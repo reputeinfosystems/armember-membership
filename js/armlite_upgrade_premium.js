@@ -1,0 +1,1 @@
+jQuery(document).ready(function(a){a('a[href="admin.php?page=arm_upgrade_to_premium"]').on("click",function(){a(this).attr("target","_blank")})});
