@@ -309,7 +309,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 
 				$log_detail = apply_filters('arm_filter_preview_log_details', $log_detail, $log_id, $_POST);//phpcs:ignore
 
-				$transaction_id = (!empty($log_detail['arm_transaction_id'])) ? $log_detail['arm_transaction_id'] : esc_html__('Manual', 'ARMember'); 
+				$transaction_id = (!empty($log_detail['arm_transaction_id'])) ? $log_detail['arm_transaction_id'] : esc_html__('Manual', 'armember-membership'); 
 
 				$plan_id = (!empty($log_detail['arm_plan_id'])) ? $arm_subscription_plans->arm_get_plan_name_by_id($log_detail['arm_plan_id']): '--';
 
@@ -327,12 +327,12 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					<div class="popup_wrapper_inner" style="overflow: hidden;">
 						<div class="popup_header">
 							<span class="popup_close_btn arm_popup_close_btn arm_preview_log_detail_close_btn"></span>
-							<span class="add_rule_content"><?php esc_html_e('Transaction Details','ARMember');?></span>
+							<span class="add_rule_content"><?php esc_html_e('Transaction Details','armember-membership');?></span>
 						</div>
 						<div class="popup_content_text arm_transactions_detail_popup_text">
 							<table width="100%" cellspacing="0">
 								<tr>
-									<th><?php esc_html_e('User','ARMember' );?></th>
+									<th><?php esc_html_e('User','armember-membership' );?></th>
 									<td><?php 
 									if(!empty($log_detail['arm_user_id']))
 									{
@@ -349,15 +349,15 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 										<?php 
 											if(!empty($arm_is_post_payment)) 
 											{ 
-												esc_html_e('Post','ARMember' ); 
+												esc_html_e('Post','armember-membership' ); 
 											} 
 											else if(!empty($arm_is_gift_payment)) 
 											{ 
-												esc_html_e('Gift','ARMember' ); 
+												esc_html_e('Gift','armember-membership' ); 
 											} 
 											else 
 											{ 
-												esc_html_e('Plan','ARMember' ); 
+												esc_html_e('Plan','armember-membership' ); 
 											} 
 										?>
 									</th>
@@ -367,7 +367,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 									<?php
 										if ($log_detail['arm_payment_gateway'] == "bank_transfer")
 										{
-											$transaction_id_field_label = !empty($bank_transfer_gateways_opts['transaction_id_label']) ? stripslashes($bank_transfer_gateways_opts['transaction_id_label']) : esc_html__('Transaction ID', 'ARMember');
+											$transaction_id_field_label = !empty($bank_transfer_gateways_opts['transaction_id_label']) ? stripslashes($bank_transfer_gateways_opts['transaction_id_label']) : esc_html__('Transaction ID', 'armember-membership');
 									?>
 											<th><?php echo esc_html($transaction_id_field_label); ?></th>
 									<?php
@@ -375,7 +375,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 										else
 										{
 									?>
-											<th><?php esc_html_e('Transaction ID','ARMember' );?></th>
+											<th><?php esc_html_e('Transaction ID','armember-membership' );?></th>
 									<?php } ?>
 
 									<td><?php echo esc_html($transaction_id); ?></td>
@@ -385,43 +385,43 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 									<th><?php 
 									if($log_detail['arm_payment_type'] == 'subscription')
 									{
-										esc_html_e('Subscription ID','ARMember' );
+										esc_html_e('Subscription ID','armember-membership' );
 									}
 									else {
-										esc_html_e('Token','ARMember' );
+										esc_html_e('Token','armember-membership' );
 									}
 									?></th>
 									<td><?php echo esc_html($arm_token);?></td>
 								</tr>
 								<?php endif;?>
 								<tr>
-									<th><?php esc_html_e('Payment Gateway','ARMember' );?></th>
+									<th><?php esc_html_e('Payment Gateway','armember-membership' );?></th>
 									<td><?php echo esc_html($payment_gateway);?></td>
 								</tr>
 								<tr>
-									<th><?php esc_html_e('Payment Type','ARMember' );?></th>
-									<td><?php ($log_detail['arm_payment_type'] == 'subscription') ? esc_html_e('Subscription', 'ARMember') : esc_html_e('One Time', 'ARMember');?></td>
+									<th><?php esc_html_e('Payment Type','armember-membership' );?></th>
+									<td><?php ($log_detail['arm_payment_type'] == 'subscription') ? esc_html_e('Subscription', 'armember-membership') : esc_html_e('One Time', 'armember-membership');?></td>
 								</tr>
 								<tr>
-									<th><?php esc_html_e('Payer Email','ARMember' );?></th>
+									<th><?php esc_html_e('Payer Email','armember-membership' );?></th>
 									<td><?php echo esc_html($log_detail['arm_payer_email']);?></td>
 								</tr>
 								<?php if(!empty($log_detail['arm_receiver_email'])): ?>
 								<tr>
-									<th><?php esc_html_e('Receiver Email','ARMember' );?></th>
+									<th><?php esc_html_e('Receiver Email','armember-membership' );?></th>
 									<td><?php echo esc_html($log_detail['arm_receiver_email']);?></td>
 								</tr>
 								<?php endif;?>
 								<tr>
-									<th><?php esc_html_e('Transaction Status','ARMember' );?></th>
+									<th><?php esc_html_e('Transaction Status','armember-membership' );?></th>
 									<td><?php echo esc_html($transaction_status);?></td>
 								</tr>
 								<tr>
-									<th><?php esc_html_e('Payment Amount','ARMember' );?></th>
+									<th><?php esc_html_e('Payment Amount','armember-membership' );?></th>
 									<td><?php echo esc_html($payment_amount)?></td>
 								</tr>
 								<tr>
-									<th><?php esc_html_e('Credit Card Number','ARMember' );?></th>
+									<th><?php esc_html_e('Credit Card Number','armember-membership' );?></th>
 									<td><?php 
 									$cc_num = (isset($extra_vars['card_number']) && !empty($extra_vars['card_number'])) ? $extra_vars['card_number'] : '-';
 									echo $cc_num; //phpcs:ignore
@@ -429,29 +429,29 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 								</tr>
 								<?php if(isset($extra_vars['trial']) && !empty($extra_vars['trial'])): ?>
 								<tr>
-									<th><?php esc_html_e('Trial Amount','ARMember' );?></th>
+									<th><?php esc_html_e('Trial Amount','armember-membership' );?></th>
 									<td><?php echo esc_html($trial_amount)?></td>
 								</tr>
 								<tr>
-									<th><?php esc_html_e('Trial Period','ARMember' );?></th>
+									<th><?php esc_html_e('Trial Period','armember-membership' );?></th>
 									<td><?php 
 									$trialInterval = $extra_vars['trial']['interval'];
 									$trialData = $trialInterval.' ';
 									if ($extra_vars['trial']['period'] == 'Y')
 									{
-										$trialData .= ($trialInterval > 1) ? esc_html__('Years', 'ARMember') : esc_html__('Year', 'ARMember');
+										$trialData .= ($trialInterval > 1) ? esc_html__('Years', 'armember-membership') : esc_html__('Year', 'armember-membership');
 									}
 									elseif ($extra_vars['trial']['period'] == 'M')
 									{
-										$trialData .= ($trialInterval > 1) ? esc_html__('Months', 'ARMember') : esc_html__('Month', 'ARMember');
+										$trialData .= ($trialInterval > 1) ? esc_html__('Months', 'armember-membership') : esc_html__('Month', 'armember-membership');
 									}
 									elseif ($extra_vars['trial']['period'] == 'W')
 									{
-										$trialData .= ($trialInterval > 1) ? esc_html__('Weeks', 'ARMember') : esc_html__('Week', 'ARMember');
+										$trialData .= ($trialInterval > 1) ? esc_html__('Weeks', 'armember-membership') : esc_html__('Week', 'armember-membership');
 									}
 									else
 									{
-										$trialData .= ($trialInterval > 1) ? esc_html__('Days', 'ARMember') : esc_html__('Day', 'ARMember');
+										$trialData .= ($trialInterval > 1) ? esc_html__('Days', 'armember-membership') : esc_html__('Day', 'armember-membership');
 									}
 									echo esc_html($trialData);
 									?></td>
@@ -459,11 +459,11 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 								<?php endif;?>
 								<?php if(!empty($log_detail['arm_coupon_code'])): ?>
 								<tr>
-									<th><?php esc_html_e('Used Coupon Code','ARMember' );?></th>
+									<th><?php esc_html_e('Used Coupon Code','armember-membership' );?></th>
 									<td><?php echo esc_html($log_detail['arm_coupon_code']);?></td>
 								</tr>
 								<tr>
-									<th><?php esc_html_e('Used Coupon Discount','ARMember' );?></th>
+									<th><?php esc_html_e('Used Coupon Discount','armember-membership' );?></th>
 									<td><?php
 										if(!empty($log_detail['arm_coupon_discount']) && $log_detail['arm_coupon_discount'] > 0)
 										{ 
@@ -481,10 +481,10 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 								
 								<?php endif;?>
 								<?php if ($log_detail['arm_payment_gateway'] == "bank_transfer"):
-									$bank_name_field_label = !empty($bank_transfer_gateways_opts['bank_name_label']) ? stripslashes($bank_transfer_gateways_opts['bank_name_label']) : esc_html__('Bank Name', 'ARMember');
-									$account_name_field_label = !empty($bank_transfer_gateways_opts['account_name_label']) ? stripslashes($bank_transfer_gateways_opts['account_name_label']) : esc_html__('Account Holder Name', 'ARMember');
-									$additional_info_field_label = !empty($bank_transfer_gateways_opts['additional_info_label']) ? stripslashes($bank_transfer_gateways_opts['additional_info_label']) : esc_html__('Additional Note', 'ARMember');
-									$transfer_mode_field_label = !empty($bank_transfer_gateways_opts['transfer_mode_label']) ? stripslashes($bank_transfer_gateways_opts['transfer_mode_label']) : esc_html__('Payment Mode', 'ARMember');
+									$bank_name_field_label = !empty($bank_transfer_gateways_opts['bank_name_label']) ? stripslashes($bank_transfer_gateways_opts['bank_name_label']) : esc_html__('Bank Name', 'armember-membership');
+									$account_name_field_label = !empty($bank_transfer_gateways_opts['account_name_label']) ? stripslashes($bank_transfer_gateways_opts['account_name_label']) : esc_html__('Account Holder Name', 'armember-membership');
+									$additional_info_field_label = !empty($bank_transfer_gateways_opts['additional_info_label']) ? stripslashes($bank_transfer_gateways_opts['additional_info_label']) : esc_html__('Additional Note', 'armember-membership');
+									$transfer_mode_field_label = !empty($bank_transfer_gateways_opts['transfer_mode_label']) ? stripslashes($bank_transfer_gateways_opts['transfer_mode_label']) : esc_html__('Payment Mode', 'armember-membership');
 									?>
 									<?php if (isset($log_detail['arm_bank_name']) && !empty($log_detail['arm_bank_name'])): ?>
 										<tr>
@@ -513,12 +513,12 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 								<?php endif;?>
 								<?php if ($log_detail['arm_payment_gateway'] == "manual" && !empty($extra_vars['note'])): ?>
 								<tr>
-									<th><?php esc_html_e('Note','ARMember' );?></th>
+									<th><?php esc_html_e('Note','armember-membership' );?></th>
 									<td><?php $transaction_note= nl2br(stripslashes($extra_vars['note'])); echo esc_html($transaction_note);?></td>
 								</tr>
 								<?php endif;?>
 								<tr>
-									<th><?php esc_html_e('Payment Date','ARMember' );?></th>
+									<th><?php esc_html_e('Payment Date','armember-membership' );?></th>
 									<td><?php $payment_date = date_i18n($date_time_format, strtotime($log_detail['arm_created_date'])); echo esc_html($payment_date);?></td>
 								</tr>
 							</table>

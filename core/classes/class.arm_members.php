@@ -4889,7 +4889,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			$total_occurence = isset( $plan->options['recurring']['time'] ) ? $plan->options['recurring']['time'] : '';
 			if ( $total_occurence == 'infinite' ) {
 				$total_occurence_actual = 1;
-                $planData['arm_expire_plan'] = "";
+                		$planData['arm_expire_plan'] = "";
 			} else {
 				$total_occurence_actual = $total_occurence;
 			}
@@ -4900,7 +4900,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			$total_cycle_performed = 0;
 			if ( $plan->is_recurring() ) {
 
-                $is_trail_added = 0;
+                		$is_trail_added = 0;
 				while ( $total_occurence_actual > 0 ) {
 
 					if ( $start_time <= $current_time ) {

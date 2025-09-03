@@ -602,7 +602,7 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 					</div>
 				</div>
 			</div>
-			<span id="arm_no_payment_gateway-error" class="error arm_invalid" style="display:none;"><?php esc_html_e('Please enable atleast one payment.','armember-membership');?></span>  
+			<span id="arm_no_payment_gateway-error" class="error arm_invalid" style="display:none;"><?php esc_html_e('Please enable at least one payment.','armember-membership');?></span>  
 		</div>
 	</div>
 	<div class="arm-ws-footer-wrapper">

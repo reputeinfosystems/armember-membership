@@ -3500,7 +3500,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							foreach ( $validate_char as $v => $v_lbl ) {
 								if ( isset( $options[ $v ] ) && $options[ $v ] == '1' ) {
 									$pass_attr    .= ' data-validation-arm' . $v . '-callback="arm' . $v . '_function"';
-									$pass_attr_msg = esc_html__( 'Please use atleast one', 'armember-membership' ) . ' ' . $v_lbl . ' ' . esc_html__( 'character.', 'armember-membership' );
+									$pass_attr_msg = esc_html__( 'Please use at least one', 'armember-membership' ) . ' ' . $v_lbl . ' ' . esc_html__( 'character.', 'armember-membership' );
 									$pass_attr    .= ' data-validation-arm' . $v . '-message="' . htmlentities( $pass_attr_msg ) . '"';
 
 								}
@@ -4169,7 +4169,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 								$field_attr = ' name="' . esc_attr( $name ) . '" ' . $disabled;
 								if ( ! empty( $required ) ) {
-									$arm_field_chkbox_msg_required = ( ! empty( $value['blank_message'] ) ) ? $value['blank_message'] : esc_html__( 'Please check atleast one option', 'armember-membership' );
+									$arm_field_chkbox_msg_required = ( ! empty( $value['blank_message'] ) ) ? $value['blank_message'] : esc_html__( 'Please check at least one option', 'armember-membership' );
 									$field_attr                   .= ' data-validation-minchecked-minchecked="1" data-validation-minchecked-message="' . htmlentities( $arm_field_chkbox_msg_required ) . '"';
 								}
 								$checked_field_attr = $hidden_key = '';
@@ -6569,7 +6569,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						'checkbox1' => 'Checkbox1',
 						'checkbox2' => 'Checkbox2',
 					),
-					'blank_message' => esc_html__( 'Please check atleast one option.', 'armember-membership' ),
+					'blank_message' => esc_html__( 'Please check at least one option.', 'armember-membership' ),
 				),
 				'radio'        => array(
 					'label'         => esc_html__( 'Radio Button', 'armember-membership' ),
@@ -6591,7 +6591,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						''        => 'Select Option',
 						'option1' => 'Option1',
 					),
-					'blank_message' => esc_html__( 'Please select atleast one option.', 'armember-membership' ),
+					'blank_message' => esc_html__( 'Please select at least one option.', 'armember-membership' ),
 				),
 				'date'         => array(
 					'label'            => esc_html__( 'Date', 'armember-membership' ),
@@ -6634,7 +6634,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					'sub_type'      => 'select',
 					'meta_key'      => 'roles', // phpcs:ignore
 					'required'      => 0,
-					'blank_message' => esc_html__( 'Please select atleast one role.', 'armember-membership' ),
+					'blank_message' => esc_html__( 'Please select at least one role.', 'armember-membership' ),
 				),
 				'hidden'       => array(
 					'label'         => esc_html__( 'Hidden Field', 'armember-membership' ),
@@ -6851,7 +6851,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					'meta_key'      => 'country', // phpcs:ignore
 					'required'      => 0,
 					'options'       => $countries, /* array('' => 'Country/Region', 'option1' => 'Option1'), */
-					'blank_message' => esc_html__( 'Please select atleast one option.', 'armember-membership' ),
+					'blank_message' => esc_html__( 'Please select at least one option.', 'armember-membership' ),
 				),
 				'description'   => array(
 					'_builtin'      => 1,

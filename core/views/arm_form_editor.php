@@ -577,7 +577,7 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 																																		}
 																																		// Generate Field HTML
 
-																																		$arm_member_forms->arm_member_form_get_field_html( $oformid, $form_field_id, $field_options, 'inactive', $armForm, '' );
+																																		$arm_member_forms->arm_member_form_get_field_html( $oformid, $form_field_id, $field_options, 'inactive', $armForm, $isEditProfile );
 																																		?>
 													</li><!--/.End `arm-df__form-group`./-->
 														<?php
@@ -612,7 +612,7 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 											?>
 											<li class="arm-df__form-group arm-df__form-group_submit" id="arm-df__form-group_<?php echo intval($form_field_id); ?>" data-field_id="<?php echo intval($form_field_id); ?>" data-type="submit">
 																																	   <?php
-																																		$arm_member_forms->arm_member_form_get_field_html( $oformid, $form_field_id, $field_options, 'inactive', $armForm );
+																																		$arm_member_forms->arm_member_form_get_field_html( $oformid, $form_field_id, $field_options, 'inactive', $armForm, $isEditProfile );
 																																		?>
 												</li>
 										</ul>

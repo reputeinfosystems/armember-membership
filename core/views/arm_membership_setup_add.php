@@ -266,7 +266,7 @@ if($ARMemberLite->is_arm_pro_active)
 									</div>
 									<div class="armclear"></div>
 									<a href="<?php echo esc_attr( admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=payment_options' ) ); //phpcs:ignore ?>" target="_blank" class="arm_setup_conf_links arm_ref_info_links"><?php esc_html_e( 'Configure More Gateways', 'armember-membership' ); ?></a>
-									<span class="arm_setup_gateway_error_msg error" style="display: none;"><?php esc_html_e( 'Atleast one payment gateway configuration is required for paid plan(s) selection.', 'armember-membership' ); ?></span>
+									<span class="arm_setup_gateway_error_msg error" style="display: none;"><?php esc_html_e( 'At least one payment gateway configuration is required for paid plan(s) selection.', 'armember-membership' ); ?></span>
 									<div class="armclear"></div>
 								   
 									<?php

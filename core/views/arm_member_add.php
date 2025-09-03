@@ -4,6 +4,8 @@ global $wpdb, $armPrimaryStatus, $ARMemberLite, $arm_slugs, $arm_members_class, 
  * Process Submited Form.
  */
 $posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data_extend'), $_POST); //phpcs:ignore
+$posted_data['user_pass'] = !empty($_POST['user_pass']) ? $_POST['user_pass'] : '';
+$posted_data['repeat_pass'] = !empty($_POST['repeat_pass']) ? $_POST['repeat_pass'] : '';
 
 $arm_common_date_format = 'm/d/Y';
 if($ARMemberLite->is_arm_pro_active)

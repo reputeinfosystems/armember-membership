@@ -9,6 +9,16 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 			add_action('wp_ajax_arm_get_arforms', array( $this, 'arm_get_arforms_plugin_func'));
 			
 			add_action('wp_ajax_arm_get_arprice', array( $this, 'arm_get_arprice_plugin_func'));
+
+			add_action('wp_ajax_arm_activate_bookingpress', array( $this, 'arm_activate_bookingpress_plugin_func'));
+
+			add_action('wp_ajax_arm_actiate_arforms', array( $this, 'arm_activate_arforms_plugin_func'));
+			
+			add_action('wp_ajax_arm_activate_arprice', array( $this, 'arm_activate_arprice_plugin_func'));
+
+			add_action('wp_ajax_arm_get_affiliatepress', array( $this, 'arm_get_affiliatepress_plugin_func'));
+
+			add_action('wp_ajax_arm_activate_affiliatepress', array( $this, 'arm_activate_affiliatepress_plugin_func'));
         }
 
         function arm_get_bookingpress_plugin_func() {
@@ -88,6 +98,30 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 			echo wp_json_encode( $response );
 			die();
 			
+		}
+
+		function arm_activate_bookingpress_plugin_func(){
+			global $wpdb, $ARMemberLite, $arm_capabilities_global;
+			$response = array(
+				'type' => 'error',
+				'msg'  => esc_html__( 'Sorry, Something went wrong. Please try again.', 'armember-membership' ),
+			);
+
+			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_growth_plugins'], '1' ); //phpcs:ignore --Reason:Verifying nonce
+
+			if ( isset( $_POST['action'] ) && $_POST['action'] == 'arm_activate_bookingpress' ) { //phpcs:ignore
+			
+				if ( file_exists( WP_PLUGIN_DIR . '/bookingpress-appointment-booking/bookingpress-appointment-booking.php' ) ) {
+					activate_plugin( 'bookingpress-appointment-booking/bookingpress-appointment-booking.php' );
+
+					$response = array(
+						'type' => 'success',
+						'msg'  => esc_html__('BookingPress successfully activated.', 'armember-membership' ),
+					);
+				}
+			}
+			echo json_encode($response);
+			die();
 		}
 
         function arm_get_arforms_plugin_func() {
@@ -172,6 +206,31 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 			die();
 			
 		}
+
+		function arm_activate_arforms_plugin_func(){
+			global $wpdb, $ARMemberLite, $arm_capabilities_global;
+			$response = array(
+				'type' => 'error',
+				'msg'  => esc_html__( 'Sorry, Something went wrong. Please try again.', 'armember-membership' ),
+			);
+
+			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_growth_plugins'], '1' ); //phpcs:ignore --Reason:Verifying nonce
+
+			if ( isset( $_POST['action'] ) && $_POST['action'] == 'arm_activate_arforms' ) { //phpcs:ignore
+			
+				if ( file_exists( WP_PLUGIN_DIR . '/arforms-form-builder/arforms-form-builder.php' ) ) {
+					activate_plugin( 'arforms-form-builder/arforms-form-builder.php' );
+
+					$response = array(
+						'type' => 'success',
+						'msg'  => esc_html__('ARForms successfully activated.', 'armember-membership' ),
+					);
+				}
+			}
+			echo json_encode($response);
+			die();
+		}
+
 		function arm_get_arprice_plugin_func() {
 			global $wpdb, $ARMemberLite, $arm_capabilities_global;
 			$response = array(
@@ -253,6 +312,133 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 			echo wp_json_encode( $response );
 			die();
 			
+		}
+
+		function arm_activate_arprice_plugin_func(){
+			global $wpdb, $ARMemberLite, $arm_capabilities_global;
+			$response = array(
+				'type' => 'error',
+				'msg'  => esc_html__( 'Sorry, Something went wrong. Please try again.', 'armember-membership' ),
+			);
+
+			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_growth_plugins'], '1' ); //phpcs:ignore --Reason:Verifying nonce
+
+			if ( isset( $_POST['action'] ) && $_POST['action'] == 'arm_activate_arprice' ) { //phpcs:ignore
+			
+				if ( file_exists( WP_PLUGIN_DIR . '/arprice-responsive-pricing-table/arprice-responsive-pricing-table.php' ) ) {
+					activate_plugin( 'arprice-responsive-pricing-table/arprice-responsive-pricing-table.php' );
+
+					$response = array(
+						'type' => 'success',
+						'msg'  => esc_html__('ARPrice successfully activated.', 'armember-membership' ),
+					);
+				}
+			}
+			echo json_encode($response);
+			die();
+		}
+
+		function arm_get_affiliatepress_plugin_func() {
+			global $wpdb, $ARMemberLite, $arm_capabilities_global;
+			$response = array(
+				'type' => 'error',
+				'msg'  => esc_html__( 'Sorry, Something went wrong. Please try again.', 'armember-membership' ),
+			);
+
+			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_growth_plugins'], '1' ); //phpcs:ignore --Reason:Verifying nonce
+
+			if ( isset( $_POST['action'] ) && $_POST['action'] == 'arm_get_affiliatepress' ) { //phpcs:ignore
+				$arm_affiliatepress_install_activate = 1; 
+				if ( ! file_exists( WP_PLUGIN_DIR . '/affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php' ) ) {
+        
+					if ( ! function_exists( 'plugins_api' ) ) {
+						require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+					}
+					$response = plugins_api(
+						'plugin_information',
+						array(
+							'slug'   => 'affiliatepress-affiliate-marketing',
+							'fields' => array(
+								'sections' => false,
+								'versions' => true,
+							),
+						)
+					);
+					if ( ! is_wp_error( $response ) && property_exists( $response, 'versions' ) ) {
+						if ( ! class_exists( 'Plugin_Upgrader', false ) ) {
+							require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+						}
+						$upgrader = new \Plugin_Upgrader( new \Automatic_Upgrader_Skin() );
+						$source   = ! empty( $response->download_link ) ? $response->download_link : '';
+						
+						if ( ! empty( $source ) ) {
+							if ( $upgrader->install( $source ) === true ) {
+								activate_plugin( 'affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php' );
+								$arm_affiliatepress_install_activate = 1; 
+							}
+						}
+					} else {
+						$package_data = $this->arm_lite_force_check_for_plugin_update( ['version', 'dwlurl'], false, 'affiliatepress-affiliate-marketing' );
+
+						$package_url = !empty( $package_data['dwlurl'] ) ? $package_data['dwlurl'] : '';
+						
+						if(!empty($package_url)) {	
+							if ( ! class_exists( 'Plugin_Upgrader', false ) ) {
+								require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+							}
+							$upgrader = new \Plugin_Upgrader( new \Automatic_Upgrader_Skin() );
+							update_option('arm_lite_download_automatic', 1);
+                                                        
+							if ( ! empty( $package_url ) ) {
+								if ( $upgrader->install( $package_url ) === true ) {
+									activate_plugin( 'affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php' );
+									$arm_affiliatepress_install_activate = 1;
+								}
+							}
+						}
+					}
+				}
+			
+				if ( ! empty( $arm_affiliatepress_install_activate ) && $arm_affiliatepress_install_activate == 1 ) {
+					$response = array(
+						'type' => 'success',
+						'msg'  => esc_html__('AffiliatePress Successfully installed.', 'armember-membership' ),
+					);
+				} else {
+					$response = array(
+						'type' => 'error',
+						'msg'  => esc_html__('Something went wrong please try again later.', 'armember-membership' ),
+					);
+				}
+			}
+			
+			echo wp_json_encode( $response );
+			die();
+			
+		}
+
+		function arm_activate_affiliatepress_plugin_func(){
+			global $wpdb, $ARMemberLite, $arm_capabilities_global;
+			$response = array(
+				'type' => 'error',
+				'msg'  => esc_html__( 'Sorry, Something went wrong. Please try again.', 'armember-membership' ),
+			);
+
+			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_growth_plugins'], '1' ); //phpcs:ignore --Reason:Verifying nonce
+
+			if ( isset( $_POST['action'] ) && $_POST['action'] == 'arm_activate_affiliatepress' ) { //phpcs:ignore
+			
+				if ( file_exists( WP_PLUGIN_DIR . '/affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php' ) ) {
+					activate_plugin( 'affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php' );
+
+					$response = array(
+						'type' => 'success',
+						'msg'  => esc_html__('AffiliatePress successfully activated.', 'armember-membership' ),
+					);
+				}
+			}
+			echo json_encode($response);
+			die();
 		}
 
         public function arm_lite_force_check_for_plugin_update( $param = [], $force_update = false,$slug = '' ){

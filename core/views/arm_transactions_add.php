@@ -40,7 +40,7 @@ if ( isset( $posted_data['action'] ) && $posted_data['action'] == 'add_payment_h
 							<label for="arm_plan_id"><?php esc_html_e( 'Select Membership Plan', 'armember-membership' ); ?></label>
 						</th>
 						<td>
-							<input type="hidden" id="arm_plan_id" name="manual_payment[plan_id]" value="" data-msg-required="<?php esc_attr_e( 'Please select atleast one membership', 'armember-membership' ); ?>" required/>
+							<input type="hidden" id="arm_plan_id" name="manual_payment[plan_id]" value="" data-msg-required="<?php esc_attr_e( 'Please select at least one membership', 'armember-membership' ); ?>" required/>
 							<dl class="arm_selectbox column_level_dd">
 								<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
 								<dd>

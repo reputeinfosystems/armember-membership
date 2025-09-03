@@ -2041,25 +2041,6 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 													switch ( $pg ) {
 														case 'paypal':
 															break;
-														case 'stripe':
-																$hide_cc_fields = apply_filters( 'arm_hide_cc_fields', false, $pg, $pg_options );
-															if ( false == $hide_cc_fields ) {
-																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_stripe ' . esc_attr($display_block) . ' arm-form-container">';
-																$pg_fields .= '<div class="' . esc_attr($form_style_class) . '">';
-																$pg_fields .= $arm_payment_gateways->arm_get_credit_card_box( 'stripe', $column_type, $fieldPosition, $errPosCCField, $form_settings['style']['form_layout'] );
-																$pg_fields .= '</div>';
-																$pg_fields .= '</div>';
-															}
-															break;
-														case 'authorize_net':
-															$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_authorize_net ' . esc_attr($display_block) . ' arm-form-container">';
-															$pg_fields .= '<div class="' . esc_attr($form_style_class) . '">';
-															$pg_fields .= $arm_payment_gateways->arm_get_credit_card_box( 'authorize_net', $column_type, $fieldPosition, $errPosCCField, $form_settings['style']['form_layout'] );
-															$pg_fields .= '</div>';
-															$pg_fields .= '</div>';
-															break;
-														case '2checkout':
-															break;
 														case 'bank_transfer':
 															if ( isset( $pg_options['note'] ) && ! empty( $pg_options['note'] ) ) {
 																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_bank_transfer ' . esc_attr($display_block) . ' arm-form-container"><div class="arm_bank_transfer_note_container">' . stripslashes( nl2br( $pg_options['note'] ) ) . '</div></div>';
@@ -3610,25 +3591,6 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 													switch ( $pg ) {
 														case 'paypal':
 															break;
-														case 'stripe':
-															$hide_cc_fields = apply_filters( 'arm_hide_cc_fields', false, $pg, $pg_options );
-															if ( false == $hide_cc_fields ) {
-																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_stripe ' . esc_attr($display_block) . ' arm-form-container">';
-																$pg_fields .= '<div class="' . esc_attr($form_style_class) . '">';
-																$pg_fields .= $arm_payment_gateways->arm_get_credit_card_box( 'stripe', $column_type, $fieldPosition, $errPosCCField, $form_settings['style']['form_layout'] );
-																$pg_fields .= '</div>';
-																$pg_fields .= '</div>';
-															}
-															break;
-														case 'authorize_net':
-															$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_authorize_net ' . esc_attr($display_block) . ' arm-form-container">';
-															$pg_fields .= '<div class="' . esc_attr($form_style_class) . '">';
-															$pg_fields .= $arm_payment_gateways->arm_get_credit_card_box( 'authorize_net', $column_type, $fieldPosition, $errPosCCField, $form_settings['style']['form_layout'] );
-															$pg_fields .= '</div>';
-															$pg_fields .= '</div>';
-															break;
-														case '2checkout':
-															break;
 														case 'bank_transfer':
 															if ( isset( $pg_options['note'] ) && ! empty( $pg_options['note'] ) ) {
 																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_bank_transfer ' . esc_attr($display_block) . ' arm-form-container"><div class="arm_bank_transfer_note_container">' . stripslashes( nl2br( $pg_options['note'] ) ) . '</div></div>';
@@ -4536,7 +4498,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						$module_box   .= '<li class="arm_membership_setup_plans_li arm_membership_setup_sub_li">';
 						$module_box   .= '<div class="arm_membership_setup_sortable_icon"></div>';
 						$module_box   .= '<label id="label_plan_chk_' . $plan_id . '">';
-						$module_box   .= '<input type="checkbox" name="' . $input_prefix . '[modules][plans][]" value="' . $plan_id . '" id="plan_chk_' . $plan_id . '" class="arm_icheckbox plans_chk_inputs plans_chk_inputs_' . $planObj->type . '" ' . $planInputAttr . ' ' . $plan_checked . ' data-msg-required="' . esc_html__( 'Please select atleast one plan.', 'armember-membership' ) . '"/>';
+						$module_box   .= '<input type="checkbox" name="' . $input_prefix . '[modules][plans][]" value="' . $plan_id . '" id="plan_chk_' . $plan_id . '" class="arm_icheckbox plans_chk_inputs plans_chk_inputs_' . $planObj->type . '" ' . $planInputAttr . ' ' . $plan_checked . ' data-msg-required="' . esc_html__( 'Please select at least one plan.', 'armember-membership' ) . '"/>';
 						$module_box   .= '<span>' . $planObj->name . '</span>';
 						$module_box   .= '</label>';
 						$module_box   .= '<input type="hidden" name="' . $input_prefix . '[modules][plans_order][' . $plan_id . ']" value="' . $pi . '" class="arm_module_options_order">';
@@ -4545,7 +4507,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					}
 					$module_box .= '</ul>';
 				} else {
-					$module_box .= '<span class="arm_setup_plan_error_msg error" style="display: none;">' . esc_html__( 'Please select atleast one plan.', 'armember-membership' ) . '</span>';
+					$module_box .= '<span class="arm_setup_plan_error_msg error" style="display: none;">' . esc_html__( 'Please select at least one plan.', 'armember-membership' ) . '</span>';
 					$module_box .= '<a href="javascript:void(0)" class="arm_setup_module_refresh" data-module="plans" title="' . esc_html__( 'Reload Plan List', 'armember-membership' ) . '"><i class="armfa armfa-refresh"></i></a>';
 					$module_box .= '<div class="arm_setup_items_empty_msg">' . esc_html__( 'There is no any plan configured yet.', 'armember-membership' );
 					$module_box .= ' <a href="' . $add_plan_link . '" target="_blank">' . esc_html__( 'Please click here to add plan.', 'armember-membership' ) . '</a>';
@@ -4601,7 +4563,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						$module_box     .= '<li class="arm_membership_setup_gateways_li arm_membership_setup_sub_li">';
 						$module_box     .= '<div class="arm_membership_setup_sortable_icon"></div>';
 						$module_box     .= '<label>';
-						$module_box     .= '<input type="checkbox" name="' . $input_prefix . '[modules][gateways][]" value="' . $key . '" id="gateway_chk_' . $key . '" class="arm_icheckbox gateways_chk_inputs" ' . $gateway_checked . ' data-pg_name="' . $pgname . '" data-msg-required="' . esc_html__( 'Please select atleast one payment gateway.', 'armember-membership' ) . '"/>';
+						$module_box     .= '<input type="checkbox" name="' . $input_prefix . '[modules][gateways][]" value="' . $key . '" id="gateway_chk_' . $key . '" class="arm_icheckbox gateways_chk_inputs" ' . $gateway_checked . ' data-pg_name="' . $pgname . '" data-msg-required="' . esc_html__( 'Please select at least one payment gateway.', 'armember-membership' ) . '"/>';
 						$module_box     .= '<span>' . $pgname . '</span>';
 						$module_box     .= '</label>';
 						$module_box     .= '<input type="hidden" name="' . $input_prefix . '[modules][gateways_order][' . $key . ']" value="' . $gi . '" class="arm_module_options_order">';
@@ -4682,7 +4644,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$plan_checked  = ( in_array( $plan_id, $selectedPlans ) ? 'checked="checked"' : '' );
 					$planInputAttr = $plan_checked . ' data-plan_name="' . esc_attr($planObj->name) . '" data-plan_type="' . esc_attr($planObj->type) . '" data-payment_type="' . esc_attr($planObj->payment_type) . '" data-show_payment_cycle="' . esc_attr($arm_show_plan_payment_cycles) . '" ';
 					$planList     .= '<div id="label_plan_chk_' . esc_attr($plan_id) . '" class="arm_setup_plan_opt_wrapper">';
-					$planList     .= '<input type="checkbox" name="setup_data[setup_modules][modules][plans][]" value="' . esc_attr($plan_id) . '" id="plan_chk_' . esc_attr($plan_id) . '" class="arm_icheckbox plans_chk_inputs plans_chk_inputs_' . esc_attr($planObj->type) . '" ' . $planInputAttr . ' data-msg-required="' . esc_html__( 'Please select atleast one plan.', 'armember-membership' ) . '"/>';
+					$planList     .= '<input type="checkbox" name="setup_data[setup_modules][modules][plans][]" value="' . esc_attr($plan_id) . '" id="plan_chk_' . esc_attr($plan_id) . '" class="arm_icheckbox plans_chk_inputs plans_chk_inputs_' . esc_attr($planObj->type) . '" ' . $planInputAttr . ' data-msg-required="' . esc_html__( 'Please select at least one plan.', 'armember-membership' ) . '"/>';
 					$planList     .= '<label for="plan_chk_' . esc_attr($plan_id) . '">' . $planObj->name . '</label>';
 					$planList     .= '</div>';
 				}
@@ -4777,7 +4739,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						$display_payment_mode = 'display: none;';
 					}
 					$gatewayList .= '<div class="arm_setup_gateway_opt_wrapper" id="arm_setup_gateway_opt_wrapper_id">';
-					$gatewayList .= '<input type="checkbox" name="setup_data[setup_modules][modules][gateways][]" value="' . esc_attr($key) . '" id="gateway_chk_' . esc_attr($key) . '" class="arm_icheckbox gateways_chk_inputs" data-pg_name="' . esc_attr($pg['gateway_name']) . '" ' . $gatewayChecked . ' data-msg-required="' . esc_html__( 'Please select atleast one payment gateway.', 'armember-membership' ) . '"/>';
+					$gatewayList .= '<input type="checkbox" name="setup_data[setup_modules][modules][gateways][]" value="' . esc_attr($key) . '" id="gateway_chk_' . esc_attr($key) . '" class="arm_icheckbox gateways_chk_inputs" data-pg_name="' . esc_attr($pg['gateway_name']) . '" ' . $gatewayChecked . ' data-msg-required="' . esc_html__( 'Please select at least one payment gateway.', 'armember-membership' ) . '"/>';
 					$gatewayList .= '<label for="gateway_chk_' . esc_attr($key) . '">' . esc_attr($pg['gateway_name']) . '</label>';
 
 					if ( ! in_array( $key, $doNotDisplayPaymentMode ) ) {

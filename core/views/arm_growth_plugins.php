@@ -129,6 +129,70 @@
 					<div class="arm-mlc-left-heading">
 						<div class="arm-plugin-details-cls">
 							<div class="arm-gt-plugin-icon">
+								<span class="arm-plugin-icon arm-afp-icon"></span>
+							</div>
+							<div class="arm-gt-plugin-dec">
+								<div class="arm-plugin-heading afp-heading"> AffiliatePress <span class="arm-plugin-heading-cls">- WordPress Affiliate Plugin </span></div>
+								<div class="arm-plugin-heading-desc">Seamlessly compatible with WooCommerce, ARMember, BookingPress, and 20+ other platforms, AffiliatePress makes running affiliate programs effortless. With multiple commission types, powerful tracking, and a modern interface, it's the smarter choice over costly and complex affiliate tools.</div>
+								<div class="arm-plugin-key-feature"> Key Features: </div>
+								<ul class="arm-feature-list-cls-plugin-dec">
+									<li class="arm-feature-list-li-plugin"> Easy Affiliates Management </li>
+									<li class="arm-feature-list-li-plugin"> Multiple Commission Types </li>
+									<li class="arm-feature-list-li-plugin"> Customized Affiliate Signup </li>
+									<li class="arm-feature-list-li-plugin"> Advanced Reports </li>
+									<li class="arm-feature-list-li-plugin"> Realtime Commission Tracking </li>
+									<li class="arm-feature-list-li-plugin"> AI-Powered Fraud Detection </li>
+								</ul>
+								<div style="margin-top: 40px;" class="arm-gt-product-btn-seprator">
+									<a href="https://www.affiliatepressplugin.com/" target="_blank" class="arm-learnmore-btn afp-plugin"> Learn More </a>
+									<?php if (file_exists( WP_PLUGIN_DIR . '/affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php')  ) { 
+										if((is_plugin_active('affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php'))){?>
+											<button disabled="disabled" type="button" class="el-button arm-btn arm-install-btn afp-plugin el-button--default is-disabled">
+												<span>
+													<span class="arm-btn__label"> Activated </span>
+													<div class="arm-btn--loader__circles">
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</span>
+											</button>
+										<?php	}
+										else{?>
+										<button type="button" onclick="arm_activate_plugins('affiliatepress',this)" class="el-button arm-btn arm-install-btn afp-plugin el-button--default">
+											<span>
+												<span class="arm-btn__label"> Activate </span>
+												<div class="arm-btn--loader__circles">
+													<div></div>
+													<div></div>
+													<div></div>
+												</div>
+											</span>
+										</button>
+										<?php }
+									 } else { ?>	
+										<button type="button" onclick="arm_download_plugins('affiliatepress',this)" class="el-button arm-btn arm-install-btn afp-plugin el-button--default ">
+											<span>
+												<span class="arm-btn__label"> Install </span>
+												<div class="arm-btn--loader__circles">
+													<div></div>
+													<div></div>
+													<div></div>
+												</div>
+											</span>
+										</button>
+									<?php }  ?>	
+								</div>
+							</div>
+							<hr class="arm-section-line">
+						</div>
+					</div>
+				</div>
+
+				<div class="arm-mlc-head-wrap">
+					<div class="arm-mlc-left-heading">
+						<div class="arm-plugin-details-cls">
+							<div class="arm-gt-plugin-icon">
 								<span class="arm-plugin-icon arm-arm-icon"></span>
 							</div>
 							<div class="arm-gt-plugin-dec">
@@ -144,11 +208,13 @@
 									<li class="arm-feature-list-li-plugin"> Custom Email Notifications </li>
 								</ul>
 								<div style="margin-top: 40px;" class="arm-gt-product-btn-seprator">
-								<a href="https://wordpress.org/plugins/bookingpress-appointment-booking/" target="_blank" class="arm-learnmore-btn"> Learn More </a>
-								<?php if ( (is_plugin_active('bookingpress-appointment-booking/bookingpress-appointment-booking.php')) || file_exists( WP_PLUGIN_DIR . '/bookingpress-appointment-booking/bookingpress-appointment-booking.php')  ) { ?>
+								<a href="https://www.bookingpressplugin.com/" target="_blank" class="arm-learnmore-btn"> Learn More </a>
+								<?php if ( file_exists( WP_PLUGIN_DIR . '/bookingpress-appointment-booking/bookingpress-appointment-booking.php')  ) {
+									
+									if(is_plugin_active('bookingpress-appointment-booking/bookingpress-appointment-booking.php')){ ?>
 										<button disabled="disabled" type="button" class="arm-btn arm-install-btn arm-plugin is-disabled">
 											<span>
-												<span class="arm-btn__label"> Installed </span>
+												<span class="arm-btn__label"> Activated </span>
 												<div class="arm-btn--loader__circles">
 													<div></div>
 													<div></div>
@@ -156,7 +222,20 @@
 												</div>
 											</span>
 										</button>
-									<?php } else { ?>	
+									<?php }
+									else{ ?>
+										<button type="button" onclick="arm_activate_plugins('bookingpress',this)" class="el-button arm-btn arm-install-btn arm-plugin el-button--default">
+											<span>
+												<span class="arm-btn__label"> Activate </span>
+												<div class="arm-btn--loader__circles">
+													<div></div>
+													<div></div>
+													<div></div>
+												</div>
+											</span>
+										</button>
+										<?php }
+									} else { ?>	
 										<button type="button" onclick="arm_download_plugins('bookingpress',this)" class="el-button arm-btn arm-install-btn arm-plugin el-button--default">
 											<span>
 												<span class="arm-btn__label"> Install </span>
@@ -174,8 +253,6 @@
 						</div>
 					</div>
 				</div>
-
-				
 
 				<div class="arm-mlc-head-wrap">
 					<div class="arm-mlc-left-heading">
@@ -196,11 +273,12 @@
 									<li class="arm-feature-list-li-plugin"> Popular Page Builders Support </li>
 								</ul>
 								<div style="margin-top: 40px;" class="arm-gt-product-btn-seprator">
-									<a href="https://wordpress.org/plugins/arforms-form-builder/" target="_blank" class="arm-learnmore-btn arf-plugin"> Learn More </a>
-									<?php if ( (is_plugin_active('arforms-form-builder/arforms-form-builder.php')) || file_exists( WP_PLUGIN_DIR . '/arforms-form-builder/arforms-form-builder.php') ) { ?>
+									<a href="https://www.arformsplugin.com/" target="_blank" class="arm-learnmore-btn arf-plugin"> Learn More </a>
+									<?php if ( file_exists( WP_PLUGIN_DIR . '/arforms-form-builder/arforms-form-builder.php') ) {
+										if((is_plugin_active('arforms-form-builder/arforms-form-builder.php'))){?>
 										<button disabled="disabled" type="button" class="el-button el-button arm-btn arm-install-btn arf-plugin el-button--default is-disabled"><!----><!---->
 											<span>
-												<span class="arm-btn__label"> Installed </span>
+												<span class="arm-btn__label"> Activated </span>
 												<div class="arm-btn--loader__circles">
 													<div></div>
 													<div></div>
@@ -208,7 +286,20 @@
 												</div>
 											</span>
 										</button>
-									<?php } else { ?>
+										<?php }
+										else{?>
+										<button type="button" onclick="arm_activate_plugins('arforms',this)" class="el-button arm-btn arm-install-btn arf-plugin el-button--default">
+											<span>
+												<span class="arm-btn__label"> Activate </span>
+												<div class="arm-btn--loader__circles">
+													<div></div>
+													<div></div>
+													<div></div>
+												</div>
+											</span>
+										</button>
+										<?php }
+									 } else { ?>
 										<button type="button" onclick="arm_download_plugins('arforms',this)" class="el-button arm-btn arm-install-btn arf-plugin el-button--default"><!----><!---->
 											<span>
 												<span class="arm-btn__label"> Install </span>
@@ -246,11 +337,24 @@
 									<li class="arm-feature-list-li-plugin"> Multi-Site Compatible </li>
 								</ul>
 								<div style="margin-top: 40px;" class="arm-gt-product-btn-seprator">
-									<a href="https://wordpress.org/plugins/arprice-responsive-pricing-table/" target="_blank" class="arm-learnmore-btn arp-plugin"> Learn More </a>
-									<?php if ((is_plugin_active('arprice-responsive-pricing-table/arprice-responsive-pricing-table.php')) || file_exists( WP_PLUGIN_DIR . '/arprice-responsive-pricing-table/arprice-responsive-pricing-table.php')  ) { ?>
-										<button disabled="disabled" type="button" class="el-button arm-btn arm-install-btn arp-plugin el-button--default is-disabled">
+									<a href="https://www.arpriceplugin.com/" target="_blank" class="arm-learnmore-btn arp-plugin"> Learn More </a>
+									<?php if (file_exists( WP_PLUGIN_DIR . '/arprice-responsive-pricing-table/arprice-responsive-pricing-table.php')  ) { 
+										if((is_plugin_active('arprice-responsive-pricing-table/arprice-responsive-pricing-table.php'))){?>
+											<button disabled="disabled" type="button" class="el-button arm-btn arm-install-btn arp-plugin el-button--default is-disabled">
+												<span>
+													<span class="arm-btn__label"> Installed </span>
+													<div class="arm-btn--loader__circles">
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+												</span>
+											</button>
+										<?php	}
+										else{?>
+										<button type="button" onclick="arm_activate_plugins('arprice',this)" class="el-button arm-btn arm-install-btn arp-plugin el-button--default">
 											<span>
-												<span class="arm-btn__label"> Installed </span>
+												<span class="arm-btn__label"> Activate </span>
 												<div class="arm-btn--loader__circles">
 													<div></div>
 													<div></div>
@@ -258,7 +362,8 @@
 												</div>
 											</span>
 										</button>
-									<?php } else { ?>	
+										<?php }
+									 } else { ?>	
 										<button type="button" onclick="arm_download_plugins('arprice',this)" class="el-button arm-btn arm-install-btn arp-plugin el-button--default ">
 											<span>
 												<span class="arm-btn__label"> Install </span>
@@ -275,8 +380,10 @@
 						</div>
 					</div>
 				</div>
+				
 				<div class="arm-mlc-sec-space"></div>
 				<input type="hidden" name="arm_download_plugins_flag" id="arm_download_plugins_flag" value="0">
+				<input type="hidden" name="arm_activate_plugins_flag" id="arm_activate_plugins_flag" value="0">
 
 			</div>
             <?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>

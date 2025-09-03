@@ -2175,10 +2175,10 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 								$content .= '</td>';
 							endif;
 							if ( $has_start_date ) :
-
-								$content .= "<td data-label='".esc_attr($l_start_date)."' class='arm_current_membership_list_item_plan_start' id='arm_current_membership_list_item_plan_start_" . esc_attr($user_plan) . "' aria-label='".esc_html($user_plan['start_date'])."'>";
+								$arm_plan_start_date = date_i18n( $date_format, $planData['arm_start_plan'] );							
+								$content .= "<td data-label='".esc_attr($l_start_date)."' class='arm_current_membership_list_item_plan_start' id='arm_current_membership_list_item_plan_start_" . esc_attr($user_plan) . "' aria-label='".esc_html($arm_plan_start_date)."'>";
 								if ( ! empty( $start_plan ) ) {
-									$content .= date_i18n( $date_format, $start_plan );
+									$content .= $arm_plan_start_date;
 								}
 
 								if ( ! empty( $arm_trial_start_date ) ) {
@@ -2193,7 +2193,8 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 
 							endif;
 							if ( $has_end_date ) :
-								$content .= "<td data-label='".esc_attr($l_end_date)."' class='arm_current_membership_list_item_plan_end' id='arm_current_membership_list_item_plan_end_" . esc_attr($user_plan) . "' aria-label='".esc_html($user_plan['end_date'])."'>";
+								$arm_plan_end_date = date_i18n( $date_format, $planData['arm_expire_plan'] );		
+								$content .= "<td data-label='".esc_attr($l_end_date)."' class='arm_current_membership_list_item_plan_end' id='arm_current_membership_list_item_plan_end_" . esc_attr($user_plan) . "' aria-label='".esc_html($arm_plan_end_date)."'>";
 
 								if ( $plan_info->is_free() || $plan_info->is_lifetime() || ( $plan_info->is_recurring() && $recurring_time == 'infinite' ) ) {
 									$content .= esc_html__( 'Never Expires', 'armember-membership' );
@@ -2201,9 +2202,9 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 
 									if ( isset( $plan_options['access_type'] ) && ! in_array( $plan_options['access_type'], array( 'infinite', 'lifetime' ) ) ) {
 
-										if ( ! empty( $expire_plan ) ) {
+										if ( ! empty( $arm_plan_end_date ) ) {
 
-											$membership_expire_content = date_i18n( $date_format, $expire_plan );
+											$membership_expire_content = $arm_plan_end_date;
 
 											$content .= $membership_expire_content;
 										} else {
@@ -2263,8 +2264,8 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 								$content .= $remaining_occurence;
 								$content .= '</td>';
 							endif;
-							if ( $has_renew_date ) :
-								$content .= "<td data-label='".esc_attr($l_renew_date)."' class='arm_current_membership_list_item_renew_date' id='arm_current_membership_list_item_renew_date_" . esc_attr($user_plan) . "' aria-label='".esc_html($user_plan['renew_date'])."'>";
+							if ( $has_renew_date ) :							
+								$content .= "<td data-label='".esc_attr($l_renew_date)."' class='arm_current_membership_list_item_renew_date' id='arm_current_membership_list_item_renew_date_" . esc_attr($user_plan) . "' aria-label='".esc_html($next_due_date)."'>";
 
 								$content      .= $next_due_date;
 								$grace_message = '';

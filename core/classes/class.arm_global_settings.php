@@ -322,7 +322,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 					return true;
 				}
 			}
-			do_action('arm_general_log_entry','email','send test email detail','armember', $arm_email_content);
+			do_action('arm_general_log_entry','email','send test email detail','armember', $message);
 		}
 
 		function arm_change_from_email( $from_email ) {

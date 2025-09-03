@@ -501,7 +501,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
                     <th class="arm_email_settings_content_label arm_gmail_settings_content_label"></th>
                     <td class="arm_email_settings_content_text">
                         
-                        <button type="button" class="arm_save_btn" id="arm_send_test_mail"><?php esc_html_e('Send test mail', 'armember-membership');?></button><img src="<?php echo MEMBERSHIPLITE_IMAGES_URL ?>/arm_loader.gif" id="arm_send_test_mail_loader" class="arm_submit_btn_loader" width="24" height="24" style="display: none;" /><br/><span style="font-style:italic;">(<?php esc_html_e('Test e-mail works only after configure SMTP server settings', 'armember-membership');?>)</span><?php //phpcs:ignore ?>
+                        <button type="button" class="arm_save_btn  <?php echo ($ARMemberLite->is_arm_pro_active) ? 'pro' : ''; ?>" id="arm_send_test_mail"><?php esc_html_e('Send test mail', 'armember-membership');?></button><img src="<?php echo MEMBERSHIPLITE_IMAGES_URL ?>/arm_loader.gif" id="arm_send_test_mail_loader" class="arm_submit_btn_loader" width="24" height="24" style="display: none;" /><br/><span style="font-style:italic;">(<?php esc_html_e('Test e-mail works only after configure SMTP server settings', 'armember-membership');?>)</span><?php //phpcs:ignore ?>
                     </td>
                 </tr>
                 </table>

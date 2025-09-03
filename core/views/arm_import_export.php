@@ -112,7 +112,7 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 								<label for="arm_plan_id"><?php esc_html_e( 'Assign Plan To User', 'armember-membership' ); ?></label>
 							</th>
 							<td class="arm-form-table-content">
-								<input type="hidden" id="arm_plan_id" name="plan_id" value="" data-msg-required="<?php esc_attr_e( 'Please select atleast one plan.', 'armember-membership' ); ?>" required/>
+								<input type="hidden" id="arm_plan_id" name="plan_id" value="" data-msg-required="<?php esc_attr_e( 'Please select at least one plan.', 'armember-membership' ); ?>" required/>
 								<dl class="arm_selectbox column_level_dd arm_width_300">
 									<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
 									<dd>

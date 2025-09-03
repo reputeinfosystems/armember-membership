@@ -101,10 +101,10 @@ if ( ! class_exists( 'ARM_modal_view_in_menu_Lite' ) ) {
 						}
 					}
 				}
-				if ( ( $arm_hide_show != 'show_to_all' ) && ( $show == 0 ) ) {
+				if ( !in_array($arm_hide_show ,array('show_to_all','always_show')) && ( $show == 0 ) ) {
 					$all_child_array_temp = $this->get_nav_menu_item_children( $menu_id, $sorted_menu_objects );
 				}
-				if ( ! empty( $all_child_array_temp ) ) {
+				if ( ! empty( $all_child_array_temp ) && is_array($all_child_array_temp)) {
 					foreach ( $all_child_array_temp as $key_child => $child ) {
 						$all_child_array[] = $child->ID;
 						if ( $child->ID == $menu_id ) {

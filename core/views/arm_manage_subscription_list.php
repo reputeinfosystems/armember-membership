@@ -844,7 +844,7 @@ global $wpdb, $ARMember, $arm_global_settings;
                         <div class="form-field form-required arm_transaction_membership_plan_wrapper">
                             <span class="arm_edit_plan_lbl"><?php esc_html_e('Select Membership Plan','armember-membership'); ?></span>
                             <div>
-                                <input type="hidden" class="arm_user_plan_change_input_get_cycle" id="arm_plan_id" name="membership_plan" value="" data-manage-plan-grid="1" data-msg-required="<?php esc_attr_e('Please select atleast one membership', 'armember-membership');?>"/>
+                                <input type="hidden" class="arm_user_plan_change_input_get_cycle" id="arm_plan_id" name="membership_plan" value="" data-manage-plan-grid="1" data-msg-required="<?php esc_attr_e('Please select at least one membership', 'armember-membership');?>"/>
                                 <dl class="arm_selectbox column_level_dd">
                                     <dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
                                     <dd>

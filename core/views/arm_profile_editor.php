@@ -1,8 +1,20 @@
 <?php
 
 global $wpdb,$ARMemberLite;
-
-$profile_template    = isset( $_REQUEST['template'] ) ? sanitize_text_field(htmlspecialchars( $_REQUEST['template'] )) : 'profiletemplate3'; //phpcs:ignore
+$get_action = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : 'add_profile'; //phpcs:ignore
+$profile_template    = isset( $_REQUEST['template'] ) ? sanitize_text_field(htmlspecialchars( $_REQUEST['template'] )) : 'profiletemplate6'; //phpcs:ignore
+if ( ( isset( $get_action ) && $get_action == 'edit_profile') || (isset($_GET['action']) && $_GET['action'] == 'duplicate_profile') ){ //phpcs:ignore
+	$template_id = !empty( $_GET['id'] ) ? intval( $_GET['id'] ) : ''; //phpcs:ignore
+	$data        = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM `' . $ARMemberLite->tbl_arm_member_templates . '` WHERE arm_type = %s and arm_id = %d', 'profile', $template_id ) );//phpcs:ignore --Reason: $tbl_arm_member_templates is a table name. False Positive Alarm
+	if ( $data == '' || empty( $data ) ) {
+		wp_redirect( admin_url( 'admin.php?page=arm_profiles_directories' ) );
+		exit;
+	}
+	$arm_template_title = !empty($data->arm_title) ? $data->arm_title : '';
+	$subscription_plans        = ( isset( $data->arm_subscription_plan ) && $data->arm_subscription_plan != '' ) ? explode( ',', $data->arm_subscription_plan ) : array();
+	$default_data              = $data;
+	$profile_template          = $data->arm_slug;
+}
 $profile_action = htmlspecialchars(sanitize_text_field($_REQUEST['action']));//phpcs:ignore
 $default_cover_photo = 0;
 
@@ -32,9 +44,12 @@ switch ( $profile_template ) {
 	case 5:
 		$temp_slug = 'profiletemplate5';
 		break;
+	case 6:
+		$temp_slug = 'profiletemplate6';
+		break;
 
 	default:
-		$temp_slug = 'profiletemplate1';
+		$temp_slug = 'profiletemplate6';
 		break;
 }
 
@@ -152,7 +167,6 @@ $template_id               = 0;
 $is_default_template       = 0;
 $hide_empty_profile_fields = 0;
 $default_data              = array();
-$get_action 			   = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : 'add_profile'; //phpcs:ignore
 $is_rtl = is_rtl();
 if ( ( isset( $get_action ) && $get_action == 'edit_profile') || (isset($_GET['action']) && $_GET['action'] == 'duplicate_profile') ){ //phpcs:ignore
 	$template_id = !empty( $_GET['id'] ) ? intval( $_GET['id'] ) : ''; //phpcs:ignore
@@ -161,7 +175,7 @@ if ( ( isset( $get_action ) && $get_action == 'edit_profile') || (isset($_GET['a
 		wp_redirect( admin_url( 'admin.php?page=arm_profiles_directories' ) );
 		exit;
 	}
-    	$arm_template_title = !empty($data->arm_title) ? $data->arm_title : '';
+	$arm_template_title = !empty($data->arm_title) ? $data->arm_title : '';
 	$subscription_plans        = ( isset( $data->arm_subscription_plan ) && $data->arm_subscription_plan != '' ) ? explode( ',', $data->arm_subscription_plan ) : array();
 	$default_data              = $data;
 	$temp_slug                 = $data->arm_slug;
@@ -182,7 +196,6 @@ if ( ( isset( $get_action ) && $get_action == 'edit_profile') || (isset($_GET['a
 	$profile_fields_data['label']          = isset( $options['label'] ) && $options['label'] != '' ? $options['label'] : array();
 	$hide_empty_profile_fields             = isset( $options['hide_empty_profile_fields'] ) ? $options['hide_empty_profile_fields'] : 1;
 }
-
 
 $_SESSION['arm_file_upload_arr']['profile_cover'] = isset( $options['default_cover'] ) && $options['default_cover'] != '' ? $options['default_cover'] : '';
 
@@ -283,19 +296,34 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 									'subtitle_font' => esc_html__( 'Sub Title Font', 'armember-membership' ),
 									'content_font'  => esc_html__( 'Content Font', 'armember-membership' ),
 								);
-								?>
+								
+								if($profile_template == '6'){
+									$font_family = 'Poppins';
+								}else{$font_family = 'Helvetica';}
+									?>
 								<?php foreach ( $fontOptions as $key => $value ) : ?>
 									<div class="arm_temp_font_opts_box">
 										<div class="arm_opt_label"><?php echo esc_html($value); ?></div>
 										<div class="arm_temp_font_opts">
-											<input type="hidden" id="arm_template_font_family_<?php echo esc_attr($key); ?>" name="template_options[<?php echo esc_attr($key); ?>][font_family]" value="<?php echo ( $get_action == 'edit_profile' && $options[ $key ]['font_family'] != '' ) ? esc_attr($options[ $key ]['font_family']) : 'Helvetica'; ?> "/>
+											<input type="hidden" id="arm_template_font_family_<?php echo esc_attr($key); ?>" name="template_options[<?php echo esc_attr($key); ?>][font_family]" value="<?php echo ( $get_action == 'edit_profile' && $options[ $key ]['font_family'] != '' ) ? esc_attr($options[ $key ]['font_family']) : $font_family; ?> "/>
 											<dl class="arm_selectbox column_level_dd arm_width_200">
-												<dt><span><?php echo ( $get_action == 'edit_profile' ) ? esc_attr($options[ $key ]['font_family']) : 'Helvetica'; ?></span><input type="text" style="display:none;" value="" class="arm_autocomplete" readonly="readonly"  /><i class="armfa armfa-caret-down armfa-lg"></i></dt>
+												<dt><span><?php echo ( $get_action == 'edit_profile' ) ? esc_attr($options[ $key ]['font_family']) : $font_family; ?></span><input type="text" style="display:none;" value="" class="arm_autocomplete" readonly="readonly"  /><i class="armfa armfa-caret-down armfa-lg"></i></dt>
 												<dd>
 													<ul data-id="arm_template_font_family_<?php echo esc_attr($key); ?>"><?php echo $arm_member_forms->arm_fonts_list(); //phpcs:ignore ?></ul>
 												</dd>
 											</dl>
 											<?php
+												if($profile_template == '6'){
+													if(!empty($options['title_font']['font_size'])){
+														$options['title_font']['font_size'] = '24';
+													}
+													if(!empty($options['subtitle_font']['font_size'])){
+														$options['subtitle_font']['font_size'] = '16';
+													}
+													if(!empty($options['content_font']['font_size'])){
+														$options['content_font']['font_size'] = '14';
+													}												
+												}
 												$fontSize = $options[ $key ]['font_size'];
 											?>
 											<input type="hidden" id="arm_template_font_size_<?php echo esc_attr($key); ?>" name="template_options[<?php echo esc_attr($key); ?>][font_size]" value="<?php echo esc_attr($fontSize); ?>"/>
@@ -327,7 +355,7 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 										</div>
 									</div>
 								<?php endforeach; ?>
-                                				<?php do_action('arm_profile_font_settings_outside',$options); ?>
+                                				<?php do_action('arm_profile_font_settings_outside',$options,$profile_template); ?>
 								<div class="arm_profile_font_settings_popup_footer">
 									<button type="button" class="armemailaddbtn" id="arm_profile_font_settings_close"><?php esc_html_e( 'Apply', 'armember-membership' ); ?></button>
 								</div>
@@ -361,12 +389,22 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 								<div class="arm_temp_color_options" id="arm_temp_color_options" style="<?php echo isset( $options['color_scheme'] ) && $options['color_scheme'] == 'custom' ? 'display:block' : 'display:none'; ?>">
 									<div class="arm_pdtemp_color_opts">
 										<span class="arm_temp_form_label"><?php esc_html_e( 'Title Color', 'armember-membership' ); ?></span>
+										<?php
+											if($profile_template == '6'){
+												$options['title_color'] = '#000000';
+											}
+										?>
 										<label class="arm_colorpicker_label arm_custom_colorpicker_label" style="background-color:<?php echo esc_attr($options['title_color']); ?>">
 											<input type="text" name="template_options[title_color]" id="arm_profile_title_color" class="arm_colorpicker" value="<?php echo esc_attr($options['title_color']); ?>" />
 										</label>
 									</div>
 									<div class="arm_pdtemp_color_opts">
 										<span class="arm_temp_form_label"><?php esc_html_e( 'Sub Title Color', 'armember-membership' ); ?></span>
+										<?php
+											if($profile_template == '6'){
+												$options['title_color'] = '#797979';
+											}
+										?>
 										<label class="arm_colorpicker_label arm_custom_colorpicker_label" style="background-color:<?php echo esc_attr($options['subtitle_color']); ?>">
 											<input type="text" name="template_options[subtitle_color]" id="arm_profile_subtitle_color" class="arm_colorpicker" value="<?php echo esc_attr($options['subtitle_color']); ?>" />
 										</label>
@@ -383,14 +421,48 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 											<input type="text" name="template_options[content_font_color]" id="arm_profile_content_color" class="arm_colorpicker" value="<?php echo esc_attr($options['content_font_color']); ?>" />
 										</label>
 									</div>
-                                    					<?php do_action('arm_profile_color_options_outside',$options); ?>
+                                    	<?php do_action('arm_profile_color_options_outside',$profile_template,$options); ?>
 								</div>
 								<div class="arm_temp_color_option_footer">
 									<button type="button" class="armemailaddbtn" id="arm_temp_color_option_apply_button"><?php esc_html_e( 'Apply', 'armember-membership' ); ?></button>
 								</div>
 							</div>
 						</div>
-					</div></div>
+					</div>
+					<?php 
+					if(!$ARMemberLite->is_arm_pro_active){
+						?>
+						<div id="arm_profile_settings_popup" class="arm_profile_belt_right_icon"  title="<?php echo esc_html__('Change Profile Template', 'armember-membership')?>">
+							<span class="arm_profile_template_belt_icon select_template"></span>
+							<div class="arm_profile_settings_popup" id="arm_profile_settings_popup_div" style="display:none;">
+								<div class="arm_profile_settings_popup_div_title">
+								<?php esc_html__('Select Template', 'armember-membership'); ?>
+									<span class="arm_profile_settings_popup_close_button" data-id="arm_profile_settings_popup_div"></span>
+								</div>
+								<input type="hidden" name="arm_profile_template" value="<?php echo esc_attr($temp_slug) ?>" id="arm_profile_template" />
+								<dl class="arm_selectbox column_level_dd arm_width_100_pct">
+									<dt><span><?php $arm_profile_template_label?></span><input type="text" style="display:none;" class="arm_autocomplete" readonly="readonly"><i class="armfa armfa-caret-down armfa-lg"></i></dt>
+									<dd>
+										<ul data-id="arm_profile_template" style="display: none;">
+											<li data-label="Profile Template 3" data-value="profiletemplate3"><span class="arm_selectbox_option_list"><?php echo esc_html('Profile Template 3','armember-membership')?></span><img class="arm_profile_template_image" src="<?php echo MEMBERSHIPLITE_VIEWS_URL . '/templates/profiletemplate3.png'?>" width="50" height="50" /></li>
+											<li data-label="Profile Template 6" data-value="profiletemplate6"><span class="arm_selectbox_option_list"><?php echo esc_html('Profile Template 6','armember-membership')?></span><img class="arm_profile_template_image" src="<?php echo MEMBERSHIPLITE_VIEWS_URL . '/templates/profiletemplate6.png'?>" width="50" height="50" /></li>
+									</ul>
+									</dd>
+								</dl>
+								<div class="arm_accordion_separator"></div>
+								<div class="arm_profile_template_settings_popup_footer">
+									<button type="button" class="armemailaddbtn" id="arm_profile_template_settings_close"><?php echo esc_html__('Apply','armember-membership')?></button>
+								</div>
+							</div>
+						</div>
+						<?php
+					}
+					?>
+					
+				</div>
+					
+					
+
 				<?php
 				$user_id           = get_current_user_id();
 				$current_user_info = get_user_by( 'id', 1 );

@@ -56,6 +56,11 @@ else{
 $totalDefaultCount        = count( $default_columns );
 if ( ! empty( $members_show_hide_column ) ) {
 	$i = 1;
+	
+	$i = apply_filters('arm_pro_show_hide_column_start_pos',$i);
+
+	$totalCount = apply_filters('arm_pro_show_hide_column_counter',$totalCount);
+
 	foreach ( $members_show_hide_column as $value ) {
 		if ( $totalCount > $i ) {
 			if ( $value != 1 ) {
