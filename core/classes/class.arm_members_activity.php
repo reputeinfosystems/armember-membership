@@ -40,7 +40,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$arm_lite_newdbversion = get_option( 'armlite_version' );
 			}
 
-			if ( version_compare( $arm_lite_newdbversion, '4.0.67', '<' ) ) {
+			if ( version_compare( $arm_lite_newdbversion, '4.0.68', '<' ) ) {
 				$path = MEMBERSHIPLITE_VIEWS_DIR . '/upgrade_latest_data.php';
 				include $path;
 			}
@@ -555,10 +555,11 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 		}
 
 		function arm_check_for_invalid_data( $file_content = '', $arm_file_array = array() ) {
+	    	$arm_valid_pattern_with_short_tag = '/(\<\?(php)|\<\?\=)|(\<(script|iframe))/';
+			$arm_valid_pattern_without_short_tag = '/(\<\?(php))|(\<(script|iframe))/';
 
-			$arm_valid_pattern = '/(\<\?(php)|\<\?\=)|(\<(script|iframe))/';
-			
-			
+			$is_short_tag_enabled = ini_get( 'short_open_tag' ); //phpcs:ignore
+
 			$arm_valid_pattern_script = '/(\<(script))/';
 			$arm_valid_pattern_iframe = '/(\<(iframe))/';
 			$arm_valid_pattern_array = array( 'onblur', 'onchange', 'onclick', 'oncontextmenu', 'oncopy', 'oncut', 'ondblclick', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onfocus', 'oninput', 'oninvalid', 'onkeydown', 'onkeypress', 'onkeyup', 'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onpaste', 'onscroll', 'onselect', 'onwheel', 'javascript' );
@@ -566,20 +567,20 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 			$arm_valid_pattern_val_flag = true;
 			foreach($arm_valid_pattern_array as $arm_invalid_keyword)
 			{
-				if( false !== stripos( $file_content, $arm_invalid_keyword) )
+				if( false !== stripos( $file_content, $arm_invalid_keyword ) )
 				{
 					$arm_valid_pattern_val_flag = false;
 					break;
 				}
 			}
-			
+
 			$arm_wp_filetype_check   = wp_check_filetype_and_ext( $arm_file_array['tmp_name'], $arm_file_array['name'] );
 
 			$ext             = empty( $arm_wp_filetype_check['ext'] ) ? '' : $arm_wp_filetype_check['ext'];
 			$type            = empty( $arm_wp_filetype_check['type'] ) ? '' : $arm_wp_filetype_check['type'];
 			//$proper_filename = empty( $arm_wp_filetype_check['proper_filename'] ) ? '' : $arm_wp_filetype_check['proper_filename'];
 
-			if ( preg_match( $arm_valid_pattern, $file_content ) || preg_match( $arm_valid_pattern_script, $file_content ) || preg_match( $arm_valid_pattern_iframe, $file_content ) || $arm_valid_pattern_val_flag==false || ( ( ! $type || ! $ext ) && !current_user_can( 'unfiltered_upload' ) ) )
+			if ( ( (1 == $is_short_tag_enabled || true == $is_short_tag_enabled) && preg_match( $arm_valid_pattern_with_short_tag, $file_content ) ) || ( (1 != $is_short_tag_enabled || false == $is_short_tag_enabled) && preg_match( $arm_valid_pattern_without_short_tag, $file_content ) ) || $arm_valid_pattern_val_flag==false || ( ( ! $type || ! $ext ) && !current_user_can( 'unfiltered_upload' ) ) )
 			{
 				return false;
 			}

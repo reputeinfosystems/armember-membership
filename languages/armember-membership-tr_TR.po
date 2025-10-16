@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ARMember Lite - Membership Plugin v4.0.67\n"
+"Project-Id-Version: ARMember Lite - Membership Plugin v4.0.68\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-21 10:31+0000\n"
-"PO-Revision-Date: 2025-08-30 09:34:15+0000\n"
+"PO-Revision-Date: 2025-10-08 11:59:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: Turkish\n"
 "MIME-Version: 1.0\n"
@@ -1193,7 +1193,7 @@ msgstr "ARMember Lite"
 msgid "ARMember Lite - Membership Plugin"
 msgstr "ARMember Lite - Membership Plugin"
 
-#: core/classes/class.arm_members_activity.php:639
+#: core/classes/class.arm_members_activity.php:640
 #: core/classes/class.armemberlite.php:39
 #@ armember-membership
 msgid "ARMember Lite - Sorry to see you go"
@@ -1685,7 +1685,7 @@ msgstr "Sona Ermesinden Önce"
 msgid "Before Registration Form"
 msgstr "Kayıt Öncesi Formu"
 
-#: core/classes/class.arm_members_activity.php:644
+#: core/classes/class.arm_members_activity.php:645
 #: core/classes/class.armemberlite.php:44
 #@ armember-membership
 msgid "Before you deactivate the ARMember Lite plugin, would you quickly give us your reason for doing so?"
@@ -2056,7 +2056,7 @@ msgstr "Kamboçya"
 msgid "Cameroon"
 msgstr "Kamerun"
 
-#: core/classes/class.arm_members_activity.php:695
+#: core/classes/class.arm_members_activity.php:696
 #: core/classes/class.armemberlite.php:120
 #@ armember-membership
 msgid "Can you mention it?"
@@ -3131,7 +3131,7 @@ msgstr "Günler"
 msgid "days"
 msgstr "günler"
 
-#: core/classes/class.arm_members_activity.php:664
+#: core/classes/class.arm_members_activity.php:665
 #: core/classes/class.armemberlite.php:64
 #: core/views/arm_feature_settings.php:201
 #: core/views/arm_feature_settings.php:579
@@ -5008,7 +5008,7 @@ msgstr "Kullanıcı oturum açmadıysa, seçilen kayıt formu abonelik sayfasın
 msgid "Forms"
 msgstr "Formlar"
 
-#: core/classes/class.arm_members_activity.php:634
+#: core/classes/class.arm_members_activity.php:635
 #: core/classes/class.armemberlite.php:17
 #@ armember-membership
 msgid "Found a better plugin"
@@ -5584,13 +5584,13 @@ msgstr "Vurgulu Arka Plan"
 msgid "Hover Font"
 msgstr "Vurgulu Yazı Tipi"
 
-#: core/classes/class.arm_members_activity.php:650
+#: core/classes/class.arm_members_activity.php:651
 #: core/classes/class.armemberlite.php:50
 #@ armember-membership
 msgid "How could we improve ?"
 msgstr "Nasıl geliştirebiliriz?"
 
-#: core/classes/class.arm_members_activity.php:694
+#: core/classes/class.arm_members_activity.php:695
 #: core/classes/class.armemberlite.php:119
 #@ armember-membership
 msgid "How could we improve?"
@@ -5759,7 +5759,7 @@ msgstr "Varsayılan Kısıtlama'yı etkinleştirirseniz bu öğe, planına burad
 msgid "If you have any js/css loading issue in your theme, only in that case you should enable this settings"
 msgstr "Temanızda herhangi bir js/css yükleme sorunu yaşıyorsanız ancak bu durumda bu ayarları etkinleştirmelisiniz"
 
-#: core/classes/class.arm_members_activity.php:660
+#: core/classes/class.arm_members_activity.php:661
 #: core/classes/class.armemberlite.php:60
 #@ armember-membership
 msgid "If you UNCHECK this then your email address will be sent along with your feedback. This can be used by armlite to get back to you for more info or a solution."
@@ -5881,7 +5881,7 @@ msgstr "Etkin değil"
 msgid "Inactive Members"
 msgstr "Aktif Olmayan Üyeler"
 
-#: core/classes/class.arm_members_activity.php:635
+#: core/classes/class.arm_members_activity.php:636
 #: core/classes/class.armemberlite.php:18
 #@ armember-membership
 msgid "Incompatible with theme or plugin"
@@ -6273,7 +6273,7 @@ msgstr "Etiket boş olmamalıdır."
 msgid "Label Width"
 msgstr "Etiket Genişliği"
 
-#: core/classes/class.arm_members_activity.php:632
+#: core/classes/class.arm_members_activity.php:633
 #: core/classes/class.armemberlite.php:15
 #@ armember-membership
 msgid "Lack of documentation"
@@ -8048,7 +8048,7 @@ msgstr "Norveççe/Norveç"
 msgid "Not recommended"
 msgstr "Tavsiye edilmez"
 
-#: core/classes/class.arm_members_activity.php:633
+#: core/classes/class.arm_members_activity.php:634
 #: core/classes/class.armemberlite.php:16
 #@ armember-membership
 msgid "Not the features I wanted"
@@ -8261,7 +8261,7 @@ msgstr "Seçenekler"
 msgid "OR"
 msgstr "VEYA"
 
-#: core/classes/class.arm_members_activity.php:636
+#: core/classes/class.arm_members_activity.php:637
 #: core/classes/class.armemberlite.php:19
 #@ armember-membership
 msgid "Other"
@@ -9568,7 +9568,7 @@ msgstr "Lütfen kısıtlı içeriğe erişmeye çalışan kullanıcılar için v
 msgid "Please Signup"
 msgstr "Lütfen kayıt olun"
 
-#: core/classes/class.arm_members_activity.php:697
+#: core/classes/class.arm_members_activity.php:698
 #: core/classes/class.armemberlite.php:122
 #@ armember-membership
 msgid "Please specify"
@@ -10966,7 +10966,7 @@ msgstr "Yarı Otomatik Abonelik"
 msgid "Semi Automatic Subscription Label"
 msgstr "Yarı Otomatik Abonelik Etiketi"
 
-#: core/classes/class.arm_members_activity.php:661
+#: core/classes/class.arm_members_activity.php:662
 #: core/classes/class.armemberlite.php:61
 #@ armember-membership
 msgid "Send anonymous"
@@ -11051,7 +11051,7 @@ msgstr "Kullanıcının oturum açmaması ve kısıtlı sayfaya erişmeye çalı
 msgid "Set Redirection Priority"
 msgstr "Yönlendirme Önceliğini Ayarla"
 
-#: core/classes/class.arm_members_activity.php:631
+#: core/classes/class.arm_members_activity.php:632
 #: core/classes/class.armemberlite.php:14
 #@ armember-membership
 msgid "Set up is too difficult"
@@ -11746,7 +11746,7 @@ msgstr "Ders"
 
 #: core/classes/class.arm_global_settings.php:871
 #: core/classes/class.arm_member_forms.php:7339
-#: core/classes/class.arm_members_activity.php:663
+#: core/classes/class.arm_members_activity.php:664
 #: core/classes/class.arm_membership_setup.php:887
 #: core/classes/class.arm_membership_setup.php:2416
 #: core/classes/class.arm_shortcodes.php:1576
@@ -11782,7 +11782,7 @@ msgstr "Düğme Etiketini Gönder"
 msgid "Submit Button Options"
 msgstr "Gönder Düğmesi Seçenekleri"
 
-#: core/classes/class.arm_members_activity.php:657
+#: core/classes/class.arm_members_activity.php:658
 #: core/classes/class.armemberlite.php:57
 #@ armember-membership
 msgid "Submitting form"
@@ -12152,7 +12152,7 @@ msgstr "Kullanıcının kaydolduktan sonra aldığı hesap doğrulama URL'si (E-
 msgid "The e-mail could not be sent."
 msgstr "E-posta gönderilemedi."
 
-#: core/classes/class.arm_members_activity.php:614
+#: core/classes/class.arm_members_activity.php:615
 #@ armember-membership
 msgid "The file could not be uploaded due to security reason as it contains malicious code"
 msgstr "Dosya kötü amaçlı kod içerdiğinden güvenlik nedeniyle yüklenemedi"
@@ -12557,7 +12557,7 @@ msgstr "Bu alan boş bırakılamaz."
 msgid "This field can not be left blank."
 msgstr "Bu alan boş bırakılamaz."
 
-#: core/classes/class.arm_members_activity.php:622
+#: core/classes/class.arm_members_activity.php:623
 #@ armember-membership
 msgid "This file could not be processed due file limit exceeded."
 msgstr "Dosya sınırı aşıldığından bu dosya işlenemedi."
@@ -13895,7 +13895,7 @@ msgstr "Diğer plana geçiş yaparken hangi işlemin yapılması gerekir?"
 msgid "What action should be performed while upgrading to other plan"
 msgstr "Diğer plana yükseltme yaparken hangi işlemin yapılması gerekir?"
 
-#: core/classes/class.arm_members_activity.php:693
+#: core/classes/class.arm_members_activity.php:694
 #: core/classes/class.armemberlite.php:118
 #@ armember-membership
 msgid "What can we describe more?"
@@ -13911,7 +13911,7 @@ msgstr "ARMember'de hangi kişisel veriler toplandı?"
 msgid "What to display when content is restricted"
 msgstr "İçerik kısıtlandığında ne gösterilecek?"
 
-#: core/classes/class.arm_members_activity.php:692
+#: core/classes/class.arm_members_activity.php:693
 #: core/classes/class.armemberlite.php:117
 #@ armember-membership
 msgid "What was the dificult part?"
@@ -13980,7 +13980,7 @@ msgstr "Bu özellik sayesinde farklı kullanıcılar için farklı içerikler ay
 msgid "With this feature, you will able to use Membership API Services for your Application."
 msgstr "Bu özellik sayesinde Üyelik API Hizmetlerini Uygulamanız için kullanabileceksiniz."
 
-#: core/classes/class.arm_members_activity.php:696
+#: core/classes/class.arm_members_activity.php:697
 #: core/classes/class.armemberlite.php:121
 #@ armember-membership
 msgid "With what plugin or theme is incompatible?"
@@ -15891,12 +15891,6 @@ msgstr "Bir sorun oluştu lütfen daha sonra tekrar deneyin."
 msgid "User Having No Plan"
 msgstr "Planı Olmayan Kullanıcı"
 
-#. translators: plugin header field 'Version'
-#: armember-membership.php:0
-#@ armember-membership
-msgid "4.0.67"
-msgstr "4.0.67"
-
 #: core/classes/class.arm_growth_plugin.php:119
 #@ armember-membership
 msgid "BookingPress successfully activated."
@@ -16009,4 +16003,10 @@ msgstr "Ücretli plan(lar) seçimi için en az bir ödeme ağ geçidi yapıland�
 #@ armember-membership
 msgid "Please enable at least one payment."
 msgstr "Lütfen en az bir ödemeyi etkinleştirin."
+
+#. translators: plugin header field 'Version'
+#: armember-membership.php:0
+#@ armember-membership
+msgid "4.0.68"
+msgstr "4.0.68"
 

@@ -44,9 +44,12 @@ if(empty($user_arm_form_id))
 		$user_arm_form_id = $wpdb->get_var( $wpdb->prepare("SELECT arm_form_id FROM ".$ARMemberLite->tbl_arm_entries." WHERE arm_entry_id = %d ",$user_arm_form_entry_id ) ); //phpcs:ignore --Reason $usermeta_table is a table name
 	}
 }
+
+$user_arm_form_id = apply_filters('arm_modify_member_forms_id_external',$user_arm_form_id);
+
 if ( !empty($user_arm_form_id) ) {
 	$userRegForm = $arm_member_forms->arm_get_single_member_forms($user_arm_form_id);
-    $arm_exists_form = $armform->arm_is_form_exists($user_arm_form_id);
+	$arm_exists_form = $armform->arm_is_form_exists($user_arm_form_id);
     if( $arm_exists_form ){
         $armform->init((object) $userRegForm);
     }
@@ -101,7 +104,7 @@ if (is_rtl()) {
 						    if(!empty($user_id)){
 						    	$arm_default_form_id = 101;
 							    $user = $arm_members_class->arm_get_member_detail($user_id);
-							    $arm_form_id = isset($user->arm_form_id) ? $user->arm_form_id : 0;
+							    $arm_form_id = isset($user_arm_form_id) ? $user_arm_form_id : 101;
 							    if(empty($arm_form_id)){
 							        $arm_form_id=$arm_default_form_id;
 							    }

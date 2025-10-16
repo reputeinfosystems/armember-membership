@@ -110,7 +110,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version;
-$arm_lite_version = '4.0.67';
+$arm_lite_version = '4.0.68';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 global $arm_lite_ajaxurl;
@@ -3680,10 +3680,9 @@ escClose : false
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'critical_title'      => 'Version 4.0.67 Changes',
+			'critical_title'      => 'Version 4.0.68 Changes',
 			'critical'            => array(
-				'Added New "Member Profile Template"',
-				'Other minor bug fixes.',
+				'Minor bug fixes.',
 			),
 			'show_major_title'    => 0,
 			'major_title'         => 'Major Changes',

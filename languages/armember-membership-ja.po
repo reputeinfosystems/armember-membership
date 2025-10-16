@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ARMember Lite - Membership Plugin v4.0.67\n"
+"Project-Id-Version: ARMember Lite - Membership Plugin v4.0.68\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-08-30 09:25:55+0000\n"
+"PO-Revision-Date: 2025-10-08 12:01:12+0000\n"
 "Last-Translator: admin <testrepute123@gmail.com>\n"
 "Language-Team: Japanese (Japan)\n"
 "MIME-Version: 1.0\n"
@@ -2963,7 +2963,7 @@ msgstr "日々"
 msgid "days"
 msgstr "日々"
 
-#: core/classes/class.arm_members_activity.php:664
+#: core/classes/class.arm_members_activity.php:665
 #: core/classes/class.armemberlite.php:64
 #: core/views/arm_feature_settings.php:201
 #: core/views/arm_feature_settings.php:579
@@ -10717,7 +10717,7 @@ msgstr "主題"
 
 #: core/classes/class.arm_global_settings.php:871
 #: core/classes/class.arm_member_forms.php:7339
-#: core/classes/class.arm_members_activity.php:663
+#: core/classes/class.arm_members_activity.php:664
 #: core/classes/class.arm_membership_setup.php:887
 #: core/classes/class.arm_membership_setup.php:2416
 #: core/classes/class.arm_shortcodes.php:1576
@@ -11102,7 +11102,7 @@ msgstr "ユーザーがサインアップ後に受け取るアカウント検証
 msgid "The e-mail could not be sent."
 msgstr "電子メールを送信できませんでした。"
 
-#: core/classes/class.arm_members_activity.php:614
+#: core/classes/class.arm_members_activity.php:615
 #@ armember-membership
 msgid "The file could not be uploaded due to security reason as it contains malicious code"
 msgstr "悪意のあるコードが含まれているため、セキュリティ上の理由によりファイルをアップロードできませんでした"
@@ -11321,7 +11321,7 @@ msgstr "このフィールドを空白のままにすることはできません
 msgid "This field can not be left blank."
 msgstr "このフィールドを空白のままにすることはできません。"
 
-#: core/classes/class.arm_members_activity.php:622
+#: core/classes/class.arm_members_activity.php:623
 #@ armember-membership
 msgid "This file could not be processed due file limit exceeded."
 msgstr "ファイル制限を超えたため、このファイルは処理できませんでした。"
@@ -13369,109 +13369,109 @@ msgstr "メールアドレスの確認を有効にしますか?"
 msgid "Membership Type"
 msgstr "会員の種類"
 
-#: core/classes/class.arm_members_activity.php:631
+#: core/classes/class.arm_members_activity.php:632
 #: core/classes/class.armemberlite.php:14
 #@ armember-membership
 msgid "Set up is too difficult"
 msgstr "設定が難しすぎる"
 
-#: core/classes/class.arm_members_activity.php:632
+#: core/classes/class.arm_members_activity.php:633
 #: core/classes/class.armemberlite.php:15
 #@ armember-membership
 msgid "Lack of documentation"
 msgstr "文書の不足"
 
-#: core/classes/class.arm_members_activity.php:633
+#: core/classes/class.arm_members_activity.php:634
 #: core/classes/class.armemberlite.php:16
 #@ armember-membership
 msgid "Not the features I wanted"
 msgstr "私が欲しかった機能ではありませんでした"
 
-#: core/classes/class.arm_members_activity.php:634
+#: core/classes/class.arm_members_activity.php:635
 #: core/classes/class.armemberlite.php:17
 #@ armember-membership
 msgid "Found a better plugin"
 msgstr "より良いプラグインを見つけました"
 
-#: core/classes/class.arm_members_activity.php:635
+#: core/classes/class.arm_members_activity.php:636
 #: core/classes/class.armemberlite.php:18
 #@ armember-membership
 msgid "Incompatible with theme or plugin"
 msgstr "テーマまたはプラグインと互換性がありません"
 
-#: core/classes/class.arm_members_activity.php:636
+#: core/classes/class.arm_members_activity.php:637
 #: core/classes/class.armemberlite.php:19
 #@ armember-membership
 msgid "Other"
 msgstr "他の"
 
-#: core/classes/class.arm_members_activity.php:639
+#: core/classes/class.arm_members_activity.php:640
 #: core/classes/class.armemberlite.php:39
 #@ armember-membership
 msgid "ARMember Lite - Sorry to see you go"
 msgstr "ARMember Lite - 残念ながら終了します"
 
-#: core/classes/class.arm_members_activity.php:644
+#: core/classes/class.arm_members_activity.php:645
 #: core/classes/class.armemberlite.php:44
 #@ armember-membership
 msgid "Before you deactivate the ARMember Lite plugin, would you quickly give us your reason for doing so?"
 msgstr "ARMember Lite プラグインを無効にする前に、その理由を簡単に教えていただけますか?"
 
-#: core/classes/class.arm_members_activity.php:650
+#: core/classes/class.arm_members_activity.php:651
 #: core/classes/class.armemberlite.php:50
 #@ armember-membership
 msgid "How could we improve ?"
 msgstr "どうすれば改善できるでしょうか?"
 
-#: core/classes/class.arm_members_activity.php:657
+#: core/classes/class.arm_members_activity.php:658
 #: core/classes/class.armemberlite.php:57
 #@ armember-membership
 msgid "Submitting form"
 msgstr "フォームの送信"
 
-#: core/classes/class.arm_members_activity.php:660
+#: core/classes/class.arm_members_activity.php:661
 #: core/classes/class.armemberlite.php:60
 #@ armember-membership
 msgid "If you UNCHECK this then your email address will be sent along with your feedback. This can be used by armlite to get back to you for more info or a solution."
 msgstr "これのチェックを外した場合、あなたの電子メール アドレスがフィードバックとともに送信されます。 これは、armlite が詳細情報や解決策について返信するために使用できます。"
 
-#: core/classes/class.arm_members_activity.php:661
+#: core/classes/class.arm_members_activity.php:662
 #: core/classes/class.armemberlite.php:61
 #@ armember-membership
 msgid "Send anonymous"
 msgstr "匿名で送信"
 
-#: core/classes/class.arm_members_activity.php:692
+#: core/classes/class.arm_members_activity.php:693
 #: core/classes/class.armemberlite.php:117
 #@ armember-membership
 msgid "What was the dificult part?"
 msgstr "難しかった点は何ですか?"
 
-#: core/classes/class.arm_members_activity.php:693
+#: core/classes/class.arm_members_activity.php:694
 #: core/classes/class.armemberlite.php:118
 #@ armember-membership
 msgid "What can we describe more?"
 msgstr "これ以上何を説明すればよいでしょうか?"
 
-#: core/classes/class.arm_members_activity.php:694
+#: core/classes/class.arm_members_activity.php:695
 #: core/classes/class.armemberlite.php:119
 #@ armember-membership
 msgid "How could we improve?"
 msgstr "どうすれば改善できるでしょうか?"
 
-#: core/classes/class.arm_members_activity.php:695
+#: core/classes/class.arm_members_activity.php:696
 #: core/classes/class.armemberlite.php:120
 #@ armember-membership
 msgid "Can you mention it?"
 msgstr "それについて言及できますか？"
 
-#: core/classes/class.arm_members_activity.php:696
+#: core/classes/class.arm_members_activity.php:697
 #: core/classes/class.armemberlite.php:121
 #@ armember-membership
 msgid "With what plugin or theme is incompatible?"
 msgstr "どのプラグインまたはテーマと互換性がありませんか?"
 
-#: core/classes/class.arm_members_activity.php:697
+#: core/classes/class.arm_members_activity.php:698
 #: core/classes/class.armemberlite.php:122
 #@ armember-membership
 msgid "Please specify"
@@ -15891,12 +15891,6 @@ msgstr "問題が発生しました。しばらくしてからもう一度お試
 msgid "User Having No Plan"
 msgstr "計画のないユーザー"
 
-#. translators: plugin header field 'Version'
-#: armember-membership.php:0
-#@ armember-membership
-msgid "4.0.67"
-msgstr "4.0.67"
-
 #: core/classes/class.arm_growth_plugin.php:119
 #@ armember-membership
 msgid "BookingPress successfully activated."
@@ -16009,4 +16003,10 @@ msgstr "有料プランを選択するには、少なくとも 1 つの決済ゲ
 #@ armember-membership
 msgid "Please enable at least one payment."
 msgstr "少なくとも 1 つの決済を有効にしてください。"
+
+#. translators: plugin header field 'Version'
+#: armember-membership.php:0
+#@ armember-membership
+msgid "4.0.68"
+msgstr "4.0.68"
 

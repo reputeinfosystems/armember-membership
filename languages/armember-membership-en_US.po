@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ARMember Lite - Membership Plugin v4.0.67\n"
+"Project-Id-Version: ARMember Lite - Membership Plugin v4.0.68\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-08-30 09:15:57+0000\n"
+"PO-Revision-Date: 2025-10-08 11:53:30+0000\n"
 "Last-Translator: admin <testrepute123@gmail.com>\n"
 "Language-Team: English (United States)\n"
 "MIME-Version: 1.0\n"
@@ -1201,7 +1201,7 @@ msgstr "ARMember Lite"
 msgid "ARMember Lite - Membership Plugin"
 msgstr "ARMember Lite - Membership Plugin"
 
-#: core/classes/class.arm_members_activity.php:639
+#: core/classes/class.arm_members_activity.php:640
 #: core/classes/class.armemberlite.php:39
 #@ armember-membership
 msgid "ARMember Lite - Sorry to see you go"
@@ -1693,7 +1693,7 @@ msgstr "Before Expiration Of"
 msgid "Before Registration Form"
 msgstr "Before Registration Form"
 
-#: core/classes/class.arm_members_activity.php:644
+#: core/classes/class.arm_members_activity.php:645
 #: core/classes/class.armemberlite.php:44
 #@ armember-membership
 msgid "Before you deactivate the ARMember Lite plugin, would you quickly give us your reason for doing so?"
@@ -2064,7 +2064,7 @@ msgstr "Cambodia"
 msgid "Cameroon"
 msgstr "Cameroon"
 
-#: core/classes/class.arm_members_activity.php:695
+#: core/classes/class.arm_members_activity.php:696
 #: core/classes/class.armemberlite.php:120
 #@ armember-membership
 msgid "Can you mention it?"
@@ -3139,7 +3139,7 @@ msgstr "Days"
 msgid "days"
 msgstr "days"
 
-#: core/classes/class.arm_members_activity.php:664
+#: core/classes/class.arm_members_activity.php:665
 #: core/classes/class.armemberlite.php:64
 #: core/views/arm_feature_settings.php:201
 #: core/views/arm_feature_settings.php:579
@@ -5016,7 +5016,7 @@ msgstr "Form will be skipped automatically when user is logged in."
 msgid "Forms"
 msgstr "Forms"
 
-#: core/classes/class.arm_members_activity.php:634
+#: core/classes/class.arm_members_activity.php:635
 #: core/classes/class.armemberlite.php:17
 #@ armember-membership
 msgid "Found a better plugin"
@@ -5592,13 +5592,13 @@ msgstr "Hover Background 2"
 msgid "Hover Font"
 msgstr "Hover Font"
 
-#: core/classes/class.arm_members_activity.php:650
+#: core/classes/class.arm_members_activity.php:651
 #: core/classes/class.armemberlite.php:50
 #@ armember-membership
 msgid "How could we improve ?"
 msgstr "How could we improve ?"
 
-#: core/classes/class.arm_members_activity.php:694
+#: core/classes/class.arm_members_activity.php:695
 #: core/classes/class.armemberlite.php:119
 #@ armember-membership
 msgid "How could we improve?"
@@ -5779,7 +5779,7 @@ msgstr "If you enable Default Restriction, that item will be restricted for visi
 msgid "If you have any js/css loading issue in your theme, only in that case you should enable this settings"
 msgstr "If you have any js/css loading issue in your theme, only in that case you should enable this settings"
 
-#: core/classes/class.arm_members_activity.php:660
+#: core/classes/class.arm_members_activity.php:661
 #: core/classes/class.armemberlite.php:60
 #@ armember-membership
 msgid "If you UNCHECK this then your email address will be sent along with your feedback. This can be used by armlite to get back to you for more info or a solution."
@@ -5901,7 +5901,7 @@ msgstr "Inactive"
 msgid "Inactive Members"
 msgstr "Inactive Members"
 
-#: core/classes/class.arm_members_activity.php:635
+#: core/classes/class.arm_members_activity.php:636
 #: core/classes/class.armemberlite.php:18
 #@ armember-membership
 msgid "Incompatible with theme or plugin"
@@ -6293,7 +6293,7 @@ msgstr "Label should not be blank."
 msgid "Label Width"
 msgstr "Label Width"
 
-#: core/classes/class.arm_members_activity.php:632
+#: core/classes/class.arm_members_activity.php:633
 #: core/classes/class.armemberlite.php:15
 #@ armember-membership
 msgid "Lack of documentation"
@@ -8068,7 +8068,7 @@ msgstr "Norwegian/Norway"
 msgid "Not recommended"
 msgstr "Not recommended"
 
-#: core/classes/class.arm_members_activity.php:633
+#: core/classes/class.arm_members_activity.php:634
 #: core/classes/class.armemberlite.php:16
 #@ armember-membership
 msgid "Not the features I wanted"
@@ -8281,7 +8281,7 @@ msgstr "Options"
 msgid "OR"
 msgstr "OR"
 
-#: core/classes/class.arm_members_activity.php:636
+#: core/classes/class.arm_members_activity.php:637
 #: core/classes/class.armemberlite.php:19
 #@ armember-membership
 msgid "Other"
@@ -9594,7 +9594,7 @@ msgstr "Please set default redirection rules for users when they try to access r
 msgid "Please Signup"
 msgstr "Please Signup"
 
-#: core/classes/class.arm_members_activity.php:697
+#: core/classes/class.arm_members_activity.php:698
 #: core/classes/class.armemberlite.php:122
 #@ armember-membership
 msgid "Please specify"
@@ -10992,7 +10992,7 @@ msgstr "Semi Automatic Subscription"
 msgid "Semi Automatic Subscription Label"
 msgstr "Semi Automatic Subscription Label"
 
-#: core/classes/class.arm_members_activity.php:661
+#: core/classes/class.arm_members_activity.php:662
 #: core/classes/class.armemberlite.php:61
 #@ armember-membership
 msgid "Send anonymous"
@@ -11077,7 +11077,7 @@ msgstr "Set page for redirection in case when user is not loggedin & trying to a
 msgid "Set Redirection Priority"
 msgstr "Set Redirection Priority"
 
-#: core/classes/class.arm_members_activity.php:631
+#: core/classes/class.arm_members_activity.php:632
 #: core/classes/class.armemberlite.php:14
 #@ armember-membership
 msgid "Set up is too difficult"
@@ -11772,7 +11772,7 @@ msgstr "Subject"
 
 #: core/classes/class.arm_global_settings.php:871
 #: core/classes/class.arm_member_forms.php:7339
-#: core/classes/class.arm_members_activity.php:663
+#: core/classes/class.arm_members_activity.php:664
 #: core/classes/class.arm_membership_setup.php:887
 #: core/classes/class.arm_membership_setup.php:2416
 #: core/classes/class.arm_shortcodes.php:1576
@@ -11808,7 +11808,7 @@ msgstr "Submit Button Label"
 msgid "Submit Button Options"
 msgstr "Submit Button Options"
 
-#: core/classes/class.arm_members_activity.php:657
+#: core/classes/class.arm_members_activity.php:658
 #: core/classes/class.armemberlite.php:57
 #@ armember-membership
 msgid "Submitting form"
@@ -12178,7 +12178,7 @@ msgstr "The account validation URL that user receives after signing up (If you e
 msgid "The e-mail could not be sent."
 msgstr "The e-mail could not be sent."
 
-#: core/classes/class.arm_members_activity.php:614
+#: core/classes/class.arm_members_activity.php:615
 #@ armember-membership
 msgid "The file could not be uploaded due to security reason as it contains malicious code"
 msgstr "The file could not be uploaded due to security reason as it contains malicious code"
@@ -12583,7 +12583,7 @@ msgstr "This Field can not be left blank."
 msgid "This field can not be left blank."
 msgstr "This field can not be left blank."
 
-#: core/classes/class.arm_members_activity.php:622
+#: core/classes/class.arm_members_activity.php:623
 #@ armember-membership
 msgid "This file could not be processed due file limit exceeded."
 msgstr "This file could not be processed due file limit exceeded."
@@ -13953,7 +13953,7 @@ msgstr "What action should be performed while downgrading to other plan"
 msgid "What action should be performed while upgrading to other plan"
 msgstr "What action should be performed while upgrading to other plan"
 
-#: core/classes/class.arm_members_activity.php:693
+#: core/classes/class.arm_members_activity.php:694
 #: core/classes/class.armemberlite.php:118
 #@ armember-membership
 msgid "What can we describe more?"
@@ -13969,7 +13969,7 @@ msgstr "What personal data collected in ARMember"
 msgid "What to display when content is restricted"
 msgstr "What to display when content is restricted"
 
-#: core/classes/class.arm_members_activity.php:692
+#: core/classes/class.arm_members_activity.php:693
 #: core/classes/class.armemberlite.php:117
 #@ armember-membership
 msgid "What was the dificult part?"
@@ -14038,7 +14038,7 @@ msgstr "With this feature, you can set different content for different user."
 msgid "With this feature, you will able to use Membership API Services for your Application."
 msgstr "With this feature, you will able to use Membership API Services for your Application."
 
-#: core/classes/class.arm_members_activity.php:696
+#: core/classes/class.arm_members_activity.php:697
 #: core/classes/class.armemberlite.php:121
 #@ armember-membership
 msgid "With what plugin or theme is incompatible?"
@@ -15891,12 +15891,6 @@ msgstr "Something went wrong please try again later."
 msgid "User Having No Plan"
 msgstr "User Having No Plan"
 
-#. translators: plugin header field 'Version'
-#: armember-membership.php:0
-#@ armember-membership
-msgid "4.0.67"
-msgstr "4.0.67"
-
 #: core/classes/class.arm_growth_plugin.php:119
 #@ armember-membership
 msgid "BookingPress successfully activated."
@@ -16009,4 +16003,10 @@ msgstr "At least one payment gateway configuration is required for paid plan(s) 
 #@ armember-membership
 msgid "Please enable at least one payment."
 msgstr "Please enable at least one payment."
+
+#. translators: plugin header field 'Version'
+#: armember-membership.php:0
+#@ armember-membership
+msgid "4.0.68"
+msgstr "4.0.68"
 

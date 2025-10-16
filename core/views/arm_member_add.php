@@ -95,6 +95,8 @@ if ( isset( $_GET['action'] ) && $_GET['action'] == 'edit_member' && ! empty( $_
 	if ( empty( $arm_form_id ) ) {
 		$arm_form_id = $arm_member_form_id;
 	}
+	$arm_form_id = apply_filters('arm_modify_member_forms_id_external',$arm_form_id);
+
 	if ( $arm_form_id != 0 && $arm_form_id != '' ) {
 		$arm_member_form_fields = $arm_member_forms->arm_get_member_forms_fields( $arm_form_id, 'all' );
         if(empty($arm_member_form_fields)){

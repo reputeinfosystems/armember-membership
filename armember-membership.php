@@ -2,7 +2,7 @@
 /*
   Plugin Name: ARMember Lite - Membership Plugin
   Description: The most powerful membership plugin to handle any complex membership WordPress sites with super ease.
-  Version: 4.0.67
+  Version: 4.0.68
   Requires at least: 5.0
   Requires PHP: 5.6
   Plugin URI: https://www.armemberplugin.com

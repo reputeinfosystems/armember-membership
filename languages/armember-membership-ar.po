@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ARMember Lite - Membership Plugin v4.0.67\n"
+"Project-Id-Version: ARMember Lite - Membership Plugin v4.0.68\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-21 10:07+0000\n"
-"PO-Revision-Date: 2025-08-30 09:13:36+0000\n"
+"PO-Revision-Date: 2025-10-08 12:00:41+0000\n"
 "Last-Translator: \n"
 "Language-Team: Arabic (Saudi Arabia)\n"
 "MIME-Version: 1.0\n"
@@ -1201,7 +1201,7 @@ msgstr "ARMember Lite"
 msgid "ARMember Lite - Membership Plugin"
 msgstr "ARMember Lite - Membership Plugin"
 
-#: core/classes/class.arm_members_activity.php:639
+#: core/classes/class.arm_members_activity.php:640
 #: core/classes/class.armemberlite.php:39
 #@ armember-membership
 msgid "ARMember Lite - Sorry to see you go"
@@ -1693,7 +1693,7 @@ msgstr "قبل انتهاء الصلاحية"
 msgid "Before Registration Form"
 msgstr "قبل استمارة التسجيل"
 
-#: core/classes/class.arm_members_activity.php:644
+#: core/classes/class.arm_members_activity.php:645
 #: core/classes/class.armemberlite.php:44
 #@ armember-membership
 msgid "Before you deactivate the ARMember Lite plugin, would you quickly give us your reason for doing so?"
@@ -2064,7 +2064,7 @@ msgstr "كمبوديا"
 msgid "Cameroon"
 msgstr "الكاميرون"
 
-#: core/classes/class.arm_members_activity.php:695
+#: core/classes/class.arm_members_activity.php:696
 #: core/classes/class.armemberlite.php:120
 #@ armember-membership
 msgid "Can you mention it?"
@@ -3139,7 +3139,7 @@ msgstr "أيام"
 msgid "days"
 msgstr "أيام"
 
-#: core/classes/class.arm_members_activity.php:664
+#: core/classes/class.arm_members_activity.php:665
 #: core/classes/class.armemberlite.php:64
 #: core/views/arm_feature_settings.php:201
 #: core/views/arm_feature_settings.php:579
@@ -5016,7 +5016,7 @@ msgstr "سيتم تخطي النموذج تلقائيًا عند تسجيل دخ
 msgid "Forms"
 msgstr "نماذج"
 
-#: core/classes/class.arm_members_activity.php:634
+#: core/classes/class.arm_members_activity.php:635
 #: core/classes/class.armemberlite.php:17
 #@ armember-membership
 msgid "Found a better plugin"
@@ -5592,13 +5592,13 @@ msgstr "تحوم الخلفية 2"
 msgid "Hover Font"
 msgstr "تحوم الخط"
 
-#: core/classes/class.arm_members_activity.php:650
+#: core/classes/class.arm_members_activity.php:651
 #: core/classes/class.armemberlite.php:50
 #@ armember-membership
 msgid "How could we improve ?"
 msgstr "كيف يمكننا أن نتحسن؟"
 
-#: core/classes/class.arm_members_activity.php:694
+#: core/classes/class.arm_members_activity.php:695
 #: core/classes/class.armemberlite.php:119
 #@ armember-membership
 msgid "How could we improve?"
@@ -5779,7 +5779,7 @@ msgstr "إذا قمت بتمكين التقييد الافتراضي، فسيت�
 msgid "If you have any js/css loading issue in your theme, only in that case you should enable this settings"
 msgstr "إذا كانت لديك أي مشكلة في تحميل js/css في القالب الخاص بك، ففي هذه الحالة فقط يجب عليك تمكين هذه الإعدادات"
 
-#: core/classes/class.arm_members_activity.php:660
+#: core/classes/class.arm_members_activity.php:661
 #: core/classes/class.armemberlite.php:60
 #@ armember-membership
 msgid "If you UNCHECK this then your email address will be sent along with your feedback. This can be used by armlite to get back to you for more info or a solution."
@@ -5901,7 +5901,7 @@ msgstr "غير نشط"
 msgid "Inactive Members"
 msgstr "الأعضاء غير النشطين"
 
-#: core/classes/class.arm_members_activity.php:635
+#: core/classes/class.arm_members_activity.php:636
 #: core/classes/class.armemberlite.php:18
 #@ armember-membership
 msgid "Incompatible with theme or plugin"
@@ -6293,7 +6293,7 @@ msgstr "لا ينبغي أن تكون التسمية فارغة."
 msgid "Label Width"
 msgstr "عرض التسمية"
 
-#: core/classes/class.arm_members_activity.php:632
+#: core/classes/class.arm_members_activity.php:633
 #: core/classes/class.armemberlite.php:15
 #@ armember-membership
 msgid "Lack of documentation"
@@ -8068,7 +8068,7 @@ msgstr "النرويجية/النرويج"
 msgid "Not recommended"
 msgstr "لا ينصح"
 
-#: core/classes/class.arm_members_activity.php:633
+#: core/classes/class.arm_members_activity.php:634
 #: core/classes/class.armemberlite.php:16
 #@ armember-membership
 msgid "Not the features I wanted"
@@ -8281,7 +8281,7 @@ msgstr "خيارات"
 msgid "OR"
 msgstr "أو"
 
-#: core/classes/class.arm_members_activity.php:636
+#: core/classes/class.arm_members_activity.php:637
 #: core/classes/class.armemberlite.php:19
 #@ armember-membership
 msgid "Other"
@@ -9594,7 +9594,7 @@ msgstr "يرجى تعيين قواعد إعادة التوجيه الافترا�
 msgid "Please Signup"
 msgstr "يرجى الاشتراك"
 
-#: core/classes/class.arm_members_activity.php:697
+#: core/classes/class.arm_members_activity.php:698
 #: core/classes/class.armemberlite.php:122
 #@ armember-membership
 msgid "Please specify"
@@ -10992,7 +10992,7 @@ msgstr "الاشتراك شبه التلقائي"
 msgid "Semi Automatic Subscription Label"
 msgstr "تسمية الاشتراك شبه التلقائي"
 
-#: core/classes/class.arm_members_activity.php:661
+#: core/classes/class.arm_members_activity.php:662
 #: core/classes/class.armemberlite.php:61
 #@ armember-membership
 msgid "Send anonymous"
@@ -11077,7 +11077,7 @@ msgstr "قم بتعيين الصفحة لإعادة التوجيه في حالة
 msgid "Set Redirection Priority"
 msgstr "ضبط أولوية إعادة التوجيه"
 
-#: core/classes/class.arm_members_activity.php:631
+#: core/classes/class.arm_members_activity.php:632
 #: core/classes/class.armemberlite.php:14
 #@ armember-membership
 msgid "Set up is too difficult"
@@ -11772,7 +11772,7 @@ msgstr "موضوع"
 
 #: core/classes/class.arm_global_settings.php:871
 #: core/classes/class.arm_member_forms.php:7339
-#: core/classes/class.arm_members_activity.php:663
+#: core/classes/class.arm_members_activity.php:664
 #: core/classes/class.arm_membership_setup.php:887
 #: core/classes/class.arm_membership_setup.php:2416
 #: core/classes/class.arm_shortcodes.php:1576
@@ -11808,7 +11808,7 @@ msgstr "إرسال تسمية الزر"
 msgid "Submit Button Options"
 msgstr "إرسال خيارات الزر"
 
-#: core/classes/class.arm_members_activity.php:657
+#: core/classes/class.arm_members_activity.php:658
 #: core/classes/class.armemberlite.php:57
 #@ armember-membership
 msgid "Submitting form"
@@ -12178,7 +12178,7 @@ msgstr "عنوان URL للتحقق من الحساب الذي يتلقاه ال
 msgid "The e-mail could not be sent."
 msgstr "لا يمكن إرسال البريد الإلكتروني."
 
-#: core/classes/class.arm_members_activity.php:614
+#: core/classes/class.arm_members_activity.php:615
 #@ armember-membership
 msgid "The file could not be uploaded due to security reason as it contains malicious code"
 msgstr "تعذر تحميل الملف لأسباب أمنية لأنه يحتوي على تعليمات برمجية ضارة"
@@ -12583,7 +12583,7 @@ msgstr "لا يمكن ترك هذا الحقل فارغا."
 msgid "This field can not be left blank."
 msgstr "لا يمكن ترك هذا الحقل فارغا."
 
-#: core/classes/class.arm_members_activity.php:622
+#: core/classes/class.arm_members_activity.php:623
 #@ armember-membership
 msgid "This file could not be processed due file limit exceeded."
 msgstr "لا يمكن معالجة هذا الملف بسبب تجاوز الحد الأقصى للملف."
@@ -13953,7 +13953,7 @@ msgstr "ما الإجراء الذي يجب القيام به أثناء الر�
 msgid "What action should be performed while upgrading to other plan"
 msgstr "ما الإجراء الذي يجب القيام به أثناء الترقية إلى خطة أخرى؟"
 
-#: core/classes/class.arm_members_activity.php:693
+#: core/classes/class.arm_members_activity.php:694
 #: core/classes/class.armemberlite.php:118
 #@ armember-membership
 msgid "What can we describe more?"
@@ -13969,7 +13969,7 @@ msgstr "ما هي البيانات الشخصية التي تم جمعها في 
 msgid "What to display when content is restricted"
 msgstr "ما يجب عرضه عندما يكون المحتوى مقيدًا"
 
-#: core/classes/class.arm_members_activity.php:692
+#: core/classes/class.arm_members_activity.php:693
 #: core/classes/class.armemberlite.php:117
 #@ armember-membership
 msgid "What was the dificult part?"
@@ -14038,7 +14038,7 @@ msgstr "باستخدام هذه الميزة، يمكنك تعيين محتوى 
 msgid "With this feature, you will able to use Membership API Services for your Application."
 msgstr "باستخدام هذه الميزة، ستتمكن من استخدام خدمات واجهة برمجة تطبيقات العضوية لتطبيقك."
 
-#: core/classes/class.arm_members_activity.php:696
+#: core/classes/class.arm_members_activity.php:697
 #: core/classes/class.armemberlite.php:121
 #@ armember-membership
 msgid "With what plugin or theme is incompatible?"
@@ -15891,12 +15891,6 @@ msgstr "لقد حدث خطأ ما، يرجى المحاولة مرة أخرى ل
 msgid "User Having No Plan"
 msgstr "المستخدم ليس لديه خطة"
 
-#. translators: plugin header field 'Version'
-#: armember-membership.php:0
-#@ armember-membership
-msgid "4.0.67"
-msgstr "4.0.67"
-
 #: core/classes/class.arm_growth_plugin.php:119
 #@ armember-membership
 msgid "BookingPress successfully activated."
@@ -16009,4 +16003,10 @@ msgstr "يلزم تهيئة بوابة دفع واحدة على الأقل لا�
 #@ armember-membership
 msgid "Please enable at least one payment."
 msgstr "يرجى تفعيل دفعة واحدة على الأقل."
+
+#. translators: plugin header field 'Version'
+#: armember-membership.php:0
+#@ armember-membership
+msgid "4.0.68"
+msgstr "4.0.68"
 
