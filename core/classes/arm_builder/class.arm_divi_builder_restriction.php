@@ -7,11 +7,18 @@ if (!class_exists('ARM_lite_divi_builder_restriction')) {
 			$is_divi_builder_restriction_feature = get_option('arm_is_divi_builder_restriction_feature');
 			$this->isDiviBuilderRestrictionFeature = ($is_divi_builder_restriction_feature == '1') ? true : false;
 			if ( (empty( $_GET['page'] ) || 'et_divi_role_editor' !== $_GET['page']) && $this->isDiviBuilderRestrictionFeature ) { //phpcs:ignore --Reason:Verifying nonce
+				/* Start Version 4 */
 				add_filter( 'et_builder_get_parent_modules', array( $this, 'toggle' ) );
 				add_filter( 'et_pb_module_content', array( $this, 'restrict_content' ), 10, 4 );
 				add_filter( 'et_pb_all_fields_unprocessed_et_pb_row', array( $this, 'row_settings' ) );
 				add_filter( 'et_pb_all_fields_unprocessed_et_pb_section', array( $this, 'row_settings' ) );
-				add_action( 'admin_enqueue_scripts', array($this,'arm_enqueue_divi_assets'));			
+				add_action( 'admin_enqueue_scripts', array($this,'arm_enqueue_divi_assets'));
+				/* End version 4 */
+
+				/* Start New Hooks For Divi 5 Theme */
+				add_action( 'divi_visual_builder_assets_before_enqueue_scripts', array($this,'arm_enqueue_et_script') );
+				add_filter( 'divi_module_wrapper_render', array($this, 'arm_filter_restrict_content_wrapper_render'), 10, 2 );
+				/* End New Hooks For Divi 5 Theme */
 			}
 		}
 
@@ -100,7 +107,7 @@ if (!class_exists('ARM_lite_divi_builder_restriction')) {
 				return $output;
 			}
 
-			if ( ( isset( $props['armember_restriction_access'] ) && $props['armember_restriction_access'] != 'on' ) /* || !isset( $props['armember_restriction_access'] ) */ ) {
+			if ( ( isset( $props['armember_restriction_access'] ) && $props['armember_restriction_access'] != 'on' ) ) {
 				return $output;
 			}
 
@@ -144,6 +151,99 @@ if (!class_exists('ARM_lite_divi_builder_restriction')) {
 			}
 
 		}
+		/* Start DIVI 5 */
+		function arm_enqueue_et_script() {
+			global $arm_subscription_plans;
+			// Bail early if either Divi 5 or Visual Builder is not enabled.
+			if ( ! et_builder_d5_enabled() || ! et_core_is_fb_enabled() ) {
+				return;
+			}
+
+			\ET\Builder\VisualBuilder\Assets\PackageBuildManager::register_package_build(
+				array(
+					'name'    => 'arm_divi_custom_group',
+					'version' => null,
+					'script'  => array(
+						'src'                => MEMBERSHIPLITE_URL. '/js/arm_divi_custom_group.js',
+						'deps'               => array(
+							'lodash',
+							'divi-vendor-wp-hooks',
+						),
+						'enqueue_top_window' => false,
+						'enqueue_app_window' => true,
+						'args'               => array(
+							'in_footer' => false,
+						),
+						'data_app_window' => arm_membership_plans(),
+					),
+				)
+			);
+		}
+
+		/**
+		 * Modify the Audio module wrapper to add a new icon element and genre meta information.
+		 *
+		 * @param string $module_wrapper The module wrapper output.
+		 * @param array  $args           The filter arguments.
+		 *
+		 * @return string The modified module wrapper output.
+		 */
+		function arm_filter_restrict_content_wrapper_render( $module_wrapper, $args ) {
+			global $arm_restriction;
+
+			if (!$this->isDiviBuilderRestrictionFeature) {
+				return $output;
+			}
+
+			if ( et_fb_is_enabled() ) {
+				return et_core_esc_previously( $module_wrapper );
+			}
+
+			$module_name     = $args['name'] ?? '';
+			$module_attrs    = $args['attrs'] ?? '';
+			$module_elements = $args['elements'] ?? '';
+
+			if ($module_name == 'divi/section' || $module_name == 'divi/row' ) {
+				
+				$DeviceName = $this->getDeviceType();			
+
+				if ( isset($module_attrs['armember_restriction_access']['innerContent'][$DeviceName]['value']) && $module_attrs['armember_restriction_access']['innerContent'][$DeviceName]['value'] !== 'on' ) {
+					return et_core_esc_previously( $module_wrapper );
+				}
+
+				if ( !isset($module_attrs['armember_access_type']['innerContent'][$DeviceName]['value']) && !isset($module_attrs['armember_membership_plans']['innerContent'][$DeviceName]['value']) ) {
+					return et_core_esc_previously( $module_wrapper );
+				}
+				
+				$access_type = isset($module_attrs['armember_access_type']['innerContent'][$DeviceName]['value']) ? $module_attrs['armember_access_type']['innerContent'][$DeviceName]['value'] : 'show';
+				$restricted_plans_id = isset($module_attrs['armember_membership_plans']['innerContent'][$DeviceName]['value']) ? $module_attrs['armember_membership_plans']['innerContent'][$DeviceName]['value'] : array();
+
+				$hasaccess = $arm_restriction->arm_check_content_hasaccess( $restricted_plans_id, $access_type );
+
+				if ($hasaccess) {
+					return et_core_esc_previously( $module_wrapper );
+				} else {
+					return '';
+				}
+			}
+			return et_core_esc_previously( $module_wrapper );
+		}
+
+		function getDeviceType() {
+			$userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
+
+			if (preg_match('/mobile|iphone|ipod|android.*mobile|blackberry|opera mini|windows phone/i', $userAgent)) {
+				return 'mobile';
+			}
+
+			if (preg_match('/tablet|ipad|playbook|silk/i', $userAgent)) {
+				return 'tablet';
+			}
+
+			return 'desktop';
+		}
+			
+		/* End DIVI 5 */
 	}
 }
 global $arm_lite_divi_builder_restriction;
@@ -155,7 +255,7 @@ if (!function_exists('arm_membership_plans')) {
 		global $arm_subscription_plans;
 
         $arm_membership_plan = $arm_subscription_plans->arm_get_all_subscription_plans('arm_subscription_plan_id, arm_subscription_plan_name');
-	$arm_membership_plan = (is_array($arm_membership_plan) && !empty($arm_membership_plan)) ? $arm_membership_plan : array();
+        $arm_membership_plan = (is_array($arm_membership_plan) && !empty($arm_membership_plan)) ? $arm_membership_plan : array();
         $plans = array();
 		if(!empty($arm_membership_plan)) {
 			foreach ( array_reverse($arm_membership_plan) as $plan ) {

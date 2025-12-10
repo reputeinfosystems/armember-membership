@@ -11,7 +11,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 			// add_action( 'wp_ajax_arm_change_bank_transfer_status', array( $this, 'arm_change_bank_transfer_status' ) );
 			add_action( 'wp_ajax_arm_preview_log_detail', array( $this, 'arm_preview_log_detail' ) );
 		
-			add_action( 'arm_save_manual_payment', array( $this, 'arm_add_manual_payment' ) );
+			add_action( 'wp_ajax_arm_save_manual_payment', array( $this, 'arm_add_manual_payment' ) );
 			add_action( 'wp_ajax_arm_load_transactions', array( $this, 'arm_load_transaction_grid' ) );
 			add_action( 'wp_ajax_arm_get_user_transactions_paging_action', array( $this, 'arm_get_user_transactions_paging_action' ) );
 			
@@ -48,7 +48,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 
 
 		function arm_preview_log_detail() {
-			 global $wp, $wpdb, $current_user, $arm_lite_errors, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways, $arm_capabilities_global;
+			 global $wp, $wpdb, $current_user, $arm_lite_errors, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways, $arm_capabilities_global,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
 
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_transactions'], '1' ); //phpcs:ignore --Reason:Verifying nonce	
 			$gateways        = $arm_payment_gateways->arm_get_all_payment_gateways();
@@ -114,15 +114,10 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					$log_detail = $this->arm_get_single_transaction( $log_id );
 				}
 				if ( ! empty( $log_detail ) ) {
+					echo $arm_ajax_pattern_start;
 					$extra_vars = ( isset( $log_detail['arm_extra_vars'] ) ) ? maybe_unserialize( $log_detail['arm_extra_vars'] ) : array();
 					?>
-					<div class="arm_preview_log_detail_popup popup_wrapper arm_preview_log_detail_popup_wrapper" style="width:800px;">
-						<div class="popup_wrapper_inner" style="overflow: hidden;">
-							<div class="popup_header">
-								<span class="popup_close_btn arm_popup_close_btn arm_preview_log_detail_close_btn"></span>
-								<span class="add_rule_content"><?php esc_html_e( 'Transaction Details', 'armember-membership' ); ?></span>
-							</div>
-							<div class="popup_content_text arm_transactions_detail_popup_text">
+					
 								<table width="100%" cellspacing="0">
 									<tr>
 										<th><?php esc_html_e( 'User', 'armember-membership' ); ?></th>
@@ -142,15 +137,15 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 										<td><?php echo ( ! empty( $log_detail['arm_plan_id'] ) ) ? $arm_subscription_plans->arm_get_plan_name_by_id( intval($log_detail['arm_plan_id']) ) : '--'; //phpcs:ignore ?></td>
 									</tr>
 									<tr>
-										<?php
-										if ( $log_detail['arm_payment_gateway'] == 'bank_transfer' ) :
-											$transaction_id_field_label = ! empty( $bank_transfer_gateways_opts['transaction_id_label'] ) ? stripslashes( $bank_transfer_gateways_opts['transaction_id_label'] ) : esc_html__( 'Transaction ID', 'armember-membership' );
-										?>
-											<th><?php echo esc_html($transaction_id_field_label); ?></th>
-										<?php else : ?>
-											<th><?php esc_html_e( 'Transaction ID', 'armember-membership' ); ?></th>
-										<?php endif; ?>
-										<td><?php echo ( !empty( $log_detail['arm_transaction_id'] ) ) ? esc_html($log_detail['arm_transaction_id']) : esc_html__( 'Manual', 'armember-membership' ); //phpcs:ignore ?></td>
+																			<?php
+																			if ( $log_detail['arm_payment_gateway'] == 'bank_transfer' ) :
+																					  $transaction_id_field_label = ! empty( $bank_transfer_gateways_opts['transaction_id_label'] ) ? stripslashes( $bank_transfer_gateways_opts['transaction_id_label'] ) : esc_html__( 'Transaction ID', 'armember-membership' );
+																				?>
+										<th><?php echo esc_html($transaction_id_field_label); ?></th>
+																			<?php else : ?>
+																				<th><?php esc_html_e( 'Transaction ID', 'armember-membership' ); ?></th>
+																			<?php endif; ?>
+										<td><?php echo ( !empty( $log_detail['arm_transaction_id'] ) ) ? esc_html(stripslashes($log_detail['arm_transaction_id'])) : esc_html__( 'Manual', 'armember-membership' ); //phpcs:ignore ?></td>
 									</tr>
 									<?php if ( ! empty( $log_detail['arm_token'] ) ) : ?>
 									<tr>
@@ -246,19 +241,19 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 										<?php if ( isset( $log_detail['arm_bank_name'] ) && ! empty( $log_detail['arm_bank_name'] ) ) : ?>
 											<tr>
 												<th><?php echo esc_html($bank_name_field_label); ?></th>
-												<td><?php echo esc_html($log_detail['arm_bank_name']); ?></td>
+												<td><?php echo esc_html(stripslashes($log_detail['arm_bank_name'])); ?></td>
 											</tr>
 										<?php endif; ?>
 										<?php if ( isset( $log_detail['arm_account_name'] ) && ! empty( $log_detail['arm_account_name'] ) ) : ?>
 											<tr>
 												<th><?php echo esc_html($account_name_field_label); ?></th>
-												<td><?php echo esc_html($log_detail['arm_account_name']); ?></td>
+												<td><?php echo esc_html(stripslashes($log_detail['arm_account_name'])); ?></td>
 											</tr>
 										<?php endif; ?>
 										<?php if ( isset( $log_detail['arm_additional_info'] ) && ! empty( $log_detail['arm_additional_info'] ) ) : ?>
 											<tr>
 												<th><?php echo esc_html($additional_info_field_label); ?></th>
-												<td><?php echo nl2br( esc_html($log_detail['arm_additional_info']) ); ?></td>
+												<td><?php echo nl2br( esc_html(stripslashes($log_detail['arm_additional_info']) )); ?></td>
 											</tr>
 										<?php endif; ?>
 										<?php if ( isset( $log_detail['arm_payment_transfer_mode'] ) && ! empty( $log_detail['arm_payment_transfer_mode'] ) ) : ?>
@@ -279,11 +274,8 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 										<td><?php echo date_i18n( $date_time_format, strtotime( $log_detail['arm_created_date'] ) ); //phpcs:ignore ?></td>
 									</tr>
 								</table>
-							</div>
-							<div class="armclear"></div>
-						</div>
-					</div>
 					<?php
+					echo $arm_ajax_pattern_end;
 				}
 			}
 			exit;
@@ -309,7 +301,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 
 				$log_detail = apply_filters('arm_filter_preview_log_details', $log_detail, $log_id, $_POST);//phpcs:ignore
 
-				$transaction_id = (!empty($log_detail['arm_transaction_id'])) ? $log_detail['arm_transaction_id'] : esc_html__('Manual', 'armember-membership'); 
+				$transaction_id = (!empty($log_detail['arm_transaction_id'])) ? stripslashes($log_detail['arm_transaction_id']) : esc_html__('Manual', 'armember-membership'); 
 
 				$plan_id = (!empty($log_detail['arm_plan_id'])) ? $arm_subscription_plans->arm_get_plan_name_by_id($log_detail['arm_plan_id']): '--';
 
@@ -489,19 +481,19 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 									<?php if (isset($log_detail['arm_bank_name']) && !empty($log_detail['arm_bank_name'])): ?>
 										<tr>
 											<th><?php echo esc_html($bank_name_field_label);?></th>
-											<td><?php echo esc_html($log_detail['arm_bank_name']);?></td>
+											<td><?php echo esc_html(stripslashes($log_detail['arm_bank_name']));?></td>
 										</tr>
 									<?php endif;?>
 									<?php if (isset($log_detail['arm_account_name']) && !empty($log_detail['arm_account_name'])): ?>
 										<tr>
 											<th><?php echo esc_html($account_name_field_label);?></th>
-											<td><?php echo esc_html($log_detail['arm_account_name']);?></td>
+											<td><?php echo esc_html(stripslashes($log_detail['arm_account_name']));?></td>
 										</tr>
 									<?php endif;?>
 									<?php if (isset($log_detail['arm_additional_info']) && !empty($log_detail['arm_additional_info'])): ?>
 										<tr>
 											<th><?php echo esc_html($additional_info_field_label);?></th>
-											<td><?php $additional_info = nl2br($log_detail['arm_additional_info']); echo esc_html($additional_info);?></td>
+											<td><?php $additional_info = nl2br(stripslashes($log_detail['arm_additional_info'])); echo esc_html($additional_info);?></td>
 										</tr>
 									<?php endif;?>
 									<?php if (isset($log_detail['arm_payment_transfer_mode']) && !empty($log_detail['arm_payment_transfer_mode'])): ?>
@@ -571,7 +563,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages( $errors, $message );
-			echo wp_json_encode( $return_array );
+			echo arm_pattern_json_encode( $return_array );
 			exit;
 		}
 		function arm_bulk_delete_transactions() {
@@ -616,27 +608,36 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages( $errors, $message );
-						$ARMemberLite->arm_set_message( 'success', esc_html__( 'Transaction(s) has been deleted successfully.', 'armember-membership' ) );
-			echo wp_json_encode( $return_array );
+			echo arm_pattern_json_encode( $return_array );
 			exit;
 		}
 		function arm_filter_transactions_list() {
-			global $ARMemberLite, $arm_capabilities_global;
+			global $ARMemberLite, $arm_capabilities_global,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
 
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_transactions'], '1' );
-
+			echo $arm_ajax_pattern_start;
 			if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions_list_records.php' ) ) {
 				include MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions_list_records.php';
 			}
+			echo $arm_ajax_pattern_end;
 			die();
 		}
 		function arm_add_manual_payment( $data = array() ) {
 			global $wp, $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_subscription_plans,$arm_capabilities_global;
 			$ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_transactions'], '1'); //phpcs:ignore --Reason:Verifying Nonce
+			$data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_REQUEST ); //phpcs:ignore
 			$redirect_to = admin_url( 'admin.php?page=' . $arm_slugs->transactions );
+			$response = array("type"=>"error","msg" => esc_html__('Something Went Wrong! Please contact to site administrator','armember-membership'));
 			if ( ! empty( $data ) ) {
 				$manual_data = $data['manual_payment'];
 				$user_id     = intval( $data['arm_user_id_hidden'] );
+
+				if(empty($user_id)){
+					$message = esc_html__('Sorry, User not found.', 'armember-membership');
+					$response = array("type"=>"error","msg" => $message);
+					echo arm_pattern_json_encode($response);
+					die();
+				}
 	
 				$plan_id     = intval( $manual_data['plan_id'] );
 				$user_info   = get_user_by( 'id', $user_id );
@@ -659,14 +660,16 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				if ( $log_id ) {
 					/* Action After Adding Plan */
 					do_action( 'arm_saved_manual_payment', $data );
-					$ARMemberLite->arm_set_message( 'success', esc_html__( 'Manual payment has been added successfully.', 'armember-membership' ) );
-					wp_redirect( $redirect_to );
-					exit;
+					$message = esc_html__('Manual payment has been added successfully.', 'armember-membership');
+					$response = array("type"=>"success","msg" => $message);
+					echo arm_pattern_json_encode($response);
+					// wp_redirect($redirect_to);
+					die();
 				} else {
-					$ARMemberLite->arm_set_message( 'error', esc_html__( 'Sorry, Something went wrong. please try again.', 'armember-membership' ) );
-					$redirect_to = $arm_global_settings->add_query_arg( 'action', 'new', $redirect_to );
-					wp_redirect( $redirect_to );
-					exit;
+					$message = esc_html__('Sorry, Something went wrong. please try again.', 'armember-membership');
+					$response = array("type"=>"success","msg" => $message);
+					echo arm_pattern_json_encode($response);
+					die();
 				}
 			}
 			return;
@@ -743,6 +746,15 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 			} else {
 				$log_data['arm_coupon_code'] = '';
 			}
+			if(is_null($log_data['arm_amount']) || (empty($log_data['arm_amount']) && !empty($log_data['arm_is_trial'])))
+			{
+				$log_data['arm_amount'] = 0;
+			}
+			
+			if(is_null($log_data['arm_is_trial']))
+			{
+				$log_data['arm_is_trial'] = 0;
+			}
 			/* Insert Payment Log Data. */
 
 						$arm_last_invoice_id = get_option( 'arm_last_invoice_id', 0 );
@@ -755,6 +767,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 			$payment_log_id = $wpdb->insert_id;
 
 			if ( ! empty( $payment_log_id ) && $payment_log_id != 0 ) {
+				$log_data['arm_log_id'] = $payment_log_id;
 				update_option( 'arm_last_invoice_id', $arm_last_invoice_id );
 				do_action( 'arm_after_add_transaction', $log_data );
 				return $payment_log_id;
@@ -1019,7 +1032,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 			return $main_log;
 		}
 		function arm_change_bank_transfer_status( $log_id = 0, $new_status = 0, $check_permission = 1 ) {
-			global $wp, $wpdb, $current_user, $arm_lite_errors, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_capabilities_global;
+			global $wp, $wpdb, $current_user, $arm_lite_errors, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_capabilities_global,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
 			if($check_permission)
 			{
 				$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_transactions'], '1' ); //phpcs:ignore --Reason:Verifying nonce
@@ -1066,8 +1079,9 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					}
 				}
 			}
-			if ( empty( $logid_exit_flag ) ) {
-				echo wp_json_encode( $response );
+			if(empty($logid_exit_flag))
+			{
+				echo $arm_ajax_pattern_start.''.json_encode($response).''.$arm_ajax_pattern_end;
 				exit;
 			}
 		}
@@ -1275,7 +1289,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					else :
 						$response_data[ $ai ][0] = '<input id="cb-item-action-' . esc_attr( $rc->arm_log_id ) . '" class="chkstanard arm_transaction_bulk_check" type="checkbox" value="' . esc_attr( $rc->arm_log_id ) . '" name="item-action[]">';
 					endif;
-					$response_data[ $ai ][1] = ( ! empty( $rc->arm_transaction_id ) ) ? $rc->arm_transaction_id : esc_html__( 'Manual', 'armember-membership' );
+					$response_data[ $ai ][1] = ( ! empty( $rc->arm_transaction_id ) ) ? stripslashes($rc->arm_transaction_id) : esc_html__( 'Manual', 'armember-membership' );
 
 					$data = get_userdata( $rc->arm_user_id );
 					if ( ! empty( $data ) ) {
@@ -1370,9 +1384,9 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					$response_data[ $ai ][12] = ( isset( $extraVars['card_number'] ) && ! empty( $extraVars['card_number'] ) ) ? $extraVars['card_number'] : '-';
 					$gridAction               = "<div class='arm_grid_action_btn_container'>";
 
-					$gridAction              .= "<a class='armhelptip arm_preview_log_detail' href='javascript:void(0)' data-log_type='" . esc_attr($log_type) . "' data-log_id='" . esc_attr($transactionID) . "' data-trxn_status='" . esc_attr($arm_transaction_status) . "' title='" . esc_html__( 'View Detail', 'armember-membership' ) . "'><img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_preview.png' onmouseover=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_preview_hover.png';\" onmouseout=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_preview.png';\" /></a>"; //phpcs:ignore 
-					$gridAction              .= "<a href='javascript:void(0)' data-log_type='" . esc_attr($log_type) . "' data-delete_log_id='" . esc_attr($transactionID) . "' data-trxn_status='" . esc_attr($arm_transaction_status) . "' onclick='showConfirmBoxCallback(".esc_attr($transactionID).");'><img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_delete.png' class='armhelptip' title='" . esc_html__( 'Delete', 'armember-membership' ) . "' onmouseover=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_delete_hover.png';\" onmouseout=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_delete.png';\" /></a>"; //phpcs:ignore 
-					$gridAction              .= $arm_global_settings->arm_get_confirm_box( $transactionID, esc_html__( 'Are you sure you want to delete this transaction?', 'armember-membership' ), 'arm_transaction_delete_btn', $log_type );
+					$gridAction              .= "<a class='armhelptip arm_preview_log_detail' href='javascript:void(0)' data-log_type='" . esc_attr($log_type) . "' data-log_id='" . esc_attr($transactionID) . "' data-trxn_status='" . esc_attr($arm_transaction_status) . "' title='" . esc_html__( 'View Detail', 'armember-membership' ) . "'><img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_preview.svg' onmouseover=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_preview_hover.svg';\" onmouseout=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_preview.svg';\" /></a>"; //phpcs:ignore 
+					$gridAction              .= "<a href='javascript:void(0)' data-log_type='" . esc_attr($log_type) . "' data-delete_log_id='" . esc_attr($transactionID) . "' data-trxn_status='" . esc_attr($arm_transaction_status) . "' onclick='showConfirmBoxCallback(".esc_attr($transactionID).");'><img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_delete.svg' class='armhelptip' title='" . esc_html__( 'Delete', 'armember-membership' ) . "' onmouseover=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_delete_hover.svg';\" onmouseout=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_delete.svg';\" /></a>"; //phpcs:ignore 
+					$gridAction              .= $arm_global_settings->arm_get_confirm_box( $transactionID, esc_html__( 'Are you sure you want to delete this transaction?', 'armember-membership' ), 'arm_transaction_delete_btn', $log_type,esc_html__("Delete", 'armember-membership'),esc_html__("Cancel", 'armember-membership'),esc_html__("Delete", 'armember-membership') );
 					$gridAction              .= '</div>';
 					$response_data[ $ai ][13] = $gridAction;
 					$ai++;

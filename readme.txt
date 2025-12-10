@@ -3,9 +3,9 @@ Contributors: reputeinfosystems, membershippro
 Tags: content restriction,user registration ,membership, member, user profile
 Donate link: https://www.armemberplugin.com/product.php?rdt=t16
 Requires at least: 4.0
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 4.0.68
+Stable tag: 5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,12 @@ Please follow the steps for installation:
 11. Signup Form
 
 == Changelog ==
+= 5.0 =
+* A complete revamp of ARMember Admin panel UI.
+* Added support for the Divi Integration Divi 5
+* Added Facility to send test mail for email.
+* Other minor Bug fixes.
+
 = 4.0.68 =
 * Minor bug fixes.
 
@@ -412,17 +418,6 @@ Please follow the steps for installation:
 = 4.0.65 =
 * Minor bug fixes.
 
-= 4.0.64 =
-* Minor bug fixes.
-
-= 4.0.63 =
-* Minor bug fixes.
-
-= 4.0.62 =
-* Minor bug fixes.
-
-= 4.0.61 =
-* Minor bug fixes.
 
 
 For a complete list of changelog of earlier versions, please check the website [here](https://www.armemberplugin.com/documents/changelog/#lite-version)

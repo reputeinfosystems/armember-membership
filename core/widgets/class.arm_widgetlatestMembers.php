@@ -229,7 +229,7 @@ if ( ! class_exists( 'ARMwidgetlatestMembers' ) ) {
 		}
 		function scripts() {
 			if ( is_active_widget( false, false, $this->id_base, true ) ) {
-				wp_enqueue_style( 'arm_front_css', MEMBERSHIPLITE_URL . '/css/arm_front.css', array(), MEMBERSHIPLITE_VERSION );
+				wp_enqueue_style( 'arm_lite_front_css', MEMBERSHIPLITE_URL . '/css/arm_front.css', array(), MEMBERSHIPLITE_VERSION );
 				wp_enqueue_style( 'arm_form_style_css', MEMBERSHIPLITE_URL . '/css/arm_form_style.css', array(), MEMBERSHIPLITE_VERSION );
 				wp_enqueue_script( 'arm_carousel_slider_js', MEMBERSHIPLITE_URL . '/js/jquery.carouFredSel.js', array('jquery'), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
 				if (!wp_script_is('arm_common_js', 'enqueued')) {

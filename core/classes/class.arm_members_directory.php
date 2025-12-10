@@ -66,6 +66,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
                     }
                 }
             }
+			
 			if( $arm_slug == 'profiletemplate3' ){
 				$arm_template_html = '<div class="arm_profile_detail_wrapper">
                         <div class="arm_profile_picture_block armCoverPhoto" style="{ARM_Profile_Cover_Image}">
@@ -185,7 +186,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				'arm_slug'                 => $arm_slug,
 				'arm_type'                 => $arm_type,
 				'arm_subscription_plan'    => $arm_subscription_plans,
-				'arm_template_html'        => $arm_template_html,
+				'arm_template_html'		   => $arm_template_html,
 				'arm_ref_template'         => $arm_ref_template,
 				'arm_options'              => $options,
 				'arm_html_before_fields'   => $arm_before_profile_field,
@@ -197,57 +198,19 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			$default_data['arm_options'] = maybe_unserialize( $options );
 			if ( isset($posted_data['arf_profile_action']) && $posted_data['arf_profile_action'] == 'add_profile' ) {
 				if ( $wpdb->insert( $ARMemberLite->tbl_arm_member_templates, $arguments ) ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					echo wp_json_encode(
-						array(
-							'type'         => 'success',
-							'id'           => $wpdb->insert_id,
-							'message'      => esc_html__( 'Template Saved Successfully', 'armember-membership' ),
-							'default_data' => $default_data,
-						)
-					);
+                    echo arm_pattern_json_encode(array('type' => 'success','id' => $wpdb->insert_id, 'message' => esc_html__('Template Saved Successfully','armember-membership'), 'default_data' => $default_data));
 				} else {
-					echo wp_json_encode(
-						array(
-							'type'    => 'error',
-							'message' => esc_html__(
-								'There is an error while saving template, please try again',
-								'armember-membership'
-							),
-						)
-					);
+                    echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while saving template, please try again','armember-membership')));
 				}
 			} elseif ( isset($posted_data['arf_profile_action']) && $posted_data['arf_profile_action'] == 'edit_profile' ) {
 				$id = isset( $posted_data['template_id'] ) ? intval( $posted_data['template_id'] ) : 0;
 				if ( $id > 0 && $wpdb->update( $ARMemberLite->tbl_arm_member_templates, $arguments, array( 'arm_id' => $id ) ) ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					echo wp_json_encode(
-						array(
-							'type'         => 'success',
-							'id'           => $id,
-							'message'      => esc_html__( 'Template Updated Successfully', 'armember-membership' ),
-							'default_data' => $default_data,
-						)
-					);
+					echo arm_pattern_json_encode(array('type' => 'success','id' => $id, 'message' => esc_html__('Template Updated Successfully','armember-membership'), 'default_data' => $default_data));
 				} else {
-					echo wp_json_encode(
-						array(
-							'type'    => 'error',
-							'message' => esc_html__(
-								'There is an error while updating template, please try again',
-								'armember-membership'
-							),
-						)
-					);
+					echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while updating template, please try again','armember-membership')));
 				}
 			} else {
-				echo wp_json_encode(
-					array(
-						'type'    => 'error',
-						'message' => esc_html__(
-							'There is an error while saving template, please try again',
-							'armember-membership'
-						),
-					)
-				);
+				echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while saving template, please try again','armember-membership')));
 			}
 			die;
 		}
@@ -369,10 +332,8 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 			$redirect_link           = admin_url( 'admin.php?page=' . $arm_slugs->profiles_directories );
 			$response['redirect_to'] = $redirect_link;
-			if ( $status == 'success' ) {
-				$ARMemberLite->arm_set_message( $status, $message );
-			}
-			echo wp_json_encode( $response );
+
+			echo arm_pattern_json_encode( $response );
 			die();
 		}
 
@@ -728,7 +689,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 		}
 
 		function arm_profile_template_blocks( $template_data = array(), $user_detail = array(), $args = array() ) {
-			global $wpdb, $ARMemberLite, $arm_member_forms,  $arm_social_feature, $arm_global_settings, $arm_lite_ajaxurl;
+			global $wpdb, $ARMemberLite, $arm_member_forms,  $arm_social_feature, $arm_global_settings, $arm_lite_ajaxurl, $arm_shortcodes;
 			$template = '';
 
 			$user    = array_shift( $user_detail );
@@ -763,6 +724,8 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 							$spfMetaKey = 'arm_social_field_' . $skey;
 							if ( in_array( $skey, $slected_social_profiles ) ) {
 								$skey_field = get_user_meta( $user['ID'], $spfMetaKey, true );
+								$skey_field = $arm_shortcodes->arm_com_escape_all_shortcodes($skey_field);
+								$skey_field = $arm_shortcodes->arm_com_descaped_all_shortcodes($skey_field);
 								if ( isset( $skey_field ) && ! empty( $skey_field ) ) {
 									$social_fields .= "<div class='arm_social_prof_div arm_user_social_fields arm_social_field_".esc_attr($skey)."'><a target='_blank' href='".esc_attr($skey_field)."'></a></div>";
 								}
@@ -781,6 +744,8 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 							$spfMetaKey = 'arm_social_field_' . $skey;
 							if ( in_array( $skey, $selected_social_profiles ) ) {
 								$skey_field = get_user_meta( $user['ID'], $spfMetaKey, true );
+								$skey_field = $arm_shortcodes->arm_com_escape_all_shortcodes($skey_field);
+								$skey_field = $arm_shortcodes->arm_com_descaped_all_shortcodes($skey_field);
 								if ( isset( $skey_field ) && ! empty( $skey_field ) ) {
 									$social_fields_arr[] = "<div class='arm_social_prof_div arm_user_social_fields arm_social_field_".esc_attr($skey)."'><a target='_blank' href='".esc_attr($skey_field)."'></a></div>";
 								}
@@ -843,7 +808,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					}
 				}
 
-										$profile_link_name = '<a class="arm_profile_link" href="' . $user['user_link'] . '">' . $user['full_name'] . '</a>';
+										$profile_link_name = '<a class="arm_profile_link" href="' . $user['user_link'] . '">' . $arm_shortcodes->arm_com_descaped_all_shortcodes($arm_shortcodes->arm_com_escape_all_shortcodes($user['full_name'])) . '</a>';
 										$arm_template_html = str_replace( '{ARM_Profile_Cover_Image}', $arm_cover_image, $arm_template_html );
 										$arm_template_html = str_replace( '{ARM_Profile_User_Name}', $profile_link_name, $arm_template_html );
 										$arm_template_html = str_replace( '{ARM_Profile_Avatar_Image}', $user['avatar'], $arm_template_html );
@@ -864,7 +829,11 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 									   $template .= $arm_template_html;
 				$template                         = preg_replace( '|{(\w+)}|', '', $template );
 			}
-			return do_shortcode( $template );
+
+			$content = do_shortcode($template);
+			$content = $arm_shortcodes->arm_com_escape_all_shortcodes($content);
+			$content = $arm_shortcodes->arm_com_descaped_all_shortcodes($content);
+			return $content;
 		}
 		function arm_get_directory_members( $tempData, $opts = array() ) {
 			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_members_directory, $arm_members_class, $arm_social_feature;
@@ -1180,36 +1149,30 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					if ( ! empty( $tempDetails ) ) {
 						$tempType    = isset( $tempDetails['arm_type'] ) ? $tempDetails['arm_type'] : 'directory';
 						$tempOptions = $tempDetails['arm_options'];
-						$popup       = '<div class="arm_pdtemp_edit_popup_wrapper popup_wrapper" style="width: 750px;">';
-						$popup      .= '<form action="#" method="post" onsubmit="return false;" class="arm_template_edit_form arm_admin_form" id="arm_template_edit_form" data-temp_id="' . $temp_id . '">';
+						$popup = '<form action="#" method="post" onsubmit="return false;" class="arm_template_edit_form arm_admin_form" id="arm_template_edit_form" data-temp_id="' . $temp_id . '">';
 						if ( $tempType == 'directory' ) {
 														$popup .= '<input type="hidden" id="arm_template_slug" name="arm_template_slug" value="' . esc_attr($tempDetails['arm_slug']) . '">';
 						}
 
 														$popup .= '<table cellspacing="0">';
 							$popup                             .= '<tr class="popup_wrapper_inner">';
-								$popup                         .= '<td class="popup_header">';
-									$popup                     .= '<span class="popup_close_btn arm_popup_close_btn arm_pdtemp_edit_close_btn"></span>';
-									$popup                     .= '<span>' . esc_html__( 'Edit Template Options', 'armember-membership' ) . '</span>';
-								$popup                         .= '</td>';
-								$popup                         .= '<td class="popup_content_text">';
+								$popup                         .= '<td>';
 									$popup                     .= $this->arm_template_options( $temp_id, $tempType, $tempDetails );
 								$popup                         .= '</td>';
 								$popup                         .= '<td class="popup_content_btn popup_footer">';
 									$popup                     .= '<input type="hidden" name="id" id="arm_pdtemp_edit_id" value="' . esc_attr($temp_id) . '">';
-									$popup                     .= '<div class="popup_content_btn_wrapper arm_temp_option_wrapper">';
+									$popup                     .= '<div class="popup_content_btn_wrapper arm_temp_option_wrapper arm_submit_btn_container">';
+									$popup                     .= '<button class="arm_cancel_btn arm_pdtemp_directory_edit_close_btn" type="button">' . esc_html__( 'Cancel', 'armember-membership' ) . '</button>';
 									$popup                     .= '<button class="arm_save_btn arm_pdtemp_edit_submit" id="arm_pdtemp_edit_submit" data-id="' . esc_attr($temp_id) . '" type="submit">' . esc_html__( 'Save', 'armember-membership' ) . '</button>';
-									$popup                     .= '<button class="arm_cancel_btn arm_pdtemp_edit_close_btn" type="button">' . esc_html__( 'Cancel', 'armember-membership' ) . '</button>';
 									$popup                     .= '</div>';
 									$popup                     .= '<div class="popup_content_btn_wrapper arm_temp_custom_class_btn hidden_section">';
 									$backToListingIcon          = MEMBERSHIPLITE_IMAGES_URL . '/back_to_listing_arrow.png';
-									$popup                     .= '<a href="javascript:void(0)" class="arm_section_custom_css_detail_hide_template armemailaddbtn"><img src="' . $backToListingIcon . '"/>' . esc_html__( 'Back to template options', 'armember-membership' ) . '</a>'; //phpcs:ignore 
+									$popup                     .= '<a href="javascript:void(0)" class="arm_section_custom_css_detail_hide_template armemailaddbtn"><img align="absmiddle" src="' . $backToListingIcon . '"/>' . esc_html__( 'Back to template options', 'armember-membership' ) . '</a>'; //phpcs:ignore 
 									$popup                     .= '</div>';
 								$popup                         .= '</td>';
 							$popup                             .= '</tr>';
 							$popup                             .= '</table>';
 						$popup                                 .= '</form>';
-						$popup                                 .= '</div>';
 						$return                                 = array(
 							'status'  => 'success',
 							'message' => esc_html__( 'Template found.', 'armember-membership' ),
@@ -1223,7 +1186,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					}
 				}
 			}
-			echo wp_json_encode( $return );
+			echo arm_pattern_json_encode( $return );
 			exit;
 		}
 		function arm_template_options( $tempID = 0, $tempType = 'directory', $tempDetails = array() ) {
@@ -1233,7 +1196,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			}
 			$tempOptions   = $tempDetails['arm_options'];
 			$tempSlug      = $tempDetails['arm_slug'];
-			$template_name = $tempDetails['arm_title'];
+			$template_name = !empty($tempDetails['arm_title']) ? stripslashes($tempDetails['arm_title']) : '';
 			$tempOptions   = shortcode_atts(
 				array(
 					'plans'                          => array(),
@@ -1337,42 +1300,46 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$tempOptHtml     .= '</td>';
 						$tempOptHtml .= '</tr>';
 			}
-						$tempOptHtml                                    .= '<tr class="arm_directory_template_name_div arm_form_fields_wrapper">';
-						$tempOptHtml                                    .= '<th>';
+						$tempOptHtml                                    .= '<tr class="form-field arm_directory_template_name_div arm_form_fields_wrapper arm_directory_template_display_flex arm_width_100_pct">';
+						$tempOptHtml                                    .= '<th class="arm_width_32_pct">';
 						$tempOptHtml                                    .= '<label>' . esc_html__( 'Directory Template Name', 'armember-membership' ) . '</label>';
 						$tempOptHtml                                    .= '</th>';
-						$tempOptHtml                                    .= '<td>';
+						$tempOptHtml                                    .= '<td class="arm_width_32_pct">';
 						$tempOptHtml                                    .= '<input type="text" name="arm_directory_template_name" class="arm_form_input_box arm_width_100_pct" value="' . esc_attr( stripslashes_deep($template_name) ) . '">';
 						$tempOptHtml                                    .= '</td>';
 						$tempOptHtml                                    .= '</tr>';
 										$tempOptions['show_admin_users'] = ( isset( $tempOptions['show_admin_users'] ) && $tempOptions['show_admin_users'] == 1 ) ? $tempOptions['show_admin_users'] : 0;
-										$tempOptHtml                    .= '<tr>';
-						$tempOptHtml                                    .= '<td colspan="2">';
-						$tempOptHtml                                    .= '<div class="arm_temp_switch_wrapper" style="width: auto;margin: 5px 0;">';
+										$tempOptHtml                    .= '<tr class="arm_width_32_pct">';
+										$tempOptHtml                    .= '<td colspan="2" class="arm_position_relative arm_directory_temp_status_col arm_margin_top_25">';
+										$tempOptHtml                    .= '<label for="arm_template_show_admin_users" class="arm_temp_form_label arm_font_size_16 arm_line_height_24">' . esc_html__( 'Display Administrator Users', 'armember-membership' ) . '</label>';
+						$tempOptHtml 									.= '<div class="arm_directory_template_status_field_wrapper">';
+						$tempOptHtml                                    .= '<div class="arm_temp_switch_wrapper arm_temp_switch_style">';
 						$tempOptHtml                                    .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_show_admin_users" value="1" class="armswitch_input" name="template_options[show_admin_users]" ' . checked( $tempOptions['show_admin_users'], 1, false ) . '/><label for="arm_template_show_admin_users" class="armswitch_label"></label></div>';
 						$tempOptHtml                                    .= '</div>';
-						$tempOptHtml                                    .= '<label for="arm_template_show_admin_users" class="arm_temp_form_label">' . esc_html__( 'Display Administrator Users', 'armember-membership' ) . '</label>';
+						$tempOptHtml                                    .= '</div>';
 						$tempOptHtml                                    .= '</td>';
 					$tempOptHtml                                        .= '</tr>';
 
-										$tempOptHtml .= '<tr>';
-						$tempOptHtml                 .= '<td colspan="2">';
-						$tempOptHtml                 .= '<div class="arm_temp_switch_wrapper" style="width: auto;margin: 5px 0;">';
+										$tempOptHtml .= '<tr  class="arm_width_32_pct">';
+						$tempOptHtml                 .= '<td colspan="2" class="arm_position_relative arm_directory_temp_status_col arm_margin_top_25">';
+						$tempOptHtml                 .= '<label for="arm_template_show_joining" class="arm_temp_form_label arm_font_size_16 arm_line_height_24">' . esc_html__( 'Display Joining Date', 'armember-membership' ) . '</label>';
+					$tempOptHtml 					 .= '<div class="arm_directory_template_status_field_wrapper">';
+						$tempOptHtml                 .= '<div class="arm_temp_switch_wrapper arm_temp_switch_style">';
 						$tempOptHtml                 .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_show_joining" value="1" class="armswitch_input" name="template_options[show_joining]" ' . checked( $tempOptions['show_joining'], 1, false ) . '/><label for="arm_template_show_joining" class="armswitch_label"></label></div>';
 						$tempOptHtml                 .= '</div>';
-						$tempOptHtml                 .= '<label for="arm_template_show_joining" class="arm_temp_form_label">' . esc_html__( 'Display Joining Date', 'armember-membership' ) . '</label>';
+						$tempOptHtml                 .= '</div>';
 						$tempOptHtml                 .= '</td>';
 					$tempOptHtml                     .= '</tr>';
 
 			if ( $tempType == 'directory' ) {
-				$tempOptHtml     .= '<tr>';
-				$tempOptHtml     .= '<td colspan="2">';
-				$tempOptHtml     .= '<div class="arm_temp_switch_wrapper" style="width: auto;margin: 5px 0;">';
+				$tempOptHtml     .= '<tr class="arm_width_32_pct">';
+				$tempOptHtml     .= '<td colspan="2" class="arm_position_relative arm_directory_temp_status_col arm_margin_top_25">';
+				$tempOptHtml     .= '<label for="arm_template_redirect_to_author" class="arm_temp_form_label arm_font_size_16 arm_line_height_24" id="arm_template_redirect_to_author">' . esc_html__( 'Redirect To Author Archive Page', 'armember-membership' ) . ' <span class="arm_info_text arm_margin_top_10">' . esc_html__( 'If Author have no any post than user will be redirect to ARMember Profile Page', 'armember-membership' ) . '</span></label>';
+				$tempOptHtml 	 .= '<div class="arm_directory_template_status_field_wrapper">';
+				$tempOptHtml     .= '<div class="arm_temp_switch_wrapper arm_temp_switch_style">';
 				$tempOptHtml     .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_redirect_to_author" value="1" class="armswitch_input" name="template_options[redirect_to_author]" ' . checked( $tempOptions['redirect_to_author'], 1, false ) . '/><label for="arm_template_redirect_to_author" class="armswitch_label"></label></div>';
 				$tempOptHtml     .= '</div>';
-				$tempOptHtml     .= '<label for="arm_template_redirect_to_author" class="arm_temp_form_label">' . esc_html__( 'Redirect To Author Archive Page', 'armember-membership' ) . '</label>';
-					$tempOptHtml .= '<div class="armclear" style="height: 1px;"></div>';
-					$tempOptHtml .= '<span class="arm_info_text" style="width:450px;">( ' . esc_html__( 'If Author have no any post than user will be redirect to ARMember Profile Page', 'armember-membership' ) . ' )</span>';
+				$tempOptHtml     .= '</div>';
 				$tempOptHtml     .= '</td>';
 				$tempOptHtml     .= '</tr>';
 
@@ -1382,7 +1349,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 									 $tempOptHtml .= '<tr>';
 				$tempOptHtml                      .= '<td colspan="2">';
-				$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper" style="width: auto;margin: 5px 0;">';
+				$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper arm_temp_switch_style">';
 				$tempOptHtml                      .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_hide_empty_profile_fields" value="1" class="armswitch_input" name="template_options[hide_empty_profile_fields]" ' . checked( $tempOptions['hide_empty_profile_fields'], 1, false ) . '/><label for="arm_template_hide_empty_profile_fields" class="armswitch_label"></label></div>';
 				$tempOptHtml                      .= '</div>';
 				$tempOptHtml                      .= '<label for="arm_template_hide_empty_profile_fields" class="arm_temp_form_label">' . esc_html__( 'Hide empty profile fields', 'armember-membership' ) . '</label>';
@@ -1430,10 +1397,10 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$tempOptHtml     .= '</td>';
 						$tempOptHtml .= '</tr>';
 			} else {
-				$tempOptHtml .= '<tr>';
+				$tempOptHtml .= '<tr class="arm_width_32_pct">';
 				$tempOptHtml .= '<th>' . esc_html__( 'Select Membership Plans', 'armember-membership' ) . '</th>';
 				$tempOptHtml .= '<td>';
-				$tempOptHtml .= '<div style="width: auto;margin: 5px 0;">';
+				$tempOptHtml .= '<div class="arm_temp_switch_style">';
 				$subs_data    = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subscription_plan_id, arm_subscription_plan_name' );
 				$tempPlans    = isset( $tempOptions['plans'] ) ? $tempOptions['plans'] : array();
 				$tempOptHtml .= '<select id="arm_template_plans" class="arm_chosen_selectbox arm_template_plans_select" name="template_options[plans][]" data-placeholder="' . esc_html__( 'Select Plan(s)..', 'armember-membership' ) . '" multiple="multiple">';
@@ -1444,49 +1411,50 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				}
 				$tempOptHtml                          .= '</select>';
 				$tempOptHtml                          .= '<div class="armclear" style="max-height: 1px;"></div>';
-				$tempOptHtml                          .= '<span class="arm_info_text">(' . esc_html__( "Leave blank to display all plan's members.", 'armember-membership' ) . ')</span>';
+				$tempOptHtml                          .= '<span class="arm_info_text arm_margin_top_10">' . esc_html__( "Leave blank to display all plan's members.", 'armember-membership' ) . '</span>';
 				$tempOptHtml                          .= '</div>';
 				$tempOptHtml                          .= '</td>';
 				$tempOptHtml                          .= '</tr>';
-				$tempOptHtml                          .= '<tr>';
-					$tempOptHtml                      .= '<th>' . esc_html__( 'Filter Options', 'armember-membership' ) . '</th>';
-					$tempOptHtml                      .= '<td>';
-					$tempOptions['searchbox']          = isset( $tempOptions['searchbox'] ) ? $tempOptions['searchbox'] : '0';
-					$tempOptions['sortbox']            = isset( $tempOptions['sortbox'] ) ? $tempOptions['sortbox'] : '0';
-					$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper">';
-						$tempOptHtml                  .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_searchbox" value="1" class="armswitch_input" name="template_options[searchbox]" ' . ( checked( $tempOptions['searchbox'], '1', false ) ) . '/><label for="arm_template_searchbox" class="armswitch_label"></label></div>';
-						$tempOptHtml                  .= '<label for="arm_template_searchbox" class="arm_temp_form_label">' . esc_html__( 'Display Search Box', 'armember-membership' ) . '</label>';
-					$tempOptHtml                      .= '</div>';
-					$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper" class="arm_temp_form_label">';
-						$tempOptHtml                  .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_sortbox" value="1" class="armswitch_input" name="template_options[sortbox]" ' . ( checked( $tempOptions['sortbox'], '1', false ) ) . '/><label for="arm_template_sortbox" class="armswitch_label"></label></div>';
-						$tempOptHtml                  .= '<label for="arm_template_sortbox" class="arm_temp_form_label">' . esc_html__( 'Display Sorting Options', 'armember-membership' ) . '</label>';
-					$tempOptHtml                      .= '</div>';
-					$tempOptHtml                      .= '</td>';
-				$tempOptHtml                          .= '</tr>';
-				$tempOptHtml                          .= '<tr>';
+
+				$tempOptHtml                          .= '<tr class="arm_width_32_pct">';
 				$tempOptHtml                          .= '<th>' . esc_html__( 'No. Of Members Per Page', 'armember-membership' ) . '</th>';
 					$tempOptHtml                      .= '<td>';
-					$tempOptHtml                      .= '<div style="width: auto;margin: 5px 0;">';
+					$tempOptHtml                      .= '<div class="arm_temp_switch_style">';
 						$tempOptions['per_page_users'] = isset( $tempOptions['per_page_users'] ) ? $tempOptions['per_page_users'] : 10;
 						$tempOptHtml                  .= '<input type="TEXT" name="template_options[per_page_users]" value="' . $tempOptions['per_page_users'] . '" id="arm_temp_per_page_users" onkeydown="javascript:return checkNumber(event)" style="width:70px;">';
 					$tempOptHtml                      .= '</div>';
 					$tempOptHtml                      .= '</td>';
 				$tempOptHtml                          .= '</tr>';
-				$tempOptHtml                          .= '<tr>';
+				$tempOptHtml                          .= '<tr class="arm_width_32_pct">';
 				$tempOptHtml                          .= '<th>' . esc_html__( 'Pagination Style', 'armember-membership' ) . '</th>';
 					$tempOptHtml                      .= '<td>';
-					$tempOptHtml                      .= '<div style="width: auto;margin: 5px 0;">';
+					$tempOptHtml                      .= '<div class="arm_temp_switch_style">';
 						$tempOptions['pagination']     = isset( $tempOptions['pagination'] ) ? $tempOptions['pagination'] : 'numeric';
 						$tempOptHtml                  .= '<input type="radio" name="template_options[pagination]" value="numeric" id="arm_template_pagination_numeric" class="arm_iradio" ' . ( $tempOptions['pagination'] == 'numeric' ? 'checked="checked"' : '' ) . '><label for="arm_template_pagination_numeric" class="arm_temp_form_label">' . esc_html__( 'Numeric', 'armember-membership' ) . '</label>';
 						$tempOptHtml                  .= '<input type="radio" name="template_options[pagination]" value="infinite" id="arm_template_pagination_infinite" class="arm_iradio" ' . ( $tempOptions['pagination'] == 'infinite' ? 'checked="checked"' : '' ) . '><label for="arm_template_pagination_infinite" class="arm_temp_form_label">' . esc_html__( 'Load More Link', 'armember-membership' ) . '</label>';
 					$tempOptHtml                      .= '</div>';
 					$tempOptHtml                      .= '</td>';
 				$tempOptHtml                          .= '</tr>';
+				$tempOptHtml                          .= '<tr class="arm_filter_options_div arm_width_100_pct">';
+					$tempOptHtml                      .= '<th>' . esc_html__( 'Filter Options', 'armember-membership' ) . '</th>';
+					$tempOptHtml                      .= '<td>';
+					$tempOptions['searchbox']          = isset( $tempOptions['searchbox'] ) ? $tempOptions['searchbox'] : '0';
+					$tempOptions['sortbox']            = isset( $tempOptions['sortbox'] ) ? $tempOptions['sortbox'] : '0';
+					$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper arm_directory_template_switch_wrapper arm_width_32_pct">';
+						$tempOptHtml                  .= '<label for="arm_template_searchbox" class="arm_temp_form_label">' . esc_html__( 'Display Search Box', 'armember-membership' ) . '</label>';
+						$tempOptHtml                  .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_searchbox" value="1" class="armswitch_input" name="template_options[searchbox]" ' . ( checked( $tempOptions['searchbox'], '1', false ) ) . '/><label for="arm_template_searchbox" class="armswitch_label"></label></div>';
+					$tempOptHtml                      .= '</div>';
+					$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper arm_directory_template_switch_wrapper arm_width_32_pct">';
+						$tempOptHtml                  .= '<label for="arm_template_sortbox" class="arm_temp_form_label">' . esc_html__( 'Display Sorting Options', 'armember-membership' ) . '</label>';
+						$tempOptHtml                  .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_sortbox" value="1" class="armswitch_input" name="template_options[sortbox]" ' . ( checked( $tempOptions['sortbox'], '1', false ) ) . '/><label for="arm_template_sortbox" class="armswitch_label"></label></div>';
+					$tempOptHtml                      .= '</div>';
+					$tempOptHtml                      .= '</td>';
+				$tempOptHtml                          .= '</tr>';
 
 			}
-					$tempOptHtml            .= '<tr>';
-						$tempOptHtml        .= '<th>' . esc_html__( 'Social Profile Fields', 'armember-membership' ) . '</th>';
-						$tempOptHtml        .= '<td>';
+					$tempOptHtml            .= '<tr class="arm_directory_template_display_flex arm_width_100_pct">';
+						$tempOptHtml        .= '<th class="arm_width_32_pct">' . esc_html__( 'Social Profile Fields', 'armember-membership' ) . '</th>';
+						$tempOptHtml        .= '<td class="arm_width_32_pct">';
 			$tempOptHtml                    .= '<div class="arm_profile_fields_selection_wrapper arm_social_profile_fields_wrap">';
 						$socialProfileFields = $arm_member_forms->arm_social_profile_field_types();
 						$activeSPF           = array();
@@ -1513,7 +1481,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						$tempOptHtml     .= '</div>';
 						$tempOptHtml     .= '</td>';
 					$tempOptHtml         .= '</tr>';
-					$tempOptHtml         .= '<tr>';
+					$tempOptHtml         .= '<tr class="arm_directory_template_display_flex arm_width_100_pct">';
 						$tempOptHtml     .= '<th>' . esc_html__( 'Color Scheme', 'armember-membership' ) . '</th>';
 						$tempOptHtml     .= '<td>';
 							$tempCS       = ( ( ! empty( $tempOptions['color_scheme'] ) ) ? $tempOptions['color_scheme'] : 'blue' );
@@ -1547,7 +1515,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 							$tempOptHtml .= '</div>';
 						$tempOptHtml     .= '</td>';
 					$tempOptHtml         .= '</tr>';
-					$tempOptHtml         .= '<tr>';
+					$tempOptHtml         .= '<tr class="arm_directory_template_display_flex arm_width_100_pct">';
 						$tempOptHtml     .= '<th>' . esc_html__( 'Font Settings', 'armember-membership' ) . '</th>';
 						$tempOptHtml     .= '<td>';
 			foreach ( $fontOptions as $key => $title ) {
@@ -1556,7 +1524,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				$font_italic      = ( isset( $fontVal['font_italic'] ) && $fontVal['font_italic'] == '1' ) ? 1 : 0;
 				$font_decoration  = ( isset( $fontVal['font_decoration'] ) ) ? $fontVal['font_decoration'] : '';
 				$tempOptHtml     .= '<div class="arm_temp_font_settings_wrapper">';
-					$tempOptHtml .= '<label class="arm_temp_font_setting_label arm_temp_form_label">' . esc_html($title) . '</label>';
+					$tempOptHtml .= '<label class="arm_temp_font_setting_label arm_temp_form_label arm_font_size_14">' . esc_html($title) . '</label>';
 
 					$tempOptHtml         .= '<input type="hidden" id="arm_temp_font_family_' . esc_attr($key) . '" name="template_options[' . esc_attr($key) . '][font_family]" value="' . ( ( ! empty( $fontVal['font_family'] ) ) ? esc_attr($fontVal['font_family']) : 'Helvetica' ) . '"/>';
 					$tempOptHtml         .= '<dl class="arm_selectbox column_level_dd arm_margin_right_10 arm_width_230">';
@@ -1729,7 +1697,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 		}
 
 		function arm_template_preview_func() {
-			global $wpdb, $ARMemberLite, $arm_capabilities_global, $arm_shortcodes;
+			global $wpdb, $ARMemberLite, $arm_capabilities_global, $arm_shortcodes,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
 			$posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data' ), $_POST ); //phpcs:ignore
 			if ( isset( $posted_data['action'] ) && $posted_data['action'] == 'arm_template_preview' ) {
 				$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_member_templates'], '1' ); //phpcs:ignore --Reason:Verifying nonce
@@ -1743,6 +1711,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						'sample'    => 'true',
 						'is_preview' => '1',
 					);
+                    		echo $arm_ajax_pattern_start;
 				?>
 					<div class="arm_template_preview_popup popup_wrapper" style="width:960px;">
 						<div class="popup_wrapper_inner">
@@ -1770,6 +1739,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						</div>
 					</div>
 					<?php
+                    			echo $arm_ajax_pattern_end;
 				}
 			}
 			exit;
@@ -3185,8 +3155,11 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 						$template_data     .= "<table class='arm_profile_detail_tbl'>";
 							$template_data .= '<tbody>';
 				foreach ( $profile_fields_data['profile_fields'] as $meta_key => $meta_val ) {
+					if(!empty($profile_fields_data['label'][ $meta_key ])){
+						$profile_fields_data['label'][ $meta_key ] = stripslashes_deep($profile_fields_data['label'][ $meta_key ]);
+					}
 					$template_data     .= "<tr id='" . esc_attr($meta_key) . "'>";
-						$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? $profile_fields_data['default_values'][ $meta_key ] : '';
+						$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? stripslashes($profile_fields_data['default_values'][ $meta_key ]) : '';
 						$template_data .= '<td>' . esc_html($profile_fields_data['label'][ $meta_key ]) . '</td>';
 						$template_data .= '<td>' . esc_html($user_value) . '</td>';
 					$template_data     .= '</tr>';
@@ -3288,6 +3261,9 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 						$template_data     .= "<table class='arm_profile_detail_tbl'>";
 							$template_data .= '<tbody>';
 				foreach ( $profile_fields_data['profile_fields'] as $meta_key => $meta_val ) {
+					if(!empty($profile_fields_data['label'][ $meta_key ])){
+						$profile_fields_data['label'][ $meta_key ] = stripslashes_deep($profile_fields_data['label'][ $meta_key ]);
+					}
 					$template_data     .= "<tr id='" . esc_attr($meta_key) . "'>";
 						$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? $profile_fields_data['default_values'][ $meta_key ] : '';
 						$template_data .= '<td>' . esc_html($profile_fields_data['label'][ $meta_key ]) . '</td>';
@@ -3357,13 +3333,16 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 
 						$template_data     .= "<table class='arm_profile_detail_tbl'>";
 							$template_data .= '<tbody>';
-				foreach ( $profile_fields_data['profile_fields'] as $meta_key => $meta_val ) {
-					$template_data     .= "<tr id='" . esc_attr($meta_key) . "'>";
-						$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? $profile_fields_data['default_values'][ $meta_key ] : '';
-						$template_data .= '<td>' . esc_html($profile_fields_data['label'][ $meta_key ]) . '</td>';
-						$template_data .= '<td>' . esc_html($user_value) . '</td>';
-					$template_data     .= '</tr>';
-				}
+							foreach ( $profile_fields_data['profile_fields'] as $meta_key => $meta_val ) {
+								if(!empty($profile_fields_data['label'][ $meta_key ])){
+									$profile_fields_data['label'][ $meta_key ] = stripslashes_deep($profile_fields_data['label'][ $meta_key ]);
+								}
+								$template_data     .= "<tr id='" . esc_attr($meta_key) . "'>";
+									$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? $profile_fields_data['default_values'][ $meta_key ] : '';
+									$template_data .= '<td>' . esc_html($profile_fields_data['label'][ $meta_key ]) . '</td>';
+									$template_data .= '<td>' . esc_html($user_value) . '</td>';
+								$template_data     .= '</tr>';
+							}
 							$template_data .= '</tbody>';
 						$template_data     .= '</table>';
 					$template_data         .= '</div>';
@@ -3413,6 +3392,9 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 							$template_data     .= "<table class='arm_profile_detail_tbl'>";
 								$template_data .= '<tbody>';
 				foreach ( $profile_fields_data['profile_fields'] as $meta_key => $meta_val ) {
+					if(!empty($profile_fields_data['label'][ $meta_key ])){
+						$profile_fields_data['label'][ $meta_key ] = stripslashes_deep($profile_fields_data['label'][ $meta_key ]);
+					}
 					$template_data     .= "<tr id='" . esc_attr($meta_key) . "'>";
 						$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? $profile_fields_data['default_values'][ $meta_key ] : '';
 						$template_data .= '<td>' . esc_html($profile_fields_data['label'][ $meta_key ]) . '</td>';
@@ -3488,6 +3470,9 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 								$template_data     .= "<table class='arm_profile_detail_tbl'>";
 								$template_data .= '<tbody>';
 								foreach ( $profile_fields_data['profile_fields'] as $meta_key => $meta_val ) {
+									if(!empty($profile_fields_data['label'][ $meta_key ])){
+										$profile_fields_data['label'][ $meta_key ] = stripslashes_deep($profile_fields_data['label'][ $meta_key ]);
+									}
 									$template_data     .= "<tr id='" . esc_attr($meta_key) . "'>";
 										$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? $profile_fields_data['default_values'][ $meta_key ] : '';
 										$template_data .= '<td>' . esc_html($profile_fields_data['label'][ $meta_key ]) . '</td>';
@@ -3549,7 +3534,8 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 
 			$POST_ID  = intval( $posted_data['id'] );
 			$template = $this->arm_get_profile_editor_template( $profile_template, $profile_fields, $options, $POST_ID, true, $before_content, $after_content, $data_type );
-			echo wp_json_encode( array( 'template' => $template ) );
+			$response = array('template' => $template);
+			echo arm_pattern_json_encode($response );
 			exit;
 		}
 

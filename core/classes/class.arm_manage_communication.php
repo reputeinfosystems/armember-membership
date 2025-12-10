@@ -32,7 +32,7 @@ if ( ! class_exists( 'ARM_manage_communication_Lite' ) ) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages( @$errors, @$message );
-			echo wp_json_encode( $return_array );
+			echo arm_pattern_json_encode( $return_array );
 			exit;
 		}
 
@@ -73,7 +73,7 @@ if ( ! class_exists( 'ARM_manage_communication_Lite' ) ) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages( @$errors, @$message );
-			echo wp_json_encode( $return_array );
+			echo arm_pattern_json_encode( $return_array );
 			exit;
 		}
 

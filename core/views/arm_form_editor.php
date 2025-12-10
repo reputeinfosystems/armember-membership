@@ -1,5 +1,5 @@
 <?php
-global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_email_settings, $arm_social_feature, $arm_subscription_plans;
+global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_email_settings, $arm_social_feature, $arm_subscription_plans,$arm_common_lite;
 $form_color_schemes   = $arm_member_forms->arm_form_color_schemes();
 $form_gradient_scheme = $arm_member_forms->arm_default_button_gradient_color();
 $formColorSchemes     = isset( $form_color_schemes ) ? $form_color_schemes : array();
@@ -151,6 +151,8 @@ if ( ! empty( $_REQUEST['is_clone'] ) && $_REQUEST['is_clone'] == 1 ) { //phpcs:
 $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 
 ?>
+<div class="arm_loading_grid" style="display: none;"><?php $arm_loader = $arm_common_lite->arm_loader_img_func();
+echo $arm_loader; //phpcs:ignore ?></div>
 <div class="wrap arm_page arm_manage_form_main_wrapper">
 	<div id="content_wrapper" class="arm_manage_form_content_wrapper">
 		<form id="arm_manage_form_settings_form" class="arm_admin_member_form <?php echo esc_attr($form_class); ?>">
@@ -164,12 +166,22 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 				<input type="hidden" name="arm_wp_nonce" value="<?php echo esc_attr($wpnonce);?>"/>
 			<?php
 			if ( $isRegister || $isEditProfile) {
-				$arm_new_set_name = isset( $_REQUEST['arm_set_name'] ) ? sanitize_text_field($_REQUEST['arm_set_name']) : ''; //phpcs:ignore
+				$arm_new_set_name = isset( $_REQUEST['arm_set_name'] ) ? $_REQUEST['arm_set_name'] : ''; //phpcs:ignore
+				if(!empty($arm_new_set_name)){
+					$arm_new_set_name = wp_unslash($arm_new_set_name);      // remove \ slashes
+					$arm_new_set_name = htmlspecialchars_decode($arm_new_set_name, ENT_QUOTES); // convert &quot; → "
+					$arm_new_set_name = sanitize_text_field($arm_new_set_name);            // sanitize safely
+				}	
 				?>
 				<input type="hidden" name="arm_new_set_name" id="arm_new_set_name" value="<?php echo esc_html($arm_new_set_name); ?>" />
 				<?php
 			} else {
-				$arm_new_set_name = isset( $_GET['arm_set_name'] ) ? sanitize_text_field($_GET['arm_set_name']) : ''; //phpcs:ignore
+				$arm_new_set_name = isset( $_GET['arm_set_name'] ) ? $_GET['arm_set_name'] : ''; //phpcs:ignore
+				if(!empty($arm_new_set_name)){
+					$arm_new_set_name = wp_unslash($arm_new_set_name);      // remove \ slashes
+					$arm_new_set_name = htmlspecialchars_decode($arm_new_set_name, ENT_QUOTES); // convert &quot; → "
+					$arm_new_set_name = sanitize_text_field($arm_new_set_name);            // sanitize safely
+				}
 				?>
 				<input type="hidden" name="arm_new_set_name" id="arm_new_set_name" value="<?php echo esc_html($arm_new_set_name); ?>" />
 				<?php
@@ -182,15 +194,15 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 						<div class="arm_header_registration_form_title">
 							<?php
 							$form_detail['arm_form_label'] = !empty($form_detail['arm_form_label']) ? sanitize_text_field($form_detail['arm_form_label']) : sanitize_text_field($_GET['arm_set_name']); //phpcs:ignore
-							 echo stripslashes_deep( $form_label = ( sanitize_text_field( $get_action) !== 'new_form' ) ? stripslashes_deep( $form_detail['arm_form_label'] ) : stripslashes_deep(esc_html( $arm_new_set_name ) ) ); ?> <?php //phpcs:ignore ?>
+							 echo stripslashes_deep( $form_label = ( sanitize_text_field( $get_action) !== 'new_form' ) ? stripslashes_deep( wp_unslash($form_detail['arm_form_label'] )) : stripslashes_deep(wp_unslash( $arm_new_set_name ) ) ); ?> <?php //phpcs:ignore ?>
 							<input type="hidden" name="arm_forms[<?php echo esc_attr( $get_form_id ); ?>][arm_form_label]"  class="arm-df__field-label_value" value="<?php echo stripslashes_deep( esc_attr($form_label) ); //phpcs:ignore ?>"/>
 						</div>
 					<?php } else { ?>
-						<?php esc_html_e( 'Other Forms (Login / Forgot Password / Change Password)', 'armember-membership' ); ?>
+						<?php esc_html_e( 'Form Set (Login / Forgot Password / Change Password)', 'armember-membership' ); ?>
 					<?php } ?>
 					<div class="arm_editor_heading_action_btns">
-						<a href="javascript:void(0)" id="arm_save_member_form" class="arm_save_btn"><?php esc_html_e( 'Save', 'armember-membership' ); ?></a>
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->manage_forms )); //phpcs:ignore ?>" id="arm_close_member_form" class="arm_cancel_btn"><?php esc_html_e( 'Close', 'armember-membership' ); ?></a>
+						<a href="javascript:void(0)" id="arm_save_member_form" class="arm_save_btn arm_save_edior_btn"><?php esc_html_e( 'Save', 'armember-membership' ); ?></a>
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->manage_forms )); //phpcs:ignore ?>" id="arm_close_member_form" class="arm_cancel_btn arm_close_edior_btn"><?php esc_html_e( 'Close', 'armember-membership' ); ?></a>
 						<a href="javascript:void(0)" id="arm_reset_member_form" class="arm_cancel_btn arm_form_reset_btn"><i class="armfa armfa-rotate-left"></i></a>
 					</div>
                     <?php 
@@ -208,18 +220,18 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
                                 <?php
                                     if( $isEditProfile ){
                                 ?>
-                                    <input type="text" value="[arm_profile_detail id='<?php echo esc_attr($form_detail['arm_form_id']); ?>']" readonly="readonly" class="armCopyText arm_font_size_16"/>
-                                    <span class="arm_click_to_copy_text arm_font_size_16" data-code="[arm_profile_detail id='<?php echo esc_attr($form_detail['arm_form_id']); ?>']" ><?php esc_html_e('Click to Copy', 'armember-membership') ?></span>
-                                    <span class="arm_copied_text arm_font_size_16">
+                                    <input type="text" value="[arm_profile_detail id='<?php echo esc_attr($form_detail['arm_form_id']); ?>']" readonly="readonly" class="armCopyText arm_font_size_13"/>
+                                    <span class="arm_click_to_copy_text arm_font_size_13" data-code="[arm_profile_detail id='<?php echo esc_attr($form_detail['arm_form_id']); ?>']" ><?php esc_html_e('Click to Copy', 'armember-membership') ?></span>
+                                    <span class="arm_copied_text arm_font_size_13">
                                         <img src="<?php echo MEMBERSHIPLITE_IMAGES_URL . '/copied_ok.png' //phpcs:ignore?>" />
                                         <?php esc_html_e('Code Copied', 'armember-membership') ?>
                                     </span>    
                                 <?php
                                     } else {
                                 ?>
-								<input type="text" class="armCopyText arm_font_size_16" value="[arm_form id='<?php echo intval($form_detail['arm_form_id']); ?>']" readonly="readonly"/>
-								<span class="arm_click_to_copy_text arm_font_size_16" data-code="[arm_form id='<?php echo intval($form_detail['arm_form_id']); ?>']" ><?php esc_html_e( 'Click to Copy', 'armember-membership' ); ?></span>
-								<span class="arm_copied_text arm_font_size_16">
+								<input type="text" class="armCopyText arm_font_size_13" value="[arm_form id='<?php echo intval($form_detail['arm_form_id']); ?>']" readonly="readonly"/>
+								<span class="arm_click_to_copy_text arm_font_size_13" data-code="[arm_form id='<?php echo intval($form_detail['arm_form_id']); ?>']" ><?php esc_html_e( 'Click to Copy', 'armember-membership' ); ?></span>
+								<span class="arm_copied_text arm_font_size_13">
 									<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/copied_ok.png'; //phpcs:ignore ?>" />
 									<?php esc_html_e( 'Code Copied', 'armember-membership' ); ?>
 								</span>
@@ -271,7 +283,7 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 							                                                                    $fieldMetaClass = 'arm_disabled';
 							                                                                }
 						                                                            	}
-														?><li class="frmfieldtypebutton arm_form_preset_fields <?php echo esc_html($fieldMetaClass); ?>" data-field_key="<?php echo esc_attr($meta_key); ?>"><div class="arm_new_field"><a href="javascript:void(0);" id="<?php echo esc_attr($meta_key); ?>"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/general_icon.png" alt="<?php echo esc_html($opts['label']); ?>" /><img class="arm_disabled_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/general_icon_disabled.png" alt="<?php echo esc_html($opts['label']); ?>" /><?php echo esc_html($opts['label']); ?></a></div></li>
+														?><li class="frmfieldtypebutton arm_form_preset_fields <?php echo esc_html($fieldMetaClass); ?>" data-field_key="<?php echo esc_attr($meta_key); ?>"><div class="arm_new_field"><a href="javascript:void(0);" id="<?php echo esc_attr($meta_key); ?>"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/general_icon.png" alt="<?php echo esc_html(stripslashes($opts['label'])); ?>" /><img class="arm_disabled_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/general_icon_disabled.png" alt="<?php echo esc_html(stripslashes($opts['label'])); ?>" /><?php echo esc_html(stripslashes($opts['label'])); ?></a></div></li>
 																															<?php
 													}
 												}
@@ -325,7 +337,7 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 												</li>
 												<li class="frmfieldtypebutton">
 													<div class="arm_new_field">
-														<a href="javascript:void(0);" id="date"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/date_icon.png" alt="<?php esc_html_e( 'Date', 'armember-membership' ); ?>" /><?php esc_html_e( 'Date', 'armember-membership' ); ?></a>
+														<a href="javascript:void(0);" id="date"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/date_icon.svg" alt="<?php esc_html_e( 'Date', 'armember-membership' ); ?>" /><?php esc_html_e( 'Date', 'armember-membership' ); ?></a>
 													</div>
 												</li>
 												<li class="frmfieldtypebutton">
@@ -434,19 +446,20 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 									$aboveLinks                              = $belowLinks = '';
 									$form_title_position                     = ( ! empty( $form_settings['style']['form_title_position'] ) ) ? $form_settings['style']['form_title_position'] : 'left';
 
-									if ( isset( $_GET['action'] ) == 'new_form' ) { //phpcs:ignore
+									if ( isset( $_GET['action'] ) && $_GET['action'] == 'new_form' ) { //phpcs:ignore
 										if ( isset( $_GET['arm_set_name'] ) && $_GET['arm_set_name'] != '') { //phpcs:ignore
-											if( 'edit_profile' == $oformarmtype ){
-												$oform['arm_form_title'] = sanitize_text_field( $_GET['arm_set_name'] ); //phpcs:ignore
-											}
-											$oform['arm_form_label'] = sanitize_text_field($_GET['arm_set_name']); //phpcs:ignore
+											
+											$oform['arm_form_title'] = esc_html(wp_unslash( $_GET['arm_set_name'] )); //phpcs:ignore
+											
+											$oform['arm_form_label'] = esc_html(wp_unslash($_GET['arm_set_name'])); //phpcs:ignore
 										} elseif ( ! empty( $oform['arm_form_label'] ) ) {
 											$oform['arm_form_label'] = stripslashes( $oform['arm_form_label'] );
 										} else {
 											$oform['label'] = '';
 										}
 									} else {
-										$oform['arm_form_label'] = ! empty( $oform['arm_form_label'] ) ? stripslashes( $oform['arm_form_label'] ) : '';
+										$oform['arm_form_title'] = ! empty( $oform['arm_form_title'] ) ? stripslashes(wp_unslash($oform['arm_form_title'] )) : '';
+										$oform['arm_form_label'] = ! empty( $oform['arm_form_label'] ) ? stripslashes(wp_unslash($oform['arm_form_label'] )) : '';
 									}
 				    $arm_additional_social_fields = '';
 				    echo apply_filters('arm_additional_social_fields_sec',$arm_additional_social_fields,$firstForm,$social_networks,$activeSocialNetworks,$oformarmtype,$form_settings,$formSocialNetworksSettings,$oformid,'top'); //phpcs:ignore
@@ -965,7 +978,7 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 																<span><?php esc_html_e( 'Redirect to Page', 'armember-membership' ); ?></span>
 															</label>
 															<div class="armclear"></div>
-															<div class="arm_login_link_type_option arm_login_link_type_option_modal <?php echo ( $login_link_type != 'modal' ) ? 'hidden_section' : ''; ?>">
+															<div class="arm_login_link_type_option arm_margin_top_5 arm_login_link_type_option_modal <?php echo ( $login_link_type != 'modal' ) ? 'hidden_section' : ''; ?>">
 																<?php
 																$defaultLoginForm                = $arm_member_forms->arm_get_default_form_id( 'Login' );
 																$loginFormsList                  = $arm_member_forms->arm_get_member_forms_by_type( 'Login' );
@@ -975,7 +988,7 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 																<input type="hidden" id="login_link_type_modal_form_type" name="arm_form_settings[login_link_type_modal_form_type]" value="<?php echo esc_attr($login_link_type_modal_form_type); //phpcs:ignore ?>"/>
 
 																<input type="hidden" id="login_link_type_modal_form" name="arm_form_settings[login_link_type_modal]" value="<?php echo esc_attr($login_link_type_modal); //phpcs:ignore ?>"/>
-																<dl class="arm_selectbox column_level_dd arm_width_250 arm_margin_top_5">
+																<dl class="arm_selectbox column_level_dd arm_width_250 arm_margin_top_12">
 																	<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
 																	<dd>
 																		<ul data-id="login_link_type_modal_form">
@@ -1083,7 +1096,7 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 															<input type="hidden" id="registration_link_type_modal_form_type" name="arm_form_settings[registration_link_type_modal_form_type]" value="<?php echo esc_html($registration_link_type_modal_form_type); ?>"/>
 
 															<input type="hidden" id="registration_link_type_modal_form" name="arm_form_settings[registration_link_type_modal]" value="<?php echo $registration_link_type_modal; //phpcs:ignore ?>"/>
-															<dl class="arm_selectbox">
+															<dl class="arm_selectbox arm_width_100_pct arm_margin_top_12">
 																<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
 																<dd>
 																	<ul data-id="registration_link_type_modal_form">
@@ -1301,7 +1314,7 @@ $_SESSION['arm_file_upload_arr']['form_bg_file'] = "-";
 														<label class="arm_form_opt_label"><?php esc_html_e( 'Form Description', 'armember-membership' ); ?>:</label>
 
 														<?php /*<input type="text" name="arm_form_settings[forgot_password][description]" style="max-width:auto" value="<?php echo addslashes($forgotgePassDesc); ?>" id="arm_forgot_password_description_input" class="arm_forgot_password_description_input form_submit_action_input">*/ ?>
-														<textarea name="arm_form_settings[forgot_password][description]" id="arm_forgot_password_description_input" class="arm_forgot_password_description_input form_submit_action_input" rows="2" cols="35"><?php echo esc_html($forgotgePassDesc); ?></textarea>
+														<textarea name="arm_form_settings[forgot_password][description]" id="arm_forgot_password_description_input" class="arm_forgot_password_description_input form_submit_action_input" rows="2" cols="35" style="min-height:100px"><?php echo esc_html($forgotgePassDesc); ?></textarea>
 													</div>
 												</td>
 											</tr>
@@ -2276,9 +2289,9 @@ $activeSPF = ( ! empty( $activeSPF ) ) ? $activeSPF : array();
 				</div>
 			</td>
 			<td class="popup_content_btn popup_footer">
-				<div class="popup_content_btn_wrapper">
-					<button class="arm_save_btn arm_add_edit_social_profile_fields" id="arm_add_edit_social_profile_fields" type="button"><?php esc_html_e( 'Add', 'armember-membership' ); ?></button>
+				<div class="popup_content_btn_wrapper arm_social_profile_fields_btn_wrapper">
 					<button class="arm_cancel_btn popup_close_btn arm_social_profile_fields_close_btn" type="button"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></button>
+					<button class="arm_save_btn arm_add_edit_social_profile_fields" id="arm_add_edit_social_profile_fields" type="button"><?php esc_html_e( 'Add', 'armember-membership' ); ?></button>
 				</div>
 			</td>
 		</tr>
@@ -2330,7 +2343,7 @@ if ((!$isRegister && !$isEditProfile)) {
 		return GradientScheme;
 	}
 	jQuery(document).ready(function () {
-		jQuery('.arm_loading').fadeIn('slow');
+		jQuery('.arm_loading_grid').fadeIn('slow');
 	});
 	jQuery(window).on("load", function () {
 		setTimeout(function () {
@@ -2340,7 +2353,7 @@ if ((!$isRegister && !$isEditProfile)) {
 		setTimeout(function () {
 			jQuery('.arm_editor_form_fileds_container').fadeIn();
 			setTimeout(function () {
-				jQuery('.arm_loading').hide(0);
+				jQuery('.arm_loading_grid').hide(0);
 			}, 800);
 		}, 800);
 	});
@@ -2423,7 +2436,7 @@ if ((!$isRegister && !$isEditProfile)) {
                     return false;
                 }
 
-				jQuery('.arm_loading').fadeIn('slow');
+				jQuery('.arm_loading_grid').fadeIn('slow');
 				form_data = jQuery('#arm_manage_form_settings_form').serialize();
 				var arm_action = jQuery("#arm_action").val();
 				jQuery(this).attr('disabled', 'disabled');
@@ -2438,10 +2451,11 @@ if ((!$isRegister && !$isEditProfile)) {
 				jQuery.ajax({
 					type: "POST",
 					url: __ARMAJAXURL,
-					dataType: 'json',
                     data: datastr,
 					success: function (response)
 					{
+						response = arm_convert_json_from_pattern(response);
+						response = jQuery.parseJSON(response);
 						if (response.message == 'success') {
 							armToast('<?php echo addslashes( esc_html__( 'Form Settings Saved Successfully.', 'armember-membership' ) ); //phpcs:ignore ?>', 'success');
 							if (arm_action == 'new_form' || arm_action == 'duplicate_form') {
@@ -2467,11 +2481,14 @@ if ((!$isRegister && !$isEditProfile)) {
 								} else {
 									var pageurl = ArmRemoveVariableFromURL(document.URL, 'form_id');
 									var response_ids = response.form_ids;
-									var form_ids = response_ids.split(',');
-									pageurl += '&form_id=' + form_ids[0];
-									window.history.pushState({path: pageurl}, '', pageurl);
-									jQuery("#arm_login_form_ids").val(response.form_ids);
-									jQuery('#form_set_id').val(response.arm_form_set);
+									if(typeof response_ids != 'undefined')
+									{
+										var form_ids = response_ids.split(',');
+										pageurl += '&form_id=' + form_ids[0];
+										window.history.pushState({path: pageurl}, '', pageurl);
+										jQuery("#arm_login_form_ids").val(response.form_ids);
+										jQuery('#form_set_id').val(response.arm_form_set);
+									}
 								}
 							}
 						}
@@ -2479,12 +2496,12 @@ if ((!$isRegister && !$isEditProfile)) {
 						{
 							armToast(response.msg, 'error');
 						}
-						jQuery('.arm_loading').fadeOut();
+						jQuery('.arm_loading_grid').fadeOut();
 						jQuery(this).removeAttr('disabled');
 						return false;
 					}
 				});
-				jQuery('.arm_loading').fadeOut();
+				jQuery('.arm_loading_grid').fadeOut();
 				return false;
 			});
 <?php } ?>

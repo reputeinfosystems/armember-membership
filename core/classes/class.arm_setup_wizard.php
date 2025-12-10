@@ -143,7 +143,7 @@ if (!class_exists('ARM_setup_Wizard_Lite')) {
                     'gateways_order' => array('paypal' => 1,'stripe' => 2,'authorize_net' => 3,'2checkout' => 4,'bank_transfer' => 5),
                 ),
                 'style'=>array(
-                    'plan_skin' => 'skin1',
+                    'plan_skin' => 'skin3',
                     'plan_area_position' => 'before',
                     'gateway_skin' => 'radio',
                     'content_width' => 800,
@@ -171,7 +171,7 @@ if (!class_exists('ARM_setup_Wizard_Lite')) {
                     'summary_font_color' => '#555F70',
                     'selected_plan_title_font_color' => '#005AEE',
                     'selected_plan_desc_font_color' => '#2C2D42',
-                    'selected_price_font_color' => '#FFFFFF',
+                    'selected_price_font_color' => '#005AEE',
                     'bg_active_color' => '#005AEE',
                 ),
                 'plans_columns'=>3,

@@ -1,13 +1,20 @@
 <?php
-global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_global_settings, $arm_email_settings,  $arm_subscription_plans, $arm_payment_gateways,$arm_pay_per_post_feature;
+global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_global_settings, $arm_email_settings,  $arm_subscription_plans, $arm_payment_gateways,$arm_pay_per_post_feature,$arm_common_lite;
 $date_format             = $arm_global_settings->arm_get_wp_date_format();
 $actions['delete_setup'] = esc_html__( 'Delete', 'armember-membership' );
-$addNewSetupLink         = admin_url( 'admin.php?page=' . $arm_slugs->membership_setup . '&action=new_setup' );
-
-if ( $total_setups < 1 ) {
+//$addNewSetupLink         = admin_url( 'admin.php?page=' . $arm_slugs->membership_setup . '&action=new_setup' );
+$filter_search = (!empty($_POST['search'])) ? sanitize_text_field($_POST['search']) : '';//phpcs:ignore
+/*if ( $total_setups < 1 ) {
 	wp_redirect( $addNewSetupLink );
 	exit;
-}
+}*/
+$arm_col = '0,4';
+	if($ARMemberLite->is_arm_pro_active)
+	{
+		if( ( $arm_pay_per_post_feature->isPayPerPostFeature || is_plugin_active('armembergift/armembergift.php'))){
+			$arm_col = "0,1,4";
+		}
+	}
 ?>
 <style type="text/css" title="currentStyle">
 .paginate_page a{display:none;}
@@ -20,152 +27,217 @@ if ( $total_setups < 1 ) {
 function ChangeID(id){
 	document.getElementById('delete_id').value = id;
 }
+var add_setup_shortcode_text = '<span style="display: block;font-size: 12px;line-height: normal;text-align: left;"><?php esc_html_e('Shortcode will be display here once you save current setup.', 'armember-membership');?> </span>';
+
+jQuery(document).ready( function () {
+	arm_load_setup_list_grid();
+
+});
+
+function arm_load_setup_list_filtered_grid()
+{
+	jQuery('#armember_datatable').dataTable().fnDestroy();
+	arm_load_setup_list_grid();
+}
+
+jQuery(document).on('keyup','#armmanagesearch_new',function(e){
+
+	if (e.keyCode == 13 || 'Enter' == e.key) {
+		var arm_search_val = jQuery(this).val();
+		jQuery('input[type="search"]').val(arm_search_val).trigger('keyup');
+		return false;
+	}
+})
+
+function show_grid_loader(){
+	jQuery('#armember_datatable').hide();
+	jQuery('.footer').hide();
+	jQuery('.arm_loading_grid').show();
+}
+
+function arm_load_setup_list_grid(){
+	var __ARM_Showing = '<?php echo addslashes( esc_html__( 'Showing', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var __ARM_Showing_empty = '<?php echo addslashes( esc_html__( 'Showing 0 to 0 of 0 setups', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var __ARM_to = '<?php echo addslashes( esc_html__( 'to', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var __ARM_of = '<?php echo addslashes( esc_html__( 'of', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var __ARM_SETUPS = ' <?php echo addslashes( esc_html__( 'setups', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var __ARM_Show = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?> ';
+	var __ARM_NO_FOUND = '<?php echo addslashes( esc_html__( 'No any membership setup found.', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var __ARM_NO_MATCHING = '<?php echo addslashes( esc_html__( 'No matching records found.', 'armember-membership' ) ); //phpcs:ignore ?>';
+
+	var __ARM_PER_PAGE = '<?php echo addslashes( esc_html__( 'Setups per page', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var ajax_url = '<?php echo admin_url("admin-ajax.php"); //phpcs:ignore?>';
+	var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
+	
+	var table = jQuery('#armember_datatable').dataTable({
+		"oLanguage": {
+			"sInfo": __ARM_Showing + " _START_ " + __ARM_to + " _END_ " + __ARM_of + " _TOTAL_ " + __ARM_SETUPS,
+			"sInfoEmpty": __ARM_Showing_empty,
+		
+			"sLengthMenu": __ARM_PER_PAGE +"_MENU_",
+			"sEmptyTable": __ARM_NO_FOUND,
+			"sZeroRecords": __ARM_NO_MATCHING,
+		},
+		"bDestroy": true,
+		"language":{
+			"searchPlaceholder": "<?php esc_html_e( 'Search', 'armember-membership' ); ?>",
+			"search":"",
+		},
+		"bProcessing": false,
+		"responsive": true,
+		"bServerSide": true,
+		"sAjaxSource": ajax_url,
+		"sServerMethod": "POST",
+		"fnServerParams": function (aoData) {
+			aoData.push({'name': 'action', 'value': 'arm_get_configure_setup_details'});
+			aoData.push({'name': '_wpnonce', 'value': _wpnonce});
+		},
+		"bRetrieve": false,
+		"sDom": '<"H"fr>t<"footer"ipl>',
+		"sPaginationType": "four_button",
+		"bJQueryUI": true,
+		"bPaginate": true,
+		"bAutoWidth" : false,
+		"aaSorting": [],
+		"aoColumnDefs": [
+			{ "bVisible": false, "aTargets": [] },
+			{ "bSortable": false, "aTargets": [] },
+			{ "sClass": "arm_width_150", "aTargets": [5] },
+			{ "sClass": "arm_width_200", "aTargets": [<?php echo $arm_col;?>] }
+		],
+		"bStateSave": true,
+		"iCookieDuration": 60 * 60,
+		"sCookiePrefix": "arm_datatable_",
+		"aLengthMenu": [10, 25, 50, 100, 150, 200],
+		"fnPreDrawCallback": function () {
+			show_grid_loader();
+		},
+		"fnStateSave": function (oSettings, oData) {
+			oData.aaSorting = [];
+			oData.abVisCols = [];
+			oData.aoSearchCols = [];
+			this.oApi._fnCreateCookie(
+				oSettings.sCookiePrefix + oSettings.sInstance,
+				this.oApi._fnJsonString(oData),
+				oSettings.iCookieDuration,
+				oSettings.sCookiePrefix,
+				oSettings.fnCookieCallback
+			);
+		},
+		"stateSaveParams":function(oSettings,oData){
+			oData.start=0;
+		},
+		"fnStateLoadParams": function (oSettings, oData) {
+			oData.iLength = 10;
+			oData.iStart = 1;
+		},
+		"fnCreatedRow": function (nRow, aData, iDataIndex) {
+			jQuery(nRow).find('.arm_grid_action_btn_container').each(function () {
+				jQuery(this).parent().addClass('armGridActionTD');
+				jQuery(this).parent().attr('data-key', 'armGridActionTD');
+			});
+		},
+		"fnDrawCallback":function(){		
+			jQuery('#armember_datatable').show();
+			jQuery('.footer').show();
+			jQuery('.arm_loading_grid').hide();
+			arm_show_data();	
+			arm_selectbox_init();
+			jQuery('#arm_filter_wrapper').hide();	
+			filtered_data = false;
+			if (jQuery.isFunction(jQuery().tipso)) {
+				jQuery('.armhelptip').each(function () {
+					jQuery(this).tipso({
+						position: 'top',
+						size: 'small',
+						background: '#939393',
+						color: '#ffffff',
+						width: false,
+						maxWidth: 400,
+						useTitle: true
+					});
+				});
+			}
+			table.dataTable().fnAdjustColumnSizing(false);
+		}
+	});
+	var filter_box = jQuery('#arm_filter_wrapper').html();
+	jQuery('div#armember_datatable_filter').parent().append(filter_box);
+	jQuery('div#armember_datatable_filter').hide();
+	// jQuery('#arm_filter_wrapper').remove();
+}
+function ChangeID(id) {
+	document.getElementById('delete_id').value = id;
+}
+
 // ]]>
 </script>
+<div class="arm_filter_wrapper" id="arm_filter_wrapper" style="display:none;">
+	<div class="arm_datatable_filters_options arm_filters_searchbox">
+		<div class="sltstandard">
+			<div class="arm_dt_filter_block arm_datatable_searchbox">
+				<div class="arm_datatable_filter_item">
+					<label><input type="text" placeholder="<?php esc_attr_e( 'Search Setup', 'armember-membership' ); ?>" id="armmanagesearch_new" value="<?php echo esc_attr($filter_search); ?>" tabindex="-1"></label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="wrap arm_page arm_membership_setup_main_wrapper">
-	<?php 
-	if($ARMemberLite->is_arm_pro_active)
-	{
-		$arm_license_notice = '';
-		echo apply_filters('arm_admin_license_notice_html',$arm_license_notice); //phpcs:ignore
-	}
-	?>
 	<div class="content_wrapper arm_membership_setup_container" id="content_wrapper">
 		<div class="page_title">
 			<?php esc_html_e( 'Configure Plan + Signup Page', 'armember-membership' ); ?>
 			<div class="arm_add_new_item_box">
-				<a class="greensavebtn arm_add_new_form_btn" href="<?php echo esc_url($addNewSetupLink); ?>"><img align="absmiddle" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/add_new_icon.png"><span><?php esc_html_e( 'Add New Setup', 'armember-membership' ); ?></span></a>
+				<a class="greensavebtn arm_add_new_setup_form_btn" href="javascript:void(0)"><img align="absmiddle" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/add_new_icon.svg"><span><?php esc_html_e( 'Add New Setup', 'armember-membership' ); ?></span></a>
 			</div>
 			<div class="armclear"></div>
 		</div>
-		<div class="armclear"></div>
-		<div class="arm_manage_forms_content arm_membership_setups_list armPageContainer">
-			<div class="arm_form_content_box">
-				<div class="arm_form_list_container">
-					<table class="form-table">
-						<tbody>
-							<tr class="arm_form_list_header">
-								<td></td>
-								<td class="arm_form_title_col setup_name"><?php esc_html_e( 'Setup Name', 'armember-membership' ); ?></td>
+		<div class="arm_solid_divider"></div>
+		<div class="arm_membership_setups_list">
+			
+			<form method="GET" id="subscription_setup_list_form" class="data_grid_list">
+				<input type="hidden" name="page" value="<?php echo esc_attr($arm_slugs->membership_setup); //phpcs:ignore ?>" />
+				<input type="hidden" name="armaction" value="list" />
+				<div id="armmainformnewlist">
+					<div class="arm_loading_grid" style="display: none;"><?php $arm_loader = $arm_common_lite->arm_loader_img_func();
+					echo $arm_loader; //phpcs:ignore ?></div>
+					<table cellpadding="0" cellspacing="0" border="0" class="display arm_on_display" id="armember_datatable" style="visibility: hidden;">
+						<thead>
+							<tr>
+								<th class="arm_min_width_50"><?php esc_html_e( 'Setup Name', 'armember-membership' ); ?></th>
 								<?php if($ARMemberLite->is_arm_pro_active)
 								{
-									if( ($arm_pay_per_post_feature->isPayPerPostFeature || is_plugin_active('armembergift/armembergift.php'))){?> 
-									<td class="arm_form_title_col setup_type"><?php esc_html_e('Setup Type','armember-membership');?></td>
+									if( ( $arm_pay_per_post_feature->isPayPerPostFeature || is_plugin_active('armembergift/armembergift.php'))){?> 
+									<th class="arm_min_width_50"><?php esc_html_e('Setup Type','armember-membership');?></th>
 									<?php }
 								}?>
-								<td><?php esc_html_e( 'Plans', 'armember-membership' ); ?></td>
-								<td><?php esc_html_e( 'Gateways', 'armember-membership' ); ?></td>
-								<td><?php esc_html_e( 'Member Form', 'armember-membership' ); ?></td>
-								<td><?php esc_html_e( 'Shortcode', 'armember-membership' ); ?></td>
-								<td class="arm_form_action_col"><?php esc_html_e( 'Action', 'armember-membership' ); ?></td>
-								<td></td>
+								<th class="arm_min_width_120"><?php esc_html_e( 'Plans', 'armember-membership' ); ?></th>
+								<th class="arm_width_150"><?php esc_html_e( 'Shortcode', 'armember-membership' ); ?></th>
+								<th style="arm_width_100"><?php esc_html_e( 'Gateways', 'armember-membership' ); ?></th>
+								<th class="arm_width_120"><?php esc_html_e( 'Member Form', 'armember-membership' ); ?></th>
+															
+								<th data-key="armGridActionTD" class="armGridActionTD noVis"></th>
 							</tr>
-						<?php
-						$setup_result = $wpdb->get_results('SELECT `arm_setup_id`, `arm_setup_name`, `arm_setup_modules`, `arm_created_date`,`arm_setup_type` FROM `' . $ARMemberLite->tbl_arm_membership_setup . '` ORDER BY `arm_setup_id` DESC');//phpcs:ignore --Reason: $tbl_arm_membership_setup is a table name. False Positive Alarm.No need to prepare query without Where clause.
-						?>
-						<?php if ( ! empty( $setup_result ) ) : ?>
-							<?php foreach ( $setup_result as $val ) : ?>
-								<?php $setupID = $val->arm_setup_id; ?>
-								<tr class="row_<?php echo intval($setupID); ?>">
-									<td></td>
-									<td class="arm_form_title_col setup_name">
-									<?php
-									$edit_link = admin_url( 'admin.php?page=' . $arm_slugs->membership_setup . '&action=edit_setup&id=' . $setupID );
-									echo '<a href="' . esc_url( $edit_link ). '">' . stripslashes( $val->arm_setup_name ) . '</a> '; //phpcs:ignore
-									?></td>
-									<?php if($ARMemberLite->is_arm_pro_active)
-									{
-										
-										if( ($arm_pay_per_post_feature->isPayPerPostFeature || is_plugin_active('armembergift/armembergift.php'))){?> 
-										<td class="arm_form_shortcode_col">
-										<?php 
-										
-											$arm_setup_type = !empty($val->arm_setup_type) ? $val->arm_setup_type : 0;
-
-											if($arm_setup_type==0){
-												echo esc_html_e('Membership Plan','armember-membership');
-													
-											}elseif($arm_setup_type==1){
-												echo esc_html_e('Paid Post','armember-membership');
-											} elseif($arm_setup_type==2) {
-												echo esc_html_e('Gift','armember-membership');
-											}
-										?>
-										</td>
-										<?php } 
-									} ?>
-									<td class="arm_form_shortcode_col">
-									<?php
-									$val->setup_modules = maybe_unserialize( $val->arm_setup_modules );
-									$module_plans       = ( isset( $val->setup_modules['modules']['plans'] ) ) ? $val->setup_modules['modules']['plans'] : array();
-									$plan_title         = $arm_subscription_plans->arm_get_comma_plan_names_by_ids( $module_plans );
-									echo ( ! empty( $plan_title ) ) ? stripslashes_deep( $plan_title ) : '--'; //phpcs:ignore
-									?>
-									</td>
-									<td class="arm_form_shortcode_col">
-									<?php
-									$module_gateways = ( isset( $val->setup_modules['modules']['gateways'] ) ) ? $val->setup_modules['modules']['gateways'] : array();
-									$gateway_title   = '--';
-
-									if ( ! empty( $module_gateways ) ) {
-										$gateway_title = '';
-										foreach ( $module_gateways as $key => $gateway ) {
-											$gateway_title .= $arm_payment_gateways->arm_gateway_name_by_key( $gateway ) . ', ';
-										}
-									}
-									echo rtrim( $gateway_title, ', ' ); //phpcs:ignore
-									?>
-									</td>
-									<td class="arm_form_shortcode_col">
-									<?php
-									$module_plans = ( isset( $val->setup_modules['modules']['forms'] ) ) ? $val->setup_modules['modules']['forms'] : 101;
-									if($ARMemberLite->is_arm_pro_active)
-									{
-										$module_form = new ARM_Form( 'id', $module_plans );
-									}
-									else
-									{
-										$module_form = new ARM_Form_Lite( 'id', $module_plans );
-									}
-									if ( $module_form->exists() ) {
-										echo $module_form->form_detail['arm_form_label']; //phpcs:ignore
-									} else {
-										echo '--';
-									}
-									?>
-									</td>
-									<td class="arm_form_shortcode_col">
-										<!--<span><?php esc_html_e( 'Short Code', 'armember-membership' ); ?>&nbsp;&nbsp;</span>-->
-										<?php $shortCode = '[arm_setup id="' . $setupID . '"]'; ?>
-										<div class="arm_shortcode_text arm_form_shortcode_box">
-											<span class="armCopyText"><?php echo esc_html($shortCode); ?></span>
-											<span class="arm_click_to_copy_text" data-code="<?php echo esc_attr( $shortCode ); ?>"><?php esc_html_e( 'Click to copy', 'armember-membership' ); ?></span>
-											<span class="arm_copied_text"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/copied_ok.png" alt="ok"/><?php esc_html_e( 'Code Copied', 'armember-membership' ); ?></span>
-										</div>
-									</td>
-									<td class="arm_form_action_col">
-										<div class="arm_form_action_btns">
-											<a href="<?php echo $edit_link; //phpcs:ignore ?>" class="arm_get_form_link" data-form_id="<?php echo intval($setupID); ?>">
-												<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL);?>/edit_icon.png" onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/edit_icon_hover.png';" class="armhelptip" title="<?php esc_attr_e( 'Edit Form', 'armember-membership' ); ?>" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/edit_icon.png';" /> <?php //phpcs:ignore ?>
-											</a>
-											<a href="javascript:void(0)" onclick="showConfirmBoxCallback(<?php echo intval($setupID); ?>);" data-form_id="<?php echo intval($setupID); ?>">
-												<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/delete.png" class="armhelptip" title="<?php esc_attr_e( 'Delete Setup', 'armember-membership' ); ?>" onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/delete_hover.png';" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/delete.png';" style='cursor:pointer'/> <?php //phpcs:ignore ?>
-											</a>
-											<?php
-											echo $arm_global_settings->arm_get_confirm_box( $setupID, esc_html__( 'Are you sure you want to delete this setup?', 'armember-membership' ), 'arm_setup_delete_btn' ); //phpcs:ignore
-											?>
-										</div>
-										<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>
-										<input type="hidden" name="arm_wp_nonce" value="<?php echo esc_attr($wpnonce);?>"/>
-									</td>
-									<td></td>
-								</tr>
-							<?php endforeach; ?>
-						<?php endif; ?>
-						</tbody>
+						</thead>
+						
 					</table>
+				<div class="armclear"></div>
+				<input type="hidden" name="show_hide_columns" id="show_hide_columns" value="<?php esc_attr_e( 'Show / Hide columns', 'armember-membership' ); ?>"/>
+				<input type="hidden" name="search_grid" id="search_grid" value="<?php esc_attr_e( 'Search', 'armember-membership' ); ?>"/>
+				<input type="hidden" name="entries_grid" id="entries_grid" value="<?php esc_attr_e( 'setups', 'armember-membership' ); ?>"/>
+				<input type="hidden" name="show_grid" id="show_grid" value="<?php esc_attr_e( 'Show', 'armember-membership' ); ?>"/>
+				<input type="hidden" name="showing_grid" id="showing_grid" value="<?php esc_attr_e( 'Showing', 'armember-membership' ); ?>"/>
+				<input type="hidden" name="to_grid" id="to_grid" value="<?php esc_attr_e( 'to', 'armember-membership' ); ?>"/>
+				<input type="hidden" name="of_grid" id="of_grid" value="<?php esc_attr_e( 'of', 'armember-membership' ); ?>"/>
+				<input type="hidden" name="no_match_record_grid" id="no_match_record_grid" value="<?php esc_attr_e( 'No matching setup found', 'armember-membership' ); ?>"/>
+				<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No any membership setup found.', 'armember-membership' ); ?>"/>
+				<input type="hidden" name="filter_grid" id="filter_grid" value="<?php esc_attr_e( 'filtered from', 'armember-membership' ); ?>"/>
+				<input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_attr_e( 'total', 'armember-membership' ); ?>"/>
+				<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>
+				<input type="hidden" name="arm_wp_nonce" value="<?php echo esc_attr($wpnonce);?>"/>
 				</div>
-			</div>
+				<div class="footer_grid"></div>
+			</form>
 		</div>
 		<div class="armclear"></div>
 	</div>

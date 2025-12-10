@@ -504,7 +504,7 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 			}
 			?>
 			<div class=arm_payment_gateway_section>
-				<div class="armswitch arm_payment_setting_switch">
+				<div class="armswitch arm_payment_setting_switch arm_margin_0">
 					<input type="checkbox" id="arm_setup_paypal_status" value="1" <?php echo esc_attr($arm_paypal_active);?> class="armswitch_input armswitch_payment_input" name="arm_selected_payment_gateway[paypal][status]">
 					<label for="arm_setup_paypal_status" class="armswitch_label"></label>
 				</div>
@@ -580,21 +580,21 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 								<span><?php esc_html_e('Payment Mode','armember-membership');?></span>
 							</label>
 							<div class="arm_transfer_mode_main_container">
-								<div class="arm_transfer_mode_list_container">
+								<div class="arm_transfer_mode_list_container arm_margin_top_0">
 									<label>
-										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="bank_transfer" data-msg-required="Please select Payment Mode option." checked="checked">
+										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer arm_margin_bottom_0" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="bank_transfer" data-msg-required="Please select Payment Mode option." checked="checked">
 									</label>
 									<input class="arm_bank_transfer_mode_option_label" type="text" name="arm_selected_payment_gateway[bank_transfer][digital_transfer_label]" value="Digital Transfer">
 								</div>
 								<div class="arm_transfer_mode_list_container">
 									<label>
-										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="cheque" data-msg-required="Please select Payment Mode option." checked="checked">
+										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer arm_margin_bottom_0" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="cheque" data-msg-required="Please select Payment Mode option." checked="checked">
 									</label>
 										<input class="arm_bank_transfer_mode_option_label" type="text" name="arm_selected_payment_gateway[bank_transfer][cheque_label]" value="Cheque">
 								</div>
 								<div class="arm_transfer_mode_list_container">
 									<label>
-										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="cash" data-msg-required="Please select Payment Mode option." checked="checked">
+										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer arm_margin_bottom_0" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="cash" data-msg-required="Please select Payment Mode option." checked="checked">
 									</label>
 									<input class="arm_bank_transfer_mode_option_label" type="text" name="arm_selected_payment_gateway[bank_transfer][cash_label]" value="Cash">
 								</div>
@@ -602,7 +602,7 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 					</div>
 				</div>
 			</div>
-			<span id="arm_no_payment_gateway-error" class="error arm_invalid" style="display:none;"><?php esc_html_e('Please enable at least one payment.','armember-membership');?></span>  
+			<span id="arm_no_payment_gateway-error" class="error arm_invalid" style="display:none;"><?php esc_html_e('Please enable atleast one payment.','armember-membership');?></span>  
 		</div>
 	</div>
 	<div class="arm-ws-footer-wrapper">

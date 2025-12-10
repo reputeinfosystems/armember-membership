@@ -59,7 +59,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             {
                 $response = array('type'=>'error','msg'=>esc_html__( 'Plan activation failed.', 'armember-membership' ));
             }
-            echo wp_json_encode($response);
+            echo arm_pattern_json_encode($response);
             die;
         }
         function get_user_all_transaction_details_for_grid(){
@@ -71,7 +71,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 
             $arm_activity_id = intval( $_POST['activity_id'] );//phpcs:ignore
 
-            $get_result_sql = $wpdb->prepare('SELECT act.arm_activity_id,act.arm_user_id,am.arm_user_login,act.arm_content,act.arm_item_id,act.arm_date_recorded FROM '.$ARMemberLite->tbl_arm_activity.' act LEFT JOIN '.$ARMemberLite->tbl_arm_members.' am ON act.arm_user_id = am.arm_user_id WHERE act.arm_activity_id =%d',$arm_activity_id); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_activity is a table name
+            $get_result_sql = $wpdb->prepare('SELECT act.arm_activity_id,act.arm_user_id,am.arm_user_login,act.arm_content,act.arm_item_id,act.arm_activity_plan_start_date,act.arm_date_recorded FROM '.$ARMemberLite->tbl_arm_activity.' act LEFT JOIN '.$ARMemberLite->tbl_arm_members.' am ON act.arm_user_id = am.arm_user_id WHERE act.arm_activity_id =%d',$arm_activity_id); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_activity is a table name
             $response_result = $wpdb->get_row($get_result_sql); //phpcs:ignore --Reason $get_result_sql is a sql query
             
             $return='';
@@ -88,18 +88,17 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 $start_plan_date = !empty($rc->arm_activity_plan_start_date) ? $rc->arm_activity_plan_start_date : current_time( 'mysql' );
                 $plan_status = $this->get_return_status_data($user_id,$rc->arm_item_id,$user_plan_detail,strtotime($start_plan_date));
                 $canceled_date = !empty($plan_status['canceled_date']) ? $plan_status['canceled_date'] : '';
-                $transaction_started_date = date('Y-m-d 00:00:00', strtotime($start_plan_date)); //phpcs:ignore
-                
-                if($get_activity_data['gateway'] !='manual')
+                $transaction_started_date = date('Y-m-d 00:00:00', strtotime($start_plan_date)); //phpcs:ignore               
+                if(!empty($get_activity_data['gateway']) && $get_activity_data['gateway'] !='manual')
                 {
-                    $transaction_started_date = date('Y-m-d H:i:s', ( $start_plan_date - 120)); //phpcs:ignore
+                    $transaction_started_date = date('Y-m-d H:i:s', ( strtotime($start_plan_date) - 120)); //phpcs:ignore
                 }
                 if(!empty($canceled_date))
                 {
                     $get_last_transaction_sql = "SELECT * FROM ".$ARMemberLite->tbl_arm_payment_log." WHERE arm_user_id=".$user_id." AND arm_plan_id=".$rc->arm_item_id." AND arm_created_date BETWEEN '".$transaction_started_date."' AND '".$canceled_date."'  ORDER BY arm_log_id DESC";
                 }
                 else
-                {
+                {                   
                     if(!empty($user_plan_detail['arm_trial_start']))
                     {
                         $transaction_started_date = date('Y-m-d H:i:s', ( $user_plan_detail['arm_trial_start'] - 120)); //phpcs:ignore
@@ -112,13 +111,13 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 $return .= '<th>' . esc_html__('Subscription ID', 'armember-membership') . '</th>';
                 $return .= '<th>' . esc_html__('Payment Gateway', 'armember-membership') . '</th>';
                 $return .= '<th class="dt-right">' . esc_html__('Amount', 'armember-membership') . '</th>';
-                $return .= '<th class="dt-right arm_padding_right_20">' . esc_html__('Status', 'armember-membership') . '</th>';
-                $return .= '<th class="dt-right arm_padding_right_20">' . esc_html__('Transaction Date', 'armember-membership') . '</th>';
+                $return .= '<th class="center arm_padding_right_20">' . esc_html__('Status', 'armember-membership') . '</th>';
+                $return .= '<th class="arm_padding_right_20">' . esc_html__('Transaction Date', 'armember-membership') . '</th>';
                 $return .= '</tr>';
                 $response_transaction_result = $wpdb->get_results($get_last_transaction_sql); //phpcs:ignore --Reason $get_last_transaction_sql is a predefined query
                 foreach($response_transaction_result as $transactions)
                 {
-                    $transactionID = !empty($transactions->arm_transaction_id) ? $transactions->arm_transaction_id : 'manual';
+                    $transactionID = !empty($transactions->arm_transaction_id) ? stripslashes($transactions->arm_transaction_id) : 'manual';
                     $subscription_id = !empty($transactions->arm_token) ? $transactions->arm_token : '-';
                     $arm_transaction_status = $transactions->arm_transaction_status;
                     switch ($arm_transaction_status) {
@@ -136,12 +135,12 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             break;
                     }
                     $return .= '<tr class="arm_child_transaction_row">';
-                    $return .= '<td>' . $transactionID . '</td>';
-                    $return .= '<td>' . $subscription_id . '</td>';
+                    $return .= '<td class="arm_min_width_200">' . $transactionID . '</td>';
+                    $return .= '<td class="arm_min_width_250">' . $subscription_id . '</td>';
                     $return .= '<td>' . $arm_payment_gateways->arm_gateway_name_by_key($transactions->arm_payment_gateway) . '</td>';
-                    $return .= '<td class="dt-right">' . number_format(floatval($transactions->arm_amount),2,'.',',') .' '. $transactions->arm_currency . '</td>';
-                    $return .= '<td class="dt-right">' . $arm_transaction->arm_get_transaction_status_text($arm_transaction_status) . '</td>';
-                    $return .= '<td class="dt-right arm_padding_right_20">' . date_i18n($date_format, strtotime($transactions->arm_payment_date)) . '</td>';
+                    $return .= '<td class="dt-right arm_min_width_150">' . number_format(floatval($transactions->arm_amount),2,'.',',') .' '. $transactions->arm_currency . '</td>';
+                    $return .= '<td class="center">' . $arm_transaction->arm_get_transaction_status_text($arm_transaction_status) . '</td>';
+                    $return .= '<td class="arm_padding_right_20">' . date_i18n($date_format, strtotime($transactions->arm_payment_date)) . '</td>';
                     $return .= '</tr>';
                 }
                 $return .= '</table></div>';
@@ -177,7 +176,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 {
                     $response = array('type' => 'error', 'msg' => esc_html__("Membership plan is already exist for selected member.", 'armember-membership'));
                 }
-                echo wp_json_encode($response);
+                echo arm_pattern_json_encode($response);
                 die;
             }
             
@@ -339,17 +338,9 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 							<span class="popup_close_btn arm_popup_close_btn arm_invoice_detail_close_btn"></span>
 							<span class="add_rule_content"><?php esc_html_e('Invoice Detail','armember-membership' );?></span>
 						</div>
-						<div class="popup_content_text arm_invoice_detail_popup_text arm_padding_0" id="arm_invoice_detail_popup_text" >
+						<div class="popup_content_text arm_invoice_detail_popup_text arm_padding_24" id="arm_invoice_detail_popup_text" >
 							
 							<iframe src="<?php echo esc_attr(ARM_HOME_URL)."/?log_id=".esc_attr($log_id)."&log_type=".esc_attr($log_type)."&is_display_invoice=1" ; ?>" id="arm_invoice_iframe" class="arm_width_100_pct" style="height:665px;"></iframe> <?php //phpcs:ignore ?>
-						</div>
-						<div class="popup_footer arm_text_align_center" style=" padding: 0 0 35px;">
-							<button type="button" name="print" onclick="arm_print_invoice();" value="Print" class="armemailaddbtn"><?php esc_html_e('Print', 'armember-membership'); ?></button>
-							<?php 
-							$invoice_pdf_icon_html='';
-							$invoice_pdf_icon_html=apply_filters('arm_membership_invoice_details_outside',$invoice_pdf_icon_html,$log_id);
-							echo $invoice_pdf_icon_html; //phpcs:ignore
-							?>
 						</div>
 					</div>
 				</div>
@@ -412,7 +403,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 
 			if(empty($logid_exit_flag))
 			{
-				echo wp_json_encode($response);
+				echo arm_pattern_json_encode($response);
 				exit;
 			}
 		}
@@ -453,7 +444,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages(@$errors, @$message);
-			echo wp_json_encode($return_array);
+			echo arm_pattern_json_encode($return_array);
 			exit;
 		}
         function arm_fetch_activity_data() {
@@ -615,7 +606,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     }
                     $response_data[$ai][0] = (!empty($plan_detail)) ? $plan_detail : '-';                    
                     
-                    $response_data[$ai][1] = '<a class="arm_openpreview_popup" href="javascript:void(0)" data-id="'.esc_attr($rc->arm_user_id).'">'.esc_html($rc->arm_user_login).'</a>';
+                    $response_data[$ai][1] = '<a class="arm_openpreview_popup" data-arm_hide_edit="1" href="javascript:void(0)" data-id="'.esc_attr($rc->arm_user_id).'">'.esc_html($rc->arm_user_login).'</a>';
 
                     $response_data[$ai][2] = trim($user_first_name.' '.$user_last_name);
                     
@@ -667,14 +658,14 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     	$chagneStatusFun2 = 'ChangeStatus(' . $transactionID . ',2);';
                     	$armbPopupArg = 'change_transaction_status_message';
 
-                        $gridAction .= "<a class='armhelptip arm_change_btlog_status' href='javascript:void(0)' onclick=\"{$changeStatusFun}armBpopup('".$armbPopupArg."');\" data-status='1' data-log_id='" . esc_attr($transactionID) . "' title='" . esc_attr__('Approve', 'armember-membership') . "'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_approved.png' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_approved_hover.png';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_approved.png';\" /></a>"; //phpcs:ignore
-                        $gridAction .= "<a class='armhelptip arm_change_btlog_status' href='javascript:void(0)' onclick=\"{$chagneStatusFun2}armBpopup('".esc_attr($armbPopupArg)."');\" data-status='2' data-log_id='" . esc_attr($transactionID) . "' title='" . esc_attr__('Reject', 'armember-membership') . "'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.png' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied_hover.png';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.png';\" /></a>"; //phpcs:ignore
+                        $gridAction .= "<a class='armhelptip arm_change_btlog_status' href='javascript:void(0)' onclick=\"{$changeStatusFun}armBpopup('".$armbPopupArg."');\" data-status='1' data-log_id='" . esc_attr($transactionID) . "' title='" . esc_attr__('Approve', 'armember-membership') . "'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_approved.png' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_approved.png';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_approved.png';\" /></a>"; //phpcs:ignore
+                        $gridAction .= "<a class='armhelptip arm_change_btlog_status' href='javascript:void(0)' onclick=\"{$chagneStatusFun2}armBpopup('".esc_attr($armbPopupArg)."');\" data-status='2' data-log_id='" . esc_attr($transactionID) . "' title='" . esc_attr__('Reject', 'armember-membership') . "'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg';\" /></a>"; //phpcs:ignore
                     } 
                     
-                    $gridAction .= "<a class='armhelptip arm_preview_log_detail' href='javascript:void(0)' data-log_type='" . esc_attr($log_type) . "' data-log_id='" . esc_attr($transactionID) . "' data-trxn_status='".esc_attr($arm_transaction_status)."' title='" . esc_attr__('View Detail', 'armember-membership') . "'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_preview.png' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_preview_hover.png';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_preview.png';\" /></a>"; //phpcs:ignore
-                    $gridAction .= "<a href='javascript:void(0)' data-log_type='" . esc_attr($log_type) . "' data-delete_log_id='" . esc_attr($transactionID) . "' data-trxn_status='".esc_attr($arm_transaction_status)."' onclick='showConfirmBoxCallback(".esc_attr($transactionID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_delete.png' class='armhelptip' title='" . esc_attr__('Delete', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_delete_hover.png';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_delete.png';\" /></a>"; //phpcs:ignore
+                    $gridAction .= "<a class='armhelptip arm_preview_log_detail' href='javascript:void(0)' data-log_type='" . esc_attr($log_type) . "' data-log_id='" . esc_attr($transactionID) . "' data-trxn_status='".esc_attr($arm_transaction_status)."' title='" . esc_attr__('View Detail', 'armember-membership') . "'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_preview.svg' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_preview_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_preview.svg';\" /></a>"; //phpcs:ignore
+                    $gridAction .= "<a href='javascript:void(0)' data-log_type='" . esc_attr($log_type) . "' data-delete_log_id='" . esc_attr($transactionID) . "' data-trxn_status='".esc_attr($arm_transaction_status)."' onclick='showConfirmBoxCallback(".esc_attr($transactionID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_delete.svg' class='armhelptip' title='" . esc_attr__('Delete', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_delete_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_delete.svg';\" /></a>"; //phpcs:ignore
                     $arm_transaction_del_cls = 'arm_transaction_delete_btn';
-                    $gridAction .= $arm_global_settings->arm_get_confirm_box($transactionID, esc_html__("Are you sure you want to delete this transaction?", 'armember-membership'), $arm_transaction_del_cls, $log_type);
+                    $gridAction .= $arm_global_settings->arm_get_confirm_box($transactionID, esc_html__("Are you sure you want to delete this transaction?", 'armember-membership'), $arm_transaction_del_cls, $log_type,esc_html__("Delete", 'armember-membership'),esc_html__("Cancel", 'armember-membership'),esc_html__("Delete", 'armember-membership'));
                     $gridAction .= "</div>";
                     $response_data[$ai][7] = $gridAction;
                     $ai++;
@@ -937,7 +928,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         
                     }
 
-                    $response_data[$ai][3] = '<a class="arm_openpreview_popup" href="javascript:void(0)" data-id="'.$user_id.'">'.$rc->arm_user_login.'</a>';
+                    $response_data[$ai][3] = '<a class="arm_openpreview_popup" data-arm_hide_edit="1" href="javascript:void(0)" data-id="'.$user_id.'">'.$rc->arm_user_login.'</a>';
                     $response_data[$ai][4] = $user_first_name . ' ' .$user_last_name;
                     $start_plan_date = !empty($rc->arm_activity_plan_start_date) ? strtotime($rc->arm_activity_plan_start_date) : '';
                     $response_data[$ai][5] = !empty($start_plan_date) ? date_i18n($date_format, $start_plan_date) : '-';
@@ -1007,22 +998,23 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     if($status == 'active')
                     {
 
-                        $gridAction .= "<a href='javascript:void(0)' data-cancel_activity_type='" . esc_attr($status) . "'  data-cancel_activity_id='" . esc_attr($activityID) . "' onclick='showConfirmBoxCallback(".esc_attr($activityID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.png' class='armhelptip' title='" . esc_attr__('Cancel', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied_hover.png';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.png';\" /></a>"; //phpcs:ignore
+                        $gridAction .= "<a href='javascript:void(0)' data-cancel_activity_type='" . esc_attr($status) . "'  data-cancel_activity_id='" . esc_attr($activityID) . "' onclick='showConfirmBoxCallback(".esc_attr($activityID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg' class='armhelptip' title='" . esc_attr__('Cancel', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg';\" /></a>"; //phpcs:ignore
                         $arm_transaction_del_cls = 'arm_activity_delete_btn';
-                        $gridAction .= $arm_global_settings->arm_get_confirm_box($activityID, esc_html__("Are you sure you want to cancel this subscription  ?", 'armember-membership'), $arm_transaction_del_cls);
+                        $gridAction .= $arm_global_settings->arm_get_confirm_box($activityID, esc_html__("Are you sure you want to cancel this subscription  ?", 'armember-membership'), $arm_transaction_del_cls,'',esc_html__("Cancel", 'armember-membership'),esc_html__("Close", 'armember-membership'),esc_html__("Cancel Subscription", 'armember-membership'));
 
                     }
                     if($status == 'suspended')
                     {
-                        $gridAction .= "<a href='javascript:void(0)' data-activation_id='" . esc_attr($activityID) . "' data-plan_id='" . esc_attr($plan_id) . "' onclick='showConfirmBoxCallback_activation(".esc_attr($activityID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/arm-active-plan.png' class='armhelptip' title='" . esc_attr__('Activate Plan', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/arm-active-plan-hover.png';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/arm-active-plan.png';\" style='vertical-align:middle' /></a>"; //phpcs:ignore
+                        $gridAction .= "<a href='javascript:void(0)' data-activation_id='" . esc_attr($activityID) . "' data-plan_id='" . esc_attr($plan_id) . "' onclick='showConfirmBoxCallback_activation(".esc_attr($activityID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_edit.svg' class='armhelptip' title='" . esc_attr__('Activate Plan', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_edit_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_edit.svg';\" style='vertical-align:middle' /></a>"; //phpcs:ignore
 
                         $arm_plan_is_suspended = "<div class='arm_confirm_box arm_confirm_box_activate_".esc_attr($activityID)."' id='arm_confirm_box_activate_".esc_attr($activityID)."' style='right: -5px;'>";
                         $arm_plan_is_suspended .= "<div class='arm_confirm_box_body'>";
                         $arm_plan_is_suspended .= "<div class='arm_confirm_box_arrow'></div>";
+                        $arm_plan_is_suspended .= "<div class='arm_confirm_box_text_title'>". esc_html__("Activate Plan", 'armember-membership')."</div>";
                         $arm_plan_is_suspended .= "<div class='arm_confirm_box_text'>" . esc_html__("Are you sure you want to activate", 'armember-membership') . " " . esc_html($plan_name) . esc_html__(" plan for this user?", 'armember-membership') . "</div>";
                         $arm_plan_is_suspended .= "<div class='arm_confirm_box_btn_container'>";//phpcs:ignore
-                        $arm_plan_is_suspended .= "<button type='button' class='arm_confirm_box_btn armok arm_plan_activation_change' data-item_id='".esc_attr($activityID)."'>" . esc_html__('Activate', 'armember-membership') . "</button>";
                         $arm_plan_is_suspended .= "<button type='button' class='arm_confirm_box_btn armcancel' onclick='hideConfirmBoxCallback();'>" . esc_html__('Cancel', 'armember-membership') . "</button>";
+                        $arm_plan_is_suspended .= "<button type='button' class='arm_confirm_box_btn armok arm_plan_activation_change arm_margin_right_0' data-item_id='".esc_attr($activityID)."'>" . esc_html__('Activate', 'armember-membership') . "</button>";
                         $arm_plan_is_suspended .= "</div>";
                         $arm_plan_is_suspended .= "</div>";
                         $arm_plan_is_suspended .= "</div></div>";
@@ -1295,7 +1287,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             
                         }
             
-                        $response_data[$ai][2] = '<a class="arm_openpreview_popup" href="javascript:void(0)" data-id="'.esc_attr($user_id).'">'.$rc->arm_user_login.'</a>';
+                        $response_data[$ai][2] = '<a class="arm_openpreview_popup" data-arm_hide_edit="1" href="javascript:void(0)" data-id="'.esc_attr($user_id).'">'.$rc->arm_user_login.'</a>';
                         $response_data[$ai][3] = $user_first_name . ' ' .$user_last_name;
                         $arm_start_plan_date = !empty($start_plan_date) ? strtotime($start_plan_date) : '';
                         $response_data[$ai][4] = !empty($arm_start_plan_date) ? date_i18n($date_format, $arm_start_plan_date) : '-';
@@ -1351,12 +1343,13 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         $gridAction ='';
                         $gridAction .= "<div class='arm_grid_action_btn_container'>";
             
-                            $gridAction .= "<a href='javascript:void(0)' data-cancel_activity_type='active'  data-cancel_activity_id='" . esc_attr($activityID) . "' onclick='showConfirmBoxCallbackupcomming(".esc_attr($activityID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.png' class='armhelptip' title='" . esc_attr__('Cancel', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied_hover.png';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.png';\" /></a>";//phpcs:ignore
+                            $gridAction .= "<a href='javascript:void(0)' data-cancel_activity_type='active'  data-cancel_activity_id='" . esc_attr($activityID) . "' onclick='showConfirmBoxCallbackupcomming(".esc_attr($activityID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg' class='armhelptip' title='" . esc_attr__('Cancel', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg';\" /></a>";//phpcs:ignore
                             $arm_transaction_del_cls = 'arm_activity_delete_btn';
 
                             $confirmBox  = "<div class='arm_confirm_box arm_confirm_box_".esc_attr($activityID)."' id='arm_upcoming_activity_".esc_attr($activityID)."'>";
                                 $confirmBox .= "<div class='arm_confirm_box_body'>";
                                     $confirmBox .= "<div class='arm_confirm_box_arrow'></div>";
+                                    $confirmBox .= "<div class='arm_confirm_box_text_title'>".esc_html__( 'Cancel Subscription', 'armember-membership' )."</div>";
                                         $confirmBox .= "<div class='arm_confirm_box_text'>".esc_html__("Are you sure you want to cancel this subscription?", 'armember-membership')."</div>";
                                             $confirmBox .= "<div class='arm_confirm_box_btn_container'>";
                                                 $confirmBox .= "<button type='button' class='arm_confirm_box_btn armok ".esc_attr($arm_transaction_del_cls).
@@ -1496,7 +1489,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     $response = array('type' => 'error', 'message' => esc_html__('Something went wrong please try again', 'armember-membership'));
                 }
             }
-            echo wp_json_encode($response);
+            echo arm_pattern_json_encode($response);
             die;
         }
     }

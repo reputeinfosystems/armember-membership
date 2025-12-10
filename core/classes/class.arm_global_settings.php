@@ -177,13 +177,12 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				}
 			}
 			update_option( 'arm_preset_form_fields', $dbFormFields );
-			echo wp_json_encode( $arm_deleted_fields );
+			echo arm_pattern_json_encode( $arm_deleted_fields );
 			die();
 		}
 
 		function arm_send_test_mail() {
-
-			global $ARMemberLite, $arm_capabilities_global;
+			global $ARMemberLite, $arm_capabilities_global ,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
 
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_general_settings'], '1' ); //phpcs:ignore --Reason:Verifying nonce
 
@@ -203,8 +202,9 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			if ( empty( $send_to ) || empty( $reply_to ) || empty( $message ) || empty( $subject ) ) {
 				return;
 			}
-
+                	echo $arm_ajax_pattern_start;
 			echo $this->arm_send_tedst_mail_func( $reply_to, $send_to, $subject, $message, array(), $reply_to_name, $arm_mail_server, $arm_mail_port, $arm_mail_login_name, $arm_mail_password, $arm_mail_enc, $mail_authentication ); //phpcs:ignore
+                	echo $arm_ajax_pattern_end;
 			die();
 		}
 
@@ -1135,7 +1135,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				}
 			}
 			if ( isset( $posted_data['action'] ) && $posted_data['action'] == 'arm_shortcode_exist_in_page' ) { //phpcs:ignore
-				echo wp_json_encode( array( 'status' => $is_exist ) );
+				echo arm_pattern_json_encode( array( 'status' => $is_exist ) );
 				exit;
 			} else {
 				return $is_exist;
@@ -1272,9 +1272,23 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			if ( isset( $allGlobalSettings['member_profile_page_id'] ) && $allGlobalSettings['member_profile_page_id'] != 0 ) {
 				$profile_page_id = $allGlobalSettings['member_profile_page_id'];
 				$profilePage     = get_post( $profile_page_id );
+		                $is_parent_page = isset($profilePage->post_parent) && $profilePage->post_parent != 0 ? true : false ; 
+		                $parent_page_id = isset($profilePage->post_parent) && !empty($profilePage->post_parent) ? $profilePage->post_parent : 0 ; 
+		                $profileParentSlug = '';
+		                while ( $is_parent_page ) {
+		                    $parentPage = get_post($parent_page_id);
+		                    $profileParentSlug = isset($parentPage->post_name) &&  !empty($parentPage->post_name) ? $parentPage->post_name.'/'.$profileParentSlug : '' ;                                        
+		                    $parent_page_id = $parentPage->post_parent;                    
+		                    if($parent_page_id != 0) {
+		                        $is_parent_page = true;
+		                    } else {
+		                        $is_parent_page = false;
+		                        break;
+		                    }
+		                }
 				if ( isset( $profilePage->post_name ) ) {
 					$profileSlug = $profilePage->post_name;
-					add_rewrite_rule( $profileSlug . '/([^/]+)/?$', 'index.php?page_id=' . $profile_page_id . '&arm_user=$matches[1]', 'top' );
+					add_rewrite_rule( $profileParentSlug.$profileSlug . '/([^/]+)/?$', 'index.php?page_id=' . $profile_page_id . '&arm_user=$matches[1]', 'top' );
 				}
 			}
 		}
@@ -1386,7 +1400,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			if ( ! empty( $user_avatar ) ) {
 				$avatar = $user_avatar;
 			} else {
-				if ( $this->global_settings['enable_gravatar'] == '0' ) {
+				if ( empty($this->global_settings['enable_gravatar']) ) {
 					$avatar = "<img src='" . MEMBERSHIPLITE_IMAGES_URL . "/avatar_placeholder.png' class='avatar arm_grid_avatar arm-avatar avatar-{$size}' width='{$size}' />"; // phpcs:ignore
 				} else {
 					$avatar = str_replace( 'avatar-' . $size, 'avatar arm_grid_avatar arm-avatar avatar-' . $size, $avatar );
@@ -1814,7 +1828,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 					'msg'  => esc_html__( 'Global Settings Saved Successfully.', 'armember-membership' ),
 				);
 			}
-			echo wp_json_encode( $response );
+			echo arm_pattern_json_encode( $response );
 			die();
 		}
 
@@ -2125,13 +2139,27 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				$to_admin  = get_option( 'admin_email' );
 
 				$all_email_settings = $arm_email_settings->arm_get_all_email_settings();
-
+		
+				$email_css = '<style>
+				table, th, td {
+					border: 1px solid grey;
+					border-collapse: collapse;
+				}
+				table {
+					table-layout: auto;
+				}
+				th, td {
+					padding: 5px;
+					text-align: left;
+				}
+				</style>';
+		
 				if ( ! empty( $temp_slug ) ) {
 					$template = $arm_email_settings->arm_get_email_template( $temp_slug );
 					if ( $template->arm_template_status == '1' ) {
 						$message = $this->arm_filter_email_with_user_detail( $template->arm_template_content, $user_id, 0, $follower_id );
 						$subject = $this->arm_filter_email_with_user_detail( $template->arm_template_subject, $user_id, 0, $follower_id );
-						/* Send Email To User */
+						$message = $email_css . $message;
 						$user_send_mail = $this->arm_wp_mail( '', $to_user, $subject, $message );
 					}
 				}
@@ -2140,7 +2168,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 					if ( $admin_template->arm_template_status == '1' ) {
 						$message_admin = $this->arm_filter_email_with_user_detail( $admin_template->arm_template_content, $user_id, 0, $follower_id );
 						$subject_admin = $this->arm_filter_email_with_user_detail( $admin_template->arm_template_subject, $user_id, 0, $follower_id );
-
+						$message_admin = $email_css . $message_admin;
 						$admin_send_mail = $this->arm_send_message_to_armember_admin_users( $to_user, $subject_admin, $message_admin );
 					}
 				}
@@ -2187,19 +2215,39 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$content_type            = ( @$arm_plain_text ) ? 'text/plain' : 'text/html';
 			$from_name               = $from_name;
 			$reply_to                = ( ! empty( $from ) ) ? $from : $from_email;
-			/* Set Email Headers */
+			$message_html = "<html>
+            <head>";
+            $message_html .= '<style>
+						table, th, td {
+							border: 1px solid grey;
+							border-collapse: collapse;
+						}
+						table {
+							table-layout: auto;
+						}
+						th, td {
+							padding: 5px;
+							text-align: left;
+						}
+					</style>';
+            
+                $message_html .= "</head><body>";
+            $message_html .= $message;           
+            $message_html .= "</body></html>";
+            $message = $message_html;		
 			$headers = array();
-			// $headers[] = 'From: "' . $from_name . '" <' . $reply_to . '>';
-			$headers[] = 'From: "' . $from_name . '" <' . $from_email . '>';
-			$headers[] = 'Reply-To: ' . $reply_to;
-			$headers[] = 'Content-Type: ' . $content_type . '; charset="' . get_option( 'blog_charset' ) . '"';
-			/* Filter Email Subject & Message */
-			$subject = wp_specialchars_decode( wp_strip_all_tags( stripslashes( $subject ) ), ENT_QUOTES );
-			$message = do_shortcode( $message );
-			$message = wordwrap( stripslashes( $message ), 70, "\r\n" );
-			if ( @$arm_plain_text ) {
-				$message = wp_specialchars_decode( wp_strip_all_tags( $message ), ENT_QUOTES );
-			}
+			 //$headers[] = 'From: "' . $from_name . '" <' . $reply_to . '>'; //changes from v3.0
+			 $headers[] = 'From: "' . $from_name . '" <' . $from_email . '>';
+			 $headers[] = 'Reply-To: ' . $reply_to;
+			 $headers[] = 'Content-Type: ' . $content_type . '; charset="' . get_option('blog_charset') . '"';
+			 /* Filter Email Subject & Message */
+			 $subject = wp_specialchars_decode(strip_tags(stripslashes($subject)), ENT_QUOTES);
+			 $message = do_shortcode($message);
+			 $message = $email_css . stripslashes($message);
+			 $message = wordwrap(stripslashes($message), 70, "\r\n");
+			 if (@$arm_plain_text) {
+				 $message = wp_specialchars_decode(strip_tags($message), ENT_QUOTES);
+			 }
 
 			$subject   = apply_filters( 'arm_email_subject', $subject );
 			$message   = apply_filters( 'arm_change_email_content', $message );
@@ -2253,7 +2301,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$armPMailer->setFrom( $from_email, $from_name );
 			$armPMailer->addReplyTo( $reply_to, $from_name );
 			$armPMailer->addAddress( $recipient );
-			if ( isset( $attachments ) && ! empty( $attachments ) ) {
+			if ( isset( $attachments ) && ! empty( $attachments ) && is_array($attachments) ) {
 				foreach ( $attachments as $attachment ) {
 					$armPMailer->addAttachment( $attachment );
 				}
@@ -2632,10 +2680,20 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				}
 			}
 
-			$content = nl2br( $content );
+			// $content = nl2br( $content );
+			$arm_is_html = $this->arm_is_html($content);
+            if( !$arm_is_html )
+            {
+                $content = nl2br( $content );
+            }
 			$content = apply_filters( 'arm_change_email_content_with_user_detail', $content, $user_id );
 			return $content;
 		}
+
+		function arm_is_html( $content )
+        {
+            return preg_match( "/<[^<]+>/", $content, $m ) != 0;
+        }
 
 		function arm_get_wp_pages( $args = '', $columns = array() ) {
 			 $defaults      = array(
@@ -2707,7 +2765,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$required     = ( $r['required'] ) ? 'required="required"' : '';
 			$required_msg = ( $r['required_msg'] ) ? 'data-msg-required="' . esc_attr($r['required_msg']) . '"' : '';
 			$output      .= "<input type='hidden'  name='" . esc_attr( $r['name'] ) . "' id='" . esc_attr( $r['id'] ) . "' class='" . esc_attr($r['class']) . "' value='" . esc_attr($r['selected']) . "' $required $required_msg/>";
-			$output      .= "<dl class='arm_selectbox column_level_dd'>";
+			$output      .= "<dl class='arm_selectbox column_level_dd arm_width_100_pct arm_margin_top_12'>";
 			$output      .= "<dt class='" . esc_attr($dd_class) . "'><span>" . ( ! empty( $r['selected'] ) ? esc_attr( get_the_title( $r['selected'] ) ) : 'Select Page' ) . "</span><input type='text' style='display:none;' value='" . ( ! empty( $r['selected'] ) ? esc_attr( get_the_title( $r['selected'] ) ) : 'Select Page' ) . "' class='arm_autocomplete'  /><i class='armfa armfa-caret-down armfa-lg'></i></dt>";
 			$output      .= '<dd>';
 			$output      .= "<ul data-id='" . esc_attr( $r['id'] ) . "'>";
@@ -2835,7 +2893,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			return ( count( $dates ) - 1 );
 		}
 
-		function arm_get_confirm_box( $item_id = 0, $confirmText = '', $btnClass = '', $deleteType = '',$deleteText='',$cancelText='' ) {
+		function arm_get_confirm_box( $item_id = 0, $confirmText = '', $btnClass = '', $deleteType = '',$deleteText='',$cancelText='',$confirmTextTitle='') {
 			global $wp, $wpdb, $ARMemberLite, $arm_slugs;
 			
 			$item_id = $item_id;
@@ -2848,19 +2906,17 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$confirmBox  = "<div class='arm_confirm_box arm_confirm_box_".esc_attr($item_id)."' id='arm_confirm_box_".esc_attr($item_id)."'>";
 			$confirmBox .= "<div class='arm_confirm_box_body'>";
 			$confirmBox .= "<div class='arm_confirm_box_arrow'></div>";
+			$confirmBox .= "<div class='arm_confirm_box_text_title'>".$confirmTextTitle."</div>";
 			$confirmBox .= "<div class='arm_confirm_box_text'>".esc_html($confirmText)."</div>";
 			$confirmBox .= "<div class='arm_confirm_box_btn_container'>";
+			$confirmBox .= "<button type='button' class='arm_confirm_box_btn armcancel' onclick='hideConfirmBoxCallback();'>" . esc_html($cancelText) . '</button>';
 			$confirmBox .= "<button type='button' class='arm_confirm_box_btn armok ".esc_attr($btnClass).
 			"' data-item_id='".esc_attr($item_id)."' data-type='".esc_attr($deleteType)."'>" . esc_html($deleteText) . '</button>';
-			$confirmBox .= "<button type='button' class='arm_confirm_box_btn armcancel' onclick='hideConfirmBoxCallback();'>" . esc_html($cancelText) . '</button>';
 			$confirmBox .= '</div>';
 			$confirmBox .= '</div>';
 			$confirmBox .= '</div>';
 			return $confirmBox;
 		}
-
-
-
 		function arm_get_bpopup_html( $args ) {
 			global $wp, $wpdb, $ARMemberLite, $arm_slugs;
 			$defaults = array(
@@ -2873,13 +2929,18 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				'ok_btn_class'    => '',
 				'ok_btn_text'     => esc_html__( 'Ok', 'armember-membership' ),
 				'cancel_btn_text' => esc_html__( 'Cancel', 'armember-membership' ),
+				'close_icon' => false
 			);
 			extract( shortcode_atts( $defaults, $args ) );
 			/* Generate Popup HTML */
 			$popup          = '<div id="' . esc_attr( $id ) . '" class="popup_wrapper ' . esc_attr( $class ) . '"><div class="popup_wrapper_inner">';
 			$popup         .= '<div class="popup_header">';
-			$popup         .= '<span class="popup_close_btn arm_popup_close_btn"></span>';
-			$popup         .= '<span class="popup_header_text">' . $title . '</span>'; //phpcs:ignore
+			$popup .= '<span class="popup_header_text">' . $title; //phpcs:ignore
+            if($close_icon)
+            {
+                $popup         .= '<span class="popup_close_btn arm_popup_close_btn"></span>'; //phpcs:ignore
+            }
+            $popup .= '</span>';
 			$popup         .= '</div>';
 			$popup         .= '<div class="popup_content_text">' . $content . '</div>'; //phpcs:ignore
 			$popup         .= '<div class="armclear"></div>';

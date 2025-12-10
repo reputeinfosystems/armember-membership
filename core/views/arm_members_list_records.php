@@ -1,14 +1,15 @@
 <?php
-global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways;
+global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways,$arm_common_lite;
 $date_format    = $arm_global_settings->arm_get_wp_date_format();
 $user_roles     = get_editable_roles();
 $nowDate        = current_time( 'mysql' );
 $all_plans      = $arm_subscription_plans->arm_get_all_subscription_plans();
-$posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST ); //phpcs:ignore
+$posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_REQUEST ); //phpcs:ignore
 $filter_plan_id = ( ! empty( $_REQUEST['plan_id'] ) && $_REQUEST['plan_id'] != '0' ) ? intval($_REQUEST['plan_id']) : ''; //phpcs:ignore
 $filter_form_id = ( ! empty( $posted_data['form_id'] ) && $posted_data['form_id'] != '0' ) ? intval($posted_data['form_id']) : '0';  //phpcs:ignore
-$filter_search  = ( ! empty( $posted_data['search'] ) ) ? sanitize_text_field($posted_data['search']) : ''; //phpcs:ignore
+$filter_search  = ( ! empty( $_REQUEST['sSearch'] ) ) ? $_REQUEST['sSearch'] : ''; //phpcs:ignore
 $filter_member_status = (!empty($_REQUEST['member_status_id'])) ? intval($_REQUEST['member_status_id']) : '0'; //phpcs:ignore
+
 /* * *************./Begin Set Member Grid Fields/.************** */
 $grid_columns = array(
 	'avatar'             => esc_html__( 'Avatar', 'armember-membership' ),
@@ -122,6 +123,12 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 ?>
 <script type="text/javascript" charset="utf-8">
 // <![CDATA[
+	
+		<?php if(isset($_REQUEST['plan_id']) && !empty($_REQUEST['plan_id'])){?>
+		jQuery(document).ready( function(){
+			jQuery('#arm_confirm_box_manage_member_filter').find('#arm_member_grid_filter_btn').trigger('click');
+		});
+	<?php }?>
 	<?php if(!$ARMemberLite->is_arm_pro_active){?>
 	jQuery(document).on('click', '.arm_show_user_more_plans_types, .arm_show_user_more_plans', function () {
 
@@ -163,38 +170,184 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 	} 
 
 	function show_grid_loader() {
-			jQuery(".arm_hide_datatable").css('visibility', 'hidden');
-			jQuery('.arm_loading_grid').show();
-		
+		jQuery(".dataTables_scroll").hide();
+		jQuery(".footer").hide();
+		jQuery('.arm_loading_grid').show();
 	}
 	jQuery(document).ready(function () {
 		jQuery('#armember_datatable').dataTable().fnDestroy();
 		arm_load_membership_grid(false);
-		jQuery('#armmanagesearch_new').on('keyup', function (e) {
-		
-			e.stopPropagation();
-			if (e.keyCode == 13) {
-				arm_load_membership_grid_after_filtered();
-				return false;
-			}
-		});
+		var count_checkbox = jQuery('.chkstanard:checked').length;
+		if(count_checkbox > 0)
+		{
+			jQuery('.arm_datatable_filters_options.arm_filters_searchbox').addClass('hidden_section');
+			jQuery('.arm_bulk_action_section').removeClass('hidden_section');
+		}
+		else{
+			jQuery('.arm_datatable_filters_options.arm_filters_searchbox').removeClass('hidden_section');
+			jQuery('.arm_bulk_action_section').addClass('hidden_section');
+		}
 	});
+	jQuery(document).on('change','.chkstanard',function()
+	{
+		var count_checkbox = jQuery('.chkstanard:not(#cb-select-all-1):checked').length;
+		var total_checkbox = jQuery('.chkstanard:not(#cb-select-all-1)').length;
+		if(count_checkbox > 0)
+		{
+			jQuery('.arm_selected_chkcount').html(count_checkbox);
+			jQuery('.arm_selected_chkcount_total').html(total_checkbox);
+			jQuery('.arm_datatable_filters_options.arm_filters_searchbox').addClass('hidden_section');
+			jQuery('.arm_bulk_action_section').removeClass('hidden_section').show();
+		}
+		else{
+			jQuery('.arm_datatable_filters_options.arm_filters_searchbox').removeClass('hidden_section');
+			jQuery('.arm_bulk_action_section').addClass('hidden_section').hide();
+		}
+	});
+
+	jQuery(document).on('click','.arm_reset_bulk_action',function(){
+		jQuery('.chkstanard:checked').each(function(){
+			jQuery(this).prop('checked',false).trigger('change');
+		})
+	});
+
+
+	jQuery(document).on('click','#arm_member_grid_filter_btn',function(){
+		var is_filtered = 0;
+		var is_before_filtered = 0;
+		
+		hideConfirmBoxCallback_close_filter('manage_member_filter');
+		var chk_count = 0;
+		var arm_selected_plan = jQuery('.arm_filter_plans_box').find('#arm_subs_filter').val();
+		if(arm_selected_plan != '')
+		{
+			var arm_plans = arm_selected_plan.split(',');
+			chk_count = arm_plans.length;
+		}		
+				
+		if(!jQuery('.arm_filter_data_options').hasClass('hidden_section'))
+		{
+			is_before_filtered = 1;
+		}
+		else{
+			is_before_filtered = 0;
+		}
+		jQuery('.arm_plan_filter_value').html('');
+		if(chk_count > 0)
+		{
+			var arm_plan_label = '';
+			var arm_selected_plan_labels = [];
+			var arm_plan_label_temp = '';
+			var first_selected_plan_lbl = '';
+			var first_selected_plan_id = arm_plans[0];
+			
+			var first_selected_plan_lbl = jQuery('.arm_filter_plans_box').find('li[data-value="'+first_selected_plan_id+'"]').attr('data-label');
+			arm_plans.forEach(function(plan_id){				
+				var plan_label = jQuery('.arm_filter_plans_box').find('li[data-value="'+plan_id+'"]').attr('data-label');
+				arm_selected_plan_labels.push(plan_label);
+			});		
+			if(chk_count > 1)
+			{
+				first_selected_plan_lbl += '...';
+			}
+			
+			if(typeof arm_selected_plan_labels != 'undefined')
+			{
+				arm_selected_plan_labels.forEach(
+					function(plan_label) {
+						arm_plan_label_temp += plan_label+',</br>';
+					}
+				);
+				arm_plan_label = arm_plan_label_temp;
+				
+			}		
+			
+			jQuery('.arm_plan_tp').removeClass('hidden_section');
+			jQuery('.arm_plan_filter_value_tooltip').html(arm_plan_label);		
+			
+			jQuery('.arm_plan_filter_value').html(first_selected_plan_lbl);
+			jQuery('.arm_members_plan_filter').removeClass('hidden_section');
+			jQuery('.arm_reset_bulk_action').trigger('click');
+			jQuery('.arm_filter_data_options').removeClass('hidden_section');
+		}
+		else{
+			jQuery('.arm_plan_filter_value_tooltip').html('');
+			jQuery('.arm_plan_filter_value').html('');
+			jQuery('.arm_plan_tp').addClass('hidden_section');
+			jQuery('.arm_members_plan_filter').addClass('hidden_section');
+			jQuery('.arm_filter_data_options').addClass('hidden_section');
+		}
+		
+		if(!jQuery('.arm_filter_data_options').hasClass('hidden_section'))
+		{
+			is_filtered = 1;
+		}
+		else{
+			is_filtered = 0;
+		}
+		is_filtered = wp.hooks.applyFilters('arm_filter_list_action',is_filtered);
+		if(is_filtered == 1)
+		{
+			jQuery('.arm_filter_data_options').removeClass('hidden_section')
+		}
+		if(is_filtered == 1 || is_before_filtered == 1)
+		{
+			jQuery('.arm_reset_bulk_action').trigger('click');
+			setTimeout(function () {
+				arm_load_membership_grid_after_filtered();
+				is_before_filtered = 0;
+			},200);
+		}
+		else
+		{
+			jQuery('.arm_filter_data_options').addClass('hidden_section');
+		}	
+	});
+
+	function arm_reset_membership_grid(){
+		hideConfirmBoxCallback_filter('manage_member_filter');
+		jQuery('.arm_plan_filter_value').html('');
+		jQuery('.arm_plan_tp').addClass('hidden_section');
+		jQuery('.arm_plan_filter_value_tooltip').html("");
+		// jQuery('.arm_membership_plan_filters').removeClass('tipso_style');
+		jQuery('.arm_filter_data_options').addClass('hidden_section');
+		wp.hooks.doAction('arm_reset_datatable');
+		jQuery('.arm_reset_bulk_action').trigger('click');
+		jQuery('#armember_datatable').dataTable().fnDestroy();
+		arm_load_membership_grid_after_filtered(false);
+		arm_selectbox_init();
+	}
+
+	function arm_reset_fields_membership_grid(){
+		hideConfirmBoxCallback_filter('manage_member_filter');	
+	}
+
 	function arm_load_membership_grid_after_filtered() {
-		jQuery('#arm_member_grid_filter_btn').attr('disabled', 'disabled');
 		jQuery('#armember_datatable').dataTable().fnDestroy();
 		arm_load_membership_grid();
 	}
-	function arm_load_membership_grid(is_filtered) {
+	jQuery(document).on('keyup','#armmanagesearch_new', function (e) {
+		// e.stopPropagation();
+		if (e.keyCode == 13 || 'Enter' == e.key) {
+			var arm_search_val = jQuery(this).val();
+			jQuery('#armmanagesearch_new').val(arm_search_val);				
+			jQuery('#armember_datatable').dataTable().fnDestroy();
+			arm_load_membership_grid_after_filtered();
+			return false;
+		}
+	});
+	function arm_load_membership_grid(is_filtered=false) {
 		var __ARM_Showing = '<?php echo addslashes( esc_html__( 'Showing', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_Showing_empty = '<?php echo addslashes( esc_html__( 'Showing 0 to 0 of 0 members', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_to = '<?php echo addslashes( esc_html__( 'to', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_of = '<?php echo addslashes( esc_html__( 'of', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_MEMBERS = ' <?php esc_html_e( 'members', 'armember-membership' ); //phpcs:ignore ?>';
-		var __ARM_Show = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?> ';
+		var __ARM_Show = '<?php echo addslashes( esc_html__( 'Members per page', 'armember-membership' ) ); //phpcs:ignore ?> ';
 		var __ARM_NO_FOUND = '<?php echo addslashes( esc_html__( 'No any member found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_NO_MATCHING = '<?php echo addslashes( esc_html__( 'No matching records found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 
-		var search_term = jQuery("#armmanagesearch_new").val();
+		var search_term = jQuery('#armmanagesearch_new').val();
+		
 		var filtered_id = jQuery("#arm_subs_filter").val();
         var payment_mode_id = jQuery("#arm_mode_filter").val();
         var status_id = jQuery("#arm_status_filter").val();
@@ -226,11 +379,10 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 
 		var oTables = jQuery('#armember_datatable').dataTable({
 			"oLanguage": {
-				"sProcessing": show_grid_loader(),
 				"sInfo": __ARM_Showing + " _START_ " + __ARM_to + " _END_ " + __ARM_of + " _TOTAL_ " + __ARM_MEMBERS,
 				"sInfoEmpty": __ARM_Showing_empty,
 				
-				"sLengthMenu": __ARM_Show + "_MENU_" + __ARM_MEMBERS,
+				"sLengthMenu": __ARM_Show + "_MENU_",
 				"sEmptyTable": __ARM_NO_FOUND,
 				"sZeroRecords": __ARM_NO_MATCHING,
 			},
@@ -239,12 +391,23 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 				"searchPlaceholder":"<?php esc_html_e( 'Search', 'armember-membership' ); ?>",
 				"search":"",
 			},
-			"buttons":[{
-				"extend":"colvis",
-				"columns":nColVisCols,
-				"className":"ColVis_Button TableTools_Button ui-button ui-state-default ColVis_MasterButton",
-				"text":"<span class=\"armshowhideicon\" style=\"background-image: url(<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/show_hide_icon.png);background-repeat: no-repeat;background-position: 0 center;padding: 0 0 0 30px;\"><?php esc_html_e('Show / Hide columns','armember-membership');?></span>",
-			}],
+			"buttons":[
+				{
+					
+					"className":"ColVis_Button TableTools_Button ui-button ui-state-default ColVis_MasterButton arm_margin_right_10 manage_member_filter_btn",
+					"text":"<span class=\"armshowhideicon\" style=\"background-image: url(<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/show_hide_icon.svg);background-repeat: no-repeat;background-position: 0 center;padding: 0 0 0 25px;margin-right\"><?php esc_html_e('Filters','armember-membership');?></span><span class='arm_counter hidden_section' style='width:20px;height:20px; background-color:#F2F8FF;color:#0077FF'></span>",
+					"action": function (e, dt, node, config) {
+						showConfirmBoxCallback_filter('manage_member_filter');
+                    }
+				},
+				{
+					"extend":"colvis",
+					"columns":nColVisCols,
+					"className":"ColVis_Button TableTools_Button ui-button ui-state-default ColVis_MasterButton arm_show_hide_columns",
+					"text":"<span class=\"armshowhideicon\" style=\"background-image: url(<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/two_column.svg);background-repeat: no-repeat;background-position: 0 center;padding: 0 0 0 25px;\"><?php esc_html_e('Columns','armember-membership');?></span>",
+					
+				}
+			],
 			"bProcessing": false,
 			"bServerSide": true,
 			"sAjaxSource": ajax_url,
@@ -268,15 +431,19 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 			"bAutoWidth": false,
 			"sScrollX": "100%",
 			"bScrollCollapse": true,
+			"aoColumnDefs": [
+				{"sType": "html", "bVisible": false, "aTargets": [<?php echo $column_hide; //phpcs:ignore ?>]},
+				{"sClass": "center", "aTargets": [0,1,7]},
+				{"bSortable": false, "aTargets": [<?php echo rtrim( $grid_clmn, ',' ); //phpcs:ignore ?>]},
+				{"aTargets":[<?php echo $arm_exclude_colvis; //phpcs:ignore ?>],"sClass":"noVis"},
+				{"sClass":"arm_min_width_50","aTargets":[0]},
+				{"sClass":"arm_min_width_70","aTargets":[1]},
+				{"sClass":"arm_min_width_100","aTargets":[2,6,8,9]},
+				{"sClass":"arm_min_width_200","aTargets":[3,4,5,7]},
+			],
 			"oColVis": {
 				"aiExclude": [0, <?php echo $arm_colvis; //phpcs:ignore ?>]
 			},
-			"aoColumnDefs": [
-				{"sType": "html", "bVisible": false, "aTargets": [<?php echo $column_hide; //phpcs:ignore ?>]},
-				{"sClass": "center", "aTargets": [0]},
-				{"bSortable": false, "aTargets": [<?php echo rtrim( $grid_clmn, ',' ); //phpcs:ignore ?>]},
-				{"aTargets":[<?php echo $arm_exclude_colvis; //phpcs:ignore ?>],"sClass":"noVis"}
-			],
 			"fixedColumns": false,
 			"bStateSave": true,
 			"iCookieDuration": 60 * 60,
@@ -301,7 +468,6 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 			"fnStateLoadParams": function (oSettings, oData) {
 				oData.iLength = 10;
 				oData.iStart = 1;
-				//oData.oSearch.sSearch = db_search_term;
 			},
 			"fnPreDrawCallback": function () {
 				show_grid_loader();
@@ -315,6 +481,8 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 			
 			"fnDrawCallback": function (oSettings) {
 				jQuery('.arm_loading_grid').hide();
+				jQuery('.dataTables_scroll').show();
+				jQuery(".footer").show();
 				arm_show_data();
 				jQuery("#cb-select-all-1").prop("checked", false);
 				arm_selectbox_init();
@@ -334,7 +502,6 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 					});
 				}
 				oTables.dataTable().fnAdjustColumnSizing(false);
-				jQuery('#arm_member_grid_filter_btn').removeAttr('disabled');
 			}
 		});
 
@@ -342,50 +509,18 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 		jQuery('.arm_filter_grid_list_container').find('.arm_datatable_filters_options').remove();
 		jQuery('div#armember_datatable_filter').parent().append(filter_box);
 		jQuery('div#armember_datatable_filter').hide();
+		// jQuery('#arm_member_grid_filter_btn').removeAttr('disabled');
+		if(db_search_term != ''){
+			jQuery('.arm_datatable_searchbox').find('#armmanagesearch_new').val(db_search_term)
+		}
+		
 	}
 // ]]>
 </script>
-<div class="arm_filter_wrapper" id="arm_filter_wrapper_after_filter" style="display:none;">
-	<div class="arm_datatable_filters_options">
-		<div class='sltstandard'>
-			<input type='hidden' id='arm_manage_bulk_action1' name="action1" value="-1" />
-			<dl class="arm_selectbox arm_width_250">
-				<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
-				<dd>
-					<ul data-id="arm_manage_bulk_action1">
-						<li data-label="<?php esc_html_e( 'Bulk Actions', 'armember-membership' ); ?>" data-value="-1"><?php esc_html_e( 'Bulk Actions', 'armember-membership' ); ?></li>
-						<li data-label="<?php esc_html_e( 'Delete', 'armember-membership' ); ?>" data-value="delete_member"><?php esc_html_e( 'Delete', 'armember-membership' ); ?></li>
-						<?php
-							$filters_data = '';
-							if($ARMemberLite->is_arm_pro_active)
-							{
-								$filters_data = apply_filters('arm_pro_bulk_actions_filter_data',$filters_data);
-								echo $filters_data; //phpcs:ignore
-							}
-							
-						?>
-						<?php
-
-
-						if ( ! empty( $all_plans ) ) {
-							?>
-							
-							<?php foreach ( $all_plans as $plan ) : ?>
-								<?php if ( $plan['arm_subscription_plan_status'] == 1 ) { ?>
-						  <li data-label="<?php echo stripslashes( esc_attr( $plan['arm_subscription_plan_name'] ) ); ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><?php echo stripslashes( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
-						  <?php } ?>
-						  <?php endforeach; ?>
-						  <?php }?>
-					</ul>
-				</dd>
-			</dl>
-		</div>
-		<input type="submit" id="doaction1" class="armbulkbtn armemailaddbtn" value="<?php esc_html_e( 'Go', 'armember-membership' ); ?>"/>
-	</div>
-</div>
 <div class="arm_members_list">
 	<div class="arm_filter_wrapper" id="arm_filter_wrapper" style="display:none;">
-		<div class="arm_datatable_filters_options">
+		<div class="arm_datatable_filters_options arm_bulk_action_section hidden_section">
+			<span class="arm_reset_bulk_action"></span><span class="arm_selected_chkcount"></span>&nbsp;&nbsp;<span><?php esc_html_e('of','armember-membership');?></span>&nbsp;&nbsp;<span class="arm_selected_chkcount_total"></span>&nbsp;&nbsp;<span><?php esc_html_e('Selected','armember-membership');?></span><div class="arm_margin_right_10"></div><div class="arm_margin_left_10"></div>
 			<div class='sltstandard'>
 				<input type='hidden' id='arm_manage_bulk_action1' name="action1" value="-1" />
 				<dl class="arm_selectbox arm_width_250">
@@ -395,6 +530,7 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 							<li data-label="<?php esc_html_e( 'Bulk Actions', 'armember-membership' ); ?>" data-value="-1"><?php esc_html_e( 'Bulk Actions', 'armember-membership' ); ?></li>
 							<li data-label="<?php esc_html_e( 'Delete', 'armember-membership' ); ?>" data-value="delete_member"><?php esc_html_e( 'Delete', 'armember-membership' ); ?></li>
 							<?php
+							$filters_data = '';
 							if($ARMemberLite->is_arm_pro_active)
 							{
 								$filters_data = apply_filters('arm_pro_bulk_actions_filter_data',$filters_data); //phpcs:ignore
@@ -419,61 +555,122 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 					</dd>
 				</dl>
 			</div>
+			
 			<input type="submit" id="doaction1" class="armbulkbtn armemailaddbtn" value="<?php esc_attr_e( 'Go', 'armember-membership' ); ?>"/>
+		</div>
+		<div class="arm_datatable_filters_options arm_filters_searchbox">
+			<div class="sltstandard">
+				<div class="arm_dt_filter_block arm_datatable_searchbox">
+					<div class="arm_datatable_filter_item">
+						<label class="arm_padding_0"><input type="text" placeholder="<?php esc_attr_e( 'Search Member', 'armember-membership' ); ?>" id="armmanagesearch_new" value="<?php echo esc_attr($filter_search); ?>" tabindex="-1"></label>
+					</div>				
+				</div>
+			</div>
+		</div>
+		<div class="arm_datatable_filters_options arm_filter_data_options hidden_section">
+			<div class="sltstandard">
+				<div class="arm_dt_filter_block arm_datatable_searchbox">
+					<div class="arm_datatable_filter_item arm_membership_plan_filters_items">
+						<?php 
+						if($ARMemberLite->is_arm_pro_active)
+						{
+							$filters_data = apply_filters('arm_pro_actions_filter_data',$filters_data);
+							echo $filters_data; //phpcs:ignore
+						}
+						else{?>
+
+							<div class="arm_membership_plan_filters arm_members_plan_filter">
+								<?php esc_html_e('Plan','armember-membership')?>&nbsp;&nbsp;<span class="arm_plan_filter_value"></span>
+								<div class="arm_tooltip arm_plan_tp hidden_section">
+									<div class="arm_tooltip_arrow"></div>
+									<span class="arm_plan_filter_value_tooltip"></span>
+								</div>
+							</div>
+						
+						<?php
+						}
+						?>
+						<a href="javascript:void(0)" class="arm_membership_plan_filters_items_reset" onclick="arm_reset_membership_grid();"><?php esc_html_e('Clear Filters','armember-membership');?></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="arm_datatable_filters_options arm_filter_data_confirmbox">
+			<div class="sltstandard">			
+				<div class="arm_confirm_box arm_filter_confirm_box arm_right_115" id="arm_confirm_box_manage_member_filter">
+						<div class="arm_confirm_box_body">
+							<div style="margin-left: 24px">
+								<span class="arm_font_size_14 arm_filter_confirm_header"><?php esc_html_e('Add Filters','armember-membership');?></span>
+							</div>
+							<div class="arm_solid_divider"></div>
+							<div class="arm_confirm_box_btn_container">
+								<table>
+									<?php
+										$arm_meta_field_filters = '';
+										echo apply_filters('arm_member_grid_meta_fields_filter',$arm_meta_field_filters,$user_meta_keys); //phpcs:ignore
+									?>
+									<tr class="arm_child_user_row">
+										<th>
+											<?php esc_html_e('Membership Plan','armember-membership');?>
+										</th>
+										<td>
+											<?php if ( ! empty( $all_plans ) ) : ?>
+												<div class="arm_filter_plans_box arm_datatable_filter_item">                        
+													<input type="hidden" id="arm_subs_filter" class="arm_subs_filter" value="<?php echo esc_attr($filter_plan_id); ?>" />
+													<dl class="arm_multiple_selectbox arm_width_250">
+														<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
+														<dd>
+															<ul data-id="arm_subs_filter" data-placeholder="<?php esc_attr_e( 'Select Plans', 'armember-membership' ); ?>">
+																<?php foreach ( $all_plans as $plan ) : ?>
+																	<li data-label="<?php echo stripslashes( esc_attr( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><input type="checkbox" class="arm_icheckbox" value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"/><?php echo stripslashes( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
+																<?php endforeach; ?>
+															</ul>
+														</dd>
+													</dl>
+												</div>
+											<?php endif;?>
+										</td>
+									</tr>
+									<?php
+										$arm_membership_plans_field_filters = '';
+										echo apply_filters('arm_member_grid_membership_plans_fields_filter',$arm_membership_plans_field_filters,$all_plans,$filter_member_status); //phpcs:ignore
+									?>
+									<tr class="arm_child_user_row">
+										<th></th>
+										<td>
+											<input type="button" class="arm_cancel_btn arm_margin_0" id="arm_member_grid_filter_clr_btn" onclick="arm_reset_fields_membership_grid();" value="<?php esc_html_e('Clear','armember-membership');?>">
+											<input type="button" class="armemailaddbtn" id="arm_member_grid_filter_btn" value="<?php esc_html_e('Apply','armember-membership');?>">
+										</td>
+									</tr>
+								</table>
+								
+								<!--./====================Begin Filter By Plan Box====================/.-->
+								
+							<!--./====================End Filter By Plan Box====================/.-->
+							<!--./====================Begin Filter By Member Form Box====================/.-->
+							<input type="hidden" id="arm_form_filter" class="arm_form_filter" value="<?php echo esc_attr($filter_form_id); ?>" />
+							<!--./====================End Filter By Member Form Box====================/.-->
+							</div>
+						</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<form method="GET" id="arm_member_list_form" class="data_grid_list" onsubmit="return arm_member_list_form_bulk_action();">
 		<input type="hidden" name="page" value="<?php echo esc_attr($arm_slugs->manage_members); //phpcs:ignore ?>" />
 		<input type="hidden" name="armaction" value="list" />
-		<div class="arm_datatable_filters">
-			<div class="arm_dt_filter_block arm_datatable_searchbox">
-                <div class="arm_datatable_filter_item">
-					<label><input type="text" placeholder="<?php esc_attr_e( 'Search Member', 'armember-membership' ); ?>" id="armmanagesearch_new" value="<?php echo esc_attr($filter_search); ?>" tabindex="-1"></label>
-                </div>
-				<?php
-					$arm_meta_field_filters = '';
-					echo apply_filters('arm_member_grid_meta_fields_filter',$arm_meta_field_filters,$user_meta_keys); //phpcs:ignore
-				?>
-				<!--./====================Begin Filter By Plan Box====================/.-->
-				<?php if ( ! empty( $all_plans ) ) : ?>
-					<div class="arm_filter_plans_box arm_datatable_filter_item">                        
-						<input type="hidden" id="arm_subs_filter" class="arm_subs_filter" value="<?php echo esc_attr($filter_plan_id); ?>" />
-						<dl class="arm_multiple_selectbox arm_width_250">
-							<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
-							<dd>
-								<ul data-id="arm_subs_filter" data-placeholder="<?php esc_attr_e( 'Select Plans', 'armember-membership' ); ?>">
-									<?php foreach ( $all_plans as $plan ) : ?>
-										<li data-label="<?php echo stripslashes( esc_attr( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><input type="checkbox" class="arm_icheckbox" value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"/><?php echo stripslashes( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
-									<?php endforeach; ?>
-								</ul>
-							</dd>
-						</dl>
-					</div>
-					<?php
-						$arm_membership_plans_field_filters = '';
-						echo apply_filters('arm_member_grid_membership_plans_fields_filter',$arm_membership_plans_field_filters,$all_plans,$filter_member_status); //phpcs:ignore
-					?>
-				<?php endif; ?>
-				<!--./====================End Filter By Plan Box====================/.-->
-				<!--./====================Begin Filter By Member Form Box====================/.-->
-				<input type="hidden" id="arm_form_filter" class="arm_form_filter" value="<?php echo esc_attr($filter_form_id); ?>" />
-				<!--./====================End Filter By Member Form Box====================/.-->
-			</div>
-			<div class="arm_dt_filter_block arm_dt_filter_submit">
-				<input type="button" class="armemailaddbtn" id="arm_member_grid_filter_btn" onClick="arm_load_membership_grid_after_filtered();" value="<?php esc_attr_e( 'Apply', 'armember-membership' ); ?>"/>
-			</div>
-			<div class="armclear"></div>
-		</div>
 		<div id="armmainformnewlist" class="arm_filter_grid_list_container">
-			<div class="arm_loading_grid" style="display: none;"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/loader.gif" alt="Loading.."></div>
+			<div class="arm_loading_grid" style="display: none;">
+				<?php $arm_loader = $arm_common_lite->arm_loader_img_func();
+				echo $arm_loader; //phpcs:ignore ?>
+			</div>
 			<div class="response_messages"></div>
 			<?php do_action( 'arm_before_listing_members' ); ?>
 			<div class="armclear"></div>
 			<table cellpadding="0" cellspacing="0" border="0" class="display arm_hide_datatable" id="armember_datatable">
 				<thead>
 					<tr>
-					
-						<th class="center cb-select-all-th arm_max_width_60"><input id="cb-select-all-1" type="checkbox" class="chkstanard"></th>
+						<th class="center cb-select-all-th arm_max_width_50"><input id="cb-select-all-1" type="checkbox" class="chkstanard"></th>
 						<?php if ( ! empty( $grid_columns ) ) { ?>
 							<?php foreach ( $grid_columns as $key => $title ) : ?>
 								<th data-key="<?php echo esc_attr($key); ?>" class="arm_grid_th_<?php echo esc_attr($key); ?>" ><?php echo esc_html($title); ?></th>
@@ -510,4 +707,4 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 	</form>
 </div>
 
-<div class="arm_member_view_detail_container"></div>
+<?php require_once(MEMBERSHIPLITE_VIEWS_DIR.'/arm_view_member_details.php')?>

@@ -95,7 +95,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 				}
 			}
 			
-			echo wp_json_encode( $response );
+			echo arm_pattern_json_encode( $response );
 			die();
 			
 		}
@@ -202,7 +202,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 				}
 			}
 			
-			echo wp_json_encode( $response );
+			echo arm_pattern_json_encode( $response );
 			die();
 			
 		}
@@ -309,7 +309,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 				}
 			}
 			
-			echo wp_json_encode( $response );
+			echo arm_pattern_json_encode( $response );
 			die();
 			
 		}
@@ -334,7 +334,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 					);
 				}
 			}
-			echo json_encode($response);
+			echo arm_pattern_json_encode($response);
 			die();
 		}
 
@@ -412,7 +412,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 				}
 			}
 			
-			echo wp_json_encode( $response );
+			echo arm_pattern_json_encode( $response );
 			die();
 			
 		}

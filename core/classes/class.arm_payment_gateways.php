@@ -74,7 +74,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 
 		function arm_view_payment_debug_log()
         {
-            global $wpdb, $ARMemberLite, $arm_global_settings, $arm_capabilities_global;
+            global $wpdb, $ARMemberLite, $arm_global_settings, $arm_capabilities_global,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_general_settings'], '1');//phpcs:ignore --Reason:Verifying nonce
             $arm_payment_debug_log_html = '';
             if(!empty($_POST) && !empty($_POST['arm_debug_log_selector']))//phpcs:ignore
@@ -87,6 +87,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 
                 $current_page = !empty($posted_data['page']) ? $posted_data['page'] : 1;
                 $perPage = !empty($posted_data['per_page']) ? intval($posted_data['per_page']) : 25;
+				$search_val = !empty($posted_data['arm_search']) ? $posted_data['arm_search'] : '25';
 
                 $offset = 0;
                 if (!empty($current_page) && $current_page > 1) {
@@ -94,11 +95,22 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                 }
 
                 $totalRecord = $wpdb->get_var( $wpdb->prepare("SELECT COUNT('arm_payment_log_id') FROM `" . $tbl_arm_debug_payment_log . "` WHERE `arm_payment_log_gateway` = %s AND `arm_payment_log_status`= %d ORDER BY arm_payment_log_id DESC",$arm_payment_debug_log_selector,1) ); //phpcs:ignore --Reason $tbl_arm_debug_payment_log is a table name
+				if(!empty($_REQUEST['arm_search']))
+				{
+					$like_string = '%'.$_REQUEST['arm_search'].'%';
+					$totalRecord = $wpdb->get_var( $wpdb->prepare("SELECT COUNT('arm_payment_log_id') FROM `" . $tbl_arm_debug_payment_log . "` WHERE `arm_payment_log_gateway` = %s AND `arm_payment_log_status`= %d AND (`arm_payment_log_event` LIKE %s OR `arm_payment_log_raw_data` LIKE %s) ORDER BY arm_payment_log_id DESC",$arm_payment_debug_log_selector,1,$like_string,$like_string) ); //phpcs:ignore --Reason $tbl_arm_debug_payment_log is a table name
+				}
 
                 $armPaymentDebugLimit = (!empty($perPage)) ? " LIMIT $offset, $perPage " : "";
 
                 $arm_payment_debug_log_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM `" . $tbl_arm_debug_payment_log . "` WHERE `arm_payment_log_gateway` = %s AND `arm_payment_log_status`=%d ORDER BY arm_payment_log_id DESC {$armPaymentDebugLimit}", $arm_payment_debug_log_selector, 1), ARRAY_A); //phpcs:ignore --Reason $tbl_arm_debug_payment_log is a table name
-                    $arm_payment_debug_log_html .= '<div class="arm_payment_debug_log_container">';
+				if(!empty($_REQUEST['arm_search']))
+				{
+					$like_string = '%'.$_REQUEST['arm_search'].'%';
+					$arm_payment_debug_log_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM `" . $tbl_arm_debug_payment_log . "` WHERE `arm_payment_log_gateway` = %s AND `arm_payment_log_status`=%d AND (`arm_payment_log_event` LIKE %s OR `arm_payment_log_raw_data` LIKE %s) ORDER BY arm_payment_log_id DESC {$armPaymentDebugLimit}", $arm_payment_debug_log_selector, 1,$like_string,$like_string), ARRAY_A); //phpcs:ignore --Reason $tbl_arm_debug_payment_log is a table name
+					
+				}
+				$arm_payment_debug_log_html .= '<div class="arm_payment_debug_log_container">';
                 $arm_payment_debug_log_html .= '<table class="form-table arm_member_last_subscriptions_table">';
                 $arm_payment_debug_log_html .= '<tr>';
                 $arm_payment_debug_log_html .= '<td><b>'.esc_html__('Log ID', 'armember-membership').'</b></td>';
@@ -147,13 +159,13 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                 $arm_payment_debug_log_html .= '</div>';
 
             }
-            echo $arm_payment_debug_log_html; //phpcs:ignore;
+            echo $arm_ajax_pattern_start.''.$arm_payment_debug_log_html.''.$arm_ajax_pattern_end; //phpcs:ignore;
             exit();
         }
 
 		function arm_view_general_debug_log()
         {
-            global $wpdb, $ARMemberLite, $arm_global_settings, $arm_capabilities_global;
+            global $wpdb, $ARMemberLite, $arm_global_settings, $arm_capabilities_global,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_general_settings'], '1');//phpcs:ignore --Reason:Verifying nonce
             $arm_general_debug_log_html = '';
             if(!empty($_POST) && !empty($_POST['arm_debug_log_selector']))//phpcs:ignore
@@ -170,6 +182,12 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                 else {
                     $arm_general_debug_log_selector_search = $wpdb->prepare(" `arm_general_log_event` =%s ",$arm_general_debug_log_selector);
                 }
+
+				if(!empty($_REQUEST['arm_search']))
+				{
+					$arm_like_query = '%'.$_REQUEST['arm_search'].'%';
+					$arm_general_debug_log_selector_search .= $wpdb->prepare("AND (`arm_general_log_event_name` LIKE %s OR `arm_general_log_raw_data` LIKE %s) ",$arm_like_query,$arm_like_query);
+				}
                 
                 $date_time_format = $arm_global_settings->arm_get_wp_date_time_format();
 
@@ -182,7 +200,6 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                 }
 
                 $totalRecord = $wpdb->get_var("SELECT COUNT('arm_general_log_id') FROM `" . $tbl_arm_debug_general_log . "` WHERE {$arm_general_debug_log_selector_search} ORDER BY arm_general_log_id DESC"); //phpcs:ignore --Reason $tbl_arm_debug_general_log is a table name
-
                 $arm_general_debug_log_html .= '<div class="arm_general_debug_log_container">';
                 $arm_general_debug_log_html .= '<table class="form-table arm_member_last_subscriptions_table" width="100%">';
                 $arm_general_debug_log_html .= '<tr>';
@@ -237,12 +254,12 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                 $arm_general_debug_log_html .= '</div>';
 
             }
-            echo $arm_general_debug_log_html; //phpcs:ignore
+            echo $arm_ajax_pattern_start.''.$arm_general_debug_log_html .''.$arm_ajax_pattern_end; //phpcs:ignore
             exit();
         }
 
 		function arm_download_general_debug_log(){
-            global $wpdb, $ARMemberLite, $arm_global_settings, $arm_capabilities_global;
+            global $wpdb, $ARMemberLite, $arm_global_settings, $arm_capabilities_global,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_general_settings'], '1');//phpcs:ignore --Reason:Verifying nonce
             $arm_download_url = '';
             if(!empty($_POST['arm_download_key']))//phpcs:ignore
@@ -250,6 +267,8 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                 $posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST ); //phpcs:ignore
                 $tbl_arm_debug_general_log = $ARMemberLite->tbl_arm_debug_general_log;
                 $arm_download_key = $posted_data['arm_download_key'];
+                $arm_wp_nonce = !empty($posted_data['arm_wp_nonce'])?sanitize_text_field($posted_data['arm_wp_nonce']):(!empty($posted_data['_wpnonce'])?sanitize_text_field($posted_data['_wpnonce']):'');
+                
                 $arm_selected_download_duration = !empty($posted_data['selected_download_duration']) ? $posted_data['selected_download_duration'] : 'all';
 
                 $arm_custom_duration_start_date = !empty($posted_data['arm_filter_pstart_date']) ? $posted_data['arm_filter_pstart_date'] : '';
@@ -342,13 +361,13 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                 }
             }
 
-            echo admin_url( 'admin.php?page=arm_general_settings&action=debug_logs&arm_action=download_log&file=' . $debug_log_file_name ); //phpcs:ignore
+            echo $arm_ajax_pattern_start.''.admin_url( 'admin.php?page=arm_general_settings&action=debug_logs&arm_action=download_log&file=' . $debug_log_file_name . '&arm_wp_nonce=' . $arm_wp_nonce ).''.$arm_ajax_pattern_end; //phpcs:ignore
             exit();
         }
 
         function arm_download_payment_debug_log()
         {
-            global $wpdb, $ARMemberLite, $arm_global_settings, $arm_capabilities_global;
+            global $wpdb, $ARMemberLite, $arm_global_settings, $arm_capabilities_global,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_general_settings'], '1');//phpcs:ignore --Reason:Verifying nonce
             $arm_download_url = '';
             if(!empty($_POST['arm_download_key']))//phpcs:ignore
@@ -356,7 +375,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                 $posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST ); //phpcs:ignore
                 $tbl_arm_debug_payment_log = $ARMemberLite->tbl_arm_debug_payment_log;
                 $arm_download_key = $posted_data['arm_download_key'];
-
+                $arm_wp_nonce = !empty($posted_data['arm_wp_nonce'])?sanitize_text_field($posted_data['arm_wp_nonce']):(!empty($posted_data['_wpnonce'])?sanitize_text_field($posted_data['_wpnonce']):'');
                 $arm_debug_payment_log_where_cond = "";
 
                 $arm_selected_download_duration = !empty($posted_data['selected_download_duration']) ? $posted_data['selected_download_duration'] : 'all';
@@ -412,7 +431,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                 }
             }
 
-            echo admin_url( 'admin.php?page=arm_general_settings&action=debug_logs&arm_action=download_log&file=' . $debug_log_file_name ); //phpcs:ignore
+            echo $arm_ajax_pattern_start.''. admin_url( 'admin.php?page=arm_general_settings&action=debug_logs&arm_action=download_log&file=' . $debug_log_file_name . '&arm_wp_nonce=' . $arm_wp_nonce ) .''.$arm_ajax_pattern_end; //phpcs:ignore
             exit();
         }
 
@@ -425,12 +444,12 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			$pay_get_settings_user = get_option( 'arm_payment_gateway_settings', array() );
 			$pay_get_settings      = maybe_unserialize( $pay_get_settings_user );
 			/* General Settings */
-			$default_payment_gateway = array(
+			$payment_gateways = array(
 				'paypal'        => array( 'gateway_name' => $this->arm_gateway_name_by_key( 'paypal' ) ),
 
 				'bank_transfer' => array( 'gateway_name' => $this->arm_gateway_name_by_key( 'bank_transfer' ) ),
 			);
-			$payment_gateways = apply_filters( 'arm_get_payment_gateways_in_filters', $default_payment_gateway );
+			// $payment_gateways = apply_filters( 'arm_get_payment_gateways_in_filters', $default_payment_gateway );
 			foreach ( $payment_gateways as $pgKey => $pgVal ) {
 				if ( isset( $pay_get_settings[ $pgKey ] ) ) {
 					$payment_gateways[ $pgKey ] = array_merge( $pgVal, $pay_get_settings[ $pgKey ] );
@@ -444,12 +463,12 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			$pay_get_settings_unser = get_option( 'arm_payment_gateway_settings', array() );
 			$pay_get_settings       = maybe_unserialize( $pay_get_settings_unser );
 			/* General Settings */
-			$default_payment_gateway = array(
+			$payment_gateways = array(
 				'paypal'        => array( 'gateway_name' => $this->arm_gateway_name_by_key( 'paypal' ) ),
 
 				'bank_transfer' => array( 'gateway_name' => $this->arm_gateway_name_by_key( 'bank_transfer' ) ),
 			);
-			$payment_gateways = apply_filters( 'arm_get_payment_gateways', $default_payment_gateway );
+			// $payment_gateways = apply_filters( 'arm_get_payment_gateways', $default_payment_gateway );
 			foreach ( $payment_gateways as $pgKey => $pgVal ) {
 				if ( isset( $pay_get_settings[ $pgKey ] ) ) {
 					$payment_gateways[ $pgKey ] = array_merge( $pgVal, $pay_get_settings[ $pgKey ] );
@@ -566,7 +585,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 		}
 
 		function arm_update_pay_gate_settings() {
-			global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms, $arm_email_settings, $arm_global_settings, $arm_capabilities_global, $arm_subscription_plans;
+			global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms, $arm_email_settings, $arm_global_settings, $arm_capabilities_global, $arm_subscription_plans,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
 
 			$pay_gate_settings = array();
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_payment_gateways'], '1' );//phpcs:ignore --Reason:Verifying nonce
@@ -588,7 +607,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			update_option( 'arm_payment_gateway_settings', $pay_gate_settings_result );
 			$this->arm_update_payment_gate_status();
 			$response = array( 'message' => 'success' );
-			echo wp_json_encode( $response );
+            		echo $arm_ajax_pattern_start.''.json_encode($response).''.$arm_ajax_pattern_end;
 			die();
 		}
 
@@ -1353,9 +1372,11 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                         do_action('arm_payment_log_entry', 'bank_transfer', 'Save payment log data', 'armember', $payment_data, $arm_lite_debug_payment_log_id);
 
 						$payment_log = $wpdb->insert( $ARMemberLite->tbl_arm_payment_log, $payment_data ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+						$payment_log_id = $wpdb->insert_id;
+
+						$payment_data['arm_log_id'] = $payment_log_id;
 
 						do_action( 'arm_after_add_transaction', $payment_data );
-						$payment_log_id = $wpdb->insert_id;
 						$payment_done   = array();
 						if ( $payment_log_id ) {
 							update_option( 'arm_last_invoice_id', $arm_last_invoice_id );
@@ -1719,7 +1740,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 				$default_pg               = '';
 				foreach ( $transfer_mode as $key => $value ) {
 					if ( in_array( $key, $transfer_mode_option_arr ) ) {
-						$transfer_mode_option_val = ! empty( $gateways_opts['fields']['transfer_mode_option_label'][ $key ] ) ? $gateways_opts['fields']['transfer_mode_option_label'][ $key ] : $value;
+						$transfer_mode_option_val = ! empty( $gateways_opts['fields']['transfer_mode_option_label'][ $key ] ) ? stripslashes_deep($gateways_opts['fields']['transfer_mode_option_label'][ $key ]) : $value;
 						if ( $drpdown_cntr == 0 ) {
 							$default_pg = $transfer_mode_option_val;
 						}
@@ -2028,7 +2049,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 
 
 		function arm_check_currency_status( $arm_currency = 'USD' ) {
-			global $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_membership_setup, $arm_capabilities_global;
+			global $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_membership_setup, $arm_capabilities_global,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
 		
 			$response = array(
 				'type' => 'error',
@@ -2072,7 +2093,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			}
 			if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'arm_check_currency_status' ) { //phpcs:ignore
 				$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_payment_gateways'], '1' );
-				echo wp_json_encode( $response );
+				echo arm_pattern_json_encode( $response );
 				exit;
 			}
 			return $message;

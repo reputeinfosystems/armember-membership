@@ -1,7 +1,10 @@
 <?php
 
 global $ARMemberLite, $arm_lite_ajaxurl, $arm_membership_setup, $ARMemberLiteAllowedHTMLTagsArray;
-$setupData = isset( $_REQUEST['setup_data'] ) ? array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_REQUEST['setup_data'] )  : ''; //phpcs:ignore
+$setupData = isset( $_REQUEST['setup_data'] ) ? array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_REQUEST['setup_data'] )  : array(); //phpcs:ignore
+
+$setup_plans = explode(',',$setupData['setup_modules']['modules']['plans'][0]);
+$setupData['setup_modules']['modules']['plans'] = $setup_plans;
 
 $setupData['setup_name'] = ( ! empty( $setupData['setup_name'] ) ) ? wp_kses($setupData['setup_name'], $ARMemberLiteAllowedHTMLTagsArray ) : esc_html__( 'Untitled Setup', 'armember-membership' );
 
@@ -22,7 +25,7 @@ $ARMemberLite->set_front_css( 2 );
 $ARMemberLite->enqueue_angular_script();
 $ARMemberLite->set_global_javascript_variables();
 
-wp_print_styles( 'arm_front_css' );
+wp_print_styles( 'arm_lite_front_css' );
 wp_print_styles( 'arm_form_style_css' );
 wp_print_styles( 'arm_fontawesome_css' );
 wp_print_styles( 'arm_bootstrap_all_css' );
@@ -71,7 +74,7 @@ wp_print_scripts( 'arm_form_validation' );
 		margin:0;
 	}
 	.arm_setup_form_container{
-		height: 500px;
+		height: 100% !important;
 		overflow-x: hidden;
 		overflow-y: auto;
 		padding: 10px 30px 40px;

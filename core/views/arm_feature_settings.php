@@ -56,16 +56,6 @@ if ( is_rtl() ) {
 	$featureActiveIcon = MEMBERSHIPLITE_IMAGES_URL . '/feature_active_icon_rtl.png';
 }
 ?>
-<?php
-$setact = 1;
-if($ARMemberLite->is_arm_pro_active){
-	$hostname = $_SERVER["SERVER_NAME"]; //phpcs:ignore
-	global $arm_members_activity;
-	$setact = 0;
-	global $check_sorting;
-	$setact = $arm_members_activity->$check_sorting();
-}
-?>
 <style>
 	.purchased_info{ color:#7cba6c; font-weight:bold; font-size: 15px; }
 	#license_success{ color:#8ccf7a !important; }
@@ -164,12 +154,7 @@ if($ARMemberLite->is_arm_pro_active){
 	}
 </style>
 <div class="wrap arm_page arm_feature_settings_main_wrapper">
-    <?php
-    if ($setact != 1) {
-        $admin_css_url = admin_url('admin.php?page=arm_manage_license'); //phpcs:ignore
-        ?>
-        <div style="margin-top:20px;margin-bottom:20px;border-left: 4px solid #ffba00;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);height:20px;width:99%;padding:10px 0px 10px 10px;background-color:#ffffff;color:#000000;font-size:16px;display:block;visibility:visible;text-align:left;" >ARMember License is not activated. Please activate license from <a href="<?php echo esc_url($admin_css_url); ?>">here</a></div>
-    <?php } ?>
+    
 	<div class="content_wrapper arm_feature_settings_content" id="content_wrapper">
 		<div class="page_title arm_new_addon_page_design"><?php esc_html_e( 'In-built Modules', 'armember-membership' ); ?></div>
 		<div class="armclear"></div>

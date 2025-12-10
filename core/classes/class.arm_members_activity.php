@@ -40,7 +40,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$arm_lite_newdbversion = get_option( 'armlite_version' );
 			}
 
-			if ( version_compare( $arm_lite_newdbversion, '4.0.68', '<' ) ) {
+			if ( version_compare( $arm_lite_newdbversion, '5.0', '<' ) ) {
 				$path = MEMBERSHIPLITE_VIEWS_DIR . '/upgrade_latest_data.php';
 				include $path;
 			}
@@ -555,7 +555,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 		}
 
 		function arm_check_for_invalid_data( $file_content = '', $arm_file_array = array() ) {
-	    	$arm_valid_pattern_with_short_tag = '/(\<\?(php)|\<\?\=)|(\<(script|iframe))/';
+	    		$arm_valid_pattern_with_short_tag = '/(\<\?(php)|\<\?\=)|(\<(script|iframe))/';
 			$arm_valid_pattern_without_short_tag = '/(\<\?(php))|(\<(script|iframe))/';
 
 			$is_short_tag_enabled = ini_get( 'short_open_tag' ); //phpcs:ignore

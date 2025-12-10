@@ -11,7 +11,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 			/* Membership Setup Wizard Form Shortcode Ajax Action */
 			add_action( 'wp_ajax_arm_membership_setup_form_ajax_action', array( $this, 'arm_membership_setup_form_ajax_action' ) );
 			add_action( 'wp_ajax_nopriv_arm_membership_setup_form_ajax_action', array( $this, 'arm_membership_setup_form_ajax_action' ) );
-			add_action( 'arm_save_membership_setups', array( $this, 'arm_save_membership_setups_func' ) );
+			add_action( 'wp_ajax_arm_save_membership_setups', array( $this, 'arm_save_membership_setups_func' ) );
 			add_shortcode( 'arm_setup', array( $this, 'arm_setup_shortcode_func' ) );
 			add_shortcode( 'arm_setup_internal', array( $this, 'arm_setup_shortcode_func_internal' ) );
 
@@ -22,7 +22,115 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 			// add_action('wp_ajax_arm_save_configure_preview_data', array($this, 'arm_save_configure_signup_preview_data'));
 			add_action( 'wp', array( $this, 'arm_membership_setup_preview_func' ) );
 			add_action( 'arm_cancel_subscription_gateway_action', array( $this, 'arm_cancel_bank_transfer_subscription' ), 10, 2 );
+
+			add_action('wp_ajax_arm_setup_edit_detail',array($this,'arm_setup_edit_detail_func'));
+
+			add_action('wp_ajax_arm_get_configure_setup_details', array($this, 'arm_get_configure_setup_details_func'));
 		}
+
+		function arm_get_configure_setup_details_func(){
+            global $wp,$wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_global_settings, $arm_email_settings,  $arm_subscription_plans, $arm_payment_gateways,$arm_pay_per_post_feature,$arm_common_lite,$arm_capabilities_global;
+
+            $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_setups'], '1',1); //phpcs:ignore 
+
+            $setup_result_sql = "SELECT * FROM `" . $ARMemberLite->tbl_arm_membership_setup . "` ORDER BY `arm_setup_id` DESC";//phpcs:ignore --Reason: $tbl_arm_membership_setup is a table name. False Positive Alarm.No need to prepare query without Where clause.
+            
+
+            // $setup_result = $wpdb->get_results($setup_result_sql,ARRAY_A);//phpcs:ignore --Reason: $tbl_arm_membership_setup is a table name. False Positive Alarm.No need to prepare query without Where clause.
+        
+            $results = $wpdb->get_results($setup_result_sql); //phpcs:ignore --Reason $sql is a prepareed query
+
+            $before_filter = count($results);
+
+            $sSearch = !empty($_REQUEST['sSearch']) ? trim(sanitize_text_field($_REQUEST['sSearch'])) : '';
+
+            if(!empty($sSearch))
+            {
+                $where_bgs = $wpdb->prepare("`arm_setup_name` LIKE %s",'%'.$sSearch.'%');
+                $setup_result_sql = "SELECT `arm_setup_id`, `arm_setup_name`, `arm_setup_modules`, `arm_created_date`,`arm_setup_type` FROM `" . $ARMemberLite->tbl_arm_membership_setup . "` WHERE ".$where_bgs." ORDER BY `arm_setup_id` DESC";
+            }
+
+            $after_filter_data = $wpdb->get_results($setup_result_sql);//phpcs:ignore --Reason 
+            $after_filter = count($after_filter_data);
+
+            $plan_offset = isset($_REQUEST['iDisplayStart']) ? intval($_REQUEST['iDisplayStart']) : 0;
+            $plan_number = isset($_REQUEST['iDisplayLength']) ? intval($_REQUEST['iDisplayLength']) : 10;
+
+            $phlimit = "LIMIT {$plan_offset},{$plan_number}";
+
+            $setup_result = $wpdb->get_results($setup_result_sql.' '.$phlimit);
+
+            $grid_data = array();
+            $ai = 0;
+
+            if (!empty($setup_result)) {
+
+                foreach ( $setup_result as $val ) {
+                    $setupID = $val->arm_setup_id;                   
+                    $grid_data[$ai][0] = '<a href="javascript:void(0)" class="arm_get_form_link arm_edit_setup_form_link" data-form_id="'. intval($setupID).'">' . stripslashes( $val->arm_setup_name ) . '</a>';
+                    $setup_type = esc_html__('Membership Plan','armember-membership');
+                    $arm_setup_modules = maybe_unserialize( $val->arm_setup_modules );
+                    $module_plans       = ( isset( $arm_setup_modules['modules']['plans'] ) ) ? $arm_setup_modules['modules']['plans'] : array();
+                    $plan_title         = $arm_subscription_plans->arm_get_comma_plan_names_by_ids( $module_plans );
+
+                    $grid_data[$ai][1] = ( ! empty( $plan_title ) ) ? stripslashes_deep( $plan_title ) : '--';
+                    $shortCode = '[arm_setup id="' . $setupID . '"]';
+                    $grid_data[$ai][2] = '<div class="arm_shortcode_text arm_form_shortcode_box">
+                        <span class="armCopyText">'. esc_html($shortCode).'</span>
+                        <span class="arm_click_to_copy_text" data-code="'. esc_attr( $shortCode ).'">'. esc_html__( 'Click to copy', 'armember-membership' ).'</span>
+                        <span class="arm_copied_text"><img src="'. esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/copied_ok.png" alt="ok"/>'. esc_html__( 'Code Copied', 'armember-membership' ).'</span>
+                    </div>';
+
+                    $module_gateways = ( isset( $arm_setup_modules['modules']['gateways'] ) ) ? $arm_setup_modules['modules']['gateways'] : array();
+                    $gateway_title   = '--';
+                    if ( ! empty( $module_gateways ) ) {
+                        $gateway_title = '';
+                        foreach ( $module_gateways as $key => $gateway ) {
+                            $gateway_title .= $arm_payment_gateways->arm_gateway_name_by_key( $gateway ) . ', ';
+                        }
+                    }
+
+                    $grid_data[$ai][3] = rtrim( $gateway_title, ', ' ); //phpcs:ignore
+
+                    $module_plans = ( isset( $arm_setup_modules['modules']['forms'] ) ) ? $arm_setup_modules['modules']['forms'] : 0;
+
+                    $module_form = new ARM_Form_Lite( 'id', $module_plans );
+                    if ( $module_form->exists() ) {
+                        $grid_data[$ai][4] = $module_form->form_detail['arm_form_label']; //phpcs:ignore
+                    } else {
+                        $grid_data[$ai][4] = '--';
+                    }
+
+                    $grid_data_action_btn = '<div class="arm_grid_action_btn_container">
+                        <a href="javascript:void(0)" class="arm_get_form_link arm_edit_setup_form_link" data-form_id="'. intval($setupID).'">
+                            <img src="'. esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/grid_edit.svg" onmouseover="this.src=\''. esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/grid_edit_hover.svg\';" class="armhelptip" title="'. esc_attr__( 'Edit Setup', 'armember-membership' ).'" onmouseout="this.src=\''. esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/grid_edit.svg\';" />
+                        </a>
+                        <a href="javascript:void(0)" onclick="showConfirmBoxCallback('. intval($setupID).');" data-form_id="'.  intval($setupID).'">
+                            <img src="'. esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/grid_delete.svg" class="armhelptip" title="'. esc_attr__( 'Delete Setup', 'armember-membership' ).'" onmouseover="this.src=\''. esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/grid_delete_hover.svg\';" onmouseout="this.src=\''. esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/grid_delete.svg\';" style="cursor:pointer"/>
+                        </a>';
+
+                        $grid_data_action_btn .= $arm_global_settings->arm_get_confirm_box( $setupID, esc_html__( 'Are you sure you want to delete this setup?', 'armember-membership' ), 'arm_setup_delete_btn','', esc_html__('Delete', 'armember-membership'), esc_attr__('Cancel', 'armember-membership'), esc_attr__('Delete', 'armember-membership') ); //phpcs:ignore                       
+                    $grid_data_action_btn .= '</div>';
+
+                    $grid_data[$ai][5] = $grid_data_action_btn;
+                    $ai++;
+
+                }
+            }
+            $sEcho = isset($_REQUEST['sEcho']) ? intval($_REQUEST['sEcho']) : intval(10);
+            $columns = esc_html__('Setup Name', 'armember-membership') . ',' . esc_html__('Plans', 'armember-membership') . ',' . esc_html__('Gateways', 'armember-membership') . ',' . esc_html__('Member Form', 'armember-membership') . ','. esc_html__('Shortcode', 'armember-membership') . ',';
+            $response = array(
+                'sColumns' => $columns,
+                'sEcho' => $sEcho,
+                'iTotalRecords' => $before_filter, // Before Filtered Records
+                'iTotalDisplayRecords' => $after_filter, // After Filter Records
+                'aaData' => $grid_data,
+            );
+            echo json_encode($response);
+            die();
+
+        }
+
 		function arm_save_configure_signup_preview_data() {
 			global $ARMemberLite, $arm_capabilities_global;
 
@@ -415,26 +523,6 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 									$validate                       = false;
 									$validate_msgs['bank_transfer'] = esc_html__( 'Selected plan is not valid for bank transfer.', 'armember-membership' );
 								} else {
-									$pgHasCCFields = apply_filters( 'arm_payment_gateway_has_ccfields', false, $payment_gateway, $gateway_options );
-									if ( $pgHasCCFields ) {
-										$cc_error = array();
-										if ( empty( $post_data[ $payment_gateway ]['card_number'] ) ) {
-											$err_msg = $arm_global_settings->common_message['arm_blank_credit_card_number'];
-										}
-										if ( empty( $post_data[ $payment_gateway ]['exp_month'] ) ) {
-											$err_msg = $arm_global_settings->common_message['arm_blank_expire_month'];
-										}
-										if ( empty( $post_data[ $payment_gateway ]['exp_year'] ) ) {
-											$err_msg = $arm_global_settings->common_message['arm_blank_expire_year'];
-										}
-										if ( empty( $post_data[ $payment_gateway ]['cvc'] ) ) {
-											$err_msg = $arm_global_settings->common_message['arm_blank_cvc_number'];
-										}
-										if ( ! empty( $cc_error ) ) {
-											$validate                     = false;
-											$validate_msgs['card_number'] = implode( '<br/>', $cc_error );
-										}
-									}
 
 									$pg_errors = apply_filters( 'arm_validate_payment_gateway_fields', true, $post_data, $payment_gateway, $gateway_options );
 									if ( $pg_errors !== true ) {
@@ -1817,7 +1905,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 														$arm_paymentg_cycle_amount = ( isset( $arm_cycle_data['cycle_amount'] ) ) ? $arm_payment_gateways->arm_amount_set_separator( $global_currency, $arm_cycle_data['cycle_amount'] ) : 0;
 														$arm_paymentg_cycle_amount = apply_filters( 'arm_modify_secondary_amount_outside', $arm_paymentg_cycle_amount, $arm_cycle_data );
 
-														$arm_paymentg_cycle_label = ( isset( $arm_cycle_data['cycle_label'] ) ) ? $arm_cycle_data['cycle_label'] : '';
+														$arm_paymentg_cycle_label = ( isset( $arm_cycle_data['cycle_label'] ) ) ? stripslashes($arm_cycle_data['cycle_label']) : '';
 
 														$pc_content  = '<label class="arm_module_payment_cycle_option">';
 														$pc_content .= '<span class="arm_setup_check_circle"><i class="armfa armfa-check"></i></span>';
@@ -1943,10 +2031,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 															break;
 														default:
 															$gateway_fields = apply_filters( 'arm_membership_setup_gateway_option', '', $pg, $pg_options );
-															$pgHasCCFields  = apply_filters( 'arm_payment_gateway_has_ccfields', false, $pg, $pg_options );
-															if ( $pgHasCCFields ) {
-																$gateway_fields .= $arm_payment_gateways->arm_get_credit_card_box( $pg, $column_type, $fieldPosition, $errPosCCField, $form_settings['style']['form_layout'] );
-															}
+															
 															if ( ! empty( $gateway_fields ) ) {
 																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_' . esc_attr($pg) . ' ' . $display_block . ' arm-form-container">';
 																$pg_fields .= '<div class="' . esc_attr($form_style_class) . '">';
@@ -2058,10 +2143,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 															break;
 														default:
 															$gateway_fields = apply_filters( 'arm_membership_setup_gateway_option', '', $pg, $pg_options );
-															$pgHasCCFields  = apply_filters( 'arm_payment_gateway_has_ccfields', false, $pg, $pg_options );
-															if ( $pgHasCCFields ) {
-																$gateway_fields .= $arm_payment_gateways->arm_get_credit_card_box( $pg, $column_type, $fieldPosition, $errPosCCField, $form_settings['style']['form_layout'] );
-															}
+															
 															if ( ! empty( $gateway_fields ) ) {
 																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_' . esc_attr($pg) . ' ' . esc_attr($display_block) . ' arm-form-container">';
 																$pg_fields .= '<div class="' . esc_attr($form_style_class) . '">';
@@ -3473,7 +3555,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 														$arm_paymentg_cycle_amount = apply_filters( 'arm_modify_secondary_amount_outside', $arm_paymentg_cycle_amount, $arm_cycle_data );
 
-														$arm_paymentg_cycle_label = ( isset( $arm_cycle_data['cycle_label'] ) ) ? $arm_cycle_data['cycle_label'] : '';
+														$arm_paymentg_cycle_label = ( isset( $arm_cycle_data['cycle_label'] ) ) ? stripslashes($arm_cycle_data['cycle_label']) : '';
 
 														$planCycleInputAttr = " data-tax='" . esc_attr($tax_percentage) . "'";
 
@@ -3608,10 +3690,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 															break;
 														default:
 															$gateway_fields = apply_filters( 'arm_membership_setup_gateway_option', '', $pg, $pg_options );
-															$pgHasCCFields  = apply_filters( 'arm_payment_gateway_has_ccfields', false, $pg, $pg_options );
-															if ( $pgHasCCFields ) {
-																$gateway_fields .= $arm_payment_gateways->arm_get_credit_card_box( $pg, $column_type, $fieldPosition, $errPosCCField, $form_settings['style']['form_layout'] );
-															}
+															
 															if ( ! empty( $gateway_fields ) ) {
 																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_' . esc_attr($pg) . ' ' . esc_attr($display_block) . ' arm-form-container">';
 																$pg_fields .= '<div class="' . esc_attr($form_style_class) . '">';
@@ -3742,10 +3821,6 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 															break;
 														default:
 															$gateway_fields = apply_filters( 'arm_membership_setup_gateway_option', '', $pg, $pg_options );
-															$pgHasCCFields  = apply_filters( 'arm_payment_gateway_has_ccfields', false, $pg, $pg_options );
-															if ( $pgHasCCFields ) {
-																$gateway_fields .= $arm_payment_gateways->arm_get_credit_card_box( $pg, $column_type, $fieldPosition, $errPosCCField, $form_settings['style']['form_layout'] );
-															}
 															if ( ! empty( $gateway_fields ) ) {
 																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_' . esc_attr($pg) . ' ' . esc_attr($display_block) . ' arm-form-container">';
 																$pg_fields .= '<div class="' . esc_attr($form_style_class) . '">';
@@ -4632,23 +4707,30 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 		function arm_setup_plan_list_options( $selectedPlans = array(), $allPlans = array() ) {
 			global $wp, $wpdb, $ARMemberLite, $arm_subscription_plans;
 			$planList = '';
-
-			if ( ! empty( $allPlans ) ) {
-				foreach ( $allPlans as $plan ) {
-					$planObj = new ARM_Plan_Lite( 0 );
-					$planObj->init( (object) $plan );
-					$plan_id                      = $planObj->ID;
-					$plan_options                 = $planObj->options;
-					$arm_show_plan_payment_cycles = ( isset( $plan_options['show_payment_cycle'] ) && $plan_options['show_payment_cycle'] == '1' ) ? 1 : 0;
-
-					$plan_checked  = ( in_array( $plan_id, $selectedPlans ) ? 'checked="checked"' : '' );
-					$planInputAttr = $plan_checked . ' data-plan_name="' . esc_attr($planObj->name) . '" data-plan_type="' . esc_attr($planObj->type) . '" data-payment_type="' . esc_attr($planObj->payment_type) . '" data-show_payment_cycle="' . esc_attr($arm_show_plan_payment_cycles) . '" ';
-					$planList     .= '<div id="label_plan_chk_' . esc_attr($plan_id) . '" class="arm_setup_plan_opt_wrapper">';
-					$planList     .= '<input type="checkbox" name="setup_data[setup_modules][modules][plans][]" value="' . esc_attr($plan_id) . '" id="plan_chk_' . esc_attr($plan_id) . '" class="arm_icheckbox plans_chk_inputs plans_chk_inputs_' . esc_attr($planObj->type) . '" ' . $planInputAttr . ' data-msg-required="' . esc_html__( 'Please select at least one plan.', 'armember-membership' ) . '"/>';
-					$planList     .= '<label for="plan_chk_' . esc_attr($plan_id) . '">' . $planObj->name . '</label>';
-					$planList     .= '</div>';
-				}
-			}
+				$planList     .= '<div class="arm_setup_forms_container">
+					<select id="arm_membership_setup_plan" class="arm_chosen_selectbox"
+						data-msg-required="'.esc_attr__( 'Select Membership Plans.', 'armember-membership' ).'"
+						name="setup_data[setup_modules][modules][plans][]"
+						data-placeholder="'. esc_attr__( 'Select Membership Plans', 'armember-membership' ).'"
+						multiple="multiple">';					
+						if ( ! empty( $allPlans ) ) {
+							foreach ( $allPlans as $plan ) { 
+								$planObj = new ARM_Plan_Lite( 0 );
+								$planObj->init( (object) $plan );
+								$plan_id = $planObj->ID;
+								$plan_options = $planObj->options;
+								$is_plan_selected = ( in_array( $plan_id, $selectedPlans ) ) ?  "selected='selected'" : '';
+								$plan_name = $planObj->name;
+                               					$arm_plan_cls = ($planObj->type == 'recurring') ? "plans_chk_inputs_recurring" : '';
+								$arm_show_plan_payment_cycles = ( isset( $plan_options['show_payment_cycle'] ) && $plan_options['show_payment_cycle'] == '1' ) ? 1 : 0;
+								$planInputAttr = ' data-plan_name="' . esc_attr($planObj->name) . '" data-plan_type="' . esc_attr($planObj->type) . '" data-payment_type="' . esc_attr($planObj->payment_type) . '" data-show_payment_cycle="' . esc_attr($arm_show_plan_payment_cycles) . '" ';
+								$planList     .= '<option class="arm_message_selectbox_op '.$arm_plan_cls.'" value="'.esc_attr($plan_id).'" '.$is_plan_selected.' '.$planInputAttr.'>'. esc_html($plan_name).'</option>';
+							}
+						} else {
+							$planList     .= '<option value="">'. esc_html__( 'No plans Available', 'armember-membership' ).' </option>';
+						}
+					$planList     .= '</select>
+				</div>';		
 			return $planList;
 		}
 
@@ -4746,12 +4828,18 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						$gateway_note = '';
 						$gateway_note = apply_filters( 'arm_setup_show_payment_gateway_notice', $gateway_note, $key );
 						$gatewayList .= '<div class="arm_gateway_payment_mode_box" style="' . $arm_display_payment_mode_box . '"><div class="' . esc_attr($key) . '_gateway_payment_mode_class" id="arm_gateway_payment_mode_box" style="' . $display_payment_mode . '">
-                           <label>' . esc_html__( 'In case of subscription plan selected', 'armember-membership' ) . '</label>
+                           <label class="arm_padding_left_0">' . esc_html__( 'In case of subscription plan selected', 'armember-membership' ) . '</label>
                                <br/>
-                                        <input name="setup_data[setup_modules][modules][payment_mode][' . esc_attr($key) . ']" value="auto_debit_subscription" type="radio" class="arm_iradio arm_' . esc_attr($key) . '_gateway_payment_mode_input" ' . $checked_auto . ' id="arm_' . esc_attr($key) . '_auto_mode"><label for="arm_' . esc_attr($key) . '_auto_mode">' . esc_html__( 'Allow Auto debit method only', 'armember-membership' ) . '</label><br>
-                                        <input name="setup_data[setup_modules][modules][payment_mode][' . esc_attr($key) . ']" value="manual_subscription" type="radio" class="arm_iradio arm_' . esc_attr($key) . '_gateway_payment_mode_input" ' . $checked_manual . ' id= "arm_' . esc_attr($key) . '_manual_mode"><label for="arm_' . esc_attr($key) . '_manual_mode">' . esc_html__( 'Allow Semi Automatic(manual) method only', 'armember-membership' ) . '</label><br>
+									<div class="arm_autodebit_only">
+                                        <input name="setup_data[setup_modules][modules][payment_mode][' . esc_attr($key) . ']" value="auto_debit_subscription" type="radio" class="arm_iradio arm_' . esc_attr($key) . '_gateway_payment_mode_input" ' . $checked_auto . ' id="arm_' . esc_attr($key) . '_auto_mode"><label for="arm_' . esc_attr($key) . '_auto_mode">' . esc_html__( 'Allow Auto debit method only', 'armember-membership' ) . '</label>
+									</div>
+									<div class="arm_semi_autodebit_only">
+                                        <input name="setup_data[setup_modules][modules][payment_mode][' . esc_attr($key) . ']" value="manual_subscription" type="radio" class="arm_iradio arm_' . esc_attr($key) . '_gateway_payment_mode_input" ' . $checked_manual . ' id= "arm_' . esc_attr($key) . '_manual_mode"><label for="arm_' . esc_attr($key) . '_manual_mode">' . esc_html__( 'Allow Semi Automatic(manual) method only', 'armember-membership' ) . '</label>
+									</div>
+									<div class="arm_both">
                                         <input name="setup_data[setup_modules][modules][payment_mode][' . esc_attr($key) . ']" value="both" type="radio" class="arm_iradio arm_' . esc_attr($key) . '_gateway_payment_mode_input" ' . $checked_both . ' id="arm_' . esc_attr($key) . '_both_mode">
-                                        <label for="arm_' . esc_attr($key) . '_both_mode">' . esc_html__( 'Both (allow user to select payment method)', 'armember-membership' ) . '</label><br>' . $gateway_note . '
+                                        <label for="arm_' . esc_attr($key) . '_both_mode">' . esc_html__( 'Both (allow user to select payment method)', 'armember-membership' ) . '</label>
+									</div>' . $gateway_note . '
                                     </div></div>';
 					}
 					if ( in_array( $key, $doNotDisplayPaymentMode ) ) {
@@ -4786,6 +4874,9 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$setup_data['arm_setup_name']    = ( ! empty( $setup_data['arm_setup_name'] ) ) ? stripslashes( $setup_data['arm_setup_name'] ) : '';
 					$setup_data['arm_setup_modules'] = maybe_unserialize( $setup_data['arm_setup_modules'] );
 					$setup_data['arm_setup_labels']  = maybe_unserialize( $setup_data['arm_setup_labels'] );
+					if(!empty($setup_data['arm_setup_labels'])){
+						$setup_data['arm_setup_labels'] = stripslashes_deep($setup_data['arm_setup_labels']);
+					}
 					$setup_data['setup_name']        = $setup_data['arm_setup_name'];
 					$setup_data['setup_modules']     = $setup_data['arm_setup_modules'];
 					$setup_data['setup_labels']      = $setup_data['arm_setup_labels'];
@@ -4799,11 +4890,17 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 		function arm_save_membership_setups_func( $posted_data = array() ) {
 
-			global $wp, $wpdb, $current_user, $arm_slugs, $ARMemberLite, $arm_global_settings, $arm_payment_gateways, $ARMemberLiteAllowedHTMLTagsArray;
-			$redirect_to = admin_url( 'admin.php?page=' . $arm_slugs->membership_setup );
+			global $wp, $wpdb, $current_user, $arm_slugs, $ARMemberLite, $arm_global_settings, $arm_payment_gateways, $ARMemberLiteAllowedHTMLTagsArray,$arm_capabilities_global;
+			//$redirect_to = admin_url( 'admin.php?page=' . $arm_slugs->membership_setup );
+			$response = array('status' => 'error','msg' => esc_html__('Something went wrong! Please try again','armember-membership'));
+
+			$posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST ); //phpcs:ignore
+
+			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_setups'], '1', 1 ); //phpcs:ignore --Reason:Verifying nonce
 			if ( isset( $posted_data ) && ! empty( $posted_data ) && in_array( $posted_data['form_action'], array( 'add', 'update' ) ) ) {
 				$setup_data = $posted_data['setup_data'];
 				if ( ! empty( $setup_data ) ) {
+					
 					$setup_modules    = ( ! empty( $setup_data['setup_modules'] ) ) ? $setup_data['setup_modules'] : array();
 					$setup_labels     = ( ! empty( $setup_data['setup_labels'] ) ) ? $setup_data['setup_labels'] : array();
 					$setup_name       = ( ! empty( $setup_data['setup_name'] ) ) ? wp_kses($setup_data['setup_name'], $ARMemberLiteAllowedHTMLTagsArray ) : esc_html__( 'Untitled Setup', 'armember-membership' );
@@ -4841,25 +4938,19 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						$setup_id = $wpdb->insert_id;
 						/* Action After Adding Setup Details */
 						do_action( 'arm_saved_membership_setup', $setup_id, $db_data );
-						$ARMemberLite->arm_set_message( 'success', esc_html__( 'Membership setup wizard has been added successfully.', 'armember-membership' ) );
-						$redirect_to = $arm_global_settings->add_query_arg( 'action', 'edit_setup', $redirect_to );
-						$redirect_to = $arm_global_settings->add_query_arg( 'id', $setup_id, $redirect_to );
-						wp_redirect( $redirect_to );
-						exit;
+						$response = array('status' => 'success','msg' => esc_html__( 'Membership setup wizard has been added successfully.', 'armember-membership' ));
 					} elseif ( $posted_data['form_action'] == 'update' && ! empty( $posted_data['id'] ) && $posted_data['id'] != 0 ) {
 						$setup_id     = $posted_data['id'];
 						$field_update = $wpdb->update( $ARMemberLite->tbl_arm_membership_setup, $db_data, array( 'arm_setup_id' => $setup_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 						/* Action After Updating Setup Details */
 						do_action( 'arm_saved_membership_setup', $setup_id, $db_data );
-						$ARMemberLite->arm_set_message( 'success', esc_html__( 'Membership setup wizard has been updated successfully.', 'armember-membership' ) );
-						$redirect_to = $arm_global_settings->add_query_arg( 'action', 'edit_setup', $redirect_to );
-						$redirect_to = $arm_global_settings->add_query_arg( 'id', $setup_id, $redirect_to );
-						wp_redirect( $redirect_to );
-						exit;
+						$response = array('status' => 'success','msg' => esc_html__( 'Membership setup wizard has been updated successfully.', 'armember-membership' ));
 					}
 				}
+				do_action( 'arm_save_membership_setups', $posted_data ); //phpcs:ignore
 			}
-			return;
+			echo arm_pattern_json_encode( $response );
+			die;
 		}
 
 		function arm_delete_single_setup() {
@@ -4882,7 +4973,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages( @$errors, @$message );
-			echo wp_json_encode( $return_array );
+			echo arm_pattern_json_encode( $return_array );
 			exit;
 		}
 
@@ -4975,6 +5066,45 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 			);
 
 			return apply_filters( 'arm_membership_setup_skin_colors', $font_colors );
+		}
+
+		function arm_setup_edit_detail_func()
+		{
+			global $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_manage_coupons, $arm_subscription_plans, $arm_membership_setup, $arm_member_forms, $arm_payment_gateways,$arm_capabilities_global;
+
+            $ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_setups'], '1',1); //phpcs:ignore 
+
+            $setup_id = intval($_REQUEST['id']);
+            $setup_data = $arm_membership_setup->arm_get_membership_setup($setup_id);
+            $button_labels = array(
+                'submit' => esc_html__('Submit', 'armember-membership'),
+                'next' => esc_html__('Next', 'armember-membership'),
+                'previous' => esc_html__('Previous', 'armember-membership'),
+            );
+            $response = array();
+            if ($setup_data !== FALSE && !empty($setup_data)) {
+                $response['arm_setup_id'] = $setup_id;
+                $response['setup_title'] = esc_html__("Edit Plan + Signup Page", 'armember-membership');
+                $response['setup_action'] = 'update';
+                $response['setup_name'] = $setup_data['setup_name'];
+                $response['arm_setup_type'] = $setup_data['arm_setup_type'];
+                $response['setup_modules'] = !empty($setup_data['setup_modules']) ? $setup_data['setup_modules'] : array();
+                $response['two_step'] = !empty($setup_data['setup_modules']['style']['two_step']) ? $setup_data['setup_modules']['style']['two_step'] : 0;
+                $response['hide_current_plans'] = (!empty($setup_data['setup_modules']['style']['hide_current_plans'])) ? $setup_data['setup_modules']['style']['hide_current_plans'] : 0;
+                $response['hide_plan'] = (!empty($setup_data['setup_modules']['style']['hide_plans'])) ? $setup_data['setup_modules']['style']['hide_plans'] : 0; 
+                $response['setup_labels'] = isset($setup_data['setup_labels']) ? stripslashes_deep($setup_data['setup_labels']): array();
+				
+                $response['button_labels'] = isset($setup_data['setup_labels']['button_labels']) ? stripslashes_deep($setup_data['setup_labels']['button_labels']) : $button_labels;
+                $shortCode = '[arm_setup id="'.$setup_id.'"]';
+                $response['shortcode_btn'] = '
+                    <span class="armCopyText"> '.$shortCode.'</span>
+                    <span class="arm_click_to_copy_text" data-code=\''.$shortCode.'\'>'. esc_html__('Click to copy', 'armember-membership').'</span>
+                    <span class="arm_copied_text"><img src="'. MEMBERSHIPLITE_IMAGES_URL.'/copied_ok.png" alt="ok"/>'. esc_html__('Code Copied', 'armember-membership').'</span>';
+
+                $response = apply_filters( 'arm_setup_form_custom_response', $response );
+            }
+            echo arm_pattern_json_encode( $response );
+            die();
 		}
 
 	}

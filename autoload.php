@@ -52,8 +52,10 @@ define( 'MEMBERSHIPLITE_DEBUG_LOG_TYPE', 'ARM_ALL' );
  */
 
 
-global $arm_lite_datepicker_loaded, $arm_lite_avatar_loaded, $arm_lite_file_upload_field, $arm_lite_bpopup_loaded, $arm_lite_load_tipso, $arm_lite_popup_modal_elements, $arm_lite_is_access_rule_applied, $arm_lite_load_icheck, $arm_lite_font_awesome_loaded, $arm_lite_inner_form_modal,$arm_lite_forms_page_arr, $ARMemberLiteAllowedHTMLTagsArray;
+global $arm_lite_datepicker_loaded, $arm_lite_avatar_loaded, $arm_lite_file_upload_field, $arm_lite_bpopup_loaded, $arm_lite_load_tipso, $arm_lite_popup_modal_elements, $arm_lite_is_access_rule_applied, $arm_lite_load_icheck, $arm_lite_font_awesome_loaded, $arm_lite_inner_form_modal,$arm_lite_forms_page_arr, $ARMemberLiteAllowedHTMLTagsArray,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
 
+$arm_ajax_pattern_start= "<---ARM-AJAX-RESPONSE-START--->";
+$arm_ajax_pattern_end = '<---ARM-AJAX-RESPONSE-END--->';
 $arm_lite_is_access_rule_applied = 0;
 $arm_lite_datepicker_loaded      = $arm_lite_avatar_loaded = $arm_lite_file_upload_field = $arm_lite_bpopup_loaded = $arm_lite_load_tipso = $arm_lite_font_awesome_loaded = 0;
 $arm_lite_popup_modal_elements   = array();
@@ -110,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version;
-$arm_lite_version = '4.0.68';
+$arm_lite_version = '5.0';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 global $arm_lite_ajaxurl;
@@ -132,7 +134,7 @@ $arm_lite_debug_payment_log_id =0;
 $arm_lite_debug_general_log_id = 0;
 
 $arm_lite_bf_sale_start_time = "1745838000"; //black friday sale start time
-$arm_lite_bf_sale_end_time = "1746444600"; //black friday sale end time
+$arm_lite_bf_sale_end_time = "1765044000"; //black friday sale end time
 
 if(!$ARMemberLite->is_arm_pro_active){
 	if ( file_exists( MEMBERSHIPLITE_CLASSES_DIR . '/class.arm_members.php' ) ) {
@@ -281,10 +283,9 @@ if(!$ARMemberLite->is_arm_pro_active){
 	}
 	
 }
-else {
-	if( file_exists(MEMBERSHIPLITE_CLASSES_DIR.'/class.armemberlite.php')){
-		require_once MEMBERSHIPLITE_CLASSES_DIR.'/class.armemberlite.php';
-	}
+
+if( file_exists(MEMBERSHIPLITE_CLASSES_DIR.'/class.armemberlite.php')){
+	require_once MEMBERSHIPLITE_CLASSES_DIR.'/class.armemberlite.php';
 }
 if( file_exists(MEMBERSHIPLITE_CLASSES_DIR.'/class.arm_growth_plugin.php')){
 	require_once MEMBERSHIPLITE_CLASSES_DIR.'/class.arm_growth_plugin.php';
@@ -380,7 +381,7 @@ class ARMemberlite {
 		register_activation_hook( MEMBERSHIPLITE_DIR . '/armember-membership.php', array( 'ARMemberlite', 'armember_check_network_activation' ) );
 		register_deactivation_hook(MEMBERSHIPLITE_DIR . '/armember-membership.php', array( 'ARMemberlite', 'deactivate__armember_lite_version' ));
 
-		add_action( 'admin_notices', array( $this, 'arm_display_news_notices' ) );
+		add_filter( 'arm_admin_notice', array( $this, 'arm_display_news_notices' ), 1 );
 		add_action( 'wp_ajax_arm_dismiss_news', array( $this, 'arm_dismiss_news_notice' ) );
 
 		/* Load Language TextDomain */
@@ -714,22 +715,31 @@ class ARMemberlite {
 			return true;
 		}
 
+		$arm_belt_margin = "24px 64px 10px";
 		if ( ( isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'arm_manage_forms' && isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit_form' ) || (isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'arm_growth_plugins') ) { //phpcs:ignore
 			$is_arm_admin_notice_shown = 'none !important';
 		}
+		else if( isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'arm_general_settings' ) //phpcs:ignore
+		{
+			$arm_belt_margin = "24px 24px";
+		}
+		else if( isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'arm_profiles_directories' ) //phpcs:ignore
+		{
+			$arm_belt_margin = "24px 32px 10px";
+		}
 
 		?>
-		<div class="notice arm_admin_notice_shown" style="display: <?php echo esc_html($is_arm_admin_notice_shown); ?>;background-color: #faa800;color: #fff; padding: 0; border: none; margin-bottom: 0 !important">
+		<div class="notice arm_admin_notice_shown" style="display: <?php echo esc_html($is_arm_admin_notice_shown); ?>;;color: #fff; padding: 0; border: none; margin-bottom: 0 !important; background: linear-gradient(to right, #0F2027, #2C5364, #009F84); border-radius:8px;margin: <?php echo $arm_belt_margin;?> !important;">
 
-			<p class="arm_admin_notice_shown_icn" style="padding: 13px 2px 13px 0;display: table-cell;width: 60px;text-align: center;vertical-align: middle;background-color: #ffb215;line-height: 24px;margin: 0 15px 0 0;">
-				<span class="dashicons dashicons-warning" style="font-size: 25px;"></span>
+			<p class="arm_admin_notice_shown_icn" style="padding: 13px 2px 12px 19px;display: table-cell;width: 18px;text-align: center;vertical-align: middle;line-height: 24px;margin: 0 15px 0 0;">
+				<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_upgrade_to_premium.svg" width="18" height="18"/>
 			</p>
-			<p class="arm_admin_notice_shown_msg" style="display: table-cell; padding: 10px 0 0 15px; font-weight: 600; font-size: 16px;">Upgrade to <a href="https://www.armemberplugin.com/product.php?rdt=t11" style="color: #fff;font-size: 18px;text-decoration: none;border-bottom: 1px solid;" target="_blank">ARMember Premium</a> to get access of all premium features and frequent updates.</p>
+			<p class="arm_admin_notice_shown_msg" style="display: table-cell; padding: 10px 0 0 15px; font-weight: 600; font-size: 15px;">Upgrade to <a href="https://www.armemberplugin.com/product.php?rdt=t11" style="color: #00EFC6;font-size: 18px;text-decoration: none;border-bottom: 1px solid;" target="_blank">ARMember Premium</a> to get access of all premium features and frequent updates.</p>
 		</div>
 		<?php
 	}
 
-	function arm_display_news_notices() {
+	function arm_display_news_notices($arm_license_notice = '') {
 		$arm_news = get_transient( 'arm_news' );
 		if ( false == $arm_news ) {
 			$url          = 'https://www.armemberplugin.com/armember_addons/armemberlite_notices.php';
@@ -759,33 +769,32 @@ class ARMemberlite {
 			$isAlreadyDismissed = get_option( 'arm_' . $news_id . '_is_dismissed' );
 
 			if ( '' == $isAlreadyDismissed ) {
-				$class      = 'notice notice-warning arm-news-notice is-dismissible';
+				$class      = 'armember_notice_warning arm-news-notice';
 				$message    = $news_data['description'];
 				$start_date = strtotime( $news_data['start_date'] );
 				$end_date   = strtotime( $news_data['end_date'] );
-				$wpnonce = wp_create_nonce( 'arm_wp_nonce' );
-				$nonce='<input type="hidden" name="arm_wp_nonce" value="'.esc_attr($wpnonce).'"/>';
+				$wpnonce = wp_create_nonce( 'arm_wp_nonce' );				
 
 				$current_timestamp = strtotime( $current_date );
 
 				if ( $current_timestamp >= $start_date && $current_timestamp <= $end_date ) {
 					$background_color = ( isset( $news_data['background'] ) && '' != $news_data['background'] ) ? 'background:' . $news_data['background'] . ';' : '';
 					$font_color       = ( isset( $news_data['color'] ) && '' != $news_data['color'] ) ? 'color:' . $news_data['color'] . ';' : '';
-					$border_color     = ( isset( $news_data['border'] ) && '' != $news_data['border'] ) ? 'border-left-color:' . $news_data['border'] . ';' : '';
+					$border_color     = ( isset( $news_data['border'] ) && '' != $news_data['border'] ) ? 'border-color:' . $news_data['border'] . ';' : '';
 
-					printf(
-						'<div class="%1$s" style="%2$s%3$s%4$s" id="%5$s"><p>%6$s</p></div>',
+					$arm_license_notice .= sprintf(
+						'<div class="%1$s armember%5$s_close_licence_notice" style="%2$s%3$s%4$s" id="%5$s">%6$s<span class="armember_close_licence_notice_icon" id="armember%5$s_close_licence_notice_icon" data-nonce="'.esc_attr($wpnonce).'" title="' . esc_html__('Dismiss','armember-membership') . '"></span></div>',
 						esc_attr( $class ),
 						esc_attr( $background_color ),
 						esc_attr( $font_color ),
 						esc_attr( $border_color ),
 						esc_attr( $news_id ),
-						wp_kses( $message, $this->armember_allowed_html_tags() ),
-						esc_attr( $nonce )
+						wp_kses( $message, $this->armember_allowed_html_tags() )
 					);
 				}
 			}
 		}
+		return $arm_license_notice;
 	}
 
 	function arm_dismiss_news_notice() {
@@ -918,7 +927,7 @@ class ARMemberlite {
 			/* Remove BuddyPress Admin Notices */
 			remove_action( 'bp_admin_init', 'bp_core_activation_notice', 1010 );
 			if ( ! in_array( $_REQUEST['page'], array( $arm_slugs->manage_forms ) ) ) { //phpcs:ignore
-				add_action( 'admin_notices', array( $this, 'arm_admin_notices' ) );
+				add_filter( 'arm_admin_notice', array( $this, 'arm_admin_notices' ), 10, 1 );
 			}
 			global  $arm_social_feature;
 			if ( in_array( $_REQUEST['page'], array( $arm_slugs->profiles_directories ) ) && ! $arm_social_feature->isSocialFeature ) { //phpcs:ignore
@@ -929,36 +938,34 @@ class ARMemberlite {
 		}
 	}
 
-	function arm_admin_notices() {
+	function arm_admin_notices($notice_html = '') {
 		global $wp, $wpdb, $arm_lite_errors, $ARMemberLite, $pagenow, $arm_global_settings;
-		$notice_html = '';
+		
 		$notices     = array();
 		$notices     = apply_filters( 'arm_display_admin_notices', $notices );
 
 		if ( ! empty( $notices ) ) {
-			$notice_html .= '<div class="arm_admin_notices_container">';
-			$notice_html .= '<ul class="arm_admin_notices">';
+			
 			foreach ( $notices as $notice ) {
-				$notice_html .= '<li class="arm_notice arm_notice_' . esc_attr($notice['type']) . '">' . $notice['message'] . '</li>';
+				$notice_html .= '<li class="armember_notice_warning red arm_notice_' . esc_attr($notice['type']) . '">' . $notice['message'] . '</li>';
 			}
-			$notice_html .= '</ul>';
-			$notice_html .= '<div class="armclear"></div></div>';
+			
 		}
 
 		$arm_get_php_version = ( function_exists( 'phpversion' ) ) ? phpversion() : 0;
-		if ( version_compare( $arm_get_php_version, '5.6', '<' ) ) {
-			$notice_html .= '<div class="notice notice-warning" style="display:block;">';
-			$notice_html .= '<p>' . esc_html__( 'ARMember Lite recommend to use Minimum PHP version 5.6 or greater.', 'armember-membership' ) . '</p>';
+		if ( version_compare( $arm_get_php_version, '5.6', '<' )) {
+			$notice_html .= '<div class="armember_notice_warning yellow">';
+			$notice_html .= esc_html__( 'ARMember Lite recommend to use Minimum PHP version 5.6 or greater.', 'armember-membership' );
 			$notice_html .= '</div>';
 		}
 		if ( ! empty( $arm_global_settings->global_settings['enable_crop'] ) ) {
 			if ( ! function_exists( 'gd_info' ) ) {
-				$notice_html .= '<div class="notice notice-error" style="display:block;">';
-				$notice_html .= '<p>' . esc_html__( "ARMember Lite requires PHP GD Extension module at the server. And it seems that it's not installed or activated. Please contact your hosting provider for the same.", 'armember-membership' ) . '</p>';
+				$notice_html .= '<div class="armember_notice_warning red">';
+				$notice_html .= esc_html__( "ARMember Lite requires PHP GD Extension module at the server. And it seems that it's not installed or activated. Please contact your hosting provider for the same.", 'armember-membership' );
 				$notice_html .= '</div>';
 			}
 		}
-		echo $notice_html; //phpcs:ignore
+		return $notice_html; //phpcs:ignore
 	}
 
 	function arm_set_message( $type = 'error', $message = '' ) {
@@ -1180,7 +1187,7 @@ class ARMemberlite {
 				$armAddonsLink = admin_url( 'admin.php?page=' . $arm_slugs->feature_settings );
 				$link          = '<a title="' . esc_attr__( 'Add-ons', 'armember-membership' ) . '" href="' . esc_url( $armAddonsLink ) . '">' . esc_html__( 'Add-ons', 'armember-membership' ) . '</a>';
 				$link          = '<a title="' . esc_attr__( 'Upgrade To Pro', 'armember-membership' ) . '" href="https://www.armemberplugin.com/pricing/" style="font-weight:bold;">' . esc_html__( 'Upgrade To Pro', 'armember-membership' ) . '</a>';
-				array_unshift( $links, $link ); /* Add Link To First Position */
+				array_unshift( $links, $link ); 
 			}
 		}
 		return $links;
@@ -1351,6 +1358,15 @@ class ARMemberlite {
 				$pageWrapperClass = 'arm_page_rtl';
 			}
 			echo '<div class="arm_page_wrapper ' . esc_html($pageWrapperClass) . '" id="arm_page_wrapper">';
+
+			if($_REQUEST['page']!='arm_general_settings' && $_REQUEST['page']!='arm_manage_license'){
+				$arm_admin_notice = '';
+				$arm_admin_notice = apply_filters('arm_admin_notice',$arm_admin_notice);  //phpcs:ignore
+				if(!empty($arm_admin_notice)){
+					echo '<div class="arm_admin_notice_container">'.$arm_admin_notice.'</div>';
+				}	
+			}	
+
 			$requested_page = sanitize_text_field( $_REQUEST['page'] ); //phpcs:ignore
 			do_action( 'arm_admin_messages', $requested_page );
 			$GET_ACTION = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : ''; //phpcs:ignore
@@ -1358,16 +1374,16 @@ class ARMemberlite {
 			switch ( $requested_page ) {
 				case $arm_slugs->main:
 				case $arm_slugs->manage_members:
-					if ( isset( $GET_ACTION ) && in_array( $GET_ACTION, array( 'new', 'edit_member', 'view_member' ) ) ) {
-						if ( $GET_ACTION == 'view_member' && ! empty( $GET_id ) && file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_view_member.php' ) ) {
+					if ( isset( $GET_ACTION ) && in_array( $GET_ACTION, array( 'view_member' ) ) ) {
+						if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_view_member.php' ) ) {
 							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_view_member.php';
-						} elseif ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_member_add.php' ) ) {
-							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_member_add.php';
 						}
-					} else {
-						if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_members_list.php' ) ) {
-							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_members_list.php';
-						}
+					}
+					if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_member_add.php' ) ) {
+						include MEMBERSHIPLITE_VIEWS_DIR . '/arm_member_add.php';
+					}
+					if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_members_list.php' ) ) {
+						include MEMBERSHIPLITE_VIEWS_DIR . '/arm_members_list.php';
 					}
 					break;
 				case $arm_slugs->arm_setup_wizard:
@@ -1377,42 +1393,23 @@ class ARMemberlite {
 					}
 					break;
 				case $arm_slugs->manage_plans:
-					if ( isset( $GET_ACTION ) && in_array( $GET_ACTION, array( 'new', 'edit_plan' ) ) ) {
-						if ( $GET_ACTION == 'edit_plan' && ! isset( $GET_id ) && file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_subscription_plans_list.php' ) ) {
-							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_subscription_plans_list.php';
-						} elseif ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_subscription_plans_add.php' ) ) {
-							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_subscription_plans_add.php';
-						}
-					} else {
-						if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_subscription_plans_list.php' ) ) {
-							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_subscription_plans_list.php';
-						}
+					
+					if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_subscription_plans_add.php' ) ) {
+						include MEMBERSHIPLITE_VIEWS_DIR . '/arm_subscription_plans_add.php';
+					}
+					if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_subscription_plans_list.php' ) ) {
+						include MEMBERSHIPLITE_VIEWS_DIR . '/arm_subscription_plans_list.php';
 					}
 					break;
 				case $arm_slugs->membership_setup:
-					if ( isset( $GET_ACTION ) && in_array( $GET_ACTION, array( 'new_setup', 'edit_setup', 'new_setup_old' ) ) ) {
-						if ( $GET_ACTION == 'new_setup_old' ) {
-							if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_add_old.php' ) ) {
-								include MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_add_old.php';
-							}
-						} elseif ( $GET_ACTION == 'edit_setup' && isset( $GET_id ) && ! empty( $GET_id ) && $GET_id != 0 ) {
-							if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_add.php' ) ) {
-								include MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_add.php';
-							}
-						} else {
-							if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_add.php' ) ) {
-								include MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_add.php';
-							}
-						}
-					} else {
-						global $arm_membership_setup;
-						$total_setups = $arm_membership_setup->arm_total_setups();
-						if ( $total_setups < 1 && file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_add.php' ) ) {
-							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_add.php';
-						} elseif ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_list.php' ) ) {
+					
+						if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_list.php' ) ) {
 							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_list.php';
 						}
-					}
+						if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_add.php' ) ) {
+							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_membership_setup_add.php';
+						}
+					
 					break;
 				case $arm_slugs->manage_forms:
 					if ( isset( $GET_ACTION ) && ( $GET_ACTION == 'edit_form' ) && !empty( $_GET['form_id'] ) && is_numeric( $_GET['form_id'] ) && file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_form_editor.php' ) ) { //phpcs:ignore
@@ -1434,16 +1431,13 @@ class ARMemberlite {
 					}
 				break;
 				case $arm_slugs->transactions:
-					if ( isset( $GET_ACTION ) && in_array( $GET_ACTION, array( 'new', 'edit_payment' ) ) ) {
-						if ( $GET_ACTION == 'edit_payment' && ! isset( $GET_id ) && file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions.php' ) ) {
-							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions.php';
-						} elseif ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions_add.php' ) ) {
-							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions_add.php';
-						}
-					} else {
-						if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions.php' ) ) {
-							include MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions.php';
-						}
+					
+					if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions_add.php' ) ) {
+						include MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions_add.php';
+					}
+				
+					if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions.php' ) ) {
+						include MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions.php';
 					}
 					break;
 				case $arm_slugs->email_notifications:
@@ -1533,6 +1527,9 @@ class ARMemberlite {
 		wp_register_style( 'arm_front_components_form-style__arm-style-rounded', MEMBERSHIPLITE_URL . '/assets/css/front/components/form-style/_arm-style-rounded.css', array(), MEMBERSHIPLITE_VERSION );
 
 		wp_register_style( 'arm_front_component_css', MEMBERSHIPLITE_URL . '/assets/css/front/arm_front.css', array(), MEMBERSHIPLITE_VERSION );
+
+		wp_register_style( 'arm_admin_model_css', MEMBERSHIPLITE_URL . '/css/arm_admin_model_css.css', array(), MEMBERSHIPLITE_VERSION );
+
 		$arm_admin_page_name = ! empty( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : ''; //phpcs:ignore
 
 		if ( ! empty( $arm_admin_page_name ) && ( preg_match( '/arm_*/', $arm_admin_page_name ) || $arm_admin_page_name == 'badges_achievements' ) ) {
@@ -1549,11 +1546,13 @@ class ARMemberlite {
 		if ( isset( $_REQUEST['page'] ) && in_array( $_REQUEST['page'], (array) $arm_slugs ) ) { //phpcs:ignore
 			wp_enqueue_style( 'arm_admin_css' );
 			wp_enqueue_style( 'arm_form_style_css' );
+			
 
-			if ( in_array( $_REQUEST['page'], array( $arm_slugs->manage_members, $arm_slugs->manage_forms ) ) ) { //phpcs:ignore
+			if ( in_array( $_REQUEST['page'], array( $arm_slugs->manage_members, $arm_slugs->manage_forms,$arm_slugs->manage_plans  ) ) ) { //phpcs:ignore
 				wp_enqueue_style( 'arm-font-awesome-css' );
 
 				if ( $_REQUEST['page'] == $arm_slugs->manage_forms ) { //phpcs:ignore
+					wp_enqueue_style( 'arm_admin_model_css' );
 					wp_enqueue_style( 'arm_front_components_base-controls' );
 					wp_enqueue_style( 'arm_front_components_form-style_base' );
 					wp_enqueue_style( 'arm_front_components_form-style__arm-style-default' );
@@ -1570,9 +1569,20 @@ class ARMemberlite {
 			} else {
 				wp_enqueue_style( 'arm-font-awesome-mini-css' );
 			}
-			if ( in_array( $_REQUEST['page'], array( $arm_slugs->general_settings, $arm_slugs->manage_members,  $arm_slugs->manage_plans, $arm_slugs->arm_setup_wizard,$arm_slugs->email_notifications, $arm_slugs->manage_subscriptions,$arm_slugs->profiles_directories, $arm_slugs->access_rules, $arm_slugs->transactions ) ) ) { //phpcs:ignore
+			if($_REQUEST['page'] == $arm_slugs->general_settings)
+			{
 				wp_enqueue_style( 'arm_chosen_selectbox' );
 				wp_enqueue_style( 'datatables' );
+				wp_enqueue_style( 'arm_admin_model_css' );
+
+			}
+			if($_REQUEST['page'] == $arm_slugs->membership_setup || ($_REQUEST['page'] == $arm_slugs->general_settings && !empty($_REQUEST['action']) && $_REQUEST['action']=='debug_logs')){
+				wp_enqueue_style( 'arm_admin_model_css' );
+			}
+			if ( in_array( $_REQUEST['page'], array( $arm_slugs->manage_members,  $arm_slugs->manage_plans,$arm_slugs->membership_setup, $arm_slugs->arm_setup_wizard,$arm_slugs->email_notifications, $arm_slugs->manage_subscriptions,$arm_slugs->membership_setup,$arm_slugs->profiles_directories, $arm_slugs->access_rules, $arm_slugs->transactions ) ) ) { //phpcs:ignore
+				wp_enqueue_style( 'arm_chosen_selectbox' );
+				wp_enqueue_style( 'datatables' );
+				wp_enqueue_style( 'arm_admin_model_css' );
 			}
 			if(in_array($_REQUEST['page'],array($arm_slugs->arm_setup_wizard))) //phpcs:ignore
             {
@@ -1633,6 +1643,8 @@ class ARMemberlite {
 		
 		wp_register_script( 'arm_admin_chart', MEMBERSHIPLITE_URL . '/js/arm_admin_chart.js', array(), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
 
+		wp_register_script( 'arm_admin_model_js', MEMBERSHIPLITE_URL . '/js/arm_admin_model_js.js', array(), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
+
 		$arm_admin_page_name = ! empty( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : ''; //phpcs:ignore
 		if ( ! empty( $arm_admin_page_name ) && ( preg_match( '/arm_*/', $arm_admin_page_name ) || $arm_admin_page_name == 'badges_achievements' ) ) {
 			wp_deregister_script( 'datatables' );
@@ -1664,8 +1676,9 @@ class ARMemberlite {
 			wp_enqueue_script( 'arm_tipso' );
 			wp_enqueue_script( 'arm_admin_js' );
 			wp_enqueue_script( 'arm_common_js' );
+			wp_enqueue_script( 'arm_admin_model_js' );
 			wp_enqueue_script( 'wp-hooks' );
-
+			
 			/* For the Datatable Design. */
 			$dataTablePages = array(
 				$arm_slugs->main,
@@ -1703,10 +1716,10 @@ class ARMemberlite {
 			if ( in_array( $_REQUEST['page'], array( $arm_slugs->general_settings, $arm_slugs->manage_members, $arm_slugs->manage_forms, $arm_slugs->profiles_directories,$arm_slugs->arm_setup_wizard ) ) ) { //phpcs:ignore
 				wp_enqueue_script( 'arm_admin_file_upload_js' );
 			}
-			if ( in_array( $_REQUEST['page'], array( $arm_slugs->general_settings, $arm_slugs->manage_members, $arm_slugs->manage_plans, $arm_slugs->email_notifications, $arm_slugs->profiles_directories,$arm_slugs->manage_subscriptions,$arm_slugs->arm_setup_wizard ) ) ) { //phpcs:ignore
+			if ( in_array( $_REQUEST['page'], array( $arm_slugs->general_settings, $arm_slugs->manage_members, $arm_slugs->manage_plans,$arm_slugs->membership_setup, $arm_slugs->email_notifications, $arm_slugs->profiles_directories,$arm_slugs->manage_subscriptions,$arm_slugs->arm_setup_wizard ) ) ) { //phpcs:ignore
 				wp_enqueue_script( 'arm_chosen_jq_min' );
 			}
-			if ( in_array( $_REQUEST['page'], array( $arm_slugs->general_settings, $arm_slugs->manage_plans, $arm_slugs->manage_subscriptions,$arm_slugs->manage_members, $arm_slugs->transactions,$arm_slugs->arm_setup_wizard ) ) ) { //phpcs:ignore
+			if ( in_array( $_REQUEST['page'], array( $arm_slugs->general_settings, $arm_slugs->manage_plans,$arm_slugs->membership_setup, $arm_slugs->manage_subscriptions,$arm_slugs->manage_members, $arm_slugs->transactions,$arm_slugs->arm_setup_wizard ) ) ) { //phpcs:ignore
 				wp_enqueue_script( 'arm_bootstrap_js' );
 				wp_enqueue_script( 'arm_bootstrap_datepicker_with_locale' );
 			}
@@ -1717,8 +1730,15 @@ class ARMemberlite {
 			if ( in_array( $_REQUEST['page'], array( $arm_slugs->manage_members ) ) ) { //phpcs:ignore
 				wp_enqueue_script( 'arm_admin_file_upload_js' );
 			}
+			if ( in_array( $_REQUEST['page'], array( $arm_slugs->access_rules ) ) ) { //phpcs:ignore			
+				wp_enqueue_script( 'arm_common_js' );
+			}
 			if (in_array($_REQUEST['page'], array($arm_slugs->transactions,$arm_slugs->manage_subscriptions))) { //phpcs:ignore
 				wp_enqueue_script('jquery-ui-autocomplete');
+            }
+			if (in_array($_REQUEST['page'], array($arm_slugs->profiles_directories))) { //phpcs:ignore
+				wp_enqueue_script('jquery-effects-core');
+				wp_enqueue_script('jquery-effects-slide');
             }
 		}
 	}
@@ -1821,6 +1841,7 @@ class ARMemberlite {
 		$arm_global_css .= 'errorPerformingAction ="' . esc_html__( 'There is an error while performing this action, please try again.', 'armember-membership' ) . '";';
 		$arm_global_css .= 'arm_nothing_found ="' . esc_html__( 'Oops, nothing found.', 'armember-membership' ) . '";';
 		$arm_global_css .= 'armEditCurrency ="' . esc_html__( 'Edit', 'armember-membership' ) . '";';
+		$arm_global_css .= 'armCustomCurrency ="'.esc_html__('Custom Currency', 'armember-membership').'";';
 		
 		wp_add_inline_script( 'armlite-admin-notice-script-js', $arm_global_css);
 		if(!$this->is_arm_pro_active) {
@@ -1835,7 +1856,7 @@ class ARMemberlite {
 	function set_front_css( $isFrontSection = false, $form_style = '' ) {
 		global $wp, $wpdb, $wp_query, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_members_directory,$arm_global_load_js_css_forms;
 		/* Main Plugin CSS */
-		wp_register_style( 'arm_front_css', MEMBERSHIPLITE_URL . '/css/arm_front.css', array(), MEMBERSHIPLITE_VERSION );
+		wp_register_style( 'arm_lite_front_css', MEMBERSHIPLITE_URL . '/css/arm_front.css', array(), MEMBERSHIPLITE_VERSION );
 		wp_register_style( 'arm_form_style_css', MEMBERSHIPLITE_URL . '/css/arm_form_style.css', array(), MEMBERSHIPLITE_VERSION );
 		/* Font Awesome CSS */
 		wp_register_style( 'arm_fontawesome_css', MEMBERSHIPLITE_URL . '/css/arm-font-awesome.css', array(), MEMBERSHIPLITE_VERSION );
@@ -1861,7 +1882,7 @@ class ARMemberlite {
 		$isEnqueueAll        = $arm_global_settings->arm_get_single_global_settings( 'enqueue_all_js_css', 0 );
 		$is_arm_form_in_page = $this->is_arm_form_page();
 		if ( ( $is_arm_front_page === true || $isEnqueueAll == '1' || $isFrontSection || $form_style != '' ) && ! is_admin() ) {
-			wp_enqueue_style( 'arm_front_css' );
+			wp_enqueue_style( 'arm_lite_front_css' );
 			if ( $is_arm_form_in_page || $isFrontSection || $isEnqueueAll == '1' || $form_style != '' ) {
 				wp_enqueue_style( 'arm_form_style_css' );
 				wp_enqueue_style( 'arm_fontawesome_css' );
@@ -1946,7 +1967,7 @@ class ARMemberlite {
 			}
 			wp_enqueue_style( 'arm_bootstrap_all_css' );
 
-			/* Print Custom CSS in Front-End Pages (Required `arm_front_css` handle to add inline css) */
+			/* Print Custom CSS in Front-End Pages (Required `arm_lite_front_css` handle to add inline css) */
 			$arm_add_custom_css_flag = '';
 			if ( isset( $_GET['_locale'] ) && $_GET['_locale'] == 'user' && $this->arm_is_gutenberg_active() ) { //phpcs:ignore
 				$arm_add_custom_css_flag = '1';
@@ -3375,7 +3396,7 @@ class ARMemberlite {
 	}
 
 	function arm_admin_messages_init( $page = '' ) {
-		global $wp, $wpdb, $arm_lite_errors, $ARMemberLite, $pagenow, $arm_slugs;
+		global $wp, $wpdb, $arm_lite_errors, $ARMemberLite, $pagenow, $arm_slugs,$arm_common_lite;
 		$success_msgs = '';
 		$error_msgs   = '';
 		$ARMemberLite->arm_session_start();
@@ -3413,7 +3434,8 @@ class ARMemberlite {
 		</div>
 		<div class="armclear"></div>
 		<div class="arm_toast_container" id="arm_toast_container"></div>
-		<div class="arm_loading" style="display: none;"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/loader.gif" alt="Loading.."></div>
+		<div class="arm_loading" style="display: none;"><?php $arm_loader = $arm_common_lite->arm_loader_img_func();
+					echo $arm_loader;?></div>
 		<?php
 	}
 
@@ -3469,7 +3491,7 @@ class ARMemberlite {
 				var v_width = jQuery( window ).width();
 				if(v_width <= "1350")
 		        {
-		          var poup_width = "720";
+		          var poup_width = "100%";
 		          var poup_height = "400";
 		          jQuery("#arm_document_video_popup").css("width","760");
 		          jQuery(".popup_content_text iframe").css("width",poup_width);
@@ -3478,7 +3500,7 @@ class ARMemberlite {
 		        }
 		        if(v_width > "1350" && v_width <= "1600")
 		        {
-		          var poup_width = "750";
+		          var poup_width = "100%";
 		          var poup_height = "430";
 
 		          jQuery("#arm_document_video_popup").css("width","790");
@@ -3487,7 +3509,7 @@ class ARMemberlite {
 		        }
 		        if(v_width > "1600")
 		        {
-		          var poup_width = "800";
+		          var poup_width = "100%";
 		          var poup_height = "450";
 		          jQuery("#arm_document_video_popup").css("width","840");
 		          jQuery(".popup_content_text iframe").css("width",poup_width);
@@ -3680,9 +3702,12 @@ escClose : false
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'critical_title'      => 'Version 4.0.68 Changes',
+			'critical_title'      => 'Version 5.0 Changes',
 			'critical'            => array(
-				'Minor bug fixes.',
+				'A complete revamp of ARMember Admin panel UI',
+				'Added support for the Divi Integration Divi 5',
+				'Added Facility to send test mail for email.',
+				'Other minor bug fixes.',
 			),
 			'show_major_title'    => 0,
 			'major_title'         => 'Major Changes',
@@ -3696,6 +3721,7 @@ escClose : false
 	}
 
 	function arm_get_need_help_html_content($page_name) {
+		global $arm_common_lite;
         $return_html = '';
         if(!empty($page_name)) {
             $return_html .= '<div class="arm_need_help_main_wrapper arm_need_help_main_wrapper_active">';
@@ -3730,11 +3756,12 @@ escClose : false
                                 $return_html .= '</div>';
                                 $return_html .= '<div class="arm_sidebar_content_body">';
                                 $return_html .= '</div>';
-                                $return_html .= '<div class="arm_sidebar_content_footer"><a href="https://www.armemberplugin.com/documentation/" target="_blank" class="arm_readmore_link">Read More</a></div>';
+                                $return_html .= '<div class="arm_sidebar_content_footer"><a href="https://www.armemberplugin.com/documentation/" target="_blank" class="arm_readmore_link arm_cancel_btn">Read More</a></div>';
                             $return_html .= '</div>';
                         $return_html .= '</div>';
 
-                        $return_html .= '<div class="arm_loading"><img src="'.esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/loader.gif" alt="Loading.."></div>';//phpcs:ignore
+                        $return_html .= '<div class="arm_loading">'. 
+			$arm_common_lite->arm_loader_img_func().'</div>';//phpcs:ignore
 
                     $return_html .= '</div>';
                 $return_html .= '</div>';
