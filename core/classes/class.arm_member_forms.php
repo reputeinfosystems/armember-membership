@@ -274,76 +274,54 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								<div class="arm_page_wrap">
 									<div class="arm_admin_form_content">
 										<table class="form-table">';
-                                            if ( ! empty( $dbFormFields ) ) {
-                                                foreach ( $dbFormFields as $meta_key => $field ) {
-                                                    $field_options = maybe_unserialize( $field );
-                                                    $field_options = apply_filters( 'arm_change_field_options', $field_options );
-                                                    $meta_key      = isset( $field_options['meta_key'] ) ? $field_options['meta_key'] : $field_options['id'];
-                                                    $field_id      = $meta_key . arm_generate_random_code();
-                                                    if ( in_array( $meta_key, $arm_member_include_fields_keys ) && ! in_array( $meta_key, array( 'user_login', 'section', 'roles', 'html', 'hidden', 'submit', 'repeat_email', 'social_fields' ) ) ) {
-                                                        if ( $meta_key == 'user_pass' ) {
-                                                            $arm_repeated_fields['repeat_pass'] = 'repeat_pass';
-                                                            $amr_confirm_pass_lbl               = '';
-                                                            if ( isset( $dbFormFields['repeat_pass'] ) && isset( $dbFormFields['repeat_pass']['label'] ) ) {
-                                                                $amr_confirm_pass_lbl = $dbFormFields['repeat_pass']['label'];
-                                                            }
-                                                            $amr_user_pass_lbl = '';
-                                                            if ( isset( $dbFormFields['user_pass'] ) && isset( $dbFormFields['user_pass']['label'] ) ) {
-                                                                $amr_user_pass_lbl = $dbFormFields['user_pass']['label'];
-                                                            }
+											$arm_user_pass_label =  esc_html__( 'Password', 'armember-membership');
 
-                                                            $arm_user_pass_label = ( ! empty( $amr_user_pass_lbl ) ) ? esc_html__( $amr_user_pass_lbl) : esc_html__( 'Password', 'armember-membership');
-
-                                                            if( $required_class != 1 ){
-                                                                $arm_user_pass_label .= '<span class="required_icon">*</span>';
-                                                            }
-                                                            
-                                                            $arm_confirm_pass_lbl = ( ! empty( $amr_confirm_pass_lbl ) ) ? esc_html__( $amr_confirm_pass_lbl ) : esc_html__( 'Confirm Password', 'armember-membership' ); //phpcs:ignore
-                                                                if ( $required_class != 1 ) {
-                                                                    $arm_confirm_pass_lbl .= '<span
-                                                                    class="required_icon">*</span>';
-                                                                }
-                                                            $arm_form_content .= '<tr class="form-field arm_user_password_field">
-                                                        <th>
-                                                            <label
-                                                                for="arm_password">'. $arm_user_pass_label .'</label>
-                                                        </th>
-                                                        <td>';
-                                                            $arm_suffix_icon_pass_cls = '';
-                                                            if ( is_rtl() ) {
-                                                                $arm_suffix_icon_pass_cls = 'arm_visible_password_admin_rtl';
-                                                            }
-                                                            $arm_form_content .= '<div class="arm_setup_forms_container">
-                                                                <input id="arm_password" autocomplete="off"
-                                                                    class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
-                                                                    name="user_pass" type="password" value=""
-                                                                    data-msg-required="'. esc_attr__( 'Password can not be left blank.', 'armember-membership' ).'"';
-                                                                    $arm_form_content .= '/>
-                                                                '. $arm_suffix_icon_pass.'
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="form-field arm_user_password_field">
-                                                        <th>
-                                                            <label
-                                                                for="arm_repeat_pass">'. $arm_confirm_pass_lbl.'
-                                                            </label>
-                                                        </th>
-                                                        <td>
-                                                            <div class="arm_setup_forms_container">
-                                                                <input id="arm_repeat_pass"
-                                                                    class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
-                                                                    name="repeat_pass" type="password" value=""
-                                                                    data-msg-required="'. esc_attr__( 'Confirm Password can not be left blank.', 'armember-membership' ) .'"';
-                                                                    $arm_form_content .= '/>
-                                                                '. $arm_suffix_icon_pass.'
-                                                            </div>
-                                                        </td>
-                                                    </tr>';
-                                                    }
-                                                    }
-                                                }
-                                            }
+											if( $required_class != 1 ){
+												$arm_user_pass_label .= '<span class="required_icon">*</span>';
+											}
+											
+											$arm_confirm_pass_lbl = esc_html__( 'Confirm Password', 'armember-membership' ); //phpcs:ignore
+											if ( $required_class != 1 ) {
+												$arm_confirm_pass_lbl .= '<span
+												class="required_icon">*</span>';
+											}
+											$arm_form_content .= '<tr class="form-field arm_user_password_field">
+												<th>
+													<label
+														for="arm_password">'. $arm_user_pass_label .'</label>
+												</th>
+													<td>';
+														$arm_suffix_icon_pass_cls = '';
+														if ( is_rtl() ) {
+															$arm_suffix_icon_pass_cls = 'arm_visible_password_admin_rtl';
+														}
+														$arm_form_content .= '<div class="arm_setup_forms_container">
+															<input id="arm_password" autocomplete="off"
+																class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
+																name="user_pass" type="password" value=""
+																data-msg-required="'. esc_attr__( 'Password can not be left blank.', 'armember-membership' ).'"';
+																$arm_form_content .= '/>
+															'. $arm_suffix_icon_pass.'
+														</div>
+													</td>
+												</tr>
+												<tr class="form-field arm_user_password_field">
+													<th>
+														<label
+															for="arm_repeat_pass">'. $arm_confirm_pass_lbl.'
+														</label>
+													</th>
+													<td>
+														<div class="arm_setup_forms_container">
+															<input id="arm_repeat_pass"
+																class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
+																name="repeat_pass" type="password" value=""
+																data-msg-required="'. esc_attr__( 'Confirm Password can not be left blank.', 'armember-membership' ) .'"';
+																$arm_form_content .= '/>
+															'. $arm_suffix_icon_pass.'
+														</div>
+													</td>
+												</tr>';
 										$arm_form_content .= '</table>
 									</div>
 								</div>
@@ -781,60 +759,49 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							<div class="arm_page_wrap">
 								<div class="arm_admin_form_content">
 									<table class="form-table">';									
-									if ( ! empty( $dbFormFields ) ) {
-										foreach ( $dbFormFields as $meta_key => $field ) {
-											$field_options = maybe_unserialize( $field );
-											$field_options = apply_filters( 'arm_change_field_options', $field_options );
-											$meta_key      = isset( $field_options['meta_key'] ) ? $field_options['meta_key'] : $field_options['id'];
-											$field_id      = $meta_key . arm_generate_random_code();
-											if ( in_array( $meta_key, $arm_member_include_fields_keys ) && ! in_array( $meta_key, array( 'user_login', 'section', 'roles', 'html', 'hidden', 'submit', 'repeat_email', 'social_fields' ) ) ) {
-												if ( $meta_key == 'user_pass' ) {
-													$arm_repeated_fields['repeat_pass'] = 'repeat_pass';
-													$amr_confirm_pass_lbl               = esc_html__( 'Confirm Password', 'armember-membership' );
-													if ( isset( $dbFormFields['repeat_pass'] ) && isset( $dbFormFields['repeat_pass']['label'] ) ) {
-														$amr_confirm_pass_lbl = $dbFormFields['repeat_pass']['label'];
-													}
-													$amr_user_pass_lbl = esc_html__( 'Password', 'armember-membership' );
-													if ( isset( $dbFormFields['user_pass'] ) && isset( $dbFormFields['user_pass']['label'] ) ) {
-														$amr_user_pass_lbl = $dbFormFields['user_pass']['label'];
-													}
-											$arm_form_content .= '<tr class="form-field arm_user_password_field">
-												<th>
-													<label
-														for="arm_password">'. $amr_user_pass_lbl .'</label>
-												</th>
-												<td>';												
-														$arm_suffix_icon_pass_cls = '';
-														if ( is_rtl() ) {
-															$arm_suffix_icon_pass_cls = 'arm_visible_password_admin_rtl';
-														}
-													$arm_form_content .= '<div class="arm_setup_forms_container">
-														<input id="arm_password" autocomplete="off"
-															class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
-															name="user_pass" type="password" value=""
-															data-msg-required="'. esc_attr__( 'Password can not be left blank.', 'armember-membership' ).'" >'. $arm_suffix_icon_pass.'
-													</div>
-												</td>
-											</tr>
-											<tr class="form-field arm_user_password_field">
-												<th>
-													<label
-														for="arm_repeat_pass">'. $amr_confirm_pass_lbl .'
-														</label>
-												</th>
-												<td>
-													<div class="arm_setup_forms_container">
-														<input id="arm_repeat_pass"
-															class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
-															name="repeat_pass" type="password" value=""
-															data-msg-required="'. esc_attr__( 'Confirm Password can not be left blank.', 'armember-membership' ).'"> '. $arm_suffix_icon_pass.'
-													</div>
-												</td>
-											</tr>';
-												}
-											}
+									
+										$arm_repeated_fields['repeat_pass'] = 'repeat_pass';
+										$amr_confirm_pass_lbl               = esc_html__( 'Confirm Password', 'armember-membership' );
+										if ( isset( $dbFormFields['repeat_pass'] ) && isset( $dbFormFields['repeat_pass']['label'] ) ) {
+											$amr_confirm_pass_lbl = $dbFormFields['repeat_pass']['label'];
 										}
-									}
+										$amr_user_pass_lbl = esc_html__( 'Password', 'armember-membership' );
+										if ( isset( $dbFormFields['user_pass'] ) && isset( $dbFormFields['user_pass']['label'] ) ) {
+											$amr_user_pass_lbl = $dbFormFields['user_pass']['label'];
+										}
+										$arm_form_content .= '<tr class="form-field arm_user_password_field">
+											<th>
+												<label
+													for="arm_password">'. $amr_user_pass_lbl .'</label>
+											</th>
+											<td>';												
+													$arm_suffix_icon_pass_cls = '';
+													if ( is_rtl() ) {
+														$arm_suffix_icon_pass_cls = 'arm_visible_password_admin_rtl';
+													}
+												$arm_form_content .= '<div class="arm_setup_forms_container">
+													<input id="arm_password" autocomplete="off"
+														class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
+														name="user_pass" type="password" value=""
+														data-msg-required="'. esc_attr__( 'Password can not be left blank.', 'armember-membership' ).'" >'. $arm_suffix_icon_pass.'
+												</div>
+											</td>
+										</tr>
+										<tr class="form-field arm_user_password_field">
+											<th>
+												<label
+													for="arm_repeat_pass">'. $amr_confirm_pass_lbl .'
+													</label>
+											</th>
+											<td>
+												<div class="arm_setup_forms_container">
+													<input id="arm_repeat_pass"
+														class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
+														name="repeat_pass" type="password" value=""
+														data-msg-required="'. esc_attr__( 'Confirm Password can not be left blank.', 'armember-membership' ).'"> '. $arm_suffix_icon_pass.'
+												</div>
+											</td>
+										</tr>';
 
 									$arm_form_content .= '</table>
 								</div>
@@ -924,7 +891,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				}
 
 					update_option( 'arm_preset_form_fields', $dbFormFields );
-					$response = array( 'type' => 'success' );
+					$response = array( 'type' => 'success','msg'=> esc_html__('Preset Fields are updated successfully.','armember-membership') );
 			}
 			echo arm_pattern_json_encode( $response );
 			die();

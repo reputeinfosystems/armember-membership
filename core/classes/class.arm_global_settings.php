@@ -2243,7 +2243,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			 /* Filter Email Subject & Message */
 			 $subject = wp_specialchars_decode(strip_tags(stripslashes($subject)), ENT_QUOTES);
 			 $message = do_shortcode($message);
-			 $message = $email_css . stripslashes($message);
+			 $message = stripslashes($message);
 			 $message = wordwrap(stripslashes($message), 70, "\r\n");
 			 if (@$arm_plain_text) {
 				 $message = wp_specialchars_decode(strip_tags($message), ENT_QUOTES);

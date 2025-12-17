@@ -31,8 +31,8 @@
 .arm_shortcode_options_popup_wrapper input[type=checkbox]:checked, 
 .arm_shortcode_options_popup_wrapper input[type=radio]:checked
 {
-    border: 1px solid #005aee;
-    background-color: #005aee;
+    border: 1px solid #0077ff;
+    background-color: #0077ff;
 }
 .arm_shortcode_options_popup_wrapper select.arm_form_select{
 	width: 335px;

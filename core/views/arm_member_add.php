@@ -542,32 +542,10 @@ $formHiddenFields = '';
 										<div class="arm_page_wrap">
 											<div class="arm_admin_form_content">
 												<table class="form-table">
-													<?php
-			
-											if ( ! empty( $dbFormFields ) ) {
-												foreach ( $dbFormFields as $meta_key => $field ) {
-													$field_options = maybe_unserialize( $field );
-													$field_options = apply_filters( 'arm_change_field_options', $field_options );
-													$meta_key      = isset( $field_options['meta_key'] ) ? $field_options['meta_key'] : $field_options['id'];
-													$field_id      = $meta_key . arm_generate_random_code();
-													if ( in_array( $meta_key, $arm_member_include_fields_keys ) && ! in_array( $meta_key, array( 'user_login', 'section', 'roles', 'html', 'hidden', 'submit', 'repeat_email', 'social_fields' ) ) ) {
-														?>
-													<?php
-														if ( $meta_key == 'user_pass' ) {
-															$arm_repeated_fields['repeat_pass'] = 'repeat_pass';
-															$amr_confirm_pass_lbl               = '';
-															if ( isset( $dbFormFields['repeat_pass'] ) && isset( $dbFormFields['repeat_pass']['label'] ) ) {
-																$amr_confirm_pass_lbl = $dbFormFields['repeat_pass']['label'];
-															}
-															$amr_user_pass_lbl = '';
-															if ( isset( $dbFormFields['user_pass'] ) && isset( $dbFormFields['user_pass']['label'] ) ) {
-																$amr_user_pass_lbl = $dbFormFields['user_pass']['label'];
-															}
-															?>
 													<tr class="form-field arm_user_password_field">
 														<th>
 															<label
-																for="arm_password"><?php ( ! empty( $amr_user_pass_lbl ) ) ? esc_html_e( $amr_user_pass_lbl) : esc_html_e( 'Password', 'armember-membership' ); //phpcs:ignore ?>
+																for="arm_password"><?php esc_html_e( 'Password', 'armember-membership' );?>
 																<?php if ( $required_class != 1 ) : ?> <span
 																	class="required_icon">*</span><?php endif; ?></label>
 														</th>
@@ -592,7 +570,7 @@ $formHiddenFields = '';
 													<tr class="form-field arm_user_password_field">
 														<th>
 															<label
-																for="arm_repeat_pass"><?php ( ! empty( $amr_confirm_pass_lbl ) ) ? esc_html_e( $amr_confirm_pass_lbl ) : esc_html_e( 'Confirm Password', 'armember-membership' ); //phpcs:ignore?>
+																for="arm_repeat_pass"><?php esc_html_e( 'Confirm Password', 'armember-membership' ); //phpcs:ignore?>
 																<?php if ( $required_class != 1 ) : ?> <span
 																	class="required_icon">*</span><?php endif; ?></label>
 														</th>
@@ -608,12 +586,6 @@ $formHiddenFields = '';
 															</div>
 														</td>
 													</tr>
-													<?php }
-													}
-												}
-											}
-			
-											?>
 												</table>
 											</div>
 										</div>

@@ -579,8 +579,10 @@ $temp_slugs->email_verify_user => array(
 			}
 		
 			$all_sent = true;
+
+			$from = ''; //set empty from so it will send as per settings automatically
 		
-			$sent = $arm_global_settings->arm_send_message_to_armember_admin_users($email_user, $subject, $content);
+			$sent = $arm_global_settings->arm_send_message_to_armember_admin_users($from, $subject, $content);
 			if (!$sent) {
 				$all_sent = false;
 			}

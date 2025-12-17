@@ -1441,11 +1441,11 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$tempOptions['searchbox']          = isset( $tempOptions['searchbox'] ) ? $tempOptions['searchbox'] : '0';
 					$tempOptions['sortbox']            = isset( $tempOptions['sortbox'] ) ? $tempOptions['sortbox'] : '0';
 					$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper arm_directory_template_switch_wrapper arm_width_32_pct">';
-						$tempOptHtml                  .= '<label for="arm_template_searchbox" class="arm_temp_form_label">' . esc_html__( 'Display Search Box', 'armember-membership' ) . '</label>';
+						$tempOptHtml                  .= '<label for="arm_template_searchbox" class="arm_temp_form_label arm_font_size_16 arm_line_height_24">' . esc_html__( 'Display Search Box', 'armember-membership' ) . '</label>';
 						$tempOptHtml                  .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_searchbox" value="1" class="armswitch_input" name="template_options[searchbox]" ' . ( checked( $tempOptions['searchbox'], '1', false ) ) . '/><label for="arm_template_searchbox" class="armswitch_label"></label></div>';
 					$tempOptHtml                      .= '</div>';
 					$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper arm_directory_template_switch_wrapper arm_width_32_pct">';
-						$tempOptHtml                  .= '<label for="arm_template_sortbox" class="arm_temp_form_label">' . esc_html__( 'Display Sorting Options', 'armember-membership' ) . '</label>';
+						$tempOptHtml                  .= '<label for="arm_template_sortbox" class="arm_temp_form_label arm_font_size_16 arm_line_height_24">' . esc_html__( 'Display Sorting Options', 'armember-membership' ) . '</label>';
 						$tempOptHtml                  .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_sortbox" value="1" class="armswitch_input" name="template_options[sortbox]" ' . ( checked( $tempOptions['sortbox'], '1', false ) ) . '/><label for="arm_template_sortbox" class="armswitch_label"></label></div>';
 					$tempOptHtml                      .= '</div>';
 					$tempOptHtml                      .= '</td>';
@@ -1506,7 +1506,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					continue;
 				}
 				$tempOptHtml     .= '<div class="arm_pdtemp_color_opts">';
-					$tempOptHtml .= '<span class="arm_temp_form_label">' . esc_html($title) . '</span>';
+					$tempOptHtml .= '<span class="arm_temp_form_label arm_font_size_16 arm_margin_bottom_12">' . esc_html($title) . '</span>';
 					$tempOptHtml .= '<label class="arm_colorpicker_label" style="background-color:' . esc_attr($preVal) . '">';
 					$tempOptHtml .= '<input type="text" name="template_options[' . esc_html($key) . ']" id="arm_' . $key . '" class="arm_colorpicker" value="' . esc_attr($preVal) . '">';
 					$tempOptHtml .= '</label>';

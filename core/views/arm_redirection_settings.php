@@ -1608,44 +1608,6 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 							</div>
 						</div>
 					</div>
-					
-						
-				<?php
-				/*
-				?>
-				<tr>
-					<th>
-						<?php esc_html_e('For pending users', 'armember-membership'); ?><i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_html_e('Selected page from here will be ONLY accessible in case when any pending user is trying to access the site.', 'armember-membership'); ?>"></i>
-					</th>
-					<td style="vertical-align: top; padding-top: 15px;">
-						<input type="radio" name="arm_redirection_settings[default_access_rules][pending][type]" id="arm_redirect_pending_restricted_home" value="home" <?php checked($arm_pending_type, 'home'); ?> class="arm_iradio arm_redirect_pending_restricted_page_input"><label for="arm_redirect_pending_restricted_home" style="min-width: 140px;"><?php esc_html_e('Home Page', 'armember-membership'); ?></label>
-						<input type="radio" name="arm_redirection_settings[default_access_rules][pending][type]" id="arm_redirect_pending_restricted_specific" value="specific" <?php checked($arm_pending_type, 'specific'); ?> class="arm_iradio arm_redirect_pending_restricted_page_input"><label for="arm_redirect_pending_restricted_specific"><?php esc_html_e('Specific Page', 'armember-membership'); ?></label>
-						<div class="arm_redirection_access_rules_pending_specific" style="<?php echo (@$arm_pending_type == 'specific') ? '' : 'display:none'; ?>">
-							<?php
-							$arm_global_settings->arm_wp_dropdown_pages(
-									array(
-										'selected' => (isset($arm_pending_redirect_to) ? $arm_pending_redirect_to : 0),
-										'name' => 'arm_redirection_settings[default_access_rules][pending][redirect_to]',
-										'id' => 'redirect_url_pending',
-										'show_option_none' => 'Select Page',
-										'option_none_value' => '0',
-									)
-							);
-							?>
-							<span class="arm_redirection_access_rules_pending_specific_error">
-								<?php esc_html_e('The selected page is restricted item from access rule. Please select another page.', 'armember-membership'); ?>
-							</span>
-							<span class="arm_redirection_access_rules_pending_specific_blank_error">
-								<?php esc_html_e('Please Select Page.', 'armember-membership'); ?>
-							</span>
-						</div>
-					</td>
-				</tr>
-				*/
-				?>
-			
-
-
 			<?php
 			if($ARMemberLite->is_arm_pro_active){
 				$arm_add_redirection_setting_option_content = '';

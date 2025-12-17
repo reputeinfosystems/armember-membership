@@ -666,7 +666,7 @@ if(version_compare($arm_lite_newdbversion,'4.0.65','<'))
 	update_option('arm_lite_display_bf_offers', 1);
 }
 
-$arm_lite_newdbversion = '5.0';
+$arm_lite_newdbversion = '5.0.1';
 update_option( 'arm_lite_new_version_installed', 1 );
 update_option( 'armlite_version', $arm_lite_newdbversion );
 

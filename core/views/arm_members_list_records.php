@@ -124,11 +124,37 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 <script type="text/javascript" charset="utf-8">
 // <![CDATA[
 	
-		<?php if(isset($_REQUEST['plan_id']) && !empty($_REQUEST['plan_id'])){?>
+	<?php if(isset($_REQUEST['plan_id']) && !empty($_REQUEST['plan_id'])){?>
 		jQuery(document).ready( function(){
 			jQuery('#arm_confirm_box_manage_member_filter').find('#arm_member_grid_filter_btn').trigger('click');
+			var arm_form_uri = window.location.toString();
+			if( arm_form_uri.indexOf("&plan_id=") > 0 ) {
+				var arm_frm_clean_uri = arm_form_uri.substring(0, arm_form_uri.indexOf("&"));
+				window.history.replaceState({}, document.title, arm_frm_clean_uri);
+			}
 		});
 	<?php }?>
+	<?php if(isset($_REQUEST['member_status_id']) && !empty($_REQUEST['member_status_id'])){?>
+		jQuery(document).ready( function(){
+			jQuery('#arm_confirm_box_manage_member_filter').find('#arm_member_grid_filter_btn').trigger('click');
+			var arm_form_uri = window.location.toString();
+			if( arm_form_uri.indexOf("&member_status_id=") > 0 ) {
+				var arm_frm_clean_uri = arm_form_uri.substring(0, arm_form_uri.indexOf("&"));
+				window.history.replaceState({}, document.title, arm_frm_clean_uri);
+			}
+		});
+	<?php }?>
+	<?php if(isset($_REQUEST['action']) && !empty($_REQUEST['action']) && $_REQUEST['action'] == 'view_member' && !empty($_REQUEST['id'])){?>
+	jQuery(document).ready( function(){
+		var user_id = <?php echo $_REQUEST['id'];?>;
+		var arm_form_uri = window.location.toString();
+		if( arm_form_uri.indexOf("&action=") > 0 ) {
+			var arm_frm_clean_uri = arm_form_uri.substring(0, arm_form_uri.indexOf("&"));
+			window.history.replaceState({}, document.title, arm_frm_clean_uri);
+		}
+		arm_open_preview_member_data(user_id);
+	});
+<?php }?>
 	<?php if(!$ARMemberLite->is_arm_pro_active){?>
 	jQuery(document).on('click', '.arm_show_user_more_plans_types, .arm_show_user_more_plans', function () {
 

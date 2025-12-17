@@ -85,7 +85,7 @@
 																</dl>
 															</div>
 															<form id="arm_download_custom_duration_<?php echo esc_attr($payment_gateway_key); ?>_form">
-																<div class="arm_download_custom_duration_div">
+																<div class="arm_download_custom_duration_div arm_margin_top_22">
 																	<div class="arm_datatable_filter_item arm_margin_left_0" >
 																		<input type="text" name="arm_filter_pstart_date" id="arm_filter_pstart_date" class="arm_download_custom_duration_date" placeholder="<?php esc_attr_e('Start Date', 'armember-membership'); ?>" data-date_format="<?php echo esc_attr($arm_common_date_format); ?>" value="<?php echo esc_attr($arm_default_date); ?>" />
 																	</div>
@@ -207,7 +207,7 @@
 																</dl>
 															</div>
 															<form id="arm_general_debug_download_custom_duration_<?php echo esc_attr($integration_key); ?>_form">
-																<div class="arm_download_custom_duration_div">
+																<div class="arm_download_custom_duration_div arm_margin_top_22">
 																	<div class="arm_datatable_filter_item arm_margin_left_0">
 																		<input type="text" name="arm_filter_pstart_date" id="arm_filter_pstart_date" class="arm_download_custom_duration_date" placeholder="<?php esc_attr_e('Start Date', 'armember-membership'); ?>" data-date_format="<?php echo esc_attr($arm_common_date_format); ?>" value="<?php echo esc_attr($arm_default_date); ?>" />
 																	</div>
@@ -293,7 +293,7 @@
 											<div class="arm_download_duration_selection">
 												<label class="arm_select_duration_label"><?php esc_html_e('Select log duration to download', 'armember-membership'); ?></label>
 												<input type="hidden" id="arm_general_download_duration" name="action1" value="7" />
-												<dl class="arm_selectbox column_level_dd arm_margin_top_12 arm_width_100_pct">
+												<dl class="arm_selectbox column_level_dd arm_margin_top_12  arm_width_100_pct">
 													<dt>
 														<span><?php esc_html_e('Last 1 Week','armember-membership');?></span>
 														<input type="text" style="display:none;" value="" class="arm_autocomplete"  /><i class="armfa armfa-caret-down armfa-lg"></i>
@@ -318,7 +318,7 @@
 												</dl>
 											</div>
 											<form id="arm_general_debug_download_custom_duration_cron_form">
-												<div class="arm_download_custom_duration_div">
+												<div class="arm_download_custom_duration_div arm_margin_top_22">
 									                <div class="arm_datatable_filter_item arm_margin_left_0">
 									                    <input type="text" name="arm_filter_pstart_date" id="arm_filter_pstart_date" class="arm_download_custom_duration_date" placeholder="<?php esc_attr_e('Start Date', 'armember-membership'); ?>" data-date_format="<?php echo esc_attr($arm_common_date_format); ?>" value="<?php echo esc_attr($arm_default_date); ?>" />
 									                </div>
@@ -394,7 +394,7 @@
 											<div class="arm_download_duration_selection">
 												<label class="arm_select_duration_label"><?php esc_html_e('Select log duration to download', 'armember-membership'); ?></label>
 												<input type="hidden" id="arm_general_download_duration" name="action1" value="7" />
-												<dl class="arm_selectbox column_level_dd arm_margin_top_12 arm_width_100_pct">
+												<dl class="arm_selectbox column_level_dd arm_margin_top_12  arm_width_100_pct">
 													<dt>
 														<span><?php esc_html_e('Last 1 Week','armember-membership');?></span>
 														<input type="text" style="display:none;" value="" class="arm_autocomplete"  /><i class="armfa armfa-caret-down armfa-lg"></i>
@@ -419,7 +419,7 @@
 												</dl>
 											</div>
 											<form id="arm_general_debug_download_custom_duration_email_form">
-												<div class="arm_download_custom_duration_div">
+												<div class="arm_download_custom_duration_div arm_margin_top_22">
 									                <div class="arm_datatable_filter_item arm_margin_left_0">
 									                    <input type="text" name="arm_filter_pstart_date" id="arm_filter_pstart_date" class="arm_download_custom_duration_date" placeholder="<?php esc_attr_e('Start Date', 'armember-membership'); ?>" data-date_format="<?php echo esc_attr($arm_common_date_format); ?>" value="<?php echo esc_attr($arm_default_date); ?>" />
 									                </div>
