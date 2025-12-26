@@ -540,7 +540,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				$return .= '<span class="arm_edit_plan_lbl arm_margin_bottom_12">' . esc_html__( 'Select Plan', 'armember-membership' ) . '*</span> ';
 				$return .= '<div class="arm_edit_field arm_width_100_pct">';
 
-				$return .= '<input type="hidden" class="arm_user_plan_change_input arm_user_plan_change_input_get_cycle" name="arm_user_plan" id="arm_user_plan" value="" data-manage-plan-grid="1"/>';
+				$return .= '<input type="text" class="arm-selectpicker-input-control arm_user_plan_change_input arm_user_plan_change_input_get_cycle" name="arm_user_plan" id="arm_user_plan" value="" data-manage-plan-grid="1"/>';
 
 				$return .= '<dl class="arm_selectbox column_level_dd arm_member_form_dropdown arm_width_100_pct" style="float: left;">';
 				$return .= '<dt class="arm_width_100_pct arm_max_width_100_pct"><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>';
@@ -585,7 +585,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				$return .= '<th class="arm_edit_plan_name">' . esc_html__( 'Plan', 'armember-membership' ) . '</th>';
 				$return .= '<th class="arm_edit_plan_type">' . esc_html__( 'Type', 'armember-membership' ) . '</th>';
 				$return .= '<th class="arm_edit_plan_start">' . esc_html__( 'Starts Date', 'armember-membership' ) . '</th>';
-				$return .= '<th class="arm_edit_plan_expire">' . esc_html__( 'Expires Date', 'armember-membership' ) . '</th>';
+				$return .= '<th class="arm_edit_plan_expire arm_min_width_140">' . esc_html__( 'Expires Date', 'armember-membership' ) . '</th>';
 				$return .= '<th class="arm_edit_plan_cycle_date">' . esc_html__( 'Cycle Date', 'armember-membership' ) . '</th>';
 
 				$return .= '<th class="arm_edit_plan_action"></th>';
@@ -626,9 +626,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 								if ( in_array( $uplans, $suspended_plan_ids ) ) {
 									$arm_plan_is_suspended  = '<div class="arm_manage_plan_status_div" style="position: relative; width:55%;display:contents;">';
 									$arm_plan_is_suspended .= '<span style="color: #ec4444;">(' . esc_html__( 'Suspended', 'armember-membership' ) . ')</span>';
-									$arm_plan_is_suspended .= '<img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/grid_edit_hover_trns.png"  title="' . esc_html__( 'Activate Plan', 'armember-membership' ) . '" class="armhelptip tipso_style" width="26" data-plan_id="' . esc_attr($uplans) . '" data-user_id="' . esc_attr($user_id) . '" onclick="showConfirmBoxCallback_plan(\'status_' . esc_attr($uplans) . '\');" style="margin: -5px 0; position: absolute; "/>'; //phpcs:ignore 
+									$arm_plan_is_suspended .= '<img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/edit_icon.svg"  title="' . esc_html__( 'Activate Plan', 'armember-membership' ) . '" class="armhelptip tipso_style" width="26" data-plan_id="' . esc_attr($uplans) . '" data-user_id="' . esc_attr($user_id) . '" onclick="showConfirmBoxCallback_plan(\'status_' . esc_attr($uplans) . '\');" style="margin: -5px 0; position: absolute; "/>'; //phpcs:ignore 
 
-									$arm_plan_is_suspended .= "<div class='arm_confirm_box arm_confirm_box_status_{$uplans}' id='arm_confirm_box_plan_status_".esc_attr($uplans)."' style='right: auto;'>";
+									$arm_plan_is_suspended .= "<div class='arm_confirm_box arm_confirm_box_status_{$uplans}' id='arm_confirm_box_plan_status_".esc_attr($uplans)."' style='right: auto;arm_subscription_plan_amount'>";
 									$arm_plan_is_suspended .= "<div class='arm_confirm_box_body'>";
 									$arm_plan_is_suspended .= "<div class='arm_confirm_box_arrow'></div>";
 									$arm_plan_is_suspended .= "<div class='arm_confirm_box_text_title'>". esc_html__("Activate Plan", 'armember-membership')."</div>";
@@ -690,11 +690,14 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 							if ( $expiry_date != '' ) {
 								$arm_edit_plan_text_box = '<input value="' . esc_attr(date( $arm_common_date_format, $expiry_date )) . '" name="arm_subscription_expiry_date_' . esc_attr($uplans) . '_' . esc_attr($user_id) . '" id="arm_subscription_expiry_date_' . esc_attr($uplans) . '_' . esc_attr($user_id) . '" class="arm_datepicker arm_expire_date arm_edit_plan_expire_date" style="min-width:130px; width:130px" aria-invalid="false" type="text">'; //phpcs:ignore
 								$arm_edit_plan         .= "<a class='arm_member_edit_plan' >";
-								$arm_edit_plan         .= "<img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_edit_hover_trns.png' style='position: absolute; margin: -4px 0 0 5px; cursor: pointer;' width='26' title='" . esc_html__( 'Change Expiry Date', 'armember-membership' ) . "' class='armhelptip tipso_style'/>"; //phpcs:ignore 
+								$arm_edit_plan         .= "<img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/edit_icon.svg' style='position: absolute; margin: -4px 0 0 5px; cursor: pointer;' width='20' title='" . esc_html__( 'Change Expiry Date', 'armember-membership' ) . "' class='armhelptip tipso_style'/>"; //phpcs:ignore 
 								$arm_edit_plan         .= "</a>"; 
-								$arm_edit_plan         .= "<img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/arm_save_icon.png' style='vertical-align: middle;display:none;' width='14' height='16' title='" . esc_html__( 'Save Expiry Date', 'armember-membership' ) . "' class='arm_edit_plan_action_button arm_member_save_plan armhelptip tipso_style' data-plan_id='" . esc_attr($uplans) . "' data-user_id='" . esc_attr($user_id) . "' />&nbsp;"; //phpcs:ignore 
-								$arm_edit_plan         .= "<img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/cancel_date_icon.png' style='display:none;' width='14' height='16' title='" . esc_html__( 'Cancel', 'armember-membership' ) . "' class='arm_edit_plan_action_button arm_member_cancel_save_plan armhelptip tipso_style' data-plan_id='" . esc_attr($uplans) . "' data-user_id='" . esc_attr($user_id) . "' data-plan-expire-date='" . date( $arm_common_date_format, $expiry_date ) . "' />&nbsp;"; //phpcs:ignore 
-								$arm_edit_plan         .= '<img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" class="arm_edit_user_plan_loader" style="    vertical-align: middle;display:none;margin-left: 10px;" width="17" height="18" />'; //phpcs:ignore 
+								$arm_edit_plan .= "<img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/save_icon_transp.svg' onmouseover=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/save_icon_transp_hover.svg'\" onmouseout=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/save_icon_transp.svg'\" style='vertical-align: middle;display:none;' width='20' height='20' title='" . esc_html__( 'Save Expiry Date', 'armember-membership' ) . "' class='arm_edit_plan_action_button arm_member_save_plan armhelptip tipso_style' data-plan_id='" . esc_attr($uplans) . "' data-user_id='" . esc_attr($user_id) . "' />"; //phpcs:ignore
+
+								$arm_edit_plan .= "<img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/arm_cancel_transp.svg' onmouseover=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/arm_cancel_transp_hover.svg'\" onmouseout=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/arm_cancel_transp.svg'\" style='display:none;margin-top:-3px;' width='20' height='20' title='" . esc_html__( 'Cancel', 'armember-membership' ) . "' class='arm_margin_left_10 arm_edit_plan_action_button arm_member_cancel_save_plan armhelptip tipso_style' data-plan_id='" . esc_attr($uplans) . "' data-user_id='" . esc_attr($user_id) . "' data-plan-expire-date='" . date( $arm_common_date_format, $expiry_date ) . "' />"; //phpcs:ignore
+
+								$arm_edit_plan .= '<img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" class="arm_margin_left_10 arm_edit_user_plan_loader" style="vertical-align: middle;display:none;margin-left: 10px;" width="17" height="18" />'; //phpcs:ignore
+
 							}
 
 							$expire_date = ( $expiry_date != '' ) ? date_i18n( $arm_common_date_format, $expiry_date ) : esc_html__( 'Never Expires', 'armember-membership' );
@@ -5216,15 +5219,18 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
                 $arm_is_social_feature=0;
                 $arm_is_social_fields='';
+				$arm_is_social_fields_arr = array();
                 if($arm_social_feature->isSocialFeature)
                 {
                     $socialProfileFields = $arm_member_forms->arm_social_profile_field_types();
+		    $selected_fields = get_user_meta($user_id, 'arm_member_social_ac_selection', true);
                     if (!empty($socialProfileFields) ) {
                         $arm_is_social_feature = 1;
                         foreach ($socialProfileFields as $spfKey => $spfLabel) {
                             $spfMetaKey = 'arm_social_field_' . $spfKey;
                             $spfMetaValue = get_user_meta($user_id, $spfMetaKey, true);
-                            if(!empty($spfMetaValue)){
+                            if(!empty($spfMetaValue) && in_array($spfKey,$selected_fields)){
+			    	array_push($arm_is_social_fields_arr,$spfKey);
                                 $arm_is_social_fields .='<div class="form-field">
                                     <div class="arm_social_field_lbl">
                                         <label>'. esc_html($spfLabel) .'</label>
@@ -5233,19 +5239,21 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                         <input id="arm_social_'. esc_attr($spfKey) .'" class="arm_member_form_input" name="'. esc_attr($spfMetaKey) .'" type="text" value="'. esc_attr($spfMetaValue) .'"/>
                                     </div>
                                 </div>';
-                            }    
+                            }
                         }
                     }
                 }
 				$arm_form_fields = '';
 				$arm_form_fields = apply_filters('arm_get_field_html',$arm_form_fields,$arm_form_id,$user_id);
 				$response['arm_form_fields'] = $arm_form_fields;
+				$response['roles'] = $user->roles;
                 $response_form_fields_data = '';
                 $response_form_fields_data = apply_filters('arm_member_member_forms_fields_details',$response_form_fields_data,$user_id,$arm_form_id);
                 $response['arm_form_fields_section'] = $response_form_fields_data;
                 $response['is_social_field_active'] = $arm_is_social_feature;
                 $response['response_social_button_val'] = esc_html__('Add','armember-membership');
-                $response['response_social_fields'] = $arm_is_social_fields;   
+                $response['response_social_fields'] = $arm_is_social_fields;
+				$response['response_social_fields_val'] = $arm_is_social_fields_arr;
                 $response['user_url'] = $user_info->data->user_url;
                 $response = apply_filters( 'arm_get_member_addon_data',$response,$user_id );
             }
@@ -5305,7 +5313,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                                         $starts_on = date_i18n($date_format, $started_date);
                                                     }
 
-                                                    $expires_on = !empty($planData['arm_expire_plan']) ? '<span id="arm_user_expiry_date_' . $pID . '" style="display: inline;"> ' . date_i18n($date_format, $planData['arm_expire_plan']) . ' <img src="' . MEMBERSHIPLITE_IMAGES_URL . '/grid_edit_hover_trns.png" width="26" style="position: absolute; margin: -4px 0 0 5px; cursor: pointer;" title="' . esc_attr__('Change Expiry Date', 'armember-membership') . '" data-plan_id="' . $pID . '" class="arm_edit_user_expiry_date"></span><span class="arm_width_155 arm_position_relative" id="arm_user_expiry_date_box_' . $pID . '" style="display: none;"><input type="text" value="' . date($arm_common_date_format, $planData['arm_expire_plan']) . '"  data-date_format="'.$arm_common_date_format.'" name="arm_subscription_expiry_date_' . $pID . '" class="arm_member_form_input arm_user_plan_expiry_date_picker arm_width_120 arm_min_width_120" /><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/cancel_date_icon.png" width="11" height="11" title="' . esc_attr__('Cancel', 'armember-membership') . '" data-plan_id="' . $pID . '" data-plan-expire-date="' . date('m/d/Y', $planData['arm_expire_plan']) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_attr__('Never Expires', 'armember-membership');
+                                                    $expires_on = !empty($planData['arm_expire_plan']) ? '<span id="arm_user_expiry_date_' . $pID . '" style="display: flex;"> ' . date_i18n($date_format, $planData['arm_expire_plan']) . ' <img src="' . MEMBERSHIPLITE_IMAGES_URL . '/edit_icon.svg" width="26" style="margin: 0px 0 0 5px; cursor: pointer;" title="' . esc_attr__('Change Expiry Date', 'armember-membership') . '" data-plan_id="' . $pID . '" class="arm_edit_user_expiry_date"></span><span class="arm_width_155 arm_position_relative" id="arm_user_expiry_date_box_' . $pID . '" style="display: none;"><input type="text" value="' . date($arm_common_date_format, $planData['arm_expire_plan']) . '"  data-date_format="'.$arm_common_date_format.'" name="arm_subscription_expiry_date_' . $pID . '" class="arm_member_form_input arm_user_plan_expiry_date_picker arm_width_120 arm_min_width_120" /><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/cancel_date_icon.png" width="11" height="11" title="' . esc_attr__('Cancel', 'armember-membership') . '" data-plan_id="' . $pID . '" data-plan-expire-date="' . date('m/d/Y', $planData['arm_expire_plan']) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_attr__('Never Expires', 'armember-membership');
                                                     $renewal_on = !empty($planData['arm_next_due_payment']) ? date_i18n($date_format, $planData['arm_next_due_payment']) : '-';
                                                     $trial_starts = !empty($planData['arm_trial_start']) ? $planData['arm_trial_start'] : '';
                                                     $trial_ends = !empty($planData['arm_trial_end']) ? $planData['arm_trial_end'] : '';
@@ -5344,7 +5352,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
                                                     if (!empty($suspended_plan_ids)) {
                                                         if (in_array($pID, $suspended_plan_ids)) {
-                                                            $arm_plan_is_suspended = '<div class="arm_user_plan_status_div arm_position_relative" ><span class="armhelptip tipso_style arm_color_red" id="arm_user_suspend_plan_' . $pID . '" style=" cursor:pointer;" onclick="arm_show_failed_payment_history(' . $user_id . ',' . $pID . ',\'' . $planName . '\',\'' . $planData['arm_start_plan'] . '\')" title="' . esc_attr__('Click here to Show failed payment history', 'armember-membership') . '">(' . esc_attr__('Suspended', 'armember-membership') . ')</span><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/grid_edit_hover_trns.png" width="26" style="position: absolute; margin: -4px 0 0 5px; cursor: pointer;" title="' . esc_attr__('Activate Plan', 'armember-membership') . '" data-plan_id="' . $pID . '" onclick="showConfirmBoxCallback(\'change_user_plan_' . $pID . '\');" class="arm_change_user_plan_img_' . $pID . '">
+                                                            $arm_plan_is_suspended = '<div class="arm_user_plan_status_div arm_position_relative" ><span class="armhelptip tipso_style arm_color_red" id="arm_user_suspend_plan_' . $pID . '" style=" cursor:pointer;" onclick="arm_show_failed_payment_history(' . $user_id . ',' . $pID . ',\'' . $planName . '\',\'' . $planData['arm_start_plan'] . '\')" title="' . esc_attr__('Click here to Show failed payment history', 'armember-membership') . '">(' . esc_attr__('Suspended', 'armember-membership') . ')</span><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/edit_icon.svg" width="26" style="position: absolute; margin: -4px 0 0 5px; cursor: pointer;" title="' . esc_attr__('Activate Plan', 'armember-membership') . '" data-plan_id="' . $pID . '" onclick="showConfirmBoxCallback(\'change_user_plan_' . $pID . '\');" class="arm_change_user_plan_img_' . $pID . '">
 
                                                             <div class="arm_confirm_box arm_member_edit_confirm_box" id="arm_confirm_box_change_user_plan_' . $pID . '" style="top:25px; right: -20px; ">
                                                                     <div class="arm_confirm_box_body">
@@ -5435,7 +5443,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                                                         </div>';
                                                                     }
                                                                     if ($total_recurrence != $completed_rec) {
-                                                                        $response_plans_data .= '<a href="javascript:void(0)" class="arm_user_renew_next_cycle_action_btn" id="arm_skip_next_cycle" onclick="showConfirmBoxCallback(\'renew_next_cycle_'. esc_attr($pID) .'\');">'. esc_html__('Renew Cycle', 'armember-membership') .'</a>
+                                                                        $response_plans_data .= '<a href="javascript:void(0)" class="arm_user_renew_next_cycle_action_btn arm_margin_right_5" id="arm_skip_next_cycle" onclick="showConfirmBoxCallback(\'renew_next_cycle_'. esc_attr($pID) .'\');">'. esc_html__('Renew Cycle', 'armember-membership') .'</a>
                                                                         <div class="arm_confirm_box arm_member_edit_confirm_box arm_confirm_box_renew_next_cycle" id="arm_confirm_box_renew_next_cycle_'. esc_attr($pID) .'" style="top:25px; right:45px; ">
                                                                             <div class="arm_confirm_box_body">
                                                                                 <div class="arm_confirm_box_arrow arm_float_right" ></div>
@@ -5453,7 +5461,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                                                     }
 
 																	$response_plans_data .= '<div class="arm_position_relative arm_float_left">
-                                                                        <a class="arm_remove_user_plan_div armhelptip tipso_style" href="javascript:void(0)" title="'. esc_html__('Remove Plan', 'armember-membership').'" onclick="showConfirmBoxCallback(\'delete_user_plan_'. esc_attr($pID).'\');"></a>
+                                                                        <a class="arm_remove_user_plan_div armhelptip tipso_style arm_margin_top_0" href="javascript:void(0)" title="'. esc_html__('Remove Plan', 'armember-membership').'" onclick="showConfirmBoxCallback(\'delete_user_plan_'. esc_attr($pID).'\');"></a>
                                                                         <div class="arm_confirm_box arm_member_edit_confirm_box" id="arm_confirm_box_delete_user_plan_'. esc_attr($pID).'" style="top:25px; right: -20px; ">
                                                                             <div class="arm_confirm_box_body">
                                                                                 <div class="arm_confirm_box_arrow arm_float_right"></div>
@@ -5516,7 +5524,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                                 if($started_date != '' && $started_date <= $starts_date) {
                                                     $starts_on = date_i18n($date_format, $started_date);
                                                 }
-                                                $expires_on = !empty($planData['arm_expire_plan']) ? '<span id="arm_user_expiry_date_' . $pID . '" style="display: inline;">' . date_i18n($date_format, $planData['arm_expire_plan']) . ' <img src="' . MEMBERSHIPLITE_IMAGES_URL . '/grid_edit_hover_trns.png" width="26" style="position: absolute; margin: -4px 0 0 5px; cursor: pointer;" title="' . esc_html__('Change Expiry Date', 'armember-membership') . '" data-plan_id="' . $pID . '" class="arm_edit_user_expiry_date"></span><span id="arm_user_expiry_date_box_' . $pID . '" class="arm_position_relative" style="display: none; width: 155px;"><input type="text" value="' . date($arm_common_date_format, $planData['arm_expire_plan']) . '" data-date_format="'.$arm_common_date_format.'"  name="arm_subscription_expiry_date_' . $pID . '" class="arm_member_form_input arm_user_plan_expiry_date_picker arm_width_120 arm_min_width_120" /><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/cancel_date_icon.png" width="11" height="11" title="' . esc_html__('Cancel', 'armember-membership') . '" data-plan_id="' . $pID . '" data-plan-expire-date="' . date('m/d/Y', $planData['arm_expire_plan']) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_html__('Never Expires', 'armember-membership');
+                                                $expires_on = !empty($planData['arm_expire_plan']) ? '<span id="arm_user_expiry_date_' . $pID . '" style="display: flex;">' . date_i18n($date_format, $planData['arm_expire_plan']) . ' <img src="' . MEMBERSHIPLITE_IMAGES_URL . '/edit_icon.svg" width="26" style=" margin: 0px 0 0 5px; cursor: pointer;" title="' . esc_html__('Change Expiry Date', 'armember-membership') . '" data-plan_id="' . $pID . '" class="arm_edit_user_expiry_date"></span><span id="arm_user_expiry_date_box_' . $pID . '" class="arm_position_relative" style="display: none; width: 155px;"><input type="text" value="' . date($arm_common_date_format, $planData['arm_expire_plan']) . '" data-date_format="'.$arm_common_date_format.'"  name="arm_subscription_expiry_date_' . $pID . '" class="arm_member_form_input arm_user_plan_expiry_date_picker arm_width_120 arm_min_width_120" /><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/cancel_date_icon.png" width="11" height="11" title="' . esc_html__('Cancel', 'armember-membership') . '" data-plan_id="' . $pID . '" data-plan-expire-date="' . date('m/d/Y', $planData['arm_expire_plan']) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_html__('Never Expires', 'armember-membership');
                                                 $renewal_on = !empty($planData['arm_next_due_payment']) ? date_i18n($date_format, $planData['arm_next_due_payment']) : '-';
                                                 $trial_starts = !empty($planData['arm_trial_start']) ? $planData['arm_trial_start'] : '';
                                                 $trial_ends = !empty($planData['arm_trial_end']) ? $planData['arm_trial_end'] : '';

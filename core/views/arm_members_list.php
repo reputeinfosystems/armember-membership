@@ -143,7 +143,7 @@ function ChangeID(id) {
 // ]]>
 </script>
 
-<div class="arm_member_manage_plan_detail_popup popup_wrapper arm_import_user_list_detail_popup_wrapper <?php echo ( is_rtl() ) ? 'arm_page_rtl' : ''; ?>" style="width:1000px; min-height: 200px;">
+<div class="arm_member_manage_plan_detail_popup popup_wrapper arm_import_user_list_detail_popup_wrapper <?php echo ( is_rtl() ) ? 'arm_page_rtl' : ''; ?>" style="width:1200px; min-height: 200px;">
 	<form method="GET" id="arm_member_manage_plan_user_form" class="arm_admin_form">
 		<div>
 			<div class="popup_header">

@@ -21,7 +21,7 @@ if ( ! defined( 'MEMBERSHIPLITE_CORE_DIR' ) ) {
 	define( 'MEMBERSHIPLITE_INC_DIR', MEMBERSHIPLITE_DIR . '/inc' );
 	define( 'MEMBERSHIPLITE_VIEWS_DIR', MEMBERSHIPLITE_DIR . '/core/views' );
 	define( 'MEMBERSHIPLITE_VIEWS_URL', MEMBERSHIPLITE_URL . '/core/views' );
-	define( 'MEMBERSHIPLITE_VIDEO_URL', 'https://www.youtube.com/embed/8COXGo-NetQ' );
+	define( 'MEMBERSHIPLITE_VIDEO_URL', 'https://www.youtube.com/embed/WhKgS2jv2xM' );
 	define( 'MEMBERSHIPLITE_DOCUMENTATION_URL', 'https://www.armemberplugin.com/documentation' );
 
 }
@@ -111,9 +111,11 @@ define( 'MEMBERSHIPLITE_UPLOAD_DIR', $arm_lite_upload_dir );
 define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
-global $arm_lite_version;
-$arm_lite_version = '5.0.1';
+global $arm_lite_version,$armember_website_url;
+$arm_lite_version = '5.0.2';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
+
+$armember_website_url = "https://armemberplugin.com/";
 
 global $arm_lite_ajaxurl;
 $arm_lite_ajaxurl = admin_url( 'admin-ajax.php' );
@@ -715,7 +717,7 @@ class ARMemberlite {
 			return true;
 		}
 
-		$arm_belt_margin = "24px 64px 10px";
+		$arm_belt_margin = "24px 64px 0px";
 		if ( ( isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'arm_manage_forms' && isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'edit_form' ) || (isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'arm_growth_plugins') ) { //phpcs:ignore
 			$is_arm_admin_notice_shown = 'none !important';
 		}
@@ -729,7 +731,7 @@ class ARMemberlite {
 		}
 
 		?>
-		<div class="notice arm_admin_notice_shown" style="display: <?php echo esc_html($is_arm_admin_notice_shown); ?>;;color: #fff; padding: 0; border: none; margin-bottom: 0 !important; background: linear-gradient(to right, #0F2027, #2C5364, #009F84); border-radius:8px;margin: <?php echo $arm_belt_margin;?> !important;">
+		<div class="notice arm_admin_notice_shown" style="display: <?php echo esc_html($is_arm_admin_notice_shown); ?>;;color: #fff; padding: 0; border: none; margin-bottom: 0; background: linear-gradient(to right, #0F2027, #2C5364, #009F84); border-radius:8px;margin: <?php echo $arm_belt_margin;?>;">
 
 			<p class="arm_admin_notice_shown_icn" style="padding: 13px 2px 12px 19px;display: table-cell;width: 18px;text-align: center;vertical-align: middle;line-height: 24px;margin: 0 15px 0 0;">
 				<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_upgrade_to_premium.svg" width="18" height="18"/>
@@ -3572,11 +3574,12 @@ class ARMemberlite {
 				}
 			}
 
-			$popupData     = '<div id="arm_update_note" class="popup_wrapper arm_update_note">'
-					. '<div class="popup_wrapper_inner">';
-			$popupData    .= '<div class="popup_header">';
-			$popupData    .= '<img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/logo_addon.png" />'; //phpcs:ignore
-			$popupData    .= '</div>';
+			$popupData  = '<div id="arm_update_note" class="popup_wrapper arm_update_note">';
+			$popupData .= '<span class="arm_top_bg_ellipse_1112">';
+            $popupData .= '<span class="arm_top_bg_ellipse_1"></span>';
+            $popupData .= '<span class="arm_top_bg_ellipse_2"></span>';
+            $popupData .=  '<div class="popup_wrapper_inner">';
+			$popupData .= '<span id="arm_hide_update_notice" class="popup_close_btn arm_popup_close_btn" onclick="arm_hide_update_notice()"></span>';
 			$popupData    .= '<div class="popup_content_text">';
 			$i             = 1;
 			$major_changes = false;
@@ -3586,6 +3589,7 @@ class ARMemberlite {
 
 				$arm_show_critical_change_title = isset( $change_log['show_critical_title'] ) ? $change_log['show_critical_title'] : 0;
 				$arm_critical_title             = isset( $change_log['critical_title'] ) ? $change_log['critical_title'] : '';
+                $arm_update_version = isset($change_log['update_version']) ? $change_log['update_version'] : '';
 				$arm_critical_changes           = ( isset( $change_log['critical'] ) && ! empty( $change_log['critical'] ) ) ? $change_log['critical'] : array();
 
 				$arm_show_major_change_title = isset( $change_log['show_major_title'] ) ? $change_log['show_major_title'] : 0;
@@ -3598,7 +3602,20 @@ class ARMemberlite {
 
 				if ( ! empty( $arm_critical_changes ) ) {
 					if ( $arm_show_critical_change_title == 1 ) {
-						$popupData .= '<div class="arm_critical_change_title">' . esc_html( $arm_critical_title ) . '</div>';
+						$arm_uc_version_parts = explode('.', $arm_update_version);
+                        $arm_uc_version_main = '';
+                        if (count($arm_uc_version_parts) >= 2) {
+                            $arm_uc_version_main = $arm_uc_version_parts[0] . '<span class="arm_font_size_80">.</span>' . $arm_uc_version_parts[1];
+                        }
+                        $arm_uc_version_patch = '';
+                        for ($i = 2; $i < count($arm_uc_version_parts); $i++) {
+                            $arm_uc_version_patch .= '<span class="arm_font_size_80">.</span>';
+                            $arm_uc_version_patch .= $arm_uc_version_parts[$i];
+                        }
+						$popupData .= '<div class="arm_critical_change_title">' . $arm_critical_title .  '</div>';//phpcs:ignore
+                        $popupData .= '<span class="arm_uc_update_version_main">' . $arm_uc_version_main . '</span>';
+                        $popupData .= '<span class="arm_uc_update_version_patch">' . $arm_uc_version_patch . '</span>';
+                        $popupData .= '<span class="arm_uc_update_text">' . esc_html__("Updates", "armember-membership") . '</span>';
 					}
 					$popupData .= '<div class="arm_critical_change_list"><ul>';
 					foreach ( $arm_critical_changes as $value ) {
@@ -3630,61 +3647,33 @@ class ARMemberlite {
 				}
 			}
 
-			$popupData .= '</div>';
-			$popupData .= '<div class="arm_addons_list_title">' . esc_html__( 'Available Modules', 'armember-membership' ) . '</div>';
-
-			$popupData .= '<div class="arm_addons_list_div">';
-			$popupData .= '<div class="arm_addons_list" style="width:' . $arm_whtsnew_wrapper_width . 'px;">';
-
-			$popupData .= $addon_list_html;
-			$popupData .= '</div>';
-			$popupData .= '</div>';
-
-			$popupData .= '<div class="armclear"></div>';
-			$popupData .= '<div class="popup_content_btn popup_footer">';
-			if ( ! empty( $arm_critical_changes ) ) {
-				$popupData .= '<label><input type="checkbox" id="arm_hide_update_notice" class="arm_icheckbox"><span>' . esc_html__( 'I agree', 'armember-membership' ) . '</span></label>';
-				$popupData .= '<div class="popup_content_btn_wrapper">';
-				$popupData .= '<button class="arm_cancel_btn popup_close_btn" onclick="arm_hide_update_notice();" type="button">' . esc_html__( 'Close', 'armember-membership' ) . '</button>';
-				$popupData .= '</div>';
-				$popupData .= '<div class="armclear"></div>';
-			} else {
-				$popupData .= '<div style="display: none;"><input type="checkbox" id="arm_hide_update_notice" class="arm_icheckbox" value="1" checked="checked"></div>';
-			}
-			$popupData .= '</div>';
-			$popupData .= '<div class="armclear"></div>';
-			$popupData .= '</div></div>';
+			$popupData .= "<a class='arm_view_document' href='https://www.armemberplugin.com/documents/changelog/#free-version' target='_blank'>" . esc_html__('View Changelog', 'armember-membership') . "</a>";
+            $popupData .= '</div>';
+            $popupData .= '</div>';
+			$popupData .= '<span class="arm_bottom_bg_ellipse_1"></span>';
+            $popupData .= '<span class="arm_bottom_bg_ellipse_2"></span>';
+            $popupData .= '<span class="arm_bottom_bg_ellipse_3"></span>';
+            $popupData .= '</span>';
+            $popupData .= '</div>';
 			$popupData .= '<script type="text/javascript">jQuery(window).on("load", function(){
 				
 				jQuery("#arm_update_note").bPopup({
 					modalClose: false,  
-escClose : false                                        
+					escClose : false                                        
 				});
-
+				});
+            function arm_hide_update_notice(){
+			jQuery("#arm_update_note").bPopup().close();
+			var ishide = 1;                  
+			var _arm_wpnonce   = jQuery( \'input[name="arm_wp_nonce"]\' ).val();
+			jQuery.ajax({
+			type: "POST",
+			url: __ARMAJAXURL,
+			data: "action=arm_dont_show_upgrade_notice&is_hide=" + ishide + "&_wpnonce=" + _arm_wpnonce,
 			});
-                                                        function arm_hide_update_notice()
-{
-    var ishide = 0;
-    if (jQuery("#arm_hide_update_notice").is(":checked")) {
-	var ishide = 1;                   
-	    jQuery("#arm_update_note").bPopup().close(); 
-    }else{
-        return;
-    }
-	var _arm_wpnonce   = jQuery( \'input[name="arm_wp_nonce"]\' ).val();
-    jQuery.ajax({
-	type: "POST",
-	url: __ARMAJAXURL,
-	data: "action=arm_dont_show_upgrade_notice&is_hide=" + ishide + "&_wpnonce=" + _arm_wpnonce,
-	success: function (res) {
-
-            return false;
-            
-	}
-    });
-    return false;
-}
-</script>';
+			return false;
+		}
+		</script>';
 			echo $popupData; //phpcs:ignore
 		}
 	}
@@ -3702,7 +3691,8 @@ escClose : false
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'critical_title'      => 'Version 5.0.1 Changes',
+			'update_version' => '5.0.2',
+			'critical_title'      => 'Version',
 			'critical'            => array(
 				'Minor bug fixes.',
 			),

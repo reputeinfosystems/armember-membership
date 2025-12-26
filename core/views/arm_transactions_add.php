@@ -185,6 +185,3 @@ $posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), 
 <script type="text/javascript">
 	__SELECT_USER = '<?php echo esc_html__( 'Type username to select user', 'armember-membership' ); ?>';
 </script>
-<?php
-	echo $ARMemberLite->arm_get_need_help_html_content('member-payment-history-add'); //phpcs:ignore
-?>

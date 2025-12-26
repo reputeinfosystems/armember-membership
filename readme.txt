@@ -5,7 +5,7 @@ Donate link: https://www.armemberplugin.com/product.php?rdt=t16
 Requires at least: 4.0
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 5.0.1
+Stable tag: 5.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,7 +71,7 @@ ARMember provides an easy interface to set [**content access rules**](https://ww
 [**Official Site**](https://www.armemberplugin.com/) || [**ARMember Plugin Demo**](https://newdemo.armemberplugin.com/) || [**Documentation**](https://www.armemberplugin.com/documents/getting-started-with-armember/) || [**Facebook**](https://www.facebook.com/armemberplugin) || [**YouTube Tutorials**](https://www.youtube.com/@armember/videos?sub_confirmation=1) || [**LinkedIn**](https://www.linkedin.com/company/armember/) || [**Join Facebook Community**](https://www.facebook.com/groups/arplugins) 👍 || [**Buy ARMember Pro**](https://www.armemberplugin.com/pricing/) 👈
 
 <p>&nbsp;</p>
-[youtube https://www.youtube.com/watch?v=Yh_X00tHzMw]
+[youtube https://www.youtube.com/watch?v=WhKgS2jv2xM]
 <p>&nbsp;</p>
 
 ###Unique features of ARMember
@@ -398,6 +398,9 @@ Please follow the steps for installation:
 11. Signup Form
 
 == Changelog ==
+= 5.0.2 =
+* Minor Bug fixes.
+
 = 5.0.1 =
 * Minor Bug fixes.
 

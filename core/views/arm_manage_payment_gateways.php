@@ -499,3 +499,7 @@ if($ARMemberLite->is_arm_pro_active)
 		</form>
 	</div>
 </div>
+<script type="text/javascript">
+	var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete.svg';
+	var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete_hover.svg';
+</script>

@@ -257,10 +257,10 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 									
 								$popup                         .= '<input type="hidden" id="arm_admin_url" value="' . esc_url( admin_url( 'admin.php?page=' . $arm_slugs->profiles_directories . '&action=add_profile' ) ) . '" />';
 								$popup                         .= '<button class="arm_cancel_btn arm_profile_add_close_btn" type="button">' . esc_html__( 'Cancel', 'armember-membership' ) . '</button>';
-								$popup                         .= '<button class="arm_save_btn arm_profile_next_submit" data-id="' . esc_attr($temp_id) . '" type="submit" name="arm_add_profile" id="arm_profile_next_submit">' . esc_html__( 'OK', 'armember-membership' ) . '</button>';
+								$popup                         .= '<button class="arm_save_btn arm_profile_next_submit" data-id="' . esc_attr($temp_id) . '" type="submit" name="arm_add_profile" id="arm_profile_next_submit">' . esc_html__( 'Next', 'armember-membership' ) . '</button>';
 								$popup                         .= '<div class="popup_content_btn_wrapper arm_temp_custom_class_btn hidden_section">';
 								$backToListingIcon              = MEMBERSHIPLITE_IMAGES_URL . '/back_to_listing_arrow.png';
-								$popup                         .= '<a href="javascript:void(0)" class="arm_section_custom_css_detail_hide_template armemailaddbtn"><img align="absmiddle" src="' . esc_attr($backToListingIcon) . '"/>' . esc_html__( 'Back to template options', 'armember-membership' ) . '</a>'; //phpcs:ignore
+								$popup                         .= '<a href="javascript:void(0)" class="arm_section_custom_css_detail_hide_template armemailaddbtn"><img align="absmiddle" src="' . esc_attr($backToListingIcon) . '"/>' . esc_html__( 'Cancel', 'armember-membership' ) . '</a>'; //phpcs:ignore
 								$popup                         .= '</div>';
 								$popup                         .= '</td>';
 								$popup                         .= '</tr>';

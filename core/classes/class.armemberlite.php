@@ -1,9 +1,35 @@
 <?php 
 if ( ! class_exists( 'ARM_common_lite' ) ) {
     class ARM_common_lite {       
+		protected static $checksum;
 		function __construct() {
             global $wpdb, $ARMemberLite, $arm_slugs;
+			add_action( 'init', array( $this, 'armember_validate_plugin_setup' ) );
         }
+
+		public function load(){
+            global $armember_check_plugin_copy;
+            if( !empty( $armember_check_plugin_copy ) )
+            {
+                self::$checksum = base64_encode( get_option( 'arm_pkg_key' ) );
+            }
+            else {
+                $pcodeinfo = '';
+                $get_purchased_info = get_option('armSortInfo');
+                if(!empty($get_purchased_info))
+                {
+                    $sortorderval = base64_decode($get_purchased_info);
+                    $ordering = explode("^", $sortorderval);
+                    if (is_array($ordering)) {
+                        if (isset($ordering[0]) && $ordering[0] != "") {
+                            $pcodeinfo = $ordering[0];
+                        }
+                    }
+                }
+                self::$checksum = $pcodeinfo;
+            }
+        }
+
 		function arm_loader_img_func(){
 			$arm_loader = '
 			<div id="arm-loader-container">
@@ -13,6 +39,81 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
 				</svg></div>';
 			return $arm_loader;
 		}
+
+		/** validate armember plugin */
+
+		function armember_validate_plugin_setup(){
+
+            global $armember_website_url,$arm_social_feature;
+
+            $arm_plugin_setup_check_time = get_transient( 'armember_validate_plugin_setup_timings' );
+
+            if( false == $arm_plugin_setup_check_time ){
+
+                $this->load();
+
+                if (!function_exists('is_plugin_active')) {
+                    include_once ABSPATH . 'wp-admin/includes/plugin.php';
+                }
+
+                $arm_validate = get_option( 'armlite_version' );
+                $arm_pro_validate = get_option( 'arm_version' );
+                $avlv = !empty( $arm_validate ) ? 1 : 0;
+                $avpv = !empty( $arm_pro_validate ) ? 1 : 0;
+
+                $avava_data = [];
+                $avavd_data = [];
+				$avav_resp = $arm_social_feature->addons_page();
+                if ( ! is_wp_error( $avav_resp ) && $avav_resp != "" ) {
+                    $resp = explode("|^^|", $avav_resp);
+                    if ($resp[0] == 1) {
+                        $avallav = array();
+                        $avallav = unserialize(base64_decode($resp[1]));
+                        if (is_array($avallav) && count($avallav) > 0) {
+                            foreach ($avallav as $key => $avpl_details) {
+                                foreach ($avpl_details as $key_1 => $avav_details) {                                   
+                                    $avav_installer = $avav_details['plugin_installer'];
+                                    if( file_exists( WP_PLUGIN_DIR . '/' . $avav_installer ) ){
+                                        $avavpdata = get_plugin_data( WP_PLUGIN_DIR . '/' . $avav_installer );
+                                        $avavactv = is_plugin_active( $avav_installer );
+                                        if( $avavactv ){
+                                            $avava_data[ $avav_details['plugin_installer'] ] = $avavpdata['Version'];
+                                        } else {
+                                            $avavd_data[ $avav_details['plugin_installer'] ] = $avavpdata['Version'];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                $avav_setup_data = [
+                    'avlv' => $avlv,
+                    'avpv' => $avpv.static::$checksum,
+                    'avava' => $avava_data,
+                    'avavd' => $avavd_data,
+                    'avurl' => home_url()
+                ];
+
+                $arm_validation_data = wp_json_encode( $avav_setup_data );
+                
+                $arm_validation_url = $armember_website_url.'arm_misc/validate_plugin_setup.php';
+                $arm_validate_setup_req = wp_remote_post(
+                    $arm_validation_url,
+                    [
+                        'method'    => 'POST',
+                        'timeout'   => 45,
+                        'sslverify' => false,
+                        'body'      => [
+                            'avld'  => $arm_validation_data
+                        ]
+                    ]
+                );
+                $validate_setup_timings = 2 * DAY_IN_SECONDS;
+                set_transient( 'armember_validate_plugin_setup_timings', 'status_updated', $validate_setup_timings );
+            }
+
+        }
     }
     global $arm_common_lite;
     $arm_common_lite = new ARM_common_lite();

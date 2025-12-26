@@ -512,7 +512,6 @@ function arm_load_subscription_list_grid(is_filtered){
             },
             "aoColumnDefs": [                
                 {"sClass": "center", "aTargets": [0,8,9,10]},
-                {"sClass": "arm_width_50", "aTargets": [0,1]},
                 {"bSortable": false, "aTargets": [0,2,3,4,5, 6, 7, 8,9,10] },
                 {"aTargets":[0],"sClass":"noVis"},
                 {"sClass": "dt-right", "aTargets": __ARM_subscription_List_right},
@@ -597,7 +596,6 @@ function arm_load_subscription_list_grid(is_filtered){
                 "sProcessing": show_grid_loader(),
                 "sInfo": __ARM_Showing + " _START_ " + __ARM_to + " _END_ " + __ARM_of + " _TOTAL_ " + __ARM_Entries,
                 "sInfoEmpty": __ARM_Showing_empty,
-                
                 "sLengthMenu": __ARM_Show + " " + __ARM_Entries + "_MENU_",
                 "sEmptyTable": __ARM_NO_FOUND,
                 "sZeroRecords": __ARM_NO_MATCHING,
@@ -837,8 +835,7 @@ global $wpdb, $ARMember, $arm_global_settings;
                                     </div>
                                     
                                     <a href="javascript:void(0)" class="arm_manage_subscription_filters_items_reset arm_margin_right_10" onclick="arm_reset_manage_subscription_grid_filter();"><?php esc_html_e('Clear Filters','armember-membership');?></a>
-                                </div>
-                                
+                                </div>   
                             </div>
                             
                         </div>
@@ -1003,15 +1000,15 @@ global $wpdb, $ARMember, $arm_global_settings;
                     <table cellpadding="0" cellspacing="0" border="0" class="display arm_on_display arm_hide_datatable" id="armember_datatable">
                         <thead>
                                 <?php If($ARMemberLite->is_arm_pro_active){?>
-                                <th class="arm_width_150"><?php esc_html_e('Invoice ID','armember-membership');?></th>
+                                <th class="arm_min_width_200"><?php esc_html_e('Invoice ID','armember-membership');?></th>
                                 <?php }?>
-                                <th class="arm_min_width_250"><?php esc_html_e('Membership','armember-membership');?></th>
-                                <th class="arm_width_250"><?php esc_html_e('Username','armember-membership');?></th>
-                                <th class="arm_width_260"><?php esc_html_e('Name','armember-membership');?></th>
-                                <th class="arm_width_180"><?php esc_html_e('Payment Date','armember-membership');?></th>
-                                <th class="arm_width_100"><?php esc_html_e('Amount','armember-membership');?></th>
-                                <th class="center arm_width_150"><?php esc_html_e('Payment Type','armember-membership');?></th>
-                                <th class="arm_width_120"><?php esc_html_e('Status','armember-membership');?></th>
+                                <th class="arm_min_width_200"><?php esc_html_e('Membership','armember-membership');?></th>
+                                <th class="arm_min_width_200"><?php esc_html_e('Username','armember-membership');?></th>
+                                <th class="arm_min_width_200"><?php esc_html_e('Name','armember-membership');?></th>
+                                <th class="arm_min_width_180"><?php esc_html_e('Payment Date','armember-membership');?></th>
+                                <th class="arm_min_width_100"><?php esc_html_e('Amount','armember-membership');?></th>
+                                <th class="center arm_min_width_150"><?php esc_html_e('Payment Type','armember-membership');?></th>
+                                <th class="arm_min_width_120"><?php esc_html_e('Status','armember-membership');?></th>
                                 <th class="armGridActionTD"></th>
                             </tr>
                         </thead>
@@ -1037,15 +1034,15 @@ global $wpdb, $ARMember, $arm_global_settings;
                     <table cellpadding="0" cellspacing="0" border="0" class="display arm_on_display arm_hide_datatable arm_datatable_div" id="armember_datatable_1">
                         <thead>
                             <tr>
-                                <th class="arm_width_50"></th>
-                                <th class="arm_width_50"><?php esc_html_e('ID','armember-membership');?></th>
-                                <th class="arm_min_width_200"><?php esc_html_e('Membership','armember-membership');?></th>
-                                <th class="arm_min_width_150"><?php esc_html_e('Username','armember-membership');?></th>
-                                <th class="arm_min_width_150"><?php esc_html_e('Name','armember-membership');?></th>
-                                <th class="arm_min_width_150"><?php esc_html_e('Start Date','armember-membership');?></th>
-                                <th class="arm_min_width_150"><?php esc_html_e('Expire/Next Renewal','armember-membership');?></th>
-                                <th class="arm_min_width_120"><?php esc_html_e('Amount','armember-membership');?></th>
-                                <th class="center arm_min_width_120"><?php esc_html_e('Payment Type','armember-membership');?></th>
+                                <th class="arm_max_width_50 arm_min_width_40"></th>
+                                <th class="arm_min_width_50"><?php esc_html_e('ID','armember-membership');?></th>
+                                <th class="arm_min_width_180"><?php esc_html_e('Membership','armember-membership');?></th>
+                                <th class="arm_min_width_100"><?php esc_html_e('Username','armember-membership');?></th>
+                                <th ><?php esc_html_e('Name','armember-membership');?></th>
+                                <th><?php esc_html_e('Start Date','armember-membership');?></th>
+                                <th><?php esc_html_e('Expire/Next Renewal','armember-membership');?></th>
+                                <th class="arm_min_width_100"><?php esc_html_e('Amount','armember-membership');?></th>
+                                <th class="center arm_min_width_100"><?php esc_html_e('Payment Type','armember-membership');?></th>
                                 <th class="arm_min_width_80"><?php esc_html_e('Transaction','armember-membership');?></th>
                                 <th class="arm_width_100 center"><?php esc_html_e('Status','armember-membership');?></th>
                                 <th class="armGridActionTD"></th>
@@ -1184,8 +1181,8 @@ global $wpdb, $ARMember, $arm_global_settings;
                         </div>
                         <div class="form-field form-required arm_transaction_membership_plan_wrapper arm_padding_0 arm_margin_top_28">
                             <span class="arm_edit_plan_lbl arm_margin_bottom_12"><?php esc_html_e('Select Membership Plan','armember-membership'); ?></span>
-                            <div>
-                                <input type="hidden" class="arm_user_plan_change_input_get_cycle" id="arm_plan_id" name="membership_plan" value="" data-manage-plan-grid="1" data-msg-required="<?php esc_attr_e('Please select atleast one membership', 'armember-membership');?>"/>
+                            <div class="arm_display_flex">
+                                <input type="text" class="arm-selectpicker-input-control arm_user_plan_change_input_get_cycle" id="arm_plan_id" name="membership_plan" value="" data-manage-plan-grid="1" data-msg-required="<?php esc_attr_e('Please select atleast one membership', 'armember-membership');?>"/>
                                 <dl class="arm_selectbox column_level_dd">
                                     <dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
                                     <dd>
@@ -1204,8 +1201,8 @@ global $wpdb, $ARMember, $arm_global_settings;
                                         </ul>
                                     </dd>
                                 </dl>
-                                <span class="arm_plan_error"></span>
                             </div>
+                            <span class="arm_plan_error"></span>
                         </div>
                         <div class="form-field form-required arm_selected_plan_cycle arm_padding_0 arm_margin_top_28"></div>
                     </div>

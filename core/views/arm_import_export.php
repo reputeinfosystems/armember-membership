@@ -96,7 +96,7 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 								<?php esc_html_e( 'Export as xml', 'armember-membership' ); ?>
 							</button>
 						</div>
-						<span class="arm_info_text arm-note-message --notice arm_margin_top_24"><?php esc_html_e( "Note: User having role 'administrator' will not be exported.",'armember-membership')?></span>
+						<span class="arm-note-message --alert arm_margin_top_24"><?php esc_html_e( "Note: User having role 'administrator' will not be exported.",'armember-membership')?></span>
 					</div>
 				
 				</form>

@@ -2113,14 +2113,14 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					$curPlanName = isset( $plan_id_name_array[ $user_plan ] ) ? $plan_id_name_array[ $user_plan ] : '';
 
 					$historyHtml           .= '<div class="arm_membership_history_wrapper" data-user_id="' . $user_id . '">';
-					$historyHtml           .= '<table class="form-table arm_member_last_subscriptions_table" width="100%">';
+					$historyHtml           .= '<table class="form-table arm_member_last_subscriptions_table arm_view_member_history" width="100%">';
 					$historyHtml           .= '<tr>';
-					$historyHtml           .= '<td>' . esc_html__( 'Plan', 'armember-membership' ) . '</td>';
-					$historyHtml           .= '<td>' . esc_html__( 'Type', 'armember-membership' ) . '</td>';
-					$historyHtml           .= '<td>' . esc_html__( 'Start Date', 'armember-membership' ) . '</td>';
-					$historyHtml           .= '<td>' . esc_html__( 'Expire Date', 'armember-membership' ) . '</td>';
-					$historyHtml           .= '<td>' . esc_html__( 'Amount', 'armember-membership' ) . '</td>';
-					$historyHtml           .= '<td>' . esc_html__( 'Payment Gateway', 'armember-membership' ) . '</td>';
+					$historyHtml           .= '<td class="arm_min_width_200">' . esc_html__( 'Plan', 'armember-membership' ) . '</td>';
+					$historyHtml           .= '<td class="arm_min_width_140">' . esc_html__( 'Type', 'armember-membership' ) . '</td>';
+					$historyHtml           .= '<td class="arm_min_width_140">' . esc_html__( 'Start Date', 'armember-membership' ) . '</td>';
+					$historyHtml           .= '<td class="arm_min_width_140">' . esc_html__( 'Expire Date', 'armember-membership' ) . '</td>';
+					$historyHtml           .= '<td class="arm_min_width_140">' . esc_html__( 'Amount', 'armember-membership' ) . '</td>';
+					$historyHtml           .= '<td class="arm_min_width_140">' . esc_html__( 'Payment Gateway', 'armember-membership' ) . '</td>';
 					$historyHtml           .= '</tr>';
 					$isCurrent              = false;
 					$item_id_arrray         = array();

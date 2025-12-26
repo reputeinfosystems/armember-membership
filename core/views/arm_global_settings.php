@@ -46,6 +46,65 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 	line-height: 16px;
 	margin-bottom: 10px; }
 </style>
+<?php if($ARMemberLite->is_arm_pro_active){?>
+<div id='arm_rename_wp_admin_popup_div' class="popup_wrapper" >    
+	<table  cellspacing="0">
+		<tr>
+			<td class="arm_clear_field_close_btn arm_popup_close_btn"></td>
+			<td class="popup_header"><?php esc_html_e('Important Notes for Rename', 'armember-membership'); ?> wp-admin</td>
+			<td class="popup_content_text arm_rename_wpadmin_wrapper" style="">
+				<ol>
+					<li>
+						<?php esc_html_e('Do Not change permalink structure to default in order to work this option. if you set permalink structure to default, You will need to DELETE or comment (//) line which start with', 'armember-membership');?>: <code>define("ADMIN_COOKIE_PATH","...</code>
+					</li>
+
+					<?php   
+					$arm_get_hide_wp_admin_option = get_option('arm_hide_wp_amin_disable');
+					if (!empty($arm_get_hide_wp_admin_option)) {
+					?>
+					<li>
+						<?php esc_html_e('If you can\'t login after renaming wp-admin, run below URL and all changes are rollback to default :', 'armember-membership'); ?>
+						<div class="arm_shortcode_text arm_form_shortcode_box">
+							<span class="armCopyText"><?php echo home_url().'?arm_wpdisable='.$arm_get_hide_wp_admin_option;//phpcs:ignore ?></span>
+							<span class="arm_click_to_copy_text" data-code="<?php echo home_url().'?arm_wpdisable='.$arm_get_hide_wp_admin_option; //phpcs:ignore?>"><?php esc_html_e('Click to copy', 'armember-membership');?></span>
+							<span class="arm_copied_text"><img src="<?php echo MEMBERSHIP_IMAGES_URL; //phpcs:ignore?>/copied_ok.png" alt="ok"><?php esc_html_e('Code Copied', 'armember-membership');?></span>
+						</div>
+					</li>
+					<?php } ?>
+				</ol>
+			</td>
+		</tr>    
+	</table>                          
+</div>
+<div id='arm_rename_wp_admin_popup_div_notice' class="popup_wrapper">
+	<table cellspacing="0">
+		<tr>
+			
+			<td class="popup_header"><?php esc_html_e('Error renaming','armember-membership'); ?> wp-admin</td>
+			<td class="popup_content_text arm_rename_wpadmin_wrapper" id="arm_rename_wpadmin_notice_text"></td>
+		
+			<td class="popup_footer">
+			<div class='arm_rewrite_button_div'>
+			<input type='submit' name='arm_save_global_settings' id='arm_save_global_settings' class='arm_save_btn arm_min_width_auto' value='<?php esc_html_e('Okey, I did It!','armember-membership'); ?>' />
+
+			<input type='submit' name='arm_cancel_global_settings' id='arm_cancel_global_settings' style='background-color: #d54e21; border: 1px solid #d54e21;' class='arm_save_btn arm_min_width_auto' value='<?php esc_html_e('Abort Renaming','armember-membership'); ?>' />
+			</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<div id='arm_rename_wp_admin_popup_div_config_notice' class="popup_wrapper">
+	<table cellspacing="0">
+		<tr>
+			<td class="arm_clear_field_close_btn arm_popup_close_btn"></td>
+			<td class="popup_header"><?php esc_html_e('Error renaming','armember-membership'); ?> wp-config.php</td>
+			<td class="popup_content_text arm_rename_wpadmin_wrapper" id="arm_rename_wpadmin_config_notice_text">
+			<br/><a class="btn primary-btn" href="<?php wp_login_url(); ?>">I did it! Move me to the new admin</a>
+			</td>
+		</tr>
+	</table>
+</div>
+<?php }?>
 <div class="arm_global_settings_main_wrapper armPageContainer">
 	<div class="page_sub_content">
 		
@@ -977,4 +1036,6 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 // <![CDATA[
 var ARM_IMAGE_URL = "<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>";
 var ARM_UPDATE_LABEL = "<?php esc_html_e( 'Update', 'armember-membership' ); ?>";
+var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete.svg';
+var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete_hover.svg';
 </script>

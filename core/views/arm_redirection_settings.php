@@ -1413,7 +1413,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 			
 												$url = ( isset( $arm_setup_renew_conditional['url'] ) && ! empty( $arm_setup_renew_conditional['url'] ) ) ? $arm_setup_renew_conditional['url'] : ARMLITE_HOME_URL;
 												?>
-									<li id="arm_setup_renew_conditional_redirection_box<?php echo intval($ckey); ?>" class="arm_email_setting_flex_group">
+									<li id="arm_setup_renew_conditional_redirection_box<?php echo intval($ckey); ?>" class="arm_email_setting_flex_group arm_margin_top_24">
 										
 										<div class="arm_form_field_block">
 											<label><?php esc_html_e( 'If user selected plan is', 'armember-membership' ); ?></label>

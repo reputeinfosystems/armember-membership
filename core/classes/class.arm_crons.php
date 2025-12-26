@@ -183,7 +183,7 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 		}
 
 		function arm_handle_expire_infinite_subscription_func() {
-			global $wp, $wpdb, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_manage_communication, $arm_members_class;
+			global $wp, $wpdb, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_manage_communication, $arm_members_class,$arm_subscription_cancel_msg;
 			set_time_limit( 0 ); //phpcs:ignore --Reason  Preventing timeout issue.
 			$now        = current_time( 'timestamp' );
 			$start_time = strtotime( '-12 Hours', $now );
@@ -239,6 +239,13 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 													if ( $plan->is_paid() && ! $plan->is_lifetime() && $plan->is_recurring() ) {
 														// Update Last Subscriptions Log Detail
 														do_action( 'arm_cancel_subscription_gateway_action', $user_id, $plan_id );
+														
+														if (!empty($arm_subscription_cancel_msg)) {
+                                                            // Gateway cancel subscription API failed - log error and DON'T remove plan
+                                                            do_action('arm_general_log_entry', 'cron', 'Subscription canceled failed from API', 'armember', "Subscription cancellation failed for user $user_id, plan $plan_id: " . $arm_subscription_cancel_msg);
+                                                            continue;
+                                                        }
+
 														$arm_subscription_plans->arm_add_membership_history( $usr->ID, $plan_id, 'cancel_subscription' );
 														do_action( 'arm_cancel_subscription', $usr->ID, $plan_id );
 														$arm_subscription_plans->arm_clear_user_plan_detail( $usr->ID, $plan_id );

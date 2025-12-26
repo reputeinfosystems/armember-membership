@@ -1050,7 +1050,7 @@ $formHiddenFields = '';
 																if($started_date != '' && $started_date <= $starts_date) {
 																	$starts_on = date_i18n($date_format, $started_date);
 																}
-															$expires_on    = ! empty( $planData['arm_expire_plan'] ) ? '<span id="arm_user_expiry_date_' . esc_attr($pID) . '" style="display: inline;"> ' . date_i18n( $date_format, $planData['arm_expire_plan'] ) . ' <img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/grid_edit_hover_trns.png" width="26" style="position: absolute; margin: -4px 0 0 5px; cursor: pointer;" title="' . esc_attr__( 'Change Expiry Date', 'armember-membership' ) . '" data-plan_id="' . esc_attr($pID) . '" class="arm_edit_user_expiry_date"></span><span id="arm_user_expiry_date_box_' . esc_attr($pID) . '" style="display: none; position: relative; width: 155px;"><input type="text" value="' . esc_attr( date( 'm/d/Y', $planData['arm_expire_plan'] ) ) . '"  name="arm_subscription_expiry_date_' . esc_attr($pID) . '" class="arm_member_form_input arm_user_plan_expiry_date_picker arm_width_120 arm_min_width_120" /><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/cancel_date_icon.png" width="11" height="11" title="' . esc_attr__( 'Cancel', 'armember-membership' ) . '" data-plan_id="' . esc_attr($pID) . '" data-plan-expire-date="' . esc_attr( date( $arm_common_date_format, $planData['arm_expire_plan'] ) ) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_html__( 'Never Expires', 'armember-membership' ); //phpcs:ignore
+															$expires_on    = ! empty( $planData['arm_expire_plan'] ) ? '<span id="arm_user_expiry_date_' . esc_attr($pID) . '" style="display: flex;"> ' . date_i18n( $date_format, $planData['arm_expire_plan'] ) . ' <img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/grid_edit_hover_trns.png" width="26" style="margin: 0px 0 0 5px; cursor: pointer;" title="' . esc_attr__( 'Change Expiry Date', 'armember-membership' ) . '" data-plan_id="' . esc_attr($pID) . '" class="arm_edit_user_expiry_date"></span><span id="arm_user_expiry_date_box_' . esc_attr($pID) . '" style="display: none; position: relative; width: 155px;"><input type="text" value="' . esc_attr( date( 'm/d/Y', $planData['arm_expire_plan'] ) ) . '"  name="arm_subscription_expiry_date_' . esc_attr($pID) . '" class="arm_member_form_input arm_user_plan_expiry_date_picker arm_width_200 arm_min_width_200" /><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/cancel_date_icon.png" width="11" height="11" title="' . esc_attr__( 'Cancel', 'armember-membership' ) . '" data-plan_id="' . esc_attr($pID) . '" data-plan-expire-date="' . esc_attr( date( $arm_common_date_format, $planData['arm_expire_plan'] ) ) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_html__( 'Never Expires', 'armember-membership' ); //phpcs:ignore
 
 															$renewal_on        = ! empty( $planData['arm_next_due_payment'] ) ? date_i18n( $date_format, $planData['arm_next_due_payment'] ) : '-';
 															$trial_starts      = ! empty( $planData['arm_trial_start'] ) ? $planData['arm_trial_start'] : '';
@@ -1090,7 +1090,7 @@ $formHiddenFields = '';
 
 															if ( ! empty( $suspended_plan_ids ) ) {
 																if ( in_array( $pID, $suspended_plan_ids ) ) {
-																	$arm_plan_is_suspended = '<div class="arm_user_plan_status_div arm_position_relative" ><span class="armhelptip tipso_style arm_color_red" id="arm_user_suspend_plan_' . esc_attr($pID) . '" style=" cursor:pointer;" onclick="arm_show_failed_payment_history(' . esc_attr($user_id) . ',' . esc_attr($pID) . ',\'' . esc_attr($planName) . '\',\'' . esc_attr($planData['arm_start_plan']) . '\')" title="' . esc_attr__( 'Click here to Show failed payment history', 'armember-membership' ) . '">(' . esc_attr__( 'Suspended', 'armember-membership' ) . ')</span><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/grid_edit_hover_trns.png" width="26" style="position: absolute; margin: -4px 0 0 5px; cursor: pointer;" title="' . esc_attr__( 'Activate Plan', 'armember-membership' ) . '" data-plan_id="' . esc_attr($pID) . '" onclick="showConfirmBoxCallback(\'change_user_plan_' . esc_attr($pID) . '\');" class="arm_change_user_plan_img_' . esc_attr($pID) . '">'; //phpcs:ignore
+																	$arm_plan_is_suspended = '<div class="arm_user_plan_status_div arm_position_relative" ><span class="armhelptip tipso_style arm_color_red" id="arm_user_suspend_plan_' . esc_attr($pID) . '" style=" cursor:pointer;" onclick="arm_show_failed_payment_history(' . esc_attr($user_id) . ',' . esc_attr($pID) . ',\'' . esc_attr($planName) . '\',\'' . esc_attr($planData['arm_start_plan']) . '\')" title="' . esc_attr__( 'Click here to Show failed payment history', 'armember-membership' ) . '">(' . esc_attr__( 'Suspended', 'armember-membership' ) . ')</span><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/grid_edit_hover_trns.png" width="20" style="position: absolute; margin: -4px 0 0 5px; cursor: pointer;" title="' . esc_attr__( 'Activate Plan', 'armember-membership' ) . '" data-plan_id="' . esc_attr($pID) . '" onclick="showConfirmBoxCallback(\'change_user_plan_' . esc_attr($pID) . '\');" class="arm_change_user_plan_img_' . esc_attr($pID) . '">'; //phpcs:ignore
 	
 																	$arm_plan_is_suspended .='<div class="arm_confirm_box arm_member_edit_confirm_box" id="arm_confirm_box_change_user_plan_' . esc_attr($pID) . '" style="top:25px; right: -20px; ">
 																				<div class="arm_confirm_box_body">
@@ -1324,7 +1324,7 @@ $formHiddenFields = '';
 										if($started_date != '' && $started_date <= $starts_date) {
 											$starts_on = date_i18n($date_format, $started_date);
 										}
-										$expires_on        = ! empty( $planData['arm_expire_plan'] ) ? '<span id="arm_user_expiry_date_' . esc_attr($pID) . '" style="display: inline;">' . date_i18n( $date_format, $planData['arm_expire_plan'] ) . ' <img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/grid_edit_hover_trns.png" width="26" style="position: absolute; margin: -4px 0 0 5px; cursor: pointer;" title="' . esc_attr__( 'Change Expiry Date', 'armember-membership' ) . '" data-plan_id="' . esc_attr($pID) . '" class="arm_edit_user_expiry_date"></span><span id="arm_user_expiry_date_box_' . esc_attr($pID) . '" style="display: none; position: relative; width: 155px;"><input type="text" value="' . esc_attr(date( 'm/d/Y', $planData['arm_expire_plan'] )) . '"  name="arm_subscription_expiry_date_' . esc_attr($pID) . '" class="arm_member_form_input arm_user_plan_expiry_date_picker" style="width: 120px; min-width: 120px;"/><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/cancel_date_icon.png" width="11" height="11" title="' . esc_attr__( 'Cancel', 'armember-membership' ) . '" data-plan_id="' . esc_attr($pID) . '" data-plan-expire-date="' . esc_attr(date( $arm_common_date_format, $planData['arm_expire_plan'] )) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_html__( 'Never Expires', 'armember-membership' ); //phpcs:ignore
+										$expires_on        = ! empty( $planData['arm_expire_plan'] ) ? '<span id="arm_user_expiry_date_' . esc_attr($pID) . '" style="display: flex;">' . date_i18n( $date_format, $planData['arm_expire_plan'] ) . ' <img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/edit_icon.svg" width="20" style="margin: -4px 0 0 5px; cursor: pointer;" title="' . esc_attr__( 'Change Expiry Date', 'armember-membership' ) . '" data-plan_id="' . esc_attr($pID) . '" class="arm_edit_user_expiry_date"></span><span id="arm_user_expiry_date_box_' . esc_attr($pID) . '" style="display: none; position: relative; width: 155px;"><input type="text" value="' . esc_attr(date( 'm/d/Y', $planData['arm_expire_plan'] )) . '"  name="arm_subscription_expiry_date_' . esc_attr($pID) . '" class="arm_member_form_input arm_user_plan_expiry_date_picker" style="width: 120px; min-width: 120px;"/><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/cancel_date_icon.png" width="11" height="11" title="' . esc_attr__( 'Cancel', 'armember-membership' ) . '" data-plan_id="' . esc_attr($pID) . '" data-plan-expire-date="' . esc_attr(date( $arm_common_date_format, $planData['arm_expire_plan'] )) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_html__( 'Never Expires', 'armember-membership' ); //phpcs:ignore
 										$renewal_on        = ! empty( $planData['arm_next_due_payment'] ) ? date_i18n( $date_format, $planData['arm_next_due_payment'] ) : '-';
 										$trial_starts      = ! empty( $planData['arm_trial_start'] ) ? $planData['arm_trial_start'] : '';
 										$trial_ends        = ! empty( $planData['arm_trial_end'] ) ? $planData['arm_trial_end'] : '';
@@ -1402,8 +1402,7 @@ $formHiddenFields = '';
 							<tr>
 								<td colspan="2">
 									<div class="arm-note-message --alert">
-										<p><?php esc_html_e( 'Note:', 'armember-membership' ); ?></p>
-										<span><?php esc_html_e( 'All the actions like add new plan, change plan status, renew cycle, extend days, delete plan will be applied only after save button is clicked at the bottom of this page.', 'armember-membership' ); ?></span>
+										<p><?php esc_html_e( 'Note: All the actions like add new plan, change plan status, renew cycle, extend days, delete plan will be applied only after save button is clicked at the bottom of this page.', 'armember-membership' ); ?></p>
 									</div>
 								</td>
 							</tr>
@@ -1433,28 +1432,13 @@ $formHiddenFields = '';
 									<span class="arm_margin_bottom_12 arm_display_block arm-black-350 arm_font_size_16"><?php esc_html_e( 'Add Social Accounts', 'armember-membership' ); ?></span>
 									<div class="arm-form-table-content arm_margin_top_12">
 										<div class="arm_setup_forms_container arm_member_social_ac_selection_container">
-											<input type='hidden' id="arm_member_social_ac_selection" class="arm_member_social_ac_selection  arm-selectpicker-input-control" data-placeholder="<?php esc_attr_e( 'Please Select', 'armember-membership' ); ?>"
-												data-msg-required="<?php esc_attr_e( 'Please Select Social Account.', 'armember-membership' ); ?>"
-												data-msg-already="<?php esc_attr_e( 'This social account already added.', 'armember-membership' ); ?>"
-												onchange="arm_member_add_social_account_fields(this)" name="arm_member_social_ac_selection" value=""/>
-												<dl class="arm_selectbox column_level_dd">
-													<dt><span></span><input type="text" style="display:none;" value=""
-															class="arm_autocomplete" /><i
-															class="armfa armfa-angle-down armfa-lg"></i></dt>
-													<dd>
-														<ul data-id="arm_member_social_ac_selection">
-															<li data-label="<?php esc_attr_e( 'Please Select', 'armember-membership' ); ?>" data-value="" disabled><?php esc_attr_e( 'Please Select', 'armember-membership' ); ?></li>
-															<?php
-															foreach ( $socialProfileFields as $spfKey => $spfLabel ) {
-																echo '<li data-value="' . esc_attr($spfKey) . '" data-label="'.strip_tags( stripslashes( $spfLabel ) ).'">' . strip_tags( stripslashes( $spfLabel ) ) . '</li>'; //phpcs:ignore
-															}
-															?>
-														</ul>
-													</dd>
-												</dl>
-											<div class="armclear"></div>
-											<span id="arm_member_social_ac_selection-error"
-												class="error arm_invalid"><?php esc_html_e( 'Please Select account', 'armember-membership' ); ?></span>
+											<select id="arm_member_social_ac_selection" class="arm_chosen_selectbox arm_member_social_ac_selection"  name="arm_member_social_ac_selection[]" data-placeholder="<?php esc_html_e('Select Social Account','armember-membership');?>" multiple="multiple">
+												<?php
+												foreach ( $socialProfileFields as $spfKey => $spfLabel ) {
+													echo '<option class="arm_message_selectbox_op" value="' . esc_attr($spfKey) . '" data-label="'.strip_tags( stripslashes( $spfLabel ) ).'">' . strip_tags( stripslashes( $spfLabel ) ) . '</option>'; //phpcs:ignore
+												}
+												?>
+											</select>
 										</div>
 									</div>
 								</div>

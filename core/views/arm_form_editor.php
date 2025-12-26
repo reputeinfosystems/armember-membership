@@ -2277,7 +2277,7 @@ $activeSPF = ( ! empty( $activeSPF ) ) ? $activeSPF : array();
 			<td class="popup_close_btn arm_popup_close_btn arm_social_profile_fields_close_btn"></td>
 			<td class="popup_header"><?php esc_html_e( 'Social Profile Fields', 'armember-membership' ); ?></td>
 			<td class="popup_content_text">
-				<div class="arm_social_profile_fields_list_wrapper">
+				<div class="arm_social_profile_fields_list_wrapper arm_padding_0">
 					<?php if ( ! empty( $socialProfileFields ) ) { ?>
 						<?php foreach ( $socialProfileFields as $spfKey => $spfLabel ) { ?>
 							<div class="arm_social_profile_field_item">
@@ -2288,10 +2288,10 @@ $activeSPF = ( ! empty( $activeSPF ) ) ? $activeSPF : array();
 					<?php } ?>
 				</div>
 			</td>
-			<td class="popup_content_btn popup_footer">
+			<td class="popup_content_btn popup_footer arm_padding_top_0">
 				<div class="popup_content_btn_wrapper arm_social_profile_fields_btn_wrapper">
-					<button class="arm_cancel_btn popup_close_btn arm_social_profile_fields_close_btn" type="button"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></button>
-					<button class="arm_save_btn arm_add_edit_social_profile_fields" id="arm_add_edit_social_profile_fields" type="button"><?php esc_html_e( 'Add', 'armember-membership' ); ?></button>
+					<button class="arm_cancel_btn popup_close_btn arm_social_profile_fields_close_btn arm_margin_top_0" type="button"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></button>
+					<button class="arm_save_btn arm_add_edit_social_profile_fields arm_margin_top_0" id="arm_add_edit_social_profile_fields" type="button"><?php esc_html_e( 'Add', 'armember-membership' ); ?></button>
 				</div>
 			</td>
 		</tr>
@@ -2343,7 +2343,7 @@ if ((!$isRegister && !$isEditProfile)) {
 		return GradientScheme;
 	}
 	jQuery(document).ready(function () {
-		jQuery('.arm_loading_grid').fadeIn('slow');
+		jQuery('.arm_loading_grid').fadeIn('fast');
 	});
 	jQuery(window).on("load", function () {
 		setTimeout(function () {
@@ -2351,10 +2351,8 @@ if ((!$isRegister && !$isEditProfile)) {
 		}, 100);
 		arm_disable_form_fields();
 		setTimeout(function () {
-			jQuery('.arm_editor_form_fileds_container').fadeIn();
-			setTimeout(function () {
-				jQuery('.arm_loading_grid').hide(0);
-			}, 800);
+			jQuery('.arm_loading_grid').hide(0);
+			jQuery('.arm_editor_form_fileds_container').fadeIn('slow');
 		}, 800);
 	});
 	jQuery(window).resize(function () {

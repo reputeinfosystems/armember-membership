@@ -30,6 +30,7 @@ function ChangeID(id){
 var add_setup_shortcode_text = '<span style="display: block;font-size: 12px;line-height: normal;text-align: left;"><?php esc_html_e('Shortcode will be display here once you save current setup.', 'armember-membership');?> </span>';
 
 jQuery(document).ready( function () {
+	jQuery('#armember_datatable').dataTable().fnDestroy();
 	arm_load_setup_list_grid();
 
 });
@@ -50,7 +51,7 @@ jQuery(document).on('keyup','#armmanagesearch_new',function(e){
 })
 
 function show_grid_loader(){
-	jQuery('#armember_datatable').hide();
+	jQuery('.dataTables_scroll').hide();
 	jQuery('.footer').hide();
 	jQuery('.arm_loading_grid').show();
 }
@@ -73,7 +74,6 @@ function arm_load_setup_list_grid(){
 		"oLanguage": {
 			"sInfo": __ARM_Showing + " _START_ " + __ARM_to + " _END_ " + __ARM_of + " _TOTAL_ " + __ARM_SETUPS,
 			"sInfoEmpty": __ARM_Showing_empty,
-		
 			"sLengthMenu": __ARM_PER_PAGE +"_MENU_",
 			"sEmptyTable": __ARM_NO_FOUND,
 			"sZeroRecords": __ARM_NO_MATCHING,
@@ -84,7 +84,6 @@ function arm_load_setup_list_grid(){
 			"search":"",
 		},
 		"bProcessing": false,
-		"responsive": true,
 		"bServerSide": true,
 		"sAjaxSource": ajax_url,
 		"sServerMethod": "POST",
@@ -98,6 +97,8 @@ function arm_load_setup_list_grid(){
 		"bJQueryUI": true,
 		"bPaginate": true,
 		"bAutoWidth" : false,
+		"sScrollX": "100%",
+        "bScrollCollapse": true,
 		"aaSorting": [],
 		"aoColumnDefs": [
 			{ "bVisible": false, "aTargets": [] },
@@ -138,7 +139,7 @@ function arm_load_setup_list_grid(){
 			});
 		},
 		"fnDrawCallback":function(){		
-			jQuery('#armember_datatable').show();
+			jQuery('.dataTables_scroll').show();
 			jQuery('.footer').show();
 			jQuery('.arm_loading_grid').hide();
 			arm_show_data();	
@@ -193,34 +194,32 @@ function ChangeID(id) {
 			<div class="armclear"></div>
 		</div>
 		<div class="arm_solid_divider"></div>
-		<div class="arm_membership_setups_list">
-			
 			<form method="GET" id="subscription_setup_list_form" class="data_grid_list">
 				<input type="hidden" name="page" value="<?php echo esc_attr($arm_slugs->membership_setup); //phpcs:ignore ?>" />
 				<input type="hidden" name="armaction" value="list" />
-				<div id="armmainformnewlist">
-					<div class="arm_loading_grid" style="display: none;"><?php $arm_loader = $arm_common_lite->arm_loader_img_func();
-					echo $arm_loader; //phpcs:ignore ?></div>
-					<table cellpadding="0" cellspacing="0" border="0" class="display arm_on_display" id="armember_datatable" style="visibility: hidden;">
-						<thead>
-							<tr>
-								<th class="arm_min_width_50"><?php esc_html_e( 'Setup Name', 'armember-membership' ); ?></th>
-								<?php if($ARMemberLite->is_arm_pro_active)
-								{
-									if( ( $arm_pay_per_post_feature->isPayPerPostFeature || is_plugin_active('armembergift/armembergift.php'))){?> 
-									<th class="arm_min_width_50"><?php esc_html_e('Setup Type','armember-membership');?></th>
-									<?php }
-								}?>
-								<th class="arm_min_width_120"><?php esc_html_e( 'Plans', 'armember-membership' ); ?></th>
-								<th class="arm_width_150"><?php esc_html_e( 'Shortcode', 'armember-membership' ); ?></th>
-								<th style="arm_width_100"><?php esc_html_e( 'Gateways', 'armember-membership' ); ?></th>
-								<th class="arm_width_120"><?php esc_html_e( 'Member Form', 'armember-membership' ); ?></th>
-															
-								<th data-key="armGridActionTD" class="armGridActionTD noVis"></th>
-							</tr>
-						</thead>
-						
-					</table>
+				<div class="arm_loading_grid" style="display: none;"><?php $arm_loader = $arm_common_lite->arm_loader_img_func();
+				echo $arm_loader; //phpcs:ignore ?></div>
+				<div id="armmainformnewlist" class="arm_filter_grid_list_container">
+				<table cellpadding="0" cellspacing="0" border="0" class="display arm_hide_datatable arm_on_display" id="armember_datatable" style="visibility: hidden;">
+					<thead>
+						<tr>
+							<th class="arm_min_width_100"><?php esc_html_e( 'Setup Name', 'armember-membership' ); ?></th>
+							<?php if($ARMemberLite->is_arm_pro_active)
+							{
+								if( ( $arm_pay_per_post_feature->isPayPerPostFeature || is_plugin_active('armembergift/armembergift.php'))){?> 
+								<th class="arm_min_width_100"><?php esc_html_e('Setup Type','armember-membership');?></th>
+								<?php }
+							}?>
+							<th class="arm_min_width_120"><?php esc_html_e( 'Plans', 'armember-membership' ); ?></th>
+							<th class="arm_min_width_200"><?php esc_html_e( 'Shortcode', 'armember-membership' ); ?></th>
+							<th style="arm_min_width_150"><?php esc_html_e( 'Gateways', 'armember-membership' ); ?></th>
+							<th class="arm_min_width_120"><?php esc_html_e( 'Member Form', 'armember-membership' ); ?></th>
+														
+							<th data-key="armGridActionTD" class="armGridActionTD noVis"></th>
+						</tr>
+					</thead>
+					
+				</table>
 				<div class="armclear"></div>
 				<input type="hidden" name="show_hide_columns" id="show_hide_columns" value="<?php esc_attr_e( 'Show / Hide columns', 'armember-membership' ); ?>"/>
 				<input type="hidden" name="search_grid" id="search_grid" value="<?php esc_attr_e( 'Search', 'armember-membership' ); ?>"/>
@@ -235,10 +234,9 @@ function ChangeID(id) {
 				<input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_attr_e( 'total', 'armember-membership' ); ?>"/>
 				<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>
 				<input type="hidden" name="arm_wp_nonce" value="<?php echo esc_attr($wpnonce);?>"/>
-				</div>
-				<div class="footer_grid"></div>
+			</div>
+			<div class="footer_grid"></div>
 			</form>
-		</div>
 		<div class="armclear"></div>
 	</div>
 </div>

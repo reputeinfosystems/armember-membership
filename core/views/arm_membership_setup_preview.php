@@ -77,7 +77,7 @@ wp_print_scripts( 'arm_form_validation' );
 		height: 100% !important;
 		overflow-x: hidden;
 		overflow-y: auto;
-		padding: 10px 30px 40px;
+		padding: 10px 8% 40px;
 		box-sizing: border-box;
 	}
 	.arm_setup_form_container form{

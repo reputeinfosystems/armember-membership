@@ -829,16 +829,16 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 
 						$trans_records  = '';
 						$trans_records .= '<div class="arm_user_transaction_wrapper" data-user_id="' . esc_attr($user_id) . '">';
-						$trans_records .= '<table class="form-table arm_member_last_subscriptions_table" width="100%">';
+						$trans_records .= '<table class="form-table arm_member_last_subscriptions_table arm_view_member_history" width="100%">';
 					$trans_records     .= '<tr>';
 					$trans_records     .= '<td>#</td>';
-					$trans_records     .= '<td>' . esc_html__( 'Membership', 'armember-membership' ) . '</td>';
-						$trans_records .= '<td>' . esc_html__( 'Payment Type', 'armember-membership' ) . '</td>';
-						$trans_records .= '<td>' . esc_html__( 'Transaction Status', 'armember-membership' ) . '</td>';
-						$trans_records .= '<td>' . esc_html__( 'Gateway', 'armember-membership' ) . '</td>';
-						$trans_records .= '<td>' . esc_html__( 'Amount', 'armember-membership' ) . '</td>';
+					$trans_records     .= '<td class="arm_min_width_160">' . esc_html__( 'Membership', 'armember-membership' ) . '</td>';
+						$trans_records .= '<td class="arm_min_width_100">' . esc_html__( 'Payment Type', 'armember-membership' ) . '</td>';
+						$trans_records .= '<td class="arm_min_width_150">' . esc_html__( 'Transaction Status', 'armember-membership' ) . '</td>';
+						$trans_records .= '<td class="arm_min_width_100">' . esc_html__( 'Gateway', 'armember-membership' ) . '</td>';
+						$trans_records .= '<td class="arm_min_width_100">' . esc_html__( 'Amount', 'armember-membership' ) . '</td>';
 
-						$trans_records .= '<td>' . esc_html__( 'Payment Date', 'armember-membership' ) . '</td>';
+						$trans_records .= '<td class="arm_min_width_160">' . esc_html__( 'Payment Date', 'armember-membership' ) . '</td>';
 						$trans_records .= '</tr>';
 
 						$i                   = 1;

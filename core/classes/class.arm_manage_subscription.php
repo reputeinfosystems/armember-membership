@@ -1000,7 +1000,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 
                         $gridAction .= "<a href='javascript:void(0)' data-cancel_activity_type='" . esc_attr($status) . "'  data-cancel_activity_id='" . esc_attr($activityID) . "' onclick='showConfirmBoxCallback(".esc_attr($activityID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg' class='armhelptip' title='" . esc_attr__('Cancel', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg';\" /></a>"; //phpcs:ignore
                         $arm_transaction_del_cls = 'arm_activity_delete_btn';
-                        $gridAction .= $arm_global_settings->arm_get_confirm_box($activityID, esc_html__("Are you sure you want to cancel this subscription  ?", 'armember-membership'), $arm_transaction_del_cls,'',esc_html__("Cancel", 'armember-membership'),esc_html__("Close", 'armember-membership'),esc_html__("Cancel Subscription", 'armember-membership'));
+                        $gridAction .= $arm_global_settings->arm_get_confirm_box($activityID, esc_html__("Are you sure you want to cancel this subscription  ?", 'armember-membership'), $arm_transaction_del_cls,'',esc_html__("Confirm", 'armember-membership'),esc_html__("Close", 'armember-membership'),esc_html__("Cancel Subscription", 'armember-membership'));
 
                     }
                     if($status == 'suspended')

@@ -4469,7 +4469,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$temp_data = explode( '/', $fileUrl );
 								$file_name_key = array_key_last($temp_data);
 								$file_name = $temp_data[$file_name_key];
-								$output .= '<div class="arm_uploaded_file_info"><img alt="" src="' . esc_attr($fileUrl) . '"/><span class="arm_uploaded_file_name">' . $file_name . '</span>'; //phpcs:ignore 
+								$output .= '<div class="arm_uploaded_file_info"><a href="'.esc_attr($fileUrl).'" target="_blank"><img alt="" src="' . esc_attr($fileUrl) . '"/><span class="arm_uploaded_file_name">' . $file_name . '</span></a>'; //phpcs:ignore 
 								$output .= '<div class="armFileRemoveContainer"><img src="'.MEMBERSHIPLITE_IMAGES_URL.'/delete.svg" class="armhelptip tipso_style" onmouseover="this.src=\''.MEMBERSHIPLITE_IMAGES_URL.'/delete_hover.svg\';" onmouseout="this.src=\''.MEMBERSHIPLITE_IMAGES_URL.'/delete.svg\';"></div></div>';
 							}
 							$output .= '</div>';
@@ -5159,7 +5159,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 		}
 
 		function arm_admin_save_member_details_func() {
-			global $wp, $wpdb, $current_user, $arm_slugs, $arm_lite_errors, $ARMemberLite, $arm_members_class, $arm_global_settings, $arm_subscription_plans, $arm_manage_communication, $arm_capabilities_global;
+			global $wp, $wpdb, $current_user, $arm_slugs, $arm_lite_errors, $ARMemberLite, $arm_members_class, $arm_global_settings, $arm_subscription_plans, $arm_manage_communication, $arm_capabilities_global,$arm_social_feature;
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_members'], '1' );
 			//$redirect_to = admin_url( 'admin.php?page=' . $arm_slugs->manage_members );
 			$response = array("type"=>"error","msg" => esc_html__("Something Went Wrong while sumbitting a form",'armember-membership'));
@@ -5168,10 +5168,10 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			$member_data['repeat_pass'] = !empty($_POST['repeat_pass']) ? $_POST['repeat_pass'] : '';
 			if ( ! empty( $member_data['arm_action'] ) && in_array( $member_data['arm_action'], array( 'add_member', 'update_member' ) ) ) {
 				if ( preg_match( '/\s/', $member_data['user_pass'] ) ) {
-					unset( $member_data );
-					$message = esc_html__( 'Space not allowed in password field', 'armember-membership' );
-					$arm_lite_errors->add( 'arm_reg_error', $message );
-					return $arm_lite_errors;
+					$message = esc_html__( 'This password is invalid because it uses illegal characters or whitespace. Please enter a valid password.', 'armember-membership' );
+					$response = array("type"=>"error","msg" => $message);
+                    echo arm_pattern_json_encode($response);
+                    die();
 				}
 				
 				$arm_file_upload_arr= isset( $_SESSION['arm_file_upload_arr'] ) ? $_SESSION['arm_file_upload_arr'] : array(); //phpcs:ignore
@@ -5416,6 +5416,26 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					update_user_meta( $user_ID, 'arm_user_suspended_plan_ids', $arm_user_suspended_plan_ids );
 
 					unset( $member_data['arm_user_suspended_plan'] );
+
+					if($arm_social_feature->isSocialFeature)
+                    {
+                        $arm_is_social_fields_arr = array();
+                        if(!empty($member_data['arm_member_social_ac_selection']))
+                        {
+                            $arm_is_social_fields_arr = $member_data['arm_member_social_ac_selection'];
+                        }
+                        $member_data['arm_member_social_ac_selection'] = $arm_is_social_fields_arr;
+						$socialProfileFields = $this->arm_social_profile_field_types();
+						if (!empty($socialProfileFields) ) {
+							foreach ($socialProfileFields as $spfKey => $spfLabel) {
+								$spfMetaKey = 'arm_social_field_' . $spfKey;
+								if(empty($member_data[$spfMetaKey]))
+								{
+									$member_data[$spfMetaKey] = '';
+								}
+							}
+						}
+                    }
 					
 					$admin_save_flag = 1;
 					do_action( 'arm_member_update_meta', $user_ID, $member_data, $admin_save_flag );
@@ -6839,7 +6859,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 									if ( $start_time <= strtotime( current_time( 'mysql' ) ) ) {
 
 										if ( ! empty( $planObj->plan_role ) ) {
-											$user->set_role( $planObj->plan_role );
+											$user->add_role( $planObj->plan_role );
 										}
 									}
 								}

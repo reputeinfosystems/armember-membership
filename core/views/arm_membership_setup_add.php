@@ -153,7 +153,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 								<div class="arm_setup_option_label"><?php esc_html_e( 'Setup Name', 'armember-membership' ); ?></div>
 								<div class="arm_setup_option_input arm_setup_forms_container arm_width_100_pct">
 									<div class="arm_setup_module_box">
-										<input name="setup_data[setup_name]" id="setup_name"  class="arm_width_100_pct arm_max_width_95_pct" type="text"  title="Setup name" value="<?php echo esc_attr($setup_name); ?>" data-msg-required="<?php esc_attr_e( 'Setup name can not be left blank.', 'armember-membership' ); ?>" placeholder="<?php esc_attr_e( 'Setup name', 'armember-membership' ); ?>" required />
+										<input name="setup_data[setup_name]" id="setup_name"  class="arm_width_100_pct" type="text"  title="Setup name" value="<?php echo esc_attr($setup_name); ?>" data-msg-required="<?php esc_attr_e( 'Setup name can not be left blank.', 'armember-membership' ); ?>" placeholder="<?php esc_attr_e( 'Setup name', 'armember-membership' ); ?>" required />
 										<span class="arm_setup_error_msg"></span>
 									</div>
 									<div class="armclear"></div>
@@ -430,6 +430,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 						
 						<div class="arm_setup_section_body arm_basic_setup_body">
 							<div class="arm_setup_section_title arm_margin_top_20 arm_margin_bottom_24 arm_font_size_16"><?php esc_html_e( 'Basic', 'armember-membership' ); ?></div>
+							<div class="arm_form_input_section_field_grid arm_width_100_pct">
                             <?php echo $arm_setup_preview_split_string; //phpcs:ignore 
 							if($ARMemberLite->is_arm_pro_active)
 							{
@@ -479,6 +480,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 								<input type='hidden' id="arm_setup_gateway_skin" name="setup_data[setup_modules][style][gateway_skin]" class="arm_setup_gateway_skin" value="radio" />
 							<?php }
 							?>
+							</div>
 							<div class="arm_setup_option_field arm_hide_current_plan_section arm_width_100_pct">
 								<div class="arm_setup_option_label"></div>
 								<div class="arm_setup_option_input">
@@ -509,147 +511,150 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 							</div>
 							<div class="arm_solid_divider"></div>
 							<div class="arm_setup_section_title arm_margin_top_20 arm_margin_bottom_24 arm_font_size_16"><?php esc_html_e( 'Layouts', 'armember-membership' ); ?></div>
-							<div class="arm_setup_option_field">
-								<div class="arm_setup_option_label"><?php esc_html_e( 'Content Width', 'armember-membership' ); ?><i class="arm_helptip_icon armfa armfa-question-circle" title='<?php esc_html_e( 'Leave blank for auto width', 'armember-membership' ); ?>'></i></div>
-								<div class="arm_setup_option_input">
-									<?php
-									$setup_content_width = ( $setup_modules['style']['content_width'] == 0 && $setup_modules['style']['content_width'] != '' ) ? 800 : $setup_modules['style']['content_width'];
-									?>
-									<input type="text" name="setup_data[setup_modules][style][content_width]" value="<?php echo intval($setup_content_width); ?>" class="arm_setup_shortcode_form_width">
-									<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix">px</span>
-								</div>
-							</div>
-							<div class="arm_setup_option_field">
-								<div class="arm_setup_option_label"><?php esc_html_e( 'Form Position', 'armember-membership' ); ?></div>
-								<div class="arm_setup_option_input arm_padding_top_15">
-									<?php
-									$formPosition = ( isset( $setup_modules['style']['form_position'] ) && ! empty( $setup_modules['style']['form_position'] ) ) ? $setup_modules['style']['form_position'] : 'left';
-									?>
-									<div class="arm_column_layout_types_container arm_form_align">
-										<label class="arm_flex arm_active_label">
-											<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_left.svg" alt="">
-											<img class="arm_active_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_left_hover.svg" alt="">
-											<input type="radio" class="arm_iradio arm_setup_form_position_radio" name="setup_data[setup_modules][style][form_position]" value="left" <?php checked( $formPosition, 'left', true ); ?> id="arm_setup_form_position_left"><span><?php esc_html_e('Left','armember-membership');?></span>
-										</label>
-										<label class="arm_flex arm_active_label">
-											<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_center.svg" alt="">
-											<img class="arm_active_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_center_hover.svg" alt="">
-											<input type="radio" class="arm_iradio arm_setup_form_position_radio" name="setup_data[setup_modules][style][form_position]" value="center" <?php checked( $formPosition, 'center', true ); ?> id="arm_setup_form_position_center"><span><?php esc_html_e('Center','armember-membership');?></span>
-										</label>
-
-										<label class="arm_flex arm_active_label">
-											<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_right.svg" alt="">
-											<img class="arm_active_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_right_hover.svg" alt="">
-											<input type="radio" class="arm_iradio arm_setup_form_position_radio" name="setup_data[setup_modules][style][form_position]" value="right" <?php checked( $formPosition, 'right', true ); ?> id="arm_setup_form_position_right"><span><?php esc_html_e('Right','armember-membership');?></span>
-										</label>
+							<div class="arm_form_input_section_field_grid arm_width_100_pct">
+								<div class="arm_setup_option_field">
+									<div class="arm_setup_option_label"><?php esc_html_e( 'Content Width', 'armember-membership' ); ?><i class="arm_helptip_icon armfa armfa-question-circle" title='<?php esc_html_e( 'Leave blank for auto width', 'armember-membership' ); ?>'></i></div>
+									<div class="arm_setup_option_input">
+										<?php
+										$setup_content_width = ( $setup_modules['style']['content_width'] == 0 && $setup_modules['style']['content_width'] != '' ) ? 800 : $setup_modules['style']['content_width'];
+										?>
+										<input type="text" name="setup_data[setup_modules][style][content_width]" value="<?php echo intval($setup_content_width); ?>" class="arm_setup_shortcode_form_width">
+										<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix">px</span>
 									</div>
-									
+								</div>
+								<div class="arm_setup_option_field">
+									<div class="arm_setup_option_label"><?php esc_html_e( 'Form Position', 'armember-membership' ); ?></div>
+									<div class="arm_setup_option_input arm_padding_top_15">
+										<?php
+										$formPosition = ( isset( $setup_modules['style']['form_position'] ) && ! empty( $setup_modules['style']['form_position'] ) ) ? $setup_modules['style']['form_position'] : 'left';
+										?>
+										<div class="arm_column_layout_types_container arm_form_align">
+											<label class="arm_flex arm_active_label">
+												<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_left.svg" alt="">
+												<img class="arm_active_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_left_hover.svg" alt="">
+												<input type="radio" class="arm_iradio arm_setup_form_position_radio" name="setup_data[setup_modules][style][form_position]" value="left" <?php checked( $formPosition, 'left', true ); ?> id="arm_setup_form_position_left"><span><?php esc_html_e('Left','armember-membership');?></span>
+											</label>
+											<label class="arm_flex arm_active_label">
+												<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_center.svg" alt="">
+												<img class="arm_active_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_center_hover.svg" alt="">
+												<input type="radio" class="arm_iradio arm_setup_form_position_radio" name="setup_data[setup_modules][style][form_position]" value="center" <?php checked( $formPosition, 'center', true ); ?> id="arm_setup_form_position_center"><span><?php esc_html_e('Center','armember-membership');?></span>
+											</label>
+	
+											<label class="arm_flex arm_active_label">
+												<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_right.svg" alt="">
+												<img class="arm_active_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_right_hover.svg" alt="">
+												<input type="radio" class="arm_iradio arm_setup_form_position_radio" name="setup_data[setup_modules][style][form_position]" value="right" <?php checked( $formPosition, 'right', true ); ?> id="arm_setup_form_position_right"><span><?php esc_html_e('Right','armember-membership');?></span>
+											</label>
+										</div>
+										
+									</div>
 								</div>
 							</div>
 							<div class="arm_solid_divider"></div>
-							<?php echo $arm_setup_preview_split_string; //phpcs:ignore
-                             $arm_class = "";
-							 if($ARMemberLite->is_arm_pro_active)
-							 {
-								$setup_modules['style']['plan_skin'] = 'skin3';
-							 }
-                             if($setup_modules['style']['plan_skin'] == 'skin6')
-                             {
-                                 $arm_class = 'arm_hide';
-                                 $setup_modules['plans_columns'] = $setup_modules['cycle_columns'] = $setup_modules['gateways_columns'] = 1;
-                             }
-                             ?>
-
-							<div class="arm_setup_option_field">
-								<div class="arm_setup_option_label arm_padding_top_12">
-									<?php esc_html_e( 'Select Plan Layout', 'armember-membership' ); ?>
-								</div>
-								<div class="arm_setup_option_input">
-									<?php $planColumnType = ( ! empty( $setup_modules['plans_columns'] ) ) ? $setup_modules['plans_columns'] : '3'; ?>
-									<div class="arm_column_layout_types_container <?php echo esc_attr($arm_class);?>">
-										<label class="<?php echo ( $planColumnType == 1 ) ? 'arm_active_label' : ''; ?>">
-											<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/single_column.png" alt=""/>
-											<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/single_column_hover.png" alt=""/>
-											<input type="radio" name="setup_data[setup_modules][plans_columns]" value="1" class="arm_column_layout_type_radio" data-module="plans" <?php checked( $planColumnType, 1, true ); ?>>
-										</label>
-										<label class="<?php echo ( $planColumnType == 2 ) ? 'arm_active_label' : ''; ?>">
-											<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/two_column.png" alt=""/>
-											<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/two_column_hover.png" alt=""/>
-											<input type="radio" name="setup_data[setup_modules][plans_columns]" value="2" class="arm_column_layout_type_radio" data-module="plans" <?php checked( $planColumnType, 2, true ); ?>>
-										</label>
-										<label class="<?php echo ( $planColumnType == 3 ) ? 'arm_active_label' : ''; ?>">
-											<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/three_column.png" alt=""/>
-											<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/three_column_hover.png" alt=""/>
-											<input type="radio" name="setup_data[setup_modules][plans_columns]" value="3" class="arm_column_layout_type_radio" data-module="plans" <?php checked( $planColumnType, 3, true ); ?>>
-										</label>
-										<label class="<?php echo ( $planColumnType == 4 ) ? 'arm_active_label' : ''; ?>">
-											<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/four_column.png" alt=""/>
-											<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/four_column_hover.png" alt=""/>
-											<input type="radio" name="setup_data[setup_modules][plans_columns]" value="4" class="arm_column_layout_type_radio" data-module="plans" <?php checked( $planColumnType, 4, true ); ?>>
-										</label>
-										<div class="armclear"></div>
+							<div class="arm_form_input_section_field_grid arm_width_100_pct">
+								<?php echo $arm_setup_preview_split_string; //phpcs:ignore
+								 $arm_class = "";
+								 if($ARMemberLite->is_arm_pro_active)
+								 {
+									$setup_modules['style']['plan_skin'] = 'skin3';
+								 }
+								 if($setup_modules['style']['plan_skin'] == 'skin6')
+								 {
+									 $arm_class = 'arm_hide';
+									 $setup_modules['plans_columns'] = $setup_modules['cycle_columns'] = $setup_modules['gateways_columns'] = 1;
+								 }
+								 ?>
+								<div class="arm_setup_option_field">
+									<div class="arm_setup_option_label arm_padding_top_12">
+										<?php esc_html_e( 'Select Plan Layout', 'armember-membership' ); ?>
 									</div>
-									<ul class="arm_membership_setup_sub_ul arm_setup_plans_ul arm_setup_plan_layout_list arm_max_width_785 arm_column_<?php echo esc_attr($planColumnType); //phpcs:ignore ?>" style="<?php echo ( empty( $selectedPlans ) ) ? 'display:none;' : ''; ?>">
-										<?php echo $arm_membership_setup->arm_setup_plan_layout_list_options( $planOrders, $selectedPlans, $user_selected_plan ); //phpcs:ignore ?>
-									</ul>
-								</div>
-							</div>
-							<?php 
-							$arm_plan_cycle_skin = '';
-							echo apply_filters( 'arm_plan_cycle_skin_types', $arm_plan_cycle_skin, $setup_data,$setup_modules,$arm_class); //phpcs:ignore
-							?>
-													
-							<div class="arm_setup_option_field">
-								<div class="arm_setup_option_label arm_padding_top_12"><?php esc_html_e( 'Select Payment Gateway Layout', 'armember-membership' ); ?></div>
-								<div class="arm_setup_option_input">
-									<?php
-									$gatewayColumnType = ( ! empty( $setup_modules['gateways_columns'] ) ) ? $setup_modules['gateways_columns'] : '1';
-									$orderGateways     = $arm_membership_setup->arm_sort_module_by_order( $allGateways, $gatewayOrders );
-									?>
-									<div class="arm_column_layout_types_container <?php echo esc_attr($arm_class);?>">
-										<label class="<?php echo ( $gatewayColumnType == 1 ) ? 'arm_active_label' : ''; ?>">
-											<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/single_column.png" alt=""/>
-											<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/single_column_hover.png" alt=""/>
-											<input type="radio" name="setup_data[setup_modules][gateways_columns]" value="1" class="arm_column_layout_type_radio" data-module="gateways" <?php checked( $gatewayColumnType, 1, true ); ?>>
-										</label>
-										<label class="<?php echo ( $gatewayColumnType == 2 ) ? 'arm_active_label' : ''; ?>">
-											<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/two_column.png" alt=""/>
-											<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/two_column_hover.png" alt=""/>
-											<input type="radio" name="setup_data[setup_modules][gateways_columns]" value="2" class="arm_column_layout_type_radio" data-module="gateways" <?php checked( $gatewayColumnType, 2, true ); ?>>
-										</label>
-										<label class="<?php echo ( $gatewayColumnType == 3 ) ? 'arm_active_label' : ''; ?>">
-											<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/three_column.png" alt=""/>
-											<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/three_column_hover.png" alt=""/>
-											<input type="radio" name="setup_data[setup_modules][gateways_columns]" value="3" class="arm_column_layout_type_radio" data-module="gateways" <?php checked( $gatewayColumnType, 3, true ); ?>>
-										</label>
-										<label class="<?php echo ( $gatewayColumnType == 4 ) ? 'arm_active_label' : ''; ?>">
-											<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/four_column.png" alt=""/>
-											<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore	 ?>/four_column_hover.png" alt=""/>
-											<input type="radio" name="setup_data[setup_modules][gateways_columns]" value="4" class="arm_column_layout_type_radio" data-module="gateways" <?php checked( $gatewayColumnType, 4, true ); ?>>
-										</label>
-										<div class="armclear"></div>
+									<div class="arm_setup_option_input">
+										<?php $planColumnType = ( ! empty( $setup_modules['plans_columns'] ) ) ? $setup_modules['plans_columns'] : '3'; ?>
+										<div class="arm_column_layout_types_container <?php echo esc_attr($arm_class);?>">
+											<label class="<?php echo ( $planColumnType == 1 ) ? 'arm_active_label' : ''; ?>">
+												<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/single_column.png" alt=""/>
+												<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/single_column_hover.png" alt=""/>
+												<input type="radio" name="setup_data[setup_modules][plans_columns]" value="1" class="arm_column_layout_type_radio" data-module="plans" <?php checked( $planColumnType, 1, true ); ?>>
+											</label>
+											<label class="<?php echo ( $planColumnType == 2 ) ? 'arm_active_label' : ''; ?>">
+												<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/two_column.png" alt=""/>
+												<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/two_column_hover.png" alt=""/>
+												<input type="radio" name="setup_data[setup_modules][plans_columns]" value="2" class="arm_column_layout_type_radio" data-module="plans" <?php checked( $planColumnType, 2, true ); ?>>
+											</label>
+											<label class="<?php echo ( $planColumnType == 3 ) ? 'arm_active_label' : ''; ?>">
+												<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/three_column.png" alt=""/>
+												<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/three_column_hover.png" alt=""/>
+												<input type="radio" name="setup_data[setup_modules][plans_columns]" value="3" class="arm_column_layout_type_radio" data-module="plans" <?php checked( $planColumnType, 3, true ); ?>>
+											</label>
+											<label class="<?php echo ( $planColumnType == 4 ) ? 'arm_active_label' : ''; ?>">
+												<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/four_column.png" alt=""/>
+												<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/four_column_hover.png" alt=""/>
+												<input type="radio" name="setup_data[setup_modules][plans_columns]" value="4" class="arm_column_layout_type_radio" data-module="plans" <?php checked( $planColumnType, 4, true ); ?>>
+											</label>
+											<div class="armclear"></div>
+										</div>
+										<ul class="arm_membership_setup_sub_ul arm_setup_plans_ul arm_setup_plan_layout_list arm_max_width_785 arm_column_<?php echo esc_attr($planColumnType); //phpcs:ignore ?>" style="<?php echo ( empty( $selectedPlans ) ) ? 'display:none;' : ''; ?>">
+											<?php echo $arm_membership_setup->arm_setup_plan_layout_list_options( $planOrders, $selectedPlans, $user_selected_plan ); //phpcs:ignore ?>
+										</ul>
 									</div>
-									<ul class="arm_membership_setup_sub_ul arm_setup_gateways_ul arm_column_<?php echo intval($gatewayColumnType); ?>" style="<?php echo ( empty( $selectedPlans ) && empty( $arm_setup_type ) ) ? 'display:none;' : ''; ?>">
-									<?php if ( ! empty( $orderGateways ) ) : ?>
+								</div>
+								<?php 
+								$arm_plan_cycle_skin = '';
+								echo apply_filters( 'arm_plan_cycle_skin_types', $arm_plan_cycle_skin, $setup_data,$setup_modules,$arm_class); //phpcs:ignore
+								?>
+														
+								<div class="arm_setup_option_field">
+									<div class="arm_setup_option_label arm_padding_top_12"><?php esc_html_e( 'Select Payment Gateway Layout', 'armember-membership' ); ?></div>
+									<div class="arm_setup_option_input">
 										<?php
-										$gi = 1;
-										foreach ( $orderGateways as $key => $pg ) :
-											?>
-											<?php
-											$gateweyClass  = 'arm_membership_setup_gateways_li_' . $key;
-											$gateweyClass .= ( ( in_array( $key, $selectedGateways ) && ( isset( $pg['status'] ) && $pg['status'] == '1' ) ) ? '' : ' hidden_section ' );
-											?>
-											<li class="arm_membership_setup_sub_li arm_membership_setup_gateways_li <?php echo esc_attr($gateweyClass); ?>">
-												<div class="arm_membership_setup_sortable_icon"></div>
-												<span><?php echo esc_html($pg['gateway_name']); ?></span>
-												<input type="hidden" name="setup_data[setup_modules][modules][gateways_order][<?php echo esc_attr($key); ?>]" value="<?php echo intval($gi); ?>" class="arm_module_options_order">
-											</li>
-											<?php
-											$gi++;
-										endforeach;
+										$gatewayColumnType = ( ! empty( $setup_modules['gateways_columns'] ) ) ? $setup_modules['gateways_columns'] : '1';
+										$orderGateways     = $arm_membership_setup->arm_sort_module_by_order( $allGateways, $gatewayOrders );
 										?>
-									<?php endif; ?>
-									</ul>
+										<div class="arm_column_layout_types_container <?php echo esc_attr($arm_class);?>">
+											<label class="<?php echo ( $gatewayColumnType == 1 ) ? 'arm_active_label' : ''; ?>">
+												<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/single_column.png" alt=""/>
+												<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/single_column_hover.png" alt=""/>
+												<input type="radio" name="setup_data[setup_modules][gateways_columns]" value="1" class="arm_column_layout_type_radio" data-module="gateways" <?php checked( $gatewayColumnType, 1, true ); ?>>
+											</label>
+											<label class="<?php echo ( $gatewayColumnType == 2 ) ? 'arm_active_label' : ''; ?>">
+												<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/two_column.png" alt=""/>
+												<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/two_column_hover.png" alt=""/>
+												<input type="radio" name="setup_data[setup_modules][gateways_columns]" value="2" class="arm_column_layout_type_radio" data-module="gateways" <?php checked( $gatewayColumnType, 2, true ); ?>>
+											</label>
+											<label class="<?php echo ( $gatewayColumnType == 3 ) ? 'arm_active_label' : ''; ?>">
+												<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/three_column.png" alt=""/>
+												<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/three_column_hover.png" alt=""/>
+												<input type="radio" name="setup_data[setup_modules][gateways_columns]" value="3" class="arm_column_layout_type_radio" data-module="gateways" <?php checked( $gatewayColumnType, 3, true ); ?>>
+											</label>
+											<label class="<?php echo ( $gatewayColumnType == 4 ) ? 'arm_active_label' : ''; ?>">
+												<img class="arm_inactive_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/four_column.png" alt=""/>
+												<img class="arm_active_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore	 ?>/four_column_hover.png" alt=""/>
+												<input type="radio" name="setup_data[setup_modules][gateways_columns]" value="4" class="arm_column_layout_type_radio" data-module="gateways" <?php checked( $gatewayColumnType, 4, true ); ?>>
+											</label>
+											<div class="armclear"></div>
+										</div>
+										<ul class="arm_membership_setup_sub_ul arm_setup_gateways_ul arm_column_<?php echo intval($gatewayColumnType); ?>" style="<?php echo ( empty( $selectedPlans ) && empty( $arm_setup_type ) ) ? 'display:none;' : ''; ?>">
+										<?php if ( ! empty( $orderGateways ) ) : ?>
+											<?php
+											$gi = 1;
+											foreach ( $orderGateways as $key => $pg ) :
+												?>
+												<?php
+												$gateweyClass  = 'arm_membership_setup_gateways_li_' . $key;
+												$gateweyClass .= ( ( in_array( $key, $selectedGateways ) && ( isset( $pg['status'] ) && $pg['status'] == '1' ) ) ? '' : ' hidden_section ' );
+												?>
+												<li class="arm_membership_setup_sub_li arm_membership_setup_gateways_li <?php echo esc_attr($gateweyClass); ?>">
+													<div class="arm_membership_setup_sortable_icon"></div>
+													<span><?php echo esc_html($pg['gateway_name']); ?></span>
+													<input type="hidden" name="setup_data[setup_modules][modules][gateways_order][<?php echo esc_attr($key); ?>]" value="<?php echo intval($gi); ?>" class="arm_module_options_order">
+												</li>
+												<?php
+												$gi++;
+											endforeach;
+											?>
+										<?php endif; ?>
+										</ul>
+									</div>
 								</div>
 							</div>
                             <?php echo $arm_setup_preview_split_string; //phpcs:ignore 
@@ -694,7 +699,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 </div>
 <div class="popup_wrapper arm_preview_setup_shortcode_popup_wrapper">
 	<div class="popup_wrapper_inner">
-		<div class="popup_header">
+		<div class="popup_header page_title">
 			<span class="popup_close_btn arm_popup_close_btn arm_preview_setup_shortcode_close_btn"></span>
 			<span class="add_rule_content"><?php esc_html_e( 'Preview', 'armember-membership' ); ?></span>
 		</div>

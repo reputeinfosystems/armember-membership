@@ -570,11 +570,9 @@ jQuery(document).ready(function ($){
 					}
 				}
 				DTable.dataTable().fnAdjustColumnSizing(false);
-				jQuery(".arm_all_rule_plan_chks").prop("checked", false);
 			}, 1000);
 			jQuery('.DTFC_ScrollWrapper').show();
 			jQuery('.footer').show();
-            // jQuery(".arm_all_rule_plan_chks").prop("checked", false);
 		},
 	});
 
@@ -607,7 +605,7 @@ jQuery(document).ready(function ($){
 				$this.prop('indeterminate', false);
 				$this.prop('checked', true);
 			} else {
-				$this.data('checked', 2);
+				$this.attr('data-checked', 0);
 				$this.prop('indeterminate', true);
 			}
 		});
@@ -719,8 +717,10 @@ jQuery(document).ready(function ($){
 			delete armRules[item_id]["plans"][plan_id];
 		}
 		if (jQuery('input.arm_rule_plan_chks[data-plan_id="' + plan_id + '"]').length == jQuery('input.arm_rule_plan_chks[data-plan_id="' + plan_id + '"]:checked').length) {
+			jQuery(".arm_all_rules_checkbox_" + plan_id).data('checked', 1);
 			jQuery(".arm_all_rules_checkbox_" + plan_id).prop("checked", true);
 		} else {
+			jQuery(".arm_all_rules_checkbox_" + plan_id).data('checked', 0);
 			jQuery(".arm_all_rules_checkbox_" + plan_id).prop("checked", false);
 		}
 	});
@@ -730,8 +730,9 @@ jQuery(document).ready(function ($){
 		var plan_id = $this.attr('data-plan_id');
 		switch ($this.data('checked')) {
 		  case 1:
-			$this.data('checked', 2);
+			$this.data('checked', 0);
 			$this.prop('indeterminate', true);
+			$this.prop('checked', false);
 			jQuery('input.arm_rule_plan_chks[data-plan_id="' + plan_id + '"]').each(function() {
 				var item_id = jQuery(this).attr('data-item_id');
 				if (armDefaultRules[item_id]["plans"][plan_id] != undefined && armDefaultRules[item_id]["plans"][plan_id] == '1') {
@@ -758,6 +759,21 @@ jQuery(document).ready(function ($){
 						armRules[item_id]["no_plan"] = '0';
 					}
 				}
+				jQuery('input.arm_rule_plan_chks[data-plan_id="' + plan_id + '"]').each(function(){
+					var item_id = jQuery(this).attr('data-item_id');
+					if (jQuery(this).is(':checked')) {
+						jQuery(this).prop('checked', false);
+						delete armRules[item_id]["plans"][plan_id];
+						if (jQuery('input.arm_rule_plan_chks[data-item_id="' + item_id + '"]:checked').length == 0) {
+							armRules[item_id]["protection"] = '0';
+							jQuery('#arm_rule_protection_input_' + item_id).prop('checked', false);
+							if(plan_id=='-2')
+							{
+								armRules[item_id]["no_plan"] = '0';	
+							}
+						}
+					}
+				});
 			});
 			break;
 		  case 0:
@@ -828,14 +844,7 @@ jQuery(document).on('click','.arm_access_rule_grid_filter_btn',function(){
 	var url = window.location.href;
 	var rule_type = jQuery('input[name="type"]').val();
 	var rule_post_type = jQuery('input[name="slug"]').val();
-	if(rule_post_type == 'post_tag')
-	{
-		rule_type = 'tags';
-	}
-	else if(rule_post_type =='category')
-	{
-		rule_type = 'taxonomy';
-	}
+	var rule_type = jQuery('input[name="slug"]').attr('data-type');
 	url = url+'&type='+rule_type;
 	url = url+'&slug='+rule_post_type;
 	var rule_protection = jQuery('input#arm_rule_protection_filter').val();

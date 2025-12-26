@@ -196,11 +196,11 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 	} 
 
 	function show_grid_loader() {
-		jQuery(".dataTables_scroll").hide();
+		jQuery(".dataTables_scroll").hide();	
 		jQuery(".footer").hide();
 		jQuery('.arm_loading_grid').show();
 	}
-	jQuery(document).ready(function () {
+	jQuery(document).ready(function () {	
 		jQuery('#armember_datatable').dataTable().fnDestroy();
 		arm_load_membership_grid(false);
 		var count_checkbox = jQuery('.chkstanard:checked').length;
@@ -506,7 +506,7 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 			},
 			
 			"fnDrawCallback": function (oSettings) {
-				jQuery('.arm_loading_grid').hide();
+				jQuery('.arm_loading_grid').hide();			
 				jQuery('.dataTables_scroll').show();
 				jQuery(".footer").show();
 				arm_show_data();
@@ -642,7 +642,7 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 										<td>
 											<?php if ( ! empty( $all_plans ) ) : ?>
 												<div class="arm_filter_plans_box arm_datatable_filter_item">                        
-													<input type="hidden" id="arm_subs_filter" class="arm_subs_filter" value="<?php echo esc_attr($filter_plan_id); ?>" />
+													<input type="text" id="arm_subs_filter" class="arm_subs_filter arm-selectpicker-input-control" value="<?php echo esc_attr($filter_plan_id); ?>" />
 													<dl class="arm_multiple_selectbox arm_width_250">
 														<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
 														<dd>
@@ -693,7 +693,7 @@ $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sor
 			<div class="response_messages"></div>
 			<?php do_action( 'arm_before_listing_members' ); ?>
 			<div class="armclear"></div>
-			<table cellpadding="0" cellspacing="0" border="0" class="display arm_hide_datatable" id="armember_datatable">
+			<table cellpadding="0" cellspacing="0" border="0" width="100%" class="display arm_hide_datatable" id="armember_datatable">
 				<thead>
 					<tr>
 						<th class="center cb-select-all-th arm_max_width_50"><input id="cb-select-all-1" type="checkbox" class="chkstanard"></th>

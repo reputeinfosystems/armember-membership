@@ -4233,6 +4233,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					if ( ! empty( $country_tax_field_opts ) ) {
 						$country_tax_amount = isset( $general_settings['arm_country_tax_val'] ) ? $general_settings['arm_country_tax_val'] : '';
 						if ( ! empty( $country_tax_amount ) ) {
+							global $wpdb;
 							$country_tax_amount                        = maybe_unserialize( $country_tax_amount );
 							$country_tax_field_opts                    = maybe_unserialize( $country_tax_field_opts );
 							$return_arr['tax_type']                    = $tax_type;
@@ -4240,9 +4241,8 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 							$return_arr['country_tax_field_opts_json'] = wp_json_encode( $country_tax_field_opts );
 							$return_arr['country_tax_amount_json']     = wp_json_encode( $country_tax_amount );
 
+							$user_country = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM {$wpdb->usermeta} WHERE user_id = %d AND meta_key = '%s'",$user_id,$country_tax_field) ); //phpcs:ignore --Reason: $wpdb->usermeta is a table name. 
 							if ( is_user_logged_in() && ! empty( $user_id ) ) {
-								global $wpdb;
-								$user_country = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM {$wpdb->usermeta} WHERE user_id = %d AND meta_key = '%s'",$user_id,$country_tax_field) ); //phpcs:ignore --Reason: $wpdb->usermeta is a table name. 
 								if ( ! empty( $user_country ) && in_array( $user_country, $country_tax_field_opts ) ) {
 									$opt_index      = array_search( $user_country, $country_tax_field_opts );
 									$tax_percentage = $country_tax_amount[ $opt_index ];

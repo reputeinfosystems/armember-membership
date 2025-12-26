@@ -2483,7 +2483,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			);
 			return $color_schemes;
 		}
-		function arm_template_style( $tempID = 0, $tempOptions = array() ) {
+		function arm_template_style( $tempID = 0, $tempOptions = array(),$is_return=0 ) {
 			global $ARMemberLite, $arm_member_forms;
 			$templateStyle = '';
 			$posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data' ), $_POST ); //phpcs:ignore
@@ -2578,14 +2578,18 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				$borderRGB['r'] = ( ! empty( $borderRGB['r'] ) ) ? $borderRGB['r'] : 0;
 				$borderRGB['g'] = ( ! empty( $borderRGB['g'] ) ) ? $borderRGB['g'] : 0;
 				$borderRGB['b'] = ( ! empty( $borderRGB['b'] ) ) ? $borderRGB['b'] : 0;
-		                $buttonColorRGB = $arm_member_forms->armHexToRGB($tempOptions['button_color']);
-		                $buttonColorRGB['r'] = (!empty($buttonColorRGB['r'])) ? $buttonColorRGB['r'] : 0;
-		                $buttonColorRGB['g'] = (!empty($buttonColorRGB['g'])) ? $buttonColorRGB['g'] : 0;
-		                $buttonColorRGB['b'] = (!empty($buttonColorRGB['b'])) ? $buttonColorRGB['b'] : 0;
-				if ( is_admin() ) {
-					$templateStyle .= '<style type="text/css" id="arm_profile_runtime_css">';
-				} else {
-					$templateStyle .= '<style type="text/css">';
+				$buttonColorRGB = $arm_member_forms->armHexToRGB($tempOptions['button_color']);
+				$buttonColorRGB['r'] = (!empty($buttonColorRGB['r'])) ? $buttonColorRGB['r'] : 0;
+				$buttonColorRGB['g'] = (!empty($buttonColorRGB['g'])) ? $buttonColorRGB['g'] : 0;
+				$buttonColorRGB['b'] = (!empty($buttonColorRGB['b'])) ? $buttonColorRGB['b'] : 0;
+				$templateStyle = '';
+				if(empty($is_return))
+				{
+					if ( is_admin() ) {
+						$templateStyle .= '<style type="text/css" id="arm_profile_runtime_css">';
+					} else {
+						$templateStyle .= '<style type="text/css">';
+					}
 				}
 
 				$tempWrapperClass = ".arm_template_wrapper_{$tempID}";
@@ -2760,8 +2764,10 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				}
 
 				$templateStyle .= apply_filters( 'arm_change_profile_directory_style_outside', '', $tempOptions );
-
-				$templateStyle .= '</style>';
+				if(empty($is_return))
+				{
+					$templateStyle .= '</style>';
+				}
 			}
 
 			$arm_response = array(

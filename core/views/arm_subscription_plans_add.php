@@ -221,7 +221,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 									<td class='arm_padding_top_0'>
 										<div class="arm_setup_forms_container">
 											<div class="arm-df__form-field-wrap_text arm-df__form-field-wrap arm-controls arm_display_flex_wrap" id="arm-df__form-field-wrap_member_plan_amount">
-												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix arm_margin_top_0 <?php echo $global_currency_sym_pos_pre;?>"><?php echo $global_currency_sym; ?></span>
+												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix arm_margin_top_2 <?php echo $global_currency_sym_pos_pre;?>"><?php echo $global_currency_sym; ?></span>
 												<input name="arm_subscription_plan_amount" type="text" id="arm-df__form-control_member_plan_amount arm_subscription_plan_amount" value=""  class="arm-df__form-control arm-df__form-control_member_plan arm_material_input arm_no_paste <?php echo $arm_currency_pos_class?>" required="required" data-validation-required-message="<?php esc_html_e( 'Plan amount can not be left blank.', 'armember-membership' ); ?>" onkeypress="javascript:return ArmNumberValidation(event, this)"/>
 												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix <?php echo $global_currency_sym_pos_suf;?>"><?php echo $global_currency_sym; ?></span>
 											</div>
@@ -875,7 +875,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 										</div>
 									</td>
 								</tr>
-								<tr class="form-field paid_subscription_options_recurring_payment_cycles_main_box_tr divider <?php echo ($subscription_type == 'recurring') ? '' : 'hidden_section'; ?>">
+								<tr class="form-field paid_subscription_options_recurring_payment_cycles_main_box_tr divider arm_padding_right_0 <?php echo ($subscription_type == 'recurring') ? '' : 'hidden_section'; ?>">
 									<td>
 										<span class="arm-note-message --notice arm_badge_size_field_label"><?php esc_html_e('In case of infinite subscription plan cancelled, then that plan will be cancelled after current cycle completes.', 'armember-membership'); ?></span>
 									</td>
@@ -1049,7 +1049,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 									</td>
 								</tr>
 								<tr class="form-field arm_current_plan_warning_section hidden_section arm_width_100_pct">
-									<td class="arm_padding_bottom_0 arm_padding_left_0">
+									<td class="arm_padding_bottom_0 arm_padding_left_0 arm_padding_right_0">
 										<div class="arm_current_plan_warning_section hidden_section">
 											<span class="arm_current_plan_warning error" ><?php esc_html_e('One or more members has already subscribed to this plan. Any changes made to plan type & price will be applied (affect) to new users but not existing ones.', 'armember-membership'); ?></span>
 										</div>
