@@ -42,7 +42,6 @@ if ( is_rtl() ) {
 						
 												<?php do_action( 'arm_shortcode_add_tab' ); ?>
 					</ul>
-					<div class="armclear"></div>
 				</div>
 				<div class="arm_tabgroup_content_wrapper">
 					<div id="arm-forms" class="arm_tabgroup_content arm_show">
@@ -1027,113 +1026,113 @@ if ( is_rtl() ) {
 							<!-- add form shortcode buttons -->
 							<div id="arm-forms_buttons" class="arm_tabgroup_content_buttons arm_show">
 									<div class="arm_shortcode_form_opts arm_shortcode_form_opts_no_type" style="">
-											<div class="arm_group_footer">
-													<div class="popup_content_btn_wrapper">
-															<button type="button" class="arm_insrt_btn" disabled="disabled"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-															<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+											<div class="popup_content_btn popup_footer arm_padding_top_0 arm_padding_bottom_0">
+													<div class="popup_content_btn_wrapper arm_margin_bottom_12">
+															<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+															<button type="button" class="arm_insrt_btn arm_margin_0" disabled="disabled"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 													</div>
 											</div>
 									</div>
 									
 
-									<div class="arm_group_footer arm_shortcode_form_opts arm_shortcode_form_select arm_hidden" style="position:relative;">
-											<div class="popup_content_btn_wrapper">
-												<button type="button" class="arm_shortcode_form_insert_btn arm_insrt_btn arm_shortcode_form_add_btn" id="arm_shortcode_form_select" data-code="arm_form"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+									<div class="arm_group_footer arm_shortcode_form_opts arm_shortcode_form_select arm_hidden arm_padding_0" style="position:relative;">
+											<div class="popup_content_btn_wrapper arm_margin_bottom_12">
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_form_insert_btn arm_insrt_btn arm_shortcode_form_add_btn arm_margin_0" id="arm_shortcode_form_select" data-code="arm_form"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>
-									<div class="arm_group_footer arm_shortcode_form_opts arm_shortcode_edit_profile_opts arm_hidden">
-											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn" id="arm_shortcode_edit_profile_opts" data-code="arm_edit_profile"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+									<div class="arm_group_footer arm_shortcode_form_opts arm_shortcode_edit_profile_opts arm_hidden arm_padding_0">
+											<div class="popup_content_btn_wrapper arm_margin_bottom_12">
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_edit_profile_opts" data-code="arm_edit_profile"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>                                
 							</div>
 							<!-- add setup shortcode buttons -->
 							<div id="arm-membership-setup_buttons" class="arm_tabgroup_content_buttons">      
-									<div class="arm_group_footer" style="">
-											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_setup_btn arm_insrt_btn" id="arm_shortcode_membership_setup_opts" data-code="arm_setup"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+									<div class="popup_content_btn popup_footer arm_padding_top_0 arm_padding_bottom_0 " style="">
+											<div class="popup_content_btn_wrapper  arm_margin_bottom_12">
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_setup_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_membership_setup_opts" data-code="arm_setup"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>                                
 							</div>
 							<!-- add action shortcode buttons -->
 							<div id="arm-action-buttons_buttons" class="arm_tabgroup_content_buttons">
 									<div class="arm_shortcode_action_button_opts arm_shortcode_action_button_opts_no_type" style="">
-											<div class="arm_group_footer">
-													<div class="popup_content_btn_wrapper">
-															<button type="button" class="arm_insrt_btn" disabled="disabled"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-															<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+											<div class="popup_content_btn popup_footer arm_padding_top_0 arm_padding_bottom_0">
+													<div class="popup_content_btn_wrapper  arm_margin_bottom_12">
+														<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+														<button type="button" class="arm_insrt_btn arm_margin_right_0" disabled="disabled"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 													</div>
 											</div>
 									</div>                                
 
 												   
-									<div class="arm_group_footer arm_shortcode_action_button_opts arm_shortcode_action_button_opts_arm_logout arm_hidden">
-											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn" id="arm_shortcode_action_button_opts_arm_logout" data-code="arm_logout"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+									<div class="arm_group_footer arm_shortcode_action_button_opts arm_shortcode_action_button_opts_arm_logout arm_hidden arm_padding_0">
+											<div class="popup_content_btn_wrapper arm_margin_bottom_12 arm_margin_top_32">
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_action_button_opts_arm_logout" data-code="arm_logout"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>
-									<div class="arm_group_footer arm_shortcode_action_button_opts arm_shortcode_action_button_opts_arm_cancel_membership arm_hidden">
-											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn" id="arm_shortcode_action_button_opts_arm_cancel_membership" data-code="arm_cancel_membership"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+									<div class="arm_group_footer arm_shortcode_action_button_opts arm_shortcode_action_button_opts_arm_cancel_membership arm_hidden arm_padding_0">
+											<div class="popup_content_btn_wrapper arm_margin_bottom_12 arm_margin_top_32">
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_action_button_opts_arm_cancel_membership" data-code="arm_cancel_membership"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>                                
 							</div>
 							<!-- add other shortcode buttons -->
 							<div id="arm-other_buttons" class="arm_tabgroup_content_buttons">
 									<div class="arm_shortcode_other_opts arm_shortcode_other_opts_no_type" style="">
-											<div class="arm_group_footer">
-													<div class="popup_content_btn_wrapper">
-															<button type="button" class="arm_insrt_btn" disabled="disabled"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-															<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+											<div class="popup_content_btn popup_footer arm_padding_top_0 arm_padding_bottom_0">
+													<div class="popup_content_btn_wrapper  arm_margin_bottom_12">
+														<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+														<button type="button" class="arm_insrt_btn arm_margin_right_0" disabled="disabled"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 													</div>
 											</div>
 									</div>     
 									<div class="arm_group_footer arm_shortcode_other_opts arm_shortcode_other_opts_arm_member_transaction arm_hidden">
 											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn" id="arm_shortcode_other_opts_arm_member_transaction" data-code="arm_member_transaction"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_member_transaction" data-code="arm_member_transaction"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>  
 								<div class="arm_group_footer arm_shortcode_other_opts arm_shortcode_other_opts_arm_user_planinfo arm_hidden">
 											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_user_planinfo_shortcode arm_insrt_btn" id="arm_shortcode_other_opts_arm_user_planinfo" data-code="arm_user_planinfo" disabled="disabled"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_user_planinfo_shortcode arm_insrt_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_user_planinfo" data-code="arm_user_planinfo" disabled="disabled"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div> 
 									<div class="arm_group_footer arm_shortcode_other_opts arm_shortcode_other_opts_arm_account_detail arm_hidden" style="">
 											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn" id="arm_shortcode_other_opts_arm_account_detail" data-code="arm_account_detail"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_account_detail" data-code="arm_account_detail"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>      
 									<div class="arm_group_footer arm_shortcode_other_opts arm_shortcode_other_opts_arm_current_membership arm_hidden" style="">
 											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_current_membership_shortcode arm_insrt_btn" id="arm_shortcode_other_opts_arm_current_membership" data-code="arm_membership" disabled="disabled"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_current_membership_shortcode arm_insrt_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_current_membership" data-code="arm_membership" disabled="disabled"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>                                
 															   
 									<div class="arm_group_footer arm_shortcode_other_opts arm_shortcode_other_opts_arm_close_account arm_hidden" style="">
 											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_close_account_btn" id="arm_shortcode_other_opts_arm_close_account" data-code="arm_close_account"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+													<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+													<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_close_account_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_close_account" data-code="arm_close_account"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>          
 									<div class="arm_group_footer arm_shortcode_other_opts arm_shortcode_other_opts_arm_greeting_message arm_hidden" style="">
 											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn" id="arm_shortcode_other_opts_arm_greeting_message" data-code="arm_greeting_message"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_greeting_message" data-code="arm_greeting_message"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>   
 									<div class="arm_group_footer arm_shortcode_other_opts arm_shortcode_other_opts_arm_check_if_user_in_trial arm_hidden" style="">
 											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn" id="arm_shortcode_other_opts_arm_check_if_user_in_trial" data-code="arm_if_user_in_trial_or_not"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_check_if_user_in_trial" data-code="arm_if_user_in_trial_or_not"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>     
 									  
@@ -1141,15 +1140,15 @@ if ( is_rtl() ) {
 									
 									<div class="arm_group_footer arm_shortcode_other_opts arm_shortcode_other_opts_arm_login_history arm_hidden" style="">
 											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn" id="arm_shortcode_other_opts_arm_login_history" data-code="arm_login_history"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_login_history" data-code="arm_login_history"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>                                
 
 									<div class="arm_group_footer arm_shortcode_other_opts arm_shortcode_other_opts_arm_last_login_history arm_hidden" style="">
 											<div class="popup_content_btn_wrapper">
-													<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn" id="arm_shortcode_other_opts_arm_last_login_history" data-code="arm_last_login_history"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-													<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_last_login_history" data-code="arm_last_login_history"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
 									</div>                                
 							</div>
@@ -1170,7 +1169,7 @@ if ( is_rtl() ) {
 		</div>
 		<div class="popup_content_text arm_shortcode_options_container">
 							<form onsubmit="return false;" class="arm_shortcode_rc_form">
-				<div class="arm_group_body" style="padding-top: 25px;">
+				<div class="arm_group_body">
 					<table class="arm_shortcode_option_table">
 						<tr>
 							<th><?php esc_html_e( 'Restriction Type', 'armember-membership' ); ?></th>
@@ -1240,16 +1239,14 @@ if ( is_rtl() ) {
 						</tr>-->
 					</table>
 				</div>
-				<div class="arm_group_footer">
+				<div class="arm_group_footer arm_padding_0 arm_margin_bottom_0">
 					<div class="popup_content_btn_wrapper">
-						<button type="button" class="arm_shortcode_insert_rc_btn arm_insrt_btn" data-code="arm_restrict_content"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
-						<a class="arm_cancel_btn popup_close_btn" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+						<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
+						<button type="button" class="arm_shortcode_insert_rc_btn arm_insrt_btn arm_margin_right_0" data-code="arm_restrict_content"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 					</div>
 				</div>
 			</form>
-			<div class="armclear"></div>
 		</div>
-		<div class="armclear"></div>
 	</div>
 </div>
 <script type="text/javascript">

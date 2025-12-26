@@ -1,9 +1,9 @@
 <?php
-global $wpdb, $ARMemberLite, $arm_subscription_plans, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_payment_gateways;
+global $wpdb, $ARMemberLite, $arm_subscription_plans, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_payment_gateways,$arm_common_lite;
 $user_roles  = get_editable_roles();
 $user_roles1 = $arm_global_settings->arm_get_all_roles();
 
-$filter_search = (!empty($_POST['search'])) ? sanitize_text_field($_POST['search']) : '';//phpcs:ignore
+$filter_search = (!empty($_POST['sSearch'])) ? sanitize_text_field($_POST['sSearch']) : '';//phpcs:ignore
 ?>
 <style type="text/css" title="currentStyle">
 	.paginate_page a{display:none;}
@@ -14,15 +14,26 @@ $filter_search = (!empty($_POST['search'])) ? sanitize_text_field($_POST['search
 // <![CDATA[
 jQuery(document).ready( function () {
 	arm_load_plan_list_grid();
-
+	jQuery('#subscription_plans_list_form .arm_datatable_searchbox input[type="search"]').val('').trigger('keyup');
 });
 
-function arm_load_plan_list_filtered_grid(data)
+jQuery(document).on('keyup','#armmanageplan_search',function(e){
+	if (e.keyCode == 13 || 'Enter' == e.key) {
+		var arm_search = jQuery(this).val();
+		jQuery('#subscription_plans_list_form .arm_datatable_searchbox input[type="search"]').val(arm_search).trigger('keyup');
+	}
+});
+
+function arm_load_plan_list_filtered_grid()
 {
-	var tbl = jQuery('#armember_datatable').dataTable(); 
-	tbl.fnDeleteRow(data);
 	jQuery('#armember_datatable').dataTable().fnDestroy();
 	arm_load_plan_list_grid();
+}
+
+function show_grid_loader(){
+	jQuery('#armember_datatable').hide();
+	jQuery('.footer').hide();
+    jQuery('.arm_loading_grid').show();
 }
 
 function arm_load_plan_list_grid(){
@@ -30,41 +41,93 @@ function arm_load_plan_list_grid(){
 		var __ARM_Showing_empty = '<?php echo addslashes( esc_html__( 'Showing 0 to 0 of 0 enteries', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_to = '<?php echo addslashes( esc_html__( 'to', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_of = '<?php echo addslashes( esc_html__( 'of', 'armember-membership' ) ); //phpcs:ignore ?>';
-		var __ARM_PLANS = ' <?php echo addslashes( esc_html__( 'entries', 'armember-membership' ) ); //phpcs:ignore ?>';
+		var __ARM_PLANS = ' <?php echo addslashes( esc_html__( 'Plans', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_Show = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?> ';
 		var __ARM_NO_FOUND = '<?php echo addslashes( esc_html__( 'No any subscription plan found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_NO_MATCHING = '<?php echo addslashes( esc_html__( 'No matching records found.', 'armember-membership' ) ); //phpcs:ignore ?>';
+
+		var __SHOW_PER_PAGE = '<?php echo addslashes( esc_html__( 'Plans per page', 'armember-membership' ) ); //phpcs:ignore ?>';
+
+		var ajax_url = '<?php echo admin_url("admin-ajax.php"); //phpcs:ignore?>';
+		var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
 	
-	var table = jQuery('#armember_datatable').dataTable({
-		"sDom": '<"H"fr>t<"footer"ipl>',
-		"sPaginationType": "four_button",
-				"oLanguage": {
-					"sInfo": __ARM_Showing + " _START_ " + __ARM_to + " _END_ " + __ARM_of + " _TOTAL_ " + __ARM_PLANS,
-					"sInfoEmpty": __ARM_Showing_empty,
-				
-					"sLengthMenu": __ARM_Show + "_MENU_" + __ARM_PLANS,
-					"sEmptyTable": __ARM_NO_FOUND,
-					"sZeroRecords": __ARM_NO_MATCHING,
-				  },
-		"bJQueryUI": true,
-		"bPaginate": true,
-		"bAutoWidth" : false,
-		"aaSorting": [],
-		"aoColumnDefs": [
-			{ "bVisible": false, "aTargets": [] },
-			{ "bSortable": false, "aTargets": [] }
-		],
+		var table = jQuery('#armember_datatable').dataTable({
+		
+		"oLanguage": {
+			"sInfo": __ARM_Showing + " _START_ " + __ARM_to + " _END_ " + __ARM_of + " _TOTAL_ " + __ARM_PLANS,
+			"sInfoEmpty": __ARM_Showing_empty,
+		
+			"sLengthMenu": __SHOW_PER_PAGE + "_MENU_" ,
+			"sEmptyTable": __ARM_NO_FOUND,
+			"sZeroRecords": __ARM_NO_MATCHING,
+		},
+		"bDestroy": true,
 		"language":{
 			"searchPlaceholder": "<?php esc_html_e( 'Search', 'armember-membership' ); ?>",
 			"search":"",
 		},
+		"bProcessing": false,
+		"responsive": true,
+		"bServerSide": true,
+		"sAjaxSource": ajax_url,
+		"sServerMethod": "POST",
+		"fnServerParams": function (aoData) {
+			aoData.push({'name': 'action', 'value': 'arm_get_subscription_plan_details'});
+			aoData.push({'name': '_wpnonce', 'value': _wpnonce});
+		},
+		"bRetrieve": false,
+		"sDom": '<"H"fr>t<"footer"ipl>',
+		"sPaginationType": "four_button",
+		"bJQueryUI": true,
+		"bPaginate": true,
+		"bAutoWidth" : false,
+		"bScrollCollapse": true,
+		"aaSorting": [],
+		"fixedColumns": false,
+		"aoColumnDefs": [
+			{ "bVisible": false, "aTargets": [] },
+			{ "bSortable": false, "aTargets": [] },
+			{ "sClass": "arm_padding_left_24", "aTargets": [0,1,2,3,4] }
+		],
+		"bStateSave": true,
+		"iCookieDuration": 60 * 60,
+		"sCookiePrefix": "arm_datatable_",
+		"aLengthMenu": [10, 25, 50, 100, 150, 200],
 		"fnPreDrawCallback": function () {
-			jQuery('.arm_loading_grid').show();
+			show_grid_loader();
+		},
+		"fnStateSave": function (oSettings, oData) {
+			oData.aaSorting = [];
+			oData.abVisCols = [];
+			oData.aoSearchCols = [];
+			this.oApi._fnCreateCookie(
+				oSettings.sCookiePrefix + oSettings.sInstance,
+				this.oApi._fnJsonString(oData),
+				oSettings.iCookieDuration,
+				oSettings.sCookiePrefix,
+				oSettings.fnCookieCallback
+			);
+		},
+		"stateSaveParams":function(oSettings,oData){
+			oData.start=0;
+		},
+		"fnStateLoadParams": function (oSettings, oData) {
+			oData.iLength = 10;
+			oData.iStart = 1;
+		},
+		"fnCreatedRow": function (nRow, aData, iDataIndex) {
+			jQuery(nRow).find('.arm_grid_action_btn_container').each(function () {
+				jQuery(this).parent().addClass('armGridActionTD');
+				jQuery(this).parent().attr('data-key', 'armGridActionTD');
+			});
 		},
 		"fnDrawCallback":function(){
 			setTimeout(function(){
+				jQuery('#armember_datatable').show();
+				jQuery('.footer').show();
 				jQuery('.arm_loading_grid').hide();
 				arm_show_data();
+				jQuery('#arm_filter_wrapper').hide();
 			}, 1000);
 			if (jQuery.isFunction(jQuery().tipso)) {
 				jQuery('.armhelptip').each(function () {
@@ -83,36 +146,43 @@ function arm_load_plan_list_grid(){
 	});
 	var filter_box = jQuery('#arm_filter_wrapper').html();
 	jQuery('div#armember_datatable_filter').parent().append(filter_box);
-	jQuery('#arm_filter_wrapper').remove();
-	}
+	jQuery('div#armember_datatable_filter').addClass('arm_datatable_searchbox');
+	// jQuery('#arm_filter_wrapper').remove();
+}
 function ChangeID(id) {
 	document.getElementById('delete_id').value = id;
 }
 // ]]>
 </script>
+<div class="arm_filter_wrapper" id="arm_filter_wrapper" style="display:none;">
+	<div class="arm_datatable_filters_options arm_filters_searchbox">
+		<div class="sltstandard">
+			<div class="arm_dt_filter_block arm_datatable_searchbox">
+				<div class="arm_datatable_filter_item">
+					<label class="arm_padding_0"><input type="text" placeholder="<?php esc_attr_e( 'Search Plans', 'armember-membership' ); ?>" id="armmanageplan_search" value="<?php echo esc_attr($filter_search); ?>" tabindex="-1"></label>
+				</div>				
+			</div>
+		</div>
+	</div>
+</div>
 <div class="wrap arm_page arm_subscription_plans_main_wrapper">
-	<?php
-	if($ARMemberLite->is_arm_pro_active)
-	{
-		$arm_license_notice = '';
-		echo apply_filters('arm_admin_license_notice_html',$arm_license_notice); //phpcs:ignore
-	}
-	?>
 	<div class="content_wrapper arm_subscription_plans_content" id="content_wrapper">
 		<div class="page_title">
 			<?php esc_html_e( 'Manage Membership plans', 'armember-membership' ); ?>
 			<div class="arm_add_new_item_box">
-				<a class="greensavebtn" href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->manage_plans . '&action=new' ) ); //phpcs:ignore ?>"><img align="absmiddle" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/add_new_icon.png"><span><?php esc_html_e( 'Add New Plan', 'armember-membership' ); ?></span></a>
+				<a class="greensavebtn arm_add_new_plan_btn" href="javascript:void(0)"><img align="absmiddle" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/add_new_icon.svg"><span><?php esc_html_e( 'Add New Plan', 'armember-membership' ); ?></span></a>
 			</div>
 			<div class="armclear"></div>
 		</div>
-		<div class="armclear"></div>
+		<div class="arm_solid_divider"></div>	
 		<div class="arm_subscription_plans_list">
+			
 			<form method="GET" id="subscription_plans_list_form" class="data_grid_list">
 				<input type="hidden" name="page" value="<?php echo esc_attr($arm_slugs->manage_plans); //phpcs:ignore ?>" />
 				<input type="hidden" name="armaction" value="list" />
 				<div id="armmainformnewlist">
-					<div class="arm_loading_grid" style="display: none;"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/loader.gif" alt="Loading.."></div>
+					<div class="arm_loading_grid" style="display: none;"><?php $arm_loader = $arm_common_lite->arm_loader_img_func();
+					echo $arm_loader; //phpcs:ignore ?></div>
 					<table cellpadding="0" cellspacing="0" border="0" class="display arm_on_display" id="armember_datatable" style="visibility: hidden;">
 						<thead>
 							<tr>
@@ -124,114 +194,6 @@ function ChangeID(id) {
 								<th class="armGridActionTD"></th>
 							</tr>
 						</thead>
-						<tbody>
-						<?php
-						$form_result = $arm_subscription_plans->arm_get_all_subscription_plans();
-						if ( ! empty( $form_result ) ) {
-							$arm_is_multisite    = is_multisite();
-							$arm_current_blog_id = ! empty( $arm_is_multisite ) ? get_current_blog_id() : 0;
-
-							$arm_user_query = $wpdb->get_results( $wpdb->prepare( "SELECT um.user_id, um.meta_value FROM $wpdb->users  u LEFT JOIN $wpdb->usermeta um ON um.user_id = u.ID WHERE um.meta_key = %s", 'arm_user_plan_ids' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-							$arm_user_array = array();
-							if ( ! empty( $arm_user_query ) ) {
-								foreach ( $arm_user_query as $arm_user ) {
-									$user_meta  = get_userdata( $arm_user->user_id );
-									$user_roles = ! empty( $user_meta->roles ) ? $user_meta->roles : array();
-									if ( ! in_array( 'administrator', $user_roles ) ) {
-
-										if ( $arm_is_multisite ) {
-											if ( is_user_member_of_blog( $arm_user->user_id, $arm_current_blog_id ) ) {
-												$arm_user_array[ $arm_user->user_id ] = maybe_unserialize( $arm_user->meta_value );
-											} else {
-												continue;
-											}
-										} else {
-											$arm_user_array[ $arm_user->user_id ] = maybe_unserialize( $arm_user->meta_value );
-										}
-									}
-								}
-							}
-
-							foreach ( $form_result as $planData ) {
-								if($ARMemberLite->is_arm_pro_active){
-									$planObj = new ARM_Plan();
-								}
-								else
-								{
-									$planObj = new ARM_Plan_Lite();
-								}
-								$planObj->init( (object) $planData );
-								$planID      = $planData['arm_subscription_plan_id'];
-								$total_users = 0;
-								if ( ! empty( $arm_user_array ) ) {
-									foreach ( $arm_user_array as $arm_user_id => $arm_user_plans ) {
-										if ( ! empty( $arm_user_plans ) && in_array( $planID, $arm_user_plans ) ) {
-											$total_users++;
-										}
-									}
-								}
-
-
-
-								$edit_link = admin_url( 'admin.php?page=' . $arm_slugs->manage_plans . '&action=edit_plan&id=' . $planID );
-								?>
-								<tr class="row_<?php echo intval($planID); ?>">
-									<td class=""><?php echo '<a href="' . esc_url($edit_link) . '">' . $planID . '</a> '; //phpcs:ignore ?></td>
-									<td class=""><?php echo '<a href="' . esc_url($edit_link) . '">' . esc_html( stripslashes( $planObj->name ) ) . '</a> '; //phpcs:ignore ?></td>
-									<td><?php // echo $planObj->plan_text(true); ?>
-										<?php
-										if( $planObj->is_recurring() && isset($planObj->options['payment_cycles']) && count($planObj->options['payment_cycles']) > 1 && $ARMemberLite->is_arm_pro_active) {
-											echo '<span class="arm_item_status_text active">' . esc_html__('Paid', 'armember-membership') . '</span><br/>
-											<a href="javascript:void(0);" onclick="arm_plan_cycle('. esc_attr($planID) .')">' . esc_html__('Multiple Cycle', 'armember-membership') . '</a>';
-										} else {
-											echo $planObj->plan_text(true); //phpcs:ignore
-										}
-										?>
-									</td>
-									<td class="center">
-									<?php
-									$planMembers = $total_users;
-									if ( $planMembers > 0 ) {
-										$membersLink = admin_url( 'admin.php?page=' . $arm_slugs->manage_members . '&plan_id=' . $planID );
-										echo "<a href='". esc_url( $membersLink )."'>" . $planMembers . '</a>'; //phpcs:ignore
-									} else {
-										echo $planMembers; //phpcs:ignore
-									}
-									?>
-																			
-									</td>
-									<td>
-									<?php
-									$planRole = $planObj->plan_role;
-									if ( ! empty( $user_roles1[ $planRole ] ) ) {
-										echo esc_html($user_roles1[ $planRole ]);
-									} else {
-										echo '-';
-									}
-									?>
-									</td>						
-									<td class="armGridActionTD">
-									<?php
-										$gridAction = "<div class='arm_grid_action_btn_container'>";
-									if ( current_user_can( 'arm_manage_plans' ) ) {
-											$gridAction .= "<a href='" . $edit_link . "'><img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_edit.png' onmouseover=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_edit_hover.png';\" class='armhelptip' title='" . esc_attr__( 'Edit Plan', 'armember-membership' ) . "' onmouseout=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_edit.png';\" /></a>"; //phpcs:ignore
-											$gridAction .= "<a href='javascript:void(0)' onclick='showConfirmBoxCallback({$planID});'><img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_delete.png' class='armhelptip' title='" . esc_attr__( 'Delete', 'armember-membership' ) . "' onmouseover=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_delete_hover.png';\" onmouseout=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_delete.png';\" /></a>"; //phpcs:ignore
-										if ( empty( $planMembers ) || $planMembers == 0 ) {
-											$gridAction .= $arm_global_settings->arm_get_confirm_box( $planID, esc_html__( 'Are you sure you want to delete this plan?', 'armember-membership' ), 'arm_plan_delete_btn' );
-										} else {
-											$gridAction .= $arm_global_settings->arm_get_confirm_box( $planID, esc_html__( 'This plan has one or more subscribers. So this plan can not be deleted.', 'armember-membership' ), 'arm_plan_delete_btn_not arm_hide','','',esc_html__('Close','armember-membership') );
-										}
-									}
-										$gridAction .= '</div>';
-										echo '<div class="arm_grid_action_wrapper">' . $gridAction . '</div>'; //phpcs:ignore
-									?>
-									</td>
-								</tr>
-								<?php
-							}//End Foreach
-						}
-						?>
-						</tbody>
 					</table>
 					<div class="armclear"></div>
 					<input type="hidden" name="show_hide_columns" id="show_hide_columns" value="<?php esc_attr_e( 'Show / Hide columns', 'armember-membership' ); ?>"/>
@@ -272,6 +234,16 @@ function ChangeID(id) {
 
 
 <script type="text/javascript" charset="utf-8">
+<?php if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'new'){?>
+	jQuery(window).on("load", function(){
+		jQuery('.arm_add_new_plan_btn').trigger('click');
+		var arm_form_uri = window.location.toString();
+		if( arm_form_uri.indexOf("&action=new") > 0 ) {
+			var arm_frm_clean_uri = arm_form_uri.substring(0, arm_form_uri.indexOf("&"));
+			window.history.replaceState({}, document.title, arm_frm_clean_uri);
+		}
+	});
+<?php }?>
 // <![CDATA[
 var ARM_IMAGE_URL = "<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>";
 // ]]>

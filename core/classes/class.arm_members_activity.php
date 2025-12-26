@@ -40,7 +40,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$arm_lite_newdbversion = get_option( 'armlite_version' );
 			}
 
-			if ( version_compare( $arm_lite_newdbversion, '4.0.68', '<' ) ) {
+			if ( version_compare( $arm_lite_newdbversion, '5.0.2', '<' ) ) {
 				$path = MEMBERSHIPLITE_VIEWS_DIR . '/upgrade_latest_data.php';
 				include $path;
 			}
@@ -555,7 +555,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 		}
 
 		function arm_check_for_invalid_data( $file_content = '', $arm_file_array = array() ) {
-	    	$arm_valid_pattern_with_short_tag = '/(\<\?(php)|\<\?\=)|(\<(script|iframe))/';
+	    		$arm_valid_pattern_with_short_tag = '/(\<\?(php)|\<\?\=)|(\<(script|iframe))/';
 			$arm_valid_pattern_without_short_tag = '/(\<\?(php))|(\<(script|iframe))/';
 
 			$is_short_tag_enabled = ini_get( 'short_open_tag' ); //phpcs:ignore
@@ -672,7 +672,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				.armlite-deactivate-form-active .armlite-deactivate-form-wrapper {display: inline-block;}
 				.armlite-deactivate-form {display: none;}
 				.armlite-deactivate-form-active .armlite-deactivate-form {position: absolute;bottom: 30px;left: 0;max-width: 500px;min-width: 360px;background: #fff;white-space: normal;}
-				.armlite-deactivate-form-head {background: #005aee;color: #fff;padding: 8px 18px;}
+				.armlite-deactivate-form-head {background: #0077ff;color: #fff;padding: 8px 18px;}
 				.armlite-deactivate-form-body {padding: 8px 18px 0;color: #444;}
 				.armlite-deactivate-form-body label[for="armlite-remove-settings"] {font-weight: bold;}
 				.deactivating-spinner {display: none;}

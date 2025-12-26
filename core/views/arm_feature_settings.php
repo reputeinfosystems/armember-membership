@@ -56,22 +56,11 @@ if ( is_rtl() ) {
 	$featureActiveIcon = MEMBERSHIPLITE_IMAGES_URL . '/feature_active_icon_rtl.png';
 }
 ?>
-<?php
-$setact = 1;
-if($ARMemberLite->is_arm_pro_active){
-	$hostname = $_SERVER["SERVER_NAME"]; //phpcs:ignore
-	global $arm_members_activity;
-	$setact = 0;
-	global $check_sorting;
-	$setact = $arm_members_activity->$check_sorting();
-}
-?>
 <style>
 	.purchased_info{ color:#7cba6c; font-weight:bold; font-size: 15px; }
 	#license_success{ color:#8ccf7a !important; }
 	.arperrmessage{color:red;}
     #arfactlicenseform { border-radius:0px; text-align:center; width:570px; min-height:350px; height:auto; left:35%; border:none; background:#ffffff !important; padding:30px 20px; }
-	#wpcontent{ background: #EEF2F8; }
 	#arfactlicenseform .form-table th{ text-align:right; }
 	#arfactlicenseform .form-table td{ text-align:left; }
 	#license_error{ color:red;}
@@ -92,7 +81,7 @@ if($ARMemberLite->is_arm_pro_active){
 	.arm-lite-upgrade-pro-hero-heding{ font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 22px; font-weight: 600; line-height: 64px; text-align: center; color: #1A2538; display: block; }
 	.arm-lite-upgrade-pro-hero-content{ font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 18px; font-weight: 400; line-height: 30px; text-align: center; color: #2F3F5C; margin-top: 15px; }
 	.arm-lite-upgrade-pro-body-section{ margin: 40px auto 60px auto; }
-	.arm-lite-upgrade-pro-body-heding{ font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 26px; font-weight: 600; line-height: 24px; text-align: center; color: #005AEE; }
+	.arm-lite-upgrade-pro-body-heding{ font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 26px; font-weight: 600; line-height: 24px; text-align: center; color: #0077ff; }
 	.arm-lite-upgrade-pro-body-heding::after, .arm-lite-upgrade-pro-body-heding::before { content: ''; background-image: url(<?php echo MEMBERSHIPLITE_IMAGES_URL;//phpcs:ignore?>/cs-lifetime-family-plugin-star.webp); width: 22px; height: 22px; display: inline-block;
 		position: relative; right: -10px; vertical-align: bottom; top: -4px; background-size: 100%; }
 	.arm-lite-upgrade-pro-body-heding::before{ right: unset; left: -10px; }
@@ -101,11 +90,11 @@ if($ARMemberLite->is_arm_pro_active){
 	.arm-lite-upgrade-pro-body-fetur-item{ display: flex; flex-basis: 48%; }
 	.arm-lite-upgrade-pro-body-fetur-item-title { max-width: 90%; word-break: break-word; margin-left: 12px; font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 18px; font-weight: 400; line-height: 24px; color: #2F3F5C; text-align: left; }
 	.arm-lite-upgrade-pro-body-fetur-icon{ background: url(<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/tick-green.webp); width: 26px; height: 24px; background-size: 100%; background-repeat: no-repeat; background-size: 100%; }
-	.arm-addon-popup-upg-btn{ font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 18px; font-weight: 600; line-height: 20px; color: #FFF; background-color: #005AEE; border: 1px solid #005AEE; border-radius: 8px; padding: 16px 44px; text-decoration: none; }
-	.arm-addon-popup-upg-btn:hover{ color: #005AEE; background-color: #FFF; transition: background-color 0.2s ease-in-out; }
-	.arm-lite-upgrade-pro-footer-wrapper{ background-color: #005AEE0A; padding: 40px 0; margin-top: 80px; }
-	.arm-addon-popup-footer-btn{ border: 1.5px solid #005AEE; font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS";; font-size: 16px; font-weight: 600; line-height: 20px; color: #005AEE; padding: 12px 29px; border-radius: 8px; margin-right: 21px; text-decoration: none; }
-	.arm-addon-popup-footer-btn:hover{ background-color: #005AEE; color: #FFF; transition: background-color 0.2s ease-in-out; }
+	.arm-addon-popup-upg-btn{ font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 18px; font-weight: 600; line-height: 20px; color: #FFF; background-color: #0077ff; border: 1px solid #0077ff; border-radius: 8px; padding: 16px 44px; text-decoration: none; }
+	.arm-addon-popup-upg-btn:hover{ color: #0077ff; background-color: #FFF; transition: background-color 0.2s ease-in-out; }
+	.arm-lite-upgrade-pro-footer-wrapper{ background-color: #0077ff0A; padding: 40px 0; margin-top: 80px; }
+	.arm-addon-popup-footer-btn{ border: 1.5px solid #0077ff; font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS";; font-size: 16px; font-weight: 600; line-height: 20px; color: #0077ff; padding: 12px 29px; border-radius: 8px; margin-right: 21px; text-decoration: none; }
+	.arm-addon-popup-footer-btn:hover{ background-color: #0077ff; color: #FFF; transition: background-color 0.2s ease-in-out; }
 	.arm-addon-popup-footer-btn.other{ color: #F547AF; border-color: #F547AF; margin-right: 0; margin-left: 21px; }
 	.arm-addon-popup-footer-btn.other:hover{ color: #FFF; background-color: #F547AF;  transition: background-color 0.2s ease-in-out; }
 	.arm-lite-popup.popup_content_text{ padding: 0; }
@@ -164,12 +153,7 @@ if($ARMemberLite->is_arm_pro_active){
 	}
 </style>
 <div class="wrap arm_page arm_feature_settings_main_wrapper">
-    <?php
-    if ($setact != 1) {
-        $admin_css_url = admin_url('admin.php?page=arm_manage_license'); //phpcs:ignore
-        ?>
-        <div style="margin-top:20px;margin-bottom:20px;border-left: 4px solid #ffba00;box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);height:20px;width:99%;padding:10px 0px 10px 10px;background-color:#ffffff;color:#000000;font-size:16px;display:block;visibility:visible;text-align:left;" >ARMember License is not activated. Please activate license from <a href="<?php echo esc_url($admin_css_url); ?>">here</a></div>
-    <?php } ?>
+    
 	<div class="content_wrapper arm_feature_settings_content" id="content_wrapper">
 		<div class="page_title arm_new_addon_page_design"><?php esc_html_e( 'In-built Modules', 'armember-membership' ); ?></div>
 		<div class="armclear"></div>

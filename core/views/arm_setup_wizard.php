@@ -228,7 +228,7 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 	</div>
 	<div class="arm-ws-footer-wrapper">
 	    <div class="arm-ws-footer-left">
-		<a href="https://youtu.be/Yh_X00tHzMw" target="_blank" class="arm-wsc-btn arm-wsc-btn--primary arm-youtube-btn">
+		<a href="https://youtu.be/WhKgS2jv2xM" target="_blank" class="arm-wsc-btn arm-wsc-btn--primary arm-youtube-btn">
 		        <img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/arm-youtube-icon.webp' //phpcs:ignore ?>" alt="ARMember">
 				<?php esc_html_e('Watch Tutorial','armember-membership'); ?>
 		</a>
@@ -382,7 +382,7 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 	</div>
 	<div class="arm-ws-footer-wrapper">
 	    <div class="arm-ws-footer-left">
-		<a href="https://youtu.be/Yh_X00tHzMw" target="_blank" class="arm-wsc-btn arm-wsc-btn--primary arm-youtube-btn">
+		<a href="https://youtu.be/WhKgS2jv2xM" target="_blank" class="arm-wsc-btn arm-wsc-btn--primary arm-youtube-btn">
 		        <img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/arm-youtube-icon.webp' //phpcs:ignore ?>" alt="ARMember">
 				<?php esc_html_e('Watch Tutorial','armember-membership'); ?>
 		</a>
@@ -504,7 +504,7 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 			}
 			?>
 			<div class=arm_payment_gateway_section>
-				<div class="armswitch arm_payment_setting_switch">
+				<div class="armswitch arm_payment_setting_switch arm_margin_0">
 					<input type="checkbox" id="arm_setup_paypal_status" value="1" <?php echo esc_attr($arm_paypal_active);?> class="armswitch_input armswitch_payment_input" name="arm_selected_payment_gateway[paypal][status]">
 					<label for="arm_setup_paypal_status" class="armswitch_label"></label>
 				</div>
@@ -580,21 +580,21 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 								<span><?php esc_html_e('Payment Mode','armember-membership');?></span>
 							</label>
 							<div class="arm_transfer_mode_main_container">
-								<div class="arm_transfer_mode_list_container">
+								<div class="arm_transfer_mode_list_container arm_margin_top_0">
 									<label>
-										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="bank_transfer" data-msg-required="Please select Payment Mode option." checked="checked">
+										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer arm_margin_bottom_0" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="bank_transfer" data-msg-required="Please select Payment Mode option." checked="checked">
 									</label>
 									<input class="arm_bank_transfer_mode_option_label" type="text" name="arm_selected_payment_gateway[bank_transfer][digital_transfer_label]" value="Digital Transfer">
 								</div>
 								<div class="arm_transfer_mode_list_container">
 									<label>
-										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="cheque" data-msg-required="Please select Payment Mode option." checked="checked">
+										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer arm_margin_bottom_0" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="cheque" data-msg-required="Please select Payment Mode option." checked="checked">
 									</label>
 										<input class="arm_bank_transfer_mode_option_label" type="text" name="arm_selected_payment_gateway[bank_transfer][cheque_label]" value="Cheque">
 								</div>
 								<div class="arm_transfer_mode_list_container">
 									<label>
-										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="cash" data-msg-required="Please select Payment Mode option." checked="checked">
+										<input class="arm_general_input arm_icheckbox arm_active_payment_bank_transfer arm_margin_bottom_0" type="checkbox" id="bank_transfer_mode_option" name="arm_selected_payment_gateway[bank_transfer][transfer_mode_option][]" value="cash" data-msg-required="Please select Payment Mode option." checked="checked">
 									</label>
 									<input class="arm_bank_transfer_mode_option_label" type="text" name="arm_selected_payment_gateway[bank_transfer][cash_label]" value="Cash">
 								</div>
@@ -602,12 +602,12 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 					</div>
 				</div>
 			</div>
-			<span id="arm_no_payment_gateway-error" class="error arm_invalid" style="display:none;"><?php esc_html_e('Please enable at least one payment.','armember-membership');?></span>  
+			<span id="arm_no_payment_gateway-error" class="error arm_invalid" style="display:none;"><?php esc_html_e('Please enable atleast one payment.','armember-membership');?></span>  
 		</div>
 	</div>
 	<div class="arm-ws-footer-wrapper">
 	    <div class="arm-ws-footer-left">
-		<a href="https://youtu.be/Yh_X00tHzMw" target="_blank" class="arm-wsc-btn arm-wsc-btn--primary arm-youtube-btn">
+		<a href="https://youtu.be/WhKgS2jv2xM" target="_blank" class="arm-wsc-btn arm-wsc-btn--primary arm-youtube-btn">
 		        <img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/arm-youtube-icon.webp' //phpcs:ignore ?>" alt="ARMember">
 				<?php esc_html_e('Watch Tutorial','armember-membership'); ?>
 		</a>
@@ -838,7 +838,7 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 
 	<div class="arm-ws-footer-wrapper">
 	    <div class="arm-ws-footer-left">
-		<a href="https://youtu.be/Yh_X00tHzMw" target="_blank" class="arm-wsc-btn arm-wsc-btn--primary arm-youtube-btn">
+		<a href="https://youtu.be/WhKgS2jv2xM" target="_blank" class="arm-wsc-btn arm-wsc-btn--primary arm-youtube-btn">
 		        <img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/arm-youtube-icon.webp' //phpcs:ignore ?>" alt="ARMember">
 				<?php esc_html_e('Watch Tutorial','armember-membership'); ?>
 		</a>
@@ -966,26 +966,26 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 			<div class="arm-short-code-wapper" id="arm_member_setup_link">
 				<h4 class="arm-short-code-heding"><?php esc_html_e('Membership registration','armember-membership');?></h4>
 				<div class="arm-short-code-text">
-					<div class="arm_setup_shortcode_text">
+					<div class="arm_setup_shortcode_text arm_setup_click_to_copy_text" data-code="<?php echo esc_attr(get_permalink($register_page_id));?>">
 						<span class="armCopyText arm_setupform"><?php echo esc_html(get_permalink($register_page_id));?></span>
-						<img class="arm-ws-acc-img arm_setup_form_copy_text arm_setup_click_to_copy_text" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/content_copy_icon.webp' //phpcs:ignore?>" alt="armember" data-code="<?php echo esc_attr(get_permalink($register_page_id));?>">
+						<img class="arm-ws-acc-img arm_setup_form_copy_text " src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/content_copy_icon.webp' //phpcs:ignore?>" alt="armember">
 					</div>
 					<span class="arm_copied_text arm_setup_copied_text"><img src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL)."/copied_ok.png" //phpcs:ignore ?>' alt="ok"><?php esc_html_e('Link Copied!','armember-membership');?></span>
 				</div>
 			</div>
 			<div class="arm-short-code-wapper" id="arm_login_link">
 				<h4 class="arm-short-code-heding"><?php esc_html_e('Member Login','armember-membership');?></h4>
-				<div class="arm-short-code-text">
+				<div class="arm-short-code-text arm_setup_click_to_copy_text" data-code="<?php echo esc_attr(get_permalink($login_page_id));?>">
 					<span class="armCopyText"><?php echo esc_html(get_permalink($login_page_id));?> </span>
-					<img class="arm-ws-acc-img arm_setup_click_to_copy_text" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/content_copy_icon.webp' //phpcs:ignore ?>" alt="armember" data-code="<?php echo esc_attr(get_permalink($login_page_id));?>">
+					<img class="arm-ws-acc-img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/content_copy_icon.webp' //phpcs:ignore ?>" alt="armember">
 					<span class="arm_copied_text arm_setup_copied_text"><img src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL)."/copied_ok.png" //phpcs:ignore ?>' alt="ok"><?php esc_html_e('Link Copied!','armember-membership');?></span>
 				</div>
 			</div>
 			<div class="arm-short-code-wapper" id="arm_edit_profile_link">
 				<h4 class="arm-short-code-heding"><?php esc_html_e('Edit Profile','armember-membership');?></h4>
-				<div class="arm-short-code-text">
+				<div class="arm-short-code-text arm_setup_click_to_copy_text" data-code="<?php echo esc_html(get_permalink($edit_profile_page_id));?>">
 					<span class="armCopyText"><?php echo esc_html(get_permalink($edit_profile_page_id));?></span> 
-					<img class="arm-ws-acc-img arm_setup_click_to_copy_text" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/content_copy_icon.webp' //phpcs:ignore ?>" alt="armember" data-code="<?php echo esc_html(get_permalink($edit_profile_page_id));?>">
+					<img class="arm-ws-acc-img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/content_copy_icon.webp' //phpcs:ignore ?>" alt="armember">
 					<span class="arm_copied_text arm_setup_copied_text"><img src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL)."/copied_ok.png" //phpcs:ignore ?>' alt="ok"><?php esc_html_e('Link Copied!','armember-membership');?></span>
 				</div>
 			</div>

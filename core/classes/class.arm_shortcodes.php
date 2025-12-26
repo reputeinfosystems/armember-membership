@@ -503,7 +503,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 				if ( $type == 'profile' ) {
 					$current_user_info = false;
 						global $wp_query;
-						$reqUser = $wp_query->get( 'arm_user' );
+						$reqUser = rawurldecode( $wp_query->get( 'arm_user' ) ); //phpcs:ignore
 
 					if ( empty( $reqUser ) ) {
 						$reqUser = ( isset( $_REQUEST['arm_user'] ) && ! empty( $_REQUEST['arm_user'] ) ) ? sanitize_text_field( $_REQUEST['arm_user'] ) : ''; //phpcs:ignore
@@ -654,7 +654,16 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$content .= '<p class="arm_discription">' . esc_html__( '(Use Cropper to set image and use mouse scroller for zoom image.)', 'armember-membership' ) . '</p>';
 						$content .= '</div>';
 					}
-					$content             .= $arm_members_directory->arm_template_style( $id, $opts['template_options'] );
+					if(is_admin())
+					{
+						$content .= $arm_members_directory->arm_template_style( $id, $opts['template_options'] );
+					}
+					else{
+						wp_register_style('arm_profile_dir_card_shortcode_css_'.$id,false,array(),MEMBERSHIPLITE_VERSION);
+						wp_enqueue_style('arm_profile_dir_card_shortcode_css_'.$id);
+						$arm_template_content_css = $arm_members_directory->arm_template_style( $id, $opts['template_options'],1);
+						wp_add_inline_style( 'arm_profile_dir_card_shortcode_css_'.$id, $arm_template_content_css );
+					}
 					$arm_profile_form_rtl = $arm_directory_form_rtl = '';
 					if ( is_rtl() ) {
 						$arm_profile_form_rtl   = 'arm_profile_form_rtl';
@@ -733,7 +742,10 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
                 Developer URL: http://www.reputeinfosystems.com/
             -->';
 
-			return do_shortcode( $content . $hiddenvalue );
+			$content = do_shortcode($content);
+			$content = $this->arm_com_escape_all_shortcodes($content.$hiddenvalue);
+			$content = $this->arm_com_descaped_all_shortcodes($content);
+			return $content;
 		}
 
 		/**
@@ -954,7 +966,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					foreach ( $transactions as $r ) {
 
 						$r = (object) $r;
-
+						$r->arm_transaction_id = !empty($r->arm_transaction_id) ? stripslashes($r->arm_transaction_id) : '';
 						$currency = ( ! empty( $r->arm_currency ) && isset( $all_currencies[ strtoupper( $r->arm_currency ) ] ) ) ? $all_currencies[ strtoupper( $r->arm_currency ) ] : $global_currency_sym;
 						$content .= "<tr class='arm_transaction_list_item' id='arm_transaction_list_item_" . $r->arm_transaction_id . "'>";
 						if ( $has_transaction_id ) {
@@ -1171,6 +1183,8 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 				$content .= '</div>';
 				$content  = apply_filters( 'arm_after_member_transaction_shortcode_content', $content, $args );
 			}
+			$content = $this->arm_com_escape_all_shortcodes($content);
+			$content = $this->arm_com_descaped_all_shortcodes($content);
 			return do_shortcode( $content );
 		}
 
@@ -1496,7 +1510,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 								$fieldMeta_value = implode( ', ', $fieldMeta_value );
 							}
 							$content    .= '<tr class="form-field">';
-							$field_label = ( isset( $display_fields_value[ $key ] ) && ! empty( $display_fields_value[ $key ] ) ) ? $display_fields_value[ $key ] : $fieldOpt['label'];
+							$field_label = ( isset( $display_fields_value[ $key ] ) && ! empty( $display_fields_value[ $key ] ) ) ? stripslashes($display_fields_value[ $key ]) : stripslashes($fieldOpt['label']);
 							$content    .= '<th class="arm-form-table-label">' . $field_label . ' :</th>';
 
 							if ( $fieldOpt['type'] == 'file' || $fieldOpt['type'] == 'avatar' ) {
@@ -1508,7 +1522,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 									if ( in_array( $file_ext, array( 'jpg', 'jpeg', 'jpe', 'png', 'bmp', 'tif', 'tiff', 'JPG', 'JPEG', 'JPE', 'PNG', 'BMP', 'TIF', 'TIFF' ) ) ) {
 										$fileUrl = $fieldMeta_value;
 									} else {
-										$fileUrl = MEMBERSHIPLITE_IMAGES_URL . '/file_icon.png';
+										$fileUrl = MEMBERSHIPLITE_IMAGES_URL . '/file_icon.svg';
 									}
 								} else {
 									$fileUrl = '';
@@ -2993,7 +3007,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 								if ( in_array( $file_ext, array( 'jpg', 'jpeg', 'jpe', 'png', 'bmp', 'tif', 'tiff', 'JPG', 'JPEG', 'JPE', 'PNG', 'BMP', 'TIF', 'TIFF' ) ) ) {
 									$fileUrl = $return_content;
 								} else {
-									$fileUrl = MEMBERSHIPLITE_IMAGES_URL . '/file_icon.png';
+									$fileUrl = MEMBERSHIPLITE_IMAGES_URL . '/file_icon.svg';
 								}
 								if ( preg_match( '@^http@', $return_content ) ) {
 									$temp_data      = explode( '://', $return_content );
@@ -3139,6 +3153,28 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 
 		function arm_br2nl( $arm_string ) {
 			return preg_replace( '/\<br(\s*)?\/?\>/i', "\n", $arm_string );
+		}
+		
+		// Escape ALL shortcodes so they show literally instead of executing
+		function arm_com_escape_all_shortcodes($content) {
+            
+			// Replace [ and ] with ARM HTML entities
+			if(!empty($content)){
+				$content= str_replace(['[', ']'], ['&#ARM91;', '&#ARM93;'], $content);
+			}    
+
+			return $content;
+		}
+
+		// Escaped ALL shortcodes return to [ and ]
+		function arm_com_descaped_all_shortcodes($content) {
+            
+			// Replace [ and ] with HTML entities
+			if(!empty($content)){
+				$content= str_replace(['&#ARM91;', '&#ARM93;'], ['&#91;', '&#93;'], $content);
+			}
+
+			return $content;
 		}
 
 	}

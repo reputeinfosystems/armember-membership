@@ -1,5 +1,5 @@
 <?php
-global $arm_member_forms;
+global $arm_member_forms, $arm_shortcodes;
 if ( isset( $user ) && ! empty( $user ) ) {
 	$tempopt              = $templateOpt['arm_options'];
 	$fileContent         .= '<div class="arm_user_block">';
@@ -7,7 +7,7 @@ if ( isset( $user ) && ! empty( $user ) ) {
 		$fileContent     .= '<a href="' . $user['user_link'] . '" class="arm_dp_user_link"><div class="arm_user_avatar">' . $user['profile_picture'] . '</div></a>';
 		$fileContent     .= '</div>';
 		$fileContent     .= '<div class="arm_user_block_right">';
-			$fileContent .= '<a class="arm_user_link" href="' . $user['user_link'] . '">' . $user['full_name'] . '</a>';
+			$fileContent .= '<a class="arm_user_link" href="' . $user['user_link'] . '">' . $arm_shortcodes->arm_com_descaped_all_shortcodes($arm_shortcodes->arm_com_escape_all_shortcodes($user['full_name'])) . '</a>';
 			// $fileContent .= $user['arm_badges_detail'];
 			$fileContent .= '<div class="armclear"></div>';
 	if ( isset( $tempopt['show_joining'] ) && $tempopt['show_joining'] == true ) {
@@ -24,6 +24,8 @@ if ( isset( $user ) && ! empty( $user ) ) {
 				$spfMetaKey = 'arm_social_field_' . $skey;
 				if ( in_array( $skey, $slected_social_fields ) ) {
 					$skey_field = get_user_meta( $user['ID'], $spfMetaKey, true );
+					$skey_field = $arm_shortcodes->arm_com_escape_all_shortcodes($skey_field);
+					$skey_field = $arm_shortcodes->arm_com_descaped_all_shortcodes($skey_field);
 					if ( isset( $skey_field ) && ! empty( $skey_field ) ) {
 						$fileContent .= "<div class='arm_social_prof_div arm_user_social_fields arm_social_field_{$skey}'><a target='_blank' href='{$skey_field}'></a></div>";
 					}

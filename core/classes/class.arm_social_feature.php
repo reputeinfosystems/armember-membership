@@ -112,7 +112,7 @@ if ( ! class_exists( 'ARM_social_feature_Lite' ) ) {
 					'msg'  => esc_html__( 'There is a error while updating settings, please try again.', 'armember-membership' ),
 				);
 			}
-			echo wp_json_encode( $response );
+			echo arm_pattern_json_encode( $response );
 			die();
 		} */
 
@@ -149,7 +149,7 @@ if ( ! class_exists( 'ARM_social_feature_Lite' ) ) {
 					'old_settings' => maybe_serialize( $socialOptions ),
 				);
 			}
-			echo wp_json_encode( $response );
+			echo arm_pattern_json_encode( $response );
 			die();
 		}
 

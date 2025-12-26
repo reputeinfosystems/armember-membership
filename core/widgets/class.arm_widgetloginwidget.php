@@ -194,7 +194,7 @@ if ( ! class_exists( 'ARMLoginWidget' ) ) {
 
 		public function scripts() {
 			if ( is_active_widget( false, false, $this->id_base, true ) ) {
-				wp_enqueue_style( 'arm_front_css', MEMBERSHIPLITE_URL . '/css/arm_front.css', array(), MEMBERSHIPLITE_VERSION );
+				wp_enqueue_style( 'arm_lite_front_css', MEMBERSHIPLITE_URL . '/css/arm_front.css', array(), MEMBERSHIPLITE_VERSION );
 			}
 		}
 
