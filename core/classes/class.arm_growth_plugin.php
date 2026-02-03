@@ -457,6 +457,15 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 			$args = array(
 				'slug' => $slug,
 			);
+			if( 'bookingpress-appointment-booking' == $slug ){
+				$user_agent = 'BKPLITE-WordPress'. $wp_version.';'.ARMLITE_HOME_URL;
+			} else if( 'arprice-responsive-pricing-table' == $slug ){
+				$user_agent = 'ARPLITE-WordPress/'. $wp_version.';'.ARMLITE_HOME_URL;
+			} else if( 'arforms-form-builder' == $slug ){
+				$user_agent = 'ARFLITE-WordPress/'. $wp_version.';'.ARMLITE_HOME_URL;
+			} else {
+				$user_agent = 'ARMLITE-WordPress/'. $wp_version.';'.ARMLITE_HOME_URL;
+			}
 		
 			$request_string = array(
 				'body' => array(
@@ -466,7 +475,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 					'is_update' => $force_update,
 				),
 				'sslverify' => false,
-				'user-agent' => 'ARMLITE-WordPress/'.$wp_version.';'.ARMLITE_HOME_URL
+				'user-agent' => $user_agent
 			);
 		
 			//Start checking for an update
@@ -505,7 +514,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 		}       
 
     }
-
+    global $arm_growth_plugin;
     $arm_growth_plugin = new ARM_growth_plugin_Lite;
 
 }

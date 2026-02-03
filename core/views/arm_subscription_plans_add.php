@@ -71,8 +71,8 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 			<input type="hidden" name="id" id="arm_add_edit_plan_id" value="<?php echo intval($plan_id); ?>" />
 			<input type="hidden" name="arm_action" value="<?php echo esc_attr($action); ?>" />
 			<div class="arm_admin_form_content">
-				<div class="form-table arm_plan_basic_detail_section">
-					<div class="arm_setup_section_title arm_margin_bottom_5"><?php esc_html_e('Basic Details', 'armember-membership'); ?></div>
+				<div class="form-table arm_plan_basic_detail_section arm_form_main_content">
+					<div class="arm_form_header_label"><?php esc_html_e('Basic Details', 'armember-membership'); ?></div>
 					<div class="arm_plan_detail_section">
 						<table class="form-table">
 							<tr class="form-field arm_plan_detail_section_data">
@@ -173,14 +173,14 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 						</table>
 					</div>
 				</div>
-                <div class="arm_solid_divider"></div>
-                <div class="arm_plan_price_section">
-                    <div class="arm_setup_section_title arm_margin_top_32 arm_margin_bottom_10"><?php esc_html_e('Plan Type', 'armember-membership'); ?></div>
+                <div class="arm_spacing_div"></div>
+                <div class="arm_plan_price_section arm_form_main_content">
+                    <div class="arm_form_header_label"><?php esc_html_e('Plan Type', 'armember-membership'); ?></div>
 					<div id="arm_plan_price_box_content" class="arm_plan_price_box">
 						<div class="page_sub_content">
 							<table class="form-table arm_plan_price_box">
 								<tr class="form-field form-required arm_plan_price_type">
-									<th class="arm_padding_bottom_0"><label><?php esc_html_e( 'Setup Type', 'armember-membership' ); ?></label></th>
+									<th class="arm_padding_0"><label><?php esc_html_e( 'Setup Type', 'armember-membership' ); ?></label></th>
 									<td class="arm_padding_top_20">
 										<div class="arm_form_fields_wrapper">
 											<div class="arm-df__form-field-wrap_radio arm-df__form-field-wrap arm-controls arm-d-flex" id="arm-df__form-field-wrap_arm_plan_type">
@@ -220,8 +220,8 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 									<th><label><?php esc_html_e( 'Plan Amount', 'armember-membership' ); ?></label></th>   
 									<td class='arm_padding_top_0'>
 										<div class="arm_setup_forms_container">
-											<div class="arm-df__form-field-wrap_text arm-df__form-field-wrap arm-controls arm_display_flex_wrap" id="arm-df__form-field-wrap_member_plan_amount">
-												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix arm_margin_top_2 <?php echo $global_currency_sym_pos_pre;?>"><?php echo $global_currency_sym; ?></span>
+											<div class="arm-df__form-field-wrap_text arm-df__form-field-wrap arm-controls arm_display_block" id="arm-df__form-field-wrap_member_plan_amount">
+												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix <?php echo $global_currency_sym_pos_pre;?>"><?php echo $global_currency_sym; ?></span>
 												<input name="arm_subscription_plan_amount" type="text" id="arm-df__form-control_member_plan_amount arm_subscription_plan_amount" value=""  class="arm-df__form-control arm-df__form-control_member_plan arm_material_input arm_no_paste <?php echo $arm_currency_pos_class?>" required="required" data-validation-required-message="<?php esc_html_e( 'Plan amount can not be left blank.', 'armember-membership' ); ?>" onkeypress="javascript:return ArmNumberValidation(event, this)"/>
 												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix <?php echo $global_currency_sym_pos_suf;?>"><?php echo $global_currency_sym; ?></span>
 											</div>
@@ -695,7 +695,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 													<div class="arm-df__form-field-wrap_select arm-df__form-field-wrap arm-controls " id="arm-df__form-field-wrap_arm_trial_months">
 														<input class="arm-selectpicker-input-control" type="text" id="arm_trial_months" name="arm_subscription_plan_options[trial][months]" value="<?php echo ( ! empty( $plan_options['trial']['months'] ) ) ? esc_attr( sanitize_text_field($plan_options['trial']['months']) ) : 1; ?>"/>
 														
-														<dl class="arm_selectbox column_level_dd arm_member_form_dropdown arm_margin_right_0 arm_width_120">
+														<dl class="arm_selectbox column_level_dd arm_member_form_dropdown arm_margin_right_0 arm_width_80">
 															<dt>
 																<span></span>
 																<input type="text" style="display:none;" value="" class="arm_autocomplete"><i class="armfa armfa-caret-down armfa-lg"></i>
@@ -719,7 +719,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 													<div class="arm-df__form-field-wrap_select arm-df__form-field-wrap arm-controls " id="arm-df__form-field-wrap_arm_trial_years">
 														<input class="arm-selectpicker-input-control" type="text" id="arm_trial_years" name="arm_subscription_plan_options[trial][years]" value="<?php echo ( ! empty( $plan_options['trial']['years'] ) ) ? esc_attr( sanitize_text_field($plan_options['trial']['years']) ) : 1; ?>"/>
 														
-														<dl class="arm_selectbox column_level_dd arm_member_form_dropdown arm_margin_right_0 arm_width_120">
+														<dl class="arm_selectbox column_level_dd arm_member_form_dropdown arm_margin_right_0 arm_width_80">
 															<dt>
 																<span></span>
 																<input type="text" style="display:none;" value="" class="arm_autocomplete"><i class="armfa armfa-caret-down armfa-lg"></i>
@@ -991,7 +991,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 											<div class="arm_form_fields_wrapper">
 												<div class="arm_setup_forms_container">
 													<div class="arm-df__form-field-wrap_select arm-df__form-field-wrap arm-controls " id="arm-df__form-field-wrap_arm_plan_payment_failed_action">
-														<input class="arm-selectpicker-input-control" type="text" id="arm_plan_payment_failed_action" name="arm_subscription_plan_options[payment_failed_action]" value="<?php echo intval($grace_period_eot); ?>"/>
+														<input class="arm_plan_payment_failed_action arm-selectpicker-input-control" type="text" id="arm_plan_payment_failed_action" name="arm_subscription_plan_options[payment_failed_action]" value="<?php echo $payment_failed_action; ?>"/>
 														
 														<dl class="arm_selectbox column_level_dd arm_member_form_dropdown">
 															<dt>
@@ -1055,138 +1055,134 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 										</div>
 									</td>
 								</tr>
-								<tr class="form-field paid_subscription_options arm_upd_paid_subscription_divider arm_width_100_pct">
-									<td>
-										<div class="arm_solid_divider arm_upd_paid_subscription_divider"></div>
-									</td>
-								</tr>
 							</table>
                         </div>
+						<div class="form-field paid_subscription_upgrade_downgrade <?php echo (($subscription_type == 'paid_infinite' || $subscription_type == 'paid_finite') || $subscription_type == 'recurring' ) ? '' : 'hidden_section'; ?>">				
+							<table class="form-table paid_subscription_upgrade_downgrade_tbl">
+								<tr class = 'form-field arm_upgrade_downgrade_section'>
+										<?php
+										$enable_up_down_action = ( isset( $plan_options['enable_upgrade_downgrade_action'] ) ) ? $plan_options['enable_upgrade_downgrade_action'] : 0;
+										$upgrade_plans         = ( isset( $plan_options['upgrade_plans'] ) ) ? $plan_options['upgrade_plans'] : array();
+										$upgrade_action        = ( isset( $plan_options['upgrade_action'] ) && $subscription_type != 'paid_infinite') ? $plan_options['upgrade_action'] : 'immediate';
+										$downgrade_plans       = ( isset( $plan_options['downgrade_plans'] ) ) ? $plan_options['downgrade_plans'] : array();
+										$downgrade_action      = ( isset( $plan_options['downgrade_action'] ) && $subscription_type != 'paid_infinite') ? $plan_options['downgrade_action'] : 'immediate';
+										?>
+										<td class="arm_upgrade_downgrade_section">
+											<div class="arm_upgrade_downgrade_section_switch">
+												<div class="armswitch arm_global_setting_switch arm_vertical_align_middle" >
+													<input type="checkbox" id="enable_upgrade_downgrade_action" <?php checked( $enable_up_down_action, 1 ); ?> value="1" class="armswitch_input" name="arm_subscription_plan_options[enable_upgrade_downgrade_action]"/>
+													<label for="enable_upgrade_downgrade_action" class="armswitch_label arm_min_width_40" ></label>
+												</div>
+												<label for="enable_upgrade_downgrade_action" class="arm_padding_left_10 arm_font_size_14 arm_field_hint"><?php esc_html_e('Enable Upgrade / Downgrade Action', 'armember-membership'); ?><i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_html_e('Upgrade / Downgrade action will be applied when users will change their plan from frontend. Select appropriate plan level which is higher/lower than current plan and action will be performed accordingly.', 'armember-membership'); ?>"></i></label>
+												
+												<span class ="arm_font_size_14 arm_margin_top_10 " style="float:left;width:50%;position:relative;top:5px;font-weight:400px;color: #6E7E9E;"><?php esc_html_e( 'Action to be performed when user upgrade / downgrade membership from current plan.', 'armember-membership' ); ?></span>
+											</div>
+											<div class="arm_enable_up_down_action <?php echo ( $enable_up_down_action != '1' ) ? 'hidden_section' : ''; ?>">
+												<div class="arm_membership_upgrade_downgrade_plan_section">
+													<span  class="arm_font_size_16 arm_font_weight_500 arm_up_down_action_label"><?php esc_html_e( 'Upgrade Plan', 'armember-membership' ); ?></span>
+													<span class="arm_margin_bottom_12 arm_font_size_16 arm_font_weight_400 arm-black-350"><?php esc_html_e('Select plan(s) which level is higher than current plan', 'armember-membership'); ?></span>
+													<table width="100%">
+													<tr>
+														<td class="arm_upgrade_downgrade_section">
+															<select name="arm_subscription_plan_options[upgrade_plans][]" class="arm_chosen_selectbox arm_upgrade_plans_selectbox" multiple tabindex="-1" data-placeholder="<?php esc_attr_e( 'Select higher plan(s)..', 'armember-membership' ); ?>">
+																<?php
+																$isURecSelected = false;
+																if ( ! empty( $all_plans ) ) {
+																	foreach ( $all_plans as $plan ) {
+																		$isRecurring = '0';
+																		$planOpts    = $plan['arm_subscription_plan_options'];
+																		if ( $plan['arm_subscription_plan_type'] != 'free' ) {
+																			if ( $planOpts['access_type'] == 'finite' && $planOpts['payment_type'] == 'subscription' ) {
+																				$isRecurring = '1';
+																				if ( in_array( $plan['arm_subscription_plan_id'], $upgrade_plans ) ) {
+																					$upgrade_action = 'immediate';
+																					$isURecSelected = true;
+																				}
+																			}
+																		}
+																		if ( $plan_id != $plan['arm_subscription_plan_id'] ) {
+																			?>
+																			<option value="<?php echo intval($plan['arm_subscription_plan_id']); ?>" <?php echo ( in_array( $plan['arm_subscription_plan_id'], $upgrade_plans ) ) ? 'selected="selected"' : ''; ?> data-recurring="<?php echo esc_attr($isRecurring); ?>"><?php echo esc_html( stripslashes( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></option>
+																									  <?php
+																		}
+																	}
+																}
+																?>
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td class="arm_upgrade_downgrade_section">
+															<span class="arm_font_size_16 arm_margin_bottom_15 arm-black-350"><?php esc_html_e( 'What action should be performed while upgrading to other plan', 'armember-membership' ); ?></span><br/>
+															<label style="<?php echo ( $isURecSelected || $subscription_type == 'paid_infinite') ? 'display:none;' : ''; ?>" class="arm_upgrade_action_on_expire">
+																<input type="radio" class="arm_iradio arm_upgrade_action_radio" name="arm_subscription_plan_options[upgrade_action]" value="on_expire" <?php checked( $upgrade_action, 'on_expire' ); ?>/>
+																<span class="arm_padding_left_10"><?php esc_html_e( 'Upgrade to other plan after current plan expiration ( After End Of Term)', 'armember-membership' ); ?></span>
+															</label>
+															<label class="arm_upgrade_action_immediate">
+																<input type="radio" class="arm_iradio arm_upgrade_action_radio" name="arm_subscription_plan_options[upgrade_action]" value="immediate" <?php checked( $upgrade_action, 'immediate' ); ?>/>
+																<span class="arm_padding_left_10"><?php esc_html_e( 'Immediately upgrade to other plan', 'armember-membership' ); ?></span>
+															</label>
+														</td>
+													</tr>
+												</table>
+											</div>
+											<div class="arm_solid_divider arm_upd_dwn_divider"></div>
+											<div class="arm_membership_upgrade_downgrade_plan_section">
+											<span  class="arm_font_size_16 arm_font_weight_500 arm_up_down_action_label"><?php esc_html_e( 'Downgrade Plan', 'armember-membership' ); ?></span><span class="arm_margin_bottom_12 arm_font_size_16 arm_font_weight_400 arm-black-350"><?php esc_html_e('Select plan(s) which level is lower than current plan', 'armember-membership'); ?></span>
+												<table width="100%">
+													<tr>
+														<td class="arm_upgrade_downgrade_section">
+															<select name="arm_subscription_plan_options[downgrade_plans][]" class="arm_chosen_selectbox arm_downgrade_plans_selectbox" multiple tabindex="-1" data-placeholder="<?php esc_html_e( 'Select lower plan(s)..', 'armember-membership' ); ?>">
+																<?php
+																$isDRecSelected = false;
+																if ( ! empty( $all_plans ) ) {
+																	foreach ( $all_plans as $plan ) {
+																		$isRecurring = '0';
+																		$planOpts    = $plan['arm_subscription_plan_options'];
+																		if ( $plan['arm_subscription_plan_type'] != 'free' ) {
+																			if ( $planOpts['access_type'] == 'finite' && $planOpts['payment_type'] == 'subscription' ) {
+																				$isRecurring = '1';
+																				if ( in_array( $plan['arm_subscription_plan_id'], $downgrade_plans ) ) {
+																					$downgrade_action = 'immediate';
+																					$isDRecSelected   = true;
+																				}
+																			}
+																		}
+																		if ( $plan_id != $plan['arm_subscription_plan_id'] ) {
+																			?>
+																			<option value="<?php echo intval($plan['arm_subscription_plan_id']); ?>" <?php echo ( in_array( $plan['arm_subscription_plan_id'], $downgrade_plans ) ) ? 'selected="selected"' : ''; ?> data-recurring="<?php echo esc_attr($isRecurring); ?>"><?php echo esc_html( stripslashes( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></option>
+																									  <?php
+																		}
+																	}
+																}
+																?>
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td class="arm_upgrade_downgrade_section">
+															<span class="arm_font_size_16 arm_margin_bottom_15 arm-black-350"><?php esc_html_e( 'What action should be performed while downgrading to other plan', 'armember-membership' ); ?></span><br/>
+															<label style="<?php echo ( $isDRecSelected || $subscription_type == 'paid_infinite') ? 'display:none;' : ''; //phpcs:ignore ?>" class="arm_downgrade_action_on_expire">
+																<input type="radio" class="arm_iradio arm_downgrade_action_radio" name="arm_subscription_plan_options[downgrade_action]" value="on_expire" <?php checked( $downgrade_action, 'on_expire' ); ?>/>
+																<span class="arm_padding_left_10"><?php esc_html_e( 'Downgrade to other plan after current plan expiration ( After End Of Term)', 'armember-membership' ); ?></span>
+															</label>
+															<label class="arm_downgrade_action_immediate">
+																<input type="radio" class="arm_iradio arm_downgrade_action_radio" name="arm_subscription_plan_options[downgrade_action]" value="immediate" <?php checked( $downgrade_action, 'immediate' ); ?>/>
+																<span class="arm_padding_left_10"><?php esc_html_e( 'Immediately downgrade to other plan', 'armember-membership' ); ?></span>
+															</label>
+														</td>
+													</tr>
+												</table>
+											</div>
+											</div>
+										</td>
+								</tr>
+							</table>
+						</div>
                     </div>
                 </div>
+
 				
-				<div class="form-field paid_subscription_upgrade_downgrade arm_margin_bottom_24 <?php echo (($subscription_type == 'paid_infinite' || $subscription_type == 'paid_finite') || $subscription_type == 'recurring' ) ? '' : 'hidden_section'; ?>">				
-                    <table class="form-table paid_subscription_upgrade_downgrade_tbl">
-                        <tr class = 'form-field arm_upgrade_downgrade_section'>
-								<?php
-								$enable_up_down_action = ( isset( $plan_options['enable_upgrade_downgrade_action'] ) ) ? $plan_options['enable_upgrade_downgrade_action'] : 0;
-								$upgrade_plans         = ( isset( $plan_options['upgrade_plans'] ) ) ? $plan_options['upgrade_plans'] : array();
-								$upgrade_action        = ( isset( $plan_options['upgrade_action'] ) && $subscription_type != 'paid_infinite') ? $plan_options['upgrade_action'] : 'immediate';
-								$downgrade_plans       = ( isset( $plan_options['downgrade_plans'] ) ) ? $plan_options['downgrade_plans'] : array();
-								$downgrade_action      = ( isset( $plan_options['downgrade_action'] ) && $subscription_type != 'paid_infinite') ? $plan_options['downgrade_action'] : 'immediate';
-								?>
-								<td class="arm_upgrade_downgrade_section arm_padding_top_8">
-									<div class="arm_upgrade_downgrade_section_switch">
-										<div class="armswitch arm_global_setting_switch arm_vertical_align_middle" >
-											<input type="checkbox" id="enable_upgrade_downgrade_action" <?php checked( $enable_up_down_action, 1 ); ?> value="1" class="armswitch_input" name="arm_subscription_plan_options[enable_upgrade_downgrade_action]"/>
-											<label for="enable_upgrade_downgrade_action" class="armswitch_label arm_min_width_40" ></label>
-										</div>
-										<label for="enable_upgrade_downgrade_action" class="arm_padding_left_10 arm_font_size_14 arm_field_hint"><?php esc_html_e('Enable Upgrade / Downgrade Action', 'armember-membership'); ?><i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_html_e('Upgrade / Downgrade action will be applied when users will change their plan from frontend. Select appropriate plan level which is higher/lower than current plan and action will be performed accordingly.', 'armember-membership'); ?>"></i></label>
-										
-										<span class ="arm_font_size_14 arm_margin_top_10 " style="float:left;width:50%;position:relative;top:5px;font-weight:400px;color: #6E7E9E;"><?php esc_html_e( 'Action to be performed when user upgrade / downgrade membership from current plan.', 'armember-membership' ); ?></span>
-									</div>
-									<div class="arm_enable_up_down_action <?php echo ( $enable_up_down_action != '1' ) ? 'hidden_section' : ''; ?>">
-										<div class="arm_membership_upgrade_downgrade_plan_section">
-											<span  class="arm_font_size_16 arm_font_weight_500 arm_up_down_action_label"><?php esc_html_e( 'Upgrade Plan', 'armember-membership' ); ?></span>
-											<span class="arm_margin_bottom_12 arm_font_size_16 arm_font_weight_400 arm-black-350"><?php esc_html_e('Select plan(s) which level is higher than current plan', 'armember-membership'); ?></span>
-											<table width="100%">
-											<tr>
-												<td class="arm_upgrade_downgrade_section">
-													<select name="arm_subscription_plan_options[upgrade_plans][]" class="arm_chosen_selectbox arm_upgrade_plans_selectbox" multiple tabindex="-1" data-placeholder="<?php esc_attr_e( 'Select higher plan(s)..', 'armember-membership' ); ?>">
-														<?php
-														$isURecSelected = false;
-														if ( ! empty( $all_plans ) ) {
-															foreach ( $all_plans as $plan ) {
-																$isRecurring = '0';
-																$planOpts    = $plan['arm_subscription_plan_options'];
-																if ( $plan['arm_subscription_plan_type'] != 'free' ) {
-																	if ( $planOpts['access_type'] == 'finite' && $planOpts['payment_type'] == 'subscription' ) {
-																		$isRecurring = '1';
-																		if ( in_array( $plan['arm_subscription_plan_id'], $upgrade_plans ) ) {
-																			$upgrade_action = 'immediate';
-																			$isURecSelected = true;
-																		}
-																	}
-																}
-																if ( $plan_id != $plan['arm_subscription_plan_id'] ) {
-																	?>
-																	<option value="<?php echo intval($plan['arm_subscription_plan_id']); ?>" <?php echo ( in_array( $plan['arm_subscription_plan_id'], $upgrade_plans ) ) ? 'selected="selected"' : ''; ?> data-recurring="<?php echo esc_attr($isRecurring); ?>"><?php echo esc_html( stripslashes( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></option>
-																							  <?php
-																}
-															}
-														}
-														?>
-													</select>
-												</td>
-											</tr>
-											<tr>
-												<td class="arm_upgrade_downgrade_section">
-													<span class="arm_font_size_16 arm_margin_bottom_15 arm-black-350"><?php esc_html_e( 'What action should be performed while upgrading to other plan', 'armember-membership' ); ?></span><br/>
-													<label style="<?php echo ( $isURecSelected || $subscription_type == 'paid_infinite') ? 'display:none;' : ''; ?>" class="arm_upgrade_action_on_expire">
-														<input type="radio" class="arm_iradio arm_upgrade_action_radio" name="arm_subscription_plan_options[upgrade_action]" value="on_expire" <?php checked( $upgrade_action, 'on_expire' ); ?>/>
-														<span class="arm_padding_left_10"><?php esc_html_e( 'Upgrade to other plan after current plan expiration ( After End Of Term)', 'armember-membership' ); ?></span>
-													</label>
-													<label class="arm_upgrade_action_immediate">
-														<input type="radio" class="arm_iradio arm_upgrade_action_radio" name="arm_subscription_plan_options[upgrade_action]" value="immediate" <?php checked( $upgrade_action, 'immediate' ); ?>/>
-														<span class="arm_padding_left_10"><?php esc_html_e( 'Immediately upgrade to other plan', 'armember-membership' ); ?></span>
-													</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-									<div class="arm_solid_divider arm_upd_dwn_divider"></div>
-									<div class="arm_membership_upgrade_downgrade_plan_section">
-									<span  class="arm_font_size_16 arm_font_weight_500 arm_up_down_action_label"><?php esc_html_e( 'Downgrade Plan', 'armember-membership' ); ?></span><span class="arm_margin_bottom_12 arm_font_size_16 arm_font_weight_400 arm-black-350"><?php esc_html_e('Select plan(s) which level is lower than current plan', 'armember-membership'); ?></span>
-										<table width="100%">
-											<tr>
-												<td class="arm_upgrade_downgrade_section">
-													<select name="arm_subscription_plan_options[downgrade_plans][]" class="arm_chosen_selectbox arm_downgrade_plans_selectbox" multiple tabindex="-1" data-placeholder="<?php esc_html_e( 'Select lower plan(s)..', 'armember-membership' ); ?>">
-														<?php
-														$isDRecSelected = false;
-														if ( ! empty( $all_plans ) ) {
-															foreach ( $all_plans as $plan ) {
-																$isRecurring = '0';
-																$planOpts    = $plan['arm_subscription_plan_options'];
-																if ( $plan['arm_subscription_plan_type'] != 'free' ) {
-																	if ( $planOpts['access_type'] == 'finite' && $planOpts['payment_type'] == 'subscription' ) {
-																		$isRecurring = '1';
-																		if ( in_array( $plan['arm_subscription_plan_id'], $downgrade_plans ) ) {
-																			$downgrade_action = 'immediate';
-																			$isDRecSelected   = true;
-																		}
-																	}
-																}
-																if ( $plan_id != $plan['arm_subscription_plan_id'] ) {
-																	?>
-																	<option value="<?php echo intval($plan['arm_subscription_plan_id']); ?>" <?php echo ( in_array( $plan['arm_subscription_plan_id'], $downgrade_plans ) ) ? 'selected="selected"' : ''; ?> data-recurring="<?php echo esc_attr($isRecurring); ?>"><?php echo esc_html( stripslashes( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></option>
-																							  <?php
-																}
-															}
-														}
-														?>
-													</select>
-												</td>
-											</tr>
-											<tr>
-												<td class="arm_upgrade_downgrade_section">
-													<span class="arm_font_size_16 arm_margin_bottom_15 arm-black-350"><?php esc_html_e( 'What action should be performed while downgrading to other plan', 'armember-membership' ); ?></span><br/>
-													<label style="<?php echo ( $isDRecSelected || $subscription_type == 'paid_infinite') ? 'display:none;' : ''; //phpcs:ignore ?>" class="arm_downgrade_action_on_expire">
-														<input type="radio" class="arm_iradio arm_downgrade_action_radio" name="arm_subscription_plan_options[downgrade_action]" value="on_expire" <?php checked( $downgrade_action, 'on_expire' ); ?>/>
-														<span class="arm_padding_left_10"><?php esc_html_e( 'Downgrade to other plan after current plan expiration ( After End Of Term)', 'armember-membership' ); ?></span>
-													</label>
-													<label class="arm_downgrade_action_immediate">
-														<input type="radio" class="arm_iradio arm_downgrade_action_radio" name="arm_subscription_plan_options[downgrade_action]" value="immediate" <?php checked( $downgrade_action, 'immediate' ); ?>/>
-														<span class="arm_padding_left_10"><?php esc_html_e( 'Immediately downgrade to other plan', 'armember-membership' ); ?></span>
-													</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-                                					</div>
-								</td>
-							</tr>
-						</table>
-					</div>
 					<?php
 					do_action( 'arm_display_field_add_membership_plan', $plan_options );
 				?>
@@ -1221,8 +1217,8 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
         var CURRENCYSUF = "<?php echo $global_currency_sym_pos_suf; //phpcs:ignore?>";
 		var CURRENCYSYM = "<?php echo $global_currency_sym; //phpcs:ignore?>";
         var CURRENCYSYM = "<?php echo $global_currency_sym; //phpcs:ignore?>";
-        var ARM_RR_CLOSE_IMG = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_close_icon.png'; 
-        var ARM_RR_CLOSE_IMG_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_close_icon_hover.png';
+        var ARM_RR_CLOSE_IMG = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/close_btn.svg'; 
+        var ARM_RR_CLOSE_IMG_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/close_btn_hover.svg';
         var ADDCYCLE = "<?php esc_html_e('Add Payment Cycle', 'armember-membership'); ?>";
         var REMOVECYCLE = "<?php esc_html_e('Remove Payment Cycle', 'armember-membership'); ?>";
 		</script>

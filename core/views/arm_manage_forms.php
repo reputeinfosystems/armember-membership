@@ -9,13 +9,12 @@ $add_form_select   = '';
 echo $arm_loader; //phpcs:ignore ?></div>
 <div class="wrap arm_page arm_manage_forms_main_wrapper">
 	<div class="content_wrapper arm_manage_forms_container" id="content_wrapper">
-		<div class="page_title"><?php esc_html_e( 'Manage Forms', 'armember-membership' ); ?></div>
+		<div class="page_title arm_padding_bottom_40"><?php esc_html_e( 'Manage Forms', 'armember-membership' ); ?></div>
 		  
 		<div class="armclear"></div>
 		<div class="arm_manage_forms_content armPageContainer">
 			<div class="arm_form_content_box">
-
-				<div class="arm_page_spacing_div"></div>
+				
 				<!-- ****************************/.Registration Forms./***************************** -->
 				<div class="arm_form_heading">
 					<span><?php esc_html_e( 'Registration / Signup Forms', 'armember-membership' ); ?></span>
@@ -49,8 +48,8 @@ echo $arm_loader; //phpcs:ignore ?></div>
 					<div class="divTable">
 						<div class="divTableHeading">
 							<div class="divTableRow divTableRowheader arm_register_form_section">
-								<div class="divTableHead arm_padding_0 arm_padding_left_32"><?php esc_html_e( 'Form Name', 'armember-membership' ); ?></div>
-								<div class="divTableHead arm_padding_0"><?php esc_html_e( 'Form ID', 'armember-membership' ); ?></div>
+								<div class="divTableHead arm_padding_0 arm_padding_left_32"><?php esc_html_e( 'Form ID', 'armember-membership' ); ?></div>
+								<div class="divTableHead arm_padding_0"><?php esc_html_e( 'Form Name', 'armember-membership' ); ?></div>
 								<div class="divTableHead arm_padding_0"><?php esc_html_e( 'Last Modified', 'armember-membership' ); ?></div>
 								<div class="divTableHead arm_padding_0"><?php esc_html_e( 'Shortcode', 'armember-membership' ); ?></div>	
 								<div class="divTableHead arm_width_50_pct arm_padding_0"></div>						
@@ -75,10 +74,10 @@ echo $arm_loader; //phpcs:ignore ?></div>
 									?>
 									<div class="divTableRow member_row_<?php echo intval($_fid); ?> arm_register_form_section">
 										<div class="divTableCell arm_padding_0 arm_padding_left_32">
-											<a href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $_fid )); //phpcs:ignore ?>" class="arm_get_form_link arm_display_block " data-form_id="<?php echo esc_attr($_fid); ?>"><?php echo strip_tags( stripslashes( $_form['arm_form_label'] ) ); //phpcs:ignore ?></a>
+											<span class="arm_display_block"><?php echo intval($_fid); ?></span>
 										</div>
 										<div class="divTableCell arm_padding_0">
-											<span class="arm_display_block"><?php echo intval($_fid); ?></span>
+											<a href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $_fid )); //phpcs:ignore ?>" class="arm_get_form_link arm_display_block " data-form_id="<?php echo esc_attr($_fid); ?>"><?php echo strip_tags( stripslashes( $_form['arm_form_label'] ) ); //phpcs:ignore ?></a>
 										</div>
 										<div class="divTableCell arm_padding_0"> <span class="arm_display_block"><?php echo date_i18n( $date_format, strtotime( $_form['arm_form_updated_date'] ) ); //phpcs:ignore ?></span></div>
 										<div class="divTableCell arm_padding_0">
@@ -91,15 +90,15 @@ echo $arm_loader; //phpcs:ignore ?></div>
 											</div>
 											</div>
 										</div>
-										<div class="divTableCell arm_padding_0">
+										<div class="divTableCell arm_padding_0 arm_padding_right_32">
 											<div class="">
 												<div class="arm_form_action_btns arm_reg_form_action_btns">
-													<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $_fid ) ); //phpcs:ignore ?>" class="arm_get_form_link" data-form_id="<?php echo esc_attr($_fid); //phpcs:ignore ?>">
-														<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/edit_icon.svg" onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/edit_icon_hover.svg';" class="armhelptip" title="<?php esc_html_e( 'Edit Form', 'armember-membership' ); ?>" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/edit_icon.svg';" /> <?php //phpcs:ignore ?>
+													<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $_fid ) ); //phpcs:ignore ?>" class="arm_get_form_link armhelptip" title="<?php esc_html_e( 'Edit Form', 'armember-membership' ); ?>" data-form_id="<?php echo esc_attr($_fid); //phpcs:ignore ?>">
+														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.2594 3.60022L5.04936 12.2902C4.73936 12.6202 4.43936 13.2702 4.37936 13.7202L4.00936 16.9602C3.87936 18.1302 4.71936 18.9302 5.87936 18.7302L9.09936 18.1802C9.54936 18.1002 10.1794 17.7702 10.4894 17.4302L18.6994 8.74022C20.1194 7.24022 20.7594 5.53022 18.5494 3.44022C16.3494 1.37022 14.6794 2.10022 13.2594 3.60022Z" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.8906 5.0498C12.3206 7.8098 14.5606 9.9198 17.3406 10.1998" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 22H21" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
 													</a>
 													<?php if ( $_form['arm_is_default'] != '1' ) : ?>
-														<a href="javascript:void(0)" class="arm_delete_form_link" onclick="showConfirmBoxCallback(<?php echo esc_attr($_fid); //phpcs:ignore ?>);" data-form_id="<?php echo esc_attr($_fid); ?>">
-															<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/delete.svg" class="armhelptip" title="<?php esc_html_e( 'Delete Form', 'armember-membership' ); ?>" onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/delete_hover.svg';" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/delete.svg';" style='cursor:pointer'/> <?php //phpcs:ignore ?>
+														<a href="javascript:void(0)" class="arm_delete_form_link arm_delete_form armhelptip" title="<?php esc_html_e( 'Delete Form', 'armember-membership' ); ?>" onclick="showConfirmBoxCallback(<?php echo esc_attr($_fid); //phpcs:ignore ?>);" data-form_id="<?php echo esc_attr($_fid); ?>">
+															<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5.33333H21M16.5 5.33333L16.1956 4.43119C15.9005 3.55694 15.7529 3.11982 15.4793 2.79664C15.2376 2.51126 14.9274 2.29036 14.5768 2.1542C14.1798 2 13.7134 2 12.7803 2H11.2197C10.2866 2 9.8202 2 9.4232 2.1542C9.07266 2.29036 8.76234 2.51126 8.5207 2.79664C8.24706 3.11982 8.09954 3.55694 7.80447 4.43119L7.5 5.33333M18.75 5.33333V16.6667C18.75 18.5336 18.75 19.4669 18.3821 20.18C18.0586 20.8072 17.5423 21.3171 16.9072 21.6367C16.1852 22 15.2402 22 13.35 22H10.65C8.75982 22 7.81473 22 7.09278 21.6367C6.45773 21.3171 5.94143 20.8072 5.61785 20.18C5.25 19.4669 5.25 18.5336 5.25 16.6667V5.33333M14.25 9.77778V17.5556M9.75 9.77778V17.5556" stroke="#617191" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 														</a>
 														<?php
 														$formDeleteHtml = '<label class="arm_margin_bottom_24">';
@@ -124,7 +123,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 				</div>
 				<div class="armclear"></div>
 				<!-- ********************************/.Other Forms./******************************** -->
-				<div class="arm_page_spacing_div"></div>
+				<div class="arm_page_spacing_div arm_form_spacing_div"></div>
 				<div class="arm_form_heading">
 					<span><?php esc_html_e( 'Form Set (Login / Forgot Password / Change Password)', 'armember-membership' ); ?></span>
 					<?php 
@@ -139,8 +138,8 @@ echo $arm_loader; //phpcs:ignore ?></div>
 					<div class="divTable">
 						<div class="divTableHeading">
 							<div class="divTableRow divTableRowheader arm_other_form_section">
-								<div class="divTableHead arm_padding_0 arm_padding_left_32"><span class="arm_display_block"><?php esc_html_e( 'Set Name', 'armember-membership' ); ?></span></div>
-								<div class="divTableHead arm_padding_0"><span class="arm_display_block"><?php esc_html_e( 'Set ID', 'armember-membership' ); ?></span></div>
+								<div class="divTableHead arm_padding_0 arm_padding_left_32"><span class="arm_display_block"><?php esc_html_e( 'Set ID', 'armember-membership' ); ?></span></div>
+								<div class="divTableHead arm_padding_0"><span class="arm_display_block"><?php esc_html_e( 'Set Name', 'armember-membership' ); ?></span></div>
 								<div class="divTableHead arm_padding_0"><span class="arm_display_block"><?php esc_html_e( 'Last Modified', 'armember-membership' ); ?></span></div>
 								<div class="divTableHead arm_padding_0">
 									<span class="arm_display_block"><?php esc_html_e( 'Login', 'armember-membership' ); ?></span></div>
@@ -162,12 +161,11 @@ echo $arm_loader; //phpcs:ignore ?></div>
 											reset( $formSet );
 										?>
 										<div class="divTableRow member_row_<?php echo intval($setID); ?> arm_other_form_section">
-											
 											<div class="divTableCell arm_padding_0 arm_padding_left_32">
-												<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $firstForm['arm_form_id'] ) ); //phpcs:ignore ?>" class="arm_get_form_link arm_display_block" data-form_id="<?php echo esc_attr($firstForm['arm_form_id']); ?>"><?php echo stripslashes( $firstForm['arm_set_name'] ); //phpcs:ignore ?></a>
+												<span class="arm_display_block"><?php echo intval($firstForm['arm_form_id']); ?></span>
 											</div>
 											<div class="divTableCell arm_padding_0">
-												<span class="arm_display_block"><?php echo intval($firstForm['arm_form_id']); ?></span>
+												<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $firstForm['arm_form_id'] ) ); //phpcs:ignore ?>" class="arm_get_form_link arm_display_block" data-form_id="<?php echo esc_attr($firstForm['arm_form_id']); ?>"><?php echo stripslashes( $firstForm['arm_set_name'] ); //phpcs:ignore ?></a>
 											</div>
 											<div class="divTableCell arm_padding_0"><span class="arm_display_block"><?php echo date_i18n( $date_format, strtotime( $firstForm['arm_form_updated_date'] ) ); //phpcs:ignore ?></span></div>
 											<?php
@@ -187,15 +185,17 @@ echo $arm_loader; //phpcs:ignore ?></div>
 											<?php
 											$counter++;
 										 endforeach; ?>
-											<div class="divTableCell arm_no_padding">
+											<div class="divTableCell arm_no_padding arm_padding_right_32">
 												<div class="arm_form_action_btns">
 													<?php 
 													$arm_duplicate_form_fields_btn ='';
 													echo apply_filters('arm_duplicate_form_fields_btn',$arm_duplicate_form_fields_btn,$firstForm['arm_form_id']); //phpcs:ignore?>
-													<a href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $firstForm['arm_form_id'] ) ); ?>" class="arm_get_form_link" data-form_id="<?php echo esc_attr($_fid); ?>"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/edit_icon.svg" onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/edit_icon_hover.svg';" class="armhelptip" title="<?php esc_html_e( 'Edit Form', 'armember-membership' ); ?>" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/edit_icon.svg';" /></a><?php //phpcs:ignore ?>
+													<a href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $firstForm['arm_form_id'] ) ); ?>" class="arm_get_form_link armhelptip" title="<?php esc_html_e( 'Edit Form', 'armember-membership' ); ?>" data-form_id="<?php echo esc_attr($_fid); ?>">
+														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.2594 3.60022L5.04936 12.2902C4.73936 12.6202 4.43936 13.2702 4.37936 13.7202L4.00936 16.9602C3.87936 18.1302 4.71936 18.9302 5.87936 18.7302L9.09936 18.1802C9.54936 18.1002 10.1794 17.7702 10.4894 17.4302L18.6994 8.74022C20.1194 7.24022 20.7594 5.53022 18.5494 3.44022C16.3494 1.37022 14.6794 2.10022 13.2594 3.60022Z" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.8906 5.0498C12.3206 7.8098 14.5606 9.9198 17.3406 10.1998" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 22H21" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+													</a><?php //phpcs:ignore ?>
 													<?php if ( $firstForm['arm_is_default'] != '1' ) : ?>
-													<a href="javascript:void(0)" class="arm_delete_set_link" onclick="showConfirmBoxCallback('<?php echo 'set_' . intval($setID); ?>');"  data-set_id="<?php echo intval($setID); ?>">
-														<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/delete.svg" class="armhelptip" title="<?php esc_html_e( 'Delete Form Set', 'armember-membership' ); ?>" onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/delete_hover.svg';" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/delete.svg';" style='cursor:pointer'/> <?php //phpcs:ignore ?>
+													<a href="javascript:void(0)" class="arm_grid_delete_action arm_delete_set_link armhelptip" title="<?php esc_html_e( 'Delete Form Set', 'armember-membership' ); ?>" onclick="showConfirmBoxCallback('<?php echo 'set_' . intval($setID); ?>');"  data-set_id="<?php echo intval($setID); ?>">
+														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5.33333H21M16.5 5.33333L16.1956 4.43119C15.9005 3.55694 15.7529 3.11982 15.4793 2.79664C15.2376 2.51126 14.9274 2.29036 14.5768 2.1542C14.1798 2 13.7134 2 12.7803 2H11.2197C10.2866 2 9.8202 2 9.4232 2.1542C9.07266 2.29036 8.76234 2.51126 8.5207 2.79664C8.24706 3.11982 8.09954 3.55694 7.80447 4.43119L7.5 5.33333M18.75 5.33333V16.6667C18.75 18.5336 18.75 19.4669 18.3821 20.18C18.0586 20.8072 17.5423 21.3171 16.9072 21.6367C16.1852 22 15.2402 22 13.35 22H10.65C8.75982 22 7.81473 22 7.09278 21.6367C6.45773 21.3171 5.94143 20.8072 5.61785 20.18C5.25 19.4669 5.25 18.5336 5.25 16.6667V5.33333M14.25 9.77778V17.5556M9.75 9.77778V17.5556" stroke="#617191" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 													</a>
 														<?php
 														echo $arm_global_settings->arm_get_confirm_box( 'set_' . $setID, esc_html__( 'Are you sure you want to delete this form set?', 'armember-membership' ), 'arm_delete_form_set_confirm_ok','', esc_html__('Delete', 'armember-membership'), esc_attr__('Cancel', 'armember-membership'), esc_attr__('Delete', 'armember-membership') ); //phpcs:ignore
@@ -215,7 +215,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 				echo apply_filters('arm_add_new_table_edit_profile_forms',$arm_add_new_form_table); //phpcs:ignore
 				?>
 				<!-- ********************************/.Additional Shortcodes./******************************** -->
-				<div class="arm_page_spacing_div"></div>
+				<div class="arm_page_spacing_div arm_form_spacing_div"></div>
 				<div class="arm_form_heading">
 					<span><?php esc_html_e( 'Additional Shortcodes', 'armember-membership' ); ?></span>
 					<div class="armclear"></div>
@@ -223,17 +223,10 @@ echo $arm_loader; //phpcs:ignore ?></div>
 				<div class="armclear"></div>
 				<div class="arm_form_list_container arm_form_additional_shortcodes">
 				<div class="divTable">
-						<div class="divTableHeading">
-							<div class="divTableRow divTableRowheader arm_form_additional_shortcodes">
-								<div class="divTableHead arm_padding_left_32 arm_padding_right_32"><?php esc_html_e( 'Name', 'armember-membership' ); ?></div>
-								<div class="divTableHead arm_padding_0"><?php esc_html_e( 'Shortcode', 'armember-membership' ); ?></div>
-								<div class="divTableHead arm_padding_0"><?php esc_html_e( 'Possible Arguments', 'armember-membership' ); ?></div>
-							</div>
-						</div>
-						<div class="divTableBody">
+						<div class="divTableBody arm_display_grid arm_grid_col_3">
 							<?php if(!$ARMemberLite->is_arm_pro_active){?>
 								<div class="divTableRow member_row_member_profile arm_form_additional_shortcodes">
-									<div class="divTableCell arm_padding_left_32 arm_padding_right_0">
+									<div class="divTableCell arm_padding_left_24 arm_padding_right_0">
 										<?php esc_html_e( 'Edit Profile', 'armember-membership' ); ?>
 									</div>
 									<div class="divTableCell arm_padding_0">
@@ -248,22 +241,23 @@ echo $arm_loader; //phpcs:ignore ?></div>
 										</div>
 									</div>
 									<div class="divTableCell arm_padding_0">
-										<ul>
-											<li>title="<?php esc_html_e( 'Edit Profile', 'armember-membership' ); ?>"</li>
+										<?php $additional_profile_title='<h5 class="arm_font_size_16">'. esc_html__( 'Shortcode Parameters', 'armember-membership' ).'</h5><ul>
+											<li>title="'. esc_html__( 'Edit Profile', 'armember-membership' ).'"</li>
 											<li>form_id="101"</li>
-											<li><small><i><?php esc_html_e( 'In form_id pass id of registration form of which styling and fields you want to inherit in Edit Profile Form.', 'armember-membership' ); ?></i></small></li>
-											<li>submit_text="<?php esc_html_e( 'Update Profile', 'armember-membership' ); ?>"</li>
-											<li>message="<?php esc_html_e( 'Your profile has been updated successfully.', 'armember-membership' ); ?>"</li>
+											<li><small><i>'. esc_html__( 'In form_id pass id of registration form of which styling and fields you want to inherit in Edit Profile Form.', 'armember-membership' ).'</i></small></li>
+											<li>submit_text="'. esc_html__( 'Update Profile', 'armember-membership' ).'"</li>
+											<li>message="'. esc_html__( 'Your profile has been updated successfully.', 'armember-membership' ).'"</li>
 											<li>view_profile="true"</li>
-											<li>view_profile_link="<?php esc_html_e( 'View Profile', 'armember-membership' ); ?>"</li>
+											<li>view_profile_link="'. esc_html__( 'View Profile', 'armember-membership' ).'"</li>
 											<li>social_fields="facebook,twitter,linkedin"</li>
-											<li><small><i><?php echo esc_html__( 'In social_fields, pass coma seperated social networks name (facebook, twitter,linkedin, vk, instagram,  pinterest,youtube, dribbble, delicious, tumblr, vine).', 'armember-membership' ); ?></i></small></li>
-										</ul>
+											<li><small><i>'. esc_html__( 'In social_fields, pass coma seperated social networks name (facebook, twitter,linkedin, vk, instagram,  pinterest,youtube, dribbble, delicious, tumblr, vine).', 'armember-membership' ).'</i></small></li>
+										</ul>';?>
+										<div class="arm_tooltip armhelptip arm_margin_top_10" title="<?php echo esc_html($additional_profile_title);?>"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#617191" stroke-width="1.5"/><path d="M12 17V11" stroke="#617191" stroke-width="1.5" stroke-linecap="round"/><path d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z" fill="#617191"/></svg></div>
 									</div>
 								</div>
 							<?php }?>
 							<div class="divTableRow member_row_member_logout arm_form_additional_shortcodes">
-								<div class="divTableCell arm_padding_left_32 arm_padding_right_0">
+								<div class="divTableCell arm_padding_left_24 arm_padding_right_0">
 									<?php esc_html_e( 'Logout', 'armember-membership' ); ?>
 								</div>
 								<div class="divTableCell arm_padding_0">
@@ -277,18 +271,19 @@ echo $arm_loader; //phpcs:ignore ?></div>
 									</div>
 								</div>
 								<div class="divTableCell arm_padding_0">
-									<ul>
-										<li>label="<?php esc_html_e( 'Logout', 'armember-membership' ); ?>"</li>
+									<?php $additional_logout_title='<h5 class="arm_font_size_16">'. esc_html__( 'Shortcode Parameters', 'armember-membership' ).'</h5><ul>
+										<li>label="'. esc_html__( 'Logout', 'armember-membership' ).'"</li>
 										<li>type="link"</li>
 										<li>user_info="true"</li>
-										<li>redirect_to="<?php echo ARMLITE_HOME_URL; //phpcs:ignore ?>"</li>
+										<li>redirect_to="'. ARMLITE_HOME_URL.'"</li>
 										<li>link_css="color: #000000;"</li>
 										<li>link_hover_css="color: #ffffff;"</li>
-									</ul>
+									</ul>'; ?>
+									<div class="arm_tooltip armhelptip arm_margin_top_10" title="<?php echo esc_html($additional_logout_title);?>"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#617191" stroke-width="1.5"/><path d="M12 17V11" stroke="#617191" stroke-width="1.5" stroke-linecap="round"/><path d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z" fill="#617191"/></svg></div>
 								</div>
 							</div>
 							<div class="divTableRow member_row_member_logout arm_form_additional_shortcodes">
-								<div class="divTableCell arm_padding_left_32 arm_padding_right_0">
+								<div class="divTableCell arm_padding_left_24 arm_padding_right_0">
 									<?php esc_html_e( 'Close Account', 'armember-membership' ); ?>
 								</div>
 								<div class="divTableCell arm_padding_0">
@@ -302,10 +297,11 @@ echo $arm_loader; //phpcs:ignore ?></div>
 									</div>
 								</div>
 								<div class="divTableCell arm_padding_0">
-									<ul>
+									<?php $additional_close_acc_title ='<h5 class="arm_font_size_16">'. esc_html__( 'Shortcode Parameters', 'armember-membership' ).'</h5><ul>
 										<li>set_id="102"</li>
-										<li><?php esc_html_e( 'This set_id is id of set of form created for Login, Forgot Password, Change Password forms. And according to that set, Close account form styling will be set.', 'armember-membership' ); ?></li>
-									</ul>
+										<li>'. esc_html__( 'This set_id is id of set of form created for _Login, Forgot Password, Change Password forms. And according to that set, Close account form styling will be set.', 'armember-membership' ).'</li>
+									</ul>'; ?>
+									<div class="arm_tooltip armhelptip arm_margin_top_10" title="<?php echo esc_html($additional_close_acc_title);?>"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#617191" stroke-width="1.5"/><path d="M12 17V11" stroke="#617191" stroke-width="1.5" stroke-linecap="round"/><path d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z" fill="#617191"/></svg></div>
 								</div>
 							</div>
 						</div>

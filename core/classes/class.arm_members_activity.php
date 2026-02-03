@@ -40,7 +40,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$arm_lite_newdbversion = get_option( 'armlite_version' );
 			}
 
-			if ( version_compare( $arm_lite_newdbversion, '5.0.2', '<' ) ) {
+			if ( version_compare( $arm_lite_newdbversion, '5.1', '<' ) ) {
 				$path = MEMBERSHIPLITE_VIEWS_DIR . '/upgrade_latest_data.php';
 				include $path;
 			}
@@ -642,13 +642,13 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 
 			if ( is_array( $question_options['list_data_options'] ) ) {
 				$html .= '<div class="armlite-deactivate-options">';
-				$html .= '<p><strong>' . esc_html( esc_html__( 'Before you deactivate the ARMember Lite plugin, would you quickly give us your reason for doing so?', 'armember-membership' ) ) . '</strong></p><p>';
+				$html .= '<p><strong>' . esc_html__( 'Before you deactivate the ARMember Lite plugin, would you quickly give us your reason for doing so?', 'armember-membership' ) . '</strong></p><p>';
 
 				foreach ( $question_options['list_data_options'] as $key => $option ) {
 					$html .= '<input type="radio" name="armlite-deactivate-reason" id="' . esc_attr( $key ) . '" value="' . esc_attr( $key ) . '"> <label for="' . esc_attr( $key ) . '">' . esc_attr( $option ) . '</label><br>';
 				}
 
-				$html .= '</p><label id="armlite-deactivate-details-label" for="armlite-deactivate-reasons"><strong>' . esc_html( esc_html__( 'How could we improve ?', 'armember-membership' ) ) . '</strong></label><textarea name="armlite-deactivate-details" id="armlite-deactivate-details" rows="2" style="width:100%"></textarea>';
+				$html .= '</p><label id="armlite-deactivate-details-label" for="armlite-deactivate-reasons"><strong>' . esc_html__( 'How could we improve ?', 'armember-membership' ) . '</strong></label><textarea name="armlite-deactivate-details" id="armlite-deactivate-details" rows="2" style="width:100%"></textarea>';
 
 				$html .= '</div>';
 			}

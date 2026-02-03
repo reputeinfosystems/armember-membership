@@ -52,14 +52,14 @@
 	border: 1px #e0e0e0 solid;
 	padding-right:30px;
 }
-.arm_template_wrapper.arm_template_wrapper_directorytemplate2 .arm_directory_search_btn{
+.arm_template_wrapper.arm_template_wrapper_directorytemplate2 .arm_directory_search_btn:not(.arm_directory_clear_btn){
 	float:left;
-	width: 26px;
-	height:30px;
-	background:#ececec;
-	border: 1px #e0e0e0 solid;
+	width: 32px;
+	height:32px;
+	background:var(--arm-pt-theme-blue);
+	border: 1px var(--arm-pt-theme-blue) solid;
 	border-left:none;
-	color:#000000;
+	color:#FFFFFF;
 	padding-top:1px;
 	font-size:12px;
 	position: relative;

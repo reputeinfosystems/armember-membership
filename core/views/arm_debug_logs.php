@@ -473,11 +473,9 @@
 		
         <div class="popup_content_text arm_members_list_detail_popup_text arm_padding_top_24">
 			<div id="arm_debug_log_searchbox" class="dataTables_filter arm_payment_debug_log_container_search arm_margin_bottom_24">
-				<label>
-					<input type="text" class="arm_payment_debug_log_container_search_input" placeholder="<?php esc_html_e('Search','armember-membership');?>" aria-controls="armember_datatable">
-					<input type="search" class="arm_payment_debug_log_container_search_input arm_hidden_section" placeholder="<?php esc_html_e('Search','armember-membership')?>" aria-controls="armember_datatable">
-				</label>
-				<!-- <a class="arm_save_btn" href="javascript:void(0)"><span><?php esc_html_e('Search','armember-membership')?></span></a> -->
+				<input type="text" class="arm_payment_debug_log_container_search_input" placeholder="<?php esc_html_e('Search','armember-membership');?>" aria-controls="armember_datatable">
+				<input type="search" class="arm_payment_debug_log_container_search_input arm_hidden_section" placeholder="<?php esc_html_e('Search','armember-membership')?>" aria-controls="armember_datatable">
+				<a class="arm_save_btn arm_margin_left_10" href="javascript:void(0)"><span><?php esc_html_e('Apply','armember-membership')?></span></a>
 			</div>
 
         	<div class="arm_view_payment_debug_log armPageContainer arm_padding_left_0" data-arm_selected_gateway="">
@@ -499,11 +497,9 @@
         <div class="popup_content_text">
         	
 			<div id="arm_debug_log_searchbox" class="dataTables_filter arm_general_debug_log_container_searchbox arm_margin_bottom_24">
-				<label>
-					<input type="text" class="arm_general_debug_log_container_search_input" placeholder="<?php esc_html_e('Search','armember-membership')?>" aria-controls="armember_datatable">
-					<input type="search" class="arm_general_debug_log_container_search_input arm_hidden_section" placeholder="<?php esc_html_e('Search','armember-membership')?>" aria-controls="armember_datatable">
-				</label>
-				<!-- <a class="arm_save_btn" href="javascript:void(0)"><span><?php esc_html_e('Search','armember-membership')?></span></a> -->
+				<input type="text" class="arm_general_debug_log_container_search_input" placeholder="<?php esc_html_e('Search','armember-membership')?>" aria-controls="armember_datatable">
+				<input type="search" class="arm_general_debug_log_container_search_input arm_hidden_section" placeholder="<?php esc_html_e('Search','armember-membership')?>" aria-controls="armember_datatable">
+				<a class="arm_save_btn arm_margin_left_10" href="javascript:void(0)"><span><?php esc_html_e('Apply','armember-membership')?></span></a>
 			</div>
         	<div class="arm_view_general_debug_log armPageContainer arm_padding_left_0" data-arm_selected_gateway=""></div>
         </div>

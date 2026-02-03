@@ -40,7 +40,7 @@ if ( ! class_exists( 'ARMLoginWidget' ) ) {
 			$output               = '';
 			$profile_template     = $arm_members_directory->arm_get_template_by_id( 1 );
 			$profile_template_opt = $profile_template['arm_options'];
-			$default_cover        = $profile_template_opt['default_cover'];
+			$default_cover        = isset( $profile_template_opt['default_cover'] ) ? $profile_template_opt['default_cover'] : '';
 			$profile_cover        = get_user_meta( $user_id, 'profile_cover', true );
 			if ( $profile_cover == '' || empty( $profile_cover ) ) {
 				$profile_cover = $default_cover;
@@ -53,7 +53,9 @@ if ( ! class_exists( 'ARMLoginWidget' ) ) {
 			$output             .= "<div class='arm_login_widget_wrapper " . esc_attr($rtl_class) . "'>";
 				$output         .= "<div class='arm_login_widget_header'>";
 					$output     .= "<div class='arm_login_widget_user_cover'>";
+					if ( $profile_cover != '' ) {
 						$output .= "<img src='".esc_attr($profile_cover)."' style='width:100%;height:100%;border-radius:0;-webkit-border-radius:0;-o-border-radius:0;-moz-borde-radius:0;' />"; //phpcs:ignore
+					}
 					$output     .= '</div>';
 					$output     .= "<div class='arm_login_widget_avatar'>";
 						$output .= $profile_avatar;

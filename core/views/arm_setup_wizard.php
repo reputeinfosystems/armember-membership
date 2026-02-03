@@ -994,9 +994,6 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 		<div class="arm-setup-comp-video arm-setup-wizard-celebration-show">
 			<a href="javascript:void(0)" onclick="armopensetupvideos();"><img class="arm-ws-acc-img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/suceesfully-setup-video.webp' //phpcs:ignore ?>" alt="ARMember"></a>
 		</div>
-		<div class="arm-ws-get-start-but-sec">
-			<a href="<?php echo esc_attr(admin_url('admin.php?page=' . $arm_slugs->manage_members));?>" class="arm-wsc-btn arm-wsc-btn--primary arm_setup_redirection_btn"><?php esc_html_e('Explore ARMember','armember-membership');?></a>
-		</div>
 		<div class="arm-thank-you-content arm-use-link"><b><?php esc_html_e('Useful Links','armember-membership');?></b></div>
 		<a href="https://armemberplugin.com/documentation" target="_blank" class="arm-wsc-btn arm-wsc-btn--primary arm-usefull-links">
 			<?php esc_html_e('Documentation','armember-membership'); ?>
@@ -1007,6 +1004,42 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 		<a href="https://ideas.armemberplugin.com" target="_blank" class="arm-wsc-btn arm-wsc-btn--primary arm-usefull-links">
 			<?php esc_html_e('Explore Features','armember-membership'); ?>
 		</a>
+		<form method="post" id="arm_setup_wizard_installation_frm" class="arm_setup_wizard_installation_frm arm_admin_form" >
+			<div class="arm-setup-wizard-installation-section-wapper">
+				<div class="arm-setup-wizard-installation-container">
+					<?php if ( !file_exists( WP_PLUGIN_DIR . '/affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php' ) ) { ?>
+					<div class="arm-setup-wizard-installation-product-section arm_download_affi_arf_link arm_download_affiliatepress">
+						<span class="arm-installation-product-heading"><?php esc_html_e('Want your customers to promote your business for you?', 'armember-membership'); ?></span>
+						<div class="arm-installation-product-field-container">
+							<input class="arm_icheckbox arm_hidden_checkbox arm_material_input" type="checkbox" name="arm_setup_download_affiliatepress_product" id="arm_setup_download_affiliatepress_product" value="1" checked="checked">
+							<label class="arm-installation-product-field-label" for="arm_setup_download_affiliatepress_product"><?php esc_html_e('Install AffiliatePress and reward them with commissions for every membership they bring!','armember-membership'); ?></label>
+						</div>
+					</div>
+					<?php } ?>
+					<?php if ( !file_exists( WP_PLUGIN_DIR . '/arforms-form-builder/arforms-form-builder.php' ) ) { ?>
+					<div class="arm-setup-wizard-installation-product-section arm_download_affi_arf_link arm_download_arforms">
+						<span class="arm-installation-product-heading"><?php esc_html_e('Want stunning forms without coding?', 'armember-membership'); ?></span>
+						<div class="arm-installation-product-field-container">
+							<input class="arm_icheckbox arm_hidden_checkbox arm_material_input" type="checkbox" name="arm_setup_download_arfomrs_product" id="arm_setup_download_arfomrs_product" value="1" checked="checked">
+							<label class="arm-installation-product-field-label" for="arm_setup_download_arfomrs_product"><?php esc_html_e('Install ARForms - the most powerful drag-and-drop form builder for WordPress!','armember-membership'); ?></label>
+						</div>
+					</div>
+					<?php } ?>
+				</div>
+				<div class="arm-ws-get-start-but-sec">
+					<button href="javascript:void(0)" class="arm-wsc-btn arm-wsc-btn--primary arm_setup_redirection_btn arm_setup_wizard_installation_btn" id="arm_setup_wizard_installation_btn">
+						<span class="arm_setup_wizard_redirection_btn_text">
+							<span class="arm_setup_wizard_btn_txt">Explore ARMember</span>
+							<span class="arm_setup_wizard_btn_loader">
+								<svg class="arm_circular" viewBox="0 0 60 60">
+									<circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
+								</svg>
+							</span>
+						</span>
+					</button>
+				</div>
+			</div>
+		</form>
 	</div>	
 </div>
 <div class="arm_setup_skip_div">

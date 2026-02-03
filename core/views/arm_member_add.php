@@ -1,5 +1,5 @@
 <?php
-global $wpdb, $armPrimaryStatus, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_social_feature,$arm_email_settings,$arm_lite_members_activity;
+global $wpdb, $armPrimaryStatus, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_social_feature,$arm_email_settings,$arm_lite_members_activity,$arm_is_enable_crop;
 /**
  * Process Submited Form.
  */
@@ -55,6 +55,7 @@ $planIDs                        = array();
 $futurePlanIDs                  = array();
 $plan_start_date                = date( $arm_common_date_format ); //phpcs:ignore
 $arm_member_include_fields_keys = array('user_email', 'user_pass');
+$arm_is_enable_crop 			= 0;
 
 if ( isset( $posted_data['arm_action'] ) && $posted_data['arm_action'] == 'add_member' ) {
 	$username  = ! empty( $posted_data['user_login'] ) ? $posted_data['user_login'] : '';
@@ -602,7 +603,7 @@ $formHiddenFields = '';
 												<input type="hidden" name="arm_additional_fields_checkbox"
 													id="arm_additional_fields_checkbox_arm_hidden" value="">
 												<input class="arm_icheckbox arm_hidden_checkbox" type="checkbox"
-													name="'arm_additional_fields_checkbox"
+													name="arm_additional_fields_checkbox"
 													id="arm_additional_fields_checkbox" value="1"
 													data-id="arm_additional_fields_checkbox_arm_hidden" />
 												<label class="arm_checkbox_label arm_font_size_18 arm_margin_left_10"><?php esc_html_e('Additional Fields', 'armember-membership');?></label>
@@ -694,7 +695,7 @@ $formHiddenFields = '';
 															$hiddenValue = (!empty($hiddenValue)) ? $hiddenValue : $hiddenF['value'];
 															$hiddentitle = (!empty($hiddenF['title'])) ? $hiddenF['title'] : '';
 															
-															echo '<tr class="form-field"><th>'.$hiddentitle.'</th><td><input type="text" name="' . $hiddenMetaKey . '" value="' . $hiddenValue . '"/></td></tr>'; //phpcs:ignore
+															echo '<tr class="form-field"><th><label>'.$hiddentitle.'</label></th><td><input type="text" name="' . $hiddenMetaKey . '" value="' . $hiddenValue . '"/></td></tr>'; //phpcs:ignore
 															
 														}
 													}
@@ -850,7 +851,7 @@ $formHiddenFields = '';
 										<th>
 
 										</th>
-										<td class="arm_position_relative arm_members_status_col arm_margin_top_25">
+										<td class="arm_position_relative arm_members_status_col  arm_margin_top_10 arm_padding_0">
 											<label
 												for="arm_primary_status"  class="arm_font_size_16"><?php esc_html_e( 'Member Status', 'armember-membership' ); ?></label>
 											<div class="armswitch arm_member_status_div">
@@ -888,7 +889,7 @@ $formHiddenFields = '';
 											<tr class="form-field arm_send_email_to_user_div_tr">
 												<th>
 												</th>
-												<td class="arm_members_status_col arm_margin_top_25">
+												<td class="arm_members_status_col  arm_margin_top_10 arm_padding_0">
 													<label
 														for="arm_send_email" class="arm_font_size_16"><?php esc_html_e( 'Send Signup Email Notification to User', 'armember-membership' ); ?></label>
 													<div class="armswitch arm_send_email_to_user_div">
@@ -927,7 +928,7 @@ $formHiddenFields = '';
 									<div class="arm_member_membership_plan_confirm_box" id="arm_confirm_box_plan_change">
 										<div class="arm_text_align_left arm_membership_plan_section_div">
 											<div class="arm_membership_plan_section">
-												<input type='hidden' id="arm_user_plan"
+												<input type='text' id="arm_user_plan"
 													class="arm_user_plan_change_input arm_add_edit_user_plan_change_input arm_user_plan_change_input_get_cycle arm-selectpicker-input-control arm-selectpicker-input-control"
 													name="arm_user_plan" data-old="<?php echo esc_attr($plan_id); ?>"
 													value="<?php echo esc_attr($plan_id); ?>" data-manage-plan-grid="2" />
@@ -1092,7 +1093,7 @@ $formHiddenFields = '';
 																if ( in_array( $pID, $suspended_plan_ids ) ) {
 																	$arm_plan_is_suspended = '<div class="arm_user_plan_status_div arm_position_relative" ><span class="armhelptip tipso_style arm_color_red" id="arm_user_suspend_plan_' . esc_attr($pID) . '" style=" cursor:pointer;" onclick="arm_show_failed_payment_history(' . esc_attr($user_id) . ',' . esc_attr($pID) . ',\'' . esc_attr($planName) . '\',\'' . esc_attr($planData['arm_start_plan']) . '\')" title="' . esc_attr__( 'Click here to Show failed payment history', 'armember-membership' ) . '">(' . esc_attr__( 'Suspended', 'armember-membership' ) . ')</span><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/grid_edit_hover_trns.png" width="20" style="position: absolute; margin: -4px 0 0 5px; cursor: pointer;" title="' . esc_attr__( 'Activate Plan', 'armember-membership' ) . '" data-plan_id="' . esc_attr($pID) . '" onclick="showConfirmBoxCallback(\'change_user_plan_' . esc_attr($pID) . '\');" class="arm_change_user_plan_img_' . esc_attr($pID) . '">'; //phpcs:ignore
 	
-																	$arm_plan_is_suspended .='<div class="arm_confirm_box arm_member_edit_confirm_box" id="arm_confirm_box_change_user_plan_' . esc_attr($pID) . '" style="top:25px; right: -20px; ">
+																	$arm_plan_is_suspended .='<div class="arm_confirm_box arm_member_edit_confirm_box" id="arm_confirm_box_change_user_plan_' . esc_attr($pID) . '" style="top:25px; right: auto; ">
 																				<div class="arm_confirm_box_body">
 																					<div class="arm_confirm_box_arrow arm_float_right" ></div>
 																					<div class="arm_confirm_box_text_title">'.esc_html__('Activate Plan', 'armember-membership' ).'</div>

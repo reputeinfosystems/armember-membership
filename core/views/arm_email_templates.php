@@ -18,7 +18,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )
 	#poststuff #post-body {margin-top: 32px;}
 	.delete_box{float:left;}
 	.ColVis_Button{ display: none !important;}
-	.wrap #armember_datatable_wrapper tr:not(.arm_child_user_row) td.armGridActionTD{
+	.wrap #armember_datatable_wrapper tr:not(.arm_detail_expand_container) td.armGridActionTD{
 		padding: 5px !important;
 	}
 </style>
@@ -27,7 +27,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )
 // ]]>
 </script>
 <div class="arm_email_notifications_main_wrapper">
-	<div class="page_sub_content">
+	<div class="page_sub_content arm_padding_top_24">
 		<div class="page_sub_title" style="float: <?php echo ( is_rtl() ) ? 'right' : 'left'; ?>;" ><?php esc_html_e( 'Standard Email Responses', 'armember-membership' ); ?></div>
 		<?php $arm_pro_add_new_auto_message_btn = '';
 			echo apply_filters('arm_pro_add_new_auto_messages_btn',$arm_pro_add_new_auto_message_btn); //phpcs:ignore
@@ -79,13 +79,13 @@ $get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )
 										</div>
 										<div class="divTableCell"><?php echo esc_html( stripslashes( $email_template->arm_template_subject ) ); ?></div>
 										<div class="divTableCell arm_grid_action_wrapper hidden_section">
-											<div class="arm_grid_action_wrapper arm_margin_top_12">
-												<div class="arm_grid_action_btn_container arm_margin_right_24">
+											<div class="arm_grid_action_wrapper">
+												<div class="arm_grid_action_btn_container">
 												<?php
 													$gridAction  = "<div class='arm_grid_action_btn_container'>";
-													$gridAction .= "<a class='arm_edit_template_btn arm_margin_right_5' href='javascript:void(0);' data-temp_id='" . esc_attr($tempID) . "'><img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_edit.svg' onmouseover=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_edit_hover.svg';\" class='armhelptip' title='" . esc_html__( 'Edit Message', 'armember-membership' ) . "' onmouseout=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/grid_edit.svg';\" /></a>"; //phpcs:ignore
+													$gridAction .= "<a class='arm_edit_template_btn armhelptip arm_margin_right_5' title='" . esc_html__( 'Edit', 'armember-membership' ) . "' href='javascript:void(0);' data-temp_id='" . esc_attr($tempID) . "'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M13.2594 3.60022L5.04936 12.2902C4.73936 12.6202 4.43936 13.2702 4.37936 13.7202L4.00936 16.9602C3.87936 18.1302 4.71936 18.9302 5.87936 18.7302L9.09936 18.1802C9.54936 18.1002 10.1794 17.7702 10.4894 17.4302L18.6994 8.74022C20.1194 7.24022 20.7594 5.53022 18.5494 3.44022C16.3494 1.37022 14.6794 2.10022 13.2594 3.60022Z' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M11.8906 5.0498C12.3206 7.8098 14.5606 9.9198 17.3406 10.1998' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M3 22H21' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/></svg></a>"; //phpcs:ignore
 
-									$gridAction .= "<a class='arm_test_mail_btn' href='javascript:void(0);' data-temp_id='" . esc_attr($tempID) . "'><img src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/resend_mail_icon.svg' onmouseover=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/resend_mail_icon_hover.svg';\" class='armhelptip' title='" . esc_html__( 'Send Test Mail', 'armember-membership' ) . "' onmouseout=\"this.src='" . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . "/resend_mail_icon.svg';\" /></a>"; //phpcs:ignore
+									$gridAction .= "<a class='arm_test_mail_btn armhelptip' title='" . esc_html__( 'Send Test Mail', 'armember-membership' ) . "' href='javascript:void(0);' data-temp_id='" . esc_attr($tempID) . "'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'><path d='M7 19C4 19 2 17.5 2 14V7C2 3.5 4 2 7 2H17C20 2 22 3.5 22 7V11' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M17 6L12.9032 8.7338C12.3712 9.08873 11.6288 9.08873 11.0968 8.7338L7 6' stroke='#617191' stroke-width='1.5' stroke-linecap='round'/><path d='M19.8942 18.0232C20.1376 16.8612 19.9704 15.6089 19.3301 14.4998C17.9494 12.1083 14.8915 11.289 12.5 12.6697C10.1085 14.0504 9.28916 17.1083 10.6699 19.4998C11.8597 21.5606 14.2948 22.454 16.4758 21.7782' stroke='#617191' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M19.988 20.1047C19.7581 20.4134 19.2802 20.3574 19.1279 20.0039L17.7572 16.8233C17.6049 16.4699 17.8923 16.084 18.2746 16.1288L21.7144 16.5321C22.0967 16.5769 22.2871 17.0187 22.0571 17.3274L19.988 20.1047Z' fill='#617191'/></svg></a>"; //phpcs:ignore
 													$gridAction .= '</div>';
 													echo '<div class="arm_grid_action_wrapper">' . $gridAction . '</div>'; //phpcs:ignore
 												?>
@@ -148,7 +148,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )
 							$all_supported_language = array_merge($all_supported_language,$default_supported_language);
 						}
 					}?>
-					<table class="arm_table_label_on_top <?php echo $arm_table_top_class;?>">	
+					<table class="arm_table_label_on_top <?php echo $arm_table_top_class;?> arm_edit_email_table">	
 						<?php 						
 							if(empty($email_notifications_page_language_setting)){ ?>
 								<tr class="arm_membership_plan_selection_row arm_margin_top_5">
@@ -164,13 +164,13 @@ $get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )
 								</tr>
 								<tr class="arm_membership_plan_selection_row">						
 									<td>								
-										<div class="arm_solid_divider arm_margin_top_32"></div>
-										<div class="arm_font_size_20 arm-black-600 arm_font_weight_500 arm_margin_top_32"><?php esc_html_e('Message', 'armember-membership'); ?></div>
+										<div class="arm_solid_divider arm_margin_top_40"></div>
+										<div class="arm_font_size_20 arm-black-600 arm_font_weight_500 arm_margin_top_0"><?php esc_html_e('Message', 'armember-membership'); ?></div>
 									</td>
 								</tr>
 								<tr class="form-field arm_display_grid arm_grid_col_70_30">
 									<th class="arm_email_content_area_left arm_margin_top_24 arm_margin_bottom_12">
-										<?php esc_html_e( 'Email Notification Subject', 'armember-membership' ); ?>
+										<?php esc_html_e( 'Email Notification Description', 'armember-membership' ); ?>
 									</th>
 									<th class="arm_email_content_area_left arm_margin_top_24 arm_margin_bottom_12">
 										<?php esc_html_e( 'Email Template', 'armember-membership' ); ?>
@@ -290,12 +290,12 @@ $get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )
 								foreach ($email_notifications_page_language_setting as $lan) { ?>
 								<tr class="arm_general_settings_multi_languages_standard_tab arm_width_auto arm_width_100_pct" data-multi-lang-value="<?php echo $lan; ?>">
 									<td>
-										<table class="arm_padding_0 arm_padding_top_0">
+										<table class="arm_email_subject_table">
 										<tr class="arm_membership_plan_selection_row arm_margin_top_0">
-	<td>								
-		<div class="arm_font_size_20 arm-black-600 arm_font_weight_500"><?php esc_html_e('Subject', 'armember-membership'); ?></div>
-	</td>
-</tr>
+										<td>								
+											<div class="arm_font_size_20 arm-black-600 arm_font_weight_500"><?php esc_html_e('Subject', 'armember-membership'); ?></div>
+										</td>
+									</tr>
 								<tr class="arm_width_33_pct">
 									<th class="arm_margin_top_24 arm_margin_bottom_12"><?php esc_html_e( 'Email Notification Subject', 'armember-membership' ); ?></th>
 												<td>
@@ -308,13 +308,13 @@ $get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )
 											</tr>
 											<tr class="arm_membership_plan_selection_row">
 												<td>								
-													<div class="arm_solid_divider arm_margin_top_32"></div>
-													<div class="arm_font_size_20 arm-black-600 arm_font_weight_500 arm_margin_top_32"><?php esc_html_e('Message', 'armember-membership'); ?></div>
+													<div class="arm_solid_divider arm_margin_top_40"></div>
+													<div class="arm_font_size_20 arm-black-600 arm_font_weight_500 arm_margin_top_0"><?php esc_html_e('Message', 'armember-membership'); ?></div>
 												</td>
 											</tr>
 											<tr class="form-field arm_display_grid arm_grid_col_70_30">
 												<th class="arm_email_content_area_left arm_margin_top_24 arm_margin_bottom_12">
-													<?php esc_html_e( 'Email Notification Subject', 'armember-membership' ); ?>
+													<?php esc_html_e( 'Email Notification Description', 'armember-membership' ); ?>
 												</th>
 												<th class="arm_email_content_area_left arm_margin_top_24 arm_margin_bottom_12">
 													<?php esc_html_e( 'Email Template', 'armember-membership' ); ?>

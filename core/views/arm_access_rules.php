@@ -95,15 +95,15 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 				<a href="javascript:void(0)" id="arm_update_rules" class="arm_save_btn"><?php esc_html_e( 'Update Rules', 'armember-membership' ); ?></a>
 				
 			</div>
-			<div class="arm_add_new_item_box arm_margin_right_20 arm_margin_top_5">
+			<div class="arm_add_new_item_box arm_margin_right_20">
 				<a class="arm_add_new_item_box arm_page_title_link arm_ref_info_links" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=access_restriction' ) ); //phpcs:ignore ?>" target="_blank"><?php esc_html_e( 'Check Default Access Rule', 'armember-membership' ); ?></a>
 			</div>
+			<div class="armclear"></div>
 		</div>
 			<?php
 		}
 		?>
 		<div class="arm_solid_divider"></div>
-		<div class="armclear"></div>
 		<div id="arm_access_rules_grid_wrapper" class="arm_access_rules_grid_wrapper" >
 		<?php
 				$is_filtered_css = 'display:none;';
@@ -112,189 +112,108 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 					$is_filtered_css = 'display:flex; width:100% !important';
 				}
 			?>
-			<div class="arm_filter_wrapper" id="arm_filter_wrapper" style= '<?php echo $is_filtered_css;?>' >
-				<div class="arm_datatable_filters_options arm_filters_searchbox">
+			<div class="arm_filter_wrapper" id="arm_filter_wrapper" style= '<?php echo $is_filtered_css;?>' >			
+				<div class="arm_datatable_filters_options arm_filters_fields">
 					<div class="sltstandard">
-						<div class="arm_dt_filter_block arm_datatable_searchbox">
-							<div class="arm_datatable_filter_item">
-								<label class="arm_padding_left_0">
-									<input type="text" placeholder="<?php esc_attr_e( 'Search', 'armember-membership' ); ?>" id="armmanagesearch_new armGridSearchBox" class="armmanagesearch_new" value="<?php echo esc_attr($filter_search); ?>" tabindex="-1">
-								</label>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="arm_datatable_filters_options arm_filter_data_options">
-					<div class="sltstandard">
-						<div class="arm_dt_filter_block arm_datatable_searchbox">
-							<?php $hidden_section = ( !empty($filter_slug) || !empty($_REQUEST['protection']) || !empty($_REQUEST['plan'] ) ) ? '' : 'hidden_section';?>
-							<div class="arm_datatable_filter_item arm_membership_plan_filters_items <?php echo $hidden_section?>">
-								<div class="arm_membership_plan_filters">
-									<?php esc_html_e('Filter Type','armember-membership')?>&nbsp;&nbsp;<span class="arm_plan_filter_value"><?php echo $filter_slug?></span>							
-								</div>
-								<div class="arm_membership_plan_filters">
-								<?php esc_html_e('Restriction Type','armember-membership')?>&nbsp;&nbsp;<span class="restriction type arm_plan_filter_value">
-								<?php $protection = !empty($_REQUEST['protection']) ? $_REQUEST['protection'] : 'all';
-								switch($protection)
-								{
-									case 'all':
-										echo esc_html__('All','armember-membership');
-										break;
-									case 1:
-										echo esc_html__('True','armember-membership');
-										break;
-									case 0:
-										echo esc_html__('False','armember-membership');
-										break;
-									default:
-										echo esc_html__('All','armember-membership');
-										break;
-								}?>
-								</span>
-							</div>
-
-							<div class="arm_membership_plan_filters <?php echo (!empty($_REQUEST['plan']) && $_REQUEST['plan'] != 0) ? '' :'hidden_section';?>">
-								<?php esc_html_e('Plans','armember-membership')?>&nbsp;&nbsp;<span class="arm_plan_filter_value">
-								<?php
-									$plan_ids = !empty($_REQUEST['plan']) ? $_REQUEST['plan'] : 0;
-									$plan_arr = explode(',',$plan_ids);
-									$plan_name = "";
-									$first_plan = '';
-									if(count($plan_arr) > 1)
-									{
-										
-										$count = 0;
-										foreach($plan_arr as $plan_id)
-										{
-											$arm_plan = $arm_subscription_plans->arm_get_subscription_plan($plan_id);
-											$plan_name .= $arm_plan['arm_subscription_plan_name'] . ',';
-											if($count == 0)
-											{
-												$first_plan = $arm_plan['arm_subscription_plan_name'] .'...';
-											}
-										}
-										echo $first_plan;
-									}
-									else{
-										$arm_plan = $arm_subscription_plans->arm_get_subscription_plan($plan_ids);
-										$plan_name = !empty($arm_plan['arm_subscription_plan_name']) ? $arm_plan['arm_subscription_plan_name'] : '';
-
-										echo $plan_name;
-									}
-
-									$hidden_section_pp = ( !empty($plan_name ) ) ? '' : 'hidden_section';
-									?>
-								</span>
-								<div class="arm_tooltip arm_plan_tp <?php echo $hidden_section_pp;?>">
-									<div class="arm_tooltip_arrow"></div>
-									<span class="arm_plan_filter_value_tooltip"><?php echo $plan_name ?></span>
+						<div class="arm_confirm_box_btn_container arm_margin_0">
+							<div class="arm_dt_filter_block arm_datatable_searchbox">
+								<div class="arm_datatable_filter_item">
+									<label class="arm_padding_left_0">
+										<input name="search" type="text" placeholder="<?php esc_attr_e( 'Search', 'armember-membership' ); ?>" id="armmanagesearch_new" class="armmanagesearch_new armGridSearchBox" value="<?php echo sanitize_text_field($filter_search); ?>" tabindex="0">
+									</label>
 								</div>
 							</div>
-							<a href="<?php echo $arm_reset_url;?>" class="arm_membership_plan_filters_items_reset"><?php esc_html_e('Clear Filters','armember-membership');?></a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="arm_datatable_filters_options arm_filter_data_confirmbox">
-					<div class="sltstandard">
-						<div class="arm_confirm_box arm_filter_confirm_box" id="arm_confirm_box_manage_access_rule_filter">
-								<div class="arm_confirm_box_body">
-									<div style="margin-left: 24px">
-										<span class="arm_font_size_14 arm_filter_confirm_header"><?php esc_html_e('Add Filters','armember-membership');?></span>
-									</div>
-									<div class="arm_solid_divider"></div>
-									<div class="arm_confirm_box_btn_container">
-										<table>
-											<tr class="arm_child_user_row">
-												<th>
-													<?php esc_html_e('Type','armember-membership');?>
-												</th>
-												<td>
-													<div class="arm_filter_restriction_box arm_datatable_filter_item">                        
-														<input type="hidden" id="arm_rule_type_filter" name="type" value="<?php echo esc_attr($cur_type); ?>"/>
-														<input type="hidden" id="arm_rule_slug_filter" name="slug" data-type="<?php echo esc_attr($cur_type); ?>" value="<?php echo esc_attr($cur_slug); ?>"/>
-														<dl class="arm_selectbox column_level_dd arm_width_250">
-															<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
-															<dd>
-																<ul data-id="arm_rule_slug_filter">
-																	<li data-label="<?php esc_attr_e( 'Select Type', 'armember-membership' ); ?>" data-value="page" data-type="page"><?php esc_html_e( 'Select Type', 'armember-membership' ); ?></li>
-																	<?php
-																	if ( ! empty( $rule_types ) ) {
-																		foreach ( $rule_types as $type => $opts ) {
-																			?>
-																			<ol><?php echo ucfirst( str_replace( '_', ' ', $type ) ); //phpcs:ignore ?></ol>
-																						<?php
-																							if ( is_array( $opts ) ) {
-																								foreach ( $opts as $slug => $label ) {
-																									?>
-																					<li data-label="<?php echo esc_attr($label); ?>" data-value="<?php echo esc_attr($slug); ?>" data-type="<?php echo esc_attr($type); ?>"><?php echo esc_html($label); ?></li>
-																									<?php
-																								}
-																							}
-																		}
-																	}
-																	?>
-																</ul>
-															</dd>
-														</dl>
-													</div>
-												</td>
-											</tr>
-											<tr class="arm_child_user_row">
-												<th>
-													<?php esc_html_e('Restriction Type','armember-membership');?>
-												</th>
-												<td>
-													<div class="arm_filter_restriction_box arm_datatable_filter_item">                        
-														<input type="hidden" id="arm_rule_protection_filter" class="arm_rules_filter_input" name="protection" value="<?php echo esc_attr($cur_protection); ?>"/>
-														<dl class="arm_selectbox column_level_dd arm_width_250">
-															<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
-															<dd>
-																<ul data-id="arm_rule_protection_filter">
-																	<li data-label="<?php esc_attr_e( 'Select Default Restriction', 'armember-membership' ); ?>" data-value="all"><?php esc_html_e( 'Select Default Restriction', 'armember-membership' ); ?></li>
-																	<li data-label="<?php esc_attr_e( 'On', 'armember-membership' ); ?>" data-value="1"><?php esc_html_e( 'On', 'armember-membership' ); ?></li>
-																	<li data-label="<?php esc_attr_e( 'Off', 'armember-membership' ); ?>" data-value="0"><?php esc_html_e( 'Off', 'armember-membership' ); ?></li>
-																</ul>
-															</dd>
-														</dl>
-													</div>
-												</td>
-											</tr>
-											<tr class="arm_child_user_row">
-												<th>
-													<?php esc_html_e('Membership Plan','armember-membership');?>
-												</th>
-												<td>
-													<?php if ( ! empty( $all_plans ) ) :
-														$plan = !empty($_REQUEST['plan']) ? $_REQUEST['plan']: ''; ?>
-														<div class="arm_filter_plans_box arm_datatable_filter_item">                        
-															<input type="hidden" id="arm_subs_filter" class="arm_subs_filter" value="<?php echo !empty($plan) ? esc_attr($plan): 0; ?>" />
-															<dl class="arm_selectbox arm_width_250">
-																<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
-																<dd>
-																	<ul data-id="arm_subs_filter" data-placeholder="<?php esc_attr_e( 'Select Plans', 'armember-membership' ); ?>">
-																		<li data-label="<?php  esc_attr_e( 'Select Plans', 'armember-membership' ); //phpcs:ignore ?>" data-value="0"><?php  esc_attr_e( 'Select Plans', 'armember-membership' ); //phpcs:ignore ?></li>
-																		<?php foreach ( $all_plans as $plan ) : ?>
-																			<li data-label="<?php echo stripslashes( esc_attr( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><?php echo stripslashes( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
-																		<?php endforeach; ?>
-																	</ul>
-																</dd>
-															</dl>
-														</div>
-													<?php endif;?>
-												</td>
-											</tr>
-											<tr class="arm_child_user_row">
-												<th></th>
-												<td>
-													<a href="javascript:void(0);" class="arm_cancel_btn arm_margin_0" id="arm_member_grid_filter_clr_btn"><?php esc_html_e('Clear','armember-membership');?></a>
-													<input type="button" class="armemailaddbtn arm_access_rule_grid_filter_btn" id="arm_access_rule_grid_filter_btn" value="<?php esc_html_e('Apply','armember-membership');?>">
-												</td>
-											</tr>
-										</table>
+							<div class="arm_filter_child_row">
+								<div>
+									<input type="hidden" id="arm_rule_type_filter" name="type" value="<?php echo esc_attr($cur_type); ?>"/>
+									<div class="arm_filter_restriction_box arm_datatable_filter_item">                        
+										<input type="text" id="arm_rule_slug_filter" name="slug" class="arm_rule_slug_filter arm-selectpicker-input-control" data-type="<?php echo esc_attr($cur_type); ?>" value="<?php echo esc_attr($cur_slug); ?>"/>
+										<dl class="arm_selectbox column_level_dd arm_width_250">
+											<dt>
+												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.8333 6.10587L12.4167 2.66066C12 2.25053 11.4167 2.00444 10.75 2.00444H5.83334C4.58333 1.92241 3.5 2.98878 3.5 4.21921V15.7032C3.5 16.9336 4.5 18 5.83334 18H14.1667C15.4167 18 16.5 17.0157 16.5 15.7032V7.66441C16.5 7.09021 16.25 6.51601 15.8333 6.10587ZM7.5 8.48472H10C10.3334 8.48472 10.6667 8.7308 10.6667 9.14096C10.6667 9.55104 10.4166 9.79712 10 9.79712H7.5C7.16667 9.79712 6.83333 9.55104 6.83333 9.14096C6.83333 8.7308 7.16667 8.48472 7.5 8.48472ZM12.5 13.0783H7.5C7.16667 13.0783 6.83333 12.8322 6.83333 12.4221C6.83333 12.0119 7.08334 11.7658 7.5 11.7658H12.5C12.8333 11.7658 13.1666 12.0119 13.1666 12.4221C13.1666 12.8322 12.8333 13.0783 12.5 13.0783Z" fill="#9CA7BD"/></svg>
+												<span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i>
+											</dt>
+											<dd>
+												<ul data-id="arm_rule_slug_filter">
+													<li data-label="<?php esc_attr_e( 'Select Type', 'armember-membership' ); ?>" data-value="page" data-type="post_type"><?php esc_html_e( 'Select Type', 'armember-membership' ); ?></li>
+													<?php
+													if ( ! empty( $rule_types ) ) {
+														foreach ( $rule_types as $type => $opts ) {
+															?>
+															<ol><?php echo ucfirst( str_replace( '_', ' ', $type ) ); //phpcs:ignore ?></ol>
+																		<?php
+																			if ( is_array( $opts ) ) {
+																				foreach ( $opts as $slug => $label ) {
+																					?>
+																	<li data-label="<?php echo esc_attr($label); ?>" data-value="<?php echo esc_attr($slug); ?>" data-type="<?php echo esc_attr($type); ?>"><?php echo esc_html($label); ?></li>
+																					<?php
+																				}
+																			}
+														}
+													}
+													?>
+												</ul>
+											</dd>
+										</dl>
 									</div>
 								</div>
-						</div>
+							</div>
+							<div class="arm_filter_child_row">
+								<div>
+									<div class="arm_filter_restriction_box arm_datatable_filter_item">                        
+										<input type="text" id="arm_rule_protection_filter" class="arm_rules_filter_input arm-selectpicker-input-control" name="protection" value="<?php echo esc_attr($cur_protection); ?>"/>
+										<dl class="arm_selectbox column_level_dd arm_width_250">
+											<dt>
+												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2C5.60313 2 2 5.60313 2 10C2 14.3969 5.60313 18 10 18C14.3969 18 18 14.3969 18 10C18 5.60313 14.3969 2 10 2ZM3.90625 10C3.90625 6.64372 6.64372 3.90625 10 3.90625C11.2656 3.90625 12.4844 4.29997 13.525 5.04059L10 8.56559L5.04066 13.525C4.29997 12.4843 3.90625 11.2656 3.90625 10ZM10 16.0938C8.73441 16.0938 7.51559 15.7 6.475 14.9593L14.9594 6.47497C15.7 7.51559 16.0938 8.73434 16.0938 10C16.0938 13.3562 13.3563 16.0938 10 16.0938Z" fill="#9CA7BD"/></svg>
+												<span class="arm_no_auto_complete"></span><i class="armfa armfa-caret-down armfa-lg"></i>
+											</dt>
+											<dd>
+												<ul data-id="arm_rule_protection_filter">
+													<li data-label="<?php esc_attr_e( 'Select Default Restriction', 'armember-membership' ); ?>" data-value="all"><?php esc_html_e( 'Select Default Restriction', 'armember-membership' ); ?></li>
+													<li data-label="<?php esc_attr_e( 'On', 'armember-membership' ); ?>" data-value="1"><?php esc_html_e( 'On', 'armember-membership' ); ?></li>
+													<li data-label="<?php esc_attr_e( 'Off', 'armember-membership' ); ?>" data-value="0"><?php esc_html_e( 'Off', 'armember-membership' ); ?></li>
+												</ul>
+											</dd>
+										</dl>
+									</div>
+								</div>
+							</div>
+							<div class="arm_filter_child_row">
+								<div>
+									<?php if ( ! empty( $all_plans ) ) :
+										$plan = !empty($_REQUEST['plan']) ? $_REQUEST['plan']: ''; ?>
+										<div class="arm_filter_plans_box arm_datatable_filter_item">                        
+											<input type="text" id="arm_subs_filter" class="arm_subs_filter arm-selectpicker-input-control" value="<?php echo !empty($plan) ? esc_attr($plan): 0; ?>" />
+											<dl class="arm_selectbox arm_width_250">
+												<dt>
+													<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_7522_5770)"><rect x="6" y="2" width="8" height="16" rx="2" fill="#9CA7BD"/><path opacity="0.4" d="M11 4H16C17.1046 4 18 4.89543 18 6V14C18 15.1046 17.1046 16 16 16H11V4Z" fill="#9CA7BD"/><path opacity="0.4" d="M2 6C2 4.89543 2.89543 4 4 4H9V16H4C2.89543 16 2 15.1046 2 14V6Z" fill="#9CA7BD"/></g><defs><clipPath id="clip0_7522_5770"><rect width="16" height="16" fill="white" transform="translate(2 2)"/></clipPath></defs></svg>
+													<span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i>
+												</dt>
+												<dd>
+													<ul data-id="arm_subs_filter" data-placeholder="<?php esc_attr_e( 'Select Plans', 'armember-membership' ); ?>">
+														<li data-label="<?php  esc_attr_e( 'Select Plans', 'armember-membership' ); //phpcs:ignore ?>" data-value="0"><?php  esc_attr_e( 'Select Plans', 'armember-membership' ); //phpcs:ignore ?></li>
+														<?php foreach ( $all_plans as $plan ) : ?>
+															<li data-label="<?php echo stripslashes( esc_attr( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><?php echo stripslashes( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
+														<?php endforeach; ?>
+													</ul>
+												</dd>
+											</dl>
+										</div>
+									<?php endif;?>
+								</div>
+							</div>
+							<div class="arm_filter_child_row">
+								<div>
+									<input type="button" name="search" class="armemailaddbtn arm_access_rule_grid_filter_btn" id="arm_access_rule_grid_filter_btn" value="<?php esc_html_e('Apply','armember-membership');?>">
+									<a href="<?php echo admin_url('admin.php?page=arm_access_rules');?>" class="arm_cancel_btn arm_access_rule_reset hidden_section"><?php esc_html_e('Clear','armember-membership');?></a>
+								</div>
+							</div>
+						</div>	
+					</div>
+					<div class="arm_filter_hide_show_btn_section arm_hide">
+						<button type="button" class="arm_filter_hide_show_btn" id="arm_filter_hide_show_btn" data-status="0">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_7619_15796)"><g clip-path="url(#clip1_7619_15796)"><path d="M17 1H3C1.89543 1 1 1.89557 1 3.00031V4.17207C1 4.70259 1.21071 5.21137 1.58579 5.58651L7.41421 11.4158C7.78929 11.791 8 12.2998 8 12.8302V18.0027V18.2884C8 18.9211 8.7649 19.2379 9.2122 18.7906L10 18.0027L11.4142 16.5882C11.7893 16.2131 12 15.7043 12 15.1738V12.8302C12 12.2998 12.2107 11.791 12.5858 11.4158L18.4142 5.58651C18.7893 5.21137 19 4.70259 19 4.17207V3.00031C19 1.89557 18.1046 1 17 1Z" stroke="#617191" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g></g><defs><clipPath id="clip0_7619_15796"><rect width="20" height="20" fill="white"/></clipPath><clipPath id="clip1_7619_15796"><rect width="20" height="20" fill="white"/></clipPath></defs></svg>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -448,31 +367,23 @@ jQuery(document).ready(function ($){
 	var armDefaultRules = {};
 	var __ARM_Showing = '<?php echo addslashes(esc_html__('Showing','armember-membership')); //phpcs:ignore?>';
     var __ARM_Showing_empty = '<?php echo addslashes(esc_html__('Showing 0 to 0 of 0 entries','armember-membership')); //phpcs:ignore?>';
-    var __ARM_to = '<?php echo addslashes(esc_html__('to','armember-membership')); //phpcs:ignore?>';
+    var __ARM_to = '-';
     var __ARM_of = '<?php echo addslashes(esc_html__('of','armember-membership')); //phpcs:ignore?>';
     var __ARM_RECORDS = '<?php echo addslashes(esc_html__('entries','armember-membership')); //phpcs:ignore?>';   
     var __ARM_NO_FOUND = '<?php echo addslashes(esc_html__('No any record found.','armember-membership')); //phpcs:ignore?>';
     var __ARM_NO_MATCHING = '<?php echo addslashes(esc_html__('No matching records found.','armember-membership')); //phpcs:ignore?>';
-	var __ARM_Show = '<?php echo addslashes( esc_html__( 'Entries per page', 'armember-membership' ) ); //phpcs:ignore ?> ';
+	var __ARM_Show = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?> ';
 	var DTable = jQuery('#armember_datatable').dataTable({
 		"sDom": '<"H"CBfr>t<"footer"ipl>',
 		"sPaginationType": "four_button",
 		"oLanguage": {
-			"sInfo": __ARM_Showing + " _START_ " + __ARM_to + " _END_ " + __ARM_of + " _TOTAL_ " + __ARM_RECORDS,
+			"sInfo": __ARM_Showing + " <span class='arm-black-350 arm_font_size_15'>_START_</span> " + __ARM_to + " <span class='arm-black-350 arm_font_size_15'>_END_</span> " + __ARM_of + " <span class='arm-black-350 arm_font_size_15'>_TOTAL_</span> " + __ARM_RECORDS,
 			"sInfoEmpty": __ARM_Showing_empty,
 			"sLengthMenu": __ARM_Show + "_MENU_",
 			"sEmptyTable": __ARM_NO_FOUND,
 			"sZeroRecords": __ARM_NO_MATCHING
 		},
-		"buttons":[
-			{
-				"className":"ColVis_Button TableTools_Button ui-button ui-state-default ColVis_MasterButton  manage_access_rule_filter_btn",
-				"text":"<span class=\"armshowhideicon\" style=\"background-image: url(<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/show_hide_icon.svg);background-repeat: no-repeat;background-position: 0 center;padding: 0 0 0 25px;margin-right\"><?php esc_html_e('Filters','armember-membership');?></span>",
-				"action": function (e, dt, node, config) {
-					showConfirmBoxCallback_filter('manage_access_rule_filter');
-				}
-			}
-		],
+		"buttons":[],
 		"bJQueryUI": true,
 		"bPaginate": true,
 		"bAutoWidth" : false,
@@ -590,6 +501,13 @@ jQuery(document).ready(function ($){
 		"iRightWidth": 0,
 	});
 	oFC.fnRedrawLayout();
+		if (jQuery('.arm_rule_protection_action').length == jQuery('.arm_rule_protection_action:checked').length) {
+			jQuery(".arm_all_restriction").data('checked', 1);
+			jQuery(".arm_all_restriction").prop("checked", true);
+		} else {
+			jQuery(".arm_all_restriction").data('checked', 0);
+			jQuery(".arm_all_restriction").prop("checked", false);
+		}
 		// set here because user no having plan field indeterminate not working.
 		jQuery('.arm_all_rule_plan_chks').each(function() {
 			var $this = jQuery(this);
@@ -606,7 +524,8 @@ jQuery(document).ready(function ($){
 				$this.prop('checked', true);
 			} else {
 				$this.attr('data-checked', 0);
-				$this.prop('indeterminate', true);
+				$this.prop('indeterminate', false);
+				$this.prop('checked', false);
 			}
 		});
 	jQuery(document).on( 'keyup','.armmanagesearch_new', function (e) {
@@ -687,7 +606,21 @@ jQuery(document).ready(function ($){
 				{
 					armRules[item_id]["no_plan"] = '0';
 				}
+				if (jQuery('input.arm_rule_plan_chks[data-plan_id="' + plan_id + '"]').length == jQuery('input.arm_rule_plan_chks[data-plan_id="' + plan_id + '"]:checked').length) {
+					jQuery(".arm_all_rules_checkbox_" + plan_id).data('checked', 1);
+					jQuery(".arm_all_rules_checkbox_" + plan_id).prop("checked", true);
+				} else {
+					jQuery(".arm_all_rules_checkbox_" + plan_id).data('checked', 0);
+					jQuery(".arm_all_rules_checkbox_" + plan_id).prop("checked", false);
+				}
 			});
+		}
+		if (jQuery('.arm_rule_protection_action').length == jQuery('.arm_rule_protection_action:checked').length) {
+			jQuery(".arm_all_restriction").data('checked', 1);
+			jQuery(".arm_all_restriction").prop("checked", true);
+		} else {
+			jQuery(".arm_all_restriction").data('checked', 0);
+			jQuery(".arm_all_restriction").prop("checked", false);
 		}
 	});
 	jQuery(document).on('click', '.arm_no_plan_rule', function () {
@@ -833,7 +766,26 @@ jQuery(document).ready(function ($){
 			});
 		}
 	});
-		
+	
+	var armmanagesearch_new_val = jQuery('#arm_access_rules_list_form input[name="search"]').val();
+	if(armmanagesearch_new_val!='')
+	{
+		var armGridSearchBox_hidden_val = jQuery("#armGridSearchBox_hidden").val();
+		if(armmanagesearch_new_val!=armGridSearchBox_hidden_val)
+		{
+			jQuery("#armGridSearchBox_hidden").val(armmanagesearch_new_val);
+			DTable._fnReDraw();
+		}
+	}
+
+	<?php 
+	if( ( !empty($_REQUEST['type']) && $_REQUEST['type']!='post_type') || ( !empty($_REQUEST['slug']) && $_REQUEST['slug']!='page') || ( !empty($_REQUEST['protection']) && $_REQUEST['protection']!='all') || ( !empty($_REQUEST['plan']) && $_REQUEST['plan']!='0' ) || !empty($_REQUEST['search']) ) //phpcs:ignore
+	{
+	?>
+		jQuery('.arm_cancel_btn.arm_access_rule_reset').removeClass('hidden_section');
+	<?php
+	}
+	?>
 });
 
 jQuery(document).on('click','#arm_member_grid_filter_clr_btn',function(){
@@ -857,6 +809,8 @@ jQuery(document).on('click','.arm_access_rule_grid_filter_btn',function(){
 	else{
 		url = url+'&plan=';
 	}
+	var armmanagesearch_new = jQuery('#arm_access_rules_list_form input[name="search"]').val();
+	url = url+'&search='+encodeURIComponent(armmanagesearch_new);
 	
 	
 

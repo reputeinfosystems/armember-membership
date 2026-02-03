@@ -152,8 +152,8 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                     }		                       
                     $gridAction = "<div class='arm_grid_action_btn_container'>";
                     if (current_user_can('arm_manage_plans')) {
-                        $gridAction .= "<a href='javascript:void(0)'  class='arm_edit_plan_data' data-plan_id='".$planID."'><img src='".MEMBERSHIPLITE_IMAGES_URL."/grid_edit.svg' onmouseover=\"this.src='".MEMBERSHIPLITE_IMAGES_URL."/grid_edit_hover.svg';\" class='armhelptip' title='".esc_html__('Edit Plan','armember-membership')."' onmouseout=\"this.src='".MEMBERSHIPLITE_IMAGES_URL."/grid_edit.svg';\" /></a>";
-                        $gridAction .= "<a href='javascript:void(0)' onclick='showConfirmBoxCallback({$planID});'><img src='".MEMBERSHIPLITE_IMAGES_URL."/grid_delete.svg' class='armhelptip' title='".esc_html__('Delete','armember-membership')."' onmouseover=\"this.src='".MEMBERSHIPLITE_IMAGES_URL."/grid_delete_hover.svg';\" onmouseout=\"this.src='".MEMBERSHIPLITE_IMAGES_URL."/grid_delete.svg';\" /></a>";
+                        $gridAction .= "<a href='javascript:void(0)'  class='arm_edit_plan_data' data-plan_id='".$planID."'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M13.2594 3.60022L5.04936 12.2902C4.73936 12.6202 4.43936 13.2702 4.37936 13.7202L4.00936 16.9602C3.87936 18.1302 4.71936 18.9302 5.87936 18.7302L9.09936 18.1802C9.54936 18.1002 10.1794 17.7702 10.4894 17.4302L18.6994 8.74022C20.1194 7.24022 20.7594 5.53022 18.5494 3.44022C16.3494 1.37022 14.6794 2.10022 13.2594 3.60022Z' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M11.8906 5.0498C12.3206 7.8098 14.5606 9.9198 17.3406 10.1998' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M3 22H21' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/></svg></a>";
+                        $gridAction .= "<a href='javascript:void(0)' onclick='showConfirmBoxCallback({$planID});' class='arm_grid_delete_action'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M3 5.33333H21M16.5 5.33333L16.1956 4.43119C15.9005 3.55694 15.7529 3.11982 15.4793 2.79664C15.2376 2.51126 14.9274 2.29036 14.5768 2.1542C14.1798 2 13.7134 2 12.7803 2H11.2197C10.2866 2 9.8202 2 9.4232 2.1542C9.07266 2.29036 8.76234 2.51126 8.5207 2.79664C8.24706 3.11982 8.09954 3.55694 7.80447 4.43119L7.5 5.33333M18.75 5.33333V16.6667C18.75 18.5336 18.75 19.4669 18.3821 20.18C18.0586 20.8072 17.5423 21.3171 16.9072 21.6367C16.1852 22 15.2402 22 13.35 22H10.65C8.75982 22 7.81473 22 7.09278 21.6367C6.45773 21.3171 5.94143 20.8072 5.61785 20.18C5.25 19.4669 5.25 18.5336 5.25 16.6667V5.33333M14.25 9.77778V17.5556M9.75 9.77778V17.5556' stroke='#617191' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg></a>";
                         if (empty($planMembers) || $planMembers == 0) {
                             $gridAction .= $arm_global_settings->arm_get_confirm_box($planID, esc_html__("Are you sure you want to delete this plan?", 'armember-membership'), 'arm_plan_delete_btn','', esc_html__('Delete', 'armember-membership'), esc_attr__('Cancel', 'armember-membership'), esc_attr__('Delete', 'armember-membership'));
                         } else {
@@ -1628,7 +1628,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					update_user_meta( $user_id, 'arm_user_suspended_plan_ids', $suspended_plan_ids );
 				}
 
-				if ( ! in_array( $new_plan_id, $old_plan ) ) {
+				if ( !in_array( $new_plan_id, $old_plan ) ) {
 					$new_plan = new ARM_Plan_Lite( $new_plan_id );
 					if ( $new_plan->exists() && $new_plan->is_active() ) {
 						$user = new WP_User( $user_id );
@@ -1637,7 +1637,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						do_action( 'arm_before_change_user_plans', $user_id, $old_plan, $new_plan_id, $new_plan );
 						$is_update_plan = true;
 
-							$mail_type = ( empty( $old_plan ) ) ? 'new_subscription' : 'change_subscription';
+						$mail_type = ( empty( $old_plan ) ) ? 'new_subscription' : 'change_subscription';
 
 						if ( ! empty( $old_plan ) ) {
 							$defaultPlanData = $this->arm_default_plan_array();
@@ -2901,7 +2901,7 @@ if ( ! class_exists( 'ARM_Plan_Lite' ) ) {
 						$dataArray['period']      = ! empty( $opt_recurring['billing_type'] ) ? $opt_recurring['billing_type'] : 'M';
 						$dataArray['interval']    = ! empty( $opt_recurring['billing_cycle'] ) ? $opt_recurring['billing_cycle'] : '1';
 						$dataArray['cycles']      = ( ! empty( $opt_recurring['recurring_time'] ) && $opt_recurring['recurring_time'] != 'infinite' ) ? $opt_recurring['recurring_time'] : '';
-						$dataArray['rec_time']    = $opt_recurring['recurring_time'];
+						$dataArray['rec_time']    = isset( $opt_recurring['recurring_time'] ) ? $opt_recurring['recurring_time'] : '';
 					} else {
 						$dataArray['amount'] = ! empty( $this->amount ) ? $this->amount : 0;
 						$opt_recurring       = $this->options['recurring'];

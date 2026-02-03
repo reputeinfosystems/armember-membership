@@ -70,8 +70,8 @@ if ( is_rtl() ) {
     .red_remove_license_btn:hover { background: #d23939; box-shadow: 0 4px 0 0 #b83131; }
 	.newform_modal_title { font-size:25px; line-height:25px; margin-bottom: 10px; }
 	.newmodal_field_title { font-size: 16px; line-height: 16px; margin-bottom: 10px; }
-	.page_title.arm_new_addon_page_design{ font-size: 28px; line-height: 48px; text-align: center; padding: 24px 0; }
-    .page_title.arm_new_addon_page_design.arm_new_addon_page_design_other_sec{ padding-top: 35px !important; }
+	.page_title.arm_new_addon_page_design{ font-size: 24px; line-height: 40px; font-weight: 600; text-align: center; padding: 40px 0 32px; }
+
 	body:has(.arm-lite-upgrade-pro-wrapper) .popup_wrapper.arm_addon_not_supoported_notice{ background-color: transparent !important; }
 	.arm-lite-upgrade-pro-wrapper{ width: 816px; border-radius: 12px; background-color: #FFF; position: relative; text-align: center; top: 45px; }
 	.arm-lite-upgrade-pro{ padding: 0 58px; }
@@ -174,7 +174,6 @@ if ( is_rtl() ) {
 						{ ?>
 							<div class="arm_feature_button_activate_wrapper <?php echo ( $social_feature == 1 ) ? 'hidden_section' : ''; ?>">
 								<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="social"><?php esc_html_e( 'Activate', 'armember-membership' ); ?></a>
-								<a href="javascript:void(0)" class="arm_feature_configure_btn"><?php esc_html_e( 'Configure', 'armember-membership' ); ?></a>
 								<span class="arm_addon_loader">
 									<svg class="arm_circular" viewBox="0 0 60 60">
 										<circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
@@ -207,7 +206,7 @@ if ( is_rtl() ) {
 						{ ?>
 						<div class="arm_feature_button_activate_wrapper <?php echo ( $pro_ration_feature == 1 ) ? 'hidden_section' : ''; ?>">
 							<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="pro_ration"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
-							<a href="javascript:void(0)" class="arm_feature_configure_btn"><?php esc_html_e( 'Configure', 'armember-membership' ); ?></a>
+							
 							<span class="arm_addon_loader">
                             <svg class="arm_circular" viewBox="0 0 60 60">
                                 <circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
@@ -233,7 +232,7 @@ if ( is_rtl() ) {
 						{ ?>
 						<div class="arm_feature_button_activate_wrapper <?php echo ( $drip_content_feature == 1 ) ? 'hidden_section' : ''; ?>">
 							<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="drip_content"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
-							<a href="javascript:void(0)" class="arm_feature_configure_btn"><?php esc_html_e( 'Configure', 'armember-membership' ); ?></a>
+							
 							<span class="arm_addon_loader">
 								<svg class="arm_circular" viewBox="0 0 60 60">
 									<circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
@@ -260,7 +259,7 @@ if ( is_rtl() ) {
 						{ ?>
 						<div class="arm_feature_button_activate_wrapper <?php echo ( $social_login_feature == 1 ) ? 'hidden_section' : ''; ?>">
 							<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="social_login"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
-							<a href="javascript:void(0)" class="arm_feature_configure_btn"><?php esc_html_e( 'Configure', 'armember-membership' ); ?></a>
+							
 							<span class="arm_addon_loader">
 								<svg class="arm_circular" viewBox="0 0 60 60">
 									<circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
@@ -286,7 +285,7 @@ if ( is_rtl() ) {
 						{ ?>
 						<div class="arm_feature_button_activate_wrapper <?php echo ( $arm_pay_per_post == 1 ) ? 'hidden_section' : ''; ?>">
 							<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="pay_per_post"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
-							<a href="javascript:void(0)" class="arm_feature_configure_btn"><?php esc_html_e( 'Configure', 'armember-membership' ); ?></a>
+							
 							<span class="arm_addon_loader">
 								<svg class="arm_circular" viewBox="0 0 60 60">
 									<circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
@@ -313,7 +312,6 @@ if ( is_rtl() ) {
 						{ ?>
 						<div class="arm_feature_button_activate_wrapper <?php echo ( $coupon_feature == 1 ) ? 'hidden_section' : ''; ?>">
 							<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="coupon"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
-							<a href="javascript:void(0)" class="arm_feature_configure_btn"><?php esc_html_e( 'Configure', 'armember-membership' ); ?></a>
 							<span class="arm_addon_loader">
 								<svg class="arm_circular" viewBox="0 0 60 60">
 									<circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
@@ -340,7 +338,6 @@ if ( is_rtl() ) {
 						{ ?>
 						<div class="arm_feature_button_activate_wrapper <?php echo ( $invoice_tax_feature == 1 ) ? 'hidden_section' : ''; ?>">
 							<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="invoice_tax"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
-							<a href="javascript:void(0)" class="arm_feature_configure_btn"><?php esc_html_e( 'Configure', 'armember-membership' ); ?></a>
 							<span class="arm_addon_loader">
 								<svg class="arm_circular" viewBox="0 0 60 60">
 									<circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
@@ -367,7 +364,6 @@ if ( is_rtl() ) {
 						{ ?>
 						<div class="arm_feature_button_activate_wrapper <?php echo ( $user_private_content == 1 ) ? 'hidden_section' : ''; ?>">
 							<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="user_private_content"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
-							<a href="javascript:void(0)" class="arm_feature_configure_btn"><?php esc_html_e( 'Configure', 'armember-membership' ); ?></a>
 							<span class="arm_addon_loader">
 								<svg class="arm_circular" viewBox="0 0 60 60">
 									<circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
@@ -473,7 +469,6 @@ if ( is_rtl() ) {
 						{ ?>
 						<div class="arm_feature_button_activate_wrapper <?php echo ( $buddypress_feature == 1 ) ? 'hidden_section' : ''; ?>">
 							<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="buddypress"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
-							<a href="javascript:void(0)" class="arm_feature_configure_btn"><?php esc_html_e( 'Configure', 'armember-membership' ); ?></a>
 							<span class="arm_addon_loader">
                             <svg class="arm_circular" viewBox="0 0 60 60">
                                 <circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
@@ -490,8 +485,9 @@ if ( is_rtl() ) {
 					<div class="arm_feature_active_icon"><div class="arm_check_mark"></div></div>
 					<div class="arm_feature_content">
 						<div class="arm_feature_title"><?php esc_html_e( 'Woocommerce Integration', 'armember-membership' ); ?></div>
-						<div class="arm_feature_text" style=" min-height: 0;"><?php esc_html_e( 'Integrate Woocommerce with ARMember.', 'armember-membership' ); ?></div>
-						<div class="arm_feature_text arm_woocommerce_feature_version_required_notice"><?php esc_html_e( 'Minimum Required Woocommerce Version: 3.0.2', 'armember-membership' ); ?></div>
+						<div class="arm_feature_text" style=" min-height: 0;"><?php esc_html_e( 'Integrate Woocommerce with ARMember.', 'armember-membership' ); ?>
+						<span class="arm_feature_text arm_woocommerce_feature_version_required_notice"><?php esc_html_e( 'Min Require Version : 3.0.2','armember-membership' ); ?></span>
+						</div>
 						<?php if($ARMemberLite->is_arm_pro_active) {
 							$arm_addon_btn = '';
 							echo apply_filters('arm_addon_activate_button_section',$arm_addon_btn,'woocommerce',array()); //phpcs:ignore
@@ -500,7 +496,6 @@ if ( is_rtl() ) {
 						{ ?>
 						<div class="arm_feature_button_activate_wrapper <?php echo ( $woocommerce_feature == 1 ) ? 'hidden_section' : ''; ?>">
 							<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="woocommerce"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
-							<!--<a href="javascript:void(0)" class="arm_feature_configure_btn"><?php esc_html_e( 'Configure', 'armember-membership' ); ?></a>-->
 							<span class="arm_addon_loader">
                             <svg class="arm_circular" viewBox="0 0 60 60">
                                 <circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
@@ -527,7 +522,6 @@ if ( is_rtl() ) {
 						{ ?>
 						<div class="arm_feature_button_activate_wrapper <?php echo ( $arm_admin_mycred_feature == 1 ) ? 'hidden_section' : ''; ?>">
 							<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="mycred"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
-							<a href="javascript:void(0)" class="arm_feature_configure_btn"><?php esc_html_e( 'Configure', 'armember-membership' ); ?></a>
 							<span class="arm_addon_loader">
                             <svg class="arm_circular" viewBox="0 0 60 60">
                                 <circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
@@ -810,7 +804,7 @@ if ( is_rtl() ) {
 				<?php echo do_action( 'arm_add_new_custom_add_on' ); //phpcs:ignore ?>
 			</div>
 			
-			<div class="arm_feature_settings_container arm_margin_top_30">
+			<div class="arm_feature_settings_container arm_margin_top_15">
 				<?php
 				global $arm_social_feature;
 				global $arm_lite_version;
@@ -849,12 +843,12 @@ if ( is_rtl() ) {
 								<div class="page_title arm_new_addon_page_design arm_new_addon_page_design_other_sec"><?php esc_html_e('Additional Functionality Addon', 'armember-membership' ); ?></div>
 							<?php } 
 							if($key == 'payment_gateways' ) { ?>
-								<div class="page_title arm_new_addon_page_design arm_new_addon_page_design_other_sec"><?php esc_html_e('Payment Gateways Addons', 'armember-membership' ); ?></div>
+								<div class="page_title arm_new_addon_page_design arm_new_addon_page_design_other_sec arm_margin_top_15"><?php esc_html_e('Payment Gateways Addons', 'armember-membership' ); ?></div>
 							<?php }  
 							if($key == 'integrations' ) { ?>
-								<div class="page_title arm_new_addon_page_design arm_new_addon_page_design_other_sec"><?php esc_html_e('Third-Party Integrations', 'armember-membership' ); ?></div>
+								<div class="page_title arm_new_addon_page_design arm_new_addon_page_design_other_sec arm_margin_top_15"><?php esc_html_e('Third-Party Integrations', 'armember-membership' ); ?></div>
 							<?php }  ?>
-							<div class="arm_feature_settings_container arm_margin_top_30 arm_margin_bottom_25">
+							<div class="arm_feature_settings_container arm_margin_top_32 arm_margin_bottom_25">
 							<?php 
 							foreach ($plug_1 as $key_1 => $plug) {
 							
@@ -880,7 +874,7 @@ if ( is_rtl() ) {
 										{ 
 											?>
 										<div class="arm_feature_button_activate_wrapper <?php echo ( $is_active_plugin == 1 ) ? 'hidden_section' : ''; ?>">
-											<a href="javascript:void(0)" style="padding:0 15px !important;" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?> arm_feature_activation_license" data-feature_val="1" data-feature="<?php echo esc_attr($plug['short_name']); ?>"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
+											<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?> arm_feature_activation_license" data-feature_val="1" data-feature="<?php echo esc_attr($plug['short_name']); ?>"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
 											
 										</div>
 										<?php }?>
@@ -898,7 +892,6 @@ if ( is_rtl() ) {
 									
 								<?php
 							}
-		
 						}
 					?>
 						</div>

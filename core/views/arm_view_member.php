@@ -85,9 +85,10 @@ if(!empty($user_id))
 					<div class="page_title arm_view_member_title">
 						<div class="arm_member_detail_avtar_wrapper">
 							<div class="arm_member_detail_avtar">';
-							$user_avatar = get_avatar($user_id,72); //phpcs:ignore
+							$user_avatar = get_avatar($user_id,64); //phpcs:ignore
 								$popup_content .= $user_avatar;
-							$popup_content .= '</div>'. esc_html($user->first_name) . ' ' .esc_html($user->last_name).' ('. esc_html($user->user_login).')';
+							$popup_content .= '</div>';
+							$popup_content .= '<span class="arm_member_detail_name_text">'. esc_html($user->first_name) . ' ' .esc_html($user->last_name).' ('. esc_html($user->user_login).')</span>';
 							$popup_content .= '</div>
 							<div class="arm_member_detail_btn_wrapper">';
 							$arm_admin_view_member_additional_btn_data = '';
@@ -108,17 +109,13 @@ if(!empty($user_id))
 					<a href="'. $admin_member_page.'" class="armemailaddbtn">'. esc_html__('Back to listing', 'armember-membership').'</a>
 				</div>';
 					}
-					$arm_first_row_cls = '';
-					if(!$ARMemberLite->is_arm_pro_active){
-						$arm_first_row_cls = 'arm_margin_top_0';
-					}
 				$popup_content .='<div class="armclear"></div>
 			</div>
 			<div class="armclear"></div>
             <div class="arm_member_detail_wrapper_frm arm_admin_form arm_margin_0 arm_width_100_pct">
 				<div class="armclear"></div>
 				<div class="page_sub_content arm_member_details_container">
-					<div class="arm_view_member_left_box '.$arm_first_row_cls.'">
+					<div class="arm_view_member_left_box">
 						<div class="arm_view_member_sub_title">'.esc_html__('Personal Information', 'armember-membership').'</div>
 						<table class="form-table">
 							<tr class="form-field">
@@ -195,13 +192,13 @@ if(!empty($user_id))
 																if (in_array($file_ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff'))) {
 																	$thumbUrl = $file_url;
 																} else if (in_array($file_ext, array('pdf', 'exe'))) {
-																	$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/document.png";
+																	$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/file_icon.svg";
 																} else if (in_array($file_ext, array('zip'))) {
 																	$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/archive.png";
 																} else {
-																	$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/text.png";
+																	$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/file_icon.svg";
 																}
-																$popup_content .='<a href="'. esc_url($file_url).'" target="__blank"> <img src="'. esc_url($thumbUrl).'" class="arm_max_width_100"style="height: auto;"></a>';
+																$popup_content .='<a href="'. esc_url($file_url).'" target="__blank"> <img src="'. esc_url($thumbUrl).'" class="arm_max_width_100"style="height: 40px; width:40px;"></a>';
 															}
 														}
                                                     } 
@@ -377,7 +374,7 @@ if(!empty($user_id))
 															if (in_array($file_ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff'))) {
 																$thumbUrl = $user->$meta_key;
 															} else if (in_array($file_ext, array('pdf', 'exe'))) {
-																$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/document.png";
+																$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/file_icon.svg";
 															} else if (in_array($file_ext, array('zip'))) {
 																$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/archive.png";
 															} else {

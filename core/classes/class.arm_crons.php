@@ -312,7 +312,8 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 					if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 						foreach ( $plan_ids as $plan_id ) {
 							$planData = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
-							if ( ! empty( $planData ) ) {
+							$is_plan_cancelled = isset( $planData['arm_cencelled_plan'] ) ? $planData['arm_cencelled_plan'] : 0;
+							if ( ! empty( $planData ) && empty($is_plan_cancelled) ) {
 
 								$planDetail = $planData['arm_current_plan_detail'];
 
@@ -407,7 +408,8 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 							$userPlanDatameta = get_user_meta( $usr->ID, 'arm_user_plan_' . $plan_id, true );
 							$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 							$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
-							if ( ! empty( $planData ) && is_array( $plan_ids ) ) {
+							$is_plan_cancelled = isset( $planData['arm_cencelled_plan'] ) ? $planData['arm_cencelled_plan'] : 0;
+							if ( ! empty( $planData ) && is_array( $plan_ids ) && empty( $is_plan_cancelled ) ) {
 								$payment_mode = $planData['arm_payment_mode'];
 								if ( $payment_mode == 'auto_debit_subscription' ) {
 

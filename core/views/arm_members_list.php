@@ -151,7 +151,7 @@ function ChangeID(id) {
 				<input type="hidden" id="arm_edit_plan_user_id" />
 				<span class="add_rule_content"><?php esc_html_e( 'Manage Plans', 'armember-membership' ); ?> <span class="arm_manage_plans_username"></span></span>
 			</div>
-			<div class="popup_content_text arm_member_manage_plan_detail_popup_text arm_padding_top_12"  style="text-align:center;">
+			<div class="popup_content_text arm_member_manage_plan_detail_popup_text arm_padding_top_0"  style="text-align:center;">
 				
 			<div style="width: 100%; margin: 45px auto;"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif'; //phpcs:ignore ?>"></div>
 

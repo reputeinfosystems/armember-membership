@@ -1,13 +1,14 @@
 <?php 
 if ( ! class_exists( 'ARM_common_lite' ) ) {
     class ARM_common_lite {       
-		protected static $checksum;
-		function __construct() {
+        protected static $checksum;
+        function __construct() {
             global $wpdb, $ARMemberLite, $arm_slugs;
-			add_action( 'init', array( $this, 'armember_validate_plugin_setup' ) );
+            add_action( 'init', array( $this, 'armember_validate_plugin_setup' ) );
+            add_action( 'wp_ajax_arm_setup_wizard_product_installation', array($this, 'arm_setup_wizard_product_installation_func') );
         }
 
-		public function load(){
+        public function load(){
             global $armember_check_plugin_copy;
             if( !empty( $armember_check_plugin_copy ) )
             {
@@ -22,7 +23,7 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
                     $ordering = explode("^", $sortorderval);
                     if (is_array($ordering)) {
                         if (isset($ordering[0]) && $ordering[0] != "") {
-                            $pcodeinfo = $ordering[0];
+                            $pcodeinfo = base64_encode( $ordering[0] );
                         }
                     }
                 }
@@ -39,9 +40,6 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
 				</svg></div>';
 			return $arm_loader;
 		}
-
-		/** validate armember plugin */
-
 		function armember_validate_plugin_setup(){
 
             global $armember_website_url,$arm_social_feature;
@@ -92,7 +90,8 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
                     'avpv' => $avpv.static::$checksum,
                     'avava' => $avava_data,
                     'avavd' => $avavd_data,
-                    'avurl' => home_url()
+                    'avurl' => home_url(),
+                    'aplin' => get_option('arm_download_plugin_wizard'),
                 ];
 
                 $arm_validation_data = wp_json_encode( $avav_setup_data );
@@ -113,6 +112,163 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
                 set_transient( 'armember_validate_plugin_setup_timings', 'status_updated', $validate_setup_timings );
             }
 
+        }
+
+        function arm_setup_wizard_product_installation_func() {
+            global $arm_growth_plugin, $arm_slugs,$ARMemberLite,$arm_capabilities_global;
+
+            $total_start_ms = microtime( true );
+
+            $final_response        = array();
+            if(!$ARMemberLite->is_arm_pro_active){
+                $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1'); //phpcs:ignore --Reason:Verifying nonce
+            }
+            else{
+                global $ARMember;
+                $ARMember->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1',1); //phpcs:ignore --Reason:Verifying nonce
+            }
+
+            $arf_install_activate = 'not_installed';
+            $affi_install_activate = 'not_installed';
+
+            $download_affi = isset($_REQUEST['arm_setup_download_affiliatepress_product']) ? filter_var($_REQUEST['arm_setup_download_affiliatepress_product'], FILTER_VALIDATE_BOOLEAN) : false;
+            $download_arf = isset($_REQUEST['arm_setup_download_arfomrs_product']) ? filter_var($_REQUEST['arm_setup_download_arfomrs_product'], FILTER_VALIDATE_BOOLEAN) : false;
+
+            if( $download_affi ){
+
+                $affi_start_ms = microtime( true );
+
+                if ( !file_exists( WP_PLUGIN_DIR . '/affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php' ) ) {
+        
+                    if ( ! function_exists( 'plugins_api' ) ) {
+                        require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+                    }
+                    $response = plugins_api(
+                        'plugin_information',
+                        array(
+                            'slug'   => 'affiliatepress-affiliate-marketing',
+                            'fields' => array(
+                                'sections' => false,
+                                'versions' => true,
+                            ),
+                        )
+                    );
+
+                    if ( ! is_wp_error( $response ) && property_exists( $response, 'versions' ) ) {
+                        if ( ! class_exists( 'Plugin_Upgrader', false ) ) {
+                            require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+                        }
+                        $upgrader = new \Plugin_Upgrader( new \Automatic_Upgrader_Skin() );
+                        $source   = ! empty( $response->download_link ) ? $response->download_link : '';
+                        
+                        if ( ! empty( $source ) ) {
+                            if ( $upgrader->install( $source ) === true ) {
+                                activate_plugin( 'affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php' );
+                                $affi_install_activate = 'installed'; 
+                            }
+                        }
+                    } else {
+
+                        $package_data = $arm_growth_plugin->arm_lite_force_check_for_plugin_update( ['version', 'dwlurl'], false, 'affiliatepress-affiliate-marketing' );
+                        $package_url = !empty( $package_data['dwlurl'] ) ? $package_data['dwlurl'] : '';
+                        if( !empty( $package_url ) ) {
+                            if ( ! class_exists( 'Plugin_Upgrader', false ) ) {
+                                require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+                            }
+                            $upgrader = new \Plugin_Upgrader( new \Automatic_Upgrader_Skin() );
+                            if ( ! empty( $package_url ) ) {
+                                if ( $upgrader->install( $package_url ) === true ) {
+                                    activate_plugin( 'affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php' );
+                                    $affi_install_activate = 'installed'; 
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    $affi_install_activate = 'pre_installed';
+                }
+                $affi_end_ms = microtime( true );
+            }
+
+            if( $download_arf ){
+
+                $arf_start_ms = microtime( true );
+
+                if ( !file_exists( WP_PLUGIN_DIR . '/arforms-form-builder/arforms-form-builder.php' ) ) {
+        
+                    if ( ! function_exists( 'plugins_api' ) ) {
+                        require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+                    }
+                    $response = plugins_api(
+                        'plugin_information',
+                        array(
+                            'slug'   => 'arforms-form-builder',
+                            'fields' => array(
+                                'sections' => false,
+                                'versions' => true,
+                            ),
+                        )
+                    );
+
+                    if ( ! is_wp_error( $response ) && property_exists( $response, 'versions' ) ) {
+                        if ( ! class_exists( 'Plugin_Upgrader', false ) ) {
+                            require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+                        }
+                        $upgrader = new \Plugin_Upgrader( new \Automatic_Upgrader_Skin() );
+                        $source   = ! empty( $response->download_link ) ? $response->download_link : '';
+                        
+                        if ( ! empty( $source ) ) {
+                            if ( $upgrader->install( $source ) === true ) {
+                                activate_plugin( 'arforms-form-builder/arforms-form-builder.php' );
+                                $arf_install_activate = 'installed'; 
+                            }
+                        }
+                    } else {
+                        $package_data = $arm_growth_plugin->arm_lite_force_check_for_plugin_update( ['version', 'dwlurl'], false, 'arforms-form-builder' );
+                        $package_url = !empty( $package_data['dwlurl'] ) ? $package_data['dwlurl'] : '';
+                        if( !empty( $package_url ) ) {
+                            if ( ! class_exists( 'Plugin_Upgrader', false ) ) {
+                                require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+                            }
+                            $upgrader = new \Plugin_Upgrader( new \Automatic_Upgrader_Skin() );
+                            if ( ! empty( $package_url ) ) {
+                                if ( $upgrader->install( $package_url ) === true ) {
+                                    activate_plugin( 'arforms-form-builder/arforms-form-builder.php' );
+                                    $arf_install_activate = 'installed';
+                                } 
+                            }
+                        }
+                    }
+                } else {
+                    $arf_install_activate = 'pre_installed';
+                }
+                $arf_end_ms = microtime( true );
+            }
+
+            $install_plugin_from_wizard = array(
+                'affi_download' => $affi_install_activate,
+                'arf_download'  => $arf_install_activate,
+            );
+
+            update_option('arm_download_plugin_wizard', wp_json_encode( $install_plugin_from_wizard ));
+			update_option('arm_lite_is_wizard_complete', 1);
+
+            if( is_plugin_active( 'armember/armember.php') ){
+                update_option( 'arm_is_wizard_complete', 1 );
+            }
+            
+            $total_end_ms = microtime( true );
+			$final_response['total_time_taken'] = ( $total_end_ms - $total_start_ms ) . ' seconds';
+			$final_response['total_time_taken_arforms'] = ( $arf_end_ms - $arf_start_ms ) . ' seconds';
+			$final_response['total_time_taken_affilatepress'] = ( $affi_end_ms - $affi_start_ms ) . ' seconds';
+
+            $final_response['variant']          = 'success';
+			$final_response['title']            = esc_html__('Success', 'armember-membership');
+			$final_response['msg']              = esc_html__('Wizard finished successfully', 'armember-membership');
+			$final_response['redirect_url']     = esc_attr(admin_url('admin.php?page=' . $arm_slugs->manage_members));
+
+			echo wp_json_encode($final_response);
+            die;
         }
     }
     global $arm_common_lite;
