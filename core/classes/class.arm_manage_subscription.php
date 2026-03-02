@@ -156,8 +156,13 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         foreach($grid_columns as $mkey => $mlabel)
                         {
                             $meta_val = '';
-    
-                            if($mkey == 'name'){
+                            if($mkey == 'arm_item_id'){
+                                $meta_val = $plan_name;
+                            }
+                            else if($mkey == 'arm_user_login'){
+                                $meta_val = $user_login;
+                            }
+                            else if($mkey == 'name'){
                                 $meta_val = $user_full_name;
                             }
                             else if($mkey == 'arm_date_recorded'){
@@ -280,8 +285,10 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         foreach($grid_columns as $mkey => $mlabel)
                         {
                             $meta_val = '';
-    
-                            if($mkey == 'arm_display_name'){
+                            if($mkey == 'arm_username'){
+                                $meta_val = $user_login;
+                            }                           
+                            else if($mkey == 'arm_display_name'){
                                 $meta_val = $user_full_name;
                             }
                             else if($mkey == 'arm_payment_date'){
@@ -419,7 +426,17 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         {
                             $meta_val = '';
     
-                            if($mkey == 'arm_plan_start_date'){
+                            if($mkey == 'arm_user_id'){
+                                $user_data = get_userdata( $user_id );
+                                $meta_val = $user_data->user_login;
+                            }
+                            else if($mkey == 'arm_user_full_name'){
+                                $user_data = get_userdata( $user_id );
+                                $user_first_name = get_user_meta( $user_id,'first_name',true);
+                                $user_last_name = get_user_meta( $user_id,'last_name',true);
+                                $meta_val = $user_first_name. ' '. $user_last_name ;
+                            }
+                            else if($mkey == 'arm_plan_start_date'){
                                 $meta_val = date_i18n($date_format, $start_plan_date);
                             }
                             else if($mkey == 'arm_plan_end_due_date'){

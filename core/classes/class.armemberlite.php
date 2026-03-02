@@ -133,7 +133,7 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
 
             $download_affi = isset($_REQUEST['arm_setup_download_affiliatepress_product']) ? filter_var($_REQUEST['arm_setup_download_affiliatepress_product'], FILTER_VALIDATE_BOOLEAN) : false;
             $download_arf = isset($_REQUEST['arm_setup_download_arfomrs_product']) ? filter_var($_REQUEST['arm_setup_download_arfomrs_product'], FILTER_VALIDATE_BOOLEAN) : false;
-
+            $arf_start_ms = $arf_end_ms = $affi_start_ms = $affi_end_ms = '';
             if( $download_affi ){
 
                 $affi_start_ms = microtime( true );
@@ -259,8 +259,14 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
             
             $total_end_ms = microtime( true );
 			$final_response['total_time_taken'] = ( $total_end_ms - $total_start_ms ) . ' seconds';
-			$final_response['total_time_taken_arforms'] = ( $arf_end_ms - $arf_start_ms ) . ' seconds';
-			$final_response['total_time_taken_affilatepress'] = ( $affi_end_ms - $affi_start_ms ) . ' seconds';
+            if(!empty($arf_end_ms) && !empty($arf_start_ms))
+            {
+                $final_response['total_time_taken_arforms'] = ( $arf_end_ms - $arf_start_ms ) . ' seconds';
+            }
+            if(!empty($affi_end_ms) && !empty($affi_start_ms))
+            {
+                $final_response['total_time_taken_affilatepress'] = ( $affi_end_ms - $affi_start_ms ) . ' seconds';
+            }
 
             $final_response['variant']          = 'success';
 			$final_response['title']            = esc_html__('Success', 'armember-membership');

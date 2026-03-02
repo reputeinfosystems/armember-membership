@@ -528,7 +528,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 															
 															<div class="arm_plan_payment_cycle_label_input arm_padding_top_12">
 																<input type="hidden" name="arm_subscription_plan_options[payment_cycles][0][cycle_key]" value="<?php echo 'arm0'; ?>"/>
-																<input type="text" name="arm_subscription_plan_options[payment_cycles][0][cycle_label]" value="" class="paid_subscription_options_recurring_payment_cycle_label" data-msg-required="<?php esc_attr_e( 'Label should not be blank.', 'armember-membership' ); ?>"/>
+																<input type="text" name="arm_subscription_plan_options[payment_cycles][0][cycle_label]" value="" placeholder="<?php esc_attr_e( 'Cycle Label', 'armember-membership' ); ?>" class="paid_subscription_options_recurring_payment_cycle_label" data-msg-required="<?php esc_attr_e( 'Label should not be blank.', 'armember-membership' ); ?>"/>
 															</div>
 														</div>
 														<div class="arm_plan_payment_cycle_amount">

@@ -26,6 +26,109 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 			add_action('wp_ajax_arm_setup_edit_detail',array($this,'arm_setup_edit_detail_func'));
 
 			add_action('wp_ajax_arm_get_configure_setup_details', array($this, 'arm_get_configure_setup_details_func'));
+			add_action('wp_ajax_get_configure_plans_expand_grid', array($this, 'arm_get_configure_plans_expand_grid_func'));
+		}
+
+		function arm_get_configure_plans_expand_grid_func(){
+			global $wpdb, $ARMemberLite, $arm_subscription_plans, $arm_payment_gateways, $arm_global_settings, $arm_capabilities_global, $arm_form_class;
+
+			$setup_id = intval($_POST['log_id']);
+            $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_setups'], '1',1); //phpcs:ignore 
+			
+			$grid_columns = array();
+			if ( ! empty( $_REQUEST['exclude_headers'] ) ) {
+				$keys   = explode( ',', sanitize_text_field( $_REQUEST['exclude_headers'] ) );
+				$labels = explode( ',', sanitize_text_field( $_REQUEST['header_label'] ) );
+				$grid_columns = array_combine( $keys, $labels );
+			}
+			$date_format = $arm_global_settings->arm_get_wp_date_format();
+
+
+			$setup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$ARMemberLite->tbl_arm_membership_setup} WHERE arm_setup_id = %d", $setup_id));
+
+			if(!empty($setup)){
+				$setupID = $setup->arm_setup_id;   
+				$modules = maybe_unserialize($setup->arm_setup_modules);
+				$plans    = isset($modules['modules']['plans']) ? (array) $modules['modules']['plans'] : array();
+				$gateways = isset($modules['modules']['gateways']) ? (array) $modules['modules']['gateways'] : array();
+				$form_id  = isset($modules['modules']['forms']) ? intval($modules['modules']['forms']) : 0;
+
+				$plan_names = $arm_subscription_plans->arm_get_comma_plan_names_by_ids($plans);
+
+				$gateway_names = '--';
+				if(!empty($gateways)){
+					$tmp = array();
+					foreach($gateways as $gw){
+						$name = $arm_payment_gateways->arm_gateway_name_by_key($gw);
+						$tmp[] = !empty($name) ? $name : $gw;
+					}
+					$gateway_names = implode(', ', $tmp);
+				}
+
+				$form_name = '--';
+				if($form_id){
+					$formObj = new ARM_Form_Lite('id', $form_id);
+					if($formObj->exists()){
+						$form_name = $formObj->form_detail['arm_form_label'];
+					}
+				}
+
+				$return  = '<div class="arm_child_row_div"><div class="arm_child_user_data_section">';
+				$return .= '<div class="arm_view_member_left_box arm_no_border arm_margin_top_0">';
+				$return .= '<div class="arm_view_member_sub_title arm_padding_0 arm_margin_bottom_24">'.esc_html__('Setup Details','armember-membership').'</div>';
+				$return .= '<table class="form-table">';
+
+				foreach($grid_columns as $key => $label){
+					$value = '';
+
+					if($key == 'arm_setup_id'){
+						$value = esc_html($setup->arm_setup_id);
+					}
+					elseif($key == 'arm_setup_name'){
+						$value = esc_html($setup->arm_setup_name);
+					}
+					elseif($key == 'arm_setup_plans'){
+						$value = !empty($plan_names) ? esc_html($plan_names) : '--';
+					}
+					elseif($key == 'arm_payment_gateway'){
+						$value = esc_html($gateway_names);
+					}
+					elseif($key == 'arm_setup_form'){
+						$value = esc_html($form_name);
+					}
+					elseif($key == 'arm_setup_shortcode'){
+						 $setupID = $setup->arm_setup_id;
+
+						  $shortCode = '[arm_setup id="' . $setupID . '"]';
+						$value = '<div class="arm_shortcode_text arm_form_shortcode_box">
+							<span class="armCopyText">'. esc_html($shortCode).'</span>
+							<span class="arm_click_to_copy_text" data-code="'. esc_attr( $shortCode ).'">'. esc_html__( 'Click to copy', 'armember-membership' ).'</span>
+							<span class="arm_copied_text"><img src="'. esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/copied_ok.png" alt="ok"/>'. esc_html__( 'Code Copied', 'armember-membership' ).'</span>
+						</div>';
+
+					}
+					elseif($key == 'arm_setup_created_date'){
+						$value = !empty($setup->arm_created_date)
+							? date_i18n($date_format, strtotime($setup->arm_created_date))
+							: '-';
+					}
+
+					$return .= '<tr class="form-field arm_detail_expand_container_child_row">
+						<th class="arm-form-table-label">'.$label.'</th>
+						<td class="arm-form-table-content">'.$value.'</td>
+					</tr>';
+				}
+
+				$return .= '</table></div></div></div>';
+			}else{
+				$return  = '<div class="arm_child_row_div"><div class="arm_child_user_data_section">';
+				$return .= '<div class="arm_view_member_left_box arm_no_border arm_margin_top_0">';
+				$return .= '<div class="arm_view_member_sub_title arm_padding_0 arm_margin_bottom_24">'.esc_html__('Setup details not found','armember-membership').'</div>';
+				$return .= '</div></div></div>';
+			}
+
+			echo $return;
+			die;
 		}
 
 		function arm_get_configure_setup_details_func(){
@@ -62,20 +165,23 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
             $grid_data = array();
             $ai = 0;
-
+	    $return = "";
             if (!empty($setup_result)) {
 
                 foreach ( $setup_result as $val ) {
-                    $setupID = $val->arm_setup_id;                   
-                    $grid_data[$ai][0] = '<a href="javascript:void(0)" class="arm_get_form_link arm_edit_setup_form_link" data-form_id="'. intval($setupID).'">' . stripslashes( $val->arm_setup_name ) . '</a>';
+                    $setupID = $val->arm_setup_id;   
+					
+					$grid_data[$ai][0] = "<div class='arm_show_configure_plans arm_max_width_50 arm_expand_arrow_icon' id='arm_show_configure_plans_" . esc_attr($setupID) . "' data-id='" . esc_attr($setupID) . "'><svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 20 20' fill='none'><path d='M6 8L10 12L14 8' stroke='#BAC2D1' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg></div>";   
+					$return .= '<tr class="arm_child_transaction_row">';
+                    $grid_data[$ai][1] = '<a href="javascript:void(0)" class="arm_get_form_link arm_edit_setup_form_link" data-form_id="'. intval($setupID).'">' . stripslashes( $val->arm_setup_name ) . '</a>';
                     $setup_type = esc_html__('Membership Plan','armember-membership');
                     $arm_setup_modules = maybe_unserialize( $val->arm_setup_modules );
                     $module_plans       = ( isset( $arm_setup_modules['modules']['plans'] ) ) ? $arm_setup_modules['modules']['plans'] : array();
                     $plan_title         = $arm_subscription_plans->arm_get_comma_plan_names_by_ids( $module_plans );
 
-                    $grid_data[$ai][1] = ( ! empty( $plan_title ) ) ? stripslashes_deep( $plan_title ) : '--';
+                    $grid_data[$ai][2] = ( ! empty( $plan_title ) ) ? stripslashes_deep( $plan_title ) : '--';
                     $shortCode = '[arm_setup id="' . $setupID . '"]';
-                    $grid_data[$ai][2] = '<div class="arm_shortcode_text arm_form_shortcode_box">
+                    $grid_data[$ai][3] = '<div class="arm_shortcode_text arm_form_shortcode_box">
                         <span class="armCopyText">'. esc_html($shortCode).'</span>
                         <span class="arm_click_to_copy_text" data-code="'. esc_attr( $shortCode ).'">'. esc_html__( 'Click to copy', 'armember-membership' ).'</span>
                         <span class="arm_copied_text"><img src="'. esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/copied_ok.png" alt="ok"/>'. esc_html__( 'Code Copied', 'armember-membership' ).'</span>
@@ -90,15 +196,15 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
                         }
                     }
 
-                    $grid_data[$ai][3] = rtrim( $gateway_title, ', ' ); //phpcs:ignore
+                    $grid_data[$ai][4] = rtrim( $gateway_title, ', ' ); //phpcs:ignore
 
                     $module_plans = ( isset( $arm_setup_modules['modules']['forms'] ) ) ? $arm_setup_modules['modules']['forms'] : 0;
 
                     $module_form = new ARM_Form_Lite( 'id', $module_plans );
                     if ( $module_form->exists() ) {
-                        $grid_data[$ai][4] = $module_form->form_detail['arm_form_label']; //phpcs:ignore
+                        $grid_data[$ai][5] = $module_form->form_detail['arm_form_label']; //phpcs:ignore
                     } else {
-                        $grid_data[$ai][4] = '--';
+                        $grid_data[$ai][5] = '--';
                     }
 
                     $grid_data_action_btn = '<div class="arm_grid_action_btn_container">
@@ -112,9 +218,8 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
                         $grid_data_action_btn .= $arm_global_settings->arm_get_confirm_box( $setupID, esc_html__( 'Are you sure you want to delete this setup?', 'armember-membership' ), 'arm_setup_delete_btn','', esc_html__('Delete', 'armember-membership'), esc_attr__('Cancel', 'armember-membership'), esc_attr__('Delete', 'armember-membership') ); //phpcs:ignore                       
                     $grid_data_action_btn .= '</div>';
 
-                    $grid_data[$ai][5] = $grid_data_action_btn;
+                    $grid_data[$ai][6] = $grid_data_action_btn;
                     $ai++;
-
                 }
             }
             $sEcho = isset($_REQUEST['sEcho']) ? intval($_REQUEST['sEcho']) : intval(10);

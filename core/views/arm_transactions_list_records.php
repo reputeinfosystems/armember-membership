@@ -74,19 +74,19 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
     
     if (!empty($filter_pstatus) && $filter_pstatus != '0') {
         $filter_pstatus = strtolower($filter_pstatus);
-        $status_query = $wpdb->prepare(" AND ( LOWER(`arm_transaction_status`)=%s",$filter_pstatus);
         if(!in_array($filter_pstatus,array('success','pending','canceled'))) {
+			$status_query = $wpdb->prepare(" AND ( LOWER(`arm_transaction_status`)=%s",$filter_pstatus);
             $status_query .= ")";
         }
         switch ($filter_pstatus) {
             case 'success':
-                $status_query .= $wpdb->prepare(" OR `arm_transaction_status`=%d)",1);
+				$status_query = $wpdb->prepare(" AND `arm_transaction_status` IN (%s,%s)",$filter_pstatus,'1');
                 break;
             case 'pending':
-                $status_query .= $wpdb->prepare(" OR `arm_transaction_status`=%d)",0);
+				$status_query = $wpdb->prepare(" AND `arm_transaction_status` IN (%s,%s)",$filter_pstatus,'0');
                 break;
             case 'canceled':
-                $status_query .= $wpdb->prepare(" OR `arm_transaction_status`=%d)",2);
+                $status_query = $wpdb->prepare(" AND `arm_transaction_status` IN (%s,%s)",$filter_pstatus,'2');
                 break;
         }
         $where_plog .= $status_query;
@@ -110,7 +110,7 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 
     $search_ = "";
     if ($sSearch != '') {
-        $search_ = $wpdb->prepare(" AND (`arm_payment_history_log`.`arm_transaction_id` LIKE %s OR `arm_payment_history_log`.`arm_token` LIKE %s OR `arm_payment_history_log`.`arm_payer_email` LIKE %s OR `arm_payment_history_log`.`arm_created_date` LIKE %s OR `arm_payment_history_log`.`arm_first_name` LIKE %s OR `arm_payment_history_log`.`arm_last_name` LIKE %s OR `arm_user_login` LIKE %s OR `arm_user_email` LIKE %s ) ",'%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%');
+        $search_ = $wpdb->prepare(" AND (`arm_payment_history_log`.`arm_transaction_id` LIKE %s OR `arm_payment_history_log`.`arm_payer_email` LIKE %s OR `arm_payment_history_log`.`arm_created_date` LIKE %s OR `arm_payment_history_log`.`arm_first_name` LIKE %s OR `arm_payment_history_log`.`arm_last_name` LIKE %s OR `arm_user_login` LIKE %s OR `arm_user_email` LIKE %s ) ",'%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%');
     }
 
     if(empty($pt_where))
@@ -516,6 +516,9 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 			"fnDrawCallback": function () {
 				arm_show_data();
 				jQuery('#transactions_list_form .arm_loading_grid').hide();
+				<?php if( !empty($_REQUEST['arm_log_id']) ) { ?>
+                		    arm_preview_log_detail_by_url();
+				<?php } ?>
 				jQuery('#transactions_list_form #armember_datatable_wrapper').show();
 				jQuery('#transactions_list_form .dataTables_scroll').show();
 				jQuery('#transactions_list_form .footer').show();
@@ -561,41 +564,42 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 					var id = jQuery(this).closest('tr').find('.arm_show_user_transactions').attr('data-id');
 					grid_ids.push(id);
 				})
-
-				var datatable = jQuery('#armember_datatable').DataTable();
-				var dataTableHeaderElements = datatable.columns().header();	
-				var headers = [];
-				var headers_label = [];
-				for (var i = 0; i< dataTableHeaderElements.length; i++) {
-					if(typeof dataTableHeaderElements[i].dataset.key != 'undefined' && !jQuery(dataTableHeaderElements[i]).is(':visible'))
-					{
-						key = dataTableHeaderElements[i].dataset.key;
-						label = jQuery(dataTableHeaderElements[i]).text();
-						headers.push(key);
-						headers_label.push(label);
+				if(grid_ids != '' && typeof grid_ids != 'undefined') {
+					var datatable = jQuery('#armember_datatable').DataTable();
+					var dataTableHeaderElements = datatable.columns().header();	
+					var headers = [];
+					var headers_label = [];
+					for (var i = 0; i< dataTableHeaderElements.length; i++) {
+						if(typeof dataTableHeaderElements[i].dataset.key != 'undefined' && !jQuery(dataTableHeaderElements[i]).is(':visible'))
+						{
+							key = dataTableHeaderElements[i].dataset.key;
+							label = jQuery(dataTableHeaderElements[i]).text();
+							headers.push(key);
+							headers_label.push(label);
+						}
 					}
+					jQuery.ajax({
+						type: "POST",
+						url: __ARMAJAXURL,
+						data: "action=get_transaction_all_details_for_grid_loads&inv_ids=" + grid_ids + "&exclude_headers="+headers+"&header_label="+headers_label+"&_wpnonce=" + _wpnonce,
+						dataType: 'json',
+						success: function (response) {
+							
+							jQuery.each(grid_ids, function(index, uid) {
+								var arm_user_d = 'arm_log_id_'+uid;
+								var response_data = response[arm_user_d];
+								var tr = jQuery('.arm_hide_datatable tbody .chkstanard[value="'+uid+'"]').closest('tr');
+								var row = jQuery('#armember_datatable').DataTable().row(tr);
+								var class_name = jQuery('.arm_hide_datatable tbody .chkstanard[value="'+uid+'"]').closest('tr').attr('class');
+								if (!row.child()) {
+									row.child(transaction_grid_format(uid,response_data), class_name +" "+"arm_detail_expand_container").hide();							
+									tr.removeClass('shown');
+									tr.addClass('hide');
+								}
+							})
+						}
+					});
 				}
-				jQuery.ajax({
-					type: "POST",
-					url: __ARMAJAXURL,
-					data: "action=get_transaction_all_details_for_grid_loads&inv_ids=" + grid_ids + "&exclude_headers="+headers+"&header_label="+headers_label+"&_wpnonce=" + _wpnonce,
-					dataType: 'json',
-					success: function (response) {
-						
-						jQuery.each(grid_ids, function(index, uid) {
-							var arm_user_d = 'arm_log_id_'+uid;
-							var response_data = response[arm_user_d];
-							var tr = jQuery('.arm_hide_datatable tbody .chkstanard[value="'+uid+'"]').closest('tr');
-							var row = jQuery('#armember_datatable').DataTable().row(tr);
-							var class_name = jQuery('.arm_hide_datatable tbody .chkstanard[value="'+uid+'"]').closest('tr').attr('class');
-							if (!row.child()) {
-								row.child(transaction_grid_format(uid,response_data), class_name +" "+"arm_detail_expand_container").hide();							
-								tr.removeClass('shown');
-								tr.addClass('hide');
-							}
-						})
-					}
-				});
 			},
 			"aaSorting": [[8, 'desc']],
 			"fnStateSave": function (oSettings, oData) {
@@ -674,35 +678,38 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 			jQuery('.arm_detail_expand_container').hide();
 			jQuery('tr.shown .arm_show_user_transactions').trigger('click');
 			var id = jQuery(this).closest('tr').find('.arm_show_user_transactions').attr('data-id');
-			var tr = jQuery(this).closest('tr');
-			var class_name = jQuery(this).closest('tr').attr('class');
-			var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
-			var row = jQuery('#armember_datatable').DataTable().row(tr);
-			var datatable = jQuery('#armember_datatable').DataTable();
-			var dataTableHeaderElements = datatable.columns().header();		
-			var headers = [];
-			var headers_label = [];
-			for (var i = 0; i< dataTableHeaderElements.length; i++) {
-				if(typeof dataTableHeaderElements[i].dataset.key != 'undefined' && dataTableHeaderElements[i].dataset.key != 'armGridActionTD' && !jQuery(dataTableHeaderElements[i]).is(':visible'))
-				{
-					key = dataTableHeaderElements[i].dataset.key;
-					label = jQuery(dataTableHeaderElements[i]).text();
-					headers.push(key);
-					headers_label.push(label);
+			if(id != '' && typeof id !='undefined')
+			{
+				var tr = jQuery(this).closest('tr');
+				var class_name = jQuery(this).closest('tr').attr('class');
+				var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
+				var row = jQuery('#armember_datatable').DataTable().row(tr);
+				var datatable = jQuery('#armember_datatable').DataTable();
+				var dataTableHeaderElements = datatable.columns().header();		
+				var headers = [];
+				var headers_label = [];
+				for (var i = 0; i< dataTableHeaderElements.length; i++) {
+					if(typeof dataTableHeaderElements[i].dataset.key != 'undefined' && dataTableHeaderElements[i].dataset.key != 'armGridActionTD' && !jQuery(dataTableHeaderElements[i]).is(':visible'))
+					{
+						key = dataTableHeaderElements[i].dataset.key;
+						label = jQuery(dataTableHeaderElements[i]).text();
+						headers.push(key);
+						headers_label.push(label);
+					}
 				}
-			}
-			// Open this row
-			if (row.child()) {
-				row.child.show();
-				tr.removeClass('hide');
-				jQuery('.arm_detail_expand_container').removeAttr('style');
-				tr.addClass('shown');		
-			}
-			else{
-				row.child.show();
-				tr.removeClass('hide');
-				row.child(user_format(id,headers,headers_label,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
-				tr.addClass('shown');
+				// Open this row
+				if (row.child()) {
+					row.child.show();
+					tr.removeClass('hide');
+					jQuery('.arm_detail_expand_container').removeAttr('style');
+					tr.addClass('shown');		
+				}
+				else{
+					row.child.show();
+					tr.removeClass('hide');
+					row.child(user_format(id,headers,headers_label,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
+					tr.addClass('shown');
+				}
 			}
 		});
 	});
@@ -762,7 +769,7 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 				<div class="arm_confirm_box_btn_container arm_margin_0">
 					<div class="arm_dt_filter_block arm_datatable_searchbox">
 						<div class="arm_datatable_filter_item">
-							<label><input type="text" placeholder="<?php esc_attr_e( 'Search', 'armember-membership' ); ?>" id="armmanagesearch_new_transaction" value="<?php echo esc_attr($filter_search); ?>" tabindex="0" ></label>
+							<label><input type="text" placeholder="<?php esc_attr_e( 'Search', 'armember-membership' ); ?>" id="armmanagesearch_new_transaction" name="armmanagesearch_new_transaction" value="<?php echo esc_attr($filter_search); ?>" tabindex="0" ></label>
 						</div>
 					</div>
 					<?php if ( ! empty( $payment_gateways ) ) : ?>
@@ -856,7 +863,7 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 						<div>
 							<div class="arm_datatable_filter_item arm_filter_pstart_date arm_margin_left_0" >
 								<input type="text" id="arm_filter_pstart_date" class="arm_min_width_60 arm_width_220" placeholder="<?php esc_attr_e( 'Start Date', 'armember-membership' ); ?>" data-date_format="m/d/Y" value=""/>
-								<input type="hidden" id="arm_filter_pstart_date_hidden">
+								<input type="hidden" id="arm_filter_pstart_date_hidden" name="arm_filter_pstart_date">
 							</div>
 						</div>
 					</div>
@@ -864,7 +871,7 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 						<div>
 							<div class="arm_datatable_filter_item arm_filter_pend_date">
 								<input type="text" id="arm_filter_pend_date" class="arm_min_width_60 arm_width_220" placeholder="<?php esc_attr_e( 'End Date', 'armember-membership' ); ?>" data-date_format="m/d/Y" value=""/>
-								<input type="hidden" id="arm_filter_pend_date_hidden">
+								<input type="hidden" id="arm_filter_pend_date_hidden" name="arm_filter_pend_date">
 							</div>
 						</div>
 					</div>

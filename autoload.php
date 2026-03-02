@@ -112,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '5.1';
+$arm_lite_version = '5.2';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -624,6 +624,7 @@ class ARMemberlite {
 	}
 
 	function armlite_display_notice_for_rating() {
+		global $arm_version;
 		$display_notice       = get_option( 'armlite_display_rating_notice' );
 		$display_notice_never = get_option( 'armlite_never_display_rating_notice' );
 		// echo "<br>Reputelog : display_notice : ".$display_notice." || display_notice_never : ".$display_notice_never;die;
@@ -640,6 +641,15 @@ class ARMemberlite {
 
 			printf( '<div class="%1$s"><p>%2$s</p><br/><br/><a href="%3$s" class="armlite_rate_link" target="_blank">%4$s</a><br/><a class="armlite_maybe_later_link" href="javascript:void(0);">%5$s</a><br/><a class="armlite_already_rated_link" href="javascript:void(0)">%6$s</a><br/>&nbsp;</div>', esc_attr( $class ), $message, esc_url( $rate_link ), esc_html( $rate_link_text ), esc_attr( $close_btn_text ), esc_html( $rated_link_text ), $nonce ); //phpcs:ignore
 		}
+
+		if ( !empty($arm_version) && version_compare( $arm_version, '7.2', '<' )  ) {
+			$class = 'armember_notice_warning';
+            $wp_plugin_update_notification_lite = sprintf( esc_html__( 'To ensure full compatibility with the ARMember Lite version, please update the ARMember Pro to the latest version. For manual update instructions, please refer to %s', 'armember-membership'), '<a href="https://www.armemberplugin.com/documents/getting-started-with-armember/#armember-manual-update" target="_blank">'.esc_html__('our documentation', 'armember-membership').'</a>'); //phpcs:ignore
+            
+            // show admin notice
+            $arm_license_notice = "<div class='" . esc_attr( $class ) . " red arm_dismiss_arm_lite_update_force_notice' style='display:block;'>" . $wp_plugin_update_notification_lite . "</div>"; //phpcs:ignore
+            printf($arm_license_notice); //phpcs:ignore
+        }
 	}
 
 	function arm_gutenberg_category( $category, $post ) {
@@ -1702,7 +1712,7 @@ class ARMemberlite {
                 wp_enqueue_script('arm_admin_setup_js');
 				wp_enqueue_script('jquery-ui-autocomplete');
             }
-			if ( in_array( $_REQUEST['page'], array( $arm_slugs->general_settings, $arm_slugs->manage_plans, $arm_slugs->manage_subscriptions,$arm_slugs->membership_setup, $arm_slugs->manage_forms, $arm_slugs->profiles_directories ) ) ) { //phpcs:ignore
+			if ( in_array( $_REQUEST['page'], array( $arm_slugs->general_settings, $arm_slugs->manage_plans, $arm_slugs->manage_subscriptions,$arm_slugs->membership_setup, $arm_slugs->manage_forms, $arm_slugs->profiles_directories,$arm_slugs->manage_members ) ) ) { //phpcs:ignore
 				wp_enqueue_script( 'jquery-ui-sortable' );
 				wp_enqueue_script( 'jquery-ui-draggable' );
 			}
@@ -3691,10 +3701,11 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '5.1',
+			'update_version' => '5.2',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				'Improved ARMember Admin panel UI.',
+				'Added a Facility to manage and sort columns on the Admin Panel Manage Members page.',
+				'Fix: Single checkbox field not saving properly for Add/Edit Member page.',
 				'Other minor bug fixes.',
 			),
 			'show_major_title'    => 0,

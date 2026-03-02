@@ -1189,7 +1189,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					$column_name = '`arm_transaction_id`';
 					break;
 				case 3:
-					$column_name = '`arm_user_id`';
+					$column_name = '`arm_user_login`';
 					break;
 				case 4:
 					$column_name = '`arm_subscription_plan_name`';
@@ -1213,7 +1213,14 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					$column_name = '`arm_created_date`';
 					break;
 			}
-			$orderby = "ORDER BY `arm_payment_history_log`.{$column_name} {$sorting_ord}";
+			
+			if($column_name == "arm_user_login")
+			{
+				$orderby = "ORDER BY {$column_name} {$sorting_ord}";
+			}
+			else{
+				$orderby = "ORDER BY arm_payment_history_log.{$column_name} {$sorting_ord}";
+			}
 
 			$sSearch = isset( $_REQUEST['sSearch'] ) ? sanitize_text_field($_REQUEST['sSearch']) : ''; //phpcs:ignore
 			$search_ = '';
@@ -1453,6 +1460,26 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					{
 						continue;
 					}
+					if($umkey =='invoice_id')
+					{
+						$phval = $arm_transaction_id;
+					}
+					else if($umkey =='username')
+					{
+						$user_id = $phquery['arm_user_id'];
+						$user    = get_userdata( $user_id );
+						if(!empty($user))
+						{
+							$phval = $user->user_login;
+							if($phval == '')
+							{
+								$phval = '--';
+							}
+						}
+						else{
+							$phval = '--';
+						}
+					}
 					if($umkey =='user_email')
 					{
 						$user_id = $phquery['arm_user_id'];
@@ -1522,7 +1549,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 		function arm_get_transaction_all_details_for_grid_loads_func(){
 			global $wp,$wpdb,$ARMemberLite,$arm_global_settings, $arm_subscription_plans, $arm_payment_gateways,$arm_capabilities_global,$arm_member_forms,$arm_members_class,$arm_pay_per_post_feature,$is_multiple_membership_feature;
 
-			$ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1',1); //phpcs:ignore --Reason:Verifying nonce
+			$ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_transactions'], '1',1); //phpcs:ignore --Reason:Verifying nonce
 
 			$arm_invoice_ids =  explode(',',$_POST['inv_ids']);//phpcs:ignore
 			$exclude_keys = array(
@@ -1569,7 +1596,27 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 						{
 							continue;
 						}
-						if($umkey =='user_email')
+						if($umkey =='invoice_id')
+						{
+							$phval = $arm_transaction_id;
+						}
+						else if($umkey =='username')
+						{
+							$user_id = $phquery['arm_user_id'];
+							$user    = get_userdata( $user_id );
+							if(!empty($user))
+							{
+								$phval = $user->user_login;
+								if($phval == '')
+								{
+									$phval = '--';
+								}
+							}
+							else{
+								$phval = '--';
+							}
+						}
+						else if($umkey =='user_email')
 						{
 							$user_id = $phquery['arm_user_id'];
 							$user    = get_userdata( $user_id );

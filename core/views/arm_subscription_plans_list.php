@@ -91,7 +91,6 @@ function arm_load_plan_list_grid(){
 		},
 		"buttons":[],
 		"bProcessing": false,
-		"responsive": true,
 		"bServerSide": true,
 		"sAjaxSource": ajax_url,
 		"sServerMethod": "POST",
@@ -109,16 +108,22 @@ function arm_load_plan_list_grid(){
 		"aaSorting": [],
 		"fixedColumns": false,
 		"sScrollX":"100%",
-		"bScrollCollapse": false,
+		"bScrollCollapse": true,
 		"aoColumnDefs": [
-			{ "bVisible": false, "aTargets": [] },
-			{ "bSortable": false, "aTargets": [3] },
-			{ "sWidth": "10%", "aTargets": [0] },
-			{ "sWidth": "40%", "aTargets": [1] },
-			{ "sWidth": "25%", "aTargets": [2] },
-			{ "sWidth": "10%", "aTargets": [3] },
-			{ "sWidth": "15%", "aTargets": [4] }		
+			{ "bSortable": false, "aTargets": [0,4] },
+			{"sClass": "control", "aTargets": [0]},
+			{"sClass": "arm_min_width_100", "aTargets": [1]},
+            {"sClass": "arm_min_width_200", "aTargets": [2,4]},
+            {"sClass": "arm_min_width_200", "aTargets": [5]},
+            {"sClass": "arm_min_width_250", "aTargets": [3]},
+			{ "aTargets": -1, "responsivePriority": 1 }	
 		],	
+		 "responsive": {
+			details: {
+				type: 'column',
+				target: '' // This removes the dtr-control click event
+			}
+		},
 		"bStateSave": true,
 		"iCookieDuration": 60 * 60,
 		"sCookiePrefix": "arm_datatable_",
@@ -150,6 +155,13 @@ function arm_load_plan_list_grid(){
 			jQuery(nRow).find('.arm_grid_action_btn_container').each(function () {
 				jQuery(this).parent().addClass('armGridActionTD');
 				jQuery(this).parent().attr('data-key', 'armGridActionTD');
+				if(jQuery(this).html()==""){
+					jQuery(this).parent().hide(0);
+					jQuery(this).parent().css('visibility','hidden');
+				}
+				if(jQuery(this).hasClass('arm_no_expand')){
+					jQuery(this).closest('tr').addClass('arm_no_expand');
+				}
 			});
 		},
 		"fnDrawCallback":function(){
@@ -173,6 +185,19 @@ function arm_load_plan_list_grid(){
 				});
 			}
 			table.dataTable().fnAdjustColumnSizing(false);
+            jQuery('#arm_member_plan_grid_filter_btn').removeAttr('disabled');
+			var datatable = jQuery('#armember_datatable').DataTable();
+			var dataTableHeaderElements = datatable.columns().header();	
+			for (var i = 0; i< dataTableHeaderElements.length; i++) {
+				if(typeof dataTableHeaderElements[i].dataset.key != 'undefined')
+				{
+					if(!jQuery(dataTableHeaderElements[i]).is(':visible')){
+						var i = i - 1;
+						jQuery(dataTableHeaderElements[i]).addClass('arm_last_dt_col');                           
+						break;
+					}
+				}
+			}
 		}
 	});
 	var filter_box = jQuery('#arm_filter_wrapper').html();
@@ -185,6 +210,74 @@ function arm_load_plan_list_grid(){
 }
 function ChangeID(id) {
 	document.getElementById('delete_id').value = id;
+}
+jQuery(document).ready(function(){
+    jQuery(document).on('click', '.wrap #armember_datatable.collapsed tr.shown td:not([data-action="selectDay"],.armGridActionTD)', function (e) {
+		
+		var tr = jQuery(this).closest('tr');
+		var class_name = jQuery(this).closest('tr').attr('class');
+		var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
+		var row = jQuery('#armember_datatable').DataTable().row(tr);	
+		row.child.hide();
+		tr.removeClass('shown');
+		tr.addClass('hide');
+	});
+
+    jQuery(document).on('click', '.wrap #armember_datatable.collapsed tr:not(.arm_child_transaction_row,.shown,.arm_filter_child_row,.arm_detail_expand_container,.arm_detail_expand_container_child_row) td:not([data-action="selectDay"],.armGridActionTD)', function (e) {
+		
+		jQuery('.arm_child_transaction_row').hide();
+		jQuery('tr.shown .arm_show_membership_plans').trigger('click');
+		var id = jQuery(this).closest('tr').find('.arm_show_membership_plans').attr('data-id');
+        if(typeof id != 'undefined' && id != '')
+        {
+            var tr = jQuery(this).closest('tr');
+            var class_name = jQuery(this).closest('tr').attr('class');
+            var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
+            var row = jQuery('#armember_datatable').DataTable().row(tr);
+            var datatable = jQuery('#armember_datatable').DataTable();
+            var dataTableHeaderElements = datatable.columns().header();		
+            var headers = [];
+            var headers_label = [];
+            for (var i = 0; i< dataTableHeaderElements.length; i++) {
+                if(typeof dataTableHeaderElements[i].dataset.key != 'undefined' && !jQuery(dataTableHeaderElements[i]).is(':visible'))
+                {
+                    key = dataTableHeaderElements[i].dataset.key;
+                    label = jQuery(dataTableHeaderElements[i]).text();
+                    headers.push(key);
+                    headers_label.push(label);
+                }
+            }
+            // Open this row
+            if (row.child()) {
+                row.child.show();
+                tr.removeClass('hide');
+                jQuery('.arm_detail_expand_container').removeAttr('style');
+                tr.addClass('shown');
+            }
+            else{
+                row.child.show();
+                tr.removeClass('hide');
+                row.child(activity_child_format(id,headers,headers_label,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
+                tr.addClass('shown');
+            }
+        }
+	});
+});
+
+function activity_child_format(d,headers,headers_label,_wpnonce) {
+    
+    var response1 = '</div><div class="arm_child_row_div_'+d+'" style="justify-self:center;text-align:center"></><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>"div>';
+    jQuery.ajax({
+        type: "POST",
+        url: __ARMAJAXURL,
+        data: "action=get_membership_plan_expand_grid&plan_id=" + d + "&exclude_headers="+headers+"&header_label="+headers_label+"&_wpnonce=" + _wpnonce,
+        dataType: 'html',
+        success: function (response) {
+            jQuery('.arm_child_row_div_'+d).html(response);
+            jQuery('.arm_child_row_div_'+d).removeAttr('style');
+        }
+    });
+    return response1;
 }
 // ]]>
 </script>
@@ -229,11 +322,12 @@ function ChangeID(id) {
 					<table cellpadding="0" cellspacing="0" border="0" class="display arm_hide_datatable" id="armember_datatable" style="visibility: hidden;">
 						<thead>
 							<tr>
-								<th><?php esc_html_e( 'Plan ID', 'armember-membership' ); ?></th>
-								<th><?php esc_html_e( 'Plan Name', 'armember-membership' ); ?></th>
-								<th><?php esc_html_e( 'Plan Type', 'armember-membership' ); ?></th>
-								<th><?php esc_html_e( 'Members', 'armember-membership' ); ?></th>
-								<th><?php esc_html_e( 'Wp Role', 'armember-membership' ); ?></th>							
+								<th></th>
+								<th data-key="arm_plan_id"><?php esc_html_e( 'Plan ID', 'armember-membership' ); ?></th>
+								<th data-key="arm_plan_name"><?php esc_html_e( 'Plan Name', 'armember-membership' ); ?></th>
+								<th data-key="arm_plan_type"><?php esc_html_e( 'Plan Type', 'armember-membership' ); ?></th>
+								<th data-key="arm_total_users"><?php esc_html_e( 'Members', 'armember-membership' ); ?></th>
+								<th data-key="arm_plan_role"><?php esc_html_e( 'Wp Role', 'armember-membership' ); ?></th>							
 								<th class="armGridActionTD"></th>
 							</tr>
 						</thead>

@@ -4823,7 +4823,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				case 'checkbox':
 					$fname  = $name;
 					$fhname = $name . '_arm_hidden';
-					if ( ! empty( $value['options'] )) {
+					if (!empty($value['options']) && count($value['options']) > 1) {
 						$fname  = $name . '[]';
 						$fhname = $name . '_arm_hidden[]';
 					}
@@ -8559,7 +8559,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			unset( $_POST['no_field'] ); //phpcs:ignore
 			$posted_data  = $_POST; //phpcs:ignore
 			$posted_data  = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data_extend'), $posted_data ); //phpcs:ignore
-			
 			$arm_action   = sanitize_text_field( $posted_data['arm_action'] );
 			$arm_form_ids = ( isset( $posted_data['arm_login_form_ids'] ) && $posted_data['arm_login_form_ids'] !== '' ) ? explode( ',', $posted_data['arm_login_form_ids'] ) : '';
 			$arm_ref_form = isset( $posted_data['arm_ref_template'] ) ? intval( $posted_data['arm_ref_template'] ) : 0;

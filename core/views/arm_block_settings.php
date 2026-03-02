@@ -49,11 +49,11 @@ $arm_all_block_settings['arm_block_ips']                = isset( $arm_all_block_
 						<label class="arm-form-table-label payment_label"><span class="arm_failed_login_before_label"><?php esc_html_e( 'Lock user temporarily for', 'armember-membership' ); ?></span></label>
 						<i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_html_e( 'After maximum failed login attempts user will be inactive for given minutes. During this time, user will not be able to login into the system.', 'armember-membership' ); ?>" style="margin-top: 0px !important;"></i>
 						<br/>
-						<span class="arm_temporary_lockdown_duration_error arm_error_msg" style="display:none;"> <?php esc_html_e( 'Please enter temporarily lock user duration.', 'armember-membership' ); ?></span>
 						<div class="input-with-suffix">
-						<input  type="text" id="temporary_lockdown_duration" value="<?php echo intval($arm_all_block_settings['temporary_lockdown_duration']); ?>" class="arm_general_input arm_margin_top_12 arm_width_100_pct"  name="arm_block_settings[temporary_lockdown_duration]" onkeypress="return isNumber(event)" />
-						<span class="arm_failed_login_after_label suffix"><?php esc_html_e( 'Minutes', 'armember-membership' ); ?></span>
+							<input  type="text" id="temporary_lockdown_duration" value="<?php echo intval($arm_all_block_settings['temporary_lockdown_duration']); ?>" class="arm_general_input arm_margin_top_12 arm_width_100_pct"  name="arm_block_settings[temporary_lockdown_duration]" onkeypress="return isNumber(event)" />
+							<span class="arm_failed_login_after_label suffix"><?php esc_html_e( 'Minutes', 'armember-membership' ); ?></span>
 						</div>
+						<span class="arm_temporary_lockdown_duration_error arm_error_msg" style="display:none;"> <?php esc_html_e( 'Please enter temporarily lock user duration.', 'armember-membership' ); ?></span>
 					</div>
 				</div>
 
@@ -71,8 +71,8 @@ $arm_all_block_settings['arm_block_ips']                = isset( $arm_all_block_
 						<div class="input-with-suffix">
 						<input  type="text" id="permanent_lockdown_duration" value="<?php echo intval($arm_all_block_settings['permanent_lockdown_duration']); ?>" class="arm_general_input arm_margin_top_12 arm_width_100_pct"  name="arm_block_settings[permanent_lockdown_duration]" onkeypress="return isNumber(event)" />
 						<span class="arm_failed_login_after_label suffix ">&nbsp;<?php esc_html_e( 'Hours', 'armember-membership' ); ?></span>
-						<span class="arm_permanent_lockdown_duration_error arm_error_msg" style="display:none;"> <?php esc_html_e( 'Please enter permanent lockdown duration.', 'armember-membership' ); ?></span>
-						</div>
+					</div>
+					<span class="arm_permanent_lockdown_duration_error arm_error_msg" style="display:none;"> <?php esc_html_e( 'Please enter permanent lockdown duration.', 'armember-membership' ); ?></span>
 					</div>
 				</div>
 

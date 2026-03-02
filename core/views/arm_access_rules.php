@@ -48,10 +48,10 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 	.wrap table.dataTable thead tr th, .wrap table.dataTable thead tr td,
 	.wrap #armember_datatable_wrapper tr td{width: auto;}
 	.wrap .DTFC_LeftBodyWrapper table tbody tr td:first-child{
-		width:275px !important;
+		width:275px;
 	}
 	.wrap .DTFC_LeftBodyWrapper table tbody tr td:last-child{
-		width:130px !important;
+		width:130px;
 	}
 	@media all and (min-width:1400px){
 		.wrap .DTFC_LeftBodyWrapper table tbody tr td:first-child{
@@ -63,6 +63,12 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 			width:221px !important;
 		}
 	}
+	@media all and (max-width:769px){
+		.DTFC_LeftBodyWrapper table.dataTable tbody tr td:first-child{
+			width: 120px !important;
+		}
+	}
+	
 	.arm_ref_info_links:not(.arm_pg_important_note,.arm_submit_btn), a.arm_ref_info_links:not(.arm_pg_important_note,.arm_submit_btn){
 		width: 210px !important;
 		background-position-y: center;

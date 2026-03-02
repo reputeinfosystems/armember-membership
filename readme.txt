@@ -3,9 +3,9 @@ Contributors: reputeinfosystems, membershippro
 Tags: content restriction,user registration ,membership, member, user profile
 Donate link: https://www.armemberplugin.com/product.php?rdt=t16
 Requires at least: 4.0
-Tested up to: 6.9
+Tested up to: 6.9.1
 Requires PHP: 5.6
-Stable tag: 5.1
+Stable tag: 5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,11 @@ Please follow the steps for installation:
 11. Signup Form
 
 == Changelog ==
+= 5.2 =
+* Added a Facility to manage and sort columns on the Admin Panel Manage Members page.
+* Fix: Single checkbox field not saving properly for Add/Edit Member page.
+* Other minor bug fixes.
+
 = 5.1 =
 * Improved ARMember Admin panel UI.
 * Other minor Bug fixes.
@@ -413,20 +418,6 @@ Please follow the steps for installation:
 * Added support for the Divi Integration Divi 5
 * Added Facility to send test mail for email.
 * Other minor Bug fixes.
-
-= 4.0.68 =
-* Minor bug fixes.
-
-= 4.0.67 =
-* Added New "Member Profile Template"
-* Other minor bug fixes.
-
-= 4.0.66 =
-* Accessibility Improvements.
-* Minor bug fixes.
-
-= 4.0.65 =
-* Minor bug fixes.
 
 
 

@@ -57,9 +57,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			add_filter('arm_member_edit_plan_details',array($this,'arm_member_edit_plan_details_func'),10,4);
 			add_filter('arm_members_view_profile_data',array($this,'arm_members_view_profile_func'),10,2);
 
-			add_action( 'wp_ajax_get_user_all_details_for_grid', array($this,'arm_get_user_all_details_for_grid_func'),10,2 );
+			add_action( 'wp_ajax_get_user_all_details_for_grid', array($this,'arm_get_user_all_details_for_grid_func'));
 
-			add_action( 'wp_ajax_get_user_all_details_for_grid_loads', array($this,'arm_get_user_all_details_for_grid_loads_func'),10,2 );
+			add_action( 'wp_ajax_get_user_all_details_for_grid_loads', array($this,'arm_get_user_all_details_for_grid_loads_func'));
 		}
 
 		function arm_save_debug_logs_settings()
@@ -187,8 +187,8 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
 			$date_format     = $arm_global_settings->arm_get_wp_date_format();
 			$defaultPlanData = $arm_subscription_plans->arm_default_plan_array();
+			$user_ID = isset( $post_data['user_id'] ) ? intval( $post_data['user_id'] ) : 0;
 			if ( $post_data['arm_action'] == 'add' ) {
-				$user_ID = isset( $post_data['user_id'] ) ? intval( $post_data['user_id'] ) : 0;
 				if ( ! empty( $user_ID ) ) {
 					
 					if ( ! isset( $post_data['arm_user_plan'] ) ) {
@@ -237,7 +237,6 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				}
 				
 			} else if ( $post_data['arm_action'] == 'delete' ) {
-				$user_ID = intval( $post_data['user_id'] );
 				$user    = get_userdata( $user_ID );
 				$plan_id = intval( $post_data['plan_id'] );
 
@@ -277,8 +276,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					'msg'     => esc_html__( 'Plan deleted successfully.', 'armember-membership' ),
 					'content' => $popup_plan_content,
 				);
-			} else if ( $post_data['arm_action'] == 'status' ) {
-				$user_ID = intval( $post_data['user_id'] );
+			} else if ( $post_data['arm_action'] == 'status' ) {			
 				$user    = get_userdata( $user_ID );
 				$plan_id = intval( $post_data['plan_id'] );
 
@@ -299,7 +297,6 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					'content' => $popup_plan_content,
 				);
 			} else if ( $post_data['arm_action'] == 'edit' ) {
-				$user_ID                      = intval( $post_data['user_id'] );
 				$arm_changed_expiry_date_plan = get_user_meta( $user_ID, 'arm_changed_expiry_date_plans', true );
 				$arm_changed_expiry_date_plan = ! empty( $arm_changed_expiry_date_plan ) ? $arm_changed_expiry_date_plan : array();
 				if ( isset( $post_data['expiry_date'] ) && ! empty( $post_data['expiry_date'] ) ) {
@@ -376,6 +373,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					}
 				}
 				$response['membership_plan'] = $arm_member_plan_resp;
+				$excluded_header = sanitize_text_field($_REQUEST['exclude_headers']);
+				$header_label = sanitize_text_field($_REQUEST['header_label']);
+				$response['child_row_content'] = $this->arm_get_user_all_details_for_grid_func($user_ID,1,$excluded_header,$header_label);
 			}
 			
 			echo arm_pattern_json_encode($response);
@@ -1613,20 +1613,120 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 		}
 
 		function arm_members_hide_column() {
-			global $ARMemberLite, $arm_capabilities_global;
+			global $ARMemberLite, $arm_capabilities_global,$arm_member_forms;
 
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_members'], '1' ); //phpcs:ignore --Reason:Verifying nonce
+			$posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST ); //phpcs:ignore
 
-			$column_list = isset( $_POST['column_list'] ) ? sanitize_text_field( $_POST['column_list'] ) : ''; //phpcs:ignore
-			$form_id     = isset( $_POST['form_id'] ) ? intval( $_POST['form_id'] ) : '0'; //phpcs:ignore
-			if ( $column_list != '' ) {
-				$user_id                     = get_current_user_id();
-				$members_column_list         = explode( ',', $column_list );
+			$column_list = isset( $posted_data['column_list'] ) ?  $posted_data['column_list']  : array();
+			$column_list_key = isset( $posted_data['column_list_key'] ) ?  $posted_data['column_list_key']  : array();
+			$form_id     = isset( $posted_data['form_id'] ) ? intval( $posted_data['form_id'] ) : '0';
+			$column_order = isset( $posted_data['column_order'] ) ?  $posted_data['column_order']  : array();
+			$user_id                     = get_current_user_id();
+			if ( !empty($column_list) ) {
+				$members_column_list         =  $column_list;
+				$arm_column_list = array();
+				
+				$arm_column_list = array_combine($column_list_key, $column_list);
+				
 				$members_show_hide_serialize = maybe_serialize( $members_column_list );
 				// update_option('arm_members_hide_show_columns', $members_show_hide_serialize);
 				$prev_value = maybe_unserialize( get_user_meta( $user_id, 'arm_members_hide_show_columns_' . $form_id, true ) );
-				update_user_meta( $user_id, 'arm_members_hide_show_columns_' . $form_id, $members_show_hide_serialize );
+				update_user_meta( $user_id, 'arm_members_hide_show_columns_' . $form_id, $arm_column_list );
 			}
+			if ( !empty($column_order) ) {
+				update_user_meta($user_id, 'arm_members_column_order_' . $form_id, $column_order );
+			}
+
+			// Build updated HTML HERE
+			
+			$updated_column_order_array = $column_order;
+			$arm_show_hide_grid = array();
+			$grid_columns = array(
+				'avatar'             => esc_html__( 'Avatar', 'armember-membership' ),
+				'ID'                 => esc_html__( 'User ID', 'armember-membership' ),
+				'user_login'         => esc_html__( 'Username', 'armember-membership' ),
+				'user_email'         => esc_html__( 'Email Address', 'armember-membership' ),
+				'arm_member_type'    => esc_html__( 'Membership Type', 'armember-membership' ),
+				'arm_user_plan'      => esc_html__( 'Member Plan', 'armember-membership' ),
+				'arm_primary_status' => esc_html__( 'Status', 'armember-membership' ),
+				'roles'              => esc_html__( 'User Role', 'armember-membership' ),
+				'first_name'         => esc_html__( 'First Name', 'armember-membership' ),
+				'last_name'          => esc_html__( 'Last Name', 'armember-membership' ),
+				'display_name'       => esc_html__( 'Display Name', 'armember-membership' ),
+				'user_registered'    => esc_html__( 'Joined Date', 'armember-membership' ),
+			);
+			
+			$arm_sortable_meta = array( 'ID', 'user_login', 'user_email', 'user_url', 'user_registered', 'display_name', 'arm_primary_status','first_name','last_name');
+			
+			$grid_columns = apply_filters('arm_members_grid_columns',$grid_columns);
+			
+			$default_columns = $grid_columns;
+			$user_meta_keys  = $arm_member_forms->arm_get_db_form_fields( true );
+			if ( ! empty( $user_meta_keys ) ) {
+				$exclude_keys = array( 'user_pass', 'repeat_pass', 'rememberme', 'remember_me', 'section', 'html','arm_captcha');
+				foreach ( $user_meta_keys as $umkey => $val ) {
+					if ( ! in_array( $umkey, $exclude_keys ) ) {
+						if(!empty($val['label'])){
+						$grid_columns[ $umkey ] = stripslashes_deep($val['label']);
+						}else if(empty($grid_columns[$umkey])){
+							$grid_columns[$umkey] = stripslashes_deep($val['label']);
+						}
+					}
+				}
+			}
+			$arm_datatable_headers = '<th class="arm_min_width_40 arm_padding_right_0"></th><th class="center cb-select-all-th"><input id="cb-select-all-1" type="checkbox" class="chkstanard"></th>';
+			foreach($updated_column_order_array as $key){
+				$arm_show_hide_grid[$key] = $grid_columns[$key];
+				$arm_datatable_headers .= '<th data-key="'. esc_attr($key).'" class="arm_grid_th_'. esc_attr($key).'" >'. esc_html($grid_columns[$key]).'</th>';
+			}
+			$arm_datatable_headers .= '<th data-key="armGridActionTD" class="armGridActionTD noVis"></th>';
+
+
+			if ( ! empty( $arm_show_hide_grid ) ){
+				$arm_i = 0;
+				$updated_show_hide_column = $arm_column_list;
+				$totalCount               = count( $grid_columns ) + 3;
+				$i = 0;
+				$totalCount = apply_filters('arm_pro_show_hide_column_counter',$totalCount);
+				$up_column_hide = '';
+				foreach ( $updated_show_hide_column as $key => $value ) {
+					if ( $totalCount > $i ) {
+						if ( $value != 1 ) {
+							$up_column_hide = $up_column_hide . $i . ',';
+						}
+					}
+				}
+				$up_column_hide_arr = explode(',',$up_column_hide);
+				$upd_column_hide_show_arr     = $updated_column_order_array;
+				$arm_hide_show_html = '';
+				if(!empty($updated_column_order_array))
+				{
+					foreach($updated_column_order_array as $key)
+					{
+						$label = $arm_show_hide_grid[$key];
+							$arm_hide_show_html .= '<li class="arm_grid_col_div">';
+
+							$arm_clm_hide_cls = '';
+							if(!empty($upd_column_hide_show_arr) && !is_int($key))
+							{
+								$arm_clm_hide_cls = ( $updated_show_hide_column[$key] == 1) ? "active" :'';
+								$arm_clm_disabled = (!$arm_clm_hide_cls == 'active') ? "arm_btn_disabled" :'';
+							}
+							else{
+								$arm_clm_hide_cls =  (!in_array($arm_i,$up_column_hide_arr)) ? "active" :'';
+								$arm_clm_disabled = (!$arm_clm_hide_cls == 'active') ? "arm_btn_disabled" :'';
+							}
+							$arm_hide_show_html .= '<button tabindex="0" aria-controls="armember_datatable" type="button" class="ColVis_Button TableTools_Button ui-button ui-state-default '. $arm_clm_hide_cls.' '.$arm_clm_disabled.'" data-cv-idx="'. $arm_i.'" data-cv-meta="'. $key.'">';
+							$arm_hide_show_html .= '<span><span class="ColVis_radio"><span class="colvis_checkbox"></span></span><span class="ColVis_title">'. $label.'</span></span>';
+							$arm_hide_show_html .= '</button>';
+							$arm_hide_show_html .= '<span class="arm_margin_right_10 arm_margin_left_10"><span class="ColVis_radio arm_grid_col_sortable_icon"><img src="'. MEMBERSHIPLITE_IMAGES_URL.'/fe_drag.png" onmouseover="this.src = \''. MEMBERSHIPLITE_IMAGES_URL.'/fe_drag_hover.png\';" onmouseout="this.src = \''. MEMBERSHIPLITE_IMAGES_URL.'/fe_drag.png\';" style="cursor:pointer"></span>';
+							$arm_hide_show_html .= '</li>';
+						$arm_i +=1;
+					}
+				}
+			}
+			echo json_encode( array( 'grid_columns_html' => $arm_hide_show_html, 'type' => 'success','updated_order'=>$updated_column_order_array, 'arm_datatable_headers'=> $arm_datatable_headers) );
 			die();
 		}
 
@@ -3520,8 +3620,8 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 						}
 					}
 				}
-				$view_link   = admin_url( 'admin.php?page=' . $arm_slugs->manage_members . '&action=view_member&id=' . $userID );
-				$gridAction .= "<a class='arm_openpreview arm_openpreview_popup armhelptip' href='javascript:void(0)' data-id='" . esc_attr($userID) . "' title='" . esc_html__( 'View Detail', 'armember-membership' ) . "'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'><path d='M3.27489 15.2957C2.42496 14.1915 2 13.6394 2 12C2 10.3606 2.42496 9.80853 3.27489 8.70433C4.97196 6.49956 7.81811 4 12 4C16.1819 4 19.028 6.49956 20.7251 8.70433C21.575 9.80853 22 10.3606 22 12C22 13.6394 21.575 14.1915 20.7251 15.2957C19.028 17.5004 16.1819 20 12 20C7.81811 20 4.97196 17.5004 3.27489 15.2957Z' stroke='#617191' stroke-width='1.5'/><path d='M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z' stroke='#617191' stroke-width='1.5'/></svg></a>"; //phpcs:ignore 
+				$view_link   = admin_url( 'admin.php?page=' . $arm_slugs->manage_members . '&action=view_member&id=' . $userID ); 
+				$gridAction .= "<a class='arm_openpreview arm_openpreview_popup armhelptip' href='javascript:void(0)' data-id='" . esc_attr($userID) . "'   title='" . esc_html__( 'View Detail', 'armember-membership' ) . "'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'><path d='M3.27489 15.2957C2.42496 14.1915 2 13.6394 2 12C2 10.3606 2.42496 9.80853 3.27489 8.70433C4.97196 6.49956 7.81811 4 12 4C16.1819 4 19.028 6.49956 20.7251 8.70433C21.575 9.80853 22 10.3606 22 12C22 13.6394 21.575 14.1915 20.7251 15.2957C19.028 17.5004 16.1819 20 12 20C7.81811 20 4.97196 17.5004 3.27489 15.2957Z' stroke='#617191' stroke-width='1.5'/><path d='M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z' stroke='#617191' stroke-width='1.5'/></svg></a>"; //phpcs:ignore 
 				if ( current_user_can( 'arm_manage_members' ) ) {				
 					$gridAction .= "<a href='javascript:void(0)' data-id='".$userID."' class='arm_edit_member_data armhelptip' title='" . esc_html__( 'Edit Member', 'armember-membership' ) . "' ><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M13.2594 3.60022L5.04936 12.2902C4.73936 12.6202 4.43936 13.2702 4.37936 13.7202L4.00936 16.9602C3.87936 18.1302 4.71936 18.9302 5.87936 18.7302L9.09936 18.1802C9.54936 18.1002 10.1794 17.7702 10.4894 17.4302L18.6994 8.74022C20.1194 7.24022 20.7594 5.53022 18.5494 3.44022C16.3494 1.37022 14.6794 2.10022 13.2594 3.60022Z' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M11.8906 5.0498C12.3206 7.8098 14.5606 9.9198 17.3406 10.1998' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M3 22H21' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/></svg></a>"; //phpcs:ignore 
 				}
@@ -3633,6 +3733,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					'membership_plan'     => $memberPlanText,
 					'multiple_membership' => $multiple_membership,
 				);
+				$excluded_header = sanitize_text_field($_REQUEST['exclude_headers']);
+				$header_label = sanitize_text_field($_REQUEST['header_label']);
+				$response['child_row_content'] = $this->arm_get_user_all_details_for_grid_func($user_id,1,$excluded_header,$header_label);
 			}
 			echo arm_pattern_json_encode( $response );
 			die();
@@ -4059,10 +4162,46 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				'user_login'         => esc_html__( 'Username', 'armember-membership' ),
 				'user_email'         => esc_html__( 'Email Address', 'armember-membership' ),
 				'arm_member_type'    => esc_html__( 'Membership Type', 'armember-membership' ),
-				'arm_user_plan_ids'  => esc_html__( 'Member Plan', 'armember-membership' ),
+				'arm_user_plan'  => esc_html__( 'Member Plan', 'armember-membership' ),
 				'arm_primary_status' => esc_html__( 'Status', 'armember-membership' ),
 				'roles'              => esc_html__( 'User Role', 'armember-membership' ),
+				'first_name'         => esc_html__( 'First Name', 'armember-membership' ),
+				'last_name'          => esc_html__( 'Last Name', 'armember-membership' ),
+				'display_name'       => esc_html__( 'Display Name', 'armember-membership' ),
+				'user_registered'    => esc_html__( 'Joined Date', 'armember-membership' ),
 			);
+			$user_meta_keys = $arm_member_forms->arm_get_db_form_fields( true );
+			if ( ! empty( $user_meta_keys ) ) {
+				$exclude_keys = array( 'user_pass', 'repeat_pass', 'rememberme', 'remember_me', 'section', 'html' );
+				$exclude_keys = array_merge( $exclude_keys, array_keys( $grid_columns ) );
+				foreach ( $user_meta_keys as $umkey => $val ) {
+					if ( ! in_array( $umkey, $exclude_keys ) ) {
+						$grid_columns[ $umkey ] = $val['label'];
+					}
+				}
+			}
+			$grid_columns[ 'paid_with' ] = esc_html__( 'Paid With', 'armember-membership' );
+			$arm_preset_grid_cols = $grid_columns;
+			$admin_user_id = get_current_user_id();
+			$saved_column_order_array = maybe_unserialize( get_user_meta( $admin_user_id, 'arm_members_column_order_0', true ) );
+			if(!empty($saved_column_order_array))
+			{
+				foreach($saved_column_order_array as $key){
+					if(isset($grid_columns[$key])){
+						$arm_upgraded_grid[$key] = $arm_preset_grid_cols[$key];
+					}
+													
+				}
+				if(!empty($arm_upgraded_grid))
+				{
+					$grid_columns = $arm_upgraded_grid;
+				}
+				foreach ( $arm_preset_grid_cols as $key => $value ) {
+					if(!in_array($key,array_keys($arm_upgraded_grid)) && !is_int($key)){
+						$grid_columns[$key] = $value;
+					}
+				}
+			}
 
 			$plansLists = '<li data-label="' . esc_html__( 'Select Plan', 'armember-membership' ) . '" data-value="">' . esc_html__( 'Select Plan', 'armember-membership' ) . '</li>';
 			if ( ! empty( $all_plans ) ) {
@@ -4076,18 +4215,8 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
 			$displayed_grid_columns = $grid_columns;
 			$filter_plan_id         = ( ! empty( $_REQUEST['filter_plan_id'] ) && $_REQUEST['filter_plan_id'] != '0' ) ? sanitize_text_field( $_REQUEST['filter_plan_id']) : ''; //phpcs:ignore
-
-			/*$user_meta_keys = $arm_member_forms->arm_get_db_form_fields( true );
-			if ( ! empty( $user_meta_keys ) ) {
-				$exclude_keys = array( 'user_pass', 'repeat_pass', 'rememberme', 'remember_me', 'section', 'html' );
-				$exclude_keys = array_merge( $exclude_keys, array_keys( $grid_columns ) );
-				foreach ( $user_meta_keys as $umkey => $val ) {
-					if ( ! in_array( $umkey, $exclude_keys ) ) {
-						$grid_columns[ $umkey ] = $val['label'];
-					}
-				}
-			}*/
-			$grid_columns['action_btn'] = '';
+		
+			$grid_columns['action_btn'] = '';		
 			$user_args                  = array(
 				'orderby' => 'ID',
 				'order'   => 'DESC',
@@ -4334,13 +4463,13 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
 				$edit_link = admin_url( 'admin.php?page=' . $arm_slugs->manage_members . '&action=edit_member&id=' . $userID );
 				$view_link = admin_url( 'admin.php?page=' . $arm_slugs->manage_members . '&action=view_member&id=' . $userID );
-				$grid_data[$ai][0] = "<div class='arm_show_user_more_data' id='arm_show_user_more_data_" . esc_attr($userID) . "' data-id='" . esc_attr($userID) . "'><svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 20 20' fill='none'><path d='M6 8L10 12L14 8' stroke='#BAC2D1' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg></div>";
+				$grid_data[$ai][0] = "<div class='arm_show_user_more_data arm_expand_arrow_icon' id='arm_show_user_more_data_" . esc_attr($userID) . "' data-id='" . esc_attr($userID) . "'><svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 20 20' fill='none'><path d='M6 8L10 12L14 8' stroke='#BAC2D1' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg></div>";
 				if ( ( get_current_user_id() != $userID ) ) {
 
 					$grid_data[ $ai ][1] = "<input id=\"cb-item-action-{$userID}\" class=\"chkstanard\" type=\"checkbox\" value=\"{$userID}\" name=\"item-action[]\">";
 				} else {
 
-					$grid_data[ $ai ][1] = "<input id=\"cb-item-action-{$userID}\" class=\"chkstanard\" type=\"checkbox\" disabled=\"disabled\">";
+					$grid_data[ $ai ][1] = "<input id=\"cb-item-action-{$userID}\" class=\"chkstanard\" type=\"checkbox\" disabled=\"disabled\" value=\"{$userID}\">";
 				}
 
 				if ( ! empty( $grid_columns ) ) {
@@ -4386,18 +4515,18 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 								}
 								reset( $auser->roles );
 								if ( ! empty( $role_name ) ) {
-									$grid_data[ $ai ][ $n ] = implode( ', ', $role_name );
+									$grid_data[ $ai ][ $n ] = '<div class="arm_user_role_'.$userID.'">'.implode( ', ', $role_name ).'</div>';
 								} else {
-									$grid_data[ $ai ][ $n ] = '-';
+									$grid_data[ $ai ][ $n ] = '<div class="arm_user_role_'.$userID.'">--</div>';
 								}
 
 								break;
 							case 'arm_member_type':
 								$memberTypeText         = $arm_members_class->arm_get_member_type_text( $userID );
-								$grid_data[ $ai ][ $n ] = $memberTypeText;
+								$grid_data[ $ai ][ $n ] = '<div class="arm_member_type_'.$userID.'">'.$memberTypeText.'<div>';
 
 								break;
-							case 'arm_user_plan_ids':
+							case 'arm_user_plan':
 								$plan_names                  = array();
 								$subscription_effective_from = array();
 
@@ -4446,7 +4575,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
 								break;
 							case 'arm_primary_status':
-								$grid_data[ $ai ][ $n ] = $arm_members_class->armGetMemberStatusText( $userID );
+								$grid_data[ $ai ][ $n ] = '<div class="arm_user_status_'.$userID.'">'.$arm_members_class->armGetMemberStatusText( $userID ).'</div>';
 								break;
 							case 'user_registered':
 								$grid_data[ $ai ][ $n ] = date_i18n( $date_format, strtotime( $auser->$key ) );
@@ -4504,7 +4633,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 										}
 									}
 								}
-								$gridAction .= "<a class='arm_openpreview arm_openpreview_popup armhelptip' href='javascript:void(0)' data-id='" . esc_attr($userID) . "' title='" . esc_html__( 'View Detail', 'armember-membership' ) . "'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'><path d='M3.27489 15.2957C2.42496 14.1915 2 13.6394 2 12C2 10.3606 2.42496 9.80853 3.27489 8.70433C4.97196 6.49956 7.81811 4 12 4C16.1819 4 19.028 6.49956 20.7251 8.70433C21.575 9.80853 22 10.3606 22 12C22 13.6394 21.575 14.1915 20.7251 15.2957C19.028 17.5004 16.1819 20 12 20C7.81811 20 4.97196 17.5004 3.27489 15.2957Z' stroke='#617191' stroke-width='1.5'/><path d='M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z' stroke='#617191' stroke-width='1.5'/></svg></a>"; //phpcs:ignore 
+								$gridAction .= "<a class='arm_openpreview arm_openpreview_popup armhelptip' href='javascript:void(0)' data-id='" . esc_attr($userID) . "'  data-arm_hide_personal='1' title='" . esc_html__( 'Other Details', 'armember-membership' ) . "'> <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M2 9.8C2 5.65164 2 3.57747 3.30174 2.28873C4.6035 1 6.69862 1 10.8889 1H13.1111C17.3013 1 19.3966 1 20.6982 2.28873C22 3.57747 22 5.65164 22 9.8V14.2C22 18.3483 22 20.4226 20.6982 21.7112C19.3966 23 17.3013 23 13.1111 23H10.8889C6.69862 23 4.6035 23 3.30174 21.7112C2 20.4226 2 18.3483 2 14.2V9.8Z' stroke='#617191' stroke-width='1.5'/><path d='M7.67993 12H16.3199' stroke='#617191' stroke-width='1.5' stroke-linecap='round'/><path d='M7.67993 7.68018H16.3199' stroke='#617191' stroke-width='1.5' stroke-linecap='round'/><path d='M7.67993 16.3198H13.0799' stroke='#617191' stroke-width='1.5' stroke-linecap='round'/></svg></a>"; //phpcs:ignore 
 								if ( current_user_can( 'arm_manage_members' ) ) {
 
 									//$edit_link   = admin_url( 'admin.php?page=' . $arm_slugs->manage_members . '&action=edit_member&id=' . $userID );
@@ -4621,7 +4750,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 										$str                    = explode( "\n", wordwrap( $user_meta_detail, 70 ) );
 										$user_meta_detail       = $str[0] . '...';
 										$grid_data[ $ai ][ $n ] = $user_meta_detail;
-									} elseif ( in_array( $arm_form_field_type, array( 'radio', 'checkbox', 'select' ) ) && $key != 'country' ) {
+									} elseif ( in_array( $arm_form_field_type, array( 'radio', 'checkbox', 'select' ) ) ) {
 										$main_array  = array();
 										$options     = $arm_form_field_option['options'];
 										$value_array = array();
@@ -4662,6 +4791,8 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 												} else {
 													if ( in_array( $user_meta_detail, $value_array ) ) {
 														$grid_data[ $ai ][ $n ] = array_search( $user_meta_detail, $value_array );
+                                               		     						} else {
+						        	                                                $grid_data[$ai][$n] = $user_meta_detail;
 													}
 												}
 											}
@@ -5588,12 +5719,16 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
             return $popup_content;
 		}
 
-		function arm_get_user_all_details_for_grid_func(){
+		function arm_get_user_all_details_for_grid_func($user_id = 0 ,$is_return = 0,$exclude_headers='',$header_label=''){
 			global $wp,$wpdb,$ARMemberLite,$arm_global_settings, $arm_subscription_plans, $arm_payment_gateways,$arm_capabilities_global,$arm_member_forms,$arm_members_class;
-
-			$ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1',1); //phpcs:ignore --Reason:Verifying nonce
+			if(empty($is_return)){
+				$ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1',1); //phpcs:ignore --Reason:Verifying nonce
+			}
 
 			$arm_user_id = intval( $_POST['user_id'] );//phpcs:ignore
+			if(!empty($arm_user_id) && !empty($is_return)){
+				$arm_user_id = $user_id;
+			}
 
 			$exclude_keys = array(
 				'avatar',
@@ -5606,12 +5741,8 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				'user_roles',
 			);
 			$grid_columns = array();
-			if(!empty($_REQUEST['exclude_headers']))
-			{
-				$arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
-				$arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
-				$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
-			}
+			
+			
 			$grid_columns['joined_date'] = esc_html__('Joined Date','armember-membership');
 			$user_meta_keys  = $arm_member_forms->arm_get_db_form_fields( true );
 			if ( ! empty( $user_meta_keys ) ) {
@@ -5629,6 +5760,19 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				}
 			}
 			$grid_columns['paid_with'] = esc_html__('Paid With','armember-membership');
+			if(!empty($is_return)){
+				$arm_dt_exclude_keys = explode(',',$exclude_headers);
+				$arm_dt_exclude_label = explode(',',$header_label);
+				$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
+			}
+			else{
+				if(!empty($_REQUEST['exclude_headers']))
+				{
+					$arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
+					$arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
+					$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
+				}
+			}
 			$return = '<div class="arm_child_row_div"><div class="arm_child_user_data_section">';
 				$return .= '<div class="arm_view_member_left_box arm_no_border arm_margin_top_0">
 					<div class="arm_view_member_sub_title arm_padding_0 arm_margin_bottom_24">'.esc_html__('Member details','armember-membership').'</div>
@@ -5637,7 +5781,11 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					{
 						$meta_val = '';
 						$user    = get_userdata( $arm_user_id );
-						if($mkey == 'display_name')
+						if($mkey == 'avatar')
+						{
+							$meta_val = get_avatar( $arm_user_id, 43 );
+						}
+						else if($mkey == 'display_name')
 						{
 							$meta_val = $user->data->display_name;
 						}
@@ -5650,7 +5798,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 							$meta_val = $user->data->user_url;
 						}
 						else if($mkey == 'arm_primary_status'){
-							$meta_val = $arm_members_class->armGetMemberStatusText( $arm_user_id );
+							$meta_val = '<div class="arm_user_status_'.$arm_user_id.'">'.$arm_members_class->armGetMemberStatusText( $arm_user_id ).'</div>';
 						}
 						else if($mkey == 'roles' || $mkey == 'user_roles')
 						{
@@ -5675,9 +5823,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 								reset( $user->roles );
 							}	
 							if ( ! empty( $role_name ) ) {
-								$meta_val = implode( ', ', $role_name );
+								$meta_val = '<div class="arm_user_role_'.$arm_user_id.'">'.implode( ', ', $role_name ).'</div>';
 							} else {
-								$meta_val = '-';
+								$meta_val = '<div class="arm_user_role_'.$arm_user_id.'">--</div>';
 							}
 						}
 						else if($mkey == 'paid_with')
@@ -5704,7 +5852,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 								$arm_paid_with = implode( ',', $arm_paid_withs );
 							}
 							$meta_val = $arm_paid_with;
-						} else if($mkey == 'joined_date')
+						} else if($mkey == 'joined_date' || $mkey == 'user_registered')
 						{
 							$date_format = $arm_global_settings->arm_get_wp_date_format();
 							$registered_date = $user->data->user_registered;
@@ -5833,7 +5981,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 							if($mkey == 'arm_member_type' )
 							{
 								$plan_type = $arm_members_class->arm_get_member_type_text( $arm_user_id );
-								$meta_val = !empty($plan_type) ? $plan_type : '--';
+								$meta_val = !empty($plan_type) ? '<div class="arm_member_type_'.$arm_user_id.'">'.$plan_type.'<div>' : '<div class="arm_member_type_'.$arm_user_id.'">--</div>';
 							}
 							if($mkey == 'arm_user_plan' ){
 								$plan_names                  = array();
@@ -5869,7 +6017,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
 								$plan_name              = ( ! empty( $plan_names ) ) ? implode( ',', $plan_names ) : '';
 
-								$meta_val = ( ! empty( $plan_name ) ) ? $plan_name : '--';
+								$meta_val = ( ! empty( $plan_name ) ) ? '<span class="arm_user_plan_' . esc_attr($arm_user_id) . '">'.$plan_name.'<span>' : '<span class="arm_user_plan_' . esc_attr($arm_user_id) . '">--<span>';
 							}
 						}
 
@@ -5883,15 +6031,21 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 							}
 						}
 						$return .= '<tr class="form-field arm_detail_expand_container_child_row">
-							<th class="arm-form-table-label">'.$mlabel.'</th>
+							<th class="arm-form-table-label">'.stripslashes_deep($mlabel).'</th>
 							<td class="arm-form-table-content">'.$meta_val.'</td>
 						</tr>';
 					}
 				$return .= '</tbody></table>
 			</div>
 			</div></div>';
-			echo $return; //phpcs:ignore
-			die;
+			if(empty($is_return))
+			{
+				echo $return; //phpcs:ignore
+				die;
+			}
+			else{
+				return $return;
+			}
 		}
 
 		function arm_get_user_all_details_for_grid_loads_func(){
@@ -5899,40 +6053,13 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
     
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1',1); //phpcs:ignore --Reason:Verifying nonce
     
-            $arm_user_ids =  explode(',',$_POST['user_ids']);//phpcs:ignore
-            $exclude_keys = array(
-				'avatar',
-				'ID',
-				'user_login',
-				'user_email',
-				'arm_member_type',
-				'arm_user_plan',
-				'arm_primary_status',
-				'user_roles',
-			);
-            $grid_columns = array();
-            if(!empty($_REQUEST['exclude_headers']))
+            $arm_user_ids =  explode(',',$_POST['user_ids']);//phpcs:ignore           
+			if(!empty($_REQUEST['exclude_headers']))
             {
                 $arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
                 $arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
                 $grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
             }
-            $grid_columns['joined_date'] = esc_html__('Joined Date','armember-membership');
-            $user_meta_keys  = $arm_member_forms->arm_get_db_form_fields( true );
-            if ( ! empty( $user_meta_keys ) ) {
-                $exclude_keys_meta = array( 'user_pass', 'repeat_pass', 'rememberme', 'remember_me', 'section', 'html','arm_captcha');
-                $exclude_keys_arr = array_merge($exclude_keys,$exclude_keys_meta);
-                foreach ( $user_meta_keys as $umkey => $val ) {
-                    if ( !in_array( $umkey, $exclude_keys_arr ) ) {
-                        if(!empty($val['label'])){
-                            $grid_columns[ $umkey ] = stripslashes_deep($val['label']);
-                        }else if(empty($grid_columns[$umkey])){
-                            $grid_columns[$umkey] = stripslashes_deep($val['label']);
-                        }
-                    }
-                }
-            }           
-	    	$grid_columns['paid_with'] = esc_html__('Paid With','armember-membership');
             $return = array();
             
             foreach($arm_user_ids as $arm_user_id)
@@ -5946,7 +6073,11 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                         {
                             $meta_val = '';
                             $user    = get_userdata( $arm_user_id );
-                            if($mkey == 'display_name')
+							if($mkey == 'avatar')
+                            {
+                                $meta_val = get_avatar( $arm_user_id, 43 );
+                            }
+                            else if($mkey == 'display_name')
                             {
                                 $meta_val = $user->data->display_name;
                             }
@@ -5959,7 +6090,8 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                 $meta_val = $user->data->user_url;
                             }
                             else if($mkey == 'arm_primary_status'){
-                                $meta_val = $arm_members_class->armGetMemberStatusText( $arm_user_id );
+                                $meta_val = '<div class="arm_user_status_'.$arm_user_id.'">'
+								.$arm_members_class->armGetMemberStatusText( $arm_user_id ).'</div>';
                             }
                             else if($mkey == 'roles' || $mkey == 'user_roles')
                             {
@@ -5984,9 +6116,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                 	reset( $user->roles );
 								}	
                                 if ( ! empty( $role_name ) ) {
-                                    $meta_val = implode( ', ', $role_name );
+                                    $meta_val = '<div class="arm_user_role_'.$arm_user_id.'">'.implode( ', ', $role_name ).'</div>';
                                 } else {
-                                    $meta_val = '-';
+                                    $meta_val = '<div class="arm_user_role_'.$arm_user_id.'">--</div>';
                                 }
                             }
                             else if($mkey == 'paid_with')
@@ -6013,12 +6145,12 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                 }
                                 $meta_val = $arm_paid_with;
                             }
-                            else if($mkey == 'joined_date')
-                            {
-                                $date_format = $arm_global_settings->arm_get_wp_date_format();
-                                $registered_date = $user->data->user_registered;
-                                $meta_val = date_i18n( $date_format, strtotime( $registered_date ) );
-                            }
+							else if($mkey == 'joined_date' || $mkey == 'user_registered')
+							{
+								$date_format = $arm_global_settings->arm_get_wp_date_format();
+								$registered_date = $user->data->user_registered;
+								$meta_val = date_i18n( $date_format, strtotime( $registered_date ) );
+							}
                             else if($mkey == 'arm_user_paid_plans')
                             {
                                 if($arm_pay_per_post_feature->isPayPerPostFeature)
@@ -6084,8 +6216,13 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                 if( ! empty( $plan_names ) ){
                                     $arm_plans = implode( ',', $plan_names );
                                 }
-                                $meta_val = ( ! empty( $arm_plans ) ) ? $arm_plans : '--';
+                                $meta_val = ( ! empty( $arm_plans ) ) ? '<span class="arm_user_plan_'.$arm_user_id.'">'.$arm_plans.'</span>' : '<span class="arm_user_plan_'.$arm_user_id.'">--</span>';
                             }
+							else if($mkey == 'arm_member_type' )
+							{
+								$plan_type = $arm_members_class->arm_get_member_type_text( $arm_user_id );
+								$meta_val = !empty($plan_type) ? '<div class="arm_member_type_'.$arm_user_id.'">'.$plan_type.'<div>' : '<div class="arm_member_type_'.$arm_user_id.'">--</div>';
+							}
                             $arm_filed_options = $arm_member_forms->arm_get_field_option_by_meta( $mkey );
                             $arm_field_type = ( isset( $arm_filed_options['type'] ) && ! empty( $arm_filed_options['type'] ) ) ? $arm_filed_options['type'] : '';
                             if ( $arm_field_type == 'file' || $mkey == 'profile_cover') {
@@ -6231,7 +6368,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                 }
                             }
                             $return['arm_user_id_'.$arm_user_id] .= '<tr class="form-field arm_detail_expand_container_child_row">
-                                <th class="arm-form-table-label">'.$mlabel.'</th>
+                                <th class="arm-form-table-label">'.stripslashes_deep($mlabel).'</th>
                                 <td class="arm-form-table-content">'.$meta_val.'</td>
                             </tr>';
                         }

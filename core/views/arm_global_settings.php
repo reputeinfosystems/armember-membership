@@ -67,7 +67,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 						<div class="arm_shortcode_text arm_form_shortcode_box">
 							<span class="armCopyText"><?php echo home_url().'?arm_wpdisable='.$arm_get_hide_wp_admin_option;//phpcs:ignore ?></span>
 							<span class="arm_click_to_copy_text" data-code="<?php echo home_url().'?arm_wpdisable='.$arm_get_hide_wp_admin_option; //phpcs:ignore?>"><?php esc_html_e('Click to copy', 'armember-membership');?></span>
-							<span class="arm_copied_text"><img src="<?php echo MEMBERSHIP_IMAGES_URL; //phpcs:ignore?>/copied_ok.png" alt="ok"><?php esc_html_e('Code Copied', 'armember-membership');?></span>
+							<span class="arm_copied_text"><img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/copied_ok.png" alt="ok"><?php esc_html_e('Code Copied', 'armember-membership');?></span>
 						</div>
 					</li>
 					<?php } ?>

@@ -300,7 +300,7 @@ function arm_load_subscription_list_grid(is_filtered){
                 {"bSortable": false, "aTargets": [<?php echo esc_html($sortables);?>]},
                 {"sClass": "dt-right", "aTargets": [<?php echo esc_html($ARM_Activity_List_right)?>]},
                 {"sClass": "arm_min_width_190", "aTargets": [<?php echo esc_html($ARM_Activity_width_120)?>]},
-                {"sClass": "arm_padding_right_0", "aTargets": [0]},
+                {"sClass": "control arm_padding_right_0", "aTargets": [0]},
                 {"sClass": "center", "aTargets": [<?php echo esc_html($center);?>]},
                 { "aTargets": -1, "responsivePriority": 1 }
             ],
@@ -432,7 +432,7 @@ function arm_load_subscription_list_grid(is_filtered){
                 "aiExclude": [0]
             },
             "aoColumnDefs": [                
-                {"sClass": "arm_padding_right_0 center", "aTargets": [0]},
+                {"sClass": "arm_padding_right_0 center control", "aTargets": [0]},
                 {"bSortable": false, "aTargets": [0,2,3,4,5, 6, 7, 8,9,10] },
                 {"aTargets":[0],"sClass":"noVis"},                
                 {"sClass": "dt-right arm_min_width_100 arm_max_width_100", "aTargets": __ARM_subscription_List_right},
@@ -580,7 +580,7 @@ function arm_load_subscription_list_grid(is_filtered){
                 "aiExclude": [0]
             },
             "aoColumnDefs": [                
-                {"sClass": "arm_padding_right_0 center", "aTargets": [0]},
+                {"sClass": "arm_padding_right_0 center control", "aTargets": [0]},
                 {"sClass": "center", "aTargets": [8]},
                 {"bSortable": false, "aTargets": [0,1,2,3,4,5, 6, 7,8] },
                 {"sClass": "dt-right", "aTargets": [7]},

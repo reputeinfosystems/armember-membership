@@ -666,7 +666,71 @@ if(version_compare($arm_lite_newdbversion,'4.0.65','<'))
 	update_option('arm_lite_display_bf_offers', 1);
 }
 
-$arm_lite_newdbversion = '5.1';
+if(version_compare($arm_lite_newdbversion,'5.2','<'))
+{
+	//update usermeta for manage members datatable columns
+	global $ARMemberLite, $arm_capabilities_global,$arm_member_forms;
+	$args = array(
+		'capability' => 'arm_manage_members',
+		'fields'     => 'ID',
+	);
+	$admin_user_ids = get_users($args);
+	foreach($admin_user_ids as $admin_user_id){
+	
+		$arm_member_hide_show_data = get_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',true );
+	
+		$grid_columns = array(
+			'avatar'             => esc_html__( 'Avatar', 'armember-membership' ),
+			'ID'                 => esc_html__( 'User ID', 'armember-membership' ),
+			'user_login'         => esc_html__( 'Username', 'armember-membership' ),
+			'user_email'         => esc_html__( 'Email Address', 'armember-membership' ),
+			'arm_member_type'    => esc_html__( 'Membership Type', 'armember-membership' ),
+			'arm_user_plan'      => esc_html__( 'Member Plan', 'armember-membership' ),
+			'arm_primary_status' => esc_html__( 'Status', 'armember-membership' ),
+			'roles'              => esc_html__( 'User Role', 'armember-membership' ),
+			'first_name'         => esc_html__( 'First Name', 'armember-membership' ),
+			'last_name'          => esc_html__( 'Last Name', 'armember-membership' ),
+			'display_name'       => esc_html__( 'Display Name', 'armember-membership' ),
+			'user_registered'    => esc_html__( 'Joined Date', 'armember-membership' ),
+		);
+		$user_meta_keys  = $arm_member_forms->arm_get_db_form_fields( true );
+		if ( ! empty( $user_meta_keys ) ) {
+			$exclude_keys = array( 'user_pass', 'repeat_pass', 'rememberme', 'remember_me', 'section', 'html','arm_captcha');
+			foreach ( $user_meta_keys as $umkey => $val ) {
+				if ( ! in_array( $umkey, $exclude_keys ) ) {
+					if(!empty($val['label'])){
+					$grid_columns[ $umkey ] = stripslashes_deep($val['label']);
+					}else if(empty($grid_columns[$umkey])){
+						$grid_columns[$umkey] = stripslashes_deep($val['label']);
+					}
+				}
+			}
+		}
+		$grid_columns['paid_with'] = esc_html__( 'Paid With', 'armember-membership' );
+		$arm_updated_hide_show_cols = array();
+		$arm_array_show_fields = array('avatar','ID','user_login','user_email','arm_member_type','arm_user_plan','arm_primary_status','roles');
+		if ( !empty( $arm_member_hide_show_data ) ) {
+			$i = 0;
+			foreach ( $grid_columns as $column_key => $column_label ) {
+				$is_shown = (in_array($column_key,$arm_array_show_fields) ) ? "1" : "0";
+				$arm_updated_hide_show_cols[$column_key] = $is_shown;
+			}
+			update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
+			update_user_meta($admin_user_id, 'arm_members_column_order_0', array_keys($grid_columns) );
+		}
+		else{
+			foreach ( $grid_columns as $column_key => $column_label ) {
+				$is_shown = (in_array($column_key,$arm_array_show_fields)) ? "1" : "0";
+				$arm_updated_hide_show_cols[$column_key] = $is_shown;
+			}
+			update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
+			update_user_meta($admin_user_id, 'arm_members_column_order_0',array_keys($grid_columns) );
+		}
+		
+	}
+}
+
+$arm_lite_newdbversion = '5.2';
 update_option( 'arm_lite_new_version_installed', 1 );
 update_option( 'armlite_version', $arm_lite_newdbversion );
 

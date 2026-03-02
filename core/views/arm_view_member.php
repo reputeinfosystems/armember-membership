@@ -77,6 +77,17 @@ if(!empty($user_id))
 	{
 		$arm_hide_edit_profile_status = 1;
 	}
+
+	$arm_hide_personal_additional_info = 0;
+	if (isset($_REQUEST['arm_hide_personal_info']) &&$_REQUEST['arm_hide_personal_info'] === '1') {
+		$arm_hide_personal_additional_info = 1;
+	}
+
+	$other_info_title = esc_html__('Other Information', 'armember-membership');
+	if ( ! empty( $arm_hide_personal_additional_info ) ) {
+		$other_info_title = esc_html__('Additional Information', 'armember-membership');
+	}
+
 	$popup_content ='<div class="wrap arm_page arm_view_member_main_wrapper'. esc_attr($view_type_popup_class).'">
 	<div class="content_wrapper" id="content_wrapper">
         <div class="arm_view_member_wrapper arm_member_detail_box">
@@ -114,8 +125,9 @@ if(!empty($user_id))
 			<div class="armclear"></div>
             <div class="arm_member_detail_wrapper_frm arm_admin_form arm_margin_0 arm_width_100_pct">
 				<div class="armclear"></div>
-				<div class="page_sub_content arm_member_details_container">
-					<div class="arm_view_member_left_box">
+				<div class="page_sub_content arm_member_details_container">';
+				if ( empty($arm_hide_personal_additional_info) ) {
+					$popup_content .='<div class="arm_view_member_left_box">
 						<div class="arm_view_member_sub_title">'.esc_html__('Personal Information', 'armember-membership').'</div>
 						<table class="form-table">
 							<tr class="form-field">
@@ -285,9 +297,11 @@ if(!empty($user_id))
                             }                             
 							$popup_content .='
                         </table>
-                    </div>
+                    </div>';
+				}
+				$popup_content .='
 					<div class="arm_view_member_left_box">
-						<div class="arm_view_member_sub_title">'.esc_html__('Other Information', 'armember-membership').'</div>
+						<div class="arm_view_member_sub_title">'.$other_info_title.'</div>
 					    <table class="form-table">      
 							<tr class="form-field">
 								<th class="arm-form-table-label">'. esc_html__('Role', 'armember-membership').'</th>
@@ -345,7 +359,10 @@ if(!empty($user_id))
 							$arm_social_profiles_field_data = '';
 							$popup_content .= apply_filters( 'arm_admin_view_member_get_social_profile_data', $arm_social_profiles_field_data, $user_id); //phpcs:ignore
 						$popup_content .='</table>
-					</div>
+					</div>';
+
+				if ( empty($arm_hide_personal_additional_info) ) {
+				$popup_content .='
                     <div class="arm_view_member_left_box">
 						<div class="form-field">
 							<a class="arm_form_additional_btn arm_view_form_additional_btn" href="javascript:void(0);"><i></i><div class="arm_view_member_sub_title arm_padding_0">'.esc_html__('Additional Information', 'armember-membership').'</div></a>
@@ -471,10 +488,11 @@ if(!empty($user_id))
 								}  
 							$popup_content .= '</table>
 						</div>
-                    </div>
-                    
+                    </div>';
+				}
+				$popup_content .='
 					<div class="armclear"></div>';
-					$plan_id_name_array = $arm_subscription_plans->arm_get_plan_name_by_id_from_array();                                        
+					$plan_id_name_array = $arm_subscription_plans->arm_get_plan_name_by_id_from_array();
                     
 					$membership_history = $arm_subscription_plans->arm_get_user_membership_history($user_id, 1, 5, $plan_id_name_array);
 					if(!empty($membership_history)){
