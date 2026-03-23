@@ -8,9 +8,9 @@
 				{ 
 					if(!empty($_REQUEST['action'])){?>
 					
-						<a class="arm_export_paid_post_txn_btn arm_margin_right_10" href="javascript:void(0);" onmouseover="arm_change_export_csv(this,'<?php echo MEMBERSHIPLITE_IMAGES_URL;?>')" onmouseout="arm_change_export_csv_out(this,'<?php echo MEMBERSHIPLITE_IMAGES_URL;?>')"><img align="absmiddle" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_export_icon_pg.svg"><span><?php esc_html_e( 'Export as CSV', 'armember-membership' ); ?></span></a>
+						<a class="arm_export_paid_post_txn_btn arm_margin_right_10 armhelptip tipso_style" href="javascript:void(0);" onmouseover="arm_change_export_csv(this,'<?php echo MEMBERSHIPLITE_IMAGES_URL;?>')" onmouseout="arm_change_export_csv_out(this,'<?php echo MEMBERSHIPLITE_IMAGES_URL;?>')" title="<?php esc_html_e( 'Export to CSV', 'armember-membership' ); ?>"><img align="absmiddle" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_export_icon_pg.svg"></a>
 					<?php }else{?>
-						<a class="arm_export_plan_txn_btn arm_margin_right_10" href="javascript:void(0);" onmouseover="arm_change_export_csv(this,'<?php echo MEMBERSHIPLITE_IMAGES_URL;?>')" onmouseout="arm_change_export_csv_out(this,'<?php echo MEMBERSHIPLITE_IMAGES_URL;?>')"><img align="absmiddle" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_export_icon_pg.svg"><span><?php esc_html_e( 'Export as CSV', 'armember-membership' ); ?></span></a>	
+						<a class="arm_export_plan_txn_btn arm_margin_right_10 armhelptip tipso_style" href="javascript:void(0);" onmouseover="arm_change_export_csv(this,'<?php echo MEMBERSHIPLITE_IMAGES_URL;?>')" onmouseout="arm_change_export_csv_out(this,'<?php echo MEMBERSHIPLITE_IMAGES_URL;?>')" title="<?php esc_html_e( 'Export to CSV', 'armember-membership' ); ?>"><img align="absmiddle" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_export_icon_pg.svg"></a>	
 					<?php }
 				}?>
 				<a class="greensavebtn arm_add_manual_payment_btn" href="javascript:void(0);"><img align="absmiddle" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/add_new_icon.svg"><span><?php esc_html_e( 'Add Manual Payment', 'armember-membership' ); ?></span></a>
@@ -26,7 +26,7 @@
 				echo $arm_tab_action;
 			}
 			?>
-		<div class="arm_solid_divider arm_margin_top_0"></div>
+		<div class="arm_solid_divider"></div>
 		<div class="armclear"></div>
 		<?php 
 		$arm_transactions_grid_container_option = '';

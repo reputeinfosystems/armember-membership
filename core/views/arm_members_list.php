@@ -94,6 +94,13 @@ var ARM_CHANGE_STATUS_LBL = "<?php echo esc_html__('Change Status', 'armember-me
 <?php }?>
 jQuery(window).on("load", function () {
 	document.onkeypress = stopEnterKey;
+	var is_max_limited = jQuery('#armember_datatable_wrapper .ColVis_Button:not(.ColVis_MasterButton).active').length;
+	if(is_max_limited >=8){
+		jQuery('#armember_datatable_wrapper .ColVis_Button:not(.ColVis_MasterButton):not(.active)').attr("disabled","disabled");
+	}
+	else{
+		jQuery('#armember_datatable_wrapper .ColVis_Button:not(.ColVis_MasterButton):not(.active)').removeAttr("disabled");
+	}
 });
 
 jQuery(document).on("click","#cb-select-all-1",function () {
@@ -107,35 +114,6 @@ jQuery(document).on('click','input[name="item-action[]"]',function() {
 	else {
 		jQuery("#cb-select-all-1").prop("checked", false);
 	}
-});
-
-jQuery(document).on('click', "#armember_datatable_wrapper .ColVis_Button:not(.ColVis_MasterButton)", function () {
-	var form_id = jQuery('#arm_form_filter').val();
-	var column_list = "";
-	var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
-
-	var column_list_str = '';
-	jQuery('#armember_datatable_wrapper .ColVis_Button:not(.ColVis_MasterButton)').each(function(){
-		if(jQuery(this).hasClass('active'))
-		{
-			column_list_str += '1,';
-		}
-		else {
-			column_list_str += '0,';
-		}
-		
-	});
-	
-	var column_list = [[ column_list_str ]];
-	if (form_id == '') { return false; }
-	jQuery.ajax({
-		type:"POST",
-		url:__ARMAJAXURL,
-		data:"action=arm_members_hide_column&form_id="+form_id+"&column_list="+column_list+"&_wpnonce="+_wpnonce,
-		success: function (msg) {
-			return false;
-		}
-	});
 });
 function ChangeID(id) {
 	document.getElementById('delete_id').value = id;
@@ -151,7 +129,7 @@ function ChangeID(id) {
 				<input type="hidden" id="arm_edit_plan_user_id" />
 				<span class="add_rule_content"><?php esc_html_e( 'Manage Plans', 'armember-membership' ); ?> <span class="arm_manage_plans_username"></span></span>
 			</div>
-			<div class="popup_content_text arm_member_manage_plan_detail_popup_text arm_padding_top_12"  style="text-align:center;">
+			<div class="popup_content_text arm_member_manage_plan_detail_popup_text arm_padding_top_0"  style="text-align:center;">
 				
 			<div style="width: 100%; margin: 45px auto;"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif'; //phpcs:ignore ?>"></div>
 

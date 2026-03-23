@@ -77,6 +77,17 @@ if(!empty($user_id))
 	{
 		$arm_hide_edit_profile_status = 1;
 	}
+
+	$arm_hide_personal_additional_info = 0;
+	if (isset($_REQUEST['arm_hide_personal_info']) &&$_REQUEST['arm_hide_personal_info'] === '1') {
+		$arm_hide_personal_additional_info = 1;
+	}
+
+	$other_info_title = esc_html__('Other Information', 'armember-membership');
+	if ( ! empty( $arm_hide_personal_additional_info ) ) {
+		$other_info_title = esc_html__('Additional Information', 'armember-membership');
+	}
+
 	$popup_content ='<div class="wrap arm_page arm_view_member_main_wrapper'. esc_attr($view_type_popup_class).'">
 	<div class="content_wrapper" id="content_wrapper">
         <div class="arm_view_member_wrapper arm_member_detail_box">
@@ -85,9 +96,10 @@ if(!empty($user_id))
 					<div class="page_title arm_view_member_title">
 						<div class="arm_member_detail_avtar_wrapper">
 							<div class="arm_member_detail_avtar">';
-							$user_avatar = get_avatar($user_id,72); //phpcs:ignore
+							$user_avatar = get_avatar($user_id,64); //phpcs:ignore
 								$popup_content .= $user_avatar;
-							$popup_content .= '</div>'. esc_html($user->first_name) . ' ' .esc_html($user->last_name).' ('. esc_html($user->user_login).')';
+							$popup_content .= '</div>';
+							$popup_content .= '<span class="arm_member_detail_name_text">'. esc_html($user->first_name) . ' ' .esc_html($user->last_name).' ('. esc_html($user->user_login).')</span>';
 							$popup_content .= '</div>
 							<div class="arm_member_detail_btn_wrapper">';
 							$arm_admin_view_member_additional_btn_data = '';
@@ -108,17 +120,14 @@ if(!empty($user_id))
 					<a href="'. $admin_member_page.'" class="armemailaddbtn">'. esc_html__('Back to listing', 'armember-membership').'</a>
 				</div>';
 					}
-					$arm_first_row_cls = '';
-					if(!$ARMemberLite->is_arm_pro_active){
-						$arm_first_row_cls = 'arm_margin_top_0';
-					}
 				$popup_content .='<div class="armclear"></div>
 			</div>
 			<div class="armclear"></div>
             <div class="arm_member_detail_wrapper_frm arm_admin_form arm_margin_0 arm_width_100_pct">
 				<div class="armclear"></div>
-				<div class="page_sub_content arm_member_details_container">
-					<div class="arm_view_member_left_box '.$arm_first_row_cls.'">
+				<div class="page_sub_content arm_member_details_container">';
+				if ( empty($arm_hide_personal_additional_info) ) {
+					$popup_content .='<div class="arm_view_member_left_box">
 						<div class="arm_view_member_sub_title">'.esc_html__('Personal Information', 'armember-membership').'</div>
 						<table class="form-table">
 							<tr class="form-field">
@@ -195,13 +204,13 @@ if(!empty($user_id))
 																if (in_array($file_ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff'))) {
 																	$thumbUrl = $file_url;
 																} else if (in_array($file_ext, array('pdf', 'exe'))) {
-																	$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/document.png";
+																	$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/file_icon.svg";
 																} else if (in_array($file_ext, array('zip'))) {
 																	$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/archive.png";
 																} else {
-																	$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/text.png";
+																	$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/file_icon.svg";
 																}
-																$popup_content .='<a href="'. esc_url($file_url).'" target="__blank"> <img src="'. esc_url($thumbUrl).'" class="arm_max_width_100"style="height: auto;"></a>';
+																$popup_content .='<a href="'. esc_url($file_url).'" target="__blank"> <img src="'. esc_url($thumbUrl).'" class="arm_max_width_100"style="height: 40px; width:40px;"></a>';
 															}
 														}
                                                     } 
@@ -288,9 +297,11 @@ if(!empty($user_id))
                             }                             
 							$popup_content .='
                         </table>
-                    </div>
+                    </div>';
+				}
+				$popup_content .='
 					<div class="arm_view_member_left_box">
-						<div class="arm_view_member_sub_title">'.esc_html__('Other Information', 'armember-membership').'</div>
+						<div class="arm_view_member_sub_title">'.$other_info_title.'</div>
 					    <table class="form-table">      
 							<tr class="form-field">
 								<th class="arm-form-table-label">'. esc_html__('Role', 'armember-membership').'</th>
@@ -348,7 +359,10 @@ if(!empty($user_id))
 							$arm_social_profiles_field_data = '';
 							$popup_content .= apply_filters( 'arm_admin_view_member_get_social_profile_data', $arm_social_profiles_field_data, $user_id); //phpcs:ignore
 						$popup_content .='</table>
-					</div>
+					</div>';
+
+				if ( empty($arm_hide_personal_additional_info) ) {
+				$popup_content .='
                     <div class="arm_view_member_left_box">
 						<div class="form-field">
 							<a class="arm_form_additional_btn arm_view_form_additional_btn" href="javascript:void(0);"><i></i><div class="arm_view_member_sub_title arm_padding_0">'.esc_html__('Additional Information', 'armember-membership').'</div></a>
@@ -377,7 +391,7 @@ if(!empty($user_id))
 															if (in_array($file_ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff'))) {
 																$thumbUrl = $user->$meta_key;
 															} else if (in_array($file_ext, array('pdf', 'exe'))) {
-																$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/document.png";
+																$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/file_icon.svg";
 															} else if (in_array($file_ext, array('zip'))) {
 																$thumbUrl = MEMBERSHIPLITE_IMAGES_URL."/archive.png";
 															} else {
@@ -474,10 +488,11 @@ if(!empty($user_id))
 								}  
 							$popup_content .= '</table>
 						</div>
-                    </div>
-                    
+                    </div>';
+				}
+				$popup_content .='
 					<div class="armclear"></div>';
-					$plan_id_name_array = $arm_subscription_plans->arm_get_plan_name_by_id_from_array();                                        
+					$plan_id_name_array = $arm_subscription_plans->arm_get_plan_name_by_id_from_array();
                     
 					$membership_history = $arm_subscription_plans->arm_get_user_membership_history($user_id, 1, 5, $plan_id_name_array);
 					if(!empty($membership_history)){

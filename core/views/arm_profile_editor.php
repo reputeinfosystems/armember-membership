@@ -806,6 +806,9 @@ if($enable_crop){ ?>
 	var ARM_REMOVE_PROFILE_ROW_MSG = '<?php esc_html_e( 'Are you sure you want to delete this field?', 'armember-membership' ); ?>';
 	var ARM_DELETE = '<?php esc_html_e( 'Delete', 'armember-membership' ); ?>';
 	var ARM_CANCEL = '<?php esc_html_e( 'Cancel', 'armember-membership' ); ?>';
+	var IMAGEURL = '<?php echo MEMBERSHIPLITE_IMAGES_URL;?>';
+	var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete.svg';
+	var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete_hover.svg';
 </script>
 <?php
     echo $ARMemberLite->arm_get_need_help_html_content('members-profile-template-add'); //phpcs:ignore

@@ -282,7 +282,7 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 		<div class="arm_pdtemp_edit_popup_wrapper popup_wrapper">
 			<div class="popup_header arm_member_popup_header_wrapper">
 				<div class="page_title">
-					<span><?php esc_html_e( 'Edit Template Options', 'armember-membership' ) ?></span>
+					<span class="arm_pdtemp_directory_edit_title_text"><?php esc_html_e( 'Edit Template Options', 'armember-membership' ) ?></span>
 					<span class="popup_close_btn arm_popup_close_btn arm_pdtemp_directory_edit_close_btn"></span>
 				</div>
 			</div>

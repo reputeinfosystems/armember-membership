@@ -17,6 +17,484 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             add_action('wp_ajax_arm_add_new_subscriptions',array($this,'arm_add_new_subscriptions'));
             add_action('wp_ajax_get_user_all_transaction_details_for_grid',array($this,'get_user_all_transaction_details_for_grid'));      
             add_action('wp_ajax_arm_activation_subscription_plan',array($this,'arm_activation_subscription_plan'),10,2);     
+            add_action('wp_ajax_get_user_subscription_details_for_grid',array($this,'arm_get_user_subscription_details_for_grid_func'));
+            add_action('wp_ajax_get_user_activity_details_for_grid',array($this,'arm_get_user_activity_details_for_grid_func'));
+            add_action('wp_ajax_get_upcomming_sub_details_for_grid',array($this,'arm_get_upcomming_sub_details_for_grid_func'));
+            
+        }
+
+        function arm_get_upcomming_sub_details_for_grid_func(){
+            global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways, $is_multiple_membership_feature, $arm_capabilities_global,$arm_transaction;
+
+            $arm_activity_id = intval($_POST['activity_id']);
+
+            $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_subscriptions'], '1'); //phpcs:ignore --Reason:Verifying nonce
+
+            $grid_columns = array();
+			if(!empty($_REQUEST['exclude_headers']))
+			{
+				$arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
+				$arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
+				$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
+			}
+
+            $date_format = $arm_global_settings->arm_get_wp_date_format();
+
+            $sql = $wpdb->prepare('SELECT act.*,am.arm_user_login FROM '.$ARMemberLite->tbl_arm_activity.' act LEFT JOIN '.$ARMemberLite->tbl_arm_members.' am ON act.arm_user_id = am.arm_user_id WHERE act.arm_user_id !=%d AND act.arm_action != "eot" AND act.arm_activity_id = %d',0,$arm_activity_id); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_activity and $ARMemberLite->tbl_arm_members are a table names
+
+            $arm_upc_rc = $wpdb->get_row($sql);
+            if(!empty($arm_upc_rc))
+            {
+
+                $rc = $arm_upc_rc;
+                $activity_id =$activityID = $rc->arm_activity_id;
+                $user_id = $rc->arm_user_id;
+                $plan_id = $rc->arm_item_id;
+                $user_first_name = get_user_meta( $user_id,'first_name',true);
+                $user_last_name = get_user_meta( $user_id,'last_name',true);
+                $plan_name = '';
+                
+                $get_activity_data = maybe_unserialize($rc->arm_content);
+                $arm_currency = !empty($get_activity_data['arm_currency']) ? $get_activity_data['arm_currency'] : $global_currency;
+                $start_plan_date = !empty($rc->arm_activity_plan_start_date) ? $rc->arm_activity_plan_start_date : '';
+                $user_future_plan_ids = get_user_meta($user_id, 'arm_user_future_plan_ids', true);
+                $membership_data = "<span class='arm_item_status_plan paid_post'>".esc_html__('Plan','armember-membership')."</span>";
+                if(!empty($get_activity_data))
+                {
+                    $grace_period_data = $plan_detail = $membership_start = '';
+                    $plan_text = htmlentities($get_activity_data['plan_text']);
+                    $plan_details = explode('&lt;br/&gt;',$plan_text);
+                    
+                    $plan_detail = (!empty($plan_details[1])) ? wp_strip_all_tags(html_entity_decode($plan_details[1])) : '';
+                    $user_plan_detail = get_user_meta($user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
+                    $membership_start = (!empty($user_plan_detail['arm_start_plan'])) ? $user_plan_detail['arm_start_plan'] : 0;
+                    if(!empty($user_plan_detail['arm_is_user_in_grace']) && $user_plan_detail['arm_is_user_in_grace'] == 1)
+                    {
+                        $grace_period_data = "<span class='arm_item_status_plan grace'>".esc_html__('Grace Expiration','armember-membership').": ". esc_html(date_i18n($date_format, $user_plan_detail['arm_grace_period_end']))."</span>";
+                    }
+                    if(!empty($user_future_plan_ids) && in_array($plan_id,$user_future_plan_ids)){
+                        $grace_period_data .= " <span class='arm_item_status_plan plan_future'>".esc_html__('Future Membership','armember-membership')."</span>";
+                    }
+                    if(!empty($user_plan_detail['arm_current_plan_detail']) && !empty($user_plan_detail['arm_current_plan_detail']['arm_subscription_plan_type']) && $user_plan_detail['arm_current_plan_detail']['arm_subscription_plan_type'] == 'recurring')
+                    {
+                        $arm_subscription_plans_expire = date_i18n($date_format, $user_plan_detail['arm_next_due_payment']);
+                    }
+                    else
+                    {
+                        $arm_subscription_plans_expire = !empty($user_plan_detail['arm_expire_plan']) ? date_i18n($date_format, $user_plan_detail['arm_expire_plan']) : '-';
+                    }
+                    $suspended_plan_detail = get_user_meta($user_id, 'arm_user_suspended_plan_ids', true);
+                    $plan_name = $get_activity_data['plan_name'];
+                    
+                    $arm_plan_name = $get_activity_data['plan_name'] . "<br/><span class='arm_plan_style'>".$plan_detail."</span><br/>".$grace_period_data;
+    
+                    $arm_plan_expiratiuon_date = $arm_subscription_plans_expire;
+    
+                    $general_settings = isset($arm_global_settings->global_settings) ? $arm_global_settings->global_settings : array();
+                    $arm_currency_decimal = isset($general_settings['arm_currency_decimal_digit']) ? $general_settings['arm_currency_decimal_digit'] : 2;
+                    
+                    $arm_plan_amount = number_format(floatval($get_activity_data['plan_amount']),$arm_currency_decimal,'.',',') . ' '. $arm_currency;
+    
+                    $payment_type = !empty($user_plan_detail['arm_payment_mode']) ? $user_plan_detail['arm_payment_mode'] : 'manual';
+                    
+                }
+    
+                $user_login = '<a class="arm_openpreview_popup" data-arm_hide_edit="1" href="javascript:void(0)" data-id="'.esc_attr($user_id).'">'.$rc->arm_user_login.'</a>';
+                $user_full_name = $user_first_name . ' ' .$user_last_name;
+                $arm_start_plan_date = !empty($start_plan_date) ? strtotime($start_plan_date) : '';
+                $arm_plan_std_date = !empty($arm_start_plan_date) ? date_i18n($date_format, $arm_start_plan_date) : '-';
+                $transaction_started_date = !empty($arm_start_plan_date) ? date('Y-m-d H:i:s', ($arm_start_plan_date - 120)) : '-'; //phpcs:ignore
+                $payment_gateway = !empty($rc->arm_activity_payment_gateway) ? $rc->arm_activity_payment_gateway : 'manual';
+                if($payment_gateway == 'manual')
+                {
+                    $transaction_started_date = !empty($arm_start_plan_date) ? date('Y-m-d 00:00:00', $arm_start_plan_date): current_time( 'mysql'); //phpcs:ignore
+                }
+                
+                if(!empty($canceled_date))
+                {
+                    $get_last_transaction_sql = $wpdb->prepare("SELECT * FROM ".$ARMemberLite->tbl_arm_payment_log." WHERE arm_user_id=%d AND arm_plan_id=%d AND arm_created_date BETWEEN %s AND %s ORDER BY arm_log_id DESC",$user_id,$rc->arm_item_id,$transaction_started_date,$canceled_date); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
+                }
+                else
+                {
+                    if(!empty($user_plan_detail['arm_trial_start']))
+                    {
+                        $transaction_started_date = date('Y-m-d H:i:s', ($user_plan_detail['arm_trial_start'] - 120)); //phpcs:ignore
+                    }
+                    $get_last_transaction_sql = $wpdb->prepare("SELECT * FROM ".$ARMemberLite->tbl_arm_payment_log." WHERE arm_user_id=%d AND arm_plan_id=%d AND arm_created_date >= %s ORDER BY arm_log_id DESC",$user_id,$rc->arm_item_id,$transaction_started_date); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
+                }
+                
+                $get_transaction_sql = $wpdb->get_results($get_last_transaction_sql,ARRAY_A); //phpcs:ignore --Reason get_last_transaction_sql is a query
+                $transaction_count = 0;
+                $payment_row = $payment_gateway_text = $arm_payment_gateways->arm_gateway_name_by_key($payment_gateway);
+                $payment_types = '';
+                $class = '';                   
+                if($payment_gateway != 'manual')
+                {
+                    $payment_types = ($payment_type != 'auto_debit_subscription') ? esc_html__('Semi Automatic','armember-membership') : esc_html__('Auto Debit','armember-membership')  ;
+                    $class = ($payment_type != 'auto_debit_subscription') ? 'arm_semi_auto' : 'arm_auto';
+                    $payment_row = $payment_gateway_text." <br/><span class='arm_payment_types ".esc_attr($class)."'>".$payment_types."</span>";
+                }
+                $arm_payment_gateway_txt = esc_html__('Manual','armember-membership');
+                if(!empty($get_transaction_sql))
+                {
+                    $total_trans = count($get_transaction_sql);
+                    
+                    if($payment_gateway != 'manual')
+                    {
+                        $arm_payment_gateway_txt = $payment_row;
+                    }
+                    else
+                    {
+                        $arm_payment_gateway_txt = $payment_gateway_text;  
+                    }
+                
+                }
+                $return = '<div class="arm_child_row_div"><div class="arm_child_user_data_section">';
+                    $return .= '<div class="arm_view_member_left_box arm_no_border arm_margin_top_0">
+                        <div class="arm_view_member_sub_title arm_padding_0 arm_margin_bottom_24">'.esc_html__('Subscription details','armember-membership').'</div>
+                        <table class="form-table">';
+                        foreach($grid_columns as $mkey => $mlabel)
+                        {
+                            $meta_val = '';
+                            if($mkey == 'arm_item_id'){
+                                $meta_val = $plan_name;
+                            }
+                            else if($mkey == 'arm_user_login'){
+                                $meta_val = $user_login;
+                            }
+                            else if($mkey == 'name'){
+                                $meta_val = $user_full_name;
+                            }
+                            else if($mkey == 'arm_date_recorded'){
+                                $meta_val = $arm_plan_std_date;
+                            }
+                            else if($mkey == 'arm_next_cycle_date'){
+                                $meta_val = $arm_plan_expiratiuon_date;
+                            }
+                            else if($mkey =='arm_amount'){
+                                $meta_val = $arm_plan_amount;
+                            }
+                            $return .= '<tr class="form-field arm_detail_expand_container_child_row">
+                                <th class="arm-form-table-label">'.$mlabel.'</th>
+                                <td class="arm-form-table-content">'.$meta_val.'</td>
+                            </tr>';
+                        }
+                    $return .= '</tbody></table>
+                    </div>
+                </div></div>';
+            }
+            else{
+                $return = '<div class="arm_child_row_div"><div class="arm_child_user_data_section">';
+                    $return .= '<div class="arm_view_member_left_box arm_no_border arm_margin_top_0">
+                        <div class="arm_view_member_sub_title arm_padding_0 arm_margin_bottom_24">'.esc_html__('Subscription details','armember-membership').'</div>
+                            <div>'.esc_html__('Subscription details not found','armember-membership').'</div>
+                        </div>
+                </div></div>';
+            }
+            echo $return; //phpcs:ignore
+			die;
+
+        }
+
+        function arm_get_user_activity_details_for_grid_func(){
+            global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways, $is_multiple_membership_feature, $arm_capabilities_global,$arm_transaction;
+            $arm_log_id = intval($_POST['log_id']);
+
+            $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_subscriptions'], '1'); //phpcs:ignore --Reason:Verifying nonce
+
+            $grid_columns = array();
+			if(!empty($_REQUEST['exclude_headers']))
+			{
+				$arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
+				$arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
+				$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
+			}
+
+            $date_format = $arm_global_settings->arm_get_wp_date_format();
+
+            $sql = $wpdb->prepare( "SELECT pl.arm_log_id,pl.arm_invoice_id,am.arm_user_id,am.arm_user_login,pl.arm_plan_id,pl.arm_payment_gateway,pl.arm_payment_type,pl.arm_transaction_status,pl.arm_payment_date,pl.arm_is_post_payment,pl.arm_paid_post_id,pl.arm_is_gift_payment,pl.arm_payment_mode,pl.arm_amount,pl.arm_currency FROM ".$ARMemberLite->tbl_arm_payment_log." pl LEFT JOIN ".$ARMemberLite->tbl_arm_members." am ON pl.arm_user_id = am.arm_user_id WHERE 1=1 AND pl.arm_log_id = %d ",$arm_log_id); //phpcs:ignore --Reason $ARMember->tbl_arm_payment_log and $ARMember->tbl_arm_members are a table names
+
+            $arm_logs_result = $wpdb->get_row($sql);
+
+            if(!empty($arm_logs_result))
+            {
+
+                $plan_detail = '';
+                $rc = $arm_logs_result;
+                $arm_invoice_tax_feature = get_option('arm_is_invoice_tax_feature', 0);
+                $arm_is_post_payment = isset($rc->arm_is_post_payment) ? $rc->arm_is_post_payment : 0;
+                $arm_is_gift_payment = isset($rc->arm_is_gift_payment) ? $rc->arm_is_gift_payment : 0;
+                $user_first_name = get_user_meta( $rc->arm_user_id,'first_name',true);
+                $user_last_name = get_user_meta( $rc->arm_user_id,'last_name',true);
+                $log_type = ($rc->arm_payment_gateway == 'bank_transfer') ? 'bt_log' : 'other';
+                $arm_invoice_id = '#'.$rc->arm_invoice_id;
+    
+                $general_settings = isset($arm_global_settings->global_settings) ? $arm_global_settings->global_settings : array();
+                $arm_currency_decimal = isset($general_settings['arm_currency_decimal_digit']) ? $general_settings['arm_currency_decimal_digit'] : 2;
+                          
+                
+                $user_login = '<a class="arm_openpreview_popup" data-arm_hide_edit="1" href="javascript:void(0)" data-id="'.esc_attr( $rc->arm_user_id ).'">'.esc_html($rc->arm_user_login).'</a>';
+    
+                $user_full_name = trim($user_first_name.' '.$user_last_name);          
+                
+                $log_type = ($rc->arm_payment_gateway == 'bank_transfer') ? 'bt_log' : 'other';
+                $txn_date = date_i18n($date_format, strtotime($rc->arm_payment_date));
+                $global_currency = $arm_payment_gateways->arm_get_global_currency();
+                $currency_sym = (!empty($rc->arm_currency)) ? strtoupper($rc->arm_currency) : strtoupper($global_currency);
+                
+                $txn_amount = number_format(floatval($rc->arm_amount),$arm_currency_decimal,'.',',') .' '. $currency_sym;
+                $payment_mode = (!empty($rc->arm_payment_mode)) ? $rc->arm_payment_mode : esc_html__('Semi Automatic','armember-membership');
+                if($payment_mode == 'auto_debit_subscription')
+                {
+                    $payment_mode = '<span>'.esc_html__('Auto Debit','armember-membership').'</span>';
+                }
+                else
+                {
+                    $payment_mode = '<span>'.esc_html__('Semi Automatic','armember-membership') .'</span>';
+                }
+                $payment_gateway = $arm_payment_gateways->arm_gateway_name_by_key($rc->arm_payment_gateway);
+                $payment_type = !empty($rc->arm_payment_mode) ? $rc->arm_payment_mode : 'manual';
+                $txn_gateway = !empty($payment_gateway) ? $payment_gateway : esc_html__('Manual','armember-membership');
+                if(!empty($payment_gateway) && $payment_gateway != 'manual')
+                {
+                    $payment_types = ($payment_type != 'auto_debit_subscription') ? esc_html__('Semi Automatic','armember-membership') : esc_html__('Auto Debit','armember-membership')  ;
+                    $class = ($payment_type != 'auto_debit_subscription') ? 'arm_semi_auto' : 'arm_auto';
+                    $txn_gateway = $payment_gateway." <span class='arm_payment_types ".esc_attr($class)."'>".esc_html($payment_types)."</span>";
+                }           
+                $arm_transaction_status = $rc->arm_transaction_status;
+                switch ($arm_transaction_status) {
+                    case '0':
+                        $arm_transaction_status = 'pending';
+                        break;
+                    case '1':
+                        $arm_transaction_status = 'success';
+                        break;
+                    case '2':
+                        $arm_transaction_status = 'canceled';
+                        break;
+                    default:
+                        $arm_transaction_status = $rc->arm_transaction_status;
+                        break;
+                }
+                $txn_status =  $arm_transaction->arm_get_transaction_status_text($arm_transaction_status);
+    
+                $return = '<div class="arm_child_row_div"><div class="arm_child_user_data_section">';
+                    $return .= '<div class="arm_view_member_left_box arm_no_border arm_margin_top_0">
+                        <div class="arm_view_member_sub_title arm_padding_0 arm_margin_bottom_24">'.esc_html__('Transaction details','armember-membership').'</div>
+                        <table class="form-table">';
+                        foreach($grid_columns as $mkey => $mlabel)
+                        {
+                            $meta_val = '';
+                            if($mkey == 'arm_username'){
+                                $meta_val = $user_login;
+                            }                           
+                            else if($mkey == 'arm_display_name'){
+                                $meta_val = $user_full_name;
+                            }
+                            else if($mkey == 'arm_payment_date'){
+                                $meta_val = $txn_date;
+                            }
+                            else if($mkey == 'arm_amount'){
+                                $meta_val = $txn_amount;
+                            }
+                            else if($mkey =='arm_payment_type'){
+                                $meta_val = $txn_gateway;
+                            }
+                            else if($mkey =='arm_payment_status'){
+                                $meta_val = $txn_status;
+                            }
+                            $return .= '<tr class="form-field arm_detail_expand_container_child_row">
+                                <th class="arm-form-table-label">'.$mlabel.'</th>
+                                <td class="arm-form-table-content">'.$meta_val.'</td>
+                            </tr>';
+                        }
+                    $return .= '</tbody></table>
+                    </div>
+                </div></div>';
+            }
+            else{
+                $return = '<div class="arm_child_row_div"><div class="arm_child_user_data_section">';
+                    $return .= '<div class="arm_view_member_left_box arm_no_border arm_margin_top_0">
+                        <div class="arm_view_member_sub_title arm_padding_0 arm_margin_bottom_24">'.esc_html__('Transaction details','armember-membership').'</div>
+                            <div>'.esc_html__('Transaction details not found','armember-membership').'</div>
+                        </div>
+                </div></div>';
+            }
+            echo $return; //phpcs:ignore
+			die;
+
+        }
+
+        function arm_get_user_subscription_details_for_grid_func(){
+            global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways, $is_multiple_membership_feature, $arm_capabilities_global,$arm_transaction;
+
+            $arm_activity_id = intval($_POST['activity_id']);
+            $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_subscriptions'], '1'); //phpcs:ignore --Reason:Verifying nonce
+
+            $grid_columns = array();
+			if(!empty($_REQUEST['exclude_headers']))
+			{
+				$arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
+				$arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
+				$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
+			}
+            $date_format = $arm_global_settings->arm_get_wp_date_format();
+            $sql = $wpdb->prepare('SELECT act.*,am.arm_user_login FROM '.$ARMemberLite->tbl_arm_activity.' act LEFT JOIN '.$ARMemberLite->tbl_arm_members.' am ON act.arm_user_id = am.arm_user_id WHERE act.arm_activity_id=%d',$arm_activity_id); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_members is a table name
+
+            $response_result = $wpdb->get_row($sql); //phpcs:ignore --Reason $sql is a Predefined query
+
+            if(!empty($response_result))
+            {
+
+                $get_activity_data = maybe_unserialize($response_result->arm_content);
+                
+                $global_currency = $arm_payment_gateways->arm_get_global_currency();
+                $arm_currency = !empty($get_activity_data['arm_currency']) ? $get_activity_data['arm_currency'] : $global_currency;
+                $start_plan_date = !empty($response_result->arm_activity_plan_start_date) ? strtotime($response_result->arm_activity_plan_start_date) : '';
+                $user_id = $response_result->arm_user_id;
+                $user_future_plan_ids = get_user_meta($user_id, 'arm_user_future_plan_ids', true);
+                $arm_plan_id = $response_result->arm_item_id;
+                $user_plan_detail = get_user_meta($user_id, 'arm_user_plan_'.$arm_plan_id, true);
+                $membership_start = (!empty($user_plan_detail['arm_start_plan'])) ? $user_plan_detail['arm_start_plan'] : 0;
+                if(!empty($user_plan_detail['arm_current_plan_detail']) && !empty($user_plan_detail['arm_current_plan_detail']['arm_subscription_plan_type']) && $user_plan_detail['arm_current_plan_detail']['arm_subscription_plan_type'] == 'recurring')
+                {
+                    $arm_subscription_plans_expire = date_i18n($date_format, $user_plan_detail['arm_next_due_payment']);
+                }
+                else
+                {
+                    $arm_subscription_plans_expire = !empty($user_plan_detail['arm_expire_plan']) ? date_i18n($date_format, $user_plan_detail['arm_expire_plan']) : '-';
+                }
+    
+                $plan_status = $this->get_return_status_data($user_id,$arm_plan_id,$user_plan_detail,$start_plan_date);
+                $status = !empty($plan_status['status']) ? $plan_status['status'] : '';
+                $canceled_date = !empty($plan_status['canceled_date']) ? $plan_status['canceled_date'] : '';
+    
+                $transaction_started_date = date('Y-m-d H:i:s', ($start_plan_date - 120)); //phpcs:ignore
+                $payment_gateway = $get_activity_data['gateway'];
+                if($payment_gateway == 'manual')
+                {
+                    $transaction_started_date = date('Y-m-d 00:00:00', $start_plan_date); //phpcs:ignore
+                }
+                
+                if(!empty($canceled_date))
+                {
+                    $get_last_transaction_sql = $wpdb->prepare("SELECT * FROM ".$ARMemberLite->tbl_arm_payment_log." WHERE arm_user_id=%d AND arm_plan_id=%d AND arm_created_date BETWEEN %s AND %s ORDER BY arm_log_id DESC",$user_id,$arm_plan_id,$transaction_started_date,$canceled_date); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
+                }
+                else
+                {
+                    if(!empty($user_plan_detail['arm_trial_start']))
+                    {
+                        $transaction_started_date = date('Y-m-d H:i:s', ($user_plan_detail['arm_trial_start'] - 120)); //phpcs:ignore
+                    }
+                    $get_last_transaction_sql = $wpdb->prepare("SELECT * FROM ".$ARMemberLite->tbl_arm_payment_log." WHERE arm_user_id=%d AND arm_plan_id=%d AND arm_created_date >= %s ORDER BY arm_log_id DESC",$user_id,$arm_plan_id,$transaction_started_date); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
+                }
+                
+                $get_transaction_sql = $wpdb->get_results($get_last_transaction_sql,ARRAY_A); //phpcs:ignore --Reason get_last_transaction_sql is a query
+                $transaction_count = 0;
+                $payment_row = $payment_gateway_text = $arm_payment_gateways->arm_gateway_name_by_key($payment_gateway);
+                $payment_types = '';
+                $class = '';
+                $payment_type = !empty($user_plan_detail['arm_payment_mode']) ? $user_plan_detail['arm_payment_mode'] : 'manual';
+                $arm_sub_payment_type = esc_html__('Manual','armember-membership');
+                $transaction_count = 0;
+                if($payment_gateway != 'manual')
+                {
+                    $payment_types = ($payment_type != 'auto_debit_subscription') ? esc_html__('Semi Automatic','armember-membership') : esc_html__('Auto Debit','armember-membership')  ;
+                    $class = ($payment_type != 'auto_debit_subscription') ? 'arm_semi_auto' : 'arm_auto';
+                    $payment_row = $payment_gateway_text." <br/><span class='arm_payment_types ".$class."'>".$payment_types."</span>";
+                }
+                if(!empty($get_transaction_sql))
+                {
+                    $total_trans = count($get_transaction_sql);
+                    
+                    if($payment_gateway != 'manual')
+                    {
+                        $arm_sub_payment_type = $payment_row;                    
+                    }
+                    else
+                    {
+                        $arm_payment_gateway = $payment_gateway_text;  
+                    }
+                    $transaction_count = $total_trans;
+                }
+    
+                $return = '<div class="arm_child_row_div"><div class="arm_child_user_data_section">';
+                    $return .= '<div class="arm_view_member_left_box arm_no_border arm_margin_top_0">
+                        <div class="arm_view_member_sub_title arm_padding_0 arm_margin_bottom_24">'.esc_html__('Subscription details','armember-membership').'</div>
+                        <table class="form-table">';
+                        foreach($grid_columns as $mkey => $mlabel)
+                        {
+                            $meta_val = '';
+    
+                            if($mkey == 'arm_user_id'){
+                                $user_data = get_userdata( $user_id );
+                                $meta_val = $user_data->user_login;
+                            }
+                            else if($mkey == 'arm_user_full_name'){
+                                $user_data = get_userdata( $user_id );
+                                $user_first_name = get_user_meta( $user_id,'first_name',true);
+                                $user_last_name = get_user_meta( $user_id,'last_name',true);
+                                $meta_val = $user_first_name. ' '. $user_last_name ;
+                            }
+                            else if($mkey == 'arm_plan_start_date'){
+                                $meta_val = date_i18n($date_format, $start_plan_date);
+                            }
+                            else if($mkey == 'arm_plan_end_due_date'){
+                                $meta_val = $arm_subscription_plans_expire;
+                            }
+                            else if($mkey == 'arm_plan_amount'){
+                                $meta_val = number_format(floatval($get_activity_data['plan_amount']),2,'.',',') . ' '. $arm_currency;
+                            }
+                            else if($mkey =='arm_plan_payment_type'){
+                                $meta_val = $arm_sub_payment_type;
+                            }
+                            else if($mkey =='arm_plan_transaction_count'){
+                                $meta_val = $transaction_count;
+                            }
+                            else if($mkey =='arm_plan_status'){                           
+                                if(!empty($plan_status['status']) && $plan_status['status'] == 'suspended')
+                                {
+                                    $status = 'suspended';
+                                    $meta_val = '<span class="arm_item_status_plan cancelled"><i></i>'.esc_html__('Suspended','armember-membership').'</span>';
+                                }
+                                else if(!empty($plan_status['status']) &&  $plan_status['status'] == 'canceled')
+                                {
+                                    $status = 'canceled';
+                                    $arm_subscription_plans_expire = '-';
+                                    $meta_val = '<span class="arm_item_status_plan cancelled"><i></i>'.esc_html__('Canceled','armember-membership').'</span>';
+                                }
+                                else if( !empty($plan_status['status']) && $plan_status['status'] == 'expired')
+                                {
+                                    $status = 'expired';
+                                    $arm_subscription_plans_expire = '-';
+                                    $meta_val = '<span class="arm_item_status_plan expired"><i></i>'.esc_html__('Expired','armember-membership').'</span>';
+                                }
+                                else if( !empty($plan_status['status']) && $plan_status['status'] == 'active')
+                                {
+                                    $status = 'active';
+                                    $meta_val ='<span class="arm_item_status_plan active"><i></i>'.esc_html__('Active','armember-membership').'</span>';
+                                }
+                            }
+                            $return .= '<tr class="form-field arm_detail_expand_container_child_row">
+                                <th class="arm-form-table-label">'.$mlabel.'</th>
+                                <td class="arm-form-table-content">'.$meta_val.'</td>
+                            </tr>';
+                        }
+                    $return .= '</tbody></table>
+                    </div>
+                </div></div>';
+            }
+            else{
+                $return = '<div class="arm_child_row_div"><div class="arm_child_user_data_section">';
+                    $return .= '<div class="arm_view_member_left_box arm_no_border arm_margin_top_0">
+                        <div class="arm_view_member_sub_title arm_padding_0 arm_margin_bottom_24">'.esc_html__('Subscription details','armember-membership').'</div>
+                            <div>'.esc_html__('Subscription details not found','armember-membership').'</div>
+                        </div>
+                </div></div>';
+            }
+
+            echo $return; //phpcs:ignore
+			die;
         }
         function arm_activation_subscription_plan()
         {
@@ -67,6 +545,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_subscriptions'], '1'); //phpcs:ignore --Reason:Verifying nonce
 
+            $arm_currency_decimal = 2;
             $arm_invoice_tax_feature = get_option('arm_is_invoice_tax_feature', 0);
 
             $arm_activity_id = intval( $_POST['activity_id'] );//phpcs:ignore
@@ -76,8 +555,13 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             
             $return='';
             
+            $membersDatasDefault = array();
             if(!empty($response_result))
             {
+                
+                $membersData = array();
+                $response['status'] = "success";
+                $response['data'] = $membersDatasDefault;
                 $rc = (object) $response_result;
                
                 $get_activity_data = maybe_unserialize($rc->arm_content);
@@ -105,18 +589,11 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     }
                     $get_last_transaction_sql = $wpdb->prepare("SELECT * FROM ".$ARMemberLite->tbl_arm_payment_log." WHERE arm_user_id=%d AND arm_plan_id=%d AND arm_created_date >= %s ORDER BY arm_log_id DESC",$user_id,$rc->arm_item_id,$transaction_started_date); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
                 }
-                $return .= '<div class="arm_child_row_div"><table class="arm_user_child__transaction_table " cellspacing="1" >';
-                $return .= '<tr class="arm_child_transaction_row">';
-                $return .= '<th>' . esc_html__('Transaction ID', 'armember-membership') . '</th>';
-                $return .= '<th>' . esc_html__('Subscription ID', 'armember-membership') . '</th>';
-                $return .= '<th>' . esc_html__('Payment Gateway', 'armember-membership') . '</th>';
-                $return .= '<th class="dt-right">' . esc_html__('Amount', 'armember-membership') . '</th>';
-                $return .= '<th class="center arm_padding_right_20">' . esc_html__('Status', 'armember-membership') . '</th>';
-                $return .= '<th class="arm_padding_right_20">' . esc_html__('Transaction Date', 'armember-membership') . '</th>';
-                $return .= '</tr>';
+                
                 $response_transaction_result = $wpdb->get_results($get_last_transaction_sql); //phpcs:ignore --Reason $get_last_transaction_sql is a predefined query
                 foreach($response_transaction_result as $transactions)
                 {
+                    $membersDatas = array();
                     $transactionID = !empty($transactions->arm_transaction_id) ? stripslashes($transactions->arm_transaction_id) : 'manual';
                     $subscription_id = !empty($transactions->arm_token) ? $transactions->arm_token : '-';
                     $arm_transaction_status = $transactions->arm_transaction_status;
@@ -135,17 +612,19 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             break;
                     }
                     $return .= '<tr class="arm_child_transaction_row">';
-                    $return .= '<td class="arm_min_width_200">' . $transactionID . '</td>';
-                    $return .= '<td class="arm_min_width_250">' . $subscription_id . '</td>';
-                    $return .= '<td>' . $arm_payment_gateways->arm_gateway_name_by_key($transactions->arm_payment_gateway) . '</td>';
-                    $return .= '<td class="dt-right arm_min_width_150">' . number_format(floatval($transactions->arm_amount),2,'.',',') .' '. $transactions->arm_currency . '</td>';
-                    $return .= '<td class="center">' . $arm_transaction->arm_get_transaction_status_text($arm_transaction_status) . '</td>';
-                    $return .= '<td class="arm_padding_right_20">' . date_i18n($date_format, strtotime($transactions->arm_payment_date)) . '</td>';
-                    $return .= '</tr>';
+                    $membersDatas['arm_invoice_id'] = $transactions->arm_invoice_id;
+                    $membersDatas['arm_transaction_id'] = $transactionID;
+                    $membersDatas['arm_subscription_id'] = $subscription_id;
+                    $membersDatas['arm_payment_gateway'] = $arm_payment_gateways->arm_gateway_name_by_key($transactions->arm_payment_gateway);
+                    $membersDatas['arm_currency'] = number_format(floatval($transactions->arm_amount),$arm_currency_decimal,'.',',') .' '. $transactions->arm_currency;
+                    $membersDatas['arm_transaction_status'] = $arm_transaction->arm_get_transaction_status_text($arm_transaction_status);
+                    $membersDatas['arm_created_date'] = date_i18n($date_format, strtotime($transactions->arm_payment_date));
+                    $membersData[] = array_values($membersDatas); 
                 }
-                $return .= '</table></div>';
+                $response['status'] = "success";
+                $response['data'] = $membersData;
             }
-            echo $return; //phpcs:ignore
+            echo arm_pattern_json_encode($response);
             die;
         }
         function arm_add_new_subscriptions()
@@ -498,7 +977,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             $grid_columns['action_btn'] = '';            
             $sorting_ord = isset($_REQUEST['sSortDir_0']) ? sanitize_text_field($_REQUEST['sSortDir_0']) : 'desc'; //phpcs:ignore
             $sorting_ord = strtolower($sorting_ord);
-            $sorting_col = (isset($_REQUEST['iSortCol_0']) && $_REQUEST['iSortCol_0'] > 0) ? intval($_REQUEST['iSortCol_0']) : 0; //phpcs:ignore
+            $sorting_col = (isset($_REQUEST['iSortCol_0']) && $_REQUEST['iSortCol_0'] > 0) ? intval($_REQUEST['iSortCol_0']) : 1; //phpcs:ignore
             if ( empty($sorting_col) && ( 'asc'!=$sorting_ord && 'desc'!=$sorting_ord ) ) {
                 $sorting_ord = 'desc';
             }
@@ -508,6 +987,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             
             $response_data = array();
             $grid_columns = array(
+                'arm_log_id' => esc_html__('invoice ID', 'armember-membership'),
                 'arm_plan_id' => esc_html__('Membership', 'armember-membership'),
                 'arm_username' => esc_html__('Username', 'armember-membership'),
                 'arm_display_name' => esc_html__('Name', 'armember-membership'),
@@ -517,7 +997,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 'arm_transaction_status' => esc_html__('Payment type', 'armember-membership'),
             );
             $data_columns = array();
-            $n = 0;
+            $n = 1;
             foreach ($grid_columns as $key => $value) {
                 $data_columns[$n]['data'] = $key;
                 $n++;
@@ -526,13 +1006,14 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 
             $sOrder = "";
             $orderby = $data_columns[(intval($sorting_col))]['data'];
-            if(empty($orderby) || $sorting_col == 0){
+            $order_by_qry = "ORDER BY pl.arm_log_id DESC";
+            if(empty($orderby)){
                 $order_by_qry = "ORDER BY pl.arm_log_id DESC";
             }
             else{
-                $order_by_qry = "ORDER BY " . $orderby . " " . $sorting_ord ;
+                $order_by_qry = "ORDER BY pl." . $orderby . " " . $sorting_ord ;
             }
-            
+           
             $sql = $wpdb->prepare("SELECT pl.arm_log_id,pl.arm_invoice_id,am.arm_user_id,am.arm_user_login,pl.arm_plan_id,pl.arm_payment_gateway,pl.arm_payment_type,pl.arm_transaction_status,pl.arm_payment_date,pl.arm_is_post_payment,pl.arm_paid_post_id,pl.arm_is_gift_payment,pl.arm_payment_mode,pl.arm_amount,pl.arm_currency FROM ".$ARMemberLite->tbl_arm_payment_log." pl LEFT JOIN ".$ARMemberLite->tbl_arm_members." am ON pl.arm_user_id = am.arm_user_id WHERE 1=1 AND pl.arm_user_id !=%d ",0); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log and $ARMemberLite->tbl_arm_members are a table names
             $filter ='';
             if (!empty($filter_gateway) && $filter_gateway != '0') {
@@ -604,16 +1085,18 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             break;
                         }
                     }
-                    $response_data[$ai][0] = (!empty($plan_detail)) ? $plan_detail : '-';                    
+                    $response_data[$ai][0] = "<div class='arm_show_user_more_transactions arm_max_width_50' id='arm_show_user_more_transaction_" . esc_attr($rc->arm_log_id) . "' data-id='" . esc_attr($rc->arm_log_id) . "'><svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 20 20' fill='none'><path d='M6 8L10 12L14 8' stroke='#BAC2D1' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg></div>";
+                    $response_data[$ai][1] = '#'.$rc->arm_log_id;
+                    $response_data[$ai][2] = (!empty($plan_detail)) ? $plan_detail : '-';
                     
-                    $response_data[$ai][1] = '<a class="arm_openpreview_popup" data-arm_hide_edit="1" href="javascript:void(0)" data-id="'.esc_attr($rc->arm_user_id).'">'.esc_html($rc->arm_user_login).'</a>';
+                    $response_data[$ai][3] = '<a class="arm_openpreview_popup" data-arm_hide_edit="1" href="javascript:void(0)" data-id="'.esc_attr($rc->arm_user_id).'">'.esc_html($rc->arm_user_login).'</a>';
 
-                    $response_data[$ai][2] = trim($user_first_name.' '.$user_last_name);
+                    $response_data[$ai][4] = trim($user_first_name.' '.$user_last_name);
                     
                     $log_type = ($rc->arm_payment_gateway == 'bank_transfer') ? 'bt_log' : 'other';
-                    $response_data[$ai][3] = date_i18n($date_format, strtotime($rc->arm_payment_date));
+                    $response_data[$ai][5] = date_i18n($date_format, strtotime($rc->arm_payment_date));
                     $currency_sym = (!empty($rc->arm_currency)) ? strtoupper($rc->arm_currency) : strtoupper($global_currency);
-                    $response_data[$ai][4] = number_format(floatval($rc->arm_amount),2,'.',',') .' '. $currency_sym;
+                    $response_data[$ai][6] = number_format(floatval($rc->arm_amount),2,'.',',') .' '. $currency_sym;
                     $payment_mode = (!empty($rc->arm_payment_mode)) ? $rc->arm_payment_mode : esc_html__('Semi Automatic','armember-membership');
                     if($payment_mode == 'auto_debit_subscription')
                     {
@@ -629,11 +1112,11 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     {
                         $payment_types = ($payment_type != 'auto_debit_subscription') ? esc_html__('Semi Automatic','armember-membership') : esc_html__('Auto Debit','armember-membership')  ;
                         $class = ($payment_type != 'auto_debit_subscription') ? 'arm_semi_auto' : 'arm_auto';
-                        $response_data[$ai][5] = $payment_gateway." <br/><span class='arm_payment_types ".esc_attr($class)."'>".esc_html($payment_types)."</span>";                    
+                        $response_data[$ai][7] = $payment_gateway." <br/><span class='arm_payment_types ".esc_attr($class)."'>".esc_html($payment_types)."</span>";                    
                     }
                     else
                     {
-                        $response_data[$ai][5] = $payment_gateway;    
+                        $response_data[$ai][7] = $payment_gateway;    
                     }
                     $arm_transaction_status = $rc->arm_transaction_status;
                     switch ($arm_transaction_status) {
@@ -650,7 +1133,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             $arm_transaction_status = $rc->arm_transaction_status;
                             break;
                     }
-                    $response_data[$ai][6] =  $arm_transaction->arm_get_transaction_status_text($arm_transaction_status);
+                    $response_data[$ai][8] =  $arm_transaction->arm_get_transaction_status_text($arm_transaction_status);
                     $transactionID = $rc->arm_log_id;   
                     $gridAction = "<div class='arm_grid_action_btn_container'>";
                     if ($rc->arm_payment_gateway == 'bank_transfer' && $arm_transaction_status == 'pending') {
@@ -658,16 +1141,17 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     	$chagneStatusFun2 = 'ChangeStatus(' . $transactionID . ',2);';
                     	$armbPopupArg = 'change_transaction_status_message';
 
-                        $gridAction .= "<a class='armhelptip arm_change_btlog_status' href='javascript:void(0)' onclick=\"{$changeStatusFun}armBpopup('".$armbPopupArg."');\" data-status='1' data-log_id='" . esc_attr($transactionID) . "' title='" . esc_attr__('Approve', 'armember-membership') . "'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_approved.png' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_approved.png';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_approved.png';\" /></a>"; //phpcs:ignore
-                        $gridAction .= "<a class='armhelptip arm_change_btlog_status' href='javascript:void(0)' onclick=\"{$chagneStatusFun2}armBpopup('".esc_attr($armbPopupArg)."');\" data-status='2' data-log_id='" . esc_attr($transactionID) . "' title='" . esc_attr__('Reject', 'armember-membership') . "'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg';\" /></a>"; //phpcs:ignore
+                        $gridAction .= "<a class='armhelptip arm_change_btlog_status' href='javascript:void(0)' onclick=\"{$changeStatusFun}armBpopup('".$armbPopupArg."');\" data-status='1' data-log_id='" . esc_attr($transactionID) . "' title='" . esc_attr__('Approve', 'armember-membership') . "'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'><circle cx='12' cy='12' r='10' stroke='#617191' stroke-width='1.5'/><path d='M17 8.5L10.2251 15.5L7 12.1677' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/></svg></a>"; //phpcs:ignore
+                        $gridAction .= "<a class='armhelptip arm_change_btlog_status' href='javascript:void(0)' onclick=\"{$chagneStatusFun2}armBpopup('".esc_attr($armbPopupArg)."');\" data-status='2' data-log_id='" . esc_attr($transactionID) . "' title='" . esc_attr__('Reject', 'armember-membership') . "'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'><path d='M16 8L8 16' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M16 16L8 8' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><circle cx='12' cy='12' r='10' stroke='#617191' stroke-width='1.5'/></svg></a>"; //phpcs:ignore
                     } 
                     
-                    $gridAction .= "<a class='armhelptip arm_preview_log_detail' href='javascript:void(0)' data-log_type='" . esc_attr($log_type) . "' data-log_id='" . esc_attr($transactionID) . "' data-trxn_status='".esc_attr($arm_transaction_status)."' title='" . esc_attr__('View Detail', 'armember-membership') . "'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_preview.svg' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_preview_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_preview.svg';\" /></a>"; //phpcs:ignore
-                    $gridAction .= "<a href='javascript:void(0)' data-log_type='" . esc_attr($log_type) . "' data-delete_log_id='" . esc_attr($transactionID) . "' data-trxn_status='".esc_attr($arm_transaction_status)."' onclick='showConfirmBoxCallback(".esc_attr($transactionID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_delete.svg' class='armhelptip' title='" . esc_attr__('Delete', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_delete_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_delete.svg';\" /></a>"; //phpcs:ignore
+                    $gridAction .= "<a class='armhelptip arm_preview_log_detail' href='javascript:void(0)' data-log_type='" . esc_attr($log_type) . "' data-log_id='" . esc_attr($transactionID) . "' data-trxn_status='".esc_attr($arm_transaction_status)."' title='" . esc_attr__('View Detail', 'armember-membership') . "'>
+                    <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'><path d='M3.27489 15.2957C2.42496 14.1915 2 13.6394 2 12C2 10.3606 2.42496 9.80853 3.27489 8.70433C4.97196 6.49956 7.81811 4 12 4C16.1819 4 19.028 6.49956 20.7251 8.70433C21.575 9.80853 22 10.3606 22 12C22 13.6394 21.575 14.1915 20.7251 15.2957C19.028 17.5004 16.1819 20 12 20C7.81811 20 4.97196 17.5004 3.27489 15.2957Z' stroke='#617191' stroke-width='1.5'/><path d='M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z' stroke='#617191' stroke-width='1.5'/></svg></a>"; //phpcs:ignore
+                    $gridAction .= "<a href='javascript:void(0)' class='arm_grid_delete_action' data-log_type='" . esc_attr($log_type) . "' data-delete_log_id='" . esc_attr($transactionID) . "' data-trxn_status='".esc_attr($arm_transaction_status)."' onclick='showConfirmBoxCallback(".esc_attr($transactionID).");'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M3 5.33333H21M16.5 5.33333L16.1956 4.43119C15.9005 3.55694 15.7529 3.11982 15.4793 2.79664C15.2376 2.51126 14.9274 2.29036 14.5768 2.1542C14.1798 2 13.7134 2 12.7803 2H11.2197C10.2866 2 9.8202 2 9.4232 2.1542C9.07266 2.29036 8.76234 2.51126 8.5207 2.79664C8.24706 3.11982 8.09954 3.55694 7.80447 4.43119L7.5 5.33333M18.75 5.33333V16.6667C18.75 18.5336 18.75 19.4669 18.3821 20.18C18.0586 20.8072 17.5423 21.3171 16.9072 21.6367C16.1852 22 15.2402 22 13.35 22H10.65C8.75982 22 7.81473 22 7.09278 21.6367C6.45773 21.3171 5.94143 20.8072 5.61785 20.18C5.25 19.4669 5.25 18.5336 5.25 16.6667V5.33333M14.25 9.77778V17.5556M9.75 9.77778V17.5556' stroke='#617191' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg></a>"; //phpcs:ignore
                     $arm_transaction_del_cls = 'arm_transaction_delete_btn';
                     $gridAction .= $arm_global_settings->arm_get_confirm_box($transactionID, esc_html__("Are you sure you want to delete this transaction?", 'armember-membership'), $arm_transaction_del_cls, $log_type,esc_html__("Delete", 'armember-membership'),esc_html__("Cancel", 'armember-membership'),esc_html__("Delete", 'armember-membership'));
                     $gridAction .= "</div>";
-                    $response_data[$ai][7] = $gridAction;
+                    $response_data[$ai][9] = $gridAction;
                     $ai++;
                 }
             }
@@ -894,24 +1378,24 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         if(!empty($plan_status['status']) && $plan_status['status'] == 'suspended')
                         {
                             $status = 'suspended';
-                            $response_data[$ai][10] = '<span class="arm_item_status_plan cancelled">'.esc_html__('Suspended','armember-membership').'</span>';
+                            $response_data[$ai][10] = '<span class="arm_item_status_plan cancelled"><i></i>'.esc_html__('Suspended','armember-membership').'</span>';
                         }
                         else if(!empty($plan_status['status']) &&  $plan_status['status'] == 'canceled')
                         {
                             $status = 'canceled';
                             $arm_subscription_plans_expire = '-';
-                            $response_data[$ai][10] = '<span class="arm_item_status_plan cancelled">'.esc_html__('Canceled','armember-membership').'</span>';
+                            $response_data[$ai][10] = '<span class="arm_item_status_plan cancelled"><i></i>'.esc_html__('Canceled','armember-membership').'</span>';
                         }
                         else if( !empty($plan_status['status']) && $plan_status['status'] == 'expired')
                         {
                             $status = 'expired';
                             $arm_subscription_plans_expire = '-';
-                            $response_data[$ai][10] = '<span class="arm_item_status_plan expired">'.esc_html__('Expired','armember-membership').'</span>';
+                            $response_data[$ai][10] = '<span class="arm_item_status_plan expired"><i></i>'.esc_html__('Expired','armember-membership').'</span>';
                         }
                         else if( !empty($plan_status['status']) && $plan_status['status'] == 'active')
                         {
                             $status = 'active';
-                            $response_data[$ai][10] ='<span class="arm_item_status_plan active">'.esc_html__('Active','armember-membership').'</span>';
+                            $response_data[$ai][10] ='<span class="arm_item_status_plan active"><i></i>'.esc_html__('Active','armember-membership').'</span>';
                         }
                         else{
                             $arm_subscription_plans_expire = '-';
@@ -985,27 +1469,25 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         $transaction_count = 0;
                     }
                     $activityID = $rc->arm_activity_id;   
-                    if($transaction_count > 0)
-                    {
-                        $response_data[$ai][0] = "<div class='arm_show_user_more_transactions' id='arm_show_user_more_transaction_" . esc_attr($activityID) . "' data-id='" . esc_attr($activityID) . "'></div>";
-                    }
-                    else
-                    {
-                        $response_data[$ai][0] = "";
-                    }
+                    $response_data[$ai][0] = "<div class='arm_show_user_more_transactions arm_max_width_50' id='arm_show_user_more_transaction_" . esc_attr($activityID) . "' data-id='" . esc_attr($activityID) . "'><svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 20 20' fill='none'><path d='M6 8L10 12L14 8' stroke='#BAC2D1' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg></div>";                   
                     $gridAction ='';
                     $gridAction .= "<div class='arm_grid_action_btn_container'>";
+                    if($transaction_count > 0)
+                    {
+                        $gridAction .= "<a href='javascript:void(0)' data-activity_id='" . esc_attr($activityID) . "' data-username='".$rc->arm_user_login."' class='arm_show_transactions_data armhelptip' title='" . esc_attr__('Show Transactions', 'armember-membership') . "'>
+                        <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M2 9.8C2 5.65164 2 3.57747 3.30174 2.28873C4.6035 1 6.69862 1 10.8889 1H13.1111C17.3013 1 19.3966 1 20.6982 2.28873C22 3.57747 22 5.65164 22 9.8V14.2C22 18.3483 22 20.4226 20.6982 21.7112C19.3966 23 17.3013 23 13.1111 23H10.8889C6.69862 23 4.6035 23 3.30174 21.7112C2 20.4226 2 18.3483 2 14.2V9.8Z' stroke='#617191' stroke-width='1.5'></path> <path d='M12 12.3333V12.6667V13' stroke='#617191' stroke-width='1.5' stroke-linecap='round'/><path d='M12 5V5.33333V5.66667' stroke='#617191' stroke-width='1.5' stroke-linecap='round'/> <path d='M14 7.33334C14 6.41287 13.1046 5.66667 12 5.66667C10.8954 5.66667 10 6.41287 10 7.33334C10 8.2538 10.8954 9 12 9C13.1046 9 14 9.7462 14 10.6667C14 11.5871 13.1046 12.3333 12 12.3333C10.8954 12.3333 10 11.5871 10 10.6667' stroke='#617191' stroke-width='1.5' stroke-linecap='round'/><line x1='7.75' y1='16.25' x2='16.25' y2='16.25' stroke='#617191' stroke-width='1.5' stroke-linecap='round'/><line x1='9.75' y1='19.25' x2='14.25' y2='19.25' stroke='#617191' stroke-width='1.5' stroke-linecap='round'/></svg></a>";
+                    }
                     if($status == 'active')
                     {
 
-                        $gridAction .= "<a href='javascript:void(0)' data-cancel_activity_type='" . esc_attr($status) . "'  data-cancel_activity_id='" . esc_attr($activityID) . "' onclick='showConfirmBoxCallback(".esc_attr($activityID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg' class='armhelptip' title='" . esc_attr__('Cancel', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_denied.svg';\" /></a>"; //phpcs:ignore
+                        $gridAction .= "<a href='javascript:void(0)' data-cancel_activity_type='" . esc_attr($status) . "'  data-cancel_activity_id='" . esc_attr($activityID) . "' onclick='showConfirmBoxCallback(".esc_attr($activityID).");' class='armhelptip' title='" . esc_attr__('Cancel', 'armember-membership') . "'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M6.5015 17.4995L12.001 12M17.5006 6.50045L12.001 12M12.001 12L6.5015 6.50045M12.001 12L17.5006 17.4995' stroke='#4D5973' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg></a>"; //phpcs:ignore
                         $arm_transaction_del_cls = 'arm_activity_delete_btn';
                         $gridAction .= $arm_global_settings->arm_get_confirm_box($activityID, esc_html__("Are you sure you want to cancel this subscription  ?", 'armember-membership'), $arm_transaction_del_cls,'',esc_html__("Confirm", 'armember-membership'),esc_html__("Close", 'armember-membership'),esc_html__("Cancel Subscription", 'armember-membership'));
 
                     }
                     if($status == 'suspended')
                     {
-                        $gridAction .= "<a href='javascript:void(0)' data-activation_id='" . esc_attr($activityID) . "' data-plan_id='" . esc_attr($plan_id) . "' onclick='showConfirmBoxCallback_activation(".esc_attr($activityID).");'><img src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_edit.svg' class='armhelptip' title='" . esc_attr__('Activate Plan', 'armember-membership') . "' onmouseover=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_edit_hover.svg';\" onmouseout=\"this.src='" . MEMBERSHIPLITE_IMAGES_URL . "/grid_edit.svg';\" style='vertical-align:middle' /></a>"; //phpcs:ignore
+                        $gridAction .= "<a href='javascript:void(0)' data-activation_id='" . esc_attr($activityID) . "' data-plan_id='" . esc_attr($plan_id) . "' onclick='showConfirmBoxCallback_activation(".esc_attr($activityID).");'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M13.2594 3.60022L5.04936 12.2902C4.73936 12.6202 4.43936 13.2702 4.37936 13.7202L4.00936 16.9602C3.87936 18.1302 4.71936 18.9302 5.87936 18.7302L9.09936 18.1802C9.54936 18.1002 10.1794 17.7702 10.4894 17.4302L18.6994 8.74022C20.1194 7.24022 20.7594 5.53022 18.5494 3.44022C16.3494 1.37022 14.6794 2.10022 13.2594 3.60022Z' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M11.8906 5.0498C12.3206 7.8098 14.5606 9.9198 17.3406 10.1998' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M3 22H21' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/></svg></a>"; //phpcs:ignore
 
                         $arm_plan_is_suspended = "<div class='arm_confirm_box arm_confirm_box_activate_".esc_attr($activityID)."' id='arm_confirm_box_activate_".esc_attr($activityID)."' style='right: -5px;'>";
                         $arm_plan_is_suspended .= "<div class='arm_confirm_box_body'>";
@@ -1097,7 +1579,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 'arm_payment_type' => esc_html__('Payment Type', 'armember-membership'),
                 'arm_plan_status' => esc_html__('Status', 'armember-membership'),
             );
-            $grid_columns['action_btn'] = '';    
+            $grid_columns['action_btn'] = '';
             $data_columns = array();
             $n = 0;
             foreach ($grid_columns as $key => $value) {
@@ -1105,7 +1587,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 $n++;
             }
             unset($n);
-            $sql = $wpdb->prepare('SELECT act.*,am.arm_user_login FROM '.$ARMemberLite->tbl_arm_activity.' act LEFT JOIN '.$ARMemberLite->tbl_arm_members.' am ON act.arm_user_id = am.arm_user_id WHERE act.arm_user_id !=%d AND act.arm_action != "eot"',0); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_members is a table name
+            $sql = $wpdb->prepare('SELECT act.*,am.arm_user_login FROM '.$ARMemberLite->tbl_arm_activity.' act LEFT JOIN '.$ARMemberLite->tbl_arm_members.' am ON act.arm_user_id = am.arm_user_id WHERE act.arm_user_id !=%d AND act.arm_action NOT IN ("eot","cancel_subscription")',0); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_members is a table name
             
             $orderby = 'act.arm_activity_id';
         
@@ -1198,8 +1680,13 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     $plan_id = $rct->arm_item_id;
                     $suspended_plan_detail = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
                     $check_if_plan_is_canceled = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $ARMemberLite->tbl_arm_activity WHERE arm_user_id = %d AND arm_item_id =%d AND arm_activity_id > %d AND (arm_action = %s OR arm_action = %s)",$user_id,$plan_id,$activity_id,'cancel_subscription','eot'),ARRAY_A); //phpcs:ignore
+
+                    $planData = get_user_meta( $user_id, 'arm_user_plan_'.$plan_id, true );
+                        $defaultPlanData = $arm_subscription_plans->arm_default_plan_array();
+                        $planData = shortcode_atts($defaultPlanData, $planData);
+                        $is_plan_cancelled = isset( $planData['arm_cencelled_plan'] ) ? $planData['arm_cencelled_plan'] : 0;
     
-                    if(!empty($check_if_plan_is_canceled) && count($check_if_plan_is_canceled) > 0)
+                    if((!empty($check_if_plan_is_canceled) && count($check_if_plan_is_canceled) > 0) || $is_plan_cancelled)
                     {
                         array_push($arm_eot_activity,$activity_id);
                     }
@@ -1244,7 +1731,8 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         $user_first_name = get_user_meta( $user_id,'first_name',true);
                         $user_last_name = get_user_meta( $user_id,'last_name',true);
                         $plan_name = '';
-                        $response_data[$ai][0] = $rc->arm_activity_id;
+                        $response_data[$ai][0] = "<div class='arm_show_user_more_transactions arm_max_width_50' id='arm_show_user_more_transaction_" . esc_attr($activityID) . "' data-id='" . esc_attr($activityID) . "'><svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 20 20' fill='none'><path d='M6 8L10 12L14 8' stroke='#BAC2D1' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg></div>";
+                        $response_data[$ai][1] = $rc->arm_activity_id;
                         $get_activity_data = maybe_unserialize($rc->arm_content);
                         $arm_currency = !empty($get_activity_data['arm_currency']) ? $get_activity_data['arm_currency'] : $global_currency;
                         $start_plan_date = !empty($rc->arm_activity_plan_start_date) ? $rc->arm_activity_plan_start_date : '';
@@ -1277,20 +1765,20 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             $suspended_plan_detail = get_user_meta($user_id, 'arm_user_suspended_plan_ids', true);
                             $plan_name = $get_activity_data['plan_name'];
                             
-                            $response_data[$ai][1] = $get_activity_data['plan_name'] . "<br/><span class='arm_plan_style'>".$plan_detail."</span><br/>".$grace_period_data;
+                            $response_data[$ai][2] = $get_activity_data['plan_name'] . "<br/><span class='arm_plan_style'>".$plan_detail."</span><br/>".$grace_period_data;
 
-                            $response_data[$ai][5] = $arm_subscription_plans_expire;
+                            $response_data[$ai][6] = $arm_subscription_plans_expire;
                             
-                            $response_data[$ai][6] = number_format(floatval($get_activity_data['plan_amount']),$arm_currency_decimal,'.',',') . ' '. $arm_currency;
+                            $response_data[$ai][7] = number_format(floatval($get_activity_data['plan_amount']),$arm_currency_decimal,'.',',') . ' '. $arm_currency;
             
                             $payment_type = !empty($user_plan_detail['arm_payment_mode']) ? $user_plan_detail['arm_payment_mode'] : 'manual';
                             
                         }
             
-                        $response_data[$ai][2] = '<a class="arm_openpreview_popup" data-arm_hide_edit="1" href="javascript:void(0)" data-id="'.esc_attr($user_id).'">'.$rc->arm_user_login.'</a>';
-                        $response_data[$ai][3] = $user_first_name . ' ' .$user_last_name;
+                        $response_data[$ai][3] = '<a class="arm_openpreview_popup" data-arm_hide_edit="1" href="javascript:void(0)" data-id="'.esc_attr($user_id).'">'.$rc->arm_user_login.'</a>';
+                        $response_data[$ai][4] = $user_first_name . ' ' .$user_last_name;
                         $arm_start_plan_date = !empty($start_plan_date) ? strtotime($start_plan_date) : '';
-                        $response_data[$ai][4] = !empty($arm_start_plan_date) ? date_i18n($date_format, $arm_start_plan_date) : '-';
+                        $response_data[$ai][5] = !empty($arm_start_plan_date) ? date_i18n($date_format, $arm_start_plan_date) : '-';
                         $transaction_started_date = !empty($arm_start_plan_date) ? date('Y-m-d H:i:s', ($arm_start_plan_date - 120)) : '-'; //phpcs:ignore
                         $payment_gateway = !empty($rc->arm_activity_payment_gateway) ? $rc->arm_activity_payment_gateway : 'manual';
                         if($payment_gateway == 'manual')
@@ -1328,17 +1816,17 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             
                             if($payment_gateway != 'manual')
                             {
-                                $response_data[$ai][7] = $payment_row;                    
+                                $response_data[$ai][8] = $payment_row;
                             }
                             else
                             {
-                                $response_data[$ai][7] = $payment_gateway_text;  
+                                $response_data[$ai][8] = $payment_gateway_text;  
                             }
                         
                         }
                         else
                         {
-                            $response_data[$ai][7] = esc_html__('Manual','armember-membership');
+                            $response_data[$ai][8] = esc_html__('Manual','armember-membership');
                         }
                         $gridAction ='';
                         $gridAction .= "<div class='arm_grid_action_btn_container'>";
@@ -1363,7 +1851,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             $gridAction .= $confirmBox;
 
                         $gridAction .= "</div>";
-                        $response_data[$ai][8] = $gridAction;
+                        $response_data[$ai][9] = $gridAction;
                         $ai++;
                     }
                     // exit;

@@ -55,17 +55,15 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			}
 
 			if(!empty($_SESSION['arm_file_upload_arr'])){
-				$arm_file_upload_arr= $_SESSION['arm_file_upload_arr']; //phpcs:ignore
-                foreach ($arm_file_upload_arr as $upload_key => $upload_arr) {
-                    if($upload_key=='profile_cover')$upload_key = "default_cover";
-                    if(isset($options[$upload_key])){
-                        $base_name = $ARMemberLite->arm_get_basename($options[$upload_key]);
-                        if((!empty($options) && !empty($options[$upload_key]) && (is_string($upload_arr) && $upload_arr!=$base_name) || (is_array($upload_arr) && !in_array($base_name,$upload_arr))) && "profile_default_cover.png" != $base_name){
-                            unset($options[$upload_key]);
-                        }
-                    }
-                }
-            }
+				$arm_file_upload_arr=$_SESSION['arm_file_upload_arr']; //phpcs:ignore
+				foreach($arm_file_upload_arr as $upload_key=>$upload_arr){
+					if($upload_key=='profile_cover')$upload_key='default_cover';
+					if(empty($options[$upload_key])) continue;
+					$base_name=$ARMemberLite->arm_get_basename($options[$upload_key]);
+					if(((is_string($upload_arr) && $upload_arr === $base_name) ||(is_array($upload_arr) && in_array($base_name, $upload_arr))) && "profile_default_cover.png" != $base_name) continue;
+					if(empty($_POST['template_options'][$upload_key]))unset($options[$upload_key]);
+				}
+			}
 			
 			if( $arm_slug == 'profiletemplate3' ){
 				$arm_template_html = '<div class="arm_profile_detail_wrapper">
@@ -1299,18 +1297,19 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$tempOptHtml     .= '</div>';
 					$tempOptHtml     .= '</td>';
 						$tempOptHtml .= '</tr>';
-			}
-						$tempOptHtml                                    .= '<tr class="form-field arm_directory_template_name_div arm_form_fields_wrapper arm_directory_template_display_flex arm_width_100_pct">';
-						$tempOptHtml                                    .= '<th class="arm_width_32_pct">';
+			}			$tempOptHtml                                    .= '<tbody class="arm_form_main_content">';
+						$tempOptHtml                                    .= '<tr class=""><td class="arm_form_header_label arm_padding_0">' . esc_html__( 'Basic Details', 'armember-membership' ) . '</td></tr>';
+						$tempOptHtml                                    .= '<tr class="form-field arm_directory_template_name_div arm_form_fields_wrapper arm_directory_template_display_flex arm_width_100_pct ">';
+						$tempOptHtml                                    .= '<th class="arm_basic_details_fields">';
 						$tempOptHtml                                    .= '<label>' . esc_html__( 'Directory Template Name', 'armember-membership' ) . '</label>';
 						$tempOptHtml                                    .= '</th>';
-						$tempOptHtml                                    .= '<td class="arm_width_32_pct">';
+						$tempOptHtml                                    .= '<td class="arm_basic_details_fields">';
 						$tempOptHtml                                    .= '<input type="text" name="arm_directory_template_name" class="arm_form_input_box arm_width_100_pct" value="' . esc_attr( stripslashes_deep($template_name) ) . '">';
 						$tempOptHtml                                    .= '</td>';
 						$tempOptHtml                                    .= '</tr>';
 										$tempOptions['show_admin_users'] = ( isset( $tempOptions['show_admin_users'] ) && $tempOptions['show_admin_users'] == 1 ) ? $tempOptions['show_admin_users'] : 0;
-										$tempOptHtml                    .= '<tr class="arm_width_32_pct">';
-										$tempOptHtml                    .= '<td colspan="2" class="arm_position_relative arm_directory_temp_status_col arm_margin_top_25">';
+										$tempOptHtml                    .= '<tr class="arm_basic_details_fields">';
+										$tempOptHtml                    .= '<td colspan="2" class="arm_position_relative arm_directory_temp_status_col">';
 										$tempOptHtml                    .= '<label for="arm_template_show_admin_users" class="arm_temp_form_label arm_font_size_16 arm_line_height_24">' . esc_html__( 'Display Administrator Users', 'armember-membership' ) . '</label>';
 						$tempOptHtml 									.= '<div class="arm_directory_template_status_field_wrapper">';
 						$tempOptHtml                                    .= '<div class="arm_temp_switch_wrapper arm_temp_switch_style">';
@@ -1320,8 +1319,8 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						$tempOptHtml                                    .= '</td>';
 					$tempOptHtml                                        .= '</tr>';
 
-										$tempOptHtml .= '<tr  class="arm_width_32_pct">';
-						$tempOptHtml                 .= '<td colspan="2" class="arm_position_relative arm_directory_temp_status_col arm_margin_top_25">';
+										$tempOptHtml .= '<tr  class="arm_basic_details_fields">';
+						$tempOptHtml                 .= '<td colspan="2" class="arm_position_relative arm_directory_temp_status_col">';
 						$tempOptHtml                 .= '<label for="arm_template_show_joining" class="arm_temp_form_label arm_font_size_16 arm_line_height_24">' . esc_html__( 'Display Joining Date', 'armember-membership' ) . '</label>';
 					$tempOptHtml 					 .= '<div class="arm_directory_template_status_field_wrapper">';
 						$tempOptHtml                 .= '<div class="arm_temp_switch_wrapper arm_temp_switch_style">';
@@ -1332,8 +1331,8 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$tempOptHtml                     .= '</tr>';
 
 			if ( $tempType == 'directory' ) {
-				$tempOptHtml     .= '<tr class="arm_width_32_pct">';
-				$tempOptHtml     .= '<td colspan="2" class="arm_position_relative arm_directory_temp_status_col arm_margin_top_25">';
+				$tempOptHtml     .= '<tr class="arm_basic_details_fields">';
+				$tempOptHtml     .= '<td colspan="2" class="arm_position_relative arm_directory_temp_status_col">';
 				$tempOptHtml     .= '<label for="arm_template_redirect_to_author" class="arm_temp_form_label arm_font_size_16 arm_line_height_24" id="arm_template_redirect_to_author">' . esc_html__( 'Redirect To Author Archive Page', 'armember-membership' ) . ' <span class="arm_info_text arm_margin_top_10">' . esc_html__( 'If Author have no any post than user will be redirect to ARMember Profile Page', 'armember-membership' ) . '</span></label>';
 				$tempOptHtml 	 .= '<div class="arm_directory_template_status_field_wrapper">';
 				$tempOptHtml     .= '<div class="arm_temp_switch_wrapper arm_temp_switch_style">';
@@ -1397,7 +1396,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$tempOptHtml     .= '</td>';
 						$tempOptHtml .= '</tr>';
 			} else {
-				$tempOptHtml .= '<tr class="arm_width_32_pct">';
+				$tempOptHtml .= '<tr class="arm_basic_details_fields">';
 				$tempOptHtml .= '<th>' . esc_html__( 'Select Membership Plans', 'armember-membership' ) . '</th>';
 				$tempOptHtml .= '<td>';
 				$tempOptHtml .= '<div class="arm_temp_switch_style">';
@@ -1416,7 +1415,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				$tempOptHtml                          .= '</td>';
 				$tempOptHtml                          .= '</tr>';
 
-				$tempOptHtml                          .= '<tr class="arm_width_32_pct">';
+				$tempOptHtml                          .= '<tr class="arm_basic_details_fields">';
 				$tempOptHtml                          .= '<th>' . esc_html__( 'No. Of Members Per Page', 'armember-membership' ) . '</th>';
 					$tempOptHtml                      .= '<td>';
 					$tempOptHtml                      .= '<div class="arm_temp_switch_style">';
@@ -1425,7 +1424,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$tempOptHtml                      .= '</div>';
 					$tempOptHtml                      .= '</td>';
 				$tempOptHtml                          .= '</tr>';
-				$tempOptHtml                          .= '<tr class="arm_width_32_pct">';
+				$tempOptHtml                          .= '<tr class="arm_basic_details_fields">';
 				$tempOptHtml                          .= '<th>' . esc_html__( 'Pagination Style', 'armember-membership' ) . '</th>';
 					$tempOptHtml                      .= '<td>';
 					$tempOptHtml                      .= '<div class="arm_temp_switch_style">';
@@ -1440,11 +1439,11 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$tempOptHtml                      .= '<td>';
 					$tempOptions['searchbox']          = isset( $tempOptions['searchbox'] ) ? $tempOptions['searchbox'] : '0';
 					$tempOptions['sortbox']            = isset( $tempOptions['sortbox'] ) ? $tempOptions['sortbox'] : '0';
-					$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper arm_directory_template_switch_wrapper arm_width_32_pct">';
+					$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper arm_directory_template_switch_wrapper arm_basic_details_fields">';
 						$tempOptHtml                  .= '<label for="arm_template_searchbox" class="arm_temp_form_label arm_font_size_16 arm_line_height_24">' . esc_html__( 'Display Search Box', 'armember-membership' ) . '</label>';
 						$tempOptHtml                  .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_searchbox" value="1" class="armswitch_input" name="template_options[searchbox]" ' . ( checked( $tempOptions['searchbox'], '1', false ) ) . '/><label for="arm_template_searchbox" class="armswitch_label"></label></div>';
 					$tempOptHtml                      .= '</div>';
-					$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper arm_directory_template_switch_wrapper arm_width_32_pct">';
+					$tempOptHtml                      .= '<div class="arm_temp_switch_wrapper arm_directory_template_switch_wrapper arm_basic_details_fields">';
 						$tempOptHtml                  .= '<label for="arm_template_sortbox" class="arm_temp_form_label arm_font_size_16 arm_line_height_24">' . esc_html__( 'Display Sorting Options', 'armember-membership' ) . '</label>';
 						$tempOptHtml                  .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_sortbox" value="1" class="armswitch_input" name="template_options[sortbox]" ' . ( checked( $tempOptions['sortbox'], '1', false ) ) . '/><label for="arm_template_sortbox" class="armswitch_label"></label></div>';
 					$tempOptHtml                      .= '</div>';
@@ -1453,9 +1452,9 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 			}
 					$tempOptHtml            .= '<tr class="arm_directory_template_display_flex arm_width_100_pct">';
-						$tempOptHtml        .= '<th class="arm_width_32_pct">' . esc_html__( 'Social Profile Fields', 'armember-membership' ) . '</th>';
-						$tempOptHtml        .= '<td class="arm_width_32_pct">';
-			$tempOptHtml                    .= '<div class="arm_profile_fields_selection_wrapper arm_social_profile_fields_wrap">';
+						$tempOptHtml        .= '<th class="arm_basic_details_fields">' . esc_html__( 'Social Profile Fields', 'armember-membership' ) . '</th>';
+						$tempOptHtml        .= '<td class="arm_basic_details_fields">';
+						$tempOptHtml                    .= '<div class="arm_profile_fields_selection_wrapper arm_social_profile_fields_wrap">';
 						$socialProfileFields = $arm_member_forms->arm_social_profile_field_types();
 						$activeSPF           = array();
 						$orderedFields       = array();
@@ -1481,117 +1480,121 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						$tempOptHtml     .= '</div>';
 						$tempOptHtml     .= '</td>';
 					$tempOptHtml         .= '</tr>';
+					$tempOptHtml         .= '</tbody>';
+					$tempOptHtml         .= '<tr class="arm_spacing_div"></tr>';
+					$tempOptHtml         .= '<tbody class="arm_form_main_content">';
+					$tempOptHtml         .= '<tr class=""><td class="arm_form_header_label arm_padding_0">' . esc_html__( 'style Schema', 'armember-membership' ) . '</td></tr>';
 					$tempOptHtml         .= '<tr class="arm_directory_template_display_flex arm_width_100_pct">';
 						$tempOptHtml     .= '<th>' . esc_html__( 'Color Scheme', 'armember-membership' ) . '</th>';
 						$tempOptHtml     .= '<td>';
 							$tempCS       = ( ( ! empty( $tempOptions['color_scheme'] ) ) ? $tempOptions['color_scheme'] : 'blue' );
 							$tempOptHtml .= '<div class="c_schemes" style="padding-left: 5px;">';
-			foreach ( $tempColorSchemes as $color => $color_opt ) {
-				$tempOptHtml .= '<label class="arm_temp_color_scheme_block arm_temp_color_scheme_block_' . esc_attr($color) . ' ' . ( ( $tempCS == $color ) ? 'arm_color_box_active' : '' ) . '">';
-				$tempOptHtml .= '<span style="background-color:' . $color_opt['button_color'] . '"></span>';
-				$tempOptHtml .= '<span style="background-color:' . $color_opt['tab_bg_color'] . '"></span>';
-				$tempOptHtml .= '<input type="radio" id="arm_temp_color_radio_' . esc_attr($color) . '" name="template_options[color_scheme]" value="' . esc_attr($color) . '" class="arm_temp_color_radio" ' . checked( $tempCS, $color, false ) . ' data-type="' . esc_attr($tempType) . '"/>';
-				$tempOptHtml .= '</label>';
-			}
+							foreach ( $tempColorSchemes as $color => $color_opt ) {
+								$tempOptHtml .= '<label class="arm_temp_color_scheme_block arm_temp_color_scheme_block_' . esc_attr($color) . ' ' . ( ( $tempCS == $color ) ? 'arm_color_box_active' : '' ) . '">';
+								$tempOptHtml .= '<span style="background-color:' . $color_opt['button_color'] . '"></span>';
+								$tempOptHtml .= '<span style="background-color:' . $color_opt['tab_bg_color'] . '"></span>';
+								$tempOptHtml .= '<input type="radio" id="arm_temp_color_radio_' . esc_attr($color) . '" name="template_options[color_scheme]" value="' . esc_attr($color) . '" class="arm_temp_color_radio" ' . checked( $tempCS, $color, false ) . ' data-type="' . esc_attr($tempType) . '"/>';
+								$tempOptHtml .= '</label>';
+							}
 								$tempOptHtml .= '<label class="arm_temp_color_scheme_block arm_temp_color_scheme_block_custom ' . ( ( $tempCS == 'custom' ) ? 'arm_color_box_active' : '' ) . '">';
 								$tempOptHtml .= '<input type="radio" id="arm_temp_color_radio_custom" name="template_options[color_scheme]" value="custom" class="arm_temp_color_radio" ' . checked( $tempCS, 'custom', false ) . ' data-type="' . esc_attr($tempType) . '"/>';
 								$tempOptHtml .= '</label>';
 							$tempOptHtml     .= '</div>';
 							$tempOptHtml     .= '<div class="armclear" style="height: 1px;"></div>';
 							$tempOptHtml     .= '<div class="arm_temp_color_options" id="arm_temp_color_options" style="' . ( ( $tempCS == 'custom' ) ? '' : 'display:none;' ) . '">';
-			foreach ( $colorOptions as $key => $title ) {
-				$preVal = ( ( ! empty( $tempOptions[ $key ] ) ) ? $tempOptions[ $key ] : '' );
-				$preVal = ( empty( $preVal ) && isset( $tempColorSchemes[ $tempCS ][ $key ] ) ) ? $tempColorSchemes[ $tempCS ][ $key ] : $preVal;
-				if ( $key == 'box_bg_color' && $tempSlug != 'directorytemplate3' ) {
-					continue;
-				}
-				$tempOptHtml     .= '<div class="arm_pdtemp_color_opts">';
-					$tempOptHtml .= '<span class="arm_temp_form_label arm_font_size_16 arm_margin_bottom_12">' . esc_html($title) . '</span>';
-					$tempOptHtml .= '<label class="arm_colorpicker_label" style="background-color:' . esc_attr($preVal) . '">';
-					$tempOptHtml .= '<input type="text" name="template_options[' . esc_html($key) . ']" id="arm_' . $key . '" class="arm_colorpicker" value="' . esc_attr($preVal) . '">';
-					$tempOptHtml .= '</label>';
-				$tempOptHtml     .= '</div>';
-			}
+							foreach ( $colorOptions as $key => $title ) {
+								$preVal = ( ( ! empty( $tempOptions[ $key ] ) ) ? $tempOptions[ $key ] : '' );
+								$preVal = ( empty( $preVal ) && isset( $tempColorSchemes[ $tempCS ][ $key ] ) ) ? $tempColorSchemes[ $tempCS ][ $key ] : $preVal;
+								if ( $key == 'box_bg_color' && $tempSlug != 'directorytemplate3' ) {
+									continue;
+								}
+								$tempOptHtml     .= '<div class="arm_pdtemp_color_opts">';
+									$tempOptHtml .= '<span class="arm_temp_form_label arm_font_size_16 arm_margin_bottom_12">' . esc_html($title) . '</span>';
+									$tempOptHtml .= '<label class="arm_colorpicker_label" style="background-color:' . esc_attr($preVal) . '">';
+									$tempOptHtml .= '<input type="text" name="template_options[' . esc_html($key) . ']" id="arm_' . $key . '" class="arm_colorpicker" value="' . esc_attr($preVal) . '">';
+									$tempOptHtml .= '</label>';
+								$tempOptHtml     .= '</div>';
+							}
 							$tempOptHtml .= '</div>';
 						$tempOptHtml     .= '</td>';
 					$tempOptHtml         .= '</tr>';
 					$tempOptHtml         .= '<tr class="arm_directory_template_display_flex arm_width_100_pct">';
 						$tempOptHtml     .= '<th>' . esc_html__( 'Font Settings', 'armember-membership' ) . '</th>';
 						$tempOptHtml     .= '<td>';
-			foreach ( $fontOptions as $key => $title ) {
-				$fontVal          = ( ( ! empty( $tempOptions[ $key ] ) ) ? $tempOptions[ $key ] : array() );
-				$font_bold        = ( isset( $fontVal['font_bold'] ) && $fontVal['font_bold'] == '1' ) ? 1 : 0;
-				$font_italic      = ( isset( $fontVal['font_italic'] ) && $fontVal['font_italic'] == '1' ) ? 1 : 0;
-				$font_decoration  = ( isset( $fontVal['font_decoration'] ) ) ? $fontVal['font_decoration'] : '';
-				$tempOptHtml     .= '<div class="arm_temp_font_settings_wrapper">';
-					$tempOptHtml .= '<label class="arm_temp_font_setting_label arm_temp_form_label arm_font_size_14">' . esc_html($title) . '</label>';
+						foreach ( $fontOptions as $key => $title ) {
+							$fontVal          = ( ( ! empty( $tempOptions[ $key ] ) ) ? $tempOptions[ $key ] : array() );
+							$font_bold        = ( isset( $fontVal['font_bold'] ) && $fontVal['font_bold'] == '1' ) ? 1 : 0;
+							$font_italic      = ( isset( $fontVal['font_italic'] ) && $fontVal['font_italic'] == '1' ) ? 1 : 0;
+							$font_decoration  = ( isset( $fontVal['font_decoration'] ) ) ? $fontVal['font_decoration'] : '';
+							$tempOptHtml     .= '<div class="arm_temp_font_settings_wrapper">';
+								$tempOptHtml .= '<label class="arm_temp_font_setting_label arm_temp_form_label arm_font_size_14">' . esc_html($title) . '</label>';
 
-					$tempOptHtml         .= '<input type="hidden" id="arm_temp_font_family_' . esc_attr($key) . '" name="template_options[' . esc_attr($key) . '][font_family]" value="' . ( ( ! empty( $fontVal['font_family'] ) ) ? esc_attr($fontVal['font_family']) : 'Helvetica' ) . '"/>';
-					$tempOptHtml         .= '<dl class="arm_selectbox column_level_dd arm_margin_right_10 arm_width_230">';
-						$tempOptHtml     .= '<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"  /><i class="armfa armfa-caret-down armfa-lg"></i></dt>';
-						$tempOptHtml     .= '<dd><ul data-id="arm_temp_font_family_' . esc_attr($key) . '">';
-							$tempOptHtml .= $arm_member_forms->arm_fonts_list();
-						$tempOptHtml     .= '</ul></dd>';
-					$tempOptHtml         .= '</dl>';
-				if ( $key == 'content_font' && empty( $fontVal['font_size'] ) ) {
-							$fontVal['font_size'] = '16';
-				}
-					$tempOptHtml     .= '<input type="hidden" id="arm_temp_font_size_' . esc_attr($key) . '" name="template_options[' . esc_attr($key) . '][font_size]" value="' . ( ! empty( $fontVal['font_size'] ) ? esc_attr($fontVal['font_size']) : '14' ) . '"/>';
-					$tempOptHtml     .= '<dl class="arm_selectbox column_level_dd arm_margin_right_10 arm_width_90">';
-						$tempOptHtml .= '<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"  /><i class="armfa armfa-caret-down armfa-lg"></i></dt>';
-						$tempOptHtml .= '<dd><ul data-id="arm_temp_font_size_' . esc_attr($key) . '">';
-				for ( $i = 8; $i < 41; $i++ ) {
-					$tempOptHtml .= '<li data-label="' . esc_attr($i) . ' px" data-value="' . esc_attr($i) . '">' . esc_html($i) . ' px</li>';
-				}
-						$tempOptHtml .= '</ul></dd>';
-					$tempOptHtml     .= '</dl>';
-					$tempOptHtml     .= '<div class="arm_font_style_options arm_template_font_style_options">';
-						$tempOptHtml .= '<label class="arm_font_style_label ' . ( ( $font_bold == '1' ) ? 'arm_style_active' : '' ) . '" data-value="bold" data-field="arm_temp_font_bold_' . esc_attr($key) . '"><i class="armfa armfa-bold"></i></label>';
-						$tempOptHtml .= '<input type="hidden" name="template_options[' . esc_attr($key) . '][font_bold]" id="arm_temp_font_bold_' . esc_attr($key) . '" class="arm_temp_font_bold_' . esc_attr($key) . '" value="' . esc_attr($font_bold) . '" />';
-						$tempOptHtml .= '<label class="arm_font_style_label ' . ( ( $font_italic == '1' ) ? 'arm_style_active' : '' ) . '" data-value="italic" data-field="arm_temp_font_italic_' . esc_attr($key) . '"><i class="armfa armfa-italic"></i></label>';
-						$tempOptHtml .= '<input type="hidden" name="template_options[' . esc_attr($key) . '][font_italic]" id="arm_temp_font_italic_' . esc_attr($key) . '" class="arm_temp_font_italic_' . esc_attr($key) . '" value="' . esc_attr($font_italic) . '" />';
+								$tempOptHtml         .= '<input type="hidden" id="arm_temp_font_family_' . esc_attr($key) . '" name="template_options[' . esc_attr($key) . '][font_family]" value="' . ( ( ! empty( $fontVal['font_family'] ) ) ? esc_attr($fontVal['font_family']) : 'Helvetica' ) . '"/>';
+								$tempOptHtml         .= '<dl class="arm_selectbox column_level_dd arm_margin_right_10 arm_width_230">';
+									$tempOptHtml     .= '<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"  /><i class="armfa armfa-caret-down armfa-lg"></i></dt>';
+									$tempOptHtml     .= '<dd><ul data-id="arm_temp_font_family_' . esc_attr($key) . '">';
+										$tempOptHtml .= $arm_member_forms->arm_fonts_list();
+									$tempOptHtml     .= '</ul></dd>';
+								$tempOptHtml         .= '</dl>';
+							if ( $key == 'content_font' && empty( $fontVal['font_size'] ) ) {
+										$fontVal['font_size'] = '16';
+							}
+								$tempOptHtml     .= '<input type="hidden" id="arm_temp_font_size_' . esc_attr($key) . '" name="template_options[' . esc_attr($key) . '][font_size]" value="' . ( ! empty( $fontVal['font_size'] ) ? esc_attr($fontVal['font_size']) : '14' ) . '"/>';
+								$tempOptHtml     .= '<dl class="arm_selectbox column_level_dd arm_margin_right_10 arm_width_90">';
+									$tempOptHtml .= '<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"  /><i class="armfa armfa-caret-down armfa-lg"></i></dt>';
+									$tempOptHtml .= '<dd><ul data-id="arm_temp_font_size_' . esc_attr($key) . '">';
+							for ( $i = 8; $i < 41; $i++ ) {
+								$tempOptHtml .= '<li data-label="' . esc_attr($i) . ' px" data-value="' . esc_attr($i) . '">' . esc_html($i) . ' px</li>';
+							}
+									$tempOptHtml .= '</ul></dd>';
+								$tempOptHtml     .= '</dl>';
+								$tempOptHtml     .= '<div class="arm_font_style_options arm_template_font_style_options">';
+									$tempOptHtml .= '<label class="arm_font_style_label ' . ( ( $font_bold == '1' ) ? 'arm_style_active' : '' ) . '" data-value="bold" data-field="arm_temp_font_bold_' . esc_attr($key) . '"><i class="armfa armfa-bold"></i></label>';
+									$tempOptHtml .= '<input type="hidden" name="template_options[' . esc_attr($key) . '][font_bold]" id="arm_temp_font_bold_' . esc_attr($key) . '" class="arm_temp_font_bold_' . esc_attr($key) . '" value="' . esc_attr($font_bold) . '" />';
+									$tempOptHtml .= '<label class="arm_font_style_label ' . ( ( $font_italic == '1' ) ? 'arm_style_active' : '' ) . '" data-value="italic" data-field="arm_temp_font_italic_' . esc_attr($key) . '"><i class="armfa armfa-italic"></i></label>';
+									$tempOptHtml .= '<input type="hidden" name="template_options[' . esc_attr($key) . '][font_italic]" id="arm_temp_font_italic_' . esc_attr($key) . '" class="arm_temp_font_italic_' . esc_attr($key) . '" value="' . esc_attr($font_italic) . '" />';
 
-						$tempOptHtml     .= '<label class="arm_font_style_label arm_decoration_label ' . ( ( $font_decoration == 'underline' ) ? 'arm_style_active' : '' ) . '" data-value="underline" data-field="arm_temp_font_decoration_' . esc_attr($key) . '"><i class="armfa armfa-underline"></i></label>';
-						$tempOptHtml     .= '<label class="arm_font_style_label arm_decoration_label ' . ( ( $font_decoration == 'line-through' ) ? 'arm_style_active' : '' ) . '" data-value="line-through" data-field="arm_temp_font_decoration_' . esc_attr($key) . '"><i class="armfa armfa-strikethrough"></i></label>';
-						$tempOptHtml     .= '<input type="hidden" name="template_options[' . esc_attr($key) . '][font_decoration]" id="arm_temp_font_decoration_' . esc_attr($key) . '" class="arm_temp_font_decoration_' . esc_attr($key) . '" value="' . esc_attr($font_decoration) . '" />';
-					$tempOptHtml         .= '</div>';
-							$tempOptHtml .= '</div>';
-			}
+									$tempOptHtml     .= '<label class="arm_font_style_label arm_decoration_label ' . ( ( $font_decoration == 'underline' ) ? 'arm_style_active' : '' ) . '" data-value="underline" data-field="arm_temp_font_decoration_' . esc_attr($key) . '"><i class="armfa armfa-underline"></i></label>';
+									$tempOptHtml     .= '<label class="arm_font_style_label arm_decoration_label ' . ( ( $font_decoration == 'line-through' ) ? 'arm_style_active' : '' ) . '" data-value="line-through" data-field="arm_temp_font_decoration_' . esc_attr($key) . '"><i class="armfa armfa-strikethrough"></i></label>';
+									$tempOptHtml     .= '<input type="hidden" name="template_options[' . esc_attr($key) . '][font_decoration]" id="arm_temp_font_decoration_' . esc_attr($key) . '" class="arm_temp_font_decoration_' . esc_attr($key) . '" value="' . esc_attr($font_decoration) . '" />';
+								$tempOptHtml         .= '</div>';
+										$tempOptHtml .= '</div>';
+						}
 						$tempOptHtml .= '</td>';
 					$tempOptHtml     .= '</tr>';
-			if ( $tempType == 'profile' ) {
-				$tempOptHtml                 .= '<tr>';
-					$tempOptHtml             .= '<th>' . esc_html__( 'Default Cover', 'armember-membership' ) . ' <i class="arm_helptip_icon armfa armfa-question-circle" title="' . esc_html__( 'Image size should be approx 900x300.', 'armember-membership' ) . '"></i></th>';
-					$tempOptHtml             .= '<td>';
-						$defaultCover         = ( ! empty( $tempOptions['default_cover'] ) ) ? $tempOptions['default_cover'] : '';
-						$display_file         = ! empty( $defaultCover ) && file_exists( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $defaultCover ) ) ? true : false;
-						$tempOptHtml         .= '<div class="arm_default_cover_upload_container armFileUploadWrapper">';
-							$tempOptHtml     .= '<div class="armFileUploadContainer" style="' . ( ( $display_file ) ? 'display:none;' : '' ) . '">';
-								$tempOptHtml .= '<div class="armFileUpload-icon"></div>' . esc_html__( 'Upload', 'armember-membership' );
-				$tempOptHtml                 .= '<input id="armTempEditFileUpload" class="armFileUpload arm_default_cover_image_url" name="template_options[default_cover]" type="file" value="' . $defaultCover . '" accept=".jpg,.jpeg,.png,.bmp" data-file_size="5"/>';
-							$tempOptHtml     .= '</div>';
-							$tempOptHtml     .= '<div class="armFileRemoveContainer" style="' . ( ( $display_file ) ? 'display:inline-block;' : '' ) . '"><div class="armFileRemove-icon"></div>' . esc_html__( 'Remove', 'armember-membership' ) . '</div>';
-								$tempOptHtml .= '<div class="arm_old_uploaded_file">';
-				if ( $display_file ) {
-					if ( file_exists( strstr( $defaultCover, '//' ) ) ) {
-								$defaultCover = strstr( $defaultCover, '//' );
-					} elseif ( file_exists( $defaultCover ) ) {
-													   $defaultCover = $defaultCover;
-					} else {
-						$defaultCover = $defaultCover;
+					if ( $tempType == 'profile' ) {
+						$tempOptHtml                 .= '<tr>';
+							$tempOptHtml             .= '<th>' . esc_html__( 'Default Cover', 'armember-membership' ) . ' <i class="arm_helptip_icon armfa armfa-question-circle" title="' . esc_html__( 'Image size should be approx 900x300.', 'armember-membership' ) . '"></i></th>';
+							$tempOptHtml             .= '<td>';
+								$defaultCover         = ( ! empty( $tempOptions['default_cover'] ) ) ? $tempOptions['default_cover'] : '';
+								$display_file         = ! empty( $defaultCover ) && file_exists( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $defaultCover ) ) ? true : false;
+								$tempOptHtml         .= '<div class="arm_default_cover_upload_container armFileUploadWrapper">';
+									$tempOptHtml     .= '<div class="armFileUploadContainer" style="' . ( ( $display_file ) ? 'display:none;' : '' ) . '">';
+										$tempOptHtml .= '<div class="armFileUpload-icon"></div>' . esc_html__( 'Upload', 'armember-membership' );
+						$tempOptHtml                 .= '<input id="armTempEditFileUpload" class="armFileUpload arm_default_cover_image_url" name="template_options[default_cover]" type="file" value="' . $defaultCover . '" accept=".jpg,.jpeg,.png,.bmp" data-file_size="5"/>';
+									$tempOptHtml     .= '</div>';
+									$tempOptHtml     .= '<div class="armFileRemoveContainer" style="' . ( ( $display_file ) ? 'display:inline-block;' : '' ) . '"><div class="armFileRemove-icon"></div>' . esc_html__( 'Remove', 'armember-membership' ) . '</div>';
+										$tempOptHtml .= '<div class="arm_old_uploaded_file">';
+						if ( $display_file ) {
+							if ( file_exists( strstr( $defaultCover, '//' ) ) ) {
+										$defaultCover = strstr( $defaultCover, '//' );
+							} elseif ( file_exists( $defaultCover ) ) {
+															$defaultCover = $defaultCover;
+							} else {
+								$defaultCover = $defaultCover;
+							}
+											$tempOptHtml .= '<img alt="" src="' . esc_attr( $defaultCover ) . '" height="100px"/>'; //phpcs:ignore 
+						}
+										$tempOptHtml .= '</div>';
+									$tempOptHtml     .= '<div class="armFileUploadProgressBar" style="display: none;"><div class="armbar" style="width:0%;"></div></div>';
+									$tempOptHtml     .= '<div class="armFileUploadProgressInfo"></div>';
+									$tempOptHtml     .= '<div class="armFileMessages" id="armFileUploadMsg"></div>';
+									$tempOptHtml     .= '<input class="arm_file_url arm_default_cover_image_url" type="hidden" name="template_options[default_cover]" value="' . esc_attr($defaultCover) . '" data-file_type="directory_cover">';
+								$tempOptHtml         .= '</div>';
+							$tempOptHtml             .= '</td>';
+								$tempOptHtml         .= '</tr>';
 					}
-									$tempOptHtml .= '<img alt="" src="' . esc_attr( $defaultCover ) . '" height="100px"/>'; //phpcs:ignore 
-				}
-								$tempOptHtml .= '</div>';
-							$tempOptHtml     .= '<div class="armFileUploadProgressBar" style="display: none;"><div class="armbar" style="width:0%;"></div></div>';
-							$tempOptHtml     .= '<div class="armFileUploadProgressInfo"></div>';
-							$tempOptHtml     .= '<div class="armFileMessages" id="armFileUploadMsg"></div>';
-							$tempOptHtml     .= '<input class="arm_file_url arm_default_cover_image_url" type="hidden" name="template_options[default_cover]" value="' . esc_attr($defaultCover) . '" data-file_type="directory_cover">';
-						$tempOptHtml         .= '</div>';
-					$tempOptHtml             .= '</td>';
-						$tempOptHtml         .= '</tr>';
-			}
-
+				$tempOptHtml .= '</tbody>';
 				$tempOptHtml .= '</table>';
 			$tempOptHtml     .= '</div>';
 

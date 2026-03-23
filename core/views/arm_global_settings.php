@@ -67,7 +67,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 						<div class="arm_shortcode_text arm_form_shortcode_box">
 							<span class="armCopyText"><?php echo home_url().'?arm_wpdisable='.$arm_get_hide_wp_admin_option;//phpcs:ignore ?></span>
 							<span class="arm_click_to_copy_text" data-code="<?php echo home_url().'?arm_wpdisable='.$arm_get_hide_wp_admin_option; //phpcs:ignore?>"><?php esc_html_e('Click to copy', 'armember-membership');?></span>
-							<span class="arm_copied_text"><img src="<?php echo MEMBERSHIP_IMAGES_URL; //phpcs:ignore?>/copied_ok.png" alt="ok"><?php esc_html_e('Code Copied', 'armember-membership');?></span>
+							<span class="arm_copied_text"><img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/copied_ok.png" alt="ok"><?php esc_html_e('Code Copied', 'armember-membership');?></span>
 						</div>
 					</li>
 					<?php } ?>
@@ -940,7 +940,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 							<div class="arm_width_100_pct" style="margin: 45px auto;"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif'; //phpcs:ignore ?>">
 							</div>
 					</div>
-					<div class="arm_submit_btn_container">
+					<div>
 						<div class="arm_preset_field_updated_msg">
 								<span class="arm_success_msg"><?php esc_html_e( 'Preset Fields are updated successfully.', 'armember-membership' ); ?></span>
 								<span class="arm_error_msg"><?php esc_html_e( 'Sorry, something went wrong while updating prest fields.', 'armember-membership' ); ?></span>

@@ -28,6 +28,120 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
             add_action("wp_ajax_arm_get_subscription_plan_details",array($this,"arm_get_membership_plan_details_func"));
 
+            add_action('wp_ajax_get_membership_plan_expand_grid',array($this,'arm_get_membership_plan_expand_grid_func'));
+
+		}
+
+		function arm_get_membership_plan_expand_grid_func(){
+			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_capabilities_global, $arm_slugs;
+
+			$plan_id = intval($_POST['plan_id']);
+            $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_plans'], '1',1); //phpcs:ignore 
+			$grid_columns = array();
+			if ( ! empty( $_REQUEST['exclude_headers'] ) ) {
+				$keys   = explode( ',', sanitize_text_field( $_REQUEST['exclude_headers'] ) );
+				$labels = explode( ',', sanitize_text_field( $_REQUEST['header_label'] ) );
+				$grid_columns = array_combine( $keys, $labels );
+			}
+
+			$date_format = $arm_global_settings->arm_get_wp_date_format();
+
+			$plan = $wpdb->get_row(
+				$wpdb->prepare("SELECT * FROM {$ARMemberLite->tbl_arm_subscription_plans} WHERE arm_subscription_plan_id = %d" ,$plan_id));
+			
+			if(!empty($plan)){
+				$planObj = new ARM_Plan_Lite();
+				$planObj->init($plan);
+				$arm_is_multisite = is_multisite();
+				$arm_current_blog_id = !empty($arm_is_multisite) ? get_current_blog_id() : 0;
+				$arm_user_query = $wpdb->get_results($wpdb->prepare("SELECT um.user_id, um.meta_value FROM $wpdb->users  u LEFT JOIN $wpdb->usermeta um ON um.user_id = u.ID WHERE um.meta_key = %s",'arm_user_plan_ids'));
+				$arm_user_array = array(); 
+				if(!empty($arm_user_query)){
+					foreach($arm_user_query as $arm_user){
+						$user_meta=get_userdata($arm_user->user_id);
+						$user_roles= !empty($user_meta->roles) ? $user_meta->roles : array();
+						if(!in_array('administrator', $user_roles)) {
+
+							if ($arm_is_multisite) {
+								if(is_user_member_of_blog($arm_user->user_id, $arm_current_blog_id))
+								{
+									$arm_user_array[$arm_user->user_id] = maybe_unserialize($arm_user->meta_value);
+								}
+								else
+								{
+									continue;
+								}
+							}
+							else {
+								$arm_user_array[$arm_user->user_id] = maybe_unserialize($arm_user->meta_value);
+							}
+						}
+					}
+				}
+				$return  = '<div class="arm_child_row_div"><div class="arm_child_user_data_section">';
+				$return .= '<div class="arm_view_member_left_box arm_no_border arm_margin_top_0">';
+				$return .= '<div class="arm_view_member_sub_title arm_padding_0 arm_margin_bottom_24">'.esc_html__('Plan details','armember-membership').'</div>';
+				$return .= '<table class="form-table">';
+
+					foreach($grid_columns as $mkey => $mlabel){
+					$meta_val = '';
+					$planID = $plan_id;
+					$total_users = 0;
+					if(!empty($arm_user_array)){
+						foreach($arm_user_array as $arm_user_id => $arm_user_plans){
+							if(!empty($arm_user_plans) && in_array($planID, $arm_user_plans)){
+								$total_users++;
+							}
+						}
+					}
+
+					if($mkey == 'arm_plan_id'){
+						$meta_val = $plan->arm_subscription_plan_post_id;
+					}
+					else if($mkey == 'arm_plan_name'){
+						$meta_val = $planObj->name;
+					}
+					else if($mkey == 'arm_plan_type'){
+						$meta_val = $planObj->plan_text(true);
+					}
+					else if($mkey == 'arm_total_users'){
+						$planMembers = $total_users;
+						if ($planMembers > 0) {
+							$membersLink = admin_url('admin.php?page=' . $arm_slugs->manage_members . '&plan_id=' . $planID);
+							$meta_val = "<a href='".esc_url($membersLink)."'>".esc_html($planMembers)."</a>";
+						} else {
+							$meta_val= esc_html($planMembers);
+						}
+					}
+					else if($mkey == 'arm_plan_role'){
+						$meta_val = !empty($planObj->plan_role) ? $planObj->plan_role : '-';
+					}
+					else if($mkey == 'arm_plan_recurring'){
+						$meta_val = $planObj->is_recurring() ? esc_html__('Yes','armember-membership') : esc_html__('No','armember-membership');
+					}
+					else if($mkey == 'arm_plan_created_date'){
+						$meta_val = !empty($plan->arm_subscription_plan_created_date)
+							? date_i18n($date_format, strtotime($plan->arm_subscription_plan_created_date))
+							: '-';
+					}
+
+					$return .= '<tr class="form-field arm_detail_expand_container_child_row">
+						<th class="arm-form-table-label">'.$mlabel.'</th>
+						<td class="arm-form-table-content">'.$meta_val.'</td>
+					</tr>';
+				}
+
+				$return .= '</table></div></div></div>';
+			} else {
+				$return  = '<div class="arm_child_row_div"><div class="arm_child_user_data_section">';
+				$return .= '<div class="arm_view_member_left_box arm_no_border arm_margin_top_0">';
+				$return .= '<div class="arm_view_member_sub_title arm_padding_0 arm_margin_bottom_24">'.esc_html__('Plan details','armember-membership').'</div>';
+				$return .= '<div>'.esc_html__('Plan details not found','armember-membership').'</div>';
+				$return .= '</div></div></div>';
+			}
+
+			echo $return;
+			die;
 		}
 
 		function arm_get_membership_plan_details_func(){
@@ -85,6 +199,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
             $form_result = $wpdb->get_results($arm_plan_sql.' '.$order_by_qry.' '.$phlimit,ARRAY_A);
             $grid_data = array();
             $ai = 0;
+			$return = "";
             if (!empty($form_result)) {
                 $arm_is_multisite = is_multisite();
                 $arm_current_blog_id = !empty($arm_is_multisite) ? get_current_blog_id() : 0;
@@ -127,41 +242,44 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                         }
                     }
                     
-                    $grid_data[$ai][0] = esc_attr($planID);
-                    $grid_data[$ai][1] = (stripslashes($planObj->name)); //phpcs:ignore
+                    $grid_data[$ai][0] = "<div class='arm_show_membership_plans arm_max_width_50 arm_expand_arrow_icon' id='arm_show_membership_plans_" . esc_attr($planID) . "' data-id='" . esc_attr($planID) . "'><svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 20 20' fill='none'><path d='M6 8L10 12L14 8' stroke='#BAC2D1' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg></div>";   
+					$return .= '<tr class="arm_child_transaction_row">';
+                    $grid_data[$ai][1] = esc_attr($planID);
+                    $grid_data[$ai][2] = (stripslashes($planObj->name)); //phpcs:ignore
 
                     if( $planObj->is_recurring() && isset($planObj->options['payment_cycles']) && count($planObj->options['payment_cycles']) > 1 ) {
-                        $grid_data[$ai][2] = '<span class="arm_item_status_text active">' . esc_html__('Paid', 'armember-membership') . '</span>
+                        $grid_data[$ai][3] = '<span class="arm_item_status_text active">' . esc_html__('Paid', 'armember-membership') . '</span>
                         <a href="javascript:void(0);" class="arm_margin_left_12" onclick="arm_plan_cycle('. esc_attr($planID) .')">' . esc_html__('Multiple Cycle', 'armember-membership') . '</a>';
                     } else {
-                        $grid_data[$ai][2] = $planObj->plan_text(true); //phpcs:ignore
+                        $grid_data[$ai][3] = $planObj->plan_text(true); //phpcs:ignore
                     }
                             
                     $planMembers = $total_users;
                     if ($planMembers > 0) {
                         $membersLink = admin_url('admin.php?page=' . $arm_slugs->manage_members . '&plan_id=' . $planID);
-                        $grid_data[$ai][3] = "<a href='".esc_url($membersLink)."'>".esc_html($planMembers)."</a>";
+                        $grid_data[$ai][4] = "<a href='".esc_url($membersLink)."'>".esc_html($planMembers)."</a>";
                     } else {
-                        $grid_data[$ai][3] = esc_html($planMembers);
+                        $grid_data[$ai][4] = esc_html($planMembers);
                     }
                     $planRole = $planObj->plan_role;
                     if (!empty($planRole)) {
-                        $grid_data[$ai][4] = $planRole;
+                        $grid_data[$ai][5] = $planRole;
                     } else {
-                        $grid_data[$ai][4] = '-';
+                        $grid_data[$ai][5] = '-';
                     }		                       
                     $gridAction = "<div class='arm_grid_action_btn_container'>";
                     if (current_user_can('arm_manage_plans')) {
-                        $gridAction .= "<a href='javascript:void(0)'  class='arm_edit_plan_data' data-plan_id='".$planID."'><img src='".MEMBERSHIPLITE_IMAGES_URL."/grid_edit.svg' onmouseover=\"this.src='".MEMBERSHIPLITE_IMAGES_URL."/grid_edit_hover.svg';\" class='armhelptip' title='".esc_html__('Edit Plan','armember-membership')."' onmouseout=\"this.src='".MEMBERSHIPLITE_IMAGES_URL."/grid_edit.svg';\" /></a>";
-                        $gridAction .= "<a href='javascript:void(0)' onclick='showConfirmBoxCallback({$planID});'><img src='".MEMBERSHIPLITE_IMAGES_URL."/grid_delete.svg' class='armhelptip' title='".esc_html__('Delete','armember-membership')."' onmouseover=\"this.src='".MEMBERSHIPLITE_IMAGES_URL."/grid_delete_hover.svg';\" onmouseout=\"this.src='".MEMBERSHIPLITE_IMAGES_URL."/grid_delete.svg';\" /></a>";
+                        $gridAction .= "<a href='javascript:void(0)'  class='arm_edit_plan_data' data-plan_id='".$planID."'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M13.2594 3.60022L5.04936 12.2902C4.73936 12.6202 4.43936 13.2702 4.37936 13.7202L4.00936 16.9602C3.87936 18.1302 4.71936 18.9302 5.87936 18.7302L9.09936 18.1802C9.54936 18.1002 10.1794 17.7702 10.4894 17.4302L18.6994 8.74022C20.1194 7.24022 20.7594 5.53022 18.5494 3.44022C16.3494 1.37022 14.6794 2.10022 13.2594 3.60022Z' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M11.8906 5.0498C12.3206 7.8098 14.5606 9.9198 17.3406 10.1998' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M3 22H21' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/></svg></a>";
+                        $gridAction .= "<a href='javascript:void(0)' onclick='showConfirmBoxCallback({$planID});' class='arm_grid_delete_action'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M3 5.33333H21M16.5 5.33333L16.1956 4.43119C15.9005 3.55694 15.7529 3.11982 15.4793 2.79664C15.2376 2.51126 14.9274 2.29036 14.5768 2.1542C14.1798 2 13.7134 2 12.7803 2H11.2197C10.2866 2 9.8202 2 9.4232 2.1542C9.07266 2.29036 8.76234 2.51126 8.5207 2.79664C8.24706 3.11982 8.09954 3.55694 7.80447 4.43119L7.5 5.33333M18.75 5.33333V16.6667C18.75 18.5336 18.75 19.4669 18.3821 20.18C18.0586 20.8072 17.5423 21.3171 16.9072 21.6367C16.1852 22 15.2402 22 13.35 22H10.65C8.75982 22 7.81473 22 7.09278 21.6367C6.45773 21.3171 5.94143 20.8072 5.61785 20.18C5.25 19.4669 5.25 18.5336 5.25 16.6667V5.33333M14.25 9.77778V17.5556M9.75 9.77778V17.5556' stroke='#617191' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg></a>";
                         if (empty($planMembers) || $planMembers == 0) {
                             $gridAction .= $arm_global_settings->arm_get_confirm_box($planID, esc_html__("Are you sure you want to delete this plan?", 'armember-membership'), 'arm_plan_delete_btn','', esc_html__('Delete', 'armember-membership'), esc_attr__('Cancel', 'armember-membership'), esc_attr__('Delete', 'armember-membership'));
                         } else {
                             $gridAction .= $arm_global_settings->arm_get_confirm_box($planID, esc_html__("This plan has one or more subscribers. So this plan can not be deleted.", 'armember-membership'), 'arm_plan_delete_btn_not arm_hide','','',esc_html__("Close",'armember-membership'),esc_attr__('Delete', 'armember-membership'));
                         }
                     }
+
                     $gridAction .= "</div>";
-                    $grid_data[$ai][5] = $gridAction; //phpcs:ignore
+                    $grid_data[$ai][6] = $gridAction; //phpcs:ignore
                     $ai++;
                 }//End Foreach
             }
@@ -1628,7 +1746,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					update_user_meta( $user_id, 'arm_user_suspended_plan_ids', $suspended_plan_ids );
 				}
 
-				if ( ! in_array( $new_plan_id, $old_plan ) ) {
+				if ( !in_array( $new_plan_id, $old_plan ) ) {
 					$new_plan = new ARM_Plan_Lite( $new_plan_id );
 					if ( $new_plan->exists() && $new_plan->is_active() ) {
 						$user = new WP_User( $user_id );
@@ -1637,7 +1755,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						do_action( 'arm_before_change_user_plans', $user_id, $old_plan, $new_plan_id, $new_plan );
 						$is_update_plan = true;
 
-							$mail_type = ( empty( $old_plan ) ) ? 'new_subscription' : 'change_subscription';
+						$mail_type = ( empty( $old_plan ) ) ? 'new_subscription' : 'change_subscription';
 
 						if ( ! empty( $old_plan ) ) {
 							$defaultPlanData = $this->arm_default_plan_array();
@@ -2901,7 +3019,7 @@ if ( ! class_exists( 'ARM_Plan_Lite' ) ) {
 						$dataArray['period']      = ! empty( $opt_recurring['billing_type'] ) ? $opt_recurring['billing_type'] : 'M';
 						$dataArray['interval']    = ! empty( $opt_recurring['billing_cycle'] ) ? $opt_recurring['billing_cycle'] : '1';
 						$dataArray['cycles']      = ( ! empty( $opt_recurring['recurring_time'] ) && $opt_recurring['recurring_time'] != 'infinite' ) ? $opt_recurring['recurring_time'] : '';
-						$dataArray['rec_time']    = $opt_recurring['recurring_time'];
+						$dataArray['rec_time']    = isset( $opt_recurring['recurring_time'] ) ? $opt_recurring['recurring_time'] : '';
 					} else {
 						$dataArray['amount'] = ! empty( $this->amount ) ? $this->amount : 0;
 						$opt_recurring       = $this->options['recurring'];

@@ -76,10 +76,16 @@ wp_print_scripts( 'arm_form_validation' );
 	.arm_setup_form_container{
 		height: 100% !important;
 		overflow-x: hidden;
-		overflow-y: auto;
-		padding: 10px 8% 40px;
+		overflow-y: auto;	
+		padding: 0px 8% 130px;
 		box-sizing: border-box;
 	}
+	 .arm_setup_form_container .arm_membership_setup_form{
+		width: auto !important;
+        border: 1px solid var(--arm-gt-gray-100);
+        border-radius: var(--arm-radius-12px);
+        padding: 40px;
+    }
 	.arm_setup_form_container form{
 		margin: 0 auto;
 	}

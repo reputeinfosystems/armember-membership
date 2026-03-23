@@ -73,6 +73,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1',1);
 
+			$arm_member_include_fields_keys = array('user_email', 'user_pass');
+
             $arm_form_id=101;
             if (isset($form_id)) {
                 $arm_form_id = intval($form_id);
@@ -402,7 +404,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                             $hiddenValue = (!empty($hiddenValue)) ? $hiddenValue : $hiddenF['value'];
                                             $hiddentitle = (!empty($hiddenF['title'])) ? $hiddenF['title'] : '';
                                                             
-                                            $arm_form_content .= '<tr class="form-field"><th>'.$hiddentitle.'</th><td><input type="text" name="' . $hiddenMetaKey . '" value="' . $hiddenValue . '"/></td></tr>'; //phpcs:ignore
+                                            $arm_form_content .= '<tr class="form-field"><th><label>'.$hiddentitle.'</label></th><td><input type="text" name="' . $hiddenMetaKey . '" value="' . $hiddenValue . '"/></td></tr>'; //phpcs:ignore
                                                             
                                         }
                                     }
@@ -521,7 +523,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                             <tr class="form-field arm_members_status_col">
                                 <th>
                                 </th>
-                                <td class="arm_position_relative arm_members_status_col arm_margin_top_25">
+                                <td class="arm_position_relative arm_members_status_col arm_margin_top_10 arm_padding_0">
                                     <label
                                         for="arm_primary_status">'. esc_html__( 'Member Status', 'armember-membership' ).'</label>
                                         <div class="armswitch arm_member_status_div">
@@ -540,7 +542,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                     $arm_form_content .= '<tr class="form-field arm_send_email_to_user_div_tr">
                                         <th>
                                         </th>
-                                        <td class="arm_members_status_col arm_margin_top_25">
+                                        <td class="arm_members_status_col  arm_margin_top_10 arm_padding_0">
                                             <label
                                                 for="arm_send_email">'. esc_html__( 'Send Signup Email Notification to User', 'armember-membership' ).'</label>
                                             <div class="armswitch arm_send_email_to_user_div">
@@ -561,10 +563,14 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
         }
 
 		function arm_member_member_forms_fields_details_func($arm_form_content,$user_id,$arm_form_id){
-			global $wpdb, $armPrimaryStatus, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_social_feature, $arm_email_settings, $arm_lite_members_activity;
+			global $wpdb, $armPrimaryStatus, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_social_feature, $arm_email_settings, $arm_lite_members_activity,$arm_is_enable_crop;
 
             $user = $arm_members_class->arm_get_member_detail($user_id);
             $arm_suffix_icon_pass = '<span class="arm_visible_password_admin arm-df__fc-icon --arm-suffix-icon" id="" style=""><i class="armfa armfa-eye"></i></span>';
+
+			$arm_is_enable_crop = 0;
+
+			$arm_member_include_fields_keys = array('user_email', 'user_pass');
 
             $user_roles = $arm_global_settings->arm_get_all_roles();
             $all_active_plans = $arm_subscription_plans->arm_get_all_active_subscription_plans();
@@ -978,7 +984,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 						}
 					}
-					 $content .= '<table>';
+					 $content .= '</table>';
 				}
 				echo $arm_ajax_pattern_start.''.$content.''.$arm_ajax_pattern_end; //phpcs:ignore
 				die();
@@ -4431,7 +4437,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$output            .= '<button class="arm_zoom_button arm_zoom_minus arm_img_setting armhelptip tipso_style" data_id="' . esc_attr($formRandomID) . '" data-method="zoom" data-option="-0.1" title="' . esc_html__( 'Zoom Out', 'armember-membership' ) . '"><span class="armfa armfa-search-minus"></span></button>';
 								$output            .= '<button class="arm_rotate_button arm_img_setting armhelptip tipso_style" data_id="' . esc_attr($formRandomID) . '" data-method="rotate" data-option="90" title="' . esc_html__( 'Rotate', 'armember-membership' ) . '"><span class="armfa armfa-rotate-right"></span></button>';
 								$output            .= '<button class="arm_reset_button arm_img_setting armhelptip tipso_style" data_id="' . esc_attr($formRandomID) . '" title="' . esc_html__( 'Reset', 'armember-membership' ) . '" data-method="reset"><span class="armfa armfa-refresh"></span></button>';
-								$output            .= '<button id="arm_skip_avtr_crop_nav_front" class="arm_avtr_done_front" data_id="' . esc_attr($formRandomID) . '">' . esc_html__( 'Done', 'armember-membership' ) . '</button>';
+								$output            .= '<button id="arm_skip_avtr_crop_nav_adm" class="arm_avtr_done_front" data_id="' . esc_attr($formRandomID) . '">' . esc_html__( 'Done', 'armember-membership' ) . '</button>';
 								$output            .= '</div>';
 								$output           .= '<p class="arm_discription">(' . sprintf( addslashes( esc_html__( 'Use Cropper to set image and %1$s use mouse scroller for zoom image.', 'armember-membership' ) ), '<br/>') . ')</p>'; //phpcs:ignore
 								$output            .= '</div>';
@@ -4446,7 +4452,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$output .= '<button class="arm_zoom_cover_button arm_zoom_minus arm_img_cover_setting armhelptip tipso_style" data-method="zoom" data-option="-0.1" data_id="' . $formRandomID . '" title="' . esc_html__( 'Zoom Out', 'armember-membership' ) . '"><span class="armfa armfa-search-minus"></span></button>';
 								$output .= '<button class="arm_rotate_cover_button arm_img_cover_setting armhelptip tipso_style" data_id="' . esc_attr($formRandomID) . '" data-method="rotate" data-option="90" title="' . esc_html__( 'Rotate', 'armember-membership' ) . '"><span class="armfa armfa-rotate-right"></span></button>';
 								$output .= '<button class="arm_reset_cover_button arm_img_cover_setting armhelptip tipso_style" data_id="' . esc_attr($formRandomID) . '" title="' . esc_html__( 'Reset', 'armember-membership' ) . '" data-method="reset"><span class="armfa armfa-refresh"></span></button>';
-								$output .= '<button data_id="' . esc_attr($formRandomID) . '" id="arm_skip_cvr_crop_nav_front" class="arm_cvr_done_front">' . esc_html__( 'Done', 'armember-membership' ) . '</button>';
+								$output .= '<button data_id="' . esc_attr($formRandomID) . '" id="arm_skip_cvr_crop_nav_admn" class="arm_cvr_done_front">' . esc_html__( 'Done', 'armember-membership' ) . '</button>';
 								$output .= '</div>';
 								$output .= '<p class="arm_discription">' . esc_html__( '(Use Cropper to set image and use mouse scroller for zoom image.)', 'armember-membership' ) . '</p>';
 								$output .= '</div>';
@@ -4817,7 +4823,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				case 'checkbox':
 					$fname  = $name;
 					$fhname = $name . '_arm_hidden';
-					if ( ! empty( $value['options'] ) && count( $value['options'] ) > 1 ) {
+					if (!empty($value['options']) && count($value['options']) > 1) {
 						$fname  = $name . '[]';
 						$fhname = $name . '_arm_hidden[]';
 					}
@@ -4859,7 +4865,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								}
 								$output .= '<input type="hidden" name="' . esc_attr( $fhname ) . '" id="' . esc_attr( $value['id'] ) . '_' . esc_attr($arm_form_chkbox_counter) . '_' . esc_attr( $form_id ) . '_arm_hidden" value="' . esc_attr($hidden_key) . '">';							
 								$output .= '<input class="arm_icheckbox arm_hidden_checkbox ' . esc_attr( $class ) . '" type="checkbox" name="' . esc_attr( $fname ) . '" id="' . esc_attr( $value['id'] ) . '_' . esc_attr($arm_form_chkbox_counter) . '_' . esc_attr( $form_id ) . '" value="' . esc_attr( $key ) . '"  data-id="' . esc_attr( $value['id'] ) . '_' . esc_attr($arm_form_chkbox_counter) . '_' . esc_attr( $form_id ) . '_arm_hidden" ' . $chked . ' ' . $validation_data . '/>';
-								$output .= '<label class="arm_checkbox_label" for="' . esc_attr( $value['id'] ) . '_' . esc_attr($arm_form_chkbox_counter) . '_' . esc_attr($form_id) . '" aria-label="' . esc_attr( $option ) . '">' . esc_html($option) . '</label>';
+								$output .= '<label class="arm_checkbox_label" for="' . esc_attr( $value['id'] ) . '_' . esc_attr($arm_form_chkbox_counter) . '_' . esc_attr($form_id) . '" aria-label="' . esc_attr( $option ) . '">' . $option . '</label>';
 								$arm_form_chkbox_counter++;
 							}
 						} else {
@@ -8553,7 +8559,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			unset( $_POST['no_field'] ); //phpcs:ignore
 			$posted_data  = $_POST; //phpcs:ignore
 			$posted_data  = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data_extend'), $posted_data ); //phpcs:ignore
-			
 			$arm_action   = sanitize_text_field( $posted_data['arm_action'] );
 			$arm_form_ids = ( isset( $posted_data['arm_login_form_ids'] ) && $posted_data['arm_login_form_ids'] !== '' ) ? explode( ',', $posted_data['arm_login_form_ids'] ) : '';
 			$arm_ref_form = isset( $posted_data['arm_ref_template'] ) ? intval( $posted_data['arm_ref_template'] ) : 0;

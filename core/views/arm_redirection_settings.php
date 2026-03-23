@@ -225,7 +225,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 							<div class="arm_login_redirection_condition_sortable_icon ui-sortable-handle armhelptip" title="<?php esc_html_e( 'Set Redirection Priority', 'armember-membership' ); ?>"></div>
 							
 							<a class="arm_remove_login_redirection_condition" href="javascript:void(0)" data-index="0">
-								<img src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg' onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn_hover.png';" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg';" /> <?php //phpcs:ignore ?>
+								<img src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg' onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn_hover.svg';" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg';" /> <?php //phpcs:ignore ?>
 							</a>
 
 
@@ -349,7 +349,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 						<li id="arm_login_conditional_redirection_box<?php echo intval($ckey); ?>" class="arm_form_main_content arm_margin_bottom_20">
 							<div class="arm_login_redirection_condition_sortable_icon ui-sortable-handle armhelptip" title="<?php esc_attr_e( 'Set Redirection Priority', 'armember-membership' ); ?>"></div>
 							<a class="arm_remove_login_redirection_condition" href="javascript:void(0)" data-index="<?php echo intval($ckey); ?>">
-								<img src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg' onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn_hover.png';" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg';" /> <?php //phpcs:ignore ?>
+								<img src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg' onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn_hover.svg';" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg';" /> <?php //phpcs:ignore ?>
 							</a>
 						<div class="">
 							<div class="arm_login_conditional_redirection_row">
@@ -1679,6 +1679,6 @@ echo wp_json_encode( $new_pages );
 	var ARM_SET_REDIRECTION_PRIORITY = '<?php echo addslashes( esc_html__( 'Set Redirection Priority', 'armember-membership' ) ); //phpcs:ignore ?>';
 	
 	var ARM_RR_CLOSE_IMG = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/close_btn.svg';
-	var ARM_RR_CLOSE_IMG_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/close_btn_hover.png';
+	var ARM_RR_CLOSE_IMG_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/close_btn_hover.svg';
 	var CHOOSEPLAN =  '<?php echo addslashes( esc_html__( 'Choose Plan', 'armember-membership' ) ); //phpcs:ignore ?>';
 </script>

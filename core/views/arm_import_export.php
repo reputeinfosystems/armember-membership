@@ -89,11 +89,11 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 						<div class="arm-form-table-content arm_margin_top_32 arm_export_btn_wapper arm_page_setup_flex_group">
 							<button id="arm_user_export_btn_csv" class="armemailaddbtn arm_width_100_pct import_export_btn" name="arm_action" value="user_export_csv" type="submit">
 							<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/export_icon.png" alt="Download Log Icon"  class="arm-export-import-icon"/>
-								<?php esc_html_e( 'Export as csv', 'armember-membership' ); ?>
+								<?php esc_html_e( 'Export to csv', 'armember-membership' ); ?>
 							</button>
 							<button id="arm_user_export_btn_xml" class="armemailaddbtn arm_width_100_pct import_export_btn" name="arm_action" value="user_export_xml" type="submit">
 								<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/export_icon.png" alt="XML Icon" class="arm-export-import-icon" />
-								<?php esc_html_e( 'Export as xml', 'armember-membership' ); ?>
+								<?php esc_html_e( 'Export to xml', 'armember-membership' ); ?>
 							</button>
 						</div>
 						<span class="arm-note-message --alert arm_margin_top_24"><?php esc_html_e( "Note: User having role 'administrator' will not be exported.",'armember-membership')?></span>
@@ -330,7 +330,7 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 		<div cellspacing="0">
 			<div class="popup_wrapper_inner"> 
 				<div class="arm_select_user_meta_close_btn arm_popup_close_btn"></div>
-				<div class="popup_header"><?php esc_html_e( 'Select User Meta Fields', 'armember-membership' ); ?></div>
+				<div class="popup_header arm_padding_bottom_0"><?php esc_html_e( 'Select User Meta Fields', 'armember-membership' ); ?></div>
 				<div class="popup_content_text arm_select_user_meta_wrapper arm_padding_bottom_0">
 					<?php
 

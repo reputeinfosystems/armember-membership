@@ -201,8 +201,8 @@ echo $arm_loader; //phpcs:ignore ?></div>
 						<?php esc_html_e( 'Form Set (Login / Forgot Password / Change Password)', 'armember-membership' ); ?>
 					<?php } ?>
 					<div class="arm_editor_heading_action_btns">
-						<a href="javascript:void(0)" id="arm_save_member_form" class="arm_save_btn arm_save_edior_btn"><?php esc_html_e( 'Save', 'armember-membership' ); ?></a>
 						<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->manage_forms )); //phpcs:ignore ?>" id="arm_close_member_form" class="arm_cancel_btn arm_close_edior_btn"><?php esc_html_e( 'Close', 'armember-membership' ); ?></a>
+						<a href="javascript:void(0)" id="arm_save_member_form" class="arm_save_btn arm_save_edior_btn"><?php esc_html_e( 'Save', 'armember-membership' ); ?></a>
 						<a href="javascript:void(0)" id="arm_reset_member_form" class="arm_cancel_btn arm_form_reset_btn"><i class="armfa armfa-rotate-left"></i></a>
 					</div>
                     <?php 
@@ -2343,7 +2343,7 @@ if ((!$isRegister && !$isEditProfile)) {
 		return GradientScheme;
 	}
 	jQuery(document).ready(function () {
-		jQuery('.arm_loading_grid').fadeIn('fast');
+		jQuery('.arm_loading').fadeIn('fast');
 	});
 	jQuery(window).on("load", function () {
 		setTimeout(function () {
@@ -2351,7 +2351,7 @@ if ((!$isRegister && !$isEditProfile)) {
 		}, 100);
 		arm_disable_form_fields();
 		setTimeout(function () {
-			jQuery('.arm_loading_grid').hide(0);
+			jQuery('.arm_loading').hide(0);
 			jQuery('.arm_editor_form_fileds_container').fadeIn('slow');
 		}, 800);
 	});
@@ -2434,7 +2434,7 @@ if ((!$isRegister && !$isEditProfile)) {
                     return false;
                 }
 
-				jQuery('.arm_loading_grid').fadeIn('slow');
+				jQuery('.arm_loading').fadeIn('slow');
 				form_data = jQuery('#arm_manage_form_settings_form').serialize();
 				var arm_action = jQuery("#arm_action").val();
 				jQuery(this).attr('disabled', 'disabled');
@@ -2494,12 +2494,12 @@ if ((!$isRegister && !$isEditProfile)) {
 						{
 							armToast(response.msg, 'error');
 						}
-						jQuery('.arm_loading_grid').fadeOut();
+						jQuery('.arm_loading').fadeOut();
 						jQuery(this).removeAttr('disabled');
 						return false;
 					}
 				});
-				jQuery('.arm_loading_grid').fadeOut();
+				jQuery('.arm_loading').fadeOut();
 				return false;
 			});
 <?php } ?>

@@ -126,7 +126,7 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
 									$arm_addons_last_tr_counter++;
 								} else {
 									$arm_add_on_td_class = '';
-									if ( $arm_addons_list_counter % 4 == 0 ) {
+									if ( $arm_addons_list_counter % 5 == 0 ) {
 										$arm_add_on_td_class = ' arm_dashboard_addon_list_no_border';
 									}
 									?>
@@ -137,7 +137,7 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
 										</td>			                        
 									<?php
 								}
-								if ( $arm_addons_list_counter % 4 == 0 && $arm_addons_list_counter < $arm_total_addons ) {
+								if ( $arm_addons_list_counter % 5 == 0 && $arm_addons_list_counter < $arm_total_addons ) {
 									echo '</tr>';
 									$arm_addons_list_tr_class = ( $arm_addons_list_tr_class == 'even' ) ? 'odd' : 'even';
 									$arm_addons_row_counter++;

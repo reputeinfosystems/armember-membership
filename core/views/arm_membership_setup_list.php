@@ -32,22 +32,23 @@ var add_setup_shortcode_text = '<span style="display: block;font-size: 12px;line
 jQuery(document).ready( function () {
 	jQuery('#armember_datatable').dataTable().fnDestroy();
 	arm_load_setup_list_grid();
-
 });
 
-function arm_load_setup_list_filtered_grid()
-{
+function arm_load_setup_list_filtered_grid(){
 	jQuery('#armember_datatable').dataTable().fnDestroy();
 	arm_load_setup_list_grid();
 }
 
 jQuery(document).on('keyup','#armmanagesearch_new',function(e){
-
+	var arm_search_val = jQuery(this).val();
+	jQuery('.arm_datatable_searchbox #armmanagesearch_new').val(arm_search_val);
 	if (e.keyCode == 13 || 'Enter' == e.key) {
-		var arm_search_val = jQuery(this).val();
-		jQuery('input[type="search"]').val(arm_search_val).trigger('keyup');
+		arm_load_setup_list_filtered_grid();
 		return false;
 	}
+})
+jQuery(document).on('click','#arm_member_setup_grid_filter_btn',function(e){
+	arm_load_setup_list_filtered_grid();
 })
 
 function show_grid_loader(){
@@ -58,21 +59,38 @@ function show_grid_loader(){
 
 function arm_load_setup_list_grid(){
 	var __ARM_Showing = '<?php echo addslashes( esc_html__( 'Showing', 'armember-membership' ) ); //phpcs:ignore ?>';
-	var __ARM_Showing_empty = '<?php echo addslashes( esc_html__( 'Showing 0 to 0 of 0 setups', 'armember-membership' ) ); //phpcs:ignore ?>';
-	var __ARM_to = '<?php echo addslashes( esc_html__( 'to', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var __ARM_Showing_empty = '<?php echo addslashes(esc_html__('Showing','armember-membership').' <span class="arm-black-350 arm_font_size_15">0</span> - <span class="arm-black-350 arm_font_size_15">0</span> of <span class="arm-black-350 arm_font_size_15">0</span> '.esc_html__('setups','armember-membership')); //phpcs:ignore?>';
+	var __ARM_to = '-';
 	var __ARM_of = '<?php echo addslashes( esc_html__( 'of', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var __ARM_SETUPS = ' <?php echo addslashes( esc_html__( 'setups', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var __ARM_Show = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?> ';
 	var __ARM_NO_FOUND = '<?php echo addslashes( esc_html__( 'No any membership setup found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var __ARM_NO_MATCHING = '<?php echo addslashes( esc_html__( 'No matching records found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 
-	var __ARM_PER_PAGE = '<?php echo addslashes( esc_html__( 'Setups per page', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var __ARM_PER_PAGE = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var ajax_url = '<?php echo admin_url("admin-ajax.php"); //phpcs:ignore?>';
 	var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
+	var arm_width_pct = "25%";
+	var arm_width_40_cols = 2;
+	var arm_width_20_cols = [1,4,3];
+	var search_term = jQuery('.arm_datatable_searchbox #armmanagesearch_new').val();	
+	var db_search_term = (typeof search_term !== 'undefined' && search_term !== '') ? search_term : '';
+	<?php if($ARMemberLite->is_arm_pro_active)
+	{?>
+		arm_width_pct = "20%";
+	<?php if($arm_pay_per_post_feature->isPayPerPostFeature){
+		?>
+		var arm_width_40_cols = 3;
+		var arm_width_20_cols = [1,2,5,6,4];
+		<?php } else{?>
+		var arm_width_40_cols = 2;
+	    var arm_width_20_cols = [1,4];
+	<?php }?>
+	<?php }?>
 	
 	var table = jQuery('#armember_datatable').dataTable({
 		"oLanguage": {
-			"sInfo": __ARM_Showing + " _START_ " + __ARM_to + " _END_ " + __ARM_of + " _TOTAL_ " + __ARM_SETUPS,
+			"sInfo": __ARM_Showing + " <span class='arm-black-350 arm_font_size_15'>_START_</span> " + __ARM_to + " <span class='arm-black-350 arm_font_size_15'>_END_</span> " + __ARM_of + " <span class='arm-black-350 arm_font_size_15'>_TOTAL_</span> " + __ARM_SETUPS,
 			"sInfoEmpty": __ARM_Showing_empty,
 			"sLengthMenu": __ARM_PER_PAGE +"_MENU_",
 			"sEmptyTable": __ARM_NO_FOUND,
@@ -89,6 +107,7 @@ function arm_load_setup_list_grid(){
 		"sServerMethod": "POST",
 		"fnServerParams": function (aoData) {
 			aoData.push({'name': 'action', 'value': 'arm_get_configure_setup_details'});
+			aoData.push({'name': 'sSearch', 'value': db_search_term});
 			aoData.push({'name': '_wpnonce', 'value': _wpnonce});
 		},
 		"bRetrieve": false,
@@ -97,15 +116,23 @@ function arm_load_setup_list_grid(){
 		"bJQueryUI": true,
 		"bPaginate": true,
 		"bAutoWidth" : false,
-		"sScrollX": "100%",
-        "bScrollCollapse": true,
 		"aaSorting": [],
+		"sScrollX":"100%",
+		"bScrollCollapse": false,
 		"aoColumnDefs": [
 			{ "bVisible": false, "aTargets": [] },
-			{ "bSortable": false, "aTargets": [] },
-			{ "sClass": "arm_width_150", "aTargets": [5] },
-			{ "sClass": "arm_width_200", "aTargets": [<?php echo $arm_col;?>] }
+			{"sClass": "center control", "aTargets": [0]},
+			{ "bSortable": false, "aTargets": [0,1,2,3,4,5,6] },
+			{ "sClass": "arm_padding_right_0", "aTargets": [0] },
+			{ "sClass": "arm_min_width_180", "aTargets": [arm_width_40_cols] },
+			{ "sClass": "arm_min_width_150", "aTargets": arm_width_20_cols }
 		],
+		"responsive": {
+			details: {
+				type: 'column',
+				target: '' // This removes the dtr-control click event
+			}
+		},
 		"bStateSave": true,
 		"iCookieDuration": 60 * 60,
 		"sCookiePrefix": "arm_datatable_",
@@ -136,9 +163,16 @@ function arm_load_setup_list_grid(){
 			jQuery(nRow).find('.arm_grid_action_btn_container').each(function () {
 				jQuery(this).parent().addClass('armGridActionTD');
 				jQuery(this).parent().attr('data-key', 'armGridActionTD');
+				if(jQuery(this).html()==""){
+					jQuery(this).parent().hide(0);
+					jQuery(this).parent().css('visibility','hidden');
+				}
+				if(jQuery(this).hasClass('arm_no_expand')){
+					jQuery(this).closest('tr').addClass('arm_no_expand');
+				}
 			});
 		},
-		"fnDrawCallback":function(){		
+		"fnDrawCallback":function(){	
 			jQuery('.dataTables_scroll').show();
 			jQuery('.footer').show();
 			jQuery('.arm_loading_grid').hide();
@@ -160,15 +194,100 @@ function arm_load_setup_list_grid(){
 				});
 			}
 			table.dataTable().fnAdjustColumnSizing(false);
+			jQuery('#arm_member_setup_grid_filter_btn').removeAttr('disabled');
+			var datatable = jQuery('#armember_datatable').DataTable();
+			var dataTableHeaderElements = datatable.columns().header();	
+			for (var i = 0; i< dataTableHeaderElements.length; i++) {
+				if(typeof dataTableHeaderElements[i].dataset.key != 'undefined')
+				{
+					if(!jQuery(dataTableHeaderElements[i]).is(':visible')){
+						var i = i - 1;
+						jQuery(dataTableHeaderElements[i]).addClass('arm_last_dt_col');                           
+						break;
+					}
+				}
+			}
 		}
 	});
 	var filter_box = jQuery('#arm_filter_wrapper').html();
 	jQuery('div#armember_datatable_filter').parent().append(filter_box);
 	jQuery('div#armember_datatable_filter').hide();
 	// jQuery('#arm_filter_wrapper').remove();
+	if(typeof db_search_term != 'undefined'){
+		jQuery('.arm_datatable_searchbox #armmanagesearch_new').val(db_search_term);
+	}
 }
 function ChangeID(id) {
 	document.getElementById('delete_id').value = id;
+}
+
+jQuery(document).ready(function(){
+    jQuery(document).on('click', '.wrap #armember_datatable.collapsed tr.shown td:not([data-action="selectDay"],.armGridActionTD)', function (e) {
+		
+		var tr = jQuery(this).closest('tr');
+		var class_name = jQuery(this).closest('tr').attr('class');
+		var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
+		var row = jQuery('#armember_datatable').DataTable().row(tr);	
+		row.child.hide();
+		tr.removeClass('shown');
+		tr.addClass('hide');
+	});
+
+    jQuery(document).on('click', '.wrap #armember_datatable.collapsed tr:not(.arm_child_transaction_row,.shown,.arm_filter_child_row,.arm_detail_expand_container,.arm_detail_expand_container_child_row) td:not([data-action="selectDay"],.armGridActionTD)', function (e) {
+	
+		jQuery('.arm_child_transaction_row').hide();
+		jQuery('tr.shown .arm_show_configure_plans').trigger('click');
+		var id = jQuery(this).closest('tr').find('.arm_show_configure_plans').attr('data-id');
+        if(typeof id != 'undefined' && id != '')
+        {
+            var tr = jQuery(this).closest('tr');
+            var class_name = jQuery(this).closest('tr').attr('class');
+            var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
+            var row = jQuery('#armember_datatable').DataTable().row(tr);
+            var datatable = jQuery('#armember_datatable').DataTable();
+            var dataTableHeaderElements = datatable.columns().header();		
+            var headers = [];
+            var headers_label = [];
+            for (var i = 0; i< dataTableHeaderElements.length; i++) {
+                if(typeof dataTableHeaderElements[i].dataset.key != 'undefined' && !jQuery(dataTableHeaderElements[i]).is(':visible'))
+                {
+                    key = dataTableHeaderElements[i].dataset.key;
+                    label = jQuery(dataTableHeaderElements[i]).text();
+                    headers.push(key);
+                    headers_label.push(label);
+                }
+            }
+            // Open this row
+            if (row.child()) {
+                row.child.show();
+                tr.removeClass('hide');
+                jQuery('.arm_detail_expand_container').removeAttr('style');
+                tr.addClass('shown');
+            }
+            else{
+                row.child.show();
+                tr.removeClass('hide');
+                row.child(activity_child_format(id,headers,headers_label,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
+                tr.addClass('shown');
+            }
+        }
+	});
+});
+
+function activity_child_format(d,headers,headers_label,_wpnonce) {
+    
+    var response1 = '</div><div class="arm_child_row_div_'+d+'" style="justify-self:center;text-align:center"></><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>"div>';
+    jQuery.ajax({
+        type: "POST",
+        url: __ARMAJAXURL,
+        data: "action=get_configure_plans_expand_grid&log_id=" + d + "&exclude_headers="+headers+"&header_label="+headers_label+"&_wpnonce=" + _wpnonce,
+        dataType: 'html',
+        success: function (response) {
+            jQuery('.arm_child_row_div_'+d).html(response);
+            jQuery('.arm_child_row_div_'+d).removeAttr('style');
+        }
+    });
+    return response1;
 }
 
 // ]]>
@@ -176,9 +295,17 @@ function ChangeID(id) {
 <div class="arm_filter_wrapper" id="arm_filter_wrapper" style="display:none;">
 	<div class="arm_datatable_filters_options arm_filters_searchbox">
 		<div class="sltstandard">
-			<div class="arm_dt_filter_block arm_datatable_searchbox">
-				<div class="arm_datatable_filter_item">
-					<label><input type="text" placeholder="<?php esc_attr_e( 'Search Setup', 'armember-membership' ); ?>" id="armmanagesearch_new" value="<?php echo esc_attr($filter_search); ?>" tabindex="-1"></label>
+			<div class="arm_confirm_box_btn_container">
+				<div class="arm_dt_filter_block arm_datatable_searchbox">
+					<div class="arm_datatable_filter_item">
+						<label><input type="text" placeholder="<?php esc_attr_e( 'Search Setup', 'armember-membership' ); ?>" id="armmanagesearch_new" value="<?php echo esc_attr($filter_search); ?>" tabindex="0"></label>
+					</div>
+				</div>
+				<div class="arm_filter_child_row arm_margin_left_12">
+					<div>
+						<input type="button" class="armemailaddbtn arm_margin_left_12" id="arm_member_setup_grid_filter_btn" value="<?php esc_html_e('Apply','armember-membership');?>">
+						<input type="button" class="arm_cancel_btn arm_margin_left_12 hidden_section" value="<?php esc_html_e('Clear','armember-membership');?>">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -194,26 +321,27 @@ function ChangeID(id) {
 			<div class="armclear"></div>
 		</div>
 		<div class="arm_solid_divider"></div>
-			<form method="GET" id="subscription_setup_list_form" class="data_grid_list">
-				<input type="hidden" name="page" value="<?php echo esc_attr($arm_slugs->membership_setup); //phpcs:ignore ?>" />
-				<input type="hidden" name="armaction" value="list" />
-				<div class="arm_loading_grid" style="display: none;"><?php $arm_loader = $arm_common_lite->arm_loader_img_func();
-				echo $arm_loader; //phpcs:ignore ?></div>
-				<div id="armmainformnewlist" class="arm_filter_grid_list_container">
+		<form method="GET" id="subscription_setup_list_form" class="data_grid_list">
+			<input type="hidden" name="page" value="<?php echo esc_attr($arm_slugs->membership_setup); //phpcs:ignore ?>" />
+			<input type="hidden" name="armaction" value="list" />
+			<div class="arm_loading_grid" style="display: none;"><?php $arm_loader = $arm_common_lite->arm_loader_img_func();
+			echo $arm_loader; //phpcs:ignore ?></div>
+			<div id="armmainformnewlist" class="arm_filter_grid_list_container">
 				<table cellpadding="0" cellspacing="0" border="0" class="display arm_hide_datatable arm_on_display" id="armember_datatable" style="visibility: hidden;">
 					<thead>
 						<tr>
-							<th class="arm_min_width_100"><?php esc_html_e( 'Setup Name', 'armember-membership' ); ?></th>
+							<th class=""></th>
+							<th data-key="arm_setup_name"><?php esc_html_e( 'Setup Name', 'armember-membership' ); ?></th>
 							<?php if($ARMemberLite->is_arm_pro_active)
 							{
 								if( ( $arm_pay_per_post_feature->isPayPerPostFeature || is_plugin_active('armembergift/armembergift.php'))){?> 
-								<th class="arm_min_width_100"><?php esc_html_e('Setup Type','armember-membership');?></th>
+								<th><?php esc_html_e('Setup Type','armember-membership');?></th>
 								<?php }
 							}?>
-							<th class="arm_min_width_120"><?php esc_html_e( 'Plans', 'armember-membership' ); ?></th>
-							<th class="arm_min_width_200"><?php esc_html_e( 'Shortcode', 'armember-membership' ); ?></th>
-							<th style="arm_min_width_150"><?php esc_html_e( 'Gateways', 'armember-membership' ); ?></th>
-							<th class="arm_min_width_120"><?php esc_html_e( 'Member Form', 'armember-membership' ); ?></th>
+							<th data-key="arm_setup_plans"><?php esc_html_e( 'Plans', 'armember-membership' ); ?></th>
+							<th data-key="arm_setup_shortcode"><?php esc_html_e( 'Shortcode', 'armember-membership' ); ?></th>
+							<th data-key="arm_payment_gateway"><?php esc_html_e( 'Gateways', 'armember-membership' ); ?></th>
+							<th data-key="arm_setup_form"><?php esc_html_e( 'Member Form', 'armember-membership' ); ?></th>
 														
 							<th data-key="armGridActionTD" class="armGridActionTD noVis"></th>
 						</tr>
@@ -236,7 +364,7 @@ function ChangeID(id) {
 				<input type="hidden" name="arm_wp_nonce" value="<?php echo esc_attr($wpnonce);?>"/>
 			</div>
 			<div class="footer_grid"></div>
-			</form>
+		</form>
 		<div class="armclear"></div>
 	</div>
 </div>
