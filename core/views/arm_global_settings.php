@@ -7,7 +7,6 @@ if(empty($all_email_settings))
 {
 	$all_email_settings = array();
 }
-
 $is_permalink       = $arm_global_settings->is_permalink();
 $general_settings   = $all_global_settings['general_settings'];
 
@@ -66,8 +65,8 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 						<?php esc_html_e('If you can\'t login after renaming wp-admin, run below URL and all changes are rollback to default :', 'armember-membership'); ?>
 						<div class="arm_shortcode_text arm_form_shortcode_box">
 							<span class="armCopyText"><?php echo home_url().'?arm_wpdisable='.$arm_get_hide_wp_admin_option;//phpcs:ignore ?></span>
-							<span class="arm_click_to_copy_text" data-code="<?php echo home_url().'?arm_wpdisable='.$arm_get_hide_wp_admin_option; //phpcs:ignore?>"><?php esc_html_e('Click to copy', 'armember-membership');?></span>
-							<span class="arm_copied_text"><img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/copied_ok.png" alt="ok"><?php esc_html_e('Code Copied', 'armember-membership');?></span>
+							<span class="arm_click_to_copy_text" data-code="<?php echo home_url().'?arm_wpdisable='.$arm_get_hide_wp_admin_option; //phpcs:ignore ?>"><?php esc_html_e('Click to copy', 'armember-membership');?></span>
+							<span class="arm_copied_text"><img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/copied_ok.png" alt="ok"><?php esc_html_e('Code Copied', 'armember-membership');?></span>
 						</div>
 					</li>
 					<?php } ?>
@@ -109,9 +108,9 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 	<div class="page_sub_content">
 		
 		<form method="post" action="#" id="arm_global_settings" class="arm_global_settings arm_admin_form" onsubmit="return false;">
-		<div id="general_setting_sec" class="arm_settings_section">
-			<div class="page_sub_title arm_margin_bottom_32 arm_setting_title"><?php esc_html_e( 'General Settings', 'armember-membership' ); ?></div>
-				<div class="form-table"> 
+		<div id="general_setting_sec">
+			<div class="page_sub_title arm_margin_bottom_32 arm_setting_title"><?php esc_html_e( 'General Options', 'armember-membership' ); ?></div>
+			<div id="general_options_sec" class="form-table"> 
 				<div class="arm_setting_main_content">
 					<div class="arm_row_wrapper">
 						<div class="left_content">
@@ -513,10 +512,10 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 							
 						</div>
 						<div class="arm_info_text_style arm_profile_user_login arm_padding_0 arm_margin_0 arm_margin_top_12" style="<?php echo ( $permalink_base === 'user_login' ) ? '' : 'display:none;'; ?>">
-							e.g. <?php echo $profileUrl_user_login; ?>
+							e.g. <?php echo $profileUrl_user_login; //phpcs:ignore ?>
 						</div>
 						<div class="arm_info_text_style arm_profile_user_id arm_padding_0 arm_margin_0 arm_margin_top_12" style="<?php echo ( $permalink_base === 'user_id' ) ? '' : 'display:none;'; ?>">
-							e.g. <?php echo $profileUrl_user_id; ?>
+							e.g. <?php echo $profileUrl_user_id; //phpcs:ignore ?>
 						</div>
 					</div>
 				</div>
@@ -562,7 +561,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 				</div>			
 		</div>
 
-		<div id="email_setting_sec" class="arm_settings_section" style="display:none;">
+		<div id="email_setting_sec">
 			<div class="page_sub_title arm_margin_bottom_0"><?php esc_html_e( 'Email Settings', 'armember-membership' ); ?></div>
 				<div class="arm_setting_main_content arm_padding_0 arm_margin_top_32 arm_email_setting_wapper">
 					<div class="arm_row_wrapper arm_row_wrapper_padding_before">
@@ -584,7 +583,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 								</div>
 								<div class="arm_form_field_block ">
 									<label class="arm-form-table-label"><?php esc_html_e( 'From/Reply to Email', 'armember-membership' ); ?></label>
-									<input id="arm_email_from_email" type="email" name="arm_email_from_email" value="<?php echo ( ! empty( $all_email_settings['arm_email_from_email'] ) ? esc_attr($all_email_settings['arm_email_from_email']) : get_option( 'admin_email' ) ); ?>" >
+									<input id="arm_email_from_email" type="email" name="arm_email_from_email" value="<?php echo ( ! empty( $all_email_settings['arm_email_from_email'] ) ? esc_attr($all_email_settings['arm_email_from_email']) : get_option( 'admin_email' ) ); //phpcs:ignore ?>" >
 									<span id="email_from_email_error" class="arm_error_msg email_from_email_error" style="display:none;"><?php esc_html_e( 'Please enter From Email ID.', 'armember-membership' ); ?></span>
 									<span id="invalid_email_from_email_error" class="arm_error_msg invalid_email_from_email_error" style="display:none;"><?php esc_html_e( 'Please enter valid From Email ID.', 'armember-membership' ); ?></span>
 								</div>
@@ -640,7 +639,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 									<label for="arm_email_server_phpm" class="arm_email_settings_help_text arm_padding_right_46"><?php esc_html_e( 'PHP Mailer', 'armember-membership' ); ?></label>
 									</div>
 
-									<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_global_settings_section','gmail_options') : ''; ?>
+									<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_global_settings_section','gmail_options') : '';  //phpcs:ignore ?>
 
 								</div>
 							</div>
@@ -713,7 +712,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 									</div>
 								</div>
 							</div>
-							<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_global_settings_section','gmail_section') : ''; ?>	
+							<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_global_settings_section','gmail_section') : '';  //phpcs:ignore ?>	
 						</div>			
 					</div>
 				</div>	
@@ -753,7 +752,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 						</div>
 						<div class="arm_form_field_block arm_margin_top_24">
 							<button type="button" class="arm_save_btn arm_email_notification_btn" id="arm_send_test_mail" ><?php esc_html_e('Send test mail', 'armember-membership'); ?></button>
-							<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL ?>/arm_loader.gif" id="arm_send_test_mail_loader" class="arm_submit_btn_loader" width="24" height="24" style="display: none;" />
+							<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_loader.gif" id="arm_send_test_mail_loader" class="arm_submit_btn_loader" width="24" height="24" style="display: none;" />
 						</div>
 					</div>
 				</div>
@@ -762,7 +761,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 		<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_global_settings_section','invoices_tax') : ''; //phpcs:ignore ?>
 		<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_global_settings_section','google_recaptcha') : ''; //phpcs:ignore ?>
 
-		<div id="preset_fields_sec" class="arm_settings_section" style="display:none;">	
+		<div id="preset_fields_sec">	
 			<div class="page_sub_title arm_margin_bottom_0"><?php esc_html_e( 'Manage Preset Form Fields', 'armember-membership' ); ?></div>
 					
 			<div class="arm_setting_main_content arm_margin_top_32">
@@ -779,7 +778,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 			</div>
 		</div>
 
-		<div id="email_scheduler_sec" class="arm_settings_section arm_margin_bottom_32" style="display:none;">
+		<div id="email_scheduler_sec" class="arm_margin_bottom_32">
 			<div class="page_sub_title arm_margin_bottom_0"><?php esc_html_e( 'Email notification scheduler setting', 'armember-membership' ); ?>
 				<i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_html_e( 'when you change value from below dropdown and save it then it will set new schedular and remove previous one.', 'armember-membership' ); ?>"></i>
 			</div>
@@ -829,93 +828,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 		</div>
 
 		<?php do_action( 'arm_after_global_settings_html', $general_settings ); ?>
-
-		<div id="front_end_font_sec" class="arm_settings_section" style="display:none;">
-			<?php
-			$frontfontOptions = array(
-				'level_1_font' => esc_html__( 'Level 1', 'armember-membership' ),
-				'level_2_font' => esc_html__( 'Level 2', 'armember-membership' ),
-				'level_3_font' => esc_html__( 'Level 3', 'armember-membership' ),
-				'level_4_font' => esc_html__( 'Level 4', 'armember-membership' ),
-				'link_font'    => esc_html__( 'Links', 'armember-membership' ),
-				'button_font'  => esc_html__( 'Buttons', 'armember-membership' ),
-			);
-			$frontfontOptions = apply_filters( 'arm_front_font_settings_type', $frontfontOptions );
-			?>
-			<?php if ( ! empty( $frontfontOptions ) ) : ?>
-				<div class="page_sub_title"><?php esc_html_e( 'Front-end Font Settings', 'armember-membership' ); ?></div>
-				<div class="form-table arm_width_auto arm_margin_top_32 arm_margin_bottom_32">
-					<?php
-					$frontOptHtml = '';
-					$frontOptions = isset( $general_settings['front_settings'] ) ? $general_settings['front_settings'] : array();
-					foreach ( $frontfontOptions as $key => $title ) {
-						$fontVal         = ( ( ! empty( $frontOptions[ $key ] ) ) ? $frontOptions[ $key ] : array() );
-						$font_bold       = ( isset( $fontVal['font_bold'] ) && $fontVal['font_bold'] == '1' ) ? 1 : 0;
-						$font_italic     = ( isset( $fontVal['font_italic'] ) && $fontVal['font_italic'] == '1' ) ? 1 : 0;
-						$font_decoration = ( isset( $fontVal['font_decoration'] ) ) ? $fontVal['font_decoration'] : '';
-						$frontOptHtml   .= '<div class="arm_form_field_block arm_display_flex">';
-						$frontOptHtml   .= '<div class="arm-form-table-label arm_padding_left_0  arm_font_setting_label arm_font_size_18">' . esc_attr( $title );
-						if ( $key == 'level_1_font' ) {
-							$tooltip_title = esc_html__( 'Font settings of Level 1 will be applied to main heading of frontend shortcodes. Like Transaction listing heading and like wise.', 'armember-membership' );
-						} elseif ( $key == 'level_2_font' ) {
-							$tooltip_title = esc_html__( 'Font settings of Level 2 will be applied to sub heading ( Main Labels ) of frontend shortcodes. For example table heading of trasanction listing.', 'armember-membership' );
-						} elseif ( $key == 'level_3_font' ) {
-							$tooltip_title = esc_html__( 'Font settings of Level 3 will be applied to sub labels of frontend shortcodes. For example table content of trasanction listing.', 'armember-membership' );
-						} elseif ( $key == 'level_4_font' ) {
-							$tooltip_title = esc_html__( 'Font settings of Level 4 will be applied to very small labels of frontend shortcodes. For member listing etc.', 'armember-membership' );
-						} elseif ( $key == 'link_font' ) {
-							$tooltip_title = esc_html__( 'Font settings of Links will be applied to links of frontend shortcodes. For example edit profile, logout link and profile links etc.', 'armember-membership' );
-						} elseif ( $key == 'button_font' ) {
-							$tooltip_title = esc_html__( 'Font settings of Buttons will be applied to buttons of frontend shortcodes output. For example Renew button, Cancel Button, Make Payment Button etc.', 'armember-membership' );
-						}
-						$frontOptHtml .= ' <i class="arm_helptip_icon armfa armfa-question-circle" title="' . esc_attr( $tooltip_title ) . '"></i></div>';
-						$frontOptHtml .= '<div class="arm_setting_main_content arm_margin_left_40">';
-						$frontOptHtml .= '<input type="hidden" id="arm_front_font_family_' . esc_attr( $key ) . '" name="arm_general_settings[front_settings][' . esc_attr( $key ) . '][font_family]" value="' . ( ( ! empty( $fontVal['font_family'] ) ) ? esc_attr( sanitize_text_field($fontVal['font_family']) ) : esc_attr('Helvetica') ) . '"/>';
-						$frontOptHtml .= '<dl class="arm_selectbox column_level_dd arm_width_140 arm_margin_right_10">';
-						$frontOptHtml .= '<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"  /><i class="armfa armfa-caret-down armfa-lg"></i></dt>';
-						$frontOptHtml .= '<dd><ul data-id="arm_front_font_family_' . esc_attr( $key ) . '">';
-						$frontOptHtml .= $arm_member_forms->arm_fonts_list();
-						$frontOptHtml .= '</ul></dd>';
-						$frontOptHtml .= '</dl>';
-						$frontOptHtml .= '<input type="hidden" id="arm_front_font_size_' . esc_attr( $key ) . '" name="arm_general_settings[front_settings][' . esc_attr( $key ) . '][font_size]" value="' . ( ! empty( $fontVal['font_size'] ) ? esc_attr( sanitize_text_field($fontVal['font_size'])) : esc_attr('14') ) . '"/>';
-						$frontOptHtml .= '<dl class="arm_selectbox column_level_dd arm_width_100">';
-						$frontOptHtml .= '<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"  /><i class="armfa armfa-caret-down armfa-lg"></i></dt>';
-						$frontOptHtml .= '<dd><ul data-id="arm_front_font_size_' . esc_attr( $key ) . '">';
-						for ( $i = 8; $i < 41; $i++ ) {
-							$frontOptHtml .= '<li data-label="' . esc_attr( $i ) . ' px" data-value="' . esc_attr( $i ) . '">' . esc_attr( $i ) . ' px</li>';
-						}
-						$frontOptHtml .= '</ul></dd>';
-						$frontOptHtml .= '</dl>';
-					
-						$frontOptHtml .= '<div class="arm_font_style_options arm_front_font_style_options arm_margin_left_24">';
-						$frontOptHtml .= '<label class="arm_font_style_label ' . ( ( $font_bold == '1' ) ? 'arm_style_active' : '' ) . '" data-value="bold" data-field="arm_front_font_bold_' . esc_attr( $key ) . ' "><svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.66667H1M5 7.66667C5 7.66667 8.33333 7.66666 8.33333 4.33333C8.33333 1.00001 5 1 5 1H1.6C1.26863 1 1 1.26863 1 1.6V7.66667M5 7.66667C5 7.66667 9 7.66667 9 11.3333C9 15 5 15 5 15H1.6C1.26863 15 1 14.7314 1 14.4V7.66667" stroke="#4D5973" stroke-width="1.2" stroke-linecap="round"/></svg></label>';
-						$frontOptHtml .= '<input type="hidden" name="arm_general_settings[front_settings][' . esc_attr( $key ) . '][font_bold]" id="arm_front_font_bold_' . esc_attr( $key ) . '" class="arm_front_font_bold_' . esc_attr( $key ) . '" value="' . esc_attr(sanitize_text_field($font_bold)) . '" />';
-						$frontOptHtml .= '<label class="arm_font_style_label ' . ( ( $font_italic == '1' ) ? 'arm_style_active' : '' ) . '" data-value="italic" data-field="arm_front_font_italic_' . esc_attr( $key ) . '"><svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1L8 0.999999M11 0.999999L8 0.999999M8 0.999999L4 15M4 15L1 15M4 15L7 15" stroke="#4D5973" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></label>';
-						$frontOptHtml .= '<input type="hidden" name="arm_general_settings[front_settings][' . esc_attr( $key ) . '][font_italic]" id="arm_front_font_italic_' . esc_attr( $key ) . '" class="arm_front_font_italic_' . esc_attr( $key ) . '" value="' . esc_attr( sanitize_text_field($font_italic)) . '" />';
-
-						$frontOptHtml .= '<label class="arm_font_style_label arm_decoration_label ' . ( ( $font_decoration == 'underline' ) ? 'arm_style_active' : '' ) . '" data-value="underline" data-field="arm_front_font_decoration_' . esc_attr( $key ) . '"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17 4V10C17 12.7614 14.7614 15 12 15V15C9.23858 15 7 12.7614 7 10V4" stroke="#4D5973" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19H19" stroke="#4D5973" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></label>';
-						$frontOptHtml .= '<label class="arm_font_style_label arm_decoration_label ' . ( ( $font_decoration == 'line-through' ) ? 'arm_style_active' : '' ) . '" data-value="line-through" data-field="arm_front_font_decoration_' . esc_attr( $key ) . '"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12H20" stroke="#4D5973" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5714 4H10.39C8.51775 4 7 5.61893 7 7.61597C7 9.1724 7.9337 10.5542 9.31797 11.0464L12 12M7 20H13.61C15.4823 20 17 18.3811 17 16.384C17 15.7697 16.8545 15.1826 16.5933 14.6667" stroke="#4D5973" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></label>';
-						$frontOptHtml .= '<input type="hidden" name="arm_general_settings[front_settings][' . esc_attr( $key ) . '][font_decoration]" id="arm_front_font_decoration_' . esc_attr( $key ) . '" class="arm_front_font_decoration_' . esc_attr( $key ) . '" value="' . esc_attr(sanitize_text_field($font_decoration)) . '" />';
-								$frontOptHtml     .= '</div>';
-								$frontOptHtml .= '<div class="arm_front_font_color arm_margin_right_0">';
-					
-								$frontOptHtml .= '<input type="text" id="arm_front_font_color_' . esc_attr( $key ) . '" name="arm_general_settings[front_settings][' . esc_attr( $key ) . '][font_color]" class="arm_colorpicker" value="' . ( ! empty( $fontVal['font_color'] ) ? esc_attr( sanitize_text_field($fontVal['font_color']) ) : esc_attr('#000000') ) . '">';
-								$frontOptHtml .= '</label>';
-								$frontOptHtml .= '</div>';
-							$frontOptHtml         .= '</div>';
-							$frontOptHtml             .= '</div>';
-							$frontOptHtml         .= '<div class="arm_margin_top_32"></div>';
-
-					}
-					echo $frontOptHtml; //phpcs:ignore
-					?>
-				</div>
-				
-				<?php endif; ?>
-		</div>
-		<div id="global_css_sec"  class="arm_settings_section" style="display:none;">
-			<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_global_settings_section','custom_css') : ''; //phpcs:ignore ?>			
-		</div>
+		
 			<div class="arm_submit_btn_container arm_apply_changes_btn_container">
 				<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif'; //phpcs:ignore ?>" id="arm_loader_img" style="display:none;" class="arm_submit_btn_loader" width="24" height="24" />&nbsp;<button id="arm_global_settings_btn" class="arm_save_btn" name="arm_global_settings_btn" type="submit"><?php esc_html_e( 'Apply Changes', 'armember-membership' ); ?></button>
 				
@@ -925,7 +838,6 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 		</form>
 	</div>
 	<div class="armclear"></div>
-	<div class="arm_custom_css_detail_container"></div>
 	<div class="arm_edit_form_fields_popup_div popup_wrapper <?php echo ( is_rtl() ) ? 'arm_page_rtl' : ''; ?>">
 			<form method="GET" id="arm_edit_preset_fields_form" class="content_wrapper">
 				<div>
@@ -1036,6 +948,6 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 // <![CDATA[
 var ARM_IMAGE_URL = "<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>";
 var ARM_UPDATE_LABEL = "<?php esc_html_e( 'Update', 'armember-membership' ); ?>";
-var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete.svg';
-var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete_hover.svg';
+var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/delete.svg';
+var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/delete_hover.svg';
 </script>

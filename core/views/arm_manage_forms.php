@@ -21,7 +21,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 					
 					<?php
 					$arm_add_member_form_btn = '';
-					echo apply_filters('arm_add_member_reg_form_btn',$arm_add_member_form_btn,'register'); //phpcs:ignore?>
+					echo apply_filters('arm_add_member_reg_form_btn',$arm_add_member_form_btn,'register'); //phpcs:ignore ?>
 					<div class="armclear"></div>
 				</div>
 				<div class="armclear"></div>
@@ -189,7 +189,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 												<div class="arm_form_action_btns">
 													<?php 
 													$arm_duplicate_form_fields_btn ='';
-													echo apply_filters('arm_duplicate_form_fields_btn',$arm_duplicate_form_fields_btn,$firstForm['arm_form_id']); //phpcs:ignore?>
+													echo apply_filters('arm_duplicate_form_fields_btn',$arm_duplicate_form_fields_btn,$firstForm['arm_form_id']); //phpcs:ignore ?>
 													<a href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $firstForm['arm_form_id'] ) ); ?>" class="arm_get_form_link armhelptip" title="<?php esc_html_e( 'Edit Form', 'armember-membership' ); ?>" data-form_id="<?php echo esc_attr($_fid); ?>">
 														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.2594 3.60022L5.04936 12.2902C4.73936 12.6202 4.43936 13.2702 4.37936 13.7202L4.00936 16.9602C3.87936 18.1302 4.71936 18.9302 5.87936 18.7302L9.09936 18.1802C9.54936 18.1002 10.1794 17.7702 10.4894 17.4302L18.6994 8.74022C20.1194 7.24022 20.7594 5.53022 18.5494 3.44022C16.3494 1.37022 14.6794 2.10022 13.2594 3.60022Z" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.8906 5.0498C12.3206 7.8098 14.5606 9.9198 17.3406 10.1998" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 22H21" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
 													</a><?php //phpcs:ignore ?>
@@ -224,38 +224,6 @@ echo $arm_loader; //phpcs:ignore ?></div>
 				<div class="arm_form_list_container arm_form_additional_shortcodes">
 				<div class="divTable">
 						<div class="divTableBody arm_display_grid arm_grid_col_3">
-							<?php if(!$ARMemberLite->is_arm_pro_active){?>
-								<div class="divTableRow member_row_member_profile arm_form_additional_shortcodes">
-									<div class="divTableCell arm_padding_left_24 arm_padding_right_0">
-										<?php esc_html_e( 'Edit Profile', 'armember-membership' ); ?>
-									</div>
-									<div class="divTableCell arm_padding_0">
-										<div class="arm_shortcode_text arm_form_shortcode_box">
-											<?php
-											$arm_default_signup_form_label = $arm_member_forms->arm_get_default_form_label( 'registration' );
-											$edit_profile_code             = '[arm_edit_profile title="' . esc_html__( 'Edit Profile', 'armember-membership' ) . '" form_id="101" form_position="center" social_fields="facebook,twitter,linkedin" submit_text="' . esc_html__( 'Update Profile', 'armember-membership' ) . '" message="' . esc_html__( 'Your profile has been updated successfully.', 'armember-membership' ) . '" view_profile="true" view_profile_link="' . esc_html__( 'View Profile', 'armember-membership' ) . '"]';
-											?>
-											<span class="armCopyText"><?php echo esc_attr( $edit_profile_code ); ?></span>
-											<span class="arm_click_to_copy_text" data-code="<?php echo esc_attr( $edit_profile_code ); ?>"><?php esc_html_e( 'Click to copy', 'armember-membership' ); ?></span>
-											<span class="arm_copied_text"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/copied_ok.png" alt="ok"/><?php esc_html_e( 'Code Copied', 'armember-membership' ); ?></span>
-										</div>
-									</div>
-									<div class="divTableCell arm_padding_0">
-										<?php $additional_profile_title='<h5 class="arm_font_size_16">'. esc_html__( 'Shortcode Parameters', 'armember-membership' ).'</h5><ul>
-											<li>title="'. esc_html__( 'Edit Profile', 'armember-membership' ).'"</li>
-											<li>form_id="101"</li>
-											<li><small><i>'. esc_html__( 'In form_id pass id of registration form of which styling and fields you want to inherit in Edit Profile Form.', 'armember-membership' ).'</i></small></li>
-											<li>submit_text="'. esc_html__( 'Update Profile', 'armember-membership' ).'"</li>
-											<li>message="'. esc_html__( 'Your profile has been updated successfully.', 'armember-membership' ).'"</li>
-											<li>view_profile="true"</li>
-											<li>view_profile_link="'. esc_html__( 'View Profile', 'armember-membership' ).'"</li>
-											<li>social_fields="facebook,twitter,linkedin"</li>
-											<li><small><i>'. esc_html__( 'In social_fields, pass coma seperated social networks name (facebook, twitter,linkedin, vk, instagram,  pinterest,youtube, dribbble, delicious, tumblr, vine).', 'armember-membership' ).'</i></small></li>
-										</ul>';?>
-										<div class="arm_tooltip armhelptip arm_margin_top_10" title="<?php echo esc_html($additional_profile_title);?>"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#617191" stroke-width="1.5"/><path d="M12 17V11" stroke="#617191" stroke-width="1.5" stroke-linecap="round"/><path d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z" fill="#617191"/></svg></div>
-									</div>
-								</div>
-							<?php }?>
 							<div class="divTableRow member_row_member_logout arm_form_additional_shortcodes">
 								<div class="divTableCell arm_padding_left_24 arm_padding_right_0">
 									<?php esc_html_e( 'Logout', 'armember-membership' ); ?>
@@ -440,7 +408,7 @@ echo apply_filters('arm_member_form_add_edit_popup',$arm_member_add_edit_form_po
 ?>
 
 <script type="text/javascript">
-<?php if ( isset( $_REQUEST['setup'] ) && $_REQUEST['setup'] == 'true' ) : //phpcs:ignore?>
+<?php if ( isset( $_REQUEST['setup'] ) && $_REQUEST['setup'] == 'true' ) : //phpcs:ignore ?>
 jQuery(window).on("load", function(){
 	jQuery('.arm_add_new_form_btn').trigger('click');
 });

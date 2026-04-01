@@ -106,7 +106,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                 update_option('arm_email_debug_log', $arm_is_email_log_enabled);
 
                 $response = array('type' => 'success', 'msg' => esc_html__('Debug Settings Saved Successfully', 'armember-membership'));
-                echo arm_pattern_json_encode($response);
+                echo arm_pattern_json_encode($response); //phpcs:ignore
                 die();
             }
         }
@@ -144,7 +144,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                 }
 
                 $response = array('type' => 'success', 'msg' => esc_html__('Debug Logs cleared successfully', 'armember-membership'));
-                echo arm_pattern_json_encode($response);
+                echo arm_pattern_json_encode($response); //phpcs:ignore
                 die();
             }
         }
@@ -373,12 +373,12 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					}
 				}
 				$response['membership_plan'] = $arm_member_plan_resp;
-				$excluded_header = sanitize_text_field($_REQUEST['exclude_headers']);
-				$header_label = sanitize_text_field($_REQUEST['header_label']);
+				$excluded_header = sanitize_text_field($_REQUEST['exclude_headers']); //phpcs:ignore
+				$header_label = sanitize_text_field($_REQUEST['header_label']);  //phpcs:ignore
 				$response['child_row_content'] = $this->arm_get_user_all_details_for_grid_func($user_ID,1,$excluded_header,$header_label);
 			}
 			
-			echo arm_pattern_json_encode($response);
+			echo arm_pattern_json_encode($response); //phpcs:ignore
 			die();
 		}
 		function get_arm_member_list_func(){
@@ -475,7 +475,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					$user_list_msg= esc_html__('No Such user was found','armember-membership') ;
 					$response = array('status' => 'error', 'msg' => $user_list_msg);
 				}
-                echo arm_pattern_json_encode($response);
+                echo arm_pattern_json_encode($response); //phpcs:ignore
                 die;
             }   
 		}
@@ -1247,7 +1247,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages( @$errors, @$message );
-			echo arm_pattern_json_encode( $return_array );
+			echo arm_pattern_json_encode( $return_array ); //phpcs:ignore
 			exit;
 		}
 
@@ -1337,7 +1337,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					}
 				}
 			}
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			exit;
 		}
 
@@ -1572,7 +1572,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 							$now_time = strtotime( current_time( 'mysql' ) );
 
 							$plaData     = get_user_meta( $user_info->ID, 'arm_user_plan_' . $plan_id, true );
-							$expire_time = $plaData['arm_expire_plan'];
+							$expire_time = !empty($plaData['arm_expire_plan']) ? $plaData['arm_expire_plan'] : '';
 							if ( ! empty( $expire_time ) && $now_time >= $expire_time ) {
 								$arm_subscription_plans->arm_user_plan_status_action(
 									array(
@@ -1835,7 +1835,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			$up_file = sanitize_text_field($request['import_user']);
 			if (isset($up_file)) {
 				$up_file_ext = strtolower(pathinfo($up_file, PATHINFO_EXTENSION));
-				echo $arm_ajax_pattern_start;
+				echo $arm_ajax_pattern_start; //phpcs:ignore
 				if (in_array($up_file_ext, array('csv', 'xls', 'xlsx', 'xml'))) {
 					if ($up_file_ext == 'xml') {
 						if (file_exists(ABSPATH . 'wp-admin/includes/file.php')) {
@@ -1919,7 +1919,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 							$user_meta = (in_array($key, $exists_user_meta) || in_array(str_replace(' ', '_', $key), $exists_user_meta)) ? esc_html__('Existing', 'armember-membership') : esc_html__('New', 'armember-membership');
 							?>
 							<div class="account_detail_radio arm_account_detail_options">
-								<input type="checkbox" value="<?php echo esc_attr($key); ?>" class="arm_icheckbox arm_import_user_meta" name="import_user_meta[<?php echo esc_attr($key); ?>]" id="arm_profile_field_input_<?php echo esc_attr($key); ?>" <?php echo $checkedDefault; ?> />
+								<input type="checkbox" value="<?php echo esc_attr($key); ?>" class="arm_icheckbox arm_import_user_meta" name="import_user_meta[<?php echo esc_attr($key); ?>]" id="arm_profile_field_input_<?php echo esc_attr($key); ?>" <?php echo $checkedDefault; //phpcs:ignore ?> />
 								<label for="arm_profile_field_input_<?php echo esc_attr($key); ?>"><?php echo esc_html($title); ?></label>
 								<div class="arm_list_sortable_icon"></div>
 								<span class="arm_user_meta_<?php echo esc_attr($user_meta); ?> arm_user_meta_existing_meta_txt" style="color: gray;font-size: 11px; font-style: italic; text-align: center; width: 100%; margin: 0 0 0 34px;">
@@ -1930,7 +1930,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 						endforeach;
 					endif;
 				}
-				echo $arm_ajax_pattern_end;
+				echo $arm_ajax_pattern_end; //phpcs:ignore
 			}
 			exit;
 		}
@@ -1940,10 +1940,10 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			global $wp, $wpdb, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_case_types, $arm_member_forms, $arm_capabilities_global, $arm_ajax_pattern_start, $arm_ajax_pattern_end;
 			
 			$ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_import_export'], '1');
-			set_time_limit(0);
+			set_time_limit(0); //phpcs:ignore --Reason: Preventing timeout issue
 			
 			$file_data_array = $user_ids = $u_errors = $errors = array();
-			$request = $_POST;
+			$request = $_POST; //phpcs:ignore
 			$action = sanitize_text_field($request['arm_action']);
 			$up_file = sanitize_text_field($request['import_user']);
 			$dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
@@ -1988,7 +1988,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			$users_data = array();
 			if (isset($up_file)) {
 				$up_file_ext = pathinfo($up_file, PATHINFO_EXTENSION);
-				echo $arm_ajax_pattern_start;
+				echo $arm_ajax_pattern_start; //phpcs:ignore
 		
 				if (in_array($up_file_ext, array('csv', 'xls', 'xlsx', 'xml'))) {
 					if ($up_file_ext == 'xml') {
@@ -2102,7 +2102,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				<?php
 					}
 				}
-				echo $arm_ajax_pattern_end;
+				echo $arm_ajax_pattern_end; //phpcs:ignore
 			}
 			exit;
 		}
@@ -2110,7 +2110,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
 		function arm_add_import_user() {
 
-			global $wpdb, $ARMemberLite, $arm_members_class, $arm_global_settings, $arm_subscription_plans, $arm_case_types, $arm_member_forms, $arm_email_settings, $arm_capabilities_global;
+			global $wpdb, $ARMemberLite, $arm_members_class, $arm_global_settings, $arm_subscription_plans, $arm_case_types, $arm_member_forms, $arm_email_settings, $arm_capabilities_global,$arm_lite_members_activity;
 
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_import_export'], '1' ); //phpcs:ignore --Reason:Verifying nonce
 
@@ -3733,17 +3733,17 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					'membership_plan'     => $memberPlanText,
 					'multiple_membership' => $multiple_membership,
 				);
-				$excluded_header = sanitize_text_field($_REQUEST['exclude_headers']);
-				$header_label = sanitize_text_field($_REQUEST['header_label']);
+				$excluded_header = sanitize_text_field($_REQUEST['exclude_headers']); //phpcs:ignore
+				$header_label = sanitize_text_field($_REQUEST['header_label']); //phpcs:ignore
 				$response['child_row_content'] = $this->arm_get_user_all_details_for_grid_func($user_id,1,$excluded_header,$header_label);
 			}
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die();
 		}
 
 		function arm_resend_verification_email_func( $user_id = 0 ) {
 			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_capabilities_global;
-			$response = array(
+			$response = array( 
 				'type' => 'error',
 				'msg'  => esc_html__( 'Sorry, Something went wrong. Please try again.', 'armember-membership' ),
 			);
@@ -3767,7 +3767,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				}
 			}
 			if ( isset( $_POST['action'] ) && $_POST['action'] == 'arm_resend_verification_email' ) { //phpcs:ignore
-				echo arm_pattern_json_encode( $response );
+				echo arm_pattern_json_encode( $response ); //phpcs:ignore
 				die();
 			}
 			return $response;
@@ -4140,7 +4140,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			}
 			@session_write_close();
 			$ARMemberLite->arm_session_start( true );
-			echo arm_pattern_json_encode( stripslashes_deep( $response ) );
+			echo arm_pattern_json_encode( stripslashes_deep( $response ) ); //phpcs:ignore
 			die();
 		}
 
@@ -5193,7 +5193,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                 $member_view_data = apply_filters('arm_members_view_profile_data',$member_view_data,$member_id);
 				$response = $member_view_data;
 				$resonse_data = array('status'=>'success','response_data'=>$response);
-				echo arm_pattern_json_encode($resonse_data);
+				echo arm_pattern_json_encode($resonse_data); //phpcs:ignore
 				die;
 			}
 		}
@@ -5203,7 +5203,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
             $ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_members'], '1',1); //phpcs:ignore --Reason:Verifying nonce
             $response = array();
-            if (isset($_REQUEST['arm_action']) && $_REQUEST['arm_action'] == 'edit_member' && !empty($_REQUEST['id'])) {
+            if (isset($_REQUEST['arm_action']) && $_REQUEST['arm_action'] == 'edit_member' && !empty($_REQUEST['id'])) { //phpcs:ignore
                 $armform = new ARM_Form_Lite();
                 $formHiddenFields = '';
                 $arm_default_form_id = 101;
@@ -5212,7 +5212,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                 $arm_suffix_icon_pass = '<span class="arm_visible_password_admin arm-df__fc-icon --arm-suffix-icon" id="" style=""><i class="armfa armfa-eye"></i></span>';
                 $response['form_title'] = esc_html__('Update Member', 'armember-membership');
                 $response['form_action'] = 'update_member';
-                $user_id = abs(intval($_REQUEST['id']));
+                $user_id = abs(intval($_REQUEST['id'])); //phpcs:ignore
                 $response['user_id'] = $user_id;
 
                 $user = $arm_members_class->arm_get_member_detail($user_id);
@@ -5315,7 +5315,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
             
                 $planIDs = apply_filters('arm_modify_plan_ids_externally', $planIDs, $user_id);          
                 $planData = get_user_meta($user_id, 'arm_user_plan_' . $planID, true);
-                $plan_start_date = (isset($planData['arm_start_plan']) && !empty($planData['arm_start_plan'])) ? date('m/d/Y', $planData['arm_start_plan']) : date('m/d/Y');
+                $plan_start_date = (isset($planData['arm_start_plan']) && !empty($planData['arm_start_plan'])) ? date('m/d/Y', $planData['arm_start_plan']) : date('m/d/Y');  //phpcs:ignore
             
                 $futurePlanIDs = get_user_meta($user_id, 'arm_user_future_plan_ids', true);
                 $futurePlanIDs = !empty($futurePlanIDs) ? $futurePlanIDs : array();
@@ -5377,7 +5377,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                 $response = apply_filters( 'arm_get_member_addon_data',$response,$user_id );
             }
             
-            echo $arm_ajax_pattern_start.''.wp_json_encode($response).''.$arm_ajax_pattern_end;
+            echo $arm_ajax_pattern_start.''.wp_json_encode($response).''.$arm_ajax_pattern_end; //phpcs:ignore
             die();
 		}
 
@@ -5432,7 +5432,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                                         $starts_on = date_i18n($date_format, $started_date);
                                                     }
 
-                                                    $expires_on = !empty($planData['arm_expire_plan']) ? '<span id="arm_user_expiry_date_' . $pID . '" style="display: flex;"> ' . date_i18n($date_format, $planData['arm_expire_plan']) . ' <img src="' . MEMBERSHIPLITE_IMAGES_URL . '/edit_icon.svg" width="26" style="margin: 0px 0 0 5px; cursor: pointer;" title="' . esc_attr__('Change Expiry Date', 'armember-membership') . '" data-plan_id="' . $pID . '" class="arm_edit_user_expiry_date"></span><span class="arm_width_155 arm_position_relative" id="arm_user_expiry_date_box_' . $pID . '" style="display: none;"><input type="text" value="' . date($arm_common_date_format, $planData['arm_expire_plan']) . '"  data-date_format="'.$arm_common_date_format.'" name="arm_subscription_expiry_date_' . $pID . '" class="arm_member_form_input arm_user_plan_expiry_date_picker arm_width_120 arm_min_width_120" /><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/cancel_date_icon.png" width="11" height="11" title="' . esc_attr__('Cancel', 'armember-membership') . '" data-plan_id="' . $pID . '" data-plan-expire-date="' . date('m/d/Y', $planData['arm_expire_plan']) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_attr__('Never Expires', 'armember-membership');
+                                                    $expires_on = !empty($planData['arm_expire_plan']) ? '<span id="arm_user_expiry_date_' . $pID . '" style="display: flex;"> ' . date_i18n($date_format, $planData['arm_expire_plan']) . ' <img src="' . MEMBERSHIPLITE_IMAGES_URL . '/edit_icon.svg" width="26" style="margin: 0px 0 0 5px; cursor: pointer;" title="' . esc_attr__('Change Expiry Date', 'armember-membership') . '" data-plan_id="' . $pID . '" class="arm_edit_user_expiry_date"></span><span class="arm_width_155 arm_position_relative" id="arm_user_expiry_date_box_' . $pID . '" style="display: none;"><input type="text" value="' . date($arm_common_date_format, $planData['arm_expire_plan']) . '"  data-date_format="'.$arm_common_date_format.'" name="arm_subscription_expiry_date_' . $pID . '" class="arm_member_form_input arm_user_plan_expiry_date_picker arm_width_120 arm_min_width_120" /><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/cancel_date_icon.png" width="11" height="11" title="' . esc_attr__('Cancel', 'armember-membership') . '" data-plan_id="' . $pID . '" data-plan-expire-date="' . date('m/d/Y', $planData['arm_expire_plan']) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_attr__('Never Expires', 'armember-membership'); //phpcs:ignore
                                                     $renewal_on = !empty($planData['arm_next_due_payment']) ? date_i18n($date_format, $planData['arm_next_due_payment']) : '-';
                                                     $trial_starts = !empty($planData['arm_trial_start']) ? $planData['arm_trial_start'] : '';
                                                     $trial_ends = !empty($planData['arm_trial_end']) ? $planData['arm_trial_end'] : '';
@@ -5643,7 +5643,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                                 if($started_date != '' && $started_date <= $starts_date) {
                                                     $starts_on = date_i18n($date_format, $started_date);
                                                 }
-                                                $expires_on = !empty($planData['arm_expire_plan']) ? '<span id="arm_user_expiry_date_' . $pID . '" style="display: flex;">' . date_i18n($date_format, $planData['arm_expire_plan']) . ' <img src="' . MEMBERSHIPLITE_IMAGES_URL . '/edit_icon.svg" width="26" style=" margin: 0px 0 0 5px; cursor: pointer;" title="' . esc_html__('Change Expiry Date', 'armember-membership') . '" data-plan_id="' . $pID . '" class="arm_edit_user_expiry_date"></span><span id="arm_user_expiry_date_box_' . $pID . '" class="arm_position_relative" style="display: none; width: 155px;"><input type="text" value="' . date($arm_common_date_format, $planData['arm_expire_plan']) . '" data-date_format="'.$arm_common_date_format.'"  name="arm_subscription_expiry_date_' . $pID . '" class="arm_member_form_input arm_user_plan_expiry_date_picker arm_width_120 arm_min_width_120" /><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/cancel_date_icon.png" width="11" height="11" title="' . esc_html__('Cancel', 'armember-membership') . '" data-plan_id="' . $pID . '" data-plan-expire-date="' . date('m/d/Y', $planData['arm_expire_plan']) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_html__('Never Expires', 'armember-membership');
+                                                $expires_on = !empty($planData['arm_expire_plan']) ? '<span id="arm_user_expiry_date_' . $pID . '" style="display: flex;">' . date_i18n($date_format, $planData['arm_expire_plan']) . ' <img src="' . MEMBERSHIPLITE_IMAGES_URL . '/edit_icon.svg" width="26" style=" margin: 0px 0 0 5px; cursor: pointer;" title="' . esc_html__('Change Expiry Date', 'armember-membership') . '" data-plan_id="' . $pID . '" class="arm_edit_user_expiry_date"></span><span id="arm_user_expiry_date_box_' . $pID . '" class="arm_position_relative" style="display: none; width: 155px;"><input type="text" value="' . date($arm_common_date_format, $planData['arm_expire_plan']) . '" data-date_format="'.$arm_common_date_format.'"  name="arm_subscription_expiry_date_' . $pID . '" class="arm_member_form_input arm_user_plan_expiry_date_picker arm_width_120 arm_min_width_120" /><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/cancel_date_icon.png" width="11" height="11" title="' . esc_html__('Cancel', 'armember-membership') . '" data-plan_id="' . $pID . '" data-plan-expire-date="' . date('m/d/Y', $planData['arm_expire_plan']) . '" class="arm_cancel_edit_user_expiry_date"></span>' : esc_html__('Never Expires', 'armember-membership'); //phpcs:ignore
                                                 $renewal_on = !empty($planData['arm_next_due_payment']) ? date_i18n($date_format, $planData['arm_next_due_payment']) : '-';
                                                 $trial_starts = !empty($planData['arm_trial_start']) ? $planData['arm_trial_start'] : '';
                                                 $trial_ends = !empty($planData['arm_trial_end']) ? $planData['arm_trial_end'] : '';
@@ -5762,14 +5762,14 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			$grid_columns['paid_with'] = esc_html__('Paid With','armember-membership');
 			if(!empty($is_return)){
 				$arm_dt_exclude_keys = explode(',',$exclude_headers);
-				$arm_dt_exclude_label = explode(',',$header_label);
+				$arm_dt_exclude_label = explode('|~|ARM|~|',$header_label);
 				$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
 			}
 			else{
-				if(!empty($_REQUEST['exclude_headers']))
+				if(!empty($_REQUEST['exclude_headers'])) //phpcs:ignore
 				{
-					$arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
-					$arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
+					$arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']); //phpcs:ignore
+					$arm_dt_exclude_label = explode('|~|ARM|~|',$_REQUEST['header_label']); //phpcs:ignore
 					$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
 				}
 			}
@@ -6054,10 +6054,10 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1',1); //phpcs:ignore --Reason:Verifying nonce
     
             $arm_user_ids =  explode(',',$_POST['user_ids']);//phpcs:ignore           
-			if(!empty($_REQUEST['exclude_headers']))
+			if(!empty($_REQUEST['exclude_headers'])) //phpcs:ignore
             {
-                $arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
-                $arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
+                $arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']); //phpcs:ignore
+                $arm_dt_exclude_label = explode('|~|ARM|~|',$_REQUEST['header_label']); //phpcs:ignore
                 $grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
             }
             $return = array();

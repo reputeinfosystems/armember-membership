@@ -303,7 +303,7 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
 									}
 									?>
 								</td>
-								<td class="arm_center arm_table_status"><?php echo $arm_transaction->arm_get_transaction_status_text($t->arm_transaction_status); //phpcs:ignore?></td>
+								<td class="arm_center arm_table_status"><?php echo $arm_transaction->arm_get_transaction_status_text($t->arm_transaction_status); //phpcs:ignore ?></td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>
@@ -375,7 +375,7 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
                             <div class="arm_member_summary_count_wrapper">
                                 <div class="arm_member_summary_count"><?php echo esc_html($total_members);?></div>
                                 <div class="arm_member_summery_icon_wrapper">
-                                    <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_total_members.png" alt="<?php esc_html_e('Total Members', 'armember-membership');?>">
+                                    <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_total_members.png" alt="<?php esc_html_e('Total Members', 'armember-membership');?>">
                                 </div>
                             </div>
                             <div class="arm_member_summary_label_wrapper">
@@ -388,7 +388,7 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
                             <div class="arm_member_summary_count_wrapper">
                                 <div class="arm_member_summary_count"><?php echo esc_html($total_plans);?></div>
                                 <div class="arm_member_summery_icon_wrapper">
-                                    <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_membership_plans.png" alt="<?php esc_html_e('Membership Plans', 'armember-membership');?>">
+                                    <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_membership_plans.png" alt="<?php esc_html_e('Membership Plans', 'armember-membership');?>">
                                 </div>
                             </div>
                             <div class="arm_member_summary_label_wrapper">
@@ -396,13 +396,13 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
                             </div>
 						</div>
 					</a>
-					<?php $arm_admin_dashboard_manage_member_page_url = apply_filters('arm_admin_dashboard_manage_member_page_url',$arm_manage_member_page_url,'inactive_member'); //phpcs:ignore?>
+					<?php $arm_admin_dashboard_manage_member_page_url = apply_filters('arm_admin_dashboard_manage_member_page_url',$arm_manage_member_page_url,'inactive_member'); //phpcs:ignore ?>
 					<a href="<?php echo esc_url($arm_admin_dashboard_manage_member_page_url); //phpcs:ignore ?>" class="welcome-icon">
 						<div class="arm_inactive_members arm_member_summary arm_member_summary_mr4i">
                             <div class="arm_member_summary_count_wrapper">
                             <div class="arm_member_summary_count"><?php echo esc_html($total_inactive_members);?></div>
                                 <div class="arm_member_summery_icon_wrapper">
-                                <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_inactive_members.png" alt="<?php esc_html_e('Inactive Members', 'armember-membership');?>">
+                                <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_inactive_members.png" alt="<?php esc_html_e('Inactive Members', 'armember-membership');?>">
                                 </div>
                             </div>
                             <div class="arm_member_summary_label_wrapper">
@@ -410,13 +410,13 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
                             </div>
 						</div>
 					</a>
-					<?php $arm_admin_dashboard_manage_member_page_url = apply_filters('arm_admin_dashboard_manage_member_page_url',$arm_manage_member_page_url,'active_member'); //phpcs:ignore?>
+					<?php $arm_admin_dashboard_manage_member_page_url = apply_filters('arm_admin_dashboard_manage_member_page_url',$arm_manage_member_page_url,'active_member'); //phpcs:ignore ?>
 					<a href="<?php echo esc_url($arm_admin_dashboard_manage_member_page_url); //phpcs:ignore ?>" class="welcome-icon">
 						<div class="arm_active_members arm_member_summary">
                             <div class="arm_member_summary_count_wrapper">
                                 <div class="arm_member_summary_count"><?php echo esc_html($total_active_members);?></div>
                                 <div class="arm_member_summery_icon_wrapper">
-                                <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_active_members.png" alt="<?php esc_html_e('Active Members', 'armember-membership');?>">
+                                <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_active_members.png" alt="<?php esc_html_e('Active Members', 'armember-membership');?>">
                                 </div>
                             </div>
                             <div class="arm_member_summary_label_wrapper">
@@ -424,13 +424,13 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
                             </div>
 						</div>
 					</a>
-					<?php $arm_admin_dashboard_manage_member_page_url = apply_filters('arm_admin_dashboard_manage_member_page_url',$arm_manage_member_page_url,'pending_member'); //phpcs:ignore?>
+					<?php $arm_admin_dashboard_manage_member_page_url = apply_filters('arm_admin_dashboard_manage_member_page_url',$arm_manage_member_page_url,'pending_member'); //phpcs:ignore ?>
 					<a href="<?php echo esc_url($arm_admin_dashboard_manage_member_page_url); //phpcs:ignore ?>" class="welcome-icon">
 						<div class="arm_pending_members arm_member_summary arm_member_summary_mr4i">
                             <div class="arm_member_summary_count_wrapper">
                                 <div class="arm_member_summary_count"><?php echo esc_html($total_pending_members);?></div>
                                 <div class="arm_member_summery_icon_wrapper">
-                                <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_pending_members.png" alt="<?php esc_html_e('Pending Members', 'armember-membership');?>">
+                                <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_pending_members.png" alt="<?php esc_html_e('Pending Members', 'armember-membership');?>">
                                 </div>
                             </div>
                             <div class="arm_member_summary_label_wrapper">
@@ -438,13 +438,13 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
                             </div>
 						</div>
 					</a>
-					<?php $arm_admin_dashboard_manage_member_page_url = apply_filters('arm_admin_dashboard_manage_member_page_url',$arm_manage_member_page_url,'terminated_member'); //phpcs:ignore?>
+					<?php $arm_admin_dashboard_manage_member_page_url = apply_filters('arm_admin_dashboard_manage_member_page_url',$arm_manage_member_page_url,'terminated_member'); //phpcs:ignore ?>
 					<a href="<?php echo esc_url($arm_admin_dashboard_manage_member_page_url); //phpcs:ignore ?>" class="welcome-icon">
 						<div class="arm_terminate_members arm_member_summary">
                             <div class="arm_member_summary_count_wrapper">
                                 <div class="arm_member_summary_count"><?php echo esc_html($total_terminated_members);?></div>
                                     <div class="arm_member_summery_icon_wrapper">
-                                    <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_terminate_members.png" alt="">
+                                    <img class="arm_member_summery_icon" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_terminate_members.png" alt="">
                                 </div>
                             </div>
                             <div class="arm_member_summary_label_wrapper">

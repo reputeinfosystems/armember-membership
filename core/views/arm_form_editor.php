@@ -223,7 +223,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
                                     <input type="text" value="[arm_profile_detail id='<?php echo esc_attr($form_detail['arm_form_id']); ?>']" readonly="readonly" class="armCopyText arm_font_size_13"/>
                                     <span class="arm_click_to_copy_text arm_font_size_13" data-code="[arm_profile_detail id='<?php echo esc_attr($form_detail['arm_form_id']); ?>']" ><?php esc_html_e('Click to Copy', 'armember-membership') ?></span>
                                     <span class="arm_copied_text arm_font_size_13">
-                                        <img src="<?php echo MEMBERSHIPLITE_IMAGES_URL . '/copied_ok.png' //phpcs:ignore?>" />
+                                        <img src="<?php echo MEMBERSHIPLITE_IMAGES_URL . '/copied_ok.png' //phpcs:ignore ?>" />
                                         <?php esc_html_e('Code Copied', 'armember-membership') ?>
                                     </span>    
                                 <?php
@@ -658,7 +658,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 						<ul class="tabs-menu arm_tab_menu">
 							<li class="current"><a href="#tabsetting-1"><?php esc_html_e( 'Basic Options', 'armember-membership' ); ?></a></li>
 							<?php $arm_pro_advanced_tab_option = '';
-							echo apply_filters('arm_pro_advance_option_tab',$arm_pro_advanced_tab_option); //phpcs:ignore?>
+							echo apply_filters('arm_pro_advance_option_tab',$arm_pro_advanced_tab_option); //phpcs:ignore ?>
 						</ul>
 						<div class="tab arm_form_settings_styles_container arm_width_100_pct" id="arm_form_settings_styles_container" >
 							<div id="tabsetting-1" class="arm-tab-content">
@@ -2430,7 +2430,7 @@ if ((!$isRegister && !$isEditProfile)) {
 					}
 				}
                 else if( jQuery("#arm_opt_ins_cl_mode").prop("checked") && jQuery("#arm_opt_ins_cl_form_field").val() == '' ) {
-                    armToast('<?php echo addslashes(esc_html__('Please select form field in Conditional Subscription.', 'armember-membership')); //phpcs:ignore?>', 'error');
+                    armToast('<?php echo addslashes(esc_html__('Please select form field in Conditional Subscription.', 'armember-membership')); //phpcs:ignore ?>', 'error');
                     return false;
                 }
 

@@ -356,14 +356,16 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 												$font_family = 'Poppins';
 											}else{$font_family = 'Helvetica';}
 												?>
-											<?php foreach ( $fontOptions as $key => $value ) : ?>
+											<?php foreach ( $fontOptions as $key => $value ) : 
+											$arm_template_font_family = ( $get_action == 'edit_profile' && $options[ $key ]['font_family'] != '' ) ? esc_attr($options[ $key ]['font_family']) : $font_family;
+											?>
 												<div class="arm_temp_font_opts_box">
 													<div class="arm_accordion_inner_title"><?php echo esc_html($value); ?></div>
 													<div class="arm_temp_font_opts">
 														<div class="arm_temp_font_opts_wrapper">
-															<input type="hidden" id="arm_template_font_family_<?php echo esc_attr($key); ?>" name="template_options[<?php echo esc_attr($key); ?>][font_family]" value="<?php echo ( $get_action == 'edit_profile' && $options[ $key ]['font_family'] != '' ) ? esc_attr($options[ $key ]['font_family']) : $font_family; ?> "/>
+															<input type="hidden" id="arm_template_font_family_<?php echo esc_attr($key); ?>" name="template_options[<?php echo esc_attr($key); ?>][font_family]" value="<?php echo esc_attr($arm_template_font_family); ?> "/>
 															<dl class="arm_selectbox column_level_dd arm_profile_font_family_select">
-																<dt><span><?php echo ( $get_action == 'edit_profile' ) ? esc_attr($options[ $key ]['font_family']) : $font_family; ?></span><input type="text" style="display:none;" value="" class="arm_autocomplete" readonly="readonly"  /><i class="armfa armfa-caret-down armfa-lg"></i></dt>
+																<dt><span><?php echo ( $get_action == 'edit_profile' ) ? esc_attr($options[ $key ]['font_family']) : $font_family;  //phpcs:ignore ?></span><input type="text" style="display:none;" value="" class="arm_autocomplete" readonly="readonly"  /><i class="armfa armfa-caret-down armfa-lg"></i></dt>
 																<dd>
 																	<ul data-id="arm_template_font_family_<?php echo esc_attr($key); ?>"><?php echo $arm_member_forms->arm_fonts_list(); //phpcs:ignore ?></ul>
 																</dd>
@@ -441,8 +443,8 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 											<dt><span><?php $arm_profile_template_label?></span><input type="text" style="display:none;" class="arm_autocomplete" readonly="readonly"><i class="armfa armfa-caret-down armfa-lg"></i></dt>
 											<dd>
 												<ul data-id="arm_profile_template" style="display: none;">
-													<li data-label="Profile Template 3" data-value="profiletemplate3"><span class="arm_selectbox_option_list"><?php echo esc_html('Profile Template 3','armember-membership')?></span><img class="arm_profile_template_image" src="<?php echo MEMBERSHIPLITE_VIEWS_URL . '/templates/profiletemplate3.svg'?>" width="50" height="50" /></li>
-													<li data-label="Profile Template 6" data-value="profiletemplate6"><span class="arm_selectbox_option_list"><?php echo esc_html('Profile Template 6','armember-membership')?></span><img class="arm_profile_template_image" src="<?php echo MEMBERSHIPLITE_VIEWS_URL . '/templates/profiletemplate6.svg'?>" width="50" height="50" /></li>
+													<li data-label="Profile Template 3" data-value="profiletemplate3"><span class="arm_selectbox_option_list"><?php echo esc_html('Profile Template 3','armember-membership')?></span><img class="arm_profile_template_image" src="<?php echo MEMBERSHIPLITE_VIEWS_URL . '/templates/profiletemplate3.svg'; //phpcs:ignore ?>" width="50" height="50" /></li>
+													<li data-label="Profile Template 6" data-value="profiletemplate6"><span class="arm_selectbox_option_list"><?php echo esc_html('Profile Template 6','armember-membership')?></span><img class="arm_profile_template_image" src="<?php echo MEMBERSHIPLITE_VIEWS_URL . '/templates/profiletemplate6.svg'; //phpcs:ignore ?>" width="50" height="50" /></li>
 											</ul>
 											</dd>
 										</dl>
@@ -806,9 +808,9 @@ if($enable_crop){ ?>
 	var ARM_REMOVE_PROFILE_ROW_MSG = '<?php esc_html_e( 'Are you sure you want to delete this field?', 'armember-membership' ); ?>';
 	var ARM_DELETE = '<?php esc_html_e( 'Delete', 'armember-membership' ); ?>';
 	var ARM_CANCEL = '<?php esc_html_e( 'Cancel', 'armember-membership' ); ?>';
-	var IMAGEURL = '<?php echo MEMBERSHIPLITE_IMAGES_URL;?>';
-	var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete.svg';
-	var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete_hover.svg';
+	var IMAGEURL = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>';
+	var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/delete.svg';
+	var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/delete_hover.svg';
 </script>
 <?php
     echo $ARMemberLite->arm_get_need_help_html_content('members-profile-template-add'); //phpcs:ignore

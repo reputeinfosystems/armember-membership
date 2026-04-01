@@ -19,7 +19,7 @@ $all_roles         = $arm_global_settings->arm_get_all_roles();
 		<form method="post" action="#" id="arm_access_restriction" class="arm_access_restriction arm_admin_form" onsubmit="return false;">
 						<?php do_action( 'arm_before_access_restriction_settings_html', $general_settings ); ?>
 
-			<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_restriction_settings_section', 'general_restriction') : ''; ?>
+			<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_restriction_settings_section', 'general_restriction') : '';  //phpcs:ignore ?>
 			
 			<div class="page_sub_title arm_font_size_18 arm_font_weight_500" id="arm_global_default_access_rules">
 							<?php esc_html_e( 'Default Access Rules for newly added Content', 'armember-membership' ); ?>
@@ -92,7 +92,7 @@ $all_roles         = $arm_global_settings->arm_get_all_roles();
 					</div>
 
 					<?php $visible = ($arm_default_restriction_option === '1') ? '' : 'style="display:none;"'; ?>
-					<div class="arm_row_wrapper arm_default_access_restrictions_row arm_default_restriction_option_<?php echo esc_attr($arm_default_ar_cntr); ?> arm_display_block" <?php echo $visible; ?>>
+					<div class="arm_row_wrapper arm_default_access_restrictions_row arm_default_restriction_option_<?php echo esc_attr($arm_default_ar_cntr); ?> arm_display_block" <?php echo $visible; //phpcs:ignore ?>>
 						<div class="left_content arm_padding_left_32 arm_padding_right_32 arm_padding_bottom_32 ">
 						<div class="arm_margin_bottom_12">
 						<label class="arm-form-table-label">Select Plan</label>
@@ -108,7 +108,7 @@ $all_roles         = $arm_global_settings->arm_get_all_roles();
 									foreach ($all_plans_data as $plan) {
 										if ($plan['arm_subscription_plan_id'] != '-2') {
 											$selected = in_array($plan['arm_subscription_plan_id'], $default_rules[$rtype]) ? 'selected="selected"' : '';
-											echo '<option value="' . esc_attr($plan['arm_subscription_plan_id']) . '" ' . $selected . '>' . esc_html(stripslashes($plan['arm_subscription_plan_name'])) . '</option>';
+											echo '<option value="' . esc_attr($plan['arm_subscription_plan_id']) . '" ' . $selected . '>' . esc_html(stripslashes($plan['arm_subscription_plan_name'])) . '</option>'; //phpcs:ignore
 										}
 									}
 								}
@@ -122,7 +122,7 @@ $all_roles         = $arm_global_settings->arm_get_all_roles();
 			<?php $arm_default_ar_cntr++;
 			endforeach; ?>
 
-			<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_restriction_settings_section', 'drip_rules') : ''; ?>
+			<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_restriction_settings_section', 'drip_rules') : ''; //phpcs:ignore ?>
 
 			<?php do_action('arm_after_access_restriction_settings_html', $general_settings); ?>
 

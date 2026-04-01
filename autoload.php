@@ -112,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '5.2';
+$arm_lite_version = '5.3';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -741,12 +741,12 @@ class ARMemberlite {
 		}
 
 		?>
-		<div class="notice arm_admin_notice_shown" style="display: <?php echo esc_html($is_arm_admin_notice_shown); ?>;;color: #fff; padding: 0; border: none; margin-bottom: 0; background: linear-gradient(to right, #0F2027, #2C5364, #009F84); border-radius:8px;margin: <?php echo $arm_belt_margin;?>;">
+		<div class="notice arm_admin_notice_shown" style="display: <?php echo esc_html($is_arm_admin_notice_shown); ?>;;color: #fff; padding: 0; border: none; margin-bottom: 0; background: linear-gradient(to right, #0F2027, #2C5364, #009F84); border-radius:8px;margin: <?php echo $arm_belt_margin; //phpcs:ignore ?>;"> 
 
 			<p class="arm_admin_notice_shown_icn" style="padding: 13px 2px 12px 19px;display: table-cell;width: 18px;text-align: center;vertical-align: middle;line-height: 24px;margin: 0 15px 0 0;">
-				<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_upgrade_to_premium.svg" width="18" height="18"/>
+				<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_upgrade_to_premium.svg" width="18" height="18"/>
 			</p>
-			<p class="arm_admin_notice_shown_msg" style="display: table-cell; padding: 10px 0 0 15px; font-weight: 600; font-size: 15px;">Upgrade to <a href="https://www.armemberplugin.com/product.php?rdt=t11" style="color: #00EFC6;font-size: 18px;text-decoration: none;border-bottom: 1px solid;" target="_blank">ARMember Premium</a> to get access of all premium features and frequent updates.</p>
+			<p class="arm_admin_notice_shown_msg" style="display: table-cell; padding: 10px 0 0 15px; font-weight: 600; font-size: 15px;color:#ffffff;">Upgrade to <a href="https://www.armemberplugin.com/product.php?rdt=t11" style="color: #00EFC6;font-size: 18px;text-decoration: none;border-bottom: 1px solid;" target="_blank">ARMember Premium</a> to get access of all premium features and frequent updates.</p>
 		</div>
 		<?php
 	}
@@ -1066,7 +1066,7 @@ class ARMemberlite {
 	 * Loading plugin text domain
 	 */
 	function arm_load_textdomain() {
-		load_plugin_textdomain( 'armember-membership', false, dirname( plugin_basename( MEMBERSHIPLITE_DIR_NAME.'/armember-membership.php' ) ) . '/languages/' );
+		load_plugin_textdomain( 'armember-membership', false, dirname( plugin_basename( MEMBERSHIPLITE_DIR_NAME.'/armember-membership.php' ) ) . '/languages/' ); //phpcs:ignore
 		global $armPrimaryStatus, $armSecondaryStatus, $arm_lite_widget_effects, $armlite_default_user_details_text;
 		$armPrimaryStatus   = array(
 			'1' => esc_html__( 'Active', 'armember-membership' ),
@@ -1371,11 +1371,11 @@ class ARMemberlite {
 			}
 			echo '<div class="arm_page_wrapper ' . esc_html($pageWrapperClass) . '" id="arm_page_wrapper">';
 
-			if($_REQUEST['page']!='arm_general_settings' && $_REQUEST['page']!='arm_manage_license'){
+			if($_REQUEST['page']!='arm_general_settings' && $_REQUEST['page']!='arm_manage_license'){ //phpcs:ignore
 				$arm_admin_notice = '';
 				$arm_admin_notice = apply_filters('arm_admin_notice',$arm_admin_notice);  //phpcs:ignore
 				if(!empty($arm_admin_notice)){
-					echo '<div class="arm_admin_notice_container">'.$arm_admin_notice.'</div>';
+					echo '<div class="arm_admin_notice_container">'.$arm_admin_notice.'</div>'; //phpcs:ignore
 				}	
 			}	
 
@@ -1581,14 +1581,14 @@ class ARMemberlite {
 			} else {
 				wp_enqueue_style( 'arm-font-awesome-mini-css' );
 			}
-			if($_REQUEST['page'] == $arm_slugs->general_settings)
+			if($_REQUEST['page'] == $arm_slugs->general_settings) //phpcs:ignore
 			{
 				wp_enqueue_style( 'arm_chosen_selectbox' );
 				wp_enqueue_style( 'datatables' );
 				wp_enqueue_style( 'arm_admin_model_css' );
 
 			}
-			if($_REQUEST['page'] == $arm_slugs->membership_setup || ($_REQUEST['page'] == $arm_slugs->general_settings && !empty($_REQUEST['action']) && $_REQUEST['action']=='debug_logs')){
+			if($_REQUEST['page'] == $arm_slugs->membership_setup || ($_REQUEST['page'] == $arm_slugs->general_settings && !empty($_REQUEST['action']) && $_REQUEST['action']=='debug_logs')){ //phpcs:ignore
 				wp_enqueue_style( 'arm_admin_model_css' );
 			}
 			if ( in_array( $_REQUEST['page'], array( $arm_slugs->manage_members,  $arm_slugs->manage_plans,$arm_slugs->membership_setup, $arm_slugs->arm_setup_wizard,$arm_slugs->email_notifications, $arm_slugs->manage_subscriptions,$arm_slugs->membership_setup,$arm_slugs->profiles_directories, $arm_slugs->access_rules, $arm_slugs->transactions ) ) ) { //phpcs:ignore
@@ -1711,6 +1711,8 @@ class ARMemberlite {
 			if(in_array($_REQUEST['page'],array($arm_slugs->arm_setup_wizard))){ //phpcs:ignore
                 wp_enqueue_script('arm_admin_setup_js');
 				wp_enqueue_script('jquery-ui-autocomplete');
+				wp_enqueue_style( 'arm_colpick-css', MEMBERSHIPLITE_URL . '/css/colpick.css', array(), MEMBERSHIPLITE_VERSION );
+				wp_enqueue_script( 'arm_colpick-js', MEMBERSHIPLITE_URL . '/js/colpick.min.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION,false );
             }
 			if ( in_array( $_REQUEST['page'], array( $arm_slugs->general_settings, $arm_slugs->manage_plans, $arm_slugs->manage_subscriptions,$arm_slugs->membership_setup, $arm_slugs->manage_forms, $arm_slugs->profiles_directories,$arm_slugs->manage_members ) ) ) { //phpcs:ignore
 				wp_enqueue_script( 'jquery-ui-sortable' );
@@ -1759,8 +1761,8 @@ class ARMemberlite {
 	/* Setting global javascript variables */
 	function set_global_javascript_variables() {
 
-		global $arm_lite_ajaxurl;
-		$arm_global_css = '__ARMAJAXURL = "' . esc_html($arm_lite_ajaxurl) . '";';
+		global $arm_lite_ajaxurl,$ARMemberLite,$arm_version;
+		$arm_global_css = '__ARMAJAXURL = "' . $arm_lite_ajaxurl . '";'; //phpcs:ignore
 		$arm_global_css .= '__ARMURL = "' . MEMBERSHIPLITE_URL . '";'; //phpcs:ignore
 		$arm_global_css .= '__ARMVIEWURL = "' . MEMBERSHIPLITE_VIEWS_URL . '";'; //phpcs:ignore
 		$arm_global_css .= '__ARMLITEIMAGEURL = "' . MEMBERSHIPLITE_IMAGES_URL . '";'; //phpcs:ignore
@@ -1889,6 +1891,8 @@ class ARMemberlite {
 
 		// wp_register_style('arm-font-awesome', MEMBERSHIPLITE_URL . '/assets/css/front/libs/fontawesome/arm-font-awesome.css', array(), MEMBERSHIPLITE_VERSION);
 		wp_register_style( 'arm_front_component_css', MEMBERSHIPLITE_URL . '/assets/css/front/arm_front.css', array(), MEMBERSHIPLITE_VERSION );
+
+		wp_register_style('armlite_front_user_dashboard_css', MEMBERSHIPLITE_URL . '/css/arm_front_dashboard.css', array(), MEMBERSHIPLITE_VERSION);
 		/* Check Current Front-Page is Membership Page. */
 		$is_arm_front_page   = $this->is_arm_front_page();
 		$isEnqueueAll        = $arm_global_settings->arm_get_single_global_settings( 'enqueue_all_js_css', 0 );
@@ -2002,6 +2006,13 @@ class ARMemberlite {
 				wp_enqueue_style( 'arm_front_component_css' );
 				wp_enqueue_style( 'arm_custom_component_css' );
 
+				if($isEnqueueAll == '1')
+				{
+					if(!wp_style_is('armlite_front_user_dashboard_css', 'enqueued')){
+						wp_enqueue_style('armlite_front_user_dashboard_css');
+					}
+				}
+
 				$templates = $arm_members_directory->arm_default_member_templates();
 				if ( ! empty( $templates ) ) {
 					foreach ( $templates as $tmp ) {
@@ -2091,6 +2102,8 @@ class ARMemberlite {
 
 			wp_register_script( 'arm_bootstrap_datepicker_with_locale_js', MEMBERSHIPLITE_URL . '/bootstrap/js/bootstrap-datetimepicker-with-locale.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
 
+			wp_register_script('armlite_front_dashboard_js', MEMBERSHIPLITE_URL . '/js/arm_front_dashboard.js', array('jquery'), MEMBERSHIPLITE_URL,false);
+
 			/* Enqueue Javascripts */
 			wp_enqueue_script( 'jquery-ui-core' );
 			if ( ! wp_script_is( 'arm_bpopup', 'enqueued' ) ) {
@@ -2113,6 +2126,9 @@ class ARMemberlite {
 				}
 				if ( ! wp_script_is( 'arm_tipso_front', 'enqueued' ) ) {
 					wp_enqueue_script( 'arm_tipso_front' );
+				}
+				if(!wp_script_is('armlite_front_dashboard_js', 'enqueued')){
+					wp_enqueue_script('armlite_front_dashboard_js');
 				}
 			}
 
@@ -2661,6 +2677,8 @@ class ARMemberlite {
 				$ARMemberLite->update_default_pages_for_templates();
 				/* Create Custom User Role & Capabilities. */
 				$ARMemberLite->add_user_role_and_capabilities();
+				/* Create default member panel tab */
+				$ARMemberLite->add_default_member_panel_tab();
 
 				$armember_check_db_permission = $ARMemberLite->armember_check_db_permission();
 				if(!empty($armember_check_db_permission))
@@ -3106,6 +3124,46 @@ class ARMemberlite {
 		update_option( 'arm_block_settings', $securitySettings );
 	}
 
+	/**
+	 * Add Default Page in the database	
+	 */
+    function add_default_member_panel_tab(){
+        global $arm_global_settings;
+    
+        $arm_existing_member_panel_settings = $arm_global_settings->arm_get_member_panel_settings();
+    
+        $arm_new_member_panel_settings = $arm_global_settings->arm_default_member_panel_settings();
+    
+        if (!is_array($arm_existing_member_panel_settings)) {
+            $arm_existing_member_panel_settings = array();
+        }
+    
+        if (!isset($arm_existing_member_panel_settings['tab_settings']) || !is_array($arm_existing_member_panel_settings['tab_settings'])) {
+            $arm_existing_member_panel_settings['tab_settings'] = array();
+        }
+    
+        if (!empty($arm_new_member_panel_settings['tab_settings'])) {
+            foreach ($arm_new_member_panel_settings['tab_settings'] as $new_tab) {
+                $exists = false;    
+                foreach ($arm_existing_member_panel_settings['tab_settings'] as $existing_tab) {
+                    if (isset($existing_tab['id']) && $existing_tab['id'] === $new_tab['id']) {
+                        $exists = true;
+                        break;
+                    }
+                }
+                if (!$exists) {
+                    $arm_existing_member_panel_settings['tab_settings'][] = $new_tab;
+                }
+            }
+        }
+    
+        if (!isset($arm_existing_member_panel_settings['appearance_settings']) || (isset($arm_existing_member_panel_settings['appearance_settings']) && empty($arm_existing_member_panel_settings['appearance_settings']))) {
+            $arm_existing_member_panel_settings['appearance_settings'] = $arm_new_member_panel_settings['appearance_settings'];
+        }
+    
+        update_option('arm_member_panel_settings', $arm_existing_member_panel_settings);
+    }
+
 	public static function uninstall() {
 		global $wpdb;
 		$arm_uninstall = false;
@@ -3447,7 +3505,7 @@ class ARMemberlite {
 		<div class="armclear"></div>
 		<div class="arm_toast_container" id="arm_toast_container"></div>
 		<div class="arm_loading" style="display: none;"><?php $arm_loader = $arm_common_lite->arm_loader_img_func();
-					echo $arm_loader;?></div>
+						echo $arm_loader; //phpcs:ignore ?></div> 
 		<?php
 	}
 
@@ -3701,11 +3759,13 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '5.2',
+			'update_version' => '5.3',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				'Added a Facility to manage and sort columns on the Admin Panel Manage Members page.',
-				'Fix: Single checkbox field not saving properly for Add/Edit Member page.',
+				'Added a New "Member Panel" for the members.',
+				'Added New Facility to Color Customization for Front-end Appearance.',
+				'Improved: Setup wizard for new installation.',
+				'Improved: Content Access Rule page loader.',
 				'Other minor bug fixes.',
 			),
 			'show_major_title'    => 0,

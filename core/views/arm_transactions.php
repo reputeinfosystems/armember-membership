@@ -6,7 +6,7 @@
 			<div class="arm_add_new_item_box">
 				<?php if($ARMemberLite->is_arm_pro_active)
 				{ 
-					if(!empty($_REQUEST['action'])){?>
+					if(!empty($_REQUEST['action'])){ //phpcs:ignore ?> 
 					
 						<a class="arm_export_paid_post_txn_btn arm_margin_right_10 armhelptip tipso_style" href="javascript:void(0);" onmouseover="arm_change_export_csv(this,'<?php echo MEMBERSHIPLITE_IMAGES_URL;?>')" onmouseout="arm_change_export_csv_out(this,'<?php echo MEMBERSHIPLITE_IMAGES_URL;?>')" title="<?php esc_html_e( 'Export to CSV', 'armember-membership' ); ?>"><img align="absmiddle" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_export_icon_pg.svg"></a>
 					<?php }else{?>
@@ -23,7 +23,7 @@
 				$arm_spacing_div_cls = "";
 				$arm_tab_action = '';
 				$arm_tab_action = apply_filters('arm_get_transaction_tab_actions',$arm_tab_action);
-				echo $arm_tab_action;
+				echo $arm_tab_action;  //phpcs:ignore
 			}
 			?>
 		<div class="arm_solid_divider"></div>
@@ -31,9 +31,9 @@
 		<?php 
 		$arm_transactions_grid_container_option = '';
 		$arm_transactions_grid_container_option = apply_filters('arm_transaction_grid_list_options',$arm_transactions_grid_container_option);
-		echo $arm_transactions_grid_container_option;
+		echo $arm_transactions_grid_container_option; //phpcs:ignore
 		?>
-		<?php if(!$ARMemberLite->is_arm_pro_active || ($ARMemberLite->is_arm_pro_active && empty($_REQUEST['action'])) ) 
+		<?php if(!$ARMemberLite->is_arm_pro_active || ($ARMemberLite->is_arm_pro_active && empty($_REQUEST['action'])) )  //phpcs:ignore
 		{?>
 			<div class="arm_transactions_grid_container" id="arm_transactions_grid_container">
 				<?php
@@ -82,7 +82,7 @@
 
 		?>
 		<div class="arm_invoice_detail_container">
-			<?php $log_id = !empty($_REQUEST['log_id']) ? $_REQUEST['log_id'] : 0;?>
+			<?php $log_id = !empty($_REQUEST['log_id']) ? intval($_REQUEST['log_id']) : 0; //phpcs:ignore ?> 
 			<div class="arm_invoice_detail_popup popup_wrapper arm_invoice_detail_popup_wrapper">
                 <div class="popup_wrapper_inner" style="overflow: hidden;">
                     <div class="popup_header arm_text_align_center" >
@@ -116,7 +116,7 @@
 	.arm_status_filter_label, .arm_status_filter_label select{min-width:120px;}
 </style>
 <script type="text/javascript" charset="utf-8">
-	var ARM_IMAGE_URL = "<?php echo MEMBERSHIPLITE_IMAGES_URL;?>";
+	var ARM_IMAGE_URL = "<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL);?>";
 // <![CDATA[
 jQuery(window).on("load", function () {
 	document.onkeypress = stopEnterKey;
@@ -151,19 +151,19 @@ jQuery(document).on('click', ".ColVis_Button:not(.ColVis_MasterButton)", functio
 });
 
 jQuery(document).on('mouseover','.arm_export_paid_post_txn_btn',function(){
-    jQuery(this).find('img').attr('src','<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_export_icon_pg_hover.svg');
+    jQuery(this).find('img').attr('src','<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL .'/arm_export_icon_pg_hover.svg'); ?>');
 });
 
 jQuery(document).on('mouseover','.arm_export_plan_txn_btn',function(){
-    jQuery(this).find('img').attr('src','<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_export_icon_pg_hover.svg');
+	jQuery(this).find('img').attr('src', '<?php echo esc_url( MEMBERSHIPLITE_IMAGES_URL . '/arm_export_icon_pg_hover.svg' ); ?>');
 });
 
 jQuery(document).on('mouseout','.arm_export_paid_post_txn_btn',function(){
-    jQuery(this).find('img').attr('src','<?php echo MEMBERSHIPLITE_IMAGES_URL; ?>/arm_export_icon_pg.svg');
+    jQuery(this).find('img').attr('src','<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL . '/arm_export_icon_pg.svg');?>');
 });
 
 jQuery(document).on('mouseout','.arm_export_plan_txn_btn',function(){
-    jQuery(this).find('img').attr('src','<?php echo MEMBERSHIPLITE_IMAGES_URL; ?>/arm_export_icon_pg.svg');
+    jQuery(this).find('img').attr('src','<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL . 'arm_export_icon_pg.svg');?>');
 });
 // ]]>
 </script>

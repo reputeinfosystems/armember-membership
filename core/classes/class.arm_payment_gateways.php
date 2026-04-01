@@ -95,18 +95,18 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                 }
 
                 $totalRecord = $wpdb->get_var( $wpdb->prepare("SELECT COUNT('arm_payment_log_id') FROM `" . $tbl_arm_debug_payment_log . "` WHERE `arm_payment_log_gateway` = %s AND `arm_payment_log_status`= %d ORDER BY arm_payment_log_id DESC",$arm_payment_debug_log_selector,1) ); //phpcs:ignore --Reason $tbl_arm_debug_payment_log is a table name
-				if(!empty($_REQUEST['arm_search']))
+				if(!empty($_REQUEST['arm_search'])) //phpcs:ignore
 				{
-					$like_string = '%'.$_REQUEST['arm_search'].'%';
-					$totalRecord = $wpdb->get_var( $wpdb->prepare("SELECT COUNT('arm_payment_log_id') FROM `" . $tbl_arm_debug_payment_log . "` WHERE `arm_payment_log_gateway` = %s AND `arm_payment_log_status`= %d AND (`arm_payment_log_event` LIKE %s OR `arm_payment_log_raw_data` LIKE %s) ORDER BY arm_payment_log_id DESC",$arm_payment_debug_log_selector,1,$like_string,$like_string) ); //phpcs:ignore --Reason $tbl_arm_debug_payment_log is a table name
+					$like_string = '%'.sanitize_text_field($_REQUEST['arm_search']).'%'; //phpcs:ignore
+					$totalRecord = $wpdb->get_var( $wpdb->prepare("SELECT COUNT('arm_payment_log_id') FROM `" . $tbl_arm_debug_payment_log . "` WHERE `arm_payment_log_gateway` = %s AND `arm_payment_log_status`= %d AND (`arm_payment_log_event` LIKE %s OR `arm_payment_log_raw_data` LIKE %s) ORDER BY arm_payment_log_id DESC",$arm_payment_debug_log_selector,1,$like_string,$like_string) ); //phpcs:ignore --Reason $tbl_arm_debug_payment_log is a table name 
 				}
 
                 $armPaymentDebugLimit = (!empty($perPage)) ? " LIMIT $offset, $perPage " : "";
 
                 $arm_payment_debug_log_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM `" . $tbl_arm_debug_payment_log . "` WHERE `arm_payment_log_gateway` = %s AND `arm_payment_log_status`=%d ORDER BY arm_payment_log_id DESC {$armPaymentDebugLimit}", $arm_payment_debug_log_selector, 1), ARRAY_A); //phpcs:ignore --Reason $tbl_arm_debug_payment_log is a table name
-				if(!empty($_REQUEST['arm_search']))
+				if(!empty($_REQUEST['arm_search'])) //phpcs:ignore
 				{
-					$like_string = '%'.$_REQUEST['arm_search'].'%';
+					$like_string = '%'.sanitize_text_field($_REQUEST['arm_search']).'%'; //phpcs:ignore
 					$arm_payment_debug_log_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM `" . $tbl_arm_debug_payment_log . "` WHERE `arm_payment_log_gateway` = %s AND `arm_payment_log_status`=%d AND (`arm_payment_log_event` LIKE %s OR `arm_payment_log_raw_data` LIKE %s) ORDER BY arm_payment_log_id DESC {$armPaymentDebugLimit}", $arm_payment_debug_log_selector, 1,$like_string,$like_string), ARRAY_A); //phpcs:ignore --Reason $tbl_arm_debug_payment_log is a table name
 					
 				}
@@ -183,9 +183,9 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                     $arm_general_debug_log_selector_search = $wpdb->prepare(" `arm_general_log_event` =%s ",$arm_general_debug_log_selector);
                 }
 
-				if(!empty($_REQUEST['arm_search']))
+				if(!empty($_REQUEST['arm_search'])) //phpcs:ignore
 				{
-					$arm_like_query = '%'.$_REQUEST['arm_search'].'%';
+					$arm_like_query = '%'.sanitize_text_field($_REQUEST['arm_search']).'%'; //phpcs:ignore
 					$arm_general_debug_log_selector_search .= $wpdb->prepare("AND (`arm_general_log_event_name` LIKE %s OR `arm_general_log_raw_data` LIKE %s) ",$arm_like_query,$arm_like_query);
 				}
                 
@@ -607,7 +607,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			update_option( 'arm_payment_gateway_settings', $pay_gate_settings_result );
 			$this->arm_update_payment_gate_status();
 			$response = array( 'message' => 'success' );
-            		echo $arm_ajax_pattern_start.''.json_encode($response).''.$arm_ajax_pattern_end;
+			echo $arm_ajax_pattern_start.''.json_encode($response).''.$arm_ajax_pattern_end; //phpcs:ignore
 			die();
 		}
 
@@ -2093,7 +2093,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			}
 			if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'arm_check_currency_status' ) { //phpcs:ignore
 				$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_payment_gateways'], '1' );
-				echo arm_pattern_json_encode( $response );
+				echo arm_pattern_json_encode( $response ); //phpcs:ignore
 				exit;
 			}
 			return $message;

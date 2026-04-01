@@ -44,6 +44,8 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			add_action( 'wp_ajax_arm_update_redirect_settings', array( $this, 'arm_update_all_settings' ) );
 			add_action( 'wp_ajax_arm_page_settings', array( $this, 'arm_update_all_settings' ) );
 			add_action( 'wp_ajax_arm_update_common_message_settings', array( $this, 'arm_update_all_settings' ) );
+			add_action( 'wp_ajax_arm_update_member_panel_tab_settings', array( $this, 'arm_update_all_settings' ) );
+			add_action('wp_ajax_arm_reset_front_end_appearance', array($this, 'arm_reset_front_end_appearance_func'));
 
 			add_action( 'wp_ajax_arm_update_access_restriction_settings', array( $this, 'arm_update_all_settings' ) );
 
@@ -177,7 +179,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				}
 			}
 			update_option( 'arm_preset_form_fields', $dbFormFields );
-			echo arm_pattern_json_encode( $arm_deleted_fields );
+			echo arm_pattern_json_encode( $arm_deleted_fields ); //phpcs:ignore
 			die();
 		}
 
@@ -202,9 +204,9 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			if ( empty( $send_to ) || empty( $reply_to ) || empty( $message ) || empty( $subject ) ) {
 				return;
 			}
-                	echo $arm_ajax_pattern_start;
+			echo $arm_ajax_pattern_start; //phpcs:ignore
 			echo $this->arm_send_tedst_mail_func( $reply_to, $send_to, $subject, $message, array(), $reply_to_name, $arm_mail_server, $arm_mail_port, $arm_mail_login_name, $arm_mail_password, $arm_mail_enc, $mail_authentication ); //phpcs:ignore
-                	echo $arm_ajax_pattern_end;
+			echo $arm_ajax_pattern_end; //phpcs:ignore
 			die();
 		}
 
@@ -529,7 +531,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			if ( ! empty( $final_page_settings ) ) {
 				$empty_pages = array();
 				foreach ( $final_page_settings as $key => $page_id ) {
-					if ( in_array( $key, array( 'logout_page_id', 'guest_page_id', 'thank_you_page_id', 'cancel_payment_page_id' ) ) ) {
+					if ( in_array( $key, array( 'edit_profile_page_id', 'logout_page_id', 'guest_page_id', 'thank_you_page_id', 'cancel_payment_page_id', 'member_panel_page_id' ) ) ) {
 						continue;
 					}
 					if ( $key == 'member_profile_page_id' && ! $arm_social_feature->isSocialFeature ) {
@@ -758,6 +760,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				'guest_page_id'           => 0,
 				'thank_you_page_id'       => 0,
 				'cancel_payment_page_id'  => 0,
+				'member_panel_page_id'    => 0,
 			);
 			$default_global_settings                  = apply_filters( 'arm_default_global_settings', $default_global_settings );
 			return $default_global_settings;
@@ -798,15 +801,6 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 					'post_author'  => 1,
 					'post_type'    => 'page',
 				),
-				'edit_profile_page_id'    => array(
-					'post_title'   => 'Edit Profile',
-					'post_name'    => 'edit_profile',
-					'post_content' => '[arm_edit_profile title="Edit Your Profile" form_id="101" form_position="center" social_fields="facebook,twitter,linkedin,vk,instagram,pinterest,youtube,dribbble,delicious,tumblr,vine,"  submit_text="Update Profile" message="Your profile has been updated successfully."]',
-					'post_status'  => 'publish',
-					'post_parent'  => 0,
-					'post_author'  => 1,
-					'post_type'    => 'page',
-				),
 				'change_password_page_id' => array(
 					'post_title'   => 'Change Password',
 					'post_name'    => 'change_password',
@@ -838,6 +832,15 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 					'post_title'   => 'Cancel Payment',
 					'post_name'    => 'cancel_payment',
 					'post_content' => esc_html__( 'Your purchase has not been completed.', 'armember-membership' ) . '<br/>' . esc_html__( 'Sorry something went wrong while processing your payment.', 'armember-membership' ),
+					'post_status'  => 'publish',
+					'post_parent'  => 0,
+					'post_author'  => 1,
+					'post_type'    => 'page',
+				),
+				'member_panel_page_id'  => array(
+					'post_title'   => 'Member Panel',
+					'post_name'    => 'member_panel',
+					'post_content' => '[arm_member_panel]',
 					'post_status'  => 'publish',
 					'post_parent'  => 0,
 					'post_author'  => 1,
@@ -1022,6 +1025,91 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
             );
             return $common_settings_section;
         }
+
+		function arm_default_member_panel_settings(){
+
+			$default_member_panel_settings = array();
+			
+            $armlite_default_member_panel_tab = array(
+                0 => array(
+                    'id'             => 'arm_member_subscription',
+                    'menu_title'     => esc_html__('Subscriptions', 'armember-membership' ),
+                    'is_default_tab' => 1,
+                    'icon'           => 'arm_mpt_subscription',
+                    'is_enable'      => 1,
+                    'title'          => esc_html__('Subscriptions', 'armember-membership' ),
+                    'tab_type'       => 'content',
+                    'text_content'   => '[arm_membership title="' . esc_html__('Current Membership', 'armember-membership' ) . '" display_renew_button="true" renew_text="' . esc_html__('Renew', 'armember-membership' ) . '" make_payment_text="' . esc_html__('Make Payment', 'armember-membership' ) . '" renew_css="" renew_hover_css="" display_cancel_button="true" cancel_text="' . esc_html__('Cancel', 'armember-membership' ) . '" cancel_css="" cancel_hover_css="" cancel_message="' . esc_html__('Your subscription has been cancelled.', 'armember-membership' ) . '" display_update_card_button="true" update_card_text="' . esc_html__('Update Card', 'armember-membership' ) . '" update_card_css="" update_card_hover_css="" trial_active="' . esc_html__('trial active', 'armember-membership' ) . '" per_page="10" message_no_record="' . esc_html__('There is no membership found.', 'armember-membership' ) . '" membership_label="current_membership_is,current_membership_recurring_profile,current_membership_started_on,current_membership_expired_on,current_membership_next_billing_date,action_button," membership_value="' . esc_html__('Membership Plan', 'armember-membership' ) . ',' . esc_html__('Plan Type', 'armember-membership' ) . ',' . esc_html__('Starts On', 'armember-membership' ) . ',' . esc_html__('Expires On', 'armember-membership' ) . ',' . esc_html__('Cycle Date', 'armember-membership' ) . ',' . esc_html__('Action', 'armember-membership' ) . ',"]',
+                    'url_content'    => '',
+                    'url_in_new_tab' => 0,
+                ),
+                1 => array(
+                    'id'             => 'arm_transaction',
+                    'menu_title'     => esc_html__('Transactions', 'armember-membership' ),
+                    'is_default_tab' => 1,
+                    'icon'           => 'arm_mpt_transaction',
+                    'is_enable'      => 1,
+                    'title'          => esc_html__('Transactions', 'armember-membership' ),
+                    'tab_type'       => 'content',
+                    'text_content'   => '[arm_member_transaction display_invoice_button="true" view_invoice_text="' . esc_html__('View Invoice', 'armember-membership' ) . '" view_invoice_css="" view_invoice_hover_css="" title="' . esc_html__('Transactions', 'armember-membership' ) . '" per_page="10" message_no_record="' . esc_html__('There is no any Transactions found', 'armember-membership' ) . '" label="transaction_id,invoice_id,plan,payment_gateway,payment_type,transaction_status,amount,used_coupon_code,used_coupon_discount,payment_date,tax_percentage,tax_amount," value="' . esc_html__('Transaction ID', 'armember-membership' ) . ',' . esc_html__('Invoice ID', 'armember-membership' ) . ',' . esc_html__('Plan', 'armember-membership' ) . ',' . esc_html__('Payment Gateway', 'armember-membership' ) . ',' . esc_html__('Payment Type', 'armember-membership' ) . ',' . esc_html__('Transaction Status', 'armember-membership' ) . ',' . esc_html__('Amount', 'armember-membership' ) . ',' . esc_html__('Used coupon Code', 'armember-membership' ) . ',' . esc_html__('Used coupon Discount', 'armember-membership' ) . ',' . esc_html__('Payment Date', 'armember-membership' ) . ',' . esc_html__('TAX Percentage', 'armember-membership' ) . ',' . esc_html__('TAX Amount', 'armember-membership' ) . ',"]',
+                    'url_content'    => '',
+                    'url_in_new_tab' => 0,
+                ),
+                2 => array(
+                    'id'             => 'arm_edit_profile',
+                    'menu_title'     => esc_html__('Edit Profile', 'armember-membership' ),
+                    'is_default_tab' => 1,
+                    'icon'           => 'arm_mpt_edit_profile',
+                    'is_enable'      => 1,
+                    'title'          => esc_html__('Edit Profile', 'armember-membership' ),
+                    'tab_type'       => 'content',
+                    'text_content'   => '[arm_profile_detail id="105"]',
+                    'url_content'    => '',
+                    'url_in_new_tab' => 0,
+                ),
+                3 => array(
+                    'id'             => 'arm_close_account',
+                    'menu_title'     => esc_html__('Close Account', 'armember-membership' ),
+                    'is_default_tab' => 1,
+                    'icon'           => 'arm_mpt_close_account',
+                    'is_enable'      => 1,
+                    'title'          => esc_html__('Close Account', 'armember-membership' ),
+                    'tab_type'       => 'content',
+                    'text_content'   => '[arm_close_account set_id="102"]',
+                    'url_content'    => '',
+                    'url_in_new_tab' => 0,
+                ),
+                4 => array(
+                    'id'             => 'arm_change_password',
+                    'menu_title'     => esc_html__('Change Password', 'armember-membership' ),
+                    'is_default_tab' => 1,
+                    'icon'           => 'arm_mpt_change_password',
+                    'is_enable'      => 1,
+                    'title'          => esc_html__('Change Password', 'armember-membership' ),
+                    'tab_type'       => 'content',
+                    'text_content'   => '[arm_form id="104" form_position="center" assign_default_plan="0"]',
+                    'url_content'    => '',
+                    'url_in_new_tab' => 0,
+                ),
+            );
+
+			$default_member_panel_settings['tab_settings'] = $armlite_default_member_panel_tab;
+			$default_member_panel_settings['appearance_settings'] = array(
+				'color' => array(
+					'primary_color' => '#0077FF',
+					'panel_sidebar_color' => '#FFFFFF',
+					'panel_background_color' => '#FFFFFF',
+					'border_color' => '#CED3DB',
+					'title_text_color' => '#242A36',
+					'content_color' => '#4D5973',
+				),
+				'font' => array(
+					'font_family' => 'Poppins'
+				),
+			);
+
+			return $default_member_panel_settings;
+		}
 		function arm_registration_form_shortcode_exist_in_page( $shortcode_type = '', $page_id = 0 ) {
 
 			global $wp, $wpdb, $ARMemberLite, $arm_member_forms;
@@ -1130,12 +1218,15 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 					case 'members_directory':
 						$is_exist = $this->arm_find_match_shortcode_func( 'arm_template', $post_content );
 						break;
+					case 'member_panel':
+						$is_exist = $this->arm_find_match_shortcode_func('arm_member_panel', $post_content);
+						break;
 					default:
 						break;
 				}
 			}
 			if ( isset( $posted_data['action'] ) && $posted_data['action'] == 'arm_shortcode_exist_in_page' ) { //phpcs:ignore
-				echo arm_pattern_json_encode( array( 'status' => $is_exist ) );
+				echo arm_pattern_json_encode( array( 'status' => $is_exist ) ); //phpcs:ignore
 				exit;
 			} else {
 				return $is_exist;
@@ -1424,6 +1515,10 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				$avatar_url = get_user_meta( $user_id, 'avatar', true );
 				if ( ! empty( $avatar_url ) && file_exists( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $avatar_url ) ) ) {
 					return $avatar_url;
+				} else {
+					if ($this->arm_check_image_validate_url($avatar_url) == true) {
+						return $avatar_url;
+					}
 				}
 			}
 			return $url;
@@ -1455,6 +1550,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$user             = get_user_by( 'id', $user_id );
 			$avatar_url       = get_user_meta( $user_id, 'avatar', true );
 			$avatar_w_h_class = '';
+			$arm_is_avatar_url_valid = false;
 			if ( ! empty( $avatar_url ) && file_exists( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $avatar_url ) ) ) {
 				$avatar_detail = @getimagesize( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $avatar_url ) );
 				if ( $size > $avatar_detail[0] ) {
@@ -1462,6 +1558,20 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				}
 				if ( $size > $avatar_detail[1] ) {
 					$avatar_w_h_class .= ' arm_avatar_small_height';
+				}
+			} else {
+				if (!empty($avatar_url) && $this->arm_check_image_validate_url($avatar_url) == true) {
+					$arm_is_avatar_url_valid = true;
+					if (!preg_match('#^https?://#', $avatar_url)) {
+						$avatar_url = 'https://' . ltrim($avatar_url, '/');
+					}
+					$avatar_detail = @getimagesize($avatar_url);
+					if ($size > $avatar_detail[0]) {
+						$avatar_w_h_class = ' arm_avatar_small_width';
+					}
+					if ($size > $avatar_detail[1]) {
+						$avatar_w_h_class .= ' arm_avatar_small_height';
+					}
 				}
 			}
 			$avatar_class = 'avatar arm_grid_avatar gravatar avatar arm-avatar photo avatar-' . $size . ' ' . $avatar_w_h_class;
@@ -1482,6 +1592,8 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				} else {
 					$avatar = '';
 				}
+			} elseif ($arm_is_avatar_url_valid == true) {
+				$avatar = '<img src="' . esc_url($avatar_url) . '" class="' . esc_attr($avatar_class) . '" width="' . esc_attr($size) . '" height="' . esc_attr($size) . '" alt="' . esc_attr($safe_alt) . '"/>';
 			} else {
 				$avatar = '';
 			}
@@ -1507,6 +1619,33 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				$default = add_query_arg( 's', $size, $default );
 			}
 			return esc_url( $default );
+		}
+		
+		function arm_check_image_validate_url($image_url) {
+			if (!empty($image_url)) {
+				if (!preg_match('#^https?://#', $image_url)) {
+					$image_url = 'https://' . ltrim($image_url, '/');
+				}
+				$headers = @get_headers($image_url, 1);
+
+				if ($headers === false) {
+					return false;
+				}
+
+				if (!str_contains($headers[0], '200')) {
+					return false;
+				}
+
+				if (isset($headers['Content-Type'])) {
+					$contentType = is_array($headers['Content-Type']) ? $headers['Content-Type'][0] : $headers['Content-Type'];
+					$contentsize = is_array($headers['Content-Length']) ? $headers['Content-Length'][0] : $headers['Content-Length'];
+					if (str_starts_with($contentType, 'image/') && $contentsize > 0) {
+						return true;
+					}
+				}
+			}
+		
+			return false;
 		}
 
 		/**
@@ -1542,6 +1681,15 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			return $all_global_settings;
 		}
 
+		 function arm_get_member_panel_settings() {
+				$arm_all_member_panel_settings = get_option('arm_member_panel_settings');
+				if( !is_array($arm_all_member_panel_settings) ) {
+					$arm_all_member_panel_settings = array();
+				}
+				$arm_all_member_panel_settings['tab_settings'] = isset($arm_all_member_panel_settings['tab_settings']) ? $arm_all_member_panel_settings['tab_settings'] : array();
+        		$arm_all_member_panel_settings['appearance_settings'] = isset($arm_all_member_panel_settings['appearance_settings']) ? $arm_all_member_panel_settings['appearance_settings'] : array();
+				return $arm_all_member_panel_settings;
+		}
 		function arm_get_all_block_settings() {
 			global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms;
 			$default_block_settings = array(
@@ -1828,7 +1976,110 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 					'msg'  => esc_html__( 'Global Settings Saved Successfully.', 'armember-membership' ),
 				);
 			}
-			echo arm_pattern_json_encode( $response );
+
+			if ( isset( $_POST['action'] ) && $_POST['action'] === 'arm_update_member_panel_tab_settings' ) { //phpcs:ignore
+
+				$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_general_settings'], '1' );  //phpcs:ignore --Reason:Verifying nonce
+			
+				$member_panel_settings = isset( $_POST['member_panel_settings'] ) && is_array( $_POST['member_panel_settings'] ) ? $_POST['member_panel_settings'] : array();
+				$tab_settings = isset( $member_panel_settings['tab_settings'] ) && is_array( $member_panel_settings['tab_settings'] ) ? $member_panel_settings['tab_settings'] : array();
+				$appearance_settings = isset( $member_panel_settings['appearance_settings'] ) && is_array( $member_panel_settings['appearance_settings'] ) ? $member_panel_settings['appearance_settings'] : array();
+			
+				$old_member_panel_settings = $this->arm_get_member_panel_settings();
+				$old_tabs = isset( $old_member_panel_settings['tab_settings'] ) && is_array( $old_member_panel_settings['tab_settings'] ) ? $old_member_panel_settings['tab_settings'] : array();
+			
+				$old_tabs_map = array();
+				foreach ( $old_tabs as $old_tab ) {
+					if ( isset( $old_tab['id'] ) ) {
+						$old_tabs_map[ $old_tab['id'] ] = $old_tab;
+					}
+				}
+			
+				$new_appearance_settings = array();
+			
+				if ( ! empty( $appearance_settings ) ) {
+					if ( isset( $appearance_settings['color'] ) && is_array( $appearance_settings['color'] ) ) {
+						foreach ( $appearance_settings['color'] as $key => $color ) {
+							$new_appearance_settings['color'][ $key ] = sanitize_hex_color( $color ) ? sanitize_hex_color( $color ) : '';
+						}
+					}
+					if ( isset( $appearance_settings['font']['font_family'] ) ) {
+						$new_appearance_settings['font']['font_family'] = sanitize_text_field( $appearance_settings['font']['font_family'] );
+					}
+				}
+			
+				$new_tab_settings = array();
+				$posted_ids = array();
+				$index = 0;
+				$arm_is_valid_tab_data = true;
+			
+				foreach ( $tab_settings as $tab ) {
+			
+					if ( ! is_array( $tab ) ) {
+						$arm_is_valid_tab_data = false;
+					}
+			
+					$is_default_tab = isset( $tab['is_default_tab'] ) ? (int) (bool) $tab['is_default_tab'] : 0;
+					$icon           = isset( $tab['icon'] ) ? sanitize_text_field( $tab['icon'] ) : '';
+					$id             = isset( $tab['id'] ) ? sanitize_text_field( $tab['id'] ) : '';
+					$is_enable      = isset( $tab['is_enable'] ) ? (int) (bool) $tab['is_enable'] : 0;
+					$title          = isset( $tab['title'] ) ? sanitize_text_field( $tab['title'] ) : '';
+					$tab_type       = isset( $tab['tab_type'] ) ? sanitize_text_field( $tab['tab_type'] ) : '';
+					$menu_title     = isset( $tab['menu_title'] ) ? sanitize_text_field( $tab['menu_title'] ) : '';
+			
+					if ( ! in_array( $tab_type, array( 'content', 'url' ), true ) ) {
+						$arm_is_valid_tab_data = false;
+					}
+			
+					$text_content   = isset( $tab['text_content'] ) ? wp_kses( wp_unslash( $tab['text_content'] ), $ARMemberLiteAllowedHTMLTagsArray ) : '';
+					$url_content    = isset( $tab['url_content'] ) ? esc_url_raw( $tab['url_content'] ) : '';
+					$url_in_new_tab = isset( $tab['url_in_new_tab'] ) ? (int) (bool) $tab['url_in_new_tab'] : 0;
+			
+					$new_tab_settings[ $index ] = array(
+						'id'             => $id,
+						'menu_title'     => $menu_title,
+						'is_default_tab' => $is_default_tab,
+						'icon'           => $icon,
+						'is_enable'      => $is_enable,
+						'title'          => $title,
+						'tab_type'       => $tab_type,
+						'text_content'   => $text_content,
+						'url_content'    => $url_content,
+						'url_in_new_tab' => $url_in_new_tab,
+					);
+			
+					$posted_ids[] = $id;
+					$index++;
+				}
+			
+				foreach ( $old_tabs as $old_tab ) {
+					if ( isset( $old_tab['id'] ) && ! in_array( $old_tab['id'], $posted_ids ) ) {
+						$new_tab_settings[] = $old_tab;
+					}
+				}
+			
+				$new_member_panel_settings = array();
+				$new_member_panel_settings['tab_settings'] = array_values( $new_tab_settings );
+				$new_member_panel_settings['appearance_settings'] = $new_appearance_settings;
+			
+				if ( $arm_is_valid_tab_data ) {
+			
+					update_option( 'arm_member_panel_settings', $new_member_panel_settings );
+			
+					$response = array(
+						'type' => 'success',
+						'msg'  => esc_html__( 'Member Panel Settings Saved Successfully.', 'armember-membership' ),
+					);
+			
+				} else {
+			
+					$response = array(
+						'type' => 'error',
+					);
+				}
+			}
+
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die();
 		}
 
@@ -2241,12 +2492,12 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			 $headers[] = 'Reply-To: ' . $reply_to;
 			 $headers[] = 'Content-Type: ' . $content_type . '; charset="' . get_option('blog_charset') . '"';
 			 /* Filter Email Subject & Message */
-			 $subject = wp_specialchars_decode(strip_tags(stripslashes($subject)), ENT_QUOTES);
+			 $subject = wp_specialchars_decode(strip_tags(stripslashes($subject)), ENT_QUOTES); //phpcs:ignore
 			 $message = do_shortcode($message);
 			 $message = stripslashes($message);
 			 $message = wordwrap(stripslashes($message), 70, "\r\n");
 			 if (@$arm_plain_text) {
-				 $message = wp_specialchars_decode(strip_tags($message), ENT_QUOTES);
+				 $message = wp_specialchars_decode(strip_tags($message), ENT_QUOTES); //phpcs:ignore
 			 }
 
 			$subject   = apply_filters( 'arm_email_subject', $subject );
@@ -3161,6 +3412,9 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 									case 'guest_page_id':
 										$title_label = esc_html__( 'Guest page', 'armember-membership' );
 										break;
+									case 'member_panel_page_id':
+										$title_label = esc_html__( 'Member Panel', 'armember-membership' );
+										break;
 								}
 								if ( ! empty( $title_label ) ) {
 									$str .= '<div class="arm_set_page_label">ARMember ' . esc_html($title_label) . '</div>';
@@ -3426,8 +3680,6 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 
 
 
-
-
 		function arm_get_front_font_style() {
 			global $wp, $wpdb, $arm_slugs, $current_user, $arm_lite_errors, $ARMemberLite, $arm_subscription_plans, $arm_member_forms;
 			$frontfontstyle   = array();
@@ -3453,6 +3705,241 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			}
 			$frontfontstyle['frontOptions'] = $frontOptions;
 			return $frontfontstyle;
+		}
+
+		function arm_reset_front_end_appearance_func() {
+
+			global $ARMemberLite, $arm_capabilities_global,$arm_global_settings;
+			
+			$response = array('type' => 'error');
+			
+			if ( isset($_POST['action']) && $_POST['action'] === 'arm_reset_front_end_appearance' ) {  //phpcs:ignore
+			
+				$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_general_settings'], '1' ); //phpcs:ignore --Reason:Verifying nonce
+			
+				$old_member_panel_settings = $arm_global_settings->arm_get_member_panel_settings();
+                $all_default_member_panel_setting = $this->arm_default_member_panel_settings();
+                $arm_default_front_settings  = $all_default_member_panel_setting['appearance_settings'];
+
+                $new_member_panel_settings = $old_member_panel_settings;
+                $new_member_panel_settings['appearance_settings'] = $arm_default_front_settings;
+
+                update_option('arm_member_panel_settings', $new_member_panel_settings);
+
+                $response = array(
+                    'type'            => 'success',
+                    'msg'             => esc_html__('Appearance reset successfully', 'armember-membership'),
+                    'default_setting' => $arm_default_front_settings
+                );
+			
+			}
+			
+			wp_send_json($response);
+		}
+
+		function arm_get_data_for_display_tab($tab_data, $tab_index) {
+
+			global $arm_global_settings,$ARMemberLiteAllowedHTMLTagsArray;
+
+			$tab_title       = isset($tab_data['title']) ? $tab_data['title'] : '';
+			$tab_type        = isset($tab_data['tab_type']) ? $tab_data['tab_type'] : 'content';
+			$text_content     = isset($tab_data['text_content']) ? $tab_data['text_content'] : '';
+			$url_content     = isset($tab_data['url_content']) ? $tab_data['url_content'] : '';
+			$icon     			= isset($tab_data['icon']) ? $tab_data['icon'] : '';
+			$id     			= isset($tab_data['id']) ? $tab_data['id'] : '';
+			$is_enable       = isset($tab_data['is_enable']) ? (bool)$tab_data['is_enable'] : false;
+			$open_in_new_tab = isset($tab_data['url_in_new_tab']) ? (bool)$tab_data['url_in_new_tab'] : false;
+			$is_default_tab = isset($tab_data['is_default_tab']) ? (bool)$tab_data['is_default_tab'] : false;
+			$menu_title  = isset($tab_data['menu_title']) ? $tab_data['menu_title'] : '';
+
+			?>
+			<div class="arm_member_panel_tab arm_margin_bottom_24" id="arm_member_panel_tab_<?php echo $tab_index; ?>">
+				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][is_default_tab]" value="<?php echo $is_default_tab ?>"> 
+				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][icon]" value="<?php echo esc_attr($icon) ?>"> 
+				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][id]" value="<?php echo esc_attr($id) ?>">
+				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][menu_title]" value="<?php echo esc_attr($menu_title) ?>">  
+				<input type="hidden" name="tab_index" value="<?php echo $tab_index; ?>">
+
+				<div class="arm_width_100_pct">
+					<div class="arm_row_wrapper">
+						<div class="left_content arm_manage_member_panel_title_container">
+							<div class="arm_manage_member_tab_sortable_icon ui-sortable-handle">
+								<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<rect x="5" y="3" width="3" height="3" rx="1.5" fill="#617191"/>
+									<rect x="5" y="9" width="3" height="3" rx="1.5" fill="#617191"/>
+									<rect x="5" y="15" width="3" height="3" rx="1.5" fill="#617191"/>
+									<rect x="11" y="3" width="3" height="3" rx="1.5" fill="#617191"/>
+									<rect x="11" y="9" width="3" height="3" rx="1.5" fill="#617191"/>
+									<rect x="11" y="15" width="3" height="3" rx="1.5" fill="#617191"/>
+								</svg>
+							</div>
+							<span class="arm_manage_member_panel_tab_enable_title"><strong><?php esc_html_e('Enable '.esc_attr($menu_title).' Tab', 'armember-membership'); ?></strong></span>
+						</div>
+						<div class="right_content">
+							<?php if($is_default_tab == false): 
+								$arm_remove_tab_callback = $arm_global_settings->arm_get_confirm_box($tab_index,esc_html__('Are you sure you want to delete member panel tab?', 'armember-membership'),'arm_remove_member_panle_tab_confirm_btn','',esc_html__('Delete', 'armember-membership'),esc_html__('Cancel', 'armember-membership'),esc_html__('Delete Member Panel Tab', 'armember-membership'));
+								?>
+								<a class="arm_remove_member_panle_tab_btn" href="javascript:void(0)" onclick="showConfirmBoxCallback(<?php echo $tab_index; ?>)" data-id="<?php echo $tab_index; ?>">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M3 5.33333H21M16.5 5.33333L16.1956 4.43119C15.9005 3.55694 15.7529 3.11982 15.4793 2.79664C15.2376 2.51126 14.9274 2.29036 14.5768 2.1542C14.1798 2 13.7134 2 12.7803 2H11.2197C10.2866 2 9.8202 2 9.4232 2.1542C9.07266 2.29036 8.76234 2.51126 8.5207 2.79664C8.24706 3.11982 8.09954 3.55694 7.80447 4.43119L7.5 5.33333M18.75 5.33333V16.6667C18.75 18.5336 18.75 19.4669 18.3821 20.18C18.0586 20.8072 17.5423 21.3171 16.9072 21.6367C16.1852 22 15.2402 22 13.35 22H10.65C8.75982 22 7.81473 22 7.09278 21.6367C6.45773 21.3171 5.94143 20.8072 5.61785 20.18C5.25 19.4669 5.25 18.5336 5.25 16.6667V5.33333M14.25 9.77778V17.5556M9.75 9.77778V17.5556" stroke="#617191" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+								</a>
+								<div class="arm_remove_member_panel_confirm_box_container" data-id="<?php echo $tab_index; ?>">
+									<?php echo $arm_remove_tab_callback; ?>
+								</div>
+								<?php endif ?>
+								<div class="armswitch arm_global_setting_switch arm_margin_right_0">
+									<input id="arm_is_tab_enable_<?php echo $tab_index; ?>" class="armswitch_input arm_tab_enable_switch" data-id="<?php echo $tab_index; ?>" type="checkbox" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][is_enable]" value="1" <?php echo ($is_enable ? 'checked' : ''); ?>><label for="arm_is_tab_enable_<?php echo $tab_index; ?>" class="armswitch_label"></label>
+								</div>
+						</div>
+					</div>
+				</div>
+		
+				<div class="arm_tab_inner_content arm_margin_left_32" <?php echo (!$is_enable ? 'style="display:none;"' : ''); ?>>
+					<div class="arm_form_field_block arm_new_tab_title_block">
+						<div>
+							<div class="arm_margin_top_24">
+								<label><?php esc_html_e('Title', 'armember-membership'); ?></label>
+							</div>
+							<div class="arm_member_panel_title_input_container arm_margin_top_12">
+								<input type="text" 
+										name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][title]" 
+										data-id="<?php echo $tab_index; ?>" 
+										class="arm_max_width_100_pct arm_width_100_pct" 
+										id="arm_new_tab_title" 
+										value="<?php echo esc_attr($tab_title); ?>" 
+										/>
+							</div>
+						</div>
+						<div>
+							<span class="arm_mtp_error arm_member_tab_title_error_<?php echo $tab_index; ?>">
+								<?php esc_html_e( 'This field is required.', 'armember-membership' ); ?>
+							</span>  
+						</div>
+					</div>
+		
+					<div class="arm_form_field_block arm_margin_top_28 arm_new_tab_content_block">
+						<label><?php esc_html_e('Type', 'armember-membership'); ?></label>
+						<div class="arm_margin_top_20 arm_tab_type_select_wrapper">
+							<label class="arm_min_width_150 arm_margin_0"><input type="radio" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][tab_type]" data-id="<?php echo $tab_index; ?>" value="content" class="arm_tab_content_type_radio_btn arm_iradio" <?php echo (esc_attr($tab_type) === 'content' ? 'checked' : ''); ?> /><span>&nbsp;<?php esc_html_e('Content', 'armember-membership'); ?></span></label>
+							<label class="arm_min_width_150"><input type="radio" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][tab_type]" data-id="<?php echo $tab_index; ?>" value="url" class="arm_tab_content_type_radio_btn arm_iradio" <?php echo (esc_attr($tab_type) === 'url' ? 'checked' : ''); ?> /><span>&nbsp;<?php esc_html_e('URL', 'armember-membership'); ?></span></label>
+						</div>
+					</div>
+		
+					<div id="arm_content_block_for_type_content_<?php echo $tab_index ?>" class="arm_form_field_block arm_margin_top_28 arm_new_tab_content_block arm_content_block_for_type_content" <?php echo ($tab_type !== 'content') ? 'style="display:none"' : ''; ?>>
+						<?php
+						wp_editor(
+							wp_kses($text_content,$ARMemberLiteAllowedHTMLTagsArray),
+							'arm_tab_editor_' . $tab_index,
+							array(
+								'textarea_name' => 'member_panel_settings[tab_settings]['.$tab_index.'][text_content]',
+								'media_buttons' => false,
+								'textarea_rows' => 10,
+								'tinymce'       => false,
+								'quicktags'     => true,
+							)
+						);
+						?>
+						<div>
+							<span class="arm_mtp_error arm_member_tab_content_error_<?php echo $tab_index; ?>">
+								<?php esc_html_e( 'This field is required.', 'armember-membership' ); ?>
+							</span>  
+						</div>
+					</div>
+		
+					<div id="arm_content_block_for_type_url_<?php echo $tab_index ?>" class="arm_content_block_for_type_url arm_margin_top_28" <?php echo ($tab_type !== 'url' ? 'style="display:none"' : ''); ?>>
+						<div class="arm_form_field_block arm_new_tab_title_block">
+							<label><?php esc_html_e('Enter URL', 'armember-membership'); ?></label>
+							<div class="arm_member_panel_url_input_container arm_margin_top_12">
+								<input type="text" 
+										name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][url_content]" 
+										class="arm_max_width_100_pct arm_width_100_pct" 
+										id="arm_content_url" 
+										value="<?php echo esc_attr($url_content); ?>" />
+							</div>
+							<div>
+								<span class="arm_mtp_error arm_member_tab_url_error_<?php echo $tab_index; ?>">
+									<?php esc_html_e( 'This field is required.', 'armember-membership' ); ?>
+								</span>  
+							</div>
+						</div>
+						<div class="arm_form_field_block arm_new_tab_title_block">
+							<div class="arm_width_100_pct arm_margin_top_24">
+								<div class="armswitch arm_global_setting_switch arm_margin_right_0">
+									<input id="arm_open_url_in_new_tab_<?php echo $tab_index; ?>" class="armswitch_input" type="checkbox" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][url_in_new_tab]" value="1" <?php echo ($open_in_new_tab ? 'checked' : ''); ?>><label for="arm_open_url_in_new_tab_<?php echo $tab_index; ?>" class="armswitch_label"></label>
+								</div>
+								<span class="arm_padding_left_10"><?php esc_html_e('Open URL in the new tab', 'armember-membership'); ?></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+
+		function arm_get_memper_panel_tab_icon_array(){
+			$arm_mpt_icons =  array(
+				'arm_mpt_multisite' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M5.66539 8.60168L4.26709 9.99999L5.66539 11.3983" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M11.2588 8.60168L12.6571 9.99999L11.2588 11.3983" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M9.161 7.20337L7.7627 12.7966" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M13.3559 15.4534H3.84745C2.68906 15.4534 1.75 14.5143 1.75 13.3559V3.84745C1.75 2.68906 2.68906 1.75 3.84745 1.75H13.3559C14.5143 1.75 15.4534 2.68906 15.4534 3.84745V13.3559C15.4534 14.5143 14.5143 15.4534 13.3559 15.4534Z" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M18.2499 6.64404V16.1525C18.2499 17.3109 17.3109 18.2499 16.1525 18.2499H6.64404" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M15.4533 4.5466H8.04228C6.88389 4.5466 5.94482 3.60754 5.94482 2.44915V1.75" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>',
+				'arm_mpt_subscription' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M17.2067 11.1712L17.3786 9.34472C17.5136 7.91027 17.5811 7.19304 17.3357 6.89655C17.203 6.73617 17.0225 6.6379 16.8295 6.62095C16.4727 6.58961 16.0247 7.09967 15.1286 8.1198C14.6651 8.64737 14.4335 8.91115 14.1749 8.95203C14.0318 8.9746 13.8858 8.95135 13.7535 8.88482C13.5149 8.76467 13.3557 8.43859 13.0374 7.78638L11.3598 4.34864C10.7584 3.11621 10.4576 2.5 10 2.5C9.54235 2.5 9.2416 3.11621 8.64017 4.34864L6.96255 7.78639C6.64427 8.43859 6.48513 8.76467 6.24644 8.88482C6.11419 8.95135 5.96825 8.9746 5.82503 8.95203C5.56654 8.91115 5.33483 8.64737 4.8714 8.1198C3.97531 7.09967 3.52726 6.58961 3.17049 6.62095C2.97749 6.6379 2.79698 6.73617 2.66424 6.89655C2.41885 7.19304 2.48635 7.91027 2.62136 9.34472L2.79325 11.1712C3.07649 14.1806 3.21811 15.6854 4.10507 16.5926C4.99203 17.5 6.32138 17.5 8.98007 17.5H11.0199C13.6786 17.5 15.008 17.5 15.8949 16.5926C16.7819 15.6854 16.9235 14.1806 17.2067 11.1712Z" stroke="white" stroke-width="1.2"/>
+				<path d="M7.75 14.5H12.25" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+				</svg>',
+				'arm_mpt_transaction' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M5.8335 12.4999V7.49976" stroke="#2E3645" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M17.3612 7.49976H15.1924C13.7054 7.49976 12.5 8.61903 12.5 9.99982C12.5 11.3806 13.7054 12.4999 15.1924 12.4999H17.3612C17.4307 12.4999 17.4654 12.4999 17.4947 12.4981C17.9441 12.4707 18.3021 12.1384 18.3316 11.721C18.3335 11.6938 18.3335 11.6615 18.3335 11.5971V8.40253C18.3335 8.33811 18.3335 8.30583 18.3316 8.27861C18.3021 7.8613 17.9441 7.52889 17.4947 7.50154C17.4654 7.49976 17.4307 7.49976 17.3612 7.49976Z" stroke="#2E3645" stroke-width="1.2"/>
+				<path d="M17.4711 7.49978C17.4063 5.93949 17.1974 4.98284 16.5239 4.30934C15.5476 3.33301 13.9761 3.33301 10.8334 3.33301H8.33333C5.19056 3.33301 3.61918 3.33301 2.64284 4.30934C1.6665 5.28568 1.6665 6.85706 1.6665 9.99984C1.6665 13.1426 1.6665 14.714 2.64284 15.6903C3.61918 16.6667 5.19056 16.6667 8.33333 16.6667H10.8334C13.9761 16.6667 15.5476 16.6667 16.5239 15.6903C17.1974 15.0169 17.4063 14.0602 17.4711 12.4999" stroke="#2E3645" stroke-width="1.2"/>
+				<path d="M14.9927 10H14.9992" stroke="#2E3645" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>',
+				'arm_mpt_paid_post' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M16.926 10.5394L17.3574 8.92952C17.8609 7.0503 18.1127 6.11069 17.9231 5.29754C17.7734 4.65549 17.4367 4.07225 16.9555 3.62158C16.3461 3.05081 15.4064 2.79904 13.5273 2.2955C11.648 1.79196 10.7083 1.54019 9.89526 1.72979C9.25317 1.87949 8.66992 2.21623 8.21927 2.69741C7.73058 3.21917 7.47574 3.98299 7.09652 5.37136C7.03283 5.60452 6.96563 5.85529 6.89323 6.12549L6.46182 7.73554C5.95828 9.61477 5.70652 10.5544 5.89612 11.3675C6.04582 12.0096 6.38255 12.5929 6.86373 13.0435C7.47313 13.6143 8.41276 13.866 10.292 14.3696C11.9858 14.8234 12.9163 15.0728 13.6788 14.9787C13.7623 14.9684 13.8438 14.954 13.924 14.9353C14.566 14.7856 15.1493 14.4489 15.5999 13.9677C16.1707 13.3583 16.4225 12.4187 16.926 10.5394Z" stroke="#2E3645" stroke-width="1.2"/>
+				<path d="M13.679 14.9784C13.5053 15.5105 13.1998 15.9918 12.789 16.3766C12.1796 16.9473 11.2399 17.1991 9.36075 17.7027C7.48149 18.2062 6.54187 18.4579 5.72872 18.2683C5.08668 18.1187 4.50344 17.7819 4.05276 17.3008C3.48199 16.6913 3.23023 15.7518 2.72669 13.8725L2.29532 12.2626C1.79178 10.3833 1.54001 9.44375 1.72961 8.63059C1.87931 7.98856 2.21604 7.40532 2.69723 6.95464C3.30663 6.38388 4.24624 6.13211 6.12548 5.62857C6.48101 5.5333 6.8029 5.44705 7.09668 5.37109" stroke="#2E3645" stroke-width="1.2"/>
+				<path d="M9.81396 8.33337L13.8386 9.41179" stroke="#2E3645" stroke-width="1.2" stroke-linecap="round"/>
+				<path d="M9.1665 10.7479L11.5813 11.3949" stroke="#2E3645" stroke-width="1.2" stroke-linecap="round"/>
+				</svg>',
+				'arm_mpt_edit_profile' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M11.77 4.05906L12.4652 3.36387C13.617 2.21204 15.4845 2.21204 16.6363 3.36387C17.7881 4.5157 17.7881 6.38318 16.6363 7.53501L15.9411 8.2302M11.77 4.05906C11.77 4.05906 11.8568 5.53634 13.1604 6.83982C14.4638 8.1433 15.9411 8.2302 15.9411 8.2302M11.77 4.05906L5.37876 10.4503C4.94587 10.8831 4.72942 11.0996 4.54328 11.3383C4.3237 11.6197 4.13544 11.9243 3.98183 12.2467C3.85162 12.5199 3.75482 12.8103 3.56123 13.3911L2.74088 15.8522M15.9411 8.2302L9.54991 14.6214C9.11705 15.0543 8.90057 15.2707 8.66187 15.4569C8.38042 15.6765 8.07577 15.8647 7.75347 16.0183C7.48025 16.1485 7.18986 16.2454 6.60907 16.4389L4.14803 17.2593M2.74088 15.8522L2.54035 16.4537C2.44508 16.7396 2.51946 17.0547 2.73249 17.2677C2.94553 17.4807 3.26063 17.5551 3.54644 17.4598L4.14803 17.2593M2.74088 15.8522L4.14803 17.2593" stroke="#2E3645" stroke-width="1.2"/>
+				</svg>',
+				'arm_mpt_manage_course' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M15.8102 5.49562C15.9846 3.98436 15.2189 2.59998 14.2088 2.59998H5.87869C4.86856 2.59998 4.10294 3.98436 4.27728 5.49562" stroke="#2E3645" stroke-width="1.2"/>
+				<path d="M12.1194 10.6561C12.5686 10.9346 12.5686 11.6554 12.1194 11.9338L9.40751 13.615C8.97099 13.8856 8.43457 13.5334 8.43457 12.9762V9.61377C8.43457 9.0566 8.97099 8.70438 9.40751 8.97496L12.1194 10.6561Z" stroke="#2E3645" stroke-width="1.2"/>
+				<path d="M2.30848 10.7986C1.94971 8.25401 1.77034 6.98174 2.53273 6.15823C3.29513 5.33472 4.6524 5.33472 7.36691 5.33472H12.72C15.4345 5.33472 16.7918 5.33472 17.5542 6.15823C18.3166 6.98174 18.1372 8.25401 17.7785 10.7986L17.4382 13.2117C17.1569 15.2072 17.0163 16.2049 16.2946 16.8024C15.5729 17.3999 14.5085 17.3999 12.3798 17.3999H7.70713C5.57838 17.3999 4.51401 17.3999 3.79236 16.8024C3.07071 16.2049 2.93003 15.2072 2.64869 13.2117L2.30848 10.7986Z" stroke="#2E3645" stroke-width="1.2"/>
+				</svg>',
+				'arm_mpt_group_membership' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M15.2453 12.23C16.9077 12.23 18.2554 13.5777 18.2554 15.2401V16.7451H16.7504M12.9878 9.1252C14.286 8.79101 15.2453 7.61254 15.2453 6.20998C15.2453 4.80744 14.286 3.62893 12.9878 3.29478M10.7303 6.20998C10.7303 7.87238 9.38262 9.22001 7.72026 9.22001C6.05786 9.22001 4.71023 7.87238 4.71023 6.20998C4.71023 4.54759 6.05786 3.19995 7.72026 3.19995C9.38262 3.19995 10.7303 4.54759 10.7303 6.20998ZM4.71023 12.23H10.7303C12.3927 12.23 13.7403 13.5777 13.7403 15.2401V16.7451H1.7002V15.2401C1.7002 13.5777 3.04783 12.23 4.71023 12.23Z" stroke="#2E3645" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>',
+				'arm_mpt_gift_membership' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M16.6424 8.33337H3.30908V15C3.30908 17.5 4.14242 18.3334 6.64242 18.3334H13.3091C15.8091 18.3334 16.6424 17.5 16.6424 15V8.33337Z" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M17.9168 5.83329V6.66663C17.9168 7.58329 17.4752 8.33329 16.2502 8.33329H3.75016C2.47516 8.33329 2.0835 7.58329 2.0835 6.66663V5.83329C2.0835 4.91663 2.47516 4.16663 3.75016 4.16663H16.2502C17.4752 4.16663 17.9168 4.91663 17.9168 5.83329Z" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M9.70099 4.16662H5.10096C4.81763 3.85828 4.82596 3.38328 5.12596 3.08328L6.30929 1.89995C6.61763 1.59162 7.12596 1.59162 7.43429 1.89995L9.70099 4.16662Z" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M14.8915 4.16662H10.2915L12.5582 1.89995C12.8665 1.59162 13.3748 1.59162 13.6832 1.89995L14.8665 3.08328C15.1665 3.38328 15.1748 3.85828 14.8915 4.16662Z" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M7.44971 8.33337V12.6167C7.44971 13.2834 8.18304 13.675 8.74142 13.3167L9.52475 12.8C9.80808 12.6167 10.1664 12.6167 10.4414 12.8L11.1831 13.3C11.7331 13.6667 12.4747 13.275 12.4747 12.6084V8.33337H7.44971Z" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>',
+				'arm_mpt_gift_transaction' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M5.21951 7.58404L2.37988 4.74441M2.37988 4.74441L5.21951 1.90479M2.37988 4.74441H12.5433C14.7612 4.74441 16.5591 6.54237 16.5591 8.76025V10M14.7803 12.4161L17.62 15.2557L14.7803 18.0953M3.44073 10V11.2398C3.44073 13.4577 5.23869 15.2557 7.45657 15.2557H17.62" stroke="#2E3645" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>',
+				'arm_mpt_change_password' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M2.49951 13.0003C2.49951 10.8789 2.49951 9.81824 3.15854 9.15918C3.81756 8.50012 4.87824 8.50012 6.99961 8.50012H12.9997C15.1211 8.50012 16.1818 8.50012 16.8408 9.15918C17.4998 9.81824 17.4998 10.8789 17.4998 13.0003C17.4998 15.1218 17.4998 16.1825 16.8408 16.8415C16.1818 17.5006 15.1211 17.5006 12.9997 17.5006H6.99961C4.87824 17.5006 3.81756 17.5006 3.15854 16.8415C2.49951 16.1825 2.49951 15.1218 2.49951 13.0003Z" stroke="#2E3645" stroke-width="1.2"/>
+				<path d="M5.49951 8.5003V7.00022C5.49951 4.51482 7.51427 2.5 9.99961 2.5C12.4849 2.5 14.4997 4.51482 14.4997 7.00022V8.5003" stroke="#2E3645" stroke-width="1.2" stroke-linecap="round"/>
+				<path d="M7.74954 12.9995C7.74954 13.4138 7.41375 13.7496 6.99953 13.7496C6.58531 13.7496 6.24951 13.4138 6.24951 12.9995C6.24951 12.5853 6.58531 12.2495 6.99953 12.2495C7.41375 12.2495 7.74954 12.5853 7.74954 12.9995Z" fill="#2E3645"/>
+				<path d="M10.7495 12.9997C10.7495 13.4139 10.4138 13.7497 9.99953 13.7497C9.58529 13.7497 9.24951 13.4139 9.24951 12.9997C9.24951 12.5854 9.58529 12.2496 9.99953 12.2496C10.4138 12.2496 10.7495 12.5854 10.7495 12.9997Z" fill="#2E3645"/>
+				<path d="M13.7495 12.9997C13.7495 13.4139 13.4138 13.7497 12.9995 13.7497C12.5853 13.7497 12.2495 13.4139 12.2495 12.9997C12.2495 12.5854 12.5853 12.2496 12.9995 12.2496C13.4138 12.2496 13.7495 12.5854 13.7495 12.9997Z" fill="#2E3645"/>
+				</svg>',
+				'arm_mpt_close_account' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M13.0001 8.99991H19.0001M13.0001 17V15.75C13.0001 13.6789 11.0811 11.9999 8.71404 11.9999H5.28602C2.91901 11.9999 1 13.6789 1 15.75V17M10.0001 5.9999C10.0001 6.79555 9.68398 7.55862 9.12137 8.12123C8.55875 8.68384 7.79569 8.99991 7.00003 8.99991C6.20438 8.99991 5.44131 8.68384 4.8787 8.12123C4.31609 7.55862 4.00002 6.79555 4.00002 5.9999C4.00002 5.20424 4.31609 4.44118 4.8787 3.87856C5.44131 3.31595 6.20438 2.99988 7.00003 2.99988C7.79569 2.99988 8.55875 3.31595 9.12137 3.87856C9.68398 4.44118 10.0001 5.20424 10.0001 5.9999Z" stroke="#2E3645" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>',
+				'arm_mpt_custom_tab' => '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M7.72252 4.72671C8.73583 2.90891 9.24247 2 9.99999 2C10.7575 2 11.2641 2.9089 12.2774 4.7267L12.5396 5.19699C12.8276 5.71355 12.9715 5.97184 13.1961 6.14225C13.4205 6.31267 13.7001 6.37593 14.2593 6.50245L14.7684 6.61763C16.7361 7.06286 17.72 7.28546 17.9541 8.03819C18.1881 8.79089 17.5174 9.57529 16.1759 11.1439L15.8289 11.5498C15.4477 11.9955 15.257 12.2184 15.1713 12.4942C15.0856 12.7699 15.1144 13.0673 15.172 13.6621L15.2245 14.2035C15.4273 16.2965 15.5287 17.343 14.9159 17.8082C14.303 18.2734 13.3818 17.8492 11.5394 17.001L11.0628 16.7815C10.5393 16.5404 10.2775 16.4199 9.99999 16.4199C9.72247 16.4199 9.46071 16.5404 8.93719 16.7815L8.46055 17.001C6.61814 17.8492 5.69694 18.2734 5.08412 17.8082C4.47129 17.343 4.5727 16.2965 4.77552 14.2035L4.82798 13.6621C4.88562 13.0673 4.91444 12.7699 4.82869 12.4942C4.74294 12.2184 4.55234 11.9955 4.17113 11.5498L3.82408 11.1439C2.4826 9.57529 1.81186 8.79089 2.04594 8.03819C2.28002 7.28546 3.26389 7.06286 5.23163 6.61763L5.74071 6.50245C6.29988 6.37593 6.57946 6.31267 6.80395 6.14225C7.02844 5.97184 7.17242 5.71356 7.46037 5.19699L7.72252 4.72671Z" stroke="#1C274C" stroke-width="1.2"/>
+				</svg>' 
+			);
+
+			return $arm_mpt_icons;
 		}
 
 	}

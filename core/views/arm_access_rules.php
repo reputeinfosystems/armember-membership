@@ -113,19 +113,19 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 		<div id="arm_access_rules_grid_wrapper" class="arm_access_rules_grid_wrapper" >
 		<?php
 				$is_filtered_css = 'display:none;';
-				if(!empty($_REQUEST['type']) || !empty($_REQUEST['slug']) || !empty($_REQUEST['protection']) || (!empty($_REQUEST['plan']) && $_REQUEST['plan'] != 0))
+				if(!empty($_REQUEST['type']) || !empty($_REQUEST['slug']) || !empty($_REQUEST['protection']) || (!empty($_REQUEST['plan']) && $_REQUEST['plan'] != 0)) //phpcs:ignore 
 				{
 					$is_filtered_css = 'display:flex; width:100% !important';
 				}
 			?>
-			<div class="arm_filter_wrapper" id="arm_filter_wrapper" style= '<?php echo $is_filtered_css;?>' >			
+			<div class="arm_filter_wrapper" id="arm_filter_wrapper" style= '<?php echo esc_attr($is_filtered_css);?>' >			
 				<div class="arm_datatable_filters_options arm_filters_fields">
 					<div class="sltstandard">
 						<div class="arm_confirm_box_btn_container arm_margin_0">
 							<div class="arm_dt_filter_block arm_datatable_searchbox">
 								<div class="arm_datatable_filter_item">
 									<label class="arm_padding_left_0">
-										<input name="search" type="text" placeholder="<?php esc_attr_e( 'Search', 'armember-membership' ); ?>" id="armmanagesearch_new" class="armmanagesearch_new armGridSearchBox" value="<?php echo sanitize_text_field($filter_search); ?>" tabindex="0">
+										<input name="search" type="text" placeholder="<?php esc_attr_e( 'Search', 'armember-membership' ); ?>" id="armmanagesearch_new" class="armmanagesearch_new armGridSearchBox" value="<?php echo esc_attr(sanitize_text_field($filter_search)); ?>" tabindex="0">
 									</label>
 								</div>
 							</div>
@@ -187,7 +187,7 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 							<div class="arm_filter_child_row">
 								<div>
 									<?php if ( ! empty( $all_plans ) ) :
-										$plan = !empty($_REQUEST['plan']) ? $_REQUEST['plan']: ''; ?>
+										$plan = !empty($_REQUEST['plan']) ? $_REQUEST['plan']: ''; //phpcs:ignore ?> 
 										<div class="arm_filter_plans_box arm_datatable_filter_item">                        
 											<input type="text" id="arm_subs_filter" class="arm_subs_filter arm-selectpicker-input-control" value="<?php echo !empty($plan) ? esc_attr($plan): 0; ?>" />
 											<dl class="arm_selectbox arm_width_250">
@@ -211,7 +211,7 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 							<div class="arm_filter_child_row">
 								<div>
 									<input type="button" name="search" class="armemailaddbtn arm_access_rule_grid_filter_btn" id="arm_access_rule_grid_filter_btn" value="<?php esc_html_e('Apply','armember-membership');?>">
-									<a href="<?php echo admin_url('admin.php?page=arm_access_rules');?>" class="arm_cancel_btn arm_access_rule_reset hidden_section"><?php esc_html_e('Clear','armember-membership');?></a>
+									<a href="<?php echo esc_url(admin_url('admin.php?page=arm_access_rules'));?>" class="arm_cancel_btn arm_access_rule_reset hidden_section"><?php esc_html_e('Clear','armember-membership');?></a>
 								</div>
 							</div>
 						</div>	
@@ -371,13 +371,13 @@ jQuery(document).ready(function ($){
 	var armRules = {};
 	var armfnInitCompleteFlag = 0;
 	var armDefaultRules = {};
-	var __ARM_Showing = '<?php echo addslashes(esc_html__('Showing','armember-membership')); //phpcs:ignore?>';
-    var __ARM_Showing_empty = '<?php echo addslashes(esc_html__('Showing 0 to 0 of 0 entries','armember-membership')); //phpcs:ignore?>';
+	var __ARM_Showing = '<?php echo addslashes(esc_html__('Showing','armember-membership')); //phpcs:ignore ?>';
+    var __ARM_Showing_empty = '<?php echo addslashes(esc_html__('Showing 0 to 0 of 0 entries','armember-membership')); //phpcs:ignore ?>';
     var __ARM_to = '-';
-    var __ARM_of = '<?php echo addslashes(esc_html__('of','armember-membership')); //phpcs:ignore?>';
-    var __ARM_RECORDS = '<?php echo addslashes(esc_html__('entries','armember-membership')); //phpcs:ignore?>';   
-    var __ARM_NO_FOUND = '<?php echo addslashes(esc_html__('No any record found.','armember-membership')); //phpcs:ignore?>';
-    var __ARM_NO_MATCHING = '<?php echo addslashes(esc_html__('No matching records found.','armember-membership')); //phpcs:ignore?>';
+    var __ARM_of = '<?php echo addslashes(esc_html__('of','armember-membership')); //phpcs:ignore ?>';
+    var __ARM_RECORDS = '<?php echo addslashes(esc_html__('entries','armember-membership')); //phpcs:ignore ?>';   
+    var __ARM_NO_FOUND = '<?php echo addslashes(esc_html__('No any record found.','armember-membership')); //phpcs:ignore ?>';
+    var __ARM_NO_MATCHING = '<?php echo addslashes(esc_html__('No matching records found.','armember-membership')); //phpcs:ignore ?>';
 	var __ARM_Show = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?> ';
 	var DTable = jQuery('#armember_datatable').dataTable({
 		"sDom": '<"H"CBfr>t<"footer"ipl>',
@@ -440,7 +440,7 @@ jQuery(document).ready(function ($){
 			});
 		},
 		"fnPreDrawCallback": function () {
-			jQuery('.DTFC_ScrollWrapper').hide();
+			jQuery('.DTFC_ScrollWrapper').css('visibility', 'hidden');
 			jQuery('.footer').hide();
 			jQuery('.arm_loading_grid').show();
 		},
@@ -487,9 +487,10 @@ jQuery(document).ready(function ($){
 					}
 				}
 				DTable.dataTable().fnAdjustColumnSizing(false);
-			}, 1000);
-			jQuery('.DTFC_ScrollWrapper').show();
-			jQuery('.footer').show();
+				jQuery('.DTFC_ScrollWrapper').css('visibility', 'visible');
+			  	jQuery('.footer').show();
+			},300);
+
 		},
 	});
 

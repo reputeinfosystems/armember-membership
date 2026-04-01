@@ -32,8 +32,8 @@
 									</div>
 									<div class="right_content">		
 										<div class="armswitch arm_payment_setting_switch arm_margin_0">
-											<input type="checkbox" id="arm_<?php echo strtolower( esc_attr($arm_gateway_name) );//phpcs:ignore?>_debug_log" <?php echo esc_attr($arm_debug_logs);?> value="1" class="armswitch_input arm_debug_mode_switch" name="payment_gateway_settings[<?php echo strtolower( esc_attr($payment_gateway_key) ); //phpcs:ignore?>][debug_log]" data-switch_key="<?php echo strtolower( esc_attr($payment_gateway_key) ); //phpcs:ignore?>"/>
-											<label for="arm_<?php echo strtolower( esc_attr($arm_gateway_name) ); //phpcs:ignore?>_debug_log" class="armswitch_label"></label>
+											<input type="checkbox" id="arm_<?php echo strtolower( esc_attr($arm_gateway_name) );//phpcs:ignore ?>_debug_log" <?php echo esc_attr($arm_debug_logs);?> value="1" class="armswitch_input arm_debug_mode_switch" name="payment_gateway_settings[<?php echo strtolower( esc_attr($payment_gateway_key) ); //phpcs:ignore ?>][debug_log]" data-switch_key="<?php echo strtolower( esc_attr($payment_gateway_key) ); //phpcs:ignore ?>"/>
+											<label for="arm_<?php echo strtolower( esc_attr($arm_gateway_name) ); //phpcs:ignore ?>_debug_log" class="armswitch_label"></label>
 										</div>
 									</div>
 								</div>
@@ -95,7 +95,7 @@
 																</div>
 															</form>
 															<button type='button' class='arm_confirm_box_btn armemailaddbtn arm_download_debug_log_btn' data-selected_key='<?php echo esc_attr($payment_gateway_key); ?>'>
-																<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL;?>/download-icon.svg" alt="Download Icon" class="arm-icon" /> 
+																<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/download-icon.svg" alt="Download Icon" class="arm-icon" /> 
 																<?php esc_html_e('Download', 'armember-membership'); ?>
 															</button>
 														</div>
@@ -154,8 +154,8 @@
 										</div>
 										
 										<div class="armswitch arm_payment_setting_switch">
-											<input type="checkbox" id="arm_<?php echo strtolower( esc_attr($arm_integration_name) );//phpcs:ignore?>_debug_log" <?php echo esc_attr($arm_integration_debug_logs);?> value="1" class="armswitch_input arm_debug_mode_switch" name="arm_integration_settings[<?php echo strtolower( esc_attr($integration_key) ); //phpcs:ignore?>][debug_logs]" data-switch_key="<?php echo strtolower( esc_attr($integration_key) ); //phpcs:ignore?>"/>
-											<label for="arm_<?php echo strtolower( esc_attr($arm_integration_name) ); //phpcs:ignore?>_debug_log" class="armswitch_label"></label>
+											<input type="checkbox" id="arm_<?php echo strtolower( esc_attr($arm_integration_name) );//phpcs:ignore ?>_debug_log" <?php echo esc_attr($arm_integration_debug_logs);?> value="1" class="armswitch_input arm_debug_mode_switch" name="arm_integration_settings[<?php echo strtolower( esc_attr($integration_key) ); //phpcs:ignore ?>][debug_logs]" data-switch_key="<?php echo strtolower( esc_attr($integration_key) ); //phpcs:ignore ?>"/>
+											<label for="arm_<?php echo strtolower( esc_attr($arm_integration_name) ); //phpcs:ignore ?>_debug_log" class="armswitch_label"></label>
 										</div>
 									</div>
 									<div class="arm-form-table-content">
@@ -217,7 +217,7 @@
 																</div>
 															</form>
 															<button type='button' class='arm_confirm_box_btn armemailaddbtn arm_download_general_debug_log_btn' data-selected_key='<?php echo esc_attr($integration_key); ?>'>
-																<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL;?>/download-icon.svg" alt="Download Icon" class="arm-icon" /> 	
+																<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/download-icon.svg" alt="Download Icon" class="arm-icon" /> 	
 																<?php esc_html_e('Download', 'armember-membership'); ?>
 															</button>
 														</div>
@@ -328,7 +328,7 @@
 								            	</div>
 								            </form>
 											<button type='button' class='arm_confirm_box_btn armemailaddbtn arm_download_general_debug_log_btn' data-selected_key='cron'>
-												<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL;?>/download-icon.svg" alt="Download Icon" class="arm-icon" /> 	
+												<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/download-icon.svg" alt="Download Icon" class="arm-icon" /> 	
 												<?php esc_html_e('Download', 'armember-membership'); ?>
 											</button>
 										</div>
@@ -429,7 +429,7 @@
 								            	</div>
 								            </form>
 											<button type='button' class='arm_confirm_box_btn armemailaddbtn arm_download_general_debug_log_btn' data-selected_key='email'>
-												<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL;?>/download-icon.svg" alt="Download Icon" class="arm-icon" /> 
+												<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/download-icon.svg" alt="Download Icon" class="arm-icon" /> 
 												<?php esc_html_e('Download', 'armember-membership'); ?>
 											</button>
 										</div>

@@ -75,18 +75,18 @@
 </style>
 <script type="text/javascript" charset="utf-8">
 // <![CDATA[
-var arm_other_file_image = '<?php echo MEMBERSHIPLITE_IMAGES_URL . '/file_icon.svg';?>';
+var arm_other_file_image = '<?php echo MEMBERSHIPLITE_IMAGES_URL . '/file_icon.svg'; //phpcs:ignore ?>';
 var ARM_IMAGE_URL = "<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>";
 var ARM_DELETE_MEMBER_LBL = "<?php echo esc_html__('Delete Member', 'armember-membership'); //phpcs:ignore ?>";
 var ARM_CHANGE_PLAN_LBL = "<?php echo esc_html__('Change Plan', 'armember-membership'); //phpcs:ignore ?>";
 var ARM_CHANGE_STATUS_LBL = "<?php echo esc_html__('Change Status', 'armember-membership'); //phpcs:ignore ?>";
-<?php if(isset($_GET['action']) && $_GET['action'] == 'edit_member' && !empty($_GET['id'])){
-	$user_id = $_GET['id'];
+<?php if(isset($_GET['action']) && $_GET['action'] == 'edit_member' && !empty($_GET['id'])){ //phpcs:ignore
+	$user_id = intval($_GET['id']); //phpcs:ignore
 	?>
 	jQuery(window).on("load", function(){	
 		var arm_form_uri = window.location.toString();
 		if( arm_form_uri.indexOf("&action=edit_member") > 0 && typeof arm_open_edit_member_form == 'function') {
-			arm_open_edit_member_form(<?php echo $user_id?>);
+			arm_open_edit_member_form(<?php echo $user_id; //phpcs:ignore ?>);
 			var arm_frm_clean_uri = arm_form_uri.substring(0, arm_form_uri.indexOf("&"));
 			window.history.replaceState({}, document.title, arm_frm_clean_uri);
 		}
@@ -143,7 +143,7 @@ function ChangeID(id) {
 if($ARMemberLite->is_arm_pro_active && $arm_pay_per_post_feature->isPayPerPostFeature)
 {
 	$arm_paid_post_popup_wrapper_filter = '';
-	echo apply_filters('arm_paid_post_wrapper_popup_filter',$arm_paid_post_popup_wrapper_filter);
+	echo apply_filters('arm_paid_post_wrapper_popup_filter',$arm_paid_post_popup_wrapper_filter); //phpcs:ignore
 }
 
 if(!$ARMemberLite->is_arm_pro_active)

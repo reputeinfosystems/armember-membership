@@ -4,26 +4,27 @@ $active = 'arm_general_settings_tab_active';
 
 $g_action = isset( $_REQUEST['action'] ) ? sanitize_text_field($_REQUEST['action']) : 'general_settings'; //phpcs:ignore
 
-$g_sub_action = isset($_GET['sub_action']) ? sanitize_text_field($_GET['sub_action']) : '';
+$g_sub_action = isset($_GET['sub_action']) ? sanitize_text_field($_GET['sub_action']) : '';   //phpcs:ignore
 ?>
 <div class="wrap arm_page arm_general_settings_main_wrapper">
     <div class="content_wrapper arm_global_settings_content" id="content_wrapper">
         <div class="armclear"></div>
         <div class="armember_general_settings_wrapper">
             <div class="arm_general_settings_tab_wrapper">
-                <a class="arm_general_settings_tab arm_setting_tabs <?php echo ($g_action == 'general_settings') ? esc_attr($active) : ""; //phpcs:ignore?>" href="<?php echo esc_url(admin_url('admin.php?page=' . $arm_slugs->general_settings)); ?>"><?php esc_html_e('General Settings', 'armember-membership'); ?></a>
+                <a class="arm_general_settings_tab arm_setting_tabs" href="<?php echo esc_url(admin_url('admin.php?page=' . $arm_slugs->general_settings));  //phpcs:ignore ?>"><?php esc_html_e('General Settings', 'armember-membership'); ?></a>
                 <?php if ( $g_action === 'general_settings' ) : ?>
                     <div class="arm_submenu_tab_indent">
-                        <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_sub_action == 'email' ? esc_html($active) : '' ); ?> arm_padding_0 arm_margin_top_5 " href="javascript:void(0)" data-target="#email_setting_sec"><?php esc_html_e( 'Email', 'armember-membership' ); ?></a>
+                        <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_sub_action == 'general_options' ? esc_html($active) : '' ); ?> arm_padding_0 arm_margin_top_5 arm_lite_offset_fix" href="javascript:void(0)" data-target="#general_options_sec"><?php esc_html_e( 'General Options', 'armember-membership' ); ?></a>
+                        <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_sub_action == 'email' ? esc_html($active) : '' ); ?> arm_padding_top_15 arm_padding_left_0 arm_padding_bottom_0" href="javascript:void(0)" data-target="#email_setting_sec"><?php esc_html_e( 'Email', 'armember-membership' ); ?></a>
                         <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_sub_action == 'preset_fields' ? esc_html($active) : '' ); ?> arm_padding_top_15 arm_padding_left_0 arm_padding_bottom_0" href="javascript:void(0)" data-target="#preset_fields_sec"><?php esc_html_e( 'Manage Preset Form Fields', 'armember-membership' ); ?></a>
                         <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_sub_action == 'email_scheduler' ? esc_html($active) : '' ); ?> arm_padding_top_15 arm_padding_left_0 arm_padding_bottom_0 arm_padding_right_0" href="javascript:void(0)" data-target="#email_scheduler_sec"><?php esc_html_e( 'Email Notification Scheduler', 'armember-membership' ); ?></a>
-                        <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_sub_action == 'front_end_font' ? esc_html($active) : '' ); ?> arm_padding_top_15 arm_padding_left_0 arm_padding_bottom_0 arm_padding_right_0" href="javascript:void(0)" data-target="#front_end_font_sec"><?php esc_html_e( 'Front-end Font', 'armember-membership' ); ?></a>
                         <div class="armclear"></div>    
                     </div>
                 <?php endif; ?>    
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'payment_options' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=payment_options' ) ); ?>"><?php esc_html_e( 'Payment Gateways', 'armember-membership' ); ?></a>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'page_setup' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=page_setup' ) ); ?>"><?php esc_html_e( 'Page Setup', 'armember-membership' ); ?></a>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'access_restriction' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=access_restriction' )); ?>"><?php esc_html_e( 'Default Restriction Rules', 'armember-membership' ); ?></a>
+                <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'member_panel' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=member_panel' ) ); ?>"><?php esc_html_e( 'Member Panel', 'armember-membership' ); ?></a>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'block_options' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=block_options' )); ?>"><?php esc_html_e( 'Security Options', 'armember-membership' ); ?></a>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'import_export' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=import_export' )); ?>"><?php esc_html_e( 'Import / Export', 'armember-membership' ); ?></a>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'redirection_options' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=redirection_options' )); ?>"><?php esc_html_e( 'Redirection Rules', 'armember-membership' ); ?></a>
@@ -110,6 +111,10 @@ $g_sub_action = isset($_GET['sub_action']) ? sanitize_text_field($_GET['sub_acti
                         case 'debug_logs':
                             $file_path         = MEMBERSHIPLITE_VIEWS_DIR . '/arm_debug_logs.php';
                             $arm_setting_title = esc_html__( 'Debug Log Settings', 'armember-membership' );
+                            break;
+                        case 'member_panel':
+                            $file_path         = MEMBERSHIPLITE_VIEWS_DIR . '/arm_member_panel_setting.php';
+                            $arm_setting_title = esc_html__( 'Member Panel', 'armember-membership' );
                             break;
                     }
                 }

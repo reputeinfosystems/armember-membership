@@ -6,7 +6,7 @@ $dbFormFields = $arm_member_forms->arm_get_db_form_fields(true);
 $return_type = "return";
 $edit_link = "javascript:void(0)";
 $target="";
-if ( !empty($_REQUEST['id']) && empty($user_id) ) {
+if ( !empty($_REQUEST['id']) && empty($user_id) ) { //phpcs:ignore
 	$user_id = abs(intval($_REQUEST['id'])); //phpcs:ignore
 	$edit_link = admin_url('admin.php?page=' . $arm_slugs->manage_members . '&action=edit_member&id=' . $user_id);
 	$target="target='_blank'";
@@ -69,17 +69,17 @@ if(!empty($user_id))
 		$backToListingIcon = MEMBERSHIPLITE_IMAGES_URL . '/back_to_listing_arrow_right.png';
 	}
 	$arm_hide_edit_profile_status = 0;
-	if(!empty($_REQUEST['arm_hide_edit_action']) && empty($_REQUEST['arm_hide_edit_btn_action']))
+	if(!empty($_REQUEST['arm_hide_edit_action']) && empty($_REQUEST['arm_hide_edit_btn_action'])) //phpcs:ignore
 	{
 		$arm_hide_edit_profile_status = 1;
 	}
-	if(empty($_REQUEST['arm_hide_edit_action']) && !empty($_REQUEST['arm_hide_edit_btn_action']))
+	if(empty($_REQUEST['arm_hide_edit_action']) && !empty($_REQUEST['arm_hide_edit_btn_action'])) //phpcs:ignore
 	{
 		$arm_hide_edit_profile_status = 1;
 	}
 
 	$arm_hide_personal_additional_info = 0;
-	if (isset($_REQUEST['arm_hide_personal_info']) &&$_REQUEST['arm_hide_personal_info'] === '1') {
+	if (isset($_REQUEST['arm_hide_personal_info']) &&$_REQUEST['arm_hide_personal_info'] === '1') {  //phpcs:ignore
 		$arm_hide_personal_additional_info = 1;
 	}
 
@@ -496,8 +496,10 @@ if(!empty($user_id))
                     
 					$membership_history = $arm_subscription_plans->arm_get_user_membership_history($user_id, 1, 5, $plan_id_name_array);
 					if(!empty($membership_history)){
+						$arm_membership_plan_section_lbl = esc_html__('Membership History', 'armember-membership');
+						$arm_membership_plan_section_lbl = apply_filters('arm_view_member_membership_history_section_label', $arm_membership_plan_section_lbl); //phpcs:ignore
 						$popup_content .= '
-						<div class="arm_view_member_sub_title arm_padding_0 arm_padding_top_48">'.esc_html__('Membership History', 'armember-membership').'</div>
+						<div class="arm_view_member_sub_title arm_padding_0 arm_padding_top_48">'.$arm_membership_plan_section_lbl.'</div>
 						<div class="arm_view_member_left_box arm_no_border">
 							<div class="arm_view_member_sub_content arm_membership_history_list armPageContainer arm_padding_0">
 								'. $membership_history.'

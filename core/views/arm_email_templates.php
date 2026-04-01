@@ -11,7 +11,7 @@ $edit_mode = false;
 $msg_type  = 'on_new_subscription';
 $local = get_locale();
 $local = apply_filters('arm_get_current_locale',$local);
-$get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )) : ''; //phpcs:ignore
+$get_page = isset($_GET['page']) ? sanitize_text_field( $_GET['page']) : ''; //phpcs:ignore
 ?>
 <style type="text/css" title="currentStyle">
 	.paginate_page a{display:none;}
@@ -70,7 +70,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )
 										<?php $is_status_active = ($email_template->arm_template_status == 1) ? 'checked="checked"' : '';?>
 										<div class="divTableCell">
 											<div class="armswitch">
-												<input id="arm_email_status_input_<?php echo intval($tempID)?>" class="armswitch_input  arm_email_status_action" <?php echo $is_status_active;?> type="checkbox" value="1" data-item_id="<?php echo intval($tempID)?>" /><label class="armswitch_label" for="arm_email_status_input_<?php echo intval($tempID)?>"></label>
+												<input id="arm_email_status_input_<?php echo intval($tempID)?>" class="armswitch_input  arm_email_status_action" <?php echo $is_status_active; //phpcs:ignore ?> type="checkbox" value="1" data-item_id="<?php echo intval($tempID)?>" /><label class="armswitch_label" for="arm_email_status_input_<?php echo intval($tempID)?>"></label>
 												<span class="arm_status_loader_img"></span>
 											</div>
 										</div>
@@ -148,7 +148,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )
 							$all_supported_language = array_merge($all_supported_language,$default_supported_language);
 						}
 					}?>
-					<table class="arm_table_label_on_top <?php echo $arm_table_top_class;?> arm_edit_email_table">	
+					<table class="arm_table_label_on_top <?php echo esc_attr($arm_table_top_class);?> arm_edit_email_table">	
 						<?php 						
 							if(empty($email_notifications_page_language_setting)){ ?>
 								<tr class="arm_membership_plan_selection_row arm_margin_top_5">
@@ -282,13 +282,13 @@ $get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )
 									}
 									array_unshift($email_notifications_page_language_setting,$local);
 									foreach ($email_notifications_page_language_setting as $language){ ?>
-										<a class="arm_general_settings_tab arm_general_settings_languages_tab arm_general_settings_languages_tab_standard" data-selected-value="<?php echo $language; ?>">&nbsp;<?php echo $all_supported_language[$language] ?>&nbsp;&nbsp;</a>
+										<a class="arm_general_settings_tab arm_general_settings_languages_tab arm_general_settings_languages_tab_standard" data-selected-value="<?php echo esc_attr($language); ?>">&nbsp;<?php echo esc_attr($all_supported_language[$language]); ?>&nbsp;&nbsp;</a>
 									<?php } ?>
 								<div class="armclear"></div>
 								</div>
 								<?php 
 								foreach ($email_notifications_page_language_setting as $lan) { ?>
-								<tr class="arm_general_settings_multi_languages_standard_tab arm_width_auto arm_width_100_pct" data-multi-lang-value="<?php echo $lan; ?>">
+								<tr class="arm_general_settings_multi_languages_standard_tab arm_width_auto arm_width_100_pct" data-multi-lang-value="<?php echo esc_attr($lan); ?>">
 									<td>
 										<table class="arm_email_subject_table">
 										<tr class="arm_membership_plan_selection_row arm_margin_top_0">
@@ -302,7 +302,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field(esc_attr( $_GET['page'] )
 													<?php if($local==$lan){ ?>
 														<input class="arm_input_tab arm_width_510" type="text" name="arm_template_subject" id="arm_template_subject" value="" data-msg-required="<?php esc_attr_e('Email Subject Required.', 'armember-membership');?>"/>
 													<?php }else{ ?>
-														<input class="arm_input_tab arm_width_510" type="text" name="arm_template_subject_translated[<?php echo $lan; ?>]" id="arm_template_subject_translated_<?php echo $lan; ?>" value="" data-msg-required="<?php esc_attr_e('Email Subject Required.', 'armember-membership');?>"/>
+														<input class="arm_input_tab arm_width_510" type="text" name="arm_template_subject_translated[<?php echo esc_attr($lan); ?>]" id="arm_template_subject_translated_<?php echo esc_attr($lan); ?>" value="" data-msg-required="<?php esc_attr_e('Email Subject Required.', 'armember-membership');?>"/>
 													<?php } ?>
 												</td>
 											</tr>

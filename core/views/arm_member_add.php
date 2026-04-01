@@ -482,7 +482,7 @@ $formHiddenFields = '';
 												<tr class="form-field arm_user_password_field">
 													<th>
 														<label
-															for="arm_repeat_pass"><?php ( ! empty( $amr_confirm_pass_lbl ) ) ? esc_html_e( $amr_confirm_pass_lbl ) : esc_html_e( 'Confirm Password', 'armember-membership' ); //phpcs:ignore?>
+															for="arm_repeat_pass"><?php ( ! empty( $amr_confirm_pass_lbl ) ) ? esc_html_e( $amr_confirm_pass_lbl ) : esc_html_e( 'Confirm Password', 'armember-membership' ); //phpcs:ignore ?>
 															<?php if ( $required_class != 1 ) : ?> <span
 																class="required_icon">*</span><?php endif; ?></label>
 													</th>
@@ -571,7 +571,7 @@ $formHiddenFields = '';
 													<tr class="form-field arm_user_password_field">
 														<th>
 															<label
-																for="arm_repeat_pass"><?php esc_html_e( 'Confirm Password', 'armember-membership' ); //phpcs:ignore?>
+																for="arm_repeat_pass"><?php esc_html_e( 'Confirm Password', 'armember-membership' ); //phpcs:ignore ?>
 																<?php if ( $required_class != 1 ) : ?> <span
 																	class="required_icon">*</span><?php endif; ?></label>
 														</th>
@@ -724,7 +724,7 @@ $formHiddenFields = '';
 													'value' => '',
 													'allow_ext' => '',
 													'file_size_limit' => '2',
-													'meta_key' => 'avatar',
+													'meta_key' => 'avatar', //phpcs:ignore
 													'required' => 0,
 													'blank_message' => esc_html__('Please select avatar.', 'armember-membership'),
 													'invalid_message' => esc_html__('Invalid image selected.', 'armember-membership'),
@@ -772,7 +772,7 @@ $formHiddenFields = '';
 													'value' => '',
 													'allow_ext' => '',
 													'file_size_limit' => '10',
-													'meta_key' => 'profile_cover',
+													'meta_key' => 'profile_cover', //phpcs:ignore
 													'required' => 0,
 													'blank_message' => esc_html__('Please select profile cover.', 'armember-membership'),
 													'invalid_message' => esc_html__('Invalid image selected.', 'armember-membership'),
@@ -791,7 +791,7 @@ $formHiddenFields = '';
 																{
 																	$profileCoverOptions['value'] = $user->profile_cover;
 																}
-																echo $arm_member_forms->arm_member_form_get_fields_by_type($profileCoverOptions, $profile_cover_field_id, $arm_form_id, 'active', $armform); //phpcs:ignore?>
+																echo $arm_member_forms->arm_member_form_get_fields_by_type($profileCoverOptions, $profile_cover_field_id, $arm_form_id, 'active', $armform); //phpcs:ignore ?>
 														<div class="armclear"></div>
 													</div>
 												</div>
@@ -928,6 +928,7 @@ $formHiddenFields = '';
 									<div class="arm_member_membership_plan_confirm_box" id="arm_confirm_box_plan_change">
 										<div class="arm_text_align_left arm_membership_plan_section_div">
 											<div class="arm_membership_plan_section">
+												<input type="hidden" id="arm_user_plan_hidden" name="arm_user_plan_hidden" value="" />
 												<input type='text' id="arm_user_plan"
 													class="arm_user_plan_change_input arm_add_edit_user_plan_change_input arm_user_plan_change_input_get_cycle arm-selectpicker-input-control arm-selectpicker-input-control"
 													name="arm_user_plan" data-old="<?php echo esc_attr($plan_id); ?>"
@@ -939,7 +940,7 @@ $formHiddenFields = '';
 															class="arm_autocomplete" /><i
 															class="armfa armfa-angle-down armfa-lg"></i></dt>
 													<dd>
-														<ul data-id="arm_user_plan"><?php echo $plansLists; //phpcs:ignore?>
+														<ul data-id="arm_user_plan"><?php echo $plansLists; //phpcs:ignore ?>
 														</ul>
 													</dd>
 												</dl>
@@ -961,7 +962,7 @@ $formHiddenFields = '';
 														class="arm_add_plan_filter_label"><?php esc_html_e('Plan Start Date', 'armember-membership');    ?>
 													</span>
 													<input type="text"
-														value="<?php echo date($arm_common_date_format, strtotime($plan_start_date)); //phpcs:ignore?>"
+														value="<?php echo date($arm_common_date_format, strtotime($plan_start_date)); //phpcs:ignore ?>"
 														data-date_format="<?php echo esc_attr($arm_common_date_format); ?>"
 														name="arm_subscription_start_date"
 														class="arm_member_form_input arm_user_plan_date_picker arm_min_width_232" />
@@ -1458,7 +1459,7 @@ $formHiddenFields = '';
                 <div class="armclear"></div>
         </div>
         <div class="arm_submit_btn_container">
-            <img src="<?php echo MEMBERSHIPLITE_IMAGES_URL.'/arm_loader.gif' //phpcs:ignore?>"
+            <img src="<?php echo MEMBERSHIPLITE_IMAGES_URL.'/arm_loader.gif' //phpcs:ignore ?>"
                 id="arm_loader_img_add_member_loader" class="arm_loader_img arm_submit_btn_loader"
                 style="display: none;" width="20" height="20" />
 				<button class="arm_cancel_btn arm_members_close_btn" type="button"><?php esc_html_e('Close', 'armember-membership') ?></button>
@@ -1498,26 +1499,26 @@ $formHiddenFields = '';
 var PLANLABEL_ADD = '<?php esc_html_e('Select Plan','armember-membership'); //phpcs:ignore ?>';
 var PLANLABEL_CHANGE = '<?php esc_html_e('Change Plan','armember-membership'); //phpcs:ignore ?>';
 var PLANLIST = '<?php echo $plansLists; //phpcs:ignore ?>';
-var PLANLIST2 = '<?php echo apply_filters('arm_paid_post_plan_lists',$paidPlansLists,$planIDs); //phpcs:ignore?>';
+var PLANLIST2 = '<?php echo apply_filters('arm_paid_post_plan_lists',$paidPlansLists,$planIDs); //phpcs:ignore ?>';
 var SELECTPLANLABEL = '<?php esc_html_e( 'Select Plan', 'armember-membership' ); ?>';
 var PLANSTARTDATELABEL = '<?php echo esc_html__( 'Plan Start Date', 'armember-membership' ) . ' '; ?>';
-var CURRENTDATE = '<?php echo esc_html(date( $arm_common_date_format ));  //phpcs:ignore?>';
+var CURRENTDATE = '<?php echo esc_html(date( $arm_common_date_format ));  //phpcs:ignore ?>';
 var REMOVEPLAN = '<?php esc_html_e( 'Remove Plan', 'armember-membership' ); ?>';
 var ADDPLAN = '<?php esc_html_e( 'Add New Plan', 'armember-membership' ); ?>';
 var REMOVEPLANMESSAGE = '<?php esc_html_e( 'You cannot remove all plans.', 'armember-membership' ); ?>';
 var IMAGEURL = "<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>";
 var ACTIVESTATUSLABEL = "<?php esc_html_e( 'Active', 'armember-membership' ); ?>";
-var SELECTPOSTLABEL = '<?php echo addslashes( esc_html__('Select Post', 'armember-membership')); //phpcs:ignore?>';
+var SELECTPOSTLABEL = '<?php echo addslashes( esc_html__('Select Post', 'armember-membership')); //phpcs:ignore ?>';
 var POSTSTARTDATELABEL =
-    '<?php echo addslashes( esc_html__('Post Start Date', 'armember-membership')).' '; //phpcs:ignore?>';
-var ARMREMOVEPOST = '<?php echo addslashes( esc_html__('Remove Post', 'armember-membership')); //phpcs:ignore?>';
-var ARMADDPOST = '<?php echo addslashes( esc_html__('Add New Post', 'armember-membership')); //phpcs:ignore?>';
+    '<?php echo addslashes( esc_html__('Post Start Date', 'armember-membership')).' '; //phpcs:ignore ?>';
+var ARMREMOVEPOST = '<?php echo addslashes( esc_html__('Remove Post', 'armember-membership')); //phpcs:ignore ?>';
+var ARMADDPOST = '<?php echo addslashes( esc_html__('Add New Post', 'armember-membership')); //phpcs:ignore ?>';
 var REMOVEPAIDPOSTMESSAGE =
-    '<?php echo addslashes( esc_html__('You cannot remove all posts.', 'armember-membership')); //phpcs:ignore?>';
+    '<?php echo addslashes( esc_html__('You cannot remove all posts.', 'armember-membership')); //phpcs:ignore ?>';
 var TODAYDATE =
-'<?php echo date($arm_common_date_format) //phpcs:ignore?>';
-var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete.svg';
-var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete_hover.svg';
+'<?php echo date($arm_common_date_format) //phpcs:ignore ?>';
+var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/delete.svg';
+var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/delete_hover.svg';
 </script>
 
 <?php

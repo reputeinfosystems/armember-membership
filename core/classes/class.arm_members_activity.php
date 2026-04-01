@@ -40,7 +40,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$arm_lite_newdbversion = get_option( 'armlite_version' );
 			}
 
-			if ( version_compare( $arm_lite_newdbversion, '5.2', '<' ) ) {
+			if ( version_compare( $arm_lite_newdbversion, '5.3', '<' ) ) {
 				$path = MEMBERSHIPLITE_VIEWS_DIR . '/upgrade_latest_data.php';
 				include $path;
 			}
@@ -309,12 +309,13 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 			$ARMemberLite->arm_check_user_cap( '', '1' ); //phpcs:ignore --Reason:Verifying nonce
 			$arm_lite_upload_dir = MEMBERSHIPLITE_UPLOAD_DIR . '/';
 			$arm_lite_upload_url = MEMBERSHIPLITE_UPLOAD_URL . '/';
-			$ARMemberLite->arm_session_start();
-			$file_name = ( isset( $_SERVER['HTTP_X_FILENAME'] ) ? "arm_".arm_generate_random_code()."_".($ARMemberLite->arm_get_basename($_SERVER['HTTP_X_FILENAME'])) : false ); //phpcs:ignore
+			$ARMemberLite->arm_session_start(true);
 			$file_meta_name = (isset($_SERVER['HTTP_FILEMETANAME']) ? sanitize_text_field($_SERVER['HTTP_FILEMETANAME']) : false); //phpcs:ignore
+			$file_name = ( isset( $_SERVER['HTTP_X_FILENAME'] ) ? "arm_".arm_generate_random_code()."_".($ARMemberLite->arm_get_basename($_SERVER['HTTP_X_FILENAME'])) : false ); //phpcs:ignore
 
-			if($file_meta_name && $file_meta_name == 'profile' || $file_meta_name == 'profile_pic' || $file_meta_name == 'cover' || $file_meta_name == 'profile_cover' ){
+			if(!empty($file_meta_name) && ($file_meta_name == 'avatar' || $file_meta_name == 'profile' || $file_meta_name == 'profile_pic' || $file_meta_name == 'cover' || $file_meta_name == 'profile_cover' )){
 				switch ($file_meta_name) {
+					case 'avatar':
 					case 'profile':
 					case 'profile_pic':
 						$file_meta_name = "avatar";
@@ -809,7 +810,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 			}
 			if(!empty($file_key)){
 				if(!isset($_SESSION['arm_file_upload_arr'][$file_key])){
-					$_SESSION['arm_file_upload_arr'][$file_key] = '';
+					$_SESSION['arm_file_upload_arr'][$file_key] = '-';
 				}
 				if(!empty($file_name)){
 					if (!($_SESSION['arm_file_upload_arr'][$file_key]==$file_name)){ //phpcs:ignore

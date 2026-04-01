@@ -230,7 +230,7 @@ if (!class_exists('ARM_lite_divi_builder_restriction')) {
 		}
 
 		function getDeviceType() {
-			$userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
+			$userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);  //phpcs:ignore
 
 			if (preg_match('/mobile|iphone|ipod|android.*mobile|blackberry|opera mini|windows phone/i', $userAgent)) {
 				return 'mobile';

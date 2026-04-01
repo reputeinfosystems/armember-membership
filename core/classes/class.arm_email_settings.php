@@ -120,7 +120,7 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 		
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_email_notifications'], '1' ); //phpcs:ignore --Reason:Verifying nonce
 		
-			$template_id = isset($_POST['template_id']) ? intval($_POST['template_id']) : 0;
+			$template_id = isset($_POST['template_id']) ? intval($_POST['template_id']) : 0; //phpcs:ignore
 			
 			if (!$template_id) {
 				$response = array('status'=>'error','message' => esc_html__('Template ID missing.','armember-membership'));
@@ -152,7 +152,7 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 					'template_content' => $defaults[$slug]['arm_template_content'],
 				);
 			}
-			echo arm_pattern_json_encode($response);
+			echo arm_pattern_json_encode($response); //phpcs:ignore
 			die;
 		}
 		
@@ -175,7 +175,7 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 					);
 				}
 			}
-			echo arm_pattern_json_encode( $return );
+			echo arm_pattern_json_encode( $return ); //phpcs:ignore
 			exit;
 		}
 		function arm_submit_email_template() {
@@ -208,7 +208,7 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 					);
 				}
 			}
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			exit;
 		}
 		function arm_update_email_template_status( $posted_data = array() ) {
@@ -234,7 +234,7 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 					);
 				}
 			}
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			exit;
 		}
 		function arm_insert_default_email_templates() {
@@ -541,7 +541,7 @@ $temp_slugs->email_verify_user => array(
 		
 			$ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_email_notifications'], '1');
 		
-			$template_id = isset($_POST['temp_id']) ? intval($_POST['temp_id']) : 0;
+			$template_id = isset($_POST['temp_id']) ? intval($_POST['temp_id']) : 0; //phpcs:ignore
 			if ($template_id <= 0) {
 				wp_send_json_error(['msg' => 'Invalid template ID.']);
 			}

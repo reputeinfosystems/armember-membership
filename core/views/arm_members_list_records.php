@@ -1,5 +1,5 @@
 <?php
-global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways,$arm_common_lite;
+global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways,$arm_common_lite,$arm_version;
 $date_format    = $arm_global_settings->arm_get_wp_date_format();
 $user_roles     = get_editable_roles();
 $nowDate        = current_time( 'mysql' );
@@ -184,9 +184,15 @@ if ( ! empty( $members_show_hide_column ) ) {
 		$grid_column_hide .= $i.',';	
 	}
 }
+$arm_is_pro_latest = (!empty($arm_version) && version_compare($arm_version, '7.2', '>' )) ? 'true' : 'false';
+$arm_is_pro_active = (!$ARMemberLite->is_arm_pro_active) ? 'false' : 'true';
 ?>
 <script type="text/javascript" charset="utf-8">
 // <![CDATA[
+	
+var __ARM_PRO_ACTIVE = "<?php echo esc_html($arm_is_pro_active); ?>";
+var __ARM_PRO_LATEST = "<?php echo esc_html($arm_is_pro_latest) ?>";
+var __ARM_SEPERATOR = "|~|ARM|~|";
 var arm_saved_column_order = <?php echo json_encode($saved_column_order_array); ?>;
 var arm_avtr_width = 2;
 var arm_usr_id_width = 3;
@@ -354,6 +360,10 @@ jQuery(document).ready(function(){
 					headers_label.push(label);
 				}
 			}
+			var arm_pro_seperator = (__ARM_PRO_LATEST == 'true') ? __ARM_SEPERATOR : ',';
+			var seperator = (__ARM_PRO_ACTIVE == 'true') ? arm_pro_seperator : __ARM_SEPERATOR;
+			var header_labels = headers_label.join(seperator);
+			var encoded_header_labels = encodeURIComponent(header_labels);
 			// Open this row
 			if (row.child()) {
 				row.child().removeAttr('style');
@@ -365,7 +375,7 @@ jQuery(document).ready(function(){
 			else{
 				row.child.show();
 				tr.removeClass('hide');
-				row.child(user_format(id,headers,headers_label,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
+				row.child(user_format(id,headers,encoded_header_labels,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
 				tr.addClass('shown');
 			}
 		}
@@ -377,7 +387,7 @@ function user_grid_format(d,response_data) {
 }
 
 function user_format(d,headers,headers_label,_wpnonce) {
-    var response1 = '<div class="arm_child_row_div_'+d+'"><div class="arm_child_row_div"><div class="arm_child_user_data_section"><div class="arm_view_member_left_box arm_no_border arm_margin_top_0" style="display: flex;align-items: center;"><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>" style="margin:30px auto;padding: 10px;width:24px; height:24px;display: flex;align-items: center;"></div></div></div></div>';
+    var response1 = '<div class="arm_child_row_div_'+d+'"><div class="arm_child_row_div"><div class="arm_child_user_data_section"><div class="arm_view_member_left_box arm_no_border arm_margin_top_0" style="display: flex;align-items: center;"><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>" style="margin:30px auto;padding: 10px;width:24px; height:24px;display: flex;align-items: center;"></div></div></div></div>';
     
 	jQuery.ajax({
 		type: "POST",
@@ -391,9 +401,9 @@ function user_format(d,headers,headers_label,_wpnonce) {
     return response1;
 }
 
-	<?php if(isset($_REQUEST['plan_id']) && !empty($_REQUEST['plan_id'])){?>
+	<?php if(isset($_REQUEST['plan_id']) && !empty($_REQUEST['plan_id'])){ //phpcs:ignore ?> 
 		jQuery(document).ready( function(){
-			var arm_member_plan = <?php echo $_REQUEST['plan_id']; ?>;
+			var arm_member_plan = <?php echo intval($_REQUEST['plan_id']); //phpcs:ignore ?>;
 			jQuery('#arm_subs_filter').val(arm_member_plan).trigger('change');
 			jQuery('.arm_filter_child_row').find('#arm_member_grid_filter_btn').trigger('click');
 			jQuery('.arm_filter_child_row').find('.arm_cancel_btn').removeClass('hidden_section');
@@ -404,9 +414,9 @@ function user_format(d,headers,headers_label,_wpnonce) {
 			}
 		});
 	<?php }?>
-	<?php if(isset($_REQUEST['member_status_id']) && !empty($_REQUEST['member_status_id'])){?>
+	<?php if(isset($_REQUEST['member_status_id']) && !empty($_REQUEST['member_status_id'])){ //phpcs:ignore ?> 
 		jQuery(document).ready( function(){
-			var arm_member_status = <?php echo $_REQUEST['member_status_id']; ?>;
+			var arm_member_status = <?php echo intval($_REQUEST['member_status_id']);  //phpcs:ignore ?>;
 			jQuery('#arm_status_filter').val(arm_member_status).trigger('change');
 			jQuery('.arm_filter_child_row').find('#arm_member_grid_filter_btn').trigger('click');
 			jQuery('.arm_filter_child_row').find('.arm_cancel_btn').removeClass('hidden_section');
@@ -417,9 +427,9 @@ function user_format(d,headers,headers_label,_wpnonce) {
 			}
 		});
 	<?php }?>
-	<?php if(isset($_REQUEST['action']) && !empty($_REQUEST['action']) && $_REQUEST['action'] == 'view_member' && !empty($_REQUEST['id'])){?>
+	<?php if(isset($_REQUEST['action']) && !empty($_REQUEST['action']) && $_REQUEST['action'] == 'view_member' && !empty($_REQUEST['id'])){ //phpcs:ignore ?> 
 	jQuery(document).ready( function(){
-		var user_id = <?php echo $_REQUEST['id'];?>;
+		var user_id = <?php echo intval($_REQUEST['id']); //phpcs:ignore ?>;
 		var arm_form_uri = window.location.toString();
 		if( arm_form_uri.indexOf("&action=") > 0 ) {
 			var arm_frm_clean_uri = arm_form_uri.substring(0, arm_form_uri.indexOf("&"));
@@ -837,10 +847,10 @@ function user_format(d,headers,headers_label,_wpnonce) {
 			"bScrollCollapse": true,
 			"aoColumnDefs": [
 				{"sType": "html", "bVisible": false, "aTargets": [<?php echo $grid_column_hide; //phpcs:ignore ?>]},
-				{"sClass": "arm_padding_left_0 arm_width_30 noVis", "aTargets": [1]},
+				{"sClass": "arm_padding_left_0 arm_min_width_30 noVis", "aTargets": [1]},
 				{"bSortable": false, "aTargets": nonSortableTargets},
+				{"sClass":"arm_padding_right_0 arm_width_40 noVis","aTargets":[0]},
 				{"aTargets":[<?php echo $arm_exclude_colvis; //phpcs:ignore ?>],"sClass":"noVis"},
-				{"sClass":"arm_padding_right_0 arm_min_width_40 noVis","aTargets":[0]},
 				{"sClass":"arm_min_width_80 arm_max_width_80","aTargets":[arm_avtr_width,arm_usr_id_width]},
 				{"sClass":"arm_min_width_200","aTargets":[arm_usreml_width]},
 				{"sClass":"arm_min_width_180","aTargets":[arm_usrmltype_width]},
@@ -945,17 +955,20 @@ function user_format(d,headers,headers_label,_wpnonce) {
 					{
 						key = dataTableHeaderElements[i].dataset.key;
 						label = jQuery(dataTableHeaderElements[i]).text();
-						txt_label = encodeURIComponent(label);
 						headers.push(key);
-						headers_label.push(txt_label);
+						headers_label.push(label);
 					}
 				}
+				var arm_pro_seperator = (__ARM_PRO_LATEST == 'true') ? __ARM_SEPERATOR : ',';
+				var seperator = (__ARM_PRO_ACTIVE == 'true') ? arm_pro_seperator : __ARM_SEPERATOR;
+				var header_labels = headers_label.join(seperator);
+				var encoded_header_labels = encodeURIComponent(header_labels);
 				if(grid_ids != '' && typeof grid_ids != 'undefined') {
 					var grid_rows = jQuery('.arm_hide_datatable tbody .chkstanard');
 					jQuery.ajax({
 						type: "POST",
 						url: __ARMAJAXURL,
-						data: "action=get_user_all_details_for_grid_loads&user_ids=" + grid_ids + "&exclude_headers="+headers+"&header_label="+headers_label+"&_wpnonce=" + _wpnonce,
+						data: "action=get_user_all_details_for_grid_loads&user_ids=" + grid_ids + "&exclude_headers="+headers+"&header_label="+encoded_header_labels+"&_wpnonce=" + _wpnonce,
 						dataType: 'json',
 						success: function (response) {
 							grid_rows.each(function() {		
@@ -1176,10 +1189,10 @@ jQuery(document).on('change','#arm_manage_bulk_action1',function(){
 															$label = $arm_preset_grid_cols[$key];
 															?>
 															<li class="arm_grid_col_div">
-																<button tabindex="0" aria-controls="armember_datatable" type="button" class="ColVis_Button TableTools_Button ui-button ui-state-default <?php echo $arm_clm_hide_cls;?> <?php echo $arm_disbled_data;?>" data-cv-idx="<?php echo $arm_i;?>" data-cv-meta="<?php echo $key;?>">
-																	<span><span class="ColVis_radio"><span class="colvis_checkbox"></span></span><span class="ColVis_title"><?php echo stripslashes_deep( $label);?></span></span>
+																<button tabindex="0" aria-controls="armember_datatable" type="button" class="ColVis_Button TableTools_Button ui-button ui-state-default <?php echo esc_attr($arm_clm_hide_cls);?> <?php echo esc_attr($arm_disbled_data);?>" data-cv-idx="<?php echo esc_attr($arm_i);?>" data-cv-meta="<?php echo esc_attr($key);?>">
+																	<span><span class="ColVis_radio"><span class="colvis_checkbox"></span></span><span class="ColVis_title"><?php echo esc_html(stripslashes_deep( $label));?></span></span>
 																</button>
-																<span class="arm_margin_left_10 arm_margin_right_10"><span class="ColVis_radio arm_grid_col_sortable_icon"><img src="<?php echo MEMBERSHIPLITE_IMAGES_URL;?>/fe_drag.png" onmouseover="this.src = '<?php echo MEMBERSHIPLITE_IMAGES_URL;?>/fe_drag_hover.png';" onmouseout="this.src = '<?php echo MEMBERSHIPLITE_IMAGES_URL;?>/fe_drag.png';" style="cursor:move"></span>
+																<span class="arm_margin_left_10 arm_margin_right_10"><span class="ColVis_radio arm_grid_col_sortable_icon"><img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/fe_drag.png" onmouseover="this.src = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/fe_drag_hover.png';" onmouseout="this.src = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/fe_drag.png';" style="cursor:move"></span>
 															</li>
 															<?php 
 															$arm_i +=1;

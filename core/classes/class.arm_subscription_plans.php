@@ -35,26 +35,25 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 		function arm_get_membership_plan_expand_grid_func(){
 			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_capabilities_global, $arm_slugs;
 
-			$plan_id = intval($_POST['plan_id']);
+			$plan_id = intval($_POST['plan_id']); //phpcs:ignore
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_plans'], '1',1); //phpcs:ignore 
 			$grid_columns = array();
-			if ( ! empty( $_REQUEST['exclude_headers'] ) ) {
-				$keys   = explode( ',', sanitize_text_field( $_REQUEST['exclude_headers'] ) );
-				$labels = explode( ',', sanitize_text_field( $_REQUEST['header_label'] ) );
+			if ( ! empty( $_REQUEST['exclude_headers'] ) ) { //phpcs:ignore
+				$keys   = explode( ',', sanitize_text_field( $_REQUEST['exclude_headers'] ) );  //phpcs:ignore
+				$labels = explode( '|~|ARM|~|', sanitize_text_field( $_REQUEST['header_label'] ) ); //phpcs:ignore
 				$grid_columns = array_combine( $keys, $labels );
 			}
 
 			$date_format = $arm_global_settings->arm_get_wp_date_format();
 
-			$plan = $wpdb->get_row(
-				$wpdb->prepare("SELECT * FROM {$ARMemberLite->tbl_arm_subscription_plans} WHERE arm_subscription_plan_id = %d" ,$plan_id));
+			$plan = $wpdb->get_row( $wpdb->prepare("SELECT * FROM {$ARMemberLite->tbl_arm_subscription_plans} WHERE arm_subscription_plan_id = %d" ,$plan_id)); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_subscription_plans is a table name
 			
 			if(!empty($plan)){
 				$planObj = new ARM_Plan_Lite();
 				$planObj->init($plan);
 				$arm_is_multisite = is_multisite();
 				$arm_current_blog_id = !empty($arm_is_multisite) ? get_current_blog_id() : 0;
-				$arm_user_query = $wpdb->get_results($wpdb->prepare("SELECT um.user_id, um.meta_value FROM $wpdb->users  u LEFT JOIN $wpdb->usermeta um ON um.user_id = u.ID WHERE um.meta_key = %s",'arm_user_plan_ids'));
+				$arm_user_query = $wpdb->get_results($wpdb->prepare("SELECT um.user_id, um.meta_value FROM $wpdb->users  u LEFT JOIN $wpdb->usermeta um ON um.user_id = u.ID WHERE um.meta_key = %s",'arm_user_plan_ids')); //phpcs:ignore --Reason $wpdb->users and $wpdb->usermeta are table names
 				$arm_user_array = array(); 
 				if(!empty($arm_user_query)){
 					foreach($arm_user_query as $arm_user){
@@ -140,7 +139,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				$return .= '</div></div></div>';
 			}
 
-			echo $return;
+			echo $return; //phpcs:ignore
 			die;
 		}
 
@@ -157,46 +156,45 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
             $before_filter = count($results);
 
-            $sSearch = isset($_REQUEST['sSearch']) ? trim(sanitize_text_field($_REQUEST['sSearch'])) : '';
+            $sSearch = isset($_REQUEST['sSearch']) ? trim(sanitize_text_field($_REQUEST['sSearch'])) : ''; //phpcs:ignore
 
             if(!empty($sSearch))
             {
                 $where_bgs = $wpdb->prepare("`arm_subscription_plan_name` LIKE %s AND",'%'.$sSearch.'%');
-                $arm_plan_sql = $wpdb->prepare("SELECT * FROM `" . $ARMemberLite->tbl_arm_subscription_plans . "` WHERE ".$where_bgs." `arm_subscription_plan_is_delete`=%d AND `arm_subscription_plan_post_id`=%d AND `arm_subscription_plan_gift_status`=%d",0,0,0);
+                $arm_plan_sql = $wpdb->prepare("SELECT * FROM `" . $ARMemberLite->tbl_arm_subscription_plans . "` WHERE ".$where_bgs." `arm_subscription_plan_is_delete`=%d AND `arm_subscription_plan_post_id`=%d AND `arm_subscription_plan_gift_status`=%d",0,0,0); //phpcs:ignore
             }
 
             $after_filter_data = $wpdb->get_results($arm_plan_sql);//phpcs:ignore --Reason 
-            $after_filter = count($after_filter_data);
+            $after_filter = count($after_filter_data); //phpcs:ignore
 
-            $sorting_ord = isset($_REQUEST['sSortDir_0']) ? sanitize_text_field($_REQUEST['sSortDir_0']) : 'DESC';
-            $sorting_ord = strtolower($sorting_ord);
-            $sorting_col = (isset($_REQUEST['iSortCol_0']) && $_REQUEST['iSortCol_0'] > 0) ? intval($_REQUEST['iSortCol_0']) : 0;
+            $sorting_ord = isset($_REQUEST['sSortDir_0']) ? sanitize_text_field($_REQUEST['sSortDir_0']) : 'DESC'; //phpcs:ignore
+            $sorting_ord = strtolower($sorting_ord); //phpcs:ignore
+
+			$sorting_col = isset($_REQUEST['iSortCol_0']) ? intval($_REQUEST['iSortCol_0']) : 1; //phpcs:ignore
             if ( ( 'asc'!=$sorting_ord && 'desc'!=$sorting_ord ) ) {
                 $sorting_ord = 'DESC';
             }
 
-            if(intval($sorting_col) == 1) {
-                $orderby = "arm_subscription_plan_name";
-            }
-            else if(intval($sorting_col) == 2){
-                $orderby = "arm_subscription_plan_type";
-            }
-            else if(intval($sorting_col) == 4){
-                $orderby = "arm_subscription_plan_role";
-            }
-            else
-            {
-                $orderby = "arm_subscription_plan_id";
-            }
+            if ($sorting_col == 1) {
+				$orderby = "arm_subscription_plan_id";
+			} elseif ($sorting_col == 2) {
+				$orderby = "arm_subscription_plan_name";
+			} elseif ($sorting_col == 3) {
+				$orderby = "arm_subscription_plan_type";
+			} elseif ($sorting_col == 5) {
+				$orderby = "arm_subscription_plan_role";
+			} else {
+				$orderby = "arm_subscription_plan_id";
+			}
 
-            $order_by_qry = " ORDER BY " . $orderby . " " . $sorting_ord;
+            $order_by_qry = " ORDER BY " . $orderby . " " . $sorting_ord; //phpcs:ignore
 
-            $plan_offset = isset($_REQUEST['iDisplayStart']) ? intval($_REQUEST['iDisplayStart']) : 0;
-            $plan_number = isset($_REQUEST['iDisplayLength']) ? intval($_REQUEST['iDisplayLength']) : 10;
+            $plan_offset = isset($_REQUEST['iDisplayStart']) ? intval($_REQUEST['iDisplayStart']) : 0; //phpcs:ignore
+            $plan_number = isset($_REQUEST['iDisplayLength']) ? intval($_REQUEST['iDisplayLength']) : 10; //phpcs:ignore
 
             $phlimit = "LIMIT {$plan_offset},{$plan_number}";
 
-            $form_result = $wpdb->get_results($arm_plan_sql.' '.$order_by_qry.' '.$phlimit,ARRAY_A);
+            $form_result = $wpdb->get_results($arm_plan_sql.' '.$order_by_qry.' '.$phlimit,ARRAY_A); //phpcs:ignore --Reason $arm_plan_sql,$order_by_qry and $phlimit is a prepared queries
             $grid_data = array();
             $ai = 0;
 			$return = "";
@@ -204,7 +202,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                 $arm_is_multisite = is_multisite();
                 $arm_current_blog_id = !empty($arm_is_multisite) ? get_current_blog_id() : 0;
                             
-                $arm_user_query = $wpdb->get_results($wpdb->prepare("SELECT um.user_id, um.meta_value FROM $wpdb->users  u LEFT JOIN $wpdb->usermeta um ON um.user_id = u.ID WHERE um.meta_key = %s",'arm_user_plan_ids'));
+                $arm_user_query = $wpdb->get_results($wpdb->prepare("SELECT um.user_id, um.meta_value FROM $wpdb->users  u LEFT JOIN $wpdb->usermeta um ON um.user_id = u.ID WHERE um.meta_key = %s",'arm_user_plan_ids')); //phpcs:ignore --Reason $wpdb->users and $wpdb->usermeta are table names
                 $arm_user_array = array(); 
                 if(!empty($arm_user_query)){
                     foreach($arm_user_query as $arm_user){
@@ -283,7 +281,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                     $ai++;
                 }//End Foreach
             }
-            $sEcho = isset($_REQUEST['sEcho']) ? intval($_REQUEST['sEcho']) : intval(10);
+            $sEcho = isset($_REQUEST['sEcho']) ? intval($_REQUEST['sEcho']) : intval(10); //phpcs:ignore
             $columns = esc_html__('Plan ID', 'armember-membership') . ',' . esc_html__('Plan Name', 'armember-membership') . ',' . esc_html__('Plan Type', 'armember-membership') . ',' . esc_html__('Members', 'armember-membership') . ',' . esc_html__('Wp Role', 'armember-membership') . ',';
             $response = array(
                 'sColumns' => $columns,
@@ -303,18 +301,18 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_plans'], '1',1); //phpcs:ignore 
 
-            $arm_plan_id = $_REQUEST['id'];
+            $arm_plan_id = $_REQUEST['id']; //phpcs:ignore
 
             $response = array("status"=>"error","response"=>esc_html__("Something Went Wrong! Please try again","armember-membership"));
 
-            if(!empty($arm_plan_id) && (!empty($_REQUEST['arm_action']) && $_REQUEST['arm_action'] == 'edit_plan'))
+            if(!empty($arm_plan_id) && (!empty($_REQUEST['arm_action']) && $_REQUEST['arm_action'] == 'edit_plan')) //phpcs:ignore
             {
                 $arm_plan_sql = $wpdb->prepare("SELECT * FROM `" . $ARMemberLite->tbl_arm_subscription_plans . "` WHERE `arm_subscription_plan_id`=%d AND `arm_subscription_plan_is_delete`=%d AND `arm_subscription_plan_post_id`=%d AND `arm_subscription_plan_gift_status`=%d",$arm_plan_id,0,0,0); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_subscription_plans is a table name
 
                 $arm_is_multisite = is_multisite();
                 $arm_current_blog_id = !empty($arm_is_multisite) ? get_current_blog_id() : 0;
                             
-                $arm_user_query = $wpdb->get_results($wpdb->prepare("SELECT um.user_id, um.meta_value FROM $wpdb->users  u LEFT JOIN $wpdb->usermeta um ON um.user_id = u.ID WHERE um.meta_key = %s",'arm_user_plan_ids'));
+                $arm_user_query = $wpdb->get_results($wpdb->prepare("SELECT um.user_id, um.meta_value FROM $wpdb->users  u LEFT JOIN $wpdb->usermeta um ON um.user_id = u.ID WHERE um.meta_key = %s",'arm_user_plan_ids')); //phpcs:ignore --Reason $wpdb->users and $wpdb->usermeta are table names
                 $arm_user_array = array(); 
                 if(!empty($arm_user_query)){
                     foreach($arm_user_query as $arm_user){
@@ -348,7 +346,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					}
 				}
 
-                $arm_plan_result_data = $wpdb->get_row($arm_plan_sql,ARRAY_A);
+                $arm_plan_result_data = $wpdb->get_row($arm_plan_sql,ARRAY_A); //phpcs:ignore --Reason $arm_plan_sql is a prepared query
                 $response_data['arm_plan_id'] = $arm_plan_id;
                 $response_data['arm_plan_title'] = esc_html__('Edit Membership plan',"armember-membership");
                 $response_data['arm_plan_name'] = !empty($arm_plan_result_data['arm_subscription_plan_name']) ?  stripslashes($arm_plan_result_data['arm_subscription_plan_name']) : '';
@@ -357,9 +355,9 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                 $response_data['arm_plan_options'] = maybe_unserialize($arm_plan_result_data['arm_subscription_plan_options']);
                 $plan_expire_date = !empty($response_data['arm_plan_options']['expiry_date']) ? $response_data['arm_plan_options']['expiry_date'] : '';
 
-                $arm_common_date_format = 'm/d/Y';
+                $arm_common_date_format = 'm/d/Y'; 
                 
-                $plan_expire_date = date($arm_common_date_format, strtotime($plan_expire_date));
+                $plan_expire_date = date($arm_common_date_format, strtotime($plan_expire_date));   //phpcs:ignore
                 $response_data['arm_plan_options']['expiry_date'] = $plan_expire_date;
 
                 $response_data['arm_plan_amount'] = $arm_plan_result_data['arm_subscription_plan_amount'];
@@ -392,7 +390,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                 $response = array("status"=>"success","response"=>$response_data);
             }
 
-            echo arm_pattern_json_encode($response);
+            echo arm_pattern_json_encode($response); //phpcs:ignore
             die();
 
         }
@@ -539,7 +537,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				}
 				do_action( 'arm_save_subscription_plans', $posted_data ); //phpcs:ignore
 			}
-			echo arm_pattern_json_encode($response);
+			echo arm_pattern_json_encode($response); //phpcs:ignore
 			die;
 		}
 
@@ -921,7 +919,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages( @$errors, @$message );
-			echo arm_pattern_json_encode( $return_array );
+			echo arm_pattern_json_encode( $return_array ); //phpcs:ignore
 			exit;
 		}
 

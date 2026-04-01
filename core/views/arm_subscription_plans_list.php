@@ -1,9 +1,11 @@
 <?php
-global $wpdb, $ARMemberLite, $arm_subscription_plans, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_payment_gateways,$arm_common_lite;
+global $wpdb, $ARMemberLite, $arm_subscription_plans, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_payment_gateways,$arm_common_lite,$arm_version;
 $user_roles  = get_editable_roles();
 $user_roles1 = $arm_global_settings->arm_get_all_roles();
 
 $filter_search = (!empty($_POST['sSearch'])) ? sanitize_text_field($_POST['sSearch']) : '';//phpcs:ignore
+$arm_is_pro_latest = (!empty($arm_version) && version_compare($arm_version, '7.2', '>' )) ? 'true' : 'false';
+$arm_is_pro_active = (!$ARMemberLite->is_arm_pro_active) ? 'false' : 'true';
 ?>
 <style type="text/css" title="currentStyle">
 	.paginate_page a{display:none;}
@@ -12,7 +14,9 @@ $filter_search = (!empty($_POST['sSearch'])) ? sanitize_text_field($_POST['sSear
 </style>
 <script type="text/javascript" charset="utf-8">
 // <![CDATA[
-
+	var __ARM_PRO_ACTIVE = "<?php echo esc_html($arm_is_pro_active); ?>";
+var __ARM_PRO_LATEST = "<?php echo esc_html($arm_is_pro_latest) ?>";
+var __ARM_SEPERATOR = "|~|ARM|~|";
 jQuery(document).keydown(function(e) {
     if (e.key === "Escape") {
 		jQuery('.arm_subscription_plans_add_edit_main_wrapper .error.arm_invalid').each(function()
@@ -58,7 +62,7 @@ function show_grid_loader(){
 
 function arm_load_plan_list_grid(){
 		var __ARM_Showing = '<?php echo addslashes( esc_html__( 'Showing', 'armember-membership' ) ); //phpcs:ignore ?>';
-		var __ARM_Showing_empty = '<?php echo addslashes(esc_html__('Showing','armember-membership').' <span class="arm-black-350 arm_font_size_15">0</span> - <span class="arm-black-350 arm_font_size_15">0</span> of <span class="arm-black-350 arm_font_size_15">0</span> '.esc_html__('enteries','armember-membership')); //phpcs:ignore?>';
+		var __ARM_Showing_empty = '<?php echo addslashes(esc_html__('Showing','armember-membership').' <span class="arm-black-350 arm_font_size_15">0</span> - <span class="arm-black-350 arm_font_size_15">0</span> of <span class="arm-black-350 arm_font_size_15">0</span> '.esc_html__('enteries','armember-membership')); //phpcs:ignore ?>';
 		var __ARM_to = '-';
 		var __ARM_of = '<?php echo addslashes( esc_html__( 'of', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_PLANS = ' <?php echo addslashes( esc_html__( 'Plans', 'armember-membership' ) ); //phpcs:ignore ?>';
@@ -68,7 +72,7 @@ function arm_load_plan_list_grid(){
 
 		var __SHOW_PER_PAGE = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?>';
 
-		var ajax_url = '<?php echo admin_url("admin-ajax.php"); //phpcs:ignore?>';
+		var ajax_url = '<?php echo admin_url("admin-ajax.php"); //phpcs:ignore ?>';
 		var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
 		var search_term = jQuery('.arm_datatable_searchbox #armmanageplan_search').val();
 		
@@ -105,7 +109,6 @@ function arm_load_plan_list_grid(){
 		"bJQueryUI": true,
 		"bPaginate": true,
 		"bAutoWidth" : false,
-		"aaSorting": [],
 		"fixedColumns": false,
 		"sScrollX":"100%",
 		"bScrollCollapse": true,
@@ -131,7 +134,7 @@ function arm_load_plan_list_grid(){
 		"fnPreDrawCallback": function () {
 			show_grid_loader();
 		},
-		"aaSorting": [0, 'desc'],
+		"aaSorting": [1, 'desc'],
 		"fnStateSave": function (oSettings, oData) {
 			oData.aaSorting = [];
 			oData.abVisCols = [];
@@ -255,9 +258,12 @@ jQuery(document).ready(function(){
                 tr.addClass('shown');
             }
             else{
+				var arm_pro_seperator = (__ARM_PRO_LATEST == 'true') ? __ARM_SEPERATOR : ',';
+				var seperator = (__ARM_PRO_ACTIVE == 'true') ? arm_pro_seperator : __ARM_SEPERATOR;
+				var header_labels = headers_label.join(seperator);
                 row.child.show();
                 tr.removeClass('hide');
-                row.child(activity_child_format(id,headers,headers_label,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
+                row.child(activity_child_format(id,headers,header_labels,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
                 tr.addClass('shown');
             }
         }
@@ -266,7 +272,7 @@ jQuery(document).ready(function(){
 
 function activity_child_format(d,headers,headers_label,_wpnonce) {
     
-    var response1 = '</div><div class="arm_child_row_div_'+d+'" style="justify-self:center;text-align:center"></><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>"div>';
+    var response1 = '</div><div class="arm_child_row_div_'+d+'" style="justify-self:center;text-align:center"></><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>"div>';
     jQuery.ajax({
         type: "POST",
         url: __ARMAJAXURL,
@@ -371,7 +377,7 @@ function activity_child_format(d,headers,headers_label,_wpnonce) {
 
 
 <script type="text/javascript" charset="utf-8">
-<?php if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'new'){?>
+<?php if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'new'){ //phpcs:ignore ?> 
 	jQuery(window).on("load", function(){
 		jQuery('.arm_add_new_plan_btn').trigger('click');
 		var arm_form_uri = window.location.toString();

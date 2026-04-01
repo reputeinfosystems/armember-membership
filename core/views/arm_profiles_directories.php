@@ -107,12 +107,12 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 											<a href="javascript:void(0)" class="arm_template_preview armhelptip" title="<?php esc_attr_e( 'Click to preview', 'armember-membership' ); ?>" <?php echo $t_link_attr; //phpcs:ignore ?>><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/dir_preview_icon.svg" alt="" onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL);?>/dir_preview_icon_hover.svg';"  onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL);?>/dir_preview_icon.svg';"/></a>
 											<a class="arm_template_edit_link armhelptip arm_member_profile_edit_link" title="<?php esc_attr_e( 'Edit Template Options', 'armember-membership' ); ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->profiles_directories . '&action=edit_profile&id=' . $t_id ) ); //phpcs:ignore ?>" <?php echo $t_link_attr; //phpcs:ignore ?>><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/dir_edit_icon.svg" alt="" onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL);?>/dir_edit_icon_hover.svg';"  onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL);?>/dir_edit_icon.svg';"/></a>
 											<?php $arm_edi_del_section_profile = '';
-											echo apply_filters('arm_profile_template_btn_content',$arm_edi_del_section_profile,$t_id,$ptemp,$t_link_attr,'profile'); //phpcs:ignore?>
+											echo apply_filters('arm_profile_template_btn_content',$arm_edi_del_section_profile,$t_id,$ptemp,$t_link_attr,'profile'); //phpcs:ignore ?>
 										</div>
 									</div>
 									<?php 
 									$arm_confirm_box_profile_delete='';
-									echo apply_filters('arm_confirm_box_profile_delete',$arm_confirm_box_profile_delete,$t_id); //phpcs:ignore?>
+									echo apply_filters('arm_confirm_box_profile_delete',$arm_confirm_box_profile_delete,$t_id); //phpcs:ignore ?>
 									<div class="armclear"></div>
 									<div class="arm_profile_template_associalated_plan"><?php echo $plan_names; //phpcs:ignore ?></div>
 								</div>
@@ -193,7 +193,7 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 											<a href="javascript:void(0)" class="arm_template_preview armhelptip" title="<?php esc_attr_e( 'Click to preview', 'armember-membership' ); ?>" <?php echo $t_link_attr; //phpcs:ignore ?>><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/dir_preview_icon.svg" alt="" onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL);?>/dir_preview_icon_hover.svg';"  onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL);?>/dir_preview_icon.svg';"/></a>
 											<a href="javascript:void(0)" class="arm_template_edit_link armhelptip" title="<?php esc_html_e( 'Edit Template Options', 'armember-membership' ); ?>" <?php echo $t_link_attr; //phpcs:ignore ?>><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/dir_edit_icon.svg" alt="" onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL);?>/dir_edit_icon_hover.svg';"  onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL);?>/dir_edit_icon.svg';"/></a>
 											<?php $arm_profile_template_btn_content = '';
-											echo apply_filters('arm_profile_template_btn_content',$arm_profile_template_btn_content,$t_id,$dtemp,$t_link_attr,'templates'); //phpcs:ignore?>
+											echo apply_filters('arm_profile_template_btn_content',$arm_profile_template_btn_content,$t_id,$dtemp,$t_link_attr,'templates'); //phpcs:ignore ?>
 										</div>
 									</div>
 									<?php 
@@ -224,7 +224,7 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 				<div class="armclear"></div>
 				<?php 
 				$arm_profile_directories_list_section = '';
-				echo apply_filters('arm_profile_directories_list_section',$arm_profile_directories_list_section,'cards',$member_templates, $defaultTemplates,$tempColorSchemes,$tempColorSchemes1,$subs_data); //phpcs:ignore?>
+				echo apply_filters('arm_profile_directories_list_section',$arm_profile_directories_list_section,'cards',$member_templates, $defaultTemplates,$tempColorSchemes,$tempColorSchemes1,$subs_data); //phpcs:ignore ?>
 			</div>
 						
 						<?php
@@ -343,9 +343,9 @@ jQuery(window).resize(function(){
 	var contentHeight = jQuery('.arm_visible').outerHeight();
 	jQuery('.arm_profiles_directories_templates_container').css('height', contentHeight);
 });
-var DEFAULT_COVER = "<?php echo MEMBERSHIPLITE_IMAGES_URL . '/profile_default_cover.png';?>";
-var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete.svg';
-var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete_hover.svg';
+var DEFAULT_COVER = "<?php echo MEMBERSHIPLITE_IMAGES_URL . '/profile_default_cover.png'; //phpcs:ignore ?>";
+var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/delete.svg';
+var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/delete_hover.svg';
 </script>
 <?php
 echo $ARMemberLite->arm_get_need_help_html_content('members-profile-directories'); //phpcs:ignore

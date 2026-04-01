@@ -113,7 +113,7 @@ $page_settings           = $arm_all_global_settings['page_settings'];
 								<?php esc_html_e( 'Shortcode of Forgot Password Form not found on selected page. Please add shortcode on that page Or please select appropriate page.', 'armember-membership' ); ?>
 							</span>
 						</div>
-		
+
 						<div class="arm_form_field_block">
 							<label class="arm-form-table-label"><?php esc_html_e( 'Change Password Page', 'armember-membership' ); ?></label>
 		
@@ -144,21 +144,21 @@ $page_settings           = $arm_all_global_settings['page_settings'];
 								<?php esc_html_e( 'Shortcode of Change Password Form not found on selected page. Please add shortcode on that page Or please select appropriate page.', 'armember-membership' ); ?>
 							</span>
 						</div>
-						
-						<div class="arm_form_field_block">
-							<label class="arm-form-table-label"><?php esc_html_e( 'Edit Profile Page', 'armember-membership' ); ?></label>
 		
-							<span data-type="edit_profile" class="arm_page_type"></span>
+						<div class="arm_form_field_block">
+							<label class="arm-form-table-label"><?php esc_html_e( 'Member Panel Page', 'armember-membership' ); ?></label>
+		
+							<span data-type="member_panel" class="arm_page_type"></span>
 		
 							<?php
-							$page_settings['edit_profile_page_id'] = isset( $page_settings['edit_profile_page_id'] ) ? $page_settings['edit_profile_page_id'] : 0;
-							$is_valid_ep_page                      = $arm_global_settings->arm_shortcode_exist_in_page( 'edit_profile', $page_settings['edit_profile_page_id'] );
+							$page_settings['member_panel_page_id'] = isset( $page_settings['member_panel_page_id'] ) ? $page_settings['member_panel_page_id'] : 0;
+							$is_valid_ep_page                      = $arm_global_settings->arm_shortcode_exist_in_page( 'member_panel', $page_settings['member_panel_page_id'] );
 		
 							$arm_global_settings->arm_wp_dropdown_pages(
 								array(
-									'selected'          => $page_settings['edit_profile_page_id'],
-									'name'              => 'arm_page_settings[edit_profile_page_id]',
-									'id'                => 'edit_profile_page_id',
+									'selected'          => $page_settings['member_panel_page_id'],
+									'name'              => 'arm_page_settings[member_panel_page_id]',
+									'id'                => 'member_panel_page_id',
 									'show_option_none'  => esc_html__( 'Select Page', 'armember-membership' ),
 									'option_none_value' => '0',
 									'class'             => 'arm_page_setup_input',
@@ -172,7 +172,7 @@ $page_settings           = $arm_all_global_settings['page_settings'];
 							</div>
 		
 							<span class="arm_error_msg <?php echo ( $is_valid_ep_page ) ? 'arm_no_error' : ''; ?>">
-								<?php esc_html_e( 'Shortcode of Edit Profile Form not found on selected page. Please add shortcode on that page Or please select appropriate page.', 'armember-membership' ); ?>
+								<?php esc_html_e( 'Member Panel Shortcode [arm_member_panel] not found on selected page. Please add shortcode on that page Or please select appropriate page.', 'armember-membership' ); ?>
 							</span>
 						</div>
 			

@@ -118,7 +118,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					$log_detail = $this->arm_get_single_transaction( $log_id );
 				}
 				if ( ! empty( $log_detail ) ) {
-					echo $arm_ajax_pattern_start;
+					echo $arm_ajax_pattern_start; //phpcs:ignore
 					$extra_vars = ( isset( $log_detail['arm_extra_vars'] ) ) ? maybe_unserialize( $log_detail['arm_extra_vars'] ) : array();
 					?>
 					
@@ -279,7 +279,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 									</tr>
 								</table>
 					<?php
-					echo $arm_ajax_pattern_end;
+					echo $arm_ajax_pattern_end; //phpcs:ignore
 				}
 			}
 			exit;
@@ -293,12 +293,12 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 			$date_time_format =  $arm_global_settings->arm_get_wp_date_time_format();
 			$gateways        = $arm_payment_gateways->arm_get_all_payment_gateways();
 			$bank_transfer_gateways_opts = $gateways['bank_transfer'];
-			$log_id = $_POST['arm_log_id'];
+			$log_id = intval($_POST['arm_log_id']); //phpcs:ignore
 			$log_detail = $this->arm_get_single_transaction($log_id);
 
 			if(!empty($log_detail))
 			{
-				echo $arm_ajax_pattern_start;
+				echo $arm_ajax_pattern_start; //phpcs:ignore
 				$extra_vars = (isset($log_detail['arm_extra_vars'])) ? maybe_unserialize($log_detail['arm_extra_vars']) : array();
 				$arm_is_post_payment = (!empty($log_detail['arm_is_post_payment'])) ? maybe_unserialize($log_detail['arm_is_post_payment']) : 0;
 				$arm_is_gift_payment = (!empty($log_detail['arm_is_gift_payment'])) ? maybe_unserialize($log_detail['arm_is_gift_payment']) : 0;		
@@ -527,7 +527,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					</div>
 				</div>
 				<?php
-				echo $arm_ajax_pattern_end;
+				echo $arm_ajax_pattern_end; //phpcs:ignore
 			}
 			exit;
 		}
@@ -567,7 +567,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages( $errors, $message );
-			echo arm_pattern_json_encode( $return_array );
+			echo arm_pattern_json_encode( $return_array ); //phpcs:ignore
 			exit;
 		}
 		function arm_bulk_delete_transactions() {
@@ -612,18 +612,18 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages( $errors, $message );
-			echo arm_pattern_json_encode( $return_array );
+			echo arm_pattern_json_encode( $return_array ); //phpcs:ignore
 			exit;
 		}
 		function arm_filter_transactions_list() {
 			global $ARMemberLite, $arm_capabilities_global,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
 
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_transactions'], '1' );
-			echo $arm_ajax_pattern_start;
+			echo $arm_ajax_pattern_start; //phpcs:ignore
 			if ( file_exists( MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions_list_records.php' ) ) {
 				include MEMBERSHIPLITE_VIEWS_DIR . '/arm_transactions_list_records.php';
 			}
-			echo $arm_ajax_pattern_end;
+			echo $arm_ajax_pattern_end; //phpcs:ignore
 			die();
 		}
 		function arm_add_manual_payment( $data = array() ) {
@@ -639,7 +639,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				if(empty($user_id)){
 					$message = esc_html__('Sorry, User not found.', 'armember-membership');
 					$response = array("type"=>"error","msg" => $message);
-					echo arm_pattern_json_encode($response);
+					echo arm_pattern_json_encode($response); //phpcs:ignore
 					die();
 				}
 	
@@ -666,13 +666,13 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					do_action( 'arm_saved_manual_payment', $data );
 					$message = esc_html__('Manual payment has been added successfully.', 'armember-membership');
 					$response = array("type"=>"success","msg" => $message);
-					echo arm_pattern_json_encode($response);
+					echo arm_pattern_json_encode($response); //phpcs:ignore
 					// wp_redirect($redirect_to);
 					die();
 				} else {
 					$message = esc_html__('Sorry, Something went wrong. please try again.', 'armember-membership');
 					$response = array("type"=>"success","msg" => $message);
-					echo arm_pattern_json_encode($response);
+					echo arm_pattern_json_encode($response); //phpcs:ignore
 					die();
 				}
 			}
@@ -1085,7 +1085,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 			}
 			if(empty($logid_exit_flag))
 			{
-				echo $arm_ajax_pattern_start.''.json_encode($response).''.$arm_ajax_pattern_end;
+				echo $arm_ajax_pattern_start.''.json_encode($response).''.$arm_ajax_pattern_end; //phpcs:ignore
 				exit;
 			}
 		}
@@ -1420,7 +1420,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_transactions'], '1' );  //phpcs:ignore --Reason:Verifying nonce
 			$general_settings = isset($arm_global_settings->global_settings) ? $arm_global_settings->global_settings : array();
 			$arm_currency_decimal = isset($general_settings['arm_currency_decimal_digit']) ? $general_settings['arm_currency_decimal_digit'] : 2;
-			$arm_transaction_id = $_REQUEST['trans_id'];
+			$arm_transaction_id = sanitize_text_field($_REQUEST['trans_id']); //phpcs:ignore
 			$exclude_keys = array(
 				'arm_transaction_id'     => 'Transaction ID',
 				'arm_user_id'            => 'User',
@@ -1432,10 +1432,10 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				'arm_amount'             => 'Amount',
 			);
 			$grid_columns = array();
-			if(!empty($_REQUEST['exclude_headers']))
+			if(!empty($_REQUEST['exclude_headers'])) //phpcs:ignore
 			{
-				$arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
-				$arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
+				$arm_dt_exclude_keys = explode(',',sanitize_text_field($_REQUEST['exclude_headers'])); //phpcs:ignore
+				$arm_dt_exclude_label = explode('|~|ARM|~|',sanitize_text_field($_REQUEST['header_label'])); //phpcs:ignore
 				$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
 			}
 			$grid_columns['arm_first_name'] = esc_html__('First Name','armember-membership');
@@ -1563,10 +1563,10 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				'arm_amount',
 			);
 			$grid_columns = array();
-            if(!empty($_REQUEST['exclude_headers']))
-            {
-                $arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
-                $arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
+            if(!empty($_REQUEST['exclude_headers'])) //phpcs:ignore
+            { 
+                $arm_dt_exclude_keys = explode(',',sanitize_text_field($_REQUEST['exclude_headers'])); //phpcs:ignore
+                $arm_dt_exclude_label = explode('|~|ARM|~|',sanitize_text_field($_REQUEST['header_label'])); //phpcs:ignore
                 $grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
             }
 			$grid_columns['arm_first_name'] = esc_html__('First Name','armember-membership');

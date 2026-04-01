@@ -744,11 +744,11 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 
 			 $all_global_settings                                 = $arm_global_settings->arm_get_all_global_settings();
 			 $page_settings                                       = $all_global_settings['page_settings'];
-			 $edit_profile_page_id                                = isset( $page_settings['edit_profile_page_id'] ) ? $page_settings['edit_profile_page_id'] : 0;
+			 $member_panel_page_id                                = isset( $page_settings['member_panel_page_id'] ) ? $page_settings['member_panel_page_id'] : 0;
 			 $arm_redirection_settings['signup']['redirect_type'] = 'common';
 			 $arm_redirection_settings['signup']['type']          = 'page';
 
-			 $arm_redirection_settings['signup']['page_id']  = $edit_profile_page_id;
+			 $arm_redirection_settings['signup']['page_id']  = $member_panel_page_id;
 			 $arm_redirection_settings['signup']['url']      = ARMLITE_HOME_URL;
 			 $arm_redirection_settings['signup']['refferel'] = ARMLITE_HOME_URL;
 
@@ -759,7 +759,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 			);
 			$arm_redirection_settings['login']['main_type']                       = 'fixed';
 			$arm_redirection_settings['login']['type']                            = 'page';
-			$arm_redirection_settings['login']['page_id']                         = $edit_profile_page_id;
+			$arm_redirection_settings['login']['page_id']                         = $member_panel_page_id;
 			$arm_redirection_settings['login']['url']                             = ARMLITE_HOME_URL;
 			$arm_redirection_settings['login']['refferel']                        = ARMLITE_HOME_URL;
 			$arm_redirection_settings['login']['conditional_redirect'][]          = array(
@@ -778,7 +778,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 			$redirection_settings['setup']['default']            = ARMLITE_HOME_URL;
 
 				$arm_redirection_settings['social']['type']                            = 'page';
-				$arm_redirection_settings['social']['page_id']                         = $edit_profile_page_id;
+				$arm_redirection_settings['social']['page_id']                         = $member_panel_page_id;
 				$arm_redirection_settings['social']['url']                             = ARMLITE_HOME_URL;
 				$arm_redirection_settings['default_access_rules']['logged_in']['type'] = 'home';
 				$arm_redirection_settings['default_access_rules']['blocked']['type']   = 'home';

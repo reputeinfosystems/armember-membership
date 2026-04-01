@@ -30,6 +30,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			add_shortcode( 'arm_form', array( $this, 'arm_form_shortcode_func' ) );
 			add_shortcode( 'arm_edit_profile', array( $this, 'arm_edit_profile_shortcode_func' ) );
 			add_shortcode( 'arm_logout', array( $this, 'arm_logout_shortcode_func' ) );
+			add_shortcode('arm_profile_detail', array($this, 'arm_profile_detail_shortcode_func') );
+
 
 			add_filter( 'arm_change_field_options', array( $this, 'arm_filter_form_field_options' ) );
 			add_action( 'arm_before_render_form', array( $this, 'arm_check_form_include_js_css' ), 10, 2 );
@@ -65,6 +67,14 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			add_filter('arm_member_member_forms_fields_details',array($this,'arm_member_member_forms_fields_details_func'),10,3);
 
 			add_filter('arm_get_field_html',array($this,'arm_get_field_html_func'),10,3);
+
+			add_action('arm_update_apparance_of_forms',array($this,'arm_update_apparance_of_forms_func'),10,2);
+
+            add_filter('arm_add_new_table_edit_profile_forms',array($this,'arm_add_new_table_edit_profile_forms_func'),10,1);
+
+            add_filter('arm_edit_profile_section',array($this,'arm_edit_profile_section_func'),10,3);
+
+
 		}
 
 		function arm_get_field_html_func($arm_form_content,$form_id, $user_id){
@@ -423,7 +433,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                         'value' => '',
                                         'allow_ext' => '',
                                         'file_size_limit' => '2',
-                                        'meta_key' => 'avatar',
+                                        'meta_key' => 'avatar', //phpcs:ignore
                                         'required' => 0,
                                         'blank_message' => esc_html__('Please select avatar.', 'armember-membership'),
                                         'invalid_message' => esc_html__('Invalid image selected.', 'armember-membership'),
@@ -458,7 +468,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                         'value' => '',
                                         'allow_ext' => '',
                                         'file_size_limit' => '10',
-                                        'meta_key' => 'profile_cover',
+                                        'meta_key' => 'profile_cover', //phpcs:ignore
                                         'required' => 0,
                                         'blank_message' => esc_html__('Please select profile cover.', 'armember-membership'),
                                         'invalid_message' => esc_html__('Invalid image selected.', 'armember-membership'),
@@ -835,7 +845,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			}
 			if ( isset( $_GET['meta'] ) ) { //phpcs:ignore
 				$opts = $opts['options'];
-				echo arm_pattern_json_encode( $opts );
+				echo arm_pattern_json_encode( $opts ); //phpcs:ignore
 				exit;
 			} else {
 				return $opts;
@@ -899,7 +909,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					update_option( 'arm_preset_form_fields', $dbFormFields );
 					$response = array( 'type' => 'success','msg'=> esc_html__('Preset Fields are updated successfully.','armember-membership') );
 			}
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die();
 		}
 
@@ -1063,13 +1073,128 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			return $errors;
 		}
 
+		  function arm_add_new_table_edit_profile_forms_func($arm_add_new_form_table)
+        {
+            global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_social_feature;
+            $date_format = $arm_global_settings->arm_get_wp_date_format();
+            $arm_add_new_form_table = '
+            <div class="arm_page_spacing_div arm_form_spacing_div"></div>
+            <div class="arm_form_heading">
+					<span>'. esc_html__( 'Profile Forms', 'armember-membership' ).'</span>
+				</div>
+				<div class="armclear"></div>
+				<div class="arm_form_list_container arm_profile_form_container">';
+						$profile_forms = $wpdb->get_results( $wpdb->prepare( "SELECT `arm_form_id`, `arm_form_label`, `arm_form_slug`, `arm_is_default`, `arm_form_updated_date` FROM `" . $ARMemberLite->tbl_arm_forms . "` WHERE `arm_form_type` = %s ORDER BY `arm_form_id` DESC", 'edit_profile'), ARRAY_A ); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_forms is a table name
+                        $arm_add_new_form_table .= '<div class="divTable">
+                            <div class="divTableHeading">
+                                <div class="divTableRow divTableRowheader arm_register_form_section">
+                                    <div class="divTableHead arm_form_id_cell arm_padding_0 arm_padding_left_32">'. esc_html__( 'Form ID', 'armember-membership' ).'</div>
+                                    <div class="divTableHead arm_padding_0">'. esc_html__( 'Form Name', 'armember-membership' ).'</div>
+                                    <div class="divTableHead arm_padding_0">'. esc_html__( 'Last Modified', 'armember-membership' ).'</div>
+                                    <div class="divTableHead arm_padding_0">'. esc_html__( 'Shortcode', 'armember-membership' ).'</div>
+                                    <div class="divTableHead arm_padding_0"></div>                              
+                                </div>
+                            </div>
+                            <div class="divTableBody">';
+                                if( !empty( $profile_forms ) ) {
+                                    foreach( $profile_forms as $edit_form ) {
+                                            $_fid = $edit_form['arm_form_id'];
+                                            $arm_add_new_form_table .= '<div class="divTableRow member_row_'. intval($_fid).' arm_register_form_section">
+                                                <div class="divTableCell arm_form_id_cell arm_padding_0 arm_padding_left_32">
+                                                    '. intval($_fid).'
+                                                </div>
+                                                <div class="divTableCell arm_padding_0">';
+                                                    $arm_add_new_form_table .= '<a href="'. esc_url( admin_url('admin.php?page='.$arm_slugs->manage_forms.'&action=edit_form&form_id='.$_fid) ).'" class="arm_get_form_link" data-form_id="'. esc_attr($_fid).'">'. strip_tags(stripslashes_deep($edit_form['arm_form_label'])).'</a>'; //phpcs:ignore
+                                                $arm_add_new_form_table .= '</div>
+                                                <div class="divTableCell arm_padding_0">'. date_i18n($date_format, strtotime($edit_form['arm_form_updated_date'])) .'</div>
+                                                <div class="divTableCell arm_padding_0">
+                                                    <div class="arm_short_code_detail">';
+                                                        $shortCode = '[arm_profile_detail id="'.$_fid.'"]'; //phpcs:ignore
+                                                        $arm_add_new_form_table .= '<div class="arm_shortcode_text arm_form_shortcode_box">
+                                                            <span class="armCopyText">'. esc_attr($shortCode).'</span>
+                                                            <span class="arm_click_to_copy_text" data-code="'. esc_attr($shortCode).'">'. esc_html__('Click to copy', 'armember-membership').'</span>
+                                                            <span class="arm_copied_text"><img src="'. MEMBERSHIPLITE_IMAGES_URL.'/copied_ok.png" alt="ok"/>'. esc_html__('Code Copied', 'armember-membership').'</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="divTableCell arm_padding_0 arm_padding_right_32">
+                                                    <div class="arm_form_action_btns arm_profile_form_action_btns">
+                                                    <a href="'. esc_url( admin_url('admin.php?page='.$arm_slugs->manage_forms.'&action=edit_form&form_id='.$_fid) ).'" class="arm_get_form_link armhelptip" title="'. esc_html__('Edit Form','armember-membership').'" data-form_id="'. esc_attr($_fid).'">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.2594 3.60022L5.04936 12.2902C4.73936 12.6202 4.43936 13.2702 4.37936 13.7202L4.00936 16.9602C3.87936 18.1302 4.71936 18.9302 5.87936 18.7302L9.09936 18.1802C9.54936 18.1002 10.1794 17.7702 10.4894 17.4302L18.6994 8.74022C20.1194 7.24022 20.7594 5.53022 18.5494 3.44022C16.3494 1.37022 14.6794 2.10022 13.2594 3.60022Z" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.8906 5.0498C12.3206 7.8098 14.5606 9.9198 17.3406 10.1998" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 22H21" stroke="#617191" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                    </a>';
+                                                    if($edit_form['arm_is_default'] != '1'){
+                                                        $arm_add_new_form_table .= '<a href="javascript:void(0)" class="arm_grid_delete_action arm_delete_form_link armhelptip" title="'. esc_html__('Delete Form','armember-membership').'" onclick="showConfirmBoxCallback('. esc_attr($_fid).');" data-form_id="'. esc_attr($_fid).'">
+                                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5.33333H21M16.5 5.33333L16.1956 4.43119C15.9005 3.55694 15.7529 3.11982 15.4793 2.79664C15.2376 2.51126 14.9274 2.29036 14.5768 2.1542C14.1798 2 13.7134 2 12.7803 2H11.2197C10.2866 2 9.8202 2 9.4232 2.1542C9.07266 2.29036 8.76234 2.51126 8.5207 2.79664C8.24706 3.11982 8.09954 3.55694 7.80447 4.43119L7.5 5.33333M18.75 5.33333V16.6667C18.75 18.5336 18.75 19.4669 18.3821 20.18C18.0586 20.8072 17.5423 21.3171 16.9072 21.6367C16.1852 22 15.2402 22 13.35 22H10.65C8.75982 22 7.81473 22 7.09278 21.6367C6.45773 21.3171 5.94143 20.8072 5.61785 20.18C5.25 19.4669 5.25 18.5336 5.25 16.6667V5.33333M14.25 9.77778V17.5556M9.75 9.77778V17.5556" stroke="#617191" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                        </a>';
+                                                        $formDeleteHtml = '<label class="arm_margin_bottom_24">';
+                                                        $formDeleteHtml .= esc_html__("Are you sure you want to delete this form?", 'armember-membership');
+                                                        $formDeleteHtml .= '</label>';
+                                                        $formDeleteHtml .= '<label  class="arm_margin_bottom_12 arm_margin_top_0 arm_width_100_pct">';
+                                                        $formDeleteHtml .= '<input type="checkbox" class="arm_icheckbox arm_form_field_chk_' . $_fid . '" value="1">';
+                                                        $formDeleteHtml .= '<span>'.esc_html__("Delete fields of this specific form.", 'armember-membership').'</span>';
+                                                        $formDeleteHtml .= '</label>';
+                                                        $formDeleteHtml .= '<span class="armnote">('.esc_html__("Fields those which are used somewhere else, will not be deleted.", 'armember-membership').')</span>';
+                                                        $arm_add_new_form_table .= $arm_global_settings->arm_get_confirm_box($_fid, $formDeleteHtml, 'arm_delete_form_confirm_ok','', esc_html__('Delete', 'armember-membership'), esc_attr__('Cancel', 'armember-membership'), esc_attr__('Delete', 'armember-membership') ); //phpcs:ignore
+                                                    }
+                                                    $arm_add_new_form_table .='</div>
+                                                </div>
+                                            </div>';
+                                }
+                            }
+                            $arm_add_new_form_table .='</div>
+                        </div>
+				</div>';
+            return $arm_add_new_form_table;
+        }
+		function arm_edit_profile_section_func($arm_edit_profile_link_option_section,$isEditProfile,$form_settings){
+            if( $isEditProfile ) { 
+
+                $arm_edit_success_message = (isset($form_settings['edit_success_message'])) ? stripslashes( esc_attr($form_settings['edit_success_message']) ) : esc_html__('Your profile has been updated successfully', 'armember-membership' );
+                $arm_edit_profile_link_option_section = '<tr class="arm_edit_profile_link_options">
+                    <td colspan="2">
+                        <label class="arm_form_opt_label" for="arm_success_message">'. esc_html__('Message after successful submission', 'armember-membership' ).'</label>
+                        <div class="arm_form_opt_input">
+                            <input type="text" name="arm_form_settings[edit_success_message]" value="'.$arm_edit_success_message.'" class="form_submit_action_input">
+                        </div>
+                    </td>
+                </tr>
+                <tr class="arm_edit_profile_link_options">';
+                    $view_profile = isset( $form_settings['view_profile_link'] ) ? $form_settings['view_profile_link'] : 0;
+
+                    $arm_view_profile_checked = ( $view_profile == '1') ? "checked='checked'" : '';
+
+                    $arm_view_profile_display = ( 1 != $view_profile ) ? 'display:none;' : '';
+
+                    $arm_view_profile_link_label = ( isset( $form_settings['view_profile_link_label'] ) ? stripslashes( esc_attr($form_settings['view_profile_link_label']) ) : esc_attr__('View Profile', 'armember-membership' ) );
+
+                    $arm_edit_profile_link_option_section .= '<td colspan="2">
+                        <label class="arm_form_opt_label" for="arm_view_profile_link">'. esc_html__('Display view profile link', 'armember-membership' ).'</label>
+                        <div class="armswitch arm_global_setting_switch arm_vertical_align_middle">
+                            <input type="checkbox" id="arm_view_profile_link" '.$arm_view_profile_checked.' value="1" class="armswitch_input" name="arm_form_settings[view_profile_link]" />
+                            <label for="arm_view_profile_link" class="armswitch_label"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="arm_edit_profile_link_options" id="arm_view_profile_link_label" style="'.$arm_view_profile_display.'">
+                    <td colspan="2">
+                        <label class="arm_form_opt_label" for="view_profile_link_label">'. esc_html__( 'Label for View Profile Link', 'armember-membership'  ).'</label>
+                        <div class="arm_form_opt_input">
+                            <input type="text" name="arm_form_settings[arm_view_profile_link_label]" value="'.$arm_view_profile_link_label.'" class="form_submit_action_input" />
+                        </div>
+                    </td>
+                </tr>';
+            }
+            return $arm_edit_profile_link_option_section;
+        }
+
+
 		function arm_remove_uploaded_file() {
 			global $wpdb, $ARMemberLite, $arm_slugs;
 			
 			$ARMemberLite->arm_check_user_cap( '', '1' ); //phpcs:ignore --Reason:Verifying nonce
 			$denyExts = array( 'php', 'php3', 'php4', 'php5', 'pl', 'py', 'jsp', 'asp', 'exe', 'cgi', 'css', 'js', 'html', 'htm' );
 			$ARMemberLite->arm_session_start(true);
-
+			$arm_unset_from_file_name = 0;
 			if ( ! empty( $_POST['file_name'] ) ) { //phpcs:ignore
 				$file_name     = $ARMemberLite->arm_get_basename( sanitize_text_field( $_POST['file_name'] ) ); //phpcs:ignore
 				$meta_field_name = !empty($_POST['meta_name']) ? sanitize_text_field( $_POST['meta_name'] ) : ''; //phpcs:ignore
@@ -1091,38 +1216,38 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 				if ( ! empty( $ext ) && ! in_array( $ext, $denyExts ) && !empty( $file_name ) && $file_name_arm == 'arm' ) {
 					$file_path = MEMBERSHIPLITE_UPLOAD_DIR . '/' . $file_name;
-					if ( file_exists($file_path) && !empty($meta_field_name) && !empty($_SESSION['arm_file_upload_arr'][$meta_field_name]) && ( $_SESSION['arm_file_upload_arr'][$meta_field_name]==$file_name ) ) { //phpcs:ignore
-						@unlink( $file_path ); //phpcs:ignore
+							if (file_exists($file_path) && (empty($meta_field_name) || (!empty($meta_field_name) && !empty($_SESSION['arm_file_upload_arr'][$meta_field_name]) && ($_SESSION['arm_file_upload_arr'][$meta_field_name]==$file_name || (is_array($_SESSION['arm_file_upload_arr'][$meta_field_name]) && in_array($file_name,$_SESSION['arm_file_upload_arr'][$meta_field_name])))))) //phpcs:ignore
+					@unlink( $file_path ); //phpcs:ignore
 
-						if( is_user_logged_in() ) {
-							if( isset( $_POST['type'] ) && $_POST['type'] == 'profile_cover' ) { //phpcs:ignore
-								delete_user_meta( get_current_user_id(), 'profile_cover' );
-								do_action( 'arm_remove_bp_profile_cover', get_current_user_id() );
-								exit;
-							}
+					if( is_user_logged_in() ) {
+						if( isset( $_POST['type'] ) && $_POST['type'] == 'profile_cover' ) { //phpcs:ignore
+							delete_user_meta( get_current_user_id(), 'profile_cover' );
+							do_action( 'arm_remove_bp_profile_cover', get_current_user_id() );
+							exit;
+						}
 
-							if( isset( $_POST['type'] ) && $_POST['type'] == 'profile_pic' ) { //phpcs:ignore
-								do_action( 'arm_remove_bp_avatar', get_current_user_id() );
-								delete_user_meta( get_current_user_id(), 'avatar' );
+						if( isset( $_POST['type'] ) && $_POST['type'] == 'profile_pic' ) { //phpcs:ignore
+							do_action( 'arm_remove_bp_avatar', get_current_user_id() );
+							delete_user_meta( get_current_user_id(), 'avatar' );
 
-								$avatar = get_avatar( wp_get_current_user()->user_email, '200' );
-								preg_match_all( "/src='([^']+)/", $avatar, $images );
+							$avatar = get_avatar( wp_get_current_user()->user_email, '200' );
+							preg_match_all( "/src='([^']+)/", $avatar, $images );
 
-								$avatar_url = isset( $images[1][0] ) ? $images[1][0] : '';
-								echo esc_url($avatar_url);
-								exit;
-							}
+							$avatar_url = isset( $images[1][0] ) ? $images[1][0] : '';
+							echo esc_url($avatar_url);
+							exit;
 						}
 					}
-					if (!empty($meta_field_name) && isset($_SESSION['arm_file_upload_arr'][$meta_field_name])){
-                        unset($_SESSION['arm_file_upload_arr'][$meta_field_name]);
-                    }
-					else if (!empty($meta_field_name)){
-						$_SESSION['arm_file_upload_arr'][$meta_field_name] = "-";
-					}
+				}
+				if(!empty($meta_field_name) && is_array($_SESSION['arm_file_upload_arr'][$meta_field_name]) && isset($_SESSION['arm_file_upload_arr'][$meta_field_name][array_search($file_name,$_SESSION['arm_file_upload_arr'][$meta_field_name])])){ //phpcs:ignore
+					unset($_SESSION['arm_file_upload_arr'][$meta_field_name][array_search($file_name,$_SESSION['arm_file_upload_arr'][$meta_field_name])]);
+					$arm_unset_from_file_name = 1;
+					$_SESSION['arm_file_upload_arr'][$meta_field_name] = array_values($_SESSION['arm_file_upload_arr'][$meta_field_name]); //phpcs:ignore
+				}else if (!empty($meta_field_name)){
+					$_SESSION['arm_file_upload_arr'][$meta_field_name]="-";
 				}
 			}
-
+			
 			if ( ! empty( $_POST['file_url'] ) ) { //phpcs:ignore
 				$file_name = $ARMemberLite->arm_get_basename(sanitize_text_field($_POST['file_url'])); //phpcs:ignore
                 $file_name_arm = substr($file_name, 0,3);
@@ -1137,9 +1262,15 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					if(file_exists( $file_path ) && !empty( $meta_field_name ) && !empty( $_SESSION['arm_file_upload_arr'][$meta_field_name] ) && ( $_SESSION['arm_file_upload_arr'][$meta_field_name]==$file_name ) ) { //phpcs:ignore
 						unlink( $file_path ); //phpcs:ignore
 					}
-					if (!empty($meta_field_name) && isset($_SESSION['arm_file_upload_arr'][$meta_field_name])){
-                        $_SESSION['arm_file_upload_arr'][$meta_field_name]="";
+                if( empty( $arm_unset_from_file_name ) )
+                {
+                    if(!empty($meta_field_name) && is_array($_SESSION['arm_file_upload_arr'][$meta_field_name]) && isset($_SESSION['arm_file_upload_arr'][$meta_field_name][array_search($file_name,$_SESSION['arm_file_upload_arr'][$meta_field_name])])){ //phpcs:ignore
+                        unset($_SESSION['arm_file_upload_arr'][$meta_field_name][array_search($file_name,$_SESSION['arm_file_upload_arr'][$meta_field_name])]);
+                        $_SESSION['arm_file_upload_arr'][$meta_field_name] = array_values($_SESSION['arm_file_upload_arr'][$meta_field_name]); //phpcs:ignore
+                    }else if (!empty($meta_field_name)){
+                        $_SESSION['arm_file_upload_arr'][$meta_field_name]="-";
                     }
+                }
 					echo '1';
 					exit;
 				}
@@ -1259,12 +1390,19 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					'view_profile_link'         => esc_html__( 'View Profile', 'armember-membership' ),
 					'profile_cover_title'       => '',
 					'profile_cover_placeholder' => esc_html__( 'Drop file here or click to select', 'armember-membership' ),
+					'arm_member_panel' => '0'
 				),
 				$atts,
 				$tag
 			);
 
 			$atts = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data_extend_only_kses'), $atts ); //phpcs:ignore
+
+			if(!empty($atts['arm_member_panel']) && $atts['arm_member_panel'] == "1"){
+				$atts['avatar_field'] = 'no';
+				$atts['profile_cover_field'] = 'no';
+
+			}
 
 			$atts['view_profile']      = ( $atts['view_profile'] === 'true' || $atts['view_profile'] == '1' ) ? true : false;
 			$atts['view_profile_link'] = ( ! empty( $atts['view_profile_link'] ) ) ? $atts['view_profile_link'] : esc_html__( 'View Profile', 'armember-membership' );
@@ -1402,12 +1540,32 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$content     .= '<a href="' . esc_url($profile_link) . '" class="arm_view_profile_link">' . esc_html($atts['view_profile_link']) . '</a>';
 						$content     .= '</div>';
 					}
-					if ( ! empty( $atts['title'] ) ) {
+					if ( ! empty( $atts['title'] ) && empty($atts['arm_member_panel']) ) {
 						$form_title_position = ( ! empty( $form_style['form_title_position'] ) ) ? $form_style['form_title_position'] : 'left';
 						$content            .= '<div class="arm-df__heading armalign' . esc_attr($form_title_position) . '">';
 						$content            .= '<span class="arm-df__heading-text">' . esc_html($atts['title']) . '</span>';
 						$content            .= '</div>';
 					}
+					if(!empty($atts['arm_member_panel']) && $atts['arm_member_panel'] == "1"){
+                        $arm_org_forms = $form;
+                        $arm_ingored_fields = array('profile_cover','avatar');
+                        $content = apply_filters('arm_change_content_before_display_form_member_panel', $content,$arm_org_forms,$arm_ingored_fields,$atts, $formRandomID);
+                        $arm_existing_form_fields = $form->fields;
+                        foreach($arm_existing_form_fields as $field_key => $field_data){
+                            if(in_array($field_data['arm_form_field_slug'],$arm_ingored_fields)){
+                                unset($arm_existing_form_fields[$field_key]);
+                            }
+							else{
+                                if($field_data['arm_form_field_option']['type'] != 'submit')
+								{
+									$field_data['arm_form_field_option']['class'] = 'arm_field_col_2';
+								}
+								$arm_existing_form_fields[$field_key] = $field_data;
+                            }
+                        }
+                        $form->fields = $arm_existing_form_fields;
+
+                    }
 					$content .= $this->arm_member_form_get_single_form_fields( $form, $atts, $formRandomID );
 					$content .= '<div class="armclear"></div>';
 					if ( isset( $form_settings['is_hidden_fields'] ) && $form_settings['is_hidden_fields'] == '1' ) {
@@ -1516,12 +1674,16 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				array(
 					'id'            => '',
 					'form_id'       => '',
+					'field_class' => '',
 					'form_position' => 'center',
+					'arm_member_panel' => '0'
 				),
 				$atts,
 				$tag
 			);
 
+			
+			$atts = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data_extend_only_kses'), $atts ); //phpcs:ignore
 			if ( '' == $atts['id'] && '' == $atts['form_id'] ) {
 				return;
 			}
@@ -1549,7 +1711,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 				$success_message = isset( $form->settings['edit_success_message'] ) ? $form->settings['edit_success_message'] : esc_html__( 'Your profile updated successfully', 'armember-membership' );
 
-				$form = apply_filters( 'arm_form_data_before_edit_profile_shortcode', $form, $atts );
+				$form = apply_filters('arm_form_data_before_edit_profile_shortcode', $form, $atts );
 				do_action( 'arm_before_render_edit_profile_form', $form, $atts );
 				do_action( 'arm_before_render_form', $form, $atts );
 				if ( $form->exists() && ! empty( $form->fields ) ) {
@@ -1632,7 +1794,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 					global $arm_is_enable_crop;
 					$nonce = wp_create_nonce( 'arm_wp_nonce' );
-					$content           .= '<input type="hidden" name="arm_wp_nonce" value="'. esc_attr( $nonce ) .'"/>';
+					$content           .= '<input type="hidden" name="arm_wp_nonce" value="'. esc_attr( $nonce ) .'" data-random-key="'. esc_attr( $formRandomID) .'" />';
 					if ( $enable_crop && empty( $arm_is_enable_crop ) ) {
 						$arm_is_enable_crop = 1;
 						$content           .= '<div id="arm_crop_div_wrapper" class="arm_crop_div_wrapper"  style="display:none;" data_id="' . esc_attr($formRandomID) . '">';
@@ -1680,6 +1842,26 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$content            .= '<div class="arm-df__heading armalign' . esc_attr($form_title_position) . '">';
 						$content            .= '<span class="arm-df__heading-text">' . esc_html($form->name) . '</span>';
 						$content            .= '</div>';
+					}
+					if(!empty($atts['arm_member_panel']) && $atts['arm_member_panel'] == "1"){
+						$arm_org_forms = $form;
+						$arm_ingored_fields = array('profile_cover','avatar');
+						$content = apply_filters('arm_change_content_before_display_form_member_panel', $content,$arm_org_forms,$arm_ingored_fields,$atts, $formRandomID);
+						$arm_existing_form_fields = $form->fields;
+						foreach($arm_existing_form_fields as $field_key => $field_data){
+							if(in_array($field_data['arm_form_field_slug'],$arm_ingored_fields)){
+								unset($arm_existing_form_fields[$field_key]);
+							}
+							else{                               
+								if($field_data['arm_form_field_option']['type'] != 'submit')
+								{
+									$field_data['arm_form_field_option']['class'] = 'arm_field_col_2';
+								}
+								$arm_existing_form_fields[$field_key] = $field_data;
+							}
+						}
+						$form->fields = $arm_existing_form_fields;
+
 					}
 					$content .= $this->arm_member_form_get_single_form_fields( $form, $atts, $formRandomID );
 					$content .= '<div class="armclear"></div>';
@@ -1741,6 +1923,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				} else {
 					$login_page_url = get_permalink( $login_page_id ) . '?arm_redirect=' . urlencode( wp_get_current_page_url() );
 				}
+                		$login_page_url = apply_filters('arm_modify_redirection_page_external', $login_page_url,0,$login_page_id);
 				if ( is_home() ) {
 					return '';
 				} else {
@@ -1766,6 +1949,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 			return $content . $hiddenvalue;
 		}
+
 
 		function arm_verify_user_activation_for_front( $user_email, $key ) {
 			global $wp, $wpdb, $arm_lite_errors, $ARMemberLite, $arm_global_settings;
@@ -2560,11 +2744,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			$form_id       = $form->ID;
 			$field_content = $submit_field = '';
 
-			if(isset($_SESSION['arm_file_upload_arr']) && empty($arm_reset_file_upload_data_flag)){
-                unset($_SESSION['arm_file_upload_arr']);
-				$arm_reset_file_upload_data_flag=1;
-            }
-
 			if ( ! empty( $form ) ) {
 				if ( ! empty( $form->fields ) ) {
 					$isAvatarField    = false;
@@ -2660,8 +2839,9 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							$enable_repeat_field = $field_options['enable_repeat_field'];
 						}
 						if(in_array($type, array('file','avatar','profile_cover'))){
+							
                             $file_meta_key = !empty($field_options['meta_key'])?sanitize_text_field($field_options['meta_key']):"";
-                            $allow_multiple = !empty($field_options['allow_multiple'])?sanitize_text_field($field_options['allow_multiple']):"";
+                            
                             $arm_lite_members_activity->session_for_file_handle($file_meta_key,$ARMemberLite->arm_get_basename($value));
                         }
 						$class = ! empty( $class ) ? ' ' . $class : '';
@@ -2796,7 +2976,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								}
 							}
 							if ( empty( $atts['setup'] ) ) {
-								$submit_field .= '<div class="arm-df__form-group' . esc_attr($class) . ' arm-df__form-group_' . esc_attr($type) . '" id="arm-df__form-group_' . esc_attr($form_field_id) . '" data-field_id="' . esc_attr($form_field_id) . '">';
+								$submit_field .= '<div class="arm-df__form-group arm-df__form-group_' . esc_attr($type) . '" id="arm-df__form-group_' . esc_attr($form_field_id) . '" data-field_id="' . esc_attr($form_field_id) . '">';
 								// $submit_field .= '<div class="arm_form_label_wrapper arm-df__field-label arm_form_member_field_' . $type . '"></div>';
 								$submit_field .= '<div class="arm_label_input_separator"></div>';
 								$submit_field .= '<div class="arm-df__form-field">';
@@ -2807,7 +2987,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						} elseif ( $type == 'social_fields' ) {
 							$isSocialField = true;
 							if ( $arm_social_feature->isSocialFeature ) {
-								$field_content .= '<div class="arm-df__form-group' . esc_attr($class) . ' arm-df__form-group_social_fields" id="arm-df__form-group_' . esc_attr($form_field_id) . '" data-field_id="' . esc_attr($form_field_id) . '">';
+								$field_content .= '<div class="arm-df__form-group arm-df__form-group_social_fields" id="arm-df__form-group_' . esc_attr($form_field_id) . '" data-field_id="' . esc_attr($form_field_id) . '">';
 								if ( ! empty( $atts['social_fields'] ) && isset( $atts['social_fields'] ) ) {
 									$extraFields = explode( ',', rtrim( $atts['social_fields'], ',' ) );
 								} else {
@@ -4370,6 +4550,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					}
 					$display_file = ! empty( $field_val ) && file_exists( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $field_val ) ) ? true : false;
 					$file_name    = $fileUrl = '';
+					$arm_is_image_url_valid = false;
 					if ( $display_file ) {
 						$file_name = basename( $field_val );
 						if ( $field_val != '' ) {
@@ -4383,6 +4564,9 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$fileUrl = MEMBERSHIPLITE_IMAGES_URL . '/file_icon.svg';
 							}
 						}
+					} elseif ($arm_global_settings->arm_check_image_validate_url($field_val)) {
+						$fileUrl = $field_val;
+						$arm_is_image_url_valid = true;
 					} else {
 						$field_val = '';
 					}
@@ -4543,7 +4727,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							}
 							$output .= '<div class="arm-ffw__file-upload-box">';
 							$output .= '<div class="arm_old_file arm_field_file_display">';
-							if ( $display_file ) {
+							if ( $display_file || $arm_is_image_url_valid == true ) {
 								$output .= '<div class="arm_uploaded_file_info"><img alt="" src="' . esc_attr($fileUrl) . '"/></div>'; //phpcs:ignore 
 								$output .= '<div class="armFileRemoveContainer">x</div>';
 							}
@@ -5170,13 +5354,13 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			//$redirect_to = admin_url( 'admin.php?page=' . $arm_slugs->manage_members );
 			$response = array("type"=>"error","msg" => esc_html__("Something Went Wrong while sumbitting a form",'armember-membership'));
 			$member_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data_extend'), $_POST); //phpcs:ignore
-			$member_data['user_pass'] = !empty($_POST['user_pass']) ? $_POST['user_pass'] : '';
-			$member_data['repeat_pass'] = !empty($_POST['repeat_pass']) ? $_POST['repeat_pass'] : '';
+			$member_data['user_pass'] = !empty($_POST['user_pass']) ? $_POST['user_pass'] : ''; //phpcs:ignore
+			$member_data['repeat_pass'] = !empty($_POST['repeat_pass']) ? $_POST['repeat_pass'] : ''; //phpcs:ignore
 			if ( ! empty( $member_data['arm_action'] ) && in_array( $member_data['arm_action'], array( 'add_member', 'update_member' ) ) ) {
 				if ( preg_match( '/\s/', $member_data['user_pass'] ) ) {
 					$message = esc_html__( 'This password is invalid because it uses illegal characters or whitespace. Please enter a valid password.', 'armember-membership' );
 					$response = array("type"=>"error","msg" => $message);
-                    echo arm_pattern_json_encode($response);
+                    echo arm_pattern_json_encode($response); //phpcs:ignore
                     die();
 				}
 				
@@ -5228,7 +5412,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						if ( $arm_lite_errors->get_error_code() ) {
                             if (!empty($arm_lite_errors->get_error_message())) {       
                                 $response = array("type"=>"error","msg" => $arm_lite_errors->get_error_message());
-                                echo arm_pattern_json_encode($response);
+                                echo arm_pattern_json_encode($response); //phpcs:ignore
                                 die();
 							}
 						}
@@ -5299,8 +5483,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					if ( $arm_lite_errors->get_error_code() ) {
 						// return $arm_lite_errors;
 						$response = array("type"=>"error","msg" => $arm_lite_errors->get_error_message());
-						echo arm_pattern_json_encode($response);
-                        			die();
+						echo arm_pattern_json_encode($response); //phpcs:ignore
+						die();
 					}
 					if ( isset( $member_data['user_url'] ) ) {
 						$update_data['user_url'] = sanitize_text_field( $member_data['user_url'] );
@@ -5680,7 +5864,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				}
 				do_action( 'arm_admin_save_member_details', $member_data );
 			}
-			echo arm_pattern_json_encode($response);
+			echo arm_pattern_json_encode($response); //phpcs:ignore
 			die();
 		}
 
@@ -6487,8 +6671,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$current_user = get_userdata( $user_ID );
 				$user_login   = isset( $posted_data['user_login'] ) ? sanitize_text_field( $posted_data['user_login'] ) : '';
 				unset( $posted_data['user_login'] );
-				$user_email  = sanitize_email( $posted_data['user_email'] );
-				$user_email  = apply_filters( 'user_registration_email', $posted_data['user_email'] );
+				$user_email  = isset($posted_data['user_email']) ? sanitize_email( $posted_data['user_email'] ) : '';
+				$user_email  = apply_filters( 'user_registration_email', $user_email );
 				$update_data = array(
 					'ID' => $user_ID,
 					// 'user_email' => $user_email
@@ -6702,6 +6886,11 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							}
 						}
 					}
+
+					if(!empty($posted_data['arm_member_panel']) && !in_array('avatar',$arm_form_field_slug_array))
+                    {
+                        $arm_form_field_slug_array[] = 'avatar';
+                    }
 				}
 
 				foreach( $posted_data as $posted_data_key => $posted_data_val ) {
@@ -7209,6 +7398,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				'sub_type'            => '',
 				'value'               => '',
 				'bg_color'            => '',
+				'class'				  => '',
 				'padding'             => array(),
 				'margin'              => array(),
 				'options'             => array(),
@@ -7783,7 +7973,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$liStyle         .= 'margin-top:' . $margin['top'] . 'px !important;';
 				$liStyle         .= 'margin-bottom:' . $margin['bottom'] . 'px !important;';
 			}
-            		echo $arm_ajax_pattern_start;
+            		echo $arm_ajax_pattern_start; //phpcs:ignore
 			/* Generate Field HTML */
 			?>
 			<li class="arm-df__form-group arm_form_field_sortable arm-df__form-group_<?php echo esc_attr($field_options['type']); ?> <?php echo esc_attr($sortable_class); ?>" id="arm-df__form-group_<?php echo esc_attr($form_field_id); ?>" data-field_id="<?php echo esc_attr($form_field_id); ?>" data-type="<?php echo esc_attr($field_options['type']); ?>" data-meta_key="<?php echo strtolower( esc_attr($field_options['meta_key']) ); //phpcs:ignore ?>" data-ref_field="<?php echo esc_attr($ref_field_id); ?>" style="<?php echo $liStyle; //phpcs:ignore ?>">
@@ -7792,7 +7982,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			?>
 			</li>
 			<?php
-            		echo $arm_ajax_pattern_end;
+            		echo $arm_ajax_pattern_end; //phpcs:ignore
 			exit;
 		}
 
@@ -7827,9 +8017,9 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$liStyle         .= 'margin-top:' . $margin['top'] . 'px !important;';
 				$liStyle         .= 'margin-bottom:' . $margin['bottom'] . 'px !important;';
 			}
-		            if($_REQUEST['action']=='arm_create_new_field')
+		            if($_REQUEST['action']=='arm_create_new_field') //phpcs:ignore
 		            {
-		                echo $arm_ajax_pattern_start;
+		                echo $arm_ajax_pattern_start; //phpcs:ignore
 		            }
 			?>
 			<li class="arm-df__form-group arm_form_field_sortable arm-df__form-group_<?php echo esc_html($field_options['type']); ?> <?php echo esc_html($sortable_class); ?>" id="arm-df__form-group_<?php echo esc_attr($form_field_id); ?>" data-field_id="<?php echo esc_attr($form_field_id); ?>" data-type="<?php echo esc_attr($field_options['type']); ?>" data-meta_key="<?php echo strtolower( esc_attr($field_options['meta_key']) ); //phpcs:ignore ?>" data-ref_field="<?php echo esc_attr($ref_field_id); ?>" style="<?php echo esc_attr($liStyle); ?>">
@@ -7838,9 +8028,9 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			?>
 			</li>
 			<?php
-		            if($_REQUEST['action']=='arm_create_new_field')
+		            if($_REQUEST['action']=='arm_create_new_field') //phpcs:ignore
 		            {
-		                echo $arm_ajax_pattern_end;
+		                echo $arm_ajax_pattern_end; //phpcs:ignore
 		            }
 			exit;
 		}
@@ -7865,7 +8055,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			$arm_form_type            = $wpdb->get_row( $wpdb->prepare( 'SELECT arm_form_type FROM `' . $ARMemberLite->tbl_arm_forms . '` WHERE arm_form_id = %d', $form_id ) );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_forms is a table name
 			$isEditProfile            = ( $arm_form_type->arm_form_type == 'edit_profile' ) ? true : false;
 			$field_options['options'] = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST['arm_social_fields'] ); //phpcs:ignore
-            		echo $arm_ajax_pattern_start;
+            		echo $arm_ajax_pattern_start; //phpcs:ignore
 			/* Filter Form Field Options. */
 			$field_options = apply_filters( 'arm_change_field_options', $field_options );
 			?>
@@ -7875,7 +8065,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			?>
 			</li>
 			<?php
-            		echo $arm_ajax_pattern_end;
+            		echo $arm_ajax_pattern_end; //phpcs:ignore
 			exit;
 		}
 
@@ -7958,13 +8148,94 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					'msg'  => 'Field deleted Successfully.',
 				);
 			}
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die();
 		}
 
 		/*
 		 * Default forms & their fields.
 		 */
+
+		function arm_default_member_profile_forms_data(){
+			$default_form_style         = $this->arm_default_form_style();
+			$profile_first_name = array(
+                'id' => 'first_name',
+                'label' => esc_html__('First Name', 'armember-membership'),
+                'placeholder' => '',
+                'type' => 'text',
+                'meta_key' => 'first_name', // phpcs:ignore
+                'required' => 1,
+                'hide_firstname' => 0,
+                'blank_message' => esc_html__('First Name can not be left blank.', 'armember-membership'),
+                'invalid_firstname' => esc_html__('This first name is invalid. Please enter a valid first name.', 'armember-membership'),
+                'default_field' => 0,
+            );
+            $profile_last_name = array(
+                'id' => 'last_name',
+                'label' => esc_html__('Last Name', 'armember-membership'),
+                'placeholder' => '',
+                'type' => 'text',
+                'meta_key' => 'last_name', // phpcs:ignore
+                'required' => 1,
+                'hide_lastname' => 0,
+                'blank_message' => esc_html__('Last Name can not be left blank.', 'armember-membership'),
+                'invalid_Lastname' => esc_html__('This last name is invalid. Please enter a valid last name.', 'armember-membership'),
+                'default_field' => 0,
+            );
+            $profile_user_login = array(
+                'id' => 'user_login',
+                'label' => esc_html__('Username', 'armember-membership'),
+                'placeholder' => '',
+                'type' => 'text',
+                'meta_key' => 'user_login', // phpcs:ignore
+                'required' => 1,
+                'hide_username' => 0,
+                'blank_message' => esc_html__('Username can not be left blank.', 'armember-membership'),
+                'invalid_message' => esc_html__('Please enter valid username.', 'armember-membership'),
+                'invalid_username' => esc_html__('This username is invalid. Please enter a valid username.', 'armember-membership'),
+                'default_field' => 0
+            );
+
+            $profile_user_email = array(
+                'id' => 'user_email',
+                'label' => esc_html__('Email Address', 'armember-membership'),
+                'placeholder' => '',
+                'type' => 'email',
+                'meta_key' => 'user_email', // phpcs:ignore
+                'required' => 1,
+                'blank_message' => esc_html__('Email Address can not be left blank.', 'armember-membership'),
+                'invalid_message' => esc_html__('Please enter valid email address.', 'armember-membership'),
+                'default_field' => 0,
+                'ref_field_id' => 0,
+                'enable_repeat_field' => 0,
+            );
+            $profile_user_pass = array(
+                'id' => 'user_pass',
+                'label' => esc_html__('Password', 'armember-membership'),
+                'placeholder' => '',
+                'type' => 'password',
+                'options' => array('strength_meter' => 1, 'strong_password' => 0, 'minlength' => 6, 'maxlength' => '', 'special' => 1, 'numeric' => 1, 'uppercase' => 1, 'lowercase' => 1),
+                'meta_key' => 'user_pass', // phpcs:ignore
+                'required' => 1,
+                'blank_message' => esc_html__('Password can not be left blank.', 'armember-membership'),
+                'invalid_message' => esc_html__('Please enter valid password.', 'armember-membership'),
+            );
+            $profile_submit = array(
+                'id' => 'submit',
+                'label' => esc_html__('Update Profile', 'armember-membership'),
+                'type' => 'submit',
+                'default_field' => 1
+            );
+			$forms['edit_profile'] = array(
+                'name' => esc_html__('Edit Profile', 'armember-membership'),
+				'form_slug'=>'edit-profile',
+                'settings' => array(
+                    'style' => $default_form_style,
+                ),
+                'fields' => array( $profile_user_login, $profile_first_name, $profile_last_name, $profile_user_email, $profile_user_pass, $profile_submit )
+            );
+			return $forms;
+		}
 
 		function arm_default_member_forms_data() {
 			global $wp, $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings;
@@ -8184,7 +8455,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				'forgot_password_link_label'     => esc_html__( 'Lost Your Password', 'armember-membership' ),
 				'forgot_password_link_margin'    => array(
 					'bottom' => '0',
-					'top'    => '-132',
+					'top'    => '-127',
 					'left'   => '315',
 					'right'  => '0',
 				),
@@ -8512,7 +8783,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$selectFields = $fields;
 				}
 			}
-			$form_result = $wpdb->get_results( $wpdb->prepare("SELECT {$selectFields}, `arm_form_id` FROM `" . $ARMemberLite->tbl_arm_forms . "` WHERE `arm_form_type` NOT LIKE %s AND arm_form_id in(101,102,103,104) ORDER BY `arm_form_id` DESC",'template'), ARRAY_A );//phpcs:ignore --Reason: $ARMemberLite->tbl_arm_forms is a tale name. False Positive Alarm.
+			$form_result = $wpdb->get_results( $wpdb->prepare("SELECT {$selectFields}, `arm_form_id` FROM `" . $ARMemberLite->tbl_arm_forms . "` WHERE `arm_form_type` NOT LIKE %s AND arm_form_id in(101,102,103,104,105) ORDER BY `arm_form_id` DESC",'template'), ARRAY_A );//phpcs:ignore --Reason: $ARMemberLite->tbl_arm_forms is a tale name. False Positive Alarm.
 			if ( ! empty( $form_result ) ) {
 				foreach ( $form_result as $form ) {
 					$id                        = $form['arm_form_id'];
@@ -8774,7 +9045,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			if ( $formType != 'registration' && $formType != 'edit_profile' ) {
 				$final_response['form_ids'] = implode( ',', $login_form_ids );
 			}
-			echo arm_pattern_json_encode( $final_response );
+			echo arm_pattern_json_encode( $final_response ); //phpcs:ignore
 			die();
 		}
 
@@ -8787,14 +9058,14 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				'form_width'                  => '550',
 				'form_width_type'             => 'px',
 				'form_border_width'           => '2',
-				'form_border_radius'          => '12',
+				'form_border_radius'          => '24',
 				'form_border_style'           => 'solid',
 				'form_layout'                 => 'writer_border',
 				'form_opacity'                => '1',
-				'form_padding_top'            => '40',
-				'form_padding_right'          => '30',
-				'form_padding_bottom'         => '40',
-				'form_padding_left'           => '30',
+				'form_padding_top'            => '48',
+				'form_padding_right'          => '26',
+				'form_padding_bottom'         => '48',
+				'form_padding_left'           => '26',
 				'form_title_font_family'      => 'Poppins',
 				'form_title_font_size'        => '24',
 				'form_title_font_bold'        => '1',
@@ -8850,18 +9121,18 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				'label_font_bold'             => '0',
 				'label_font_italic'           => '0',
 				'label_font_decoration'       => '',
-				'button_width'                => '360',
+				'button_width'                => '500',
 				'button_width_type'           => 'px',
-				'button_height'               => '40',
+				'button_height'               => '50',
 				'button_height_type'          => 'px',
-				'button_border_radius'        => '6',
+				'button_border_radius'        => '12',
 				'button_style'                => 'flat',
 				'button_font_family'          => 'Poppins',
 				'button_font_size'            => '15',
 				'button_font_bold'            => '0',
 				'button_font_italic'          => '0',
 				'button_font_decoration'      => '',
-				'button_margin_top'           => '10',
+				'button_margin_top'           => '8',
 				'button_margin_right'         => '0',
 				'button_margin_bottom'        => '0',
 				'button_margin_left'          => '0',
@@ -9564,7 +9835,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                             font-size: ' . $new_style['label_font_size'] . 'px;
                             cursor: pointer;
                             ' . $new_style['label_font_bold'] . $new_style['label_font_italic'] . $new_style['label_font_decoration'] . '
-                            line-height: ' . ( $new_style['label_font_size'] + 5 ) . "px;
+                            line-height: ' . ( $new_style['label_font_size'] + 6 ) . "px;
                         }
                         $container" . $form_style_container . ' .arm-df__form-field-wrap .arm-notched-outline__notch label {
                             line-height: ' . ( $new_style['label_font_size'] * 2 ) . "px;
@@ -10027,7 +10298,7 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 							width: auto;
 							max-width: 100%;
 							width: ' . $new_style['button_width'] . $new_style['button_width_type'] . ';
-							min-height: 35px;
+							min-height: 50px;
 							min-height: ' . $new_style['button_height'] . $new_style['button_height_type'] . ';
 							line-height: ' . $new_style['button_height'] . $new_style['button_height_type'] . ';
 							padding: 0 10px;
@@ -10150,7 +10421,7 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 				'field_array' => $arm_default_fields_array,
 			);
 			if ( isset( $_POST['action'] ) && $_POST['action'] == 'arm_ajax_generate_form_styles' ) { //phpcs:ignore
-				echo arm_pattern_json_encode( $arm_response );
+				echo arm_pattern_json_encode( $arm_response ); //phpcs:ignore
 				exit;
 			}
 			return $arm_response;
@@ -10192,7 +10463,7 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 
 		function arm_google_fonts_list() {
 			global $wp, $wpdb, $ARMemberLite;
-			$google_fonts = array( 'ABeeZee', 'Abel', 'Abhaya Libre', 'Abril Fatface', 'Aclonica', 'Acme', 'Actor', 'Adamina', 'Advent Pro', 'Aguafina Script', 'Akronim', 'Aladin', 'Aldrich', 'Alef', 'Alegreya', 'Alegreya SC', 'Alegreya Sans', 'Alegreya Sans SC', 'Alex Brush', 'Alfa Slab One', 'Alice', 'Alike', 'Alike Angular', 'Allan', 'Allerta', 'Allerta Stencil', 'Allura', 'Almendra', 'Almendra Display', 'Almendra SC', 'Amarante', 'Amaranth', 'Amatic SC', 'Amethysta', 'Amiko', 'Amiri', 'Amita', 'Anaheim', 'Andada', 'Andika', 'Angkor', 'Annie Use Your Telescope', 'Anonymous Pro', 'Antic', 'Antic Didone', 'Antic Slab', 'Anton', 'Arapey', 'Arbutus', 'Arbutus Slab', 'Architects Daughter', 'Archivo', 'Archivo Black', 'Archivo Narrow', 'Aref Ruqaa', 'Arima Madurai', 'Arimo', 'Arizonia', 'Armata', 'Arsenal', 'Artifika', 'Arvo', 'Arya', 'Asap', 'Asap Condensed', 'Asar', 'Asset', 'Assistant', 'Astloch', 'Asul', 'Athiti', 'Atma', 'Atomic Age', 'Aubrey', 'Audiowide', 'Autour One', 'Average', 'Average Sans', 'Averia Gruesa Libre', 'Averia Libre', 'Averia Sans Libre', 'Averia Serif Libre', 'Bad Script', 'Bahiana', 'Bai Jamjuree', 'Baloo', 'Baloo Bhai', 'Baloo Bhaijaan', 'Baloo Bhaina', 'Baloo Chettan', 'Baloo Da', 'Baloo Paaji', 'Baloo Tamma', 'Baloo Tammudu', 'Baloo Thambi', 'Balthazar', 'Bangers', 'Barlow', 'Barlow Condensed', 'Barlow Semi Condensed', 'Barrio', 'Basic', 'Battambang', 'Baumans', 'Bayon', 'Belgrano', 'Bellefair', 'Belleza', 'BenchNine', 'Bentham', 'Berkshire Swash', 'Bevan', 'Bigelow Rules', 'Bigshot One', 'Bilbo', 'Bilbo Swash Caps', 'BioRhyme', 'BioRhyme Expanded', 'Biryani', 'Bitter', 'Black And White Picture', 'Black Han Sans', 'Black Ops One', 'Bokor', 'Bonbon', 'Boogaloo', 'Bowlby One', 'Bowlby One SC', 'Brawler', 'Bree Serif', 'Bubblegum Sans', 'Bubbler One', 'Buda', 'Buenard', 'Bungee', 'Bungee Hairline', 'Bungee Inline', 'Bungee Outline', 'Bungee Shade', 'Butcherman', 'Butterfly Kids', 'Cabin', 'Cabin Condensed', 'Cabin Sketch', 'Caesar Dressing', 'Cagliostro', 'Cairo', 'Calligraffitti', 'Cambay', 'Cambo', 'Candal', 'Cantarell', 'Cantata One', 'Cantora One', 'Capriola', 'Cardo', 'Carme', 'Carrois Gothic', 'Carrois Gothic SC', 'Carter One', 'Catamaran', 'Caudex', 'Caveat', 'Caveat Brush', 'Cedarville Cursive', 'Ceviche One', 'Chakra Petch', 'Changa', 'Changa One', 'Chango', 'Charmonman', 'Chathura', 'Chau Philomene One', 'Chela One', 'Chelsea Market', 'Chenla', 'Cherry Cream Soda', 'Cherry Swash', 'Chewy', 'Chicle', 'Chivo', 'Chonburi', 'Cinzel', 'Cinzel Decorative', 'Clicker Script', 'Coda', 'Coda Caption', 'Codystar', 'Coiny', 'Combo', 'Comfortaa', 'Coming Soon', 'Concert One', 'Condiment', 'Content', 'Contrail One', 'Convergence', 'Cookie', 'Copse', 'Corben', 'Cormorant', 'Cormorant Garamond', 'Cormorant Infant', 'Cormorant SC', 'Cormorant Unicase', 'Cormorant Upright', 'Courgette', 'Cousine', 'Coustard', 'Covered By Your Grace', 'Crafty Girls', 'Creepster', 'Crete Round', 'Crimson Text', 'Croissant One', 'Crushed', 'Cuprum', 'Cute Font', 'Cutive', 'Cutive Mono', 'Damion', 'Dancing Script', 'Dangrek', 'David Libre', 'Dawning of a New Day', 'Days One', 'Dekko', 'Delius', 'Delius Swash Caps', 'Delius Unicase', 'Della Respira', 'Denk One', 'Devonshire', 'Dhurjati', 'Didact Gothic', 'Diplomata', 'Diplomata SC', 'Do Hyeon', 'Dokdo', 'Domine', 'Donegal One', 'Doppio One', 'Dorsa', 'Dosis', 'Dr Sugiyama', 'Duru Sans', 'Dynalight', 'EB Garamond', 'Eagle Lake', 'East Sea Dokdo', 'Eater', 'Economica', 'Eczar', 'El Messiri', 'Electrolize', 'Elsie', 'Elsie Swash Caps', 'Emblema One', 'Emilys Candy', 'Encode Sans', 'Encode Sans Condensed', 'Encode Sans Expanded', 'Encode Sans Semi Condensed', 'Encode Sans Semi Expanded', 'Engagement', 'Englebert', 'Enriqueta', 'Erica One', 'Esteban', 'Euphoria Script', 'Ewert', 'Exo', 'Exo 2', 'Expletus Sans', 'Fahkwang', 'Fanwood Text', 'Farsan', 'Fascinate', 'Fascinate Inline', 'Faster One', 'Fasthand', 'Fauna One', 'Faustina', 'Federant', 'Federo', 'Felipa', 'Fenix', 'Finger Paint', 'Fira Mono', 'Fira Sans', 'Fira Sans Condensed', 'Fira Sans Extra Condensed', 'Fjalla One', 'Fjord One', 'Flamenco', 'Flavors', 'Fondamento', 'Fontdiner Swanky', 'Forum', 'Francois One', 'Frank Ruhl Libre', 'Freckle Face', 'Fredericka the Great', 'Fredoka One', 'Freehand', 'Fresca', 'Frijole', 'Fruktur', 'Fugaz One', 'GFS Didot', 'GFS Neohellenic', 'Gabriela', 'Gaegu', 'Gafata', 'Galada', 'Galdeano', 'Galindo', 'Gamja Flower', 'Gentium Basic', 'Gentium Book Basic', 'Geo', 'Geostar', 'Geostar Fill', 'Germania One', 'Gidugu', 'Gilda Display', 'Give You Glory', 'Glass Antiqua', 'Glegoo', 'Gloria Hallelujah', 'Goblin One', 'Gochi Hand', 'Gorditas', 'Gothic A1', 'Goudy Bookletter 1911', 'Graduate', 'Grand Hotel', 'Gravitas One', 'Great Vibes', 'Griffy', 'Gruppo', 'Gudea', 'Gugi', 'Gurajada', 'Habibi', 'Halant', 'Hammersmith One', 'Hanalei', 'Hanalei Fill', 'Handlee', 'Hanuman', 'Happy Monkey', 'Harmattan', 'Headland One', 'Heebo', 'Henny Penny', 'Herr Von Muellerhoff', 'Hi Melody', 'Hind', 'Hind Guntur', 'Hind Madurai', 'Hind Siliguri', 'Hind Vadodara', 'Holtwood One SC', 'Homemade Apple', 'Homenaje', 'IBM Plex Mono', 'IBM Plex Sans', 'IBM Plex Sans Condensed', 'IBM Plex Serif', 'IM Fell DW Pica', 'IM Fell DW Pica SC', 'IM Fell Double Pica', 'IM Fell Double Pica SC', 'IM Fell English', 'IM Fell English SC', 'IM Fell French Canon', 'IM Fell French Canon SC', 'IM Fell Great Primer', 'IM Fell Great Primer SC', 'Iceberg', 'Iceland', 'Imprima', 'Inconsolata', 'Inder', 'Indie Flower', 'Inika', 'Inknut Antiqua', 'Irish Grover', 'Istok Web', 'Italiana', 'Italianno', 'Itim', 'Jacques Francois', 'Jacques Francois Shadow', 'Jaldi', 'Jim Nightshade', 'Jockey One', 'Jolly Lodger', 'Jomhuria', 'Josefin Sans', 'Josefin Slab', 'Joti One', 'Jua', 'Judson', 'Julee', 'Julius Sans One', 'Junge', 'Jura', 'Just Another Hand', 'Just Me Again Down Here', 'K2D', 'Kadwa', 'Kalam', 'Kameron', 'Kanit', 'Kantumruy', 'Karla', 'Karma', 'Katibeh', 'Kaushan Script', 'Kavivanar', 'Kavoon', 'Kdam Thmor', 'Keania One', 'Kelly Slab', 'Kenia', 'Khand', 'Khmer', 'Khula', 'Kirang Haerang', 'Kite One', 'Knewave', 'KoHo', 'Kodchasan', 'Kosugi', 'Kosugi Maru', 'Kotta One', 'Koulen', 'Kranky', 'Kreon', 'Kristi', 'Krona One', 'Krub', 'Kumar One', 'Kumar One Outline', 'Kurale', 'La Belle Aurore', 'Laila', 'Lakki Reddy', 'Lalezar', 'Lancelot', 'Lateef', 'Lato', 'League Script', 'Leckerli One', 'Ledger', 'Lekton', 'Lemon', 'Lemonada', 'Libre Barcode 128', 'Libre Barcode 128 Text', 'Libre Barcode 39', 'Libre Barcode 39 Extended', 'Libre Barcode 39 Extended Text', 'Libre Barcode 39 Text', 'Libre Baskerville', 'Libre Franklin', 'Life Savers', 'Lilita One', 'Lily Script One', 'Limelight', 'Linden Hill', 'Lobster', 'Lobster Two', 'Londrina Outline', 'Londrina Shadow', 'Londrina Sketch', 'Londrina Solid', 'Lora', 'Love Ya Like A Sister', 'Loved by the King', 'Lovers Quarrel', 'Luckiest Guy', 'Lusitana', 'Lustria', 'M PLUS 1p', 'M PLUS Rounded 1c', 'Macondo', 'Macondo Swash Caps', 'Mada', 'Magra', 'Maiden Orange', 'Maitree', 'Mako', 'Mali', 'Mallanna', 'Mandali', 'Manuale', 'Marcellus', 'Marcellus SC', 'Marck Script', 'Margarine', 'Markazi Text', 'Marko One', 'Marmelad', 'Martel', 'Martel Sans', 'Marvel', 'Mate', 'Mate SC', 'Maven Pro', 'McLaren', 'Meddon', 'MedievalSharp', 'Medula One', 'Meera Inimai', 'Megrim', 'Meie Script', 'Merienda', 'Merienda One', 'Merriweather', 'Merriweather Sans', 'Metal', 'Metal Mania', 'Metamorphous', 'Metrophobic', 'Michroma', 'Milonga', 'Miltonian', 'Miltonian Tattoo', 'Mina', 'Miniver', 'Miriam Libre', 'Mirza', 'Miss Fajardose', 'Mitr', 'Modak', 'Modern Antiqua', 'Mogra', 'Molengo', 'Molle', 'Monda', 'Monofett', 'Monoton', 'Monsieur La Doulaise', 'Montaga', 'Montez', 'Montserrat', 'Montserrat Alternates', 'Montserrat Subrayada', 'Moul', 'Moulpali', 'Mountains of Christmas', 'Mouse Memoirs', 'Mr Bedfort', 'Mr Dafoe', 'Mr De Haviland', 'Mrs Saint Delafield', 'Mrs Sheppards', 'Mukta', 'Mukta Mahee', 'Mukta Malar', 'Mukta Vaani', 'Muli', 'Mystery Quest', 'NTR', 'Nanum Brush Script', 'Nanum Gothic', 'Nanum Gothic Coding', 'Nanum Myeongjo', 'Nanum Pen Script', 'Neucha', 'Neuton', 'New Rocker', 'News Cycle', 'Niconne', 'Niramit', 'Nixie One', 'Nobile', 'Nokora', 'Norican', 'Nosifer', 'Notable', 'Nothing You Could Do', 'Noticia Text', 'Noto Sans', 'Noto Sans JP', 'Noto Sans KR', 'Noto Serif', 'Noto Serif JP', 'Noto Serif KR', 'Nova Cut', 'Nova Flat', 'Nova Mono', 'Nova Oval', 'Nova Round', 'Nova Script', 'Nova Slim', 'Nova Square', 'Numans', 'Nunito', 'Nunito Sans', 'Odor Mean Chey', 'Offside', 'Old Standard TT', 'Oldenburg', 'Oleo Script', 'Oleo Script Swash Caps', 'Open Sans', 'Open Sans Condensed', 'Oranienbaum', 'Orbitron', 'Oregano', 'Orienta', 'Original Surfer', 'Oswald', 'Over the Rainbow', 'Overlock', 'Overlock SC', 'Overpass', 'Overpass Mono', 'Ovo', 'Oxygen', 'Oxygen Mono', 'PT Mono', 'PT Sans', 'PT Sans Caption', 'PT Sans Narrow', 'PT Serif', 'PT Serif Caption', 'Pacifico', 'Padauk', 'Palanquin', 'Palanquin Dark', 'Pangolin', 'Paprika', 'Parisienne', 'Passero One', 'Passion One', 'Pathway Gothic One', 'Patrick Hand', 'Patrick Hand SC', 'Pattaya', 'Patua One', 'Pavanam', 'Paytone One', 'Peddana', 'Peralta', 'Permanent Marker', 'Petit Formal Script', 'Petrona', 'Philosopher', 'Piedra', 'Pinyon Script', 'Pirata One', 'Plaster', 'Play', 'Playball', 'Playfair Display', 'Playfair Display SC', 'Podkova', 'Poiret One', 'Poller One', 'Poly', 'Pompiere', 'Pontano Sans', 'Poor Story', 'Poppins', 'Port Lligat Sans', 'Port Lligat Slab', 'Pragati Narrow', 'Prata', 'Preahvihear', 'Press Start 2P', 'Pridi', 'Princess Sofia', 'Prociono', 'Prompt', 'Prosto One', 'Proza Libre', 'Puritan', 'Purple Purse', 'Quando', 'Quantico', 'Quattrocento', 'Quattrocento Sans', 'Questrial', 'Quicksand', 'Quintessential', 'Qwigley', 'Racing Sans One', 'Radley', 'Rajdhani', 'Rakkas', 'Raleway', 'Raleway Dots', 'Ramabhadra', 'Ramaraja', 'Rambla', 'Rammetto One', 'Ranchers', 'Rancho', 'Ranga', 'Rasa', 'Rationale', 'Ravi Prakash', 'Redressed', 'Reem Kufi', 'Reenie Beanie', 'Revalia', 'Rhodium Libre', 'Ribeye', 'Ribeye Marrow', 'Righteous', 'Risque', 'Roboto', 'Roboto Condensed', 'Roboto Mono', 'Roboto Slab', 'Rochester', 'Rock Salt', 'Rokkitt', 'Romanesco', 'Ropa Sans', 'Rosario', 'Rosarivo', 'Rouge Script', 'Rozha One', 'Rubik', 'Rubik Mono One', 'Ruda', 'Rufina', 'Ruge Boogie', 'Ruluko', 'Rum Raisin', 'Ruslan Display', 'Russo One', 'Ruthie', 'Rye', 'Sacramento', 'Sahitya', 'Sail', 'Saira', 'Saira Condensed', 'Saira Extra Condensed', 'Saira Semi Condensed', 'Salsa', 'Sanchez', 'Sancreek', 'Sansita', 'Sarala', 'Sarina', 'Sarpanch', 'Satisfy', 'Sawarabi Gothic', 'Sawarabi Mincho', 'Scada', 'Scheherazade', 'Schoolbell', 'Scope One', 'Seaweed Script', 'Secular One', 'Sedgwick Ave', 'Sedgwick Ave Display', 'Sevillana', 'Seymour One', 'Shadows Into Light', 'Shadows Into Light Two', 'Shanti', 'Share', 'Share Tech', 'Share Tech Mono', 'Shojumaru', 'Short Stack', 'Shrikhand', 'Siemreap', 'Sigmar One', 'Signika', 'Signika Negative', 'Simonetta', 'Sintony', 'Sirin Stencil', 'Six Caps', 'Skranji', 'Slabo 13px', 'Slabo 27px', 'Slackey', 'Smokum', 'Smythe', 'Sniglet', 'Snippet', 'Snowburst One', 'Sofadi One', 'Sofia', 'Song Myung', 'Sonsie One', 'Sorts Mill Goudy', 'Source Code Pro', 'Source Sans Pro', 'Source Serif Pro', 'Space Mono', 'Special Elite', 'Spectral', 'Spectral SC', 'Spicy Rice', 'Spinnaker', 'Spirax', 'Squada One', 'Sree Krushnadevaraya', 'Sriracha', 'Srisakdi', 'Stalemate', 'Stalinist One', 'Stardos Stencil', 'Stint Ultra Condensed', 'Stint Ultra Expanded', 'Stoke', 'Strait', 'Stylish', 'Sue Ellen Francisco', 'Suez One', 'Sumana', 'Sunflower', 'Sunshiney', 'Supermercado One', 'Sura', 'Suranna', 'Suravaram', 'Suwannaphum', 'Swanky and Moo Moo', 'Syncopate', 'Tajawal', 'Tangerine', 'Taprom', 'Tauri', 'Taviraj', 'Teko', 'Telex', 'Tenali Ramakrishna', 'Tenor Sans', 'Text Me One', 'The Girl Next Door', 'Tienne', 'Tillana', 'Timmana', 'Tinos', 'Titan One', 'Titillium Web', 'Trade Winds', 'Trirong', 'Trocchi', 'Trochut', 'Trykker', 'Tulpen One', 'Ubuntu', 'Ubuntu Condensed', 'Ubuntu Mono', 'Ultra', 'Uncial Antiqua', 'Underdog', 'Unica One', 'UnifrakturCook', 'UnifrakturMaguntia', 'Unkempt', 'Unlock', 'Unna', 'VT323', 'Vampiro One', 'Varela', 'Varela Round', 'Vast Shadow', 'Vesper Libre', 'Vibur', 'Vidaloka', 'Viga', 'Voces', 'Volkhov', 'Vollkorn', 'Vollkorn SC', 'Voltaire', 'Waiting for the Sunrise', 'Wallpoet', 'Walter Turncoat', 'Warnes', 'Wellfleet', 'Wendy One', 'Wire One', 'Work Sans', 'Yanone Kaffeesatz', 'Yantramanav', 'Yatra One', 'Yellowtail', 'Yeon Sung', 'Yeseva One', 'Yesteryear', 'Yrsa', 'Zeyada', 'Zilla Slab', 'Zilla Slab Highlight' );
+			$google_fonts = array( 'ABeeZee', 'Abel', 'Abhaya Libre', 'Abril Fatface', 'Aclonica', 'Acme', 'Actor', 'Adamina', 'Advent Pro', 'Aguafina Script', 'Akronim', 'Aladin', 'Aldrich', 'Alef', 'Alegreya', 'Alegreya SC', 'Alegreya Sans', 'Alegreya Sans SC', 'Alex Brush', 'Alfa Slab One', 'Alice', 'Alike', 'Alike Angular', 'Allan', 'Allerta', 'Allerta Stencil', 'Allura', 'Almendra', 'Almendra Display', 'Almendra SC', 'Amarante', 'Amaranth', 'Amatic SC', 'Amethysta', 'Amiko', 'Amiri', 'Amita', 'Anaheim', 'Andada', 'Andika', 'Angkor', 'Annie Use Your Telescope', 'Anonymous Pro', 'Antic', 'Antic Didone', 'Antic Slab', 'Anton', 'Arapey', 'Arbutus', 'Arbutus Slab', 'Architects Daughter', 'Archivo', 'Archivo Black', 'Archivo Narrow', 'Aref Ruqaa', 'Arima Madurai', 'Arimo', 'Arizonia', 'Armata', 'Arsenal', 'Artifika', 'Arvo', 'Arya', 'Asap', 'Asap Condensed', 'Asar', 'Asset', 'Assistant', 'Astloch', 'Asul', 'Athiti', 'Atma', 'Atomic Age', 'Aubrey', 'Audiowide', 'Autour One', 'Average', 'Average Sans', 'Averia Gruesa Libre', 'Averia Libre', 'Averia Sans Libre', 'Averia Serif Libre', 'Bad Script', 'Bahiana', 'Bai Jamjuree', 'Baloo', 'Baloo Bhai', 'Baloo Bhaijaan', 'Baloo Bhaina', 'Baloo Chettan', 'Baloo Da', 'Baloo Paaji', 'Baloo Tamma', 'Baloo Tammudu', 'Baloo Thambi', 'Balthazar', 'Bangers', 'Barlow', 'Barlow Condensed', 'Barlow Semi Condensed', 'Barrio', 'Basic', 'Battambang', 'Baumans', 'Bayon', 'Belgrano', 'Bellefair', 'Belleza', 'BenchNine', 'Bentham', 'Berkshire Swash', 'Bevan', 'Bigelow Rules', 'Bigshot One', 'Bilbo', 'Bilbo Swash Caps', 'BioRhyme', 'BioRhyme Expanded', 'Biryani', 'Bitter', 'Black And White Picture', 'Black Han Sans', 'Black Ops One', 'Bokor', 'Bonbon', 'Boogaloo', 'Bowlby One', 'Bowlby One SC', 'Brawler', 'Bree Serif', 'Bubblegum Sans', 'Bubbler One', 'Buda', 'Buenard', 'Bungee', 'Bungee Hairline', 'Bungee Inline', 'Bungee Outline', 'Bungee Shade', 'Butcherman', 'Butterfly Kids', 'Cabin', 'Cabin Condensed', 'Cabin Sketch', 'Caesar Dressing', 'Cagliostro', 'Cairo', 'Calligraffitti', 'Cambay', 'Cambo', 'Candal', 'Cantarell', 'Cantata One', 'Cantora One', 'Capriola', 'Cardo', 'Carme', 'Carrois Gothic', 'Carrois Gothic SC', 'Carter One', 'Catamaran', 'Caudex', 'Caveat', 'Caveat Brush', 'Cedarville Cursive', 'Ceviche One', 'Chakra Petch', 'Changa', 'Changa One', 'Chango', 'Charmonman', 'Chathura', 'Chau Philomene One', 'Chela One', 'Chelsea Market', 'Chenla', 'Cherry Cream Soda', 'Cherry Swash', 'Chewy', 'Chicle', 'Chivo', 'Chonburi', 'Cinzel', 'Cinzel Decorative', 'Clicker Script', 'Coda', 'Coda Caption', 'Codystar', 'Coiny', 'Combo', 'Comfortaa', 'Coming Soon', 'Concert One', 'Condiment', 'Content', 'Contrail One', 'Convergence', 'Cookie', 'Copse', 'Corben', 'Cormorant', 'Cormorant Garamond', 'Cormorant Infant', 'Cormorant SC', 'Cormorant Unicase', 'Cormorant Upright', 'Courgette', 'Cousine', 'Coustard', 'Covered By Your Grace', 'Crafty Girls', 'Creepster', 'Crete Round', 'Crimson Text', 'Croissant One', 'Crushed', 'Cuprum', 'Cute Font', 'Cutive', 'Cutive Mono', 'Damion', 'Dancing Script', 'Dangrek', 'David Libre', 'Dawning of a New Day', 'Days One', 'Dekko', 'Delius', 'Delius Swash Caps', 'Delius Unicase', 'Della Respira', 'Denk One', 'Devonshire', 'Dhurjati', 'Didact Gothic', 'Diplomata', 'Diplomata SC', 'Do Hyeon', 'Dokdo', 'Domine', 'Donegal One', 'Doppio One', 'Dorsa', 'Dosis', 'Dr Sugiyama', 'Duru Sans', 'Dynalight', 'EB Garamond', 'Eagle Lake', 'East Sea Dokdo', 'Eater', 'Economica', 'Eczar', 'El Messiri', 'Electrolize', 'Elsie', 'Elsie Swash Caps', 'Emblema One', 'Emilys Candy', 'Encode Sans', 'Encode Sans Condensed', 'Encode Sans Expanded', 'Encode Sans Semi Condensed', 'Encode Sans Semi Expanded', 'Engagement', 'Englebert', 'Enriqueta', 'Erica One', 'Esteban', 'Euphoria Script', 'Ewert', 'Exo', 'Exo 2', 'Expletus Sans', 'Fahkwang', 'Fanwood Text', 'Farsan', 'Fascinate', 'Fascinate Inline', 'Faster One', 'Fasthand', 'Fauna One', 'Faustina', 'Federant', 'Federo', 'Felipa', 'Fenix', 'Finger Paint', 'Fira Mono', 'Fira Sans', 'Fira Sans Condensed', 'Fira Sans Extra Condensed', 'Fjalla One', 'Fjord One', 'Flamenco', 'Flavors', 'Fondamento', 'Fontdiner Swanky', 'Forum', 'Francois One', 'Frank Ruhl Libre', 'Freckle Face', 'Fredericka the Great', 'Fredoka One', 'Freehand', 'Fresca', 'Frijole', 'Fruktur', 'Fugaz One', 'GFS Didot', 'GFS Neohellenic', 'Gabriela', 'Gaegu', 'Gafata', 'Galada', 'Galdeano', 'Galindo', 'Gamja Flower', 'Gentium Basic', 'Gentium Book Basic', 'Geo', 'Geostar', 'Geostar Fill', 'Germania One', 'Gidugu', 'Gilda Display', 'Give You Glory', 'Glass Antiqua', 'Glegoo', 'Gloria Hallelujah', 'Goblin One', 'Gochi Hand', 'Gorditas', 'Gothic A1', 'Goudy Bookletter 1911', 'Graduate', 'Grand Hotel', 'Gravitas One', 'Great Vibes', 'Griffy', 'Gruppo', 'Gudea', 'Gugi', 'Gurajada', 'Habibi', 'Halant', 'Hammersmith One', 'Hanalei', 'Hanalei Fill', 'Handlee', 'Hanuman', 'Happy Monkey', 'Harmattan', 'Headland One', 'Heebo', 'Henny Penny', 'Herr Von Muellerhoff', 'Hi Melody', 'Hind', 'Hind Guntur', 'Hind Madurai', 'Hind Siliguri', 'Hind Vadodara', 'Holtwood One SC', 'Homemade Apple', 'Homenaje', 'IBM Plex Mono', 'IBM Plex Sans', 'IBM Plex Sans Condensed', 'IBM Plex Serif', 'IM Fell DW Pica', 'IM Fell DW Pica SC', 'IM Fell Double Pica', 'IM Fell Double Pica SC', 'IM Fell English', 'IM Fell English SC', 'IM Fell French Canon', 'IM Fell French Canon SC', 'IM Fell Great Primer', 'IM Fell Great Primer SC', 'Iceberg', 'Iceland', 'Imprima', 'Inconsolata', 'Inder', 'Indie Flower', 'Inika', 'Inknut Antiqua', 'Irish Grover', 'Istok Web', 'Italiana', 'Italianno', 'Itim', 'Jacques Francois', 'Jacques Francois Shadow', 'Jaldi', 'Jim Nightshade', 'Jockey One', 'Jolly Lodger', 'Jomhuria', 'Josefin Sans', 'Josefin Slab', 'Joti One', 'Jua', 'Judson', 'Julee', 'Julius Sans One', 'Junge', 'Jura', 'Just Another Hand', 'Just Me Again Down Here', 'K2D', 'Kadwa', 'Kalam', 'Kameron', 'Kanit', 'Kantumruy', 'Karla', 'Karma', 'Katibeh', 'Kaushan Script', 'Kavivanar', 'Kavoon', 'Kdam Thmor', 'Keania One', 'Kelly Slab', 'Kenia', 'Khand', 'Khmer', 'Khula', 'Kirang Haerang', 'Kite One', 'Knewave', 'KoHo', 'Kodchasan', 'Kosugi', 'Kosugi Maru', 'Kotta One', 'Koulen', 'Kranky', 'Kreon', 'Kristi', 'Krona One', 'Krub', 'Kumar One', 'Kumar One Outline', 'Kurale', 'La Belle Aurore', 'Laila', 'Lakki Reddy', 'Lalezar', 'Lancelot', 'Lateef', 'Lato', 'League Script', 'Leckerli One', 'Ledger', 'Lekton', 'Lemon', 'Lemonada', 'Libre Barcode 128', 'Libre Barcode 128 Text', 'Libre Barcode 39', 'Libre Barcode 39 Extended', 'Libre Barcode 39 Extended Text', 'Libre Barcode 39 Text', 'Libre Baskerville', 'Libre Franklin', 'Life Savers', 'Lilita One', 'Lily Script One', 'Limelight', 'Linden Hill', 'Lobster', 'Lobster Two', 'Londrina Outline', 'Londrina Shadow', 'Londrina Sketch', 'Londrina Solid', 'Lora', 'Love Ya Like A Sister', 'Loved by the King', 'Lovers Quarrel', 'Luckiest Guy', 'Lusitana', 'Lustria', 'M PLUS 1p', 'M PLUS Rounded 1c', 'Macondo', 'Macondo Swash Caps', 'Mada', 'Magra', 'Maiden Orange', 'Maitree', 'Mako', 'Mali', 'Mallanna', 'Mandali', 'Manuale', 'Marcellus', 'Marcellus SC', 'Marck Script', 'Margarine', 'Markazi Text', 'Marko One', 'Marmelad', 'Martel', 'Martel Sans', 'Marvel', 'Mate', 'Mate SC', 'Maven Pro', 'McLaren', 'Meddon', 'MedievalSharp', 'Medula One', 'Meera Inimai', 'Megrim', 'Meie Script', 'Merienda', 'Merienda One', 'Merriweather', 'Merriweather Sans', 'Metal', 'Metal Mania', 'Metamorphous', 'Metrophobic', 'Michroma', 'Milonga', 'Miltonian', 'Miltonian Tattoo', 'Mina', 'Miniver', 'Miriam Libre', 'Mirza', 'Miss Fajardose', 'Mitr', 'Modak', 'Modern Antiqua', 'Mogra', 'Molengo', 'Molle', 'Monda', 'Monofett', 'Monoton', 'Monsieur La Doulaise', 'Montaga', 'Montez', 'Montserrat', 'Montserrat Alternates', 'Montserrat Subrayada', 'Moul', 'Moulpali', 'Mountains of Christmas', 'Mouse Memoirs', 'Mr Bedfort', 'Mr Dafoe', 'Mr De Haviland', 'Mrs Saint Delafield', 'Mrs Sheppards', 'Mukta', 'Mukta Mahee', 'Mukta Malar', 'Mukta Vaani', 'Muli', 'Mystery Quest', 'NTR', 'Nanum Brush Script', 'Nanum Gothic', 'Nanum Gothic Coding', 'Nanum Myeongjo', 'Nanum Pen Script', 'Neucha', 'Neuton', 'New Rocker', 'News Cycle', 'Niconne', 'Niramit', 'Nixie One', 'Nobile', 'Nokora', 'Norican', 'Nosifer', 'Notable', 'Nothing You Could Do', 'Noticia Text', 'Noto Sans', 'Noto Sans JP', 'Noto Sans KR', 'Noto Serif', 'Noto Serif JP', 'Noto Serif KR', 'Nova Cut', 'Nova Flat', 'Nova Mono', 'Nova Oval', 'Nova Round', 'Nova Script', 'Nova Slim', 'Nova Square', 'Numans', 'Nunito', 'Nunito Sans', 'Odor Mean Chey', 'Offside', 'Old Standard TT', 'Oldenburg', 'Oleo Script', 'Oleo Script Swash Caps', 'Open Sans', 'Open Sans Condensed', 'Oranienbaum', 'Orbitron', 'Oregano', 'Orienta', 'Original Surfer', 'Oswald', 'Over the Rainbow', 'Overlock', 'Overlock SC', 'Overpass', 'Overpass Mono', 'Ovo', 'Oxygen', 'Oxygen Mono', 'PT Mono', 'PT Sans', 'PT Sans Caption', 'PT Sans Narrow', 'PT Serif', 'PT Serif Caption', 'Pacifico', 'Padauk', 'Palanquin', 'Palanquin Dark', 'Pangolin', 'Paprika', 'Parisienne', 'Passero One', 'Passion One', 'Pathway Gothic One', 'Patrick Hand', 'Patrick Hand SC', 'Pattaya', 'Patua One', 'Pavanam', 'Paytone One', 'Peddana', 'Peralta', 'Permanent Marker', 'Petit Formal Script', 'Petrona', 'Philosopher', 'Piedra', 'Pinyon Script', 'Pirata One', 'Plaster', 'Play', 'Playball', 'Playfair Display', 'Playfair Display SC', 'Podkova', 'Poiret One', 'Poller One', 'Poly', 'Pompiere', 'Pontano Sans', 'Poor Story', 'Poppins', 'Port Lligat Sans', 'Port Lligat Slab', 'Pragati Narrow', 'Prata', 'Preahvihear', 'Press Start 2P', 'Pridi', 'Princess Sofia', 'Prociono', 'Prompt', 'Prosto One', 'Proza Libre', 'Puritan', 'Purple Purse', 'Quando', 'Quantico', 'Quattrocento', 'Quattrocento Sans', 'Questrial', 'Quicksand', 'Quintessential', 'Qwigley', 'Racing Sans One', 'Radley', 'Rajdhani', 'Rakkas', 'Raleway', 'Raleway Dots', 'Ramabhadra', 'Ramaraja', 'Rambla', 'Rammetto One', 'Ranchers', 'Rancho', 'Ranga', 'Rasa', 'Rationale', 'Ravi Prakash', 'Redressed', 'Reem Kufi', 'Reenie Beanie', 'Revalia', 'Rhodium Libre', 'Ribeye', 'Ribeye Marrow', 'Righteous', 'Risque', 'Roboto', 'Roboto Condensed', 'Roboto Mono', 'Roboto Slab', 'Rochester', 'Rock Salt', 'Rokkitt', 'Romanesco', 'Ropa Sans', 'Rosario', 'Rosarivo', 'Rouge Script', 'Rozha One', 'Rubik', 'Rubik Mono One', 'Ruda', 'Rufina', 'Ruge Boogie', 'Ruluko', 'Rum Raisin', 'Ruslan Display', 'Russo One', 'Ruthie', 'Rye', 'Sacramento', 'Sahitya', 'Sail', 'Saira', 'Saira Condensed', 'Saira Extra Condensed', 'Saira Semi Condensed', 'Salsa', 'Sanchez', 'Sancreek', 'Sansita', 'Sarala', 'Sarina', 'Sarpanch', 'Satisfy', 'Sawarabi Gothic', 'Sawarabi Mincho', 'Scada', 'Scheherazade', 'Schoolbell', 'Scope One', 'Seaweed Script', 'Secular One', 'Sedgwick Ave', 'Sedgwick Ave Display', 'Sevillana', 'Seymour One', 'Shadows Into Light', 'Shadows Into Light Two', 'Shanti', 'Share', 'Share Tech', 'Share Tech Mono', 'Shojumaru', 'Short Stack', 'Shrikhand', 'Siemreap', 'Sigmar One', 'Signika', 'Signika Negative', 'Simonetta', 'Sintony', 'Sirin Stencil', 'Six Caps', 'Skranji', 'Slabo 13px', 'Slabo 27px', 'Slackey', 'Smokum', 'Smythe', 'Sniglet', 'Snippet', 'Snowburst One', 'Sofadi One', 'Sofia', 'Song Myung', 'Sonsie One', 'Sorts Mill Goudy', 'Source Code Pro', 'Source Sans Pro', 'Source Serif Pro', 'Space Mono', 'Special Elite', 'Spectral', 'Spectral SC', 'Spicy Rice', 'Spinnaker', 'Spirax', 'Squada One', 'Sree Krushnadevaraya', 'Sriracha', 'Srisakdi', 'Stalemate', 'Stalinist One', 'Stardos Stencil', 'Stint Ultra Condensed', 'Stint Ultra Expanded', 'Stoke', 'Strait', 'Stylish', 'Sue Ellen Francisco', 'Suez One', 'Sumana', 'Sunflower', 'Sunshiney', 'Supermercado One', 'Sura', 'Suranna', 'Suravaram', 'Suwannaphum', 'Swanky and Moo Moo', 'Syncopate', 'Tajawal', 'Tangerine', 'Taprom', 'Tauri', 'Taviraj', 'Teko', 'Telex', 'Tenali Ramakrishna', 'Tenor Sans', 'Text Me One', 'The Girl Next Door', 'Tienne', 'Tillana', 'Timmana', 'Tinos', 'Titan One', 'Titillium Web', 'Trade Winds', 'Trirong', 'Trocchi', 'Trochut', 'Trykker', 'Tulpen One', 'Ubuntu', 'Ubuntu Condensed', 'Ubuntu Mono', 'Ultra', 'Uncial Antiqua', 'Underdog', 'Unica One', 'UnifrakturCook', 'UnifrakturMaguntia', 'Unkempt', 'Unlock', 'Unna', 'VT323', 'Vampiro One', 'Varela', 'Varela Round', 'Vast Shadow', 'Vesper Libre', 'Vibur', 'Vidaloka','Viga', 'Voces', 'Volkhov', 'Vollkorn', 'Vollkorn SC', 'Voltaire', 'Waiting for the Sunrise', 'Wallpoet', 'Walter Turncoat', 'Warnes', 'Wellfleet', 'Wendy One', 'Wire One', 'Work Sans', 'Yanone Kaffeesatz', 'Yantramanav', 'Yatra One', 'Yellowtail', 'Yeon Sung', 'Yeseva One', 'Yesteryear', 'Yrsa', 'Zeyada', 'Zilla Slab', 'Zilla Slab Highlight' );
 			return $google_fonts;
 		}
 
@@ -10939,6 +11210,67 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 			}
 			return null;
 		}
+
+		function arm_update_apparance_of_forms_func(){
+            global $wpdb, $ARMemberLite, $arm_global_settings;
+            
+            $all_default_member_panel_setting = $arm_global_settings->arm_default_member_panel_settings();
+            $arm_default_front_settings  = $all_default_member_panel_setting['appearance_settings'];
+            $arm_default_color_setting  = isset($arm_default_front_settings['color']) ? $arm_default_front_settings['color'] : array();
+            $arm_default_font_setting   = isset($arm_default_front_settings['font']) ? $arm_default_front_settings['font'] : array();
+            
+		    $arm_current_member_panel_settings = $arm_global_settings->arm_get_member_panel_settings();
+		    $arm_current_front_settings = $arm_current_member_panel_settings['appearance_settings'];
+            $arm_current_color_setting  = isset($arm_current_front_settings['color']) ? $arm_current_front_settings['color'] : array();
+            $arm_current_font_setting   = isset($arm_current_front_settings['font']) ? $arm_current_front_settings['font'] : array();
+            
+            $arm_is_color_changed = ($arm_default_color_setting !== $arm_current_color_setting);
+            $arm_is_font_changed  = ($arm_default_font_setting !== $arm_current_font_setting);
+            
+            $arm_forms_ids = array(101,102,103,104,105);
+            
+            if($arm_is_color_changed || $arm_is_font_changed){
+
+                foreach($arm_forms_ids as $arm_form_id){
+                    $arm_form_id = intval($arm_form_id);
+            
+                    $form_settings_serialize_data = $wpdb->get_row($wpdb->prepare("SELECT `arm_form_settings` FROM `{$ARMemberLite->tbl_arm_forms}` WHERE arm_form_id = %d",$arm_form_id),ARRAY_A);
+            
+                    if(empty($form_settings_serialize_data['arm_form_settings'])){
+                        continue;
+                    }
+            
+                    $form_settings_data = maybe_unserialize($form_settings_serialize_data['arm_form_settings']);
+            
+                    if(!is_array($form_settings_data) || !isset($form_settings_data['style'])){
+                        continue;
+                    }
+            
+                    if($arm_is_color_changed){
+                        $form_settings_data['style']['form_title_font_color'] = sanitize_text_field($arm_current_color_setting['title_text_color']);
+                        $form_settings_data['style']['form_border_color']     = sanitize_text_field($arm_current_color_setting['border_color']);
+                        $form_settings_data['style']['field_border_color']    = sanitize_text_field($arm_current_color_setting['border_color']);
+                        $form_settings_data['style']['field_font_color']      = sanitize_text_field($arm_current_color_setting['content_color']);
+                        $form_settings_data['style']['lable_font_color']      = sanitize_text_field($arm_current_color_setting['content_color']);
+                        $form_settings_data['style']['button_back_color']     = sanitize_text_field($arm_current_color_setting['primary_color']);
+                    }
+            
+                    if($arm_is_font_changed){
+                        $form_settings_data['style']['form_title_font_family'] = sanitize_text_field($arm_current_font_setting['font_family']);
+                        $form_settings_data['style']['field_font_family']      = sanitize_text_field($arm_current_font_setting['font_family']);
+                        $form_settings_data['style']['label_font_family']      = sanitize_text_field($arm_current_font_setting['font_family']);
+                        $form_settings_data['style']['button_font_family']     = sanitize_text_field($arm_current_font_setting['font_family']);
+                    }
+            
+                    $updated_form_settings = maybe_serialize($form_settings_data);
+            
+                    $wpdb->update($ARMemberLite->tbl_arm_forms,array('arm_form_settings' => $updated_form_settings),array('arm_form_id' => $arm_form_id),array('%s'),array('%d'));
+                }
+
+            }
+
+        }
+
 	}
 
 }

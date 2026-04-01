@@ -678,6 +678,7 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 	foreach($admin_user_ids as $admin_user_id){
 	
 		$arm_member_hide_show_data = get_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',true );
+		$arm_member_hide_show_data = maybe_unserialize( $arm_member_hide_show_data );
 	
 		$grid_columns = array(
 			'avatar'             => esc_html__( 'Avatar', 'armember-membership' ),
@@ -709,11 +710,12 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 		$grid_columns['paid_with'] = esc_html__( 'Paid With', 'armember-membership' );
 		$arm_updated_hide_show_cols = array();
 		$arm_array_show_fields = array('avatar','ID','user_login','user_email','arm_member_type','arm_user_plan','arm_primary_status','roles');
-		if ( !empty( $arm_member_hide_show_data ) ) {
+		if ( !empty( $arm_member_hide_show_data )) {
 			$i = 0;
 			foreach ( $grid_columns as $column_key => $column_label ) {
-				$is_shown = (in_array($column_key,$arm_array_show_fields) ) ? "1" : "0";
+				$is_shown = (!empty($arm_member_hide_show_data[$i]) && $arm_member_hide_show_data[$i] == "1" ) ? "1" : "0";
 				$arm_updated_hide_show_cols[$column_key] = $is_shown;
+				$i++;
 			}
 			update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
 			update_user_meta($admin_user_id, 'arm_members_column_order_0', array_keys($grid_columns) );
@@ -726,11 +728,72 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 			update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
 			update_user_meta($admin_user_id, 'arm_members_column_order_0',array_keys($grid_columns) );
 		}
-		
 	}
 }
 
-$arm_lite_newdbversion = '5.2';
+if(version_compare($arm_lite_newdbversion,'5.3', '<'))
+{
+	global $arm_global_settings,$wp,$wpdb,$ARMemberLite;
+	
+	$ARMemberLite->add_default_member_panel_tab();
+
+	$arm_form_tbl = $ARMemberLite->tbl_arm_forms;
+
+	$arm_form_data = $wpdb->get_row("SELECT * FROM $arm_form_tbl WHERE arm_form_id = 105"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+
+	if(empty($arm_form_data))
+	{
+		$default_member_forms_data = $arm_member_forms->arm_default_member_profile_forms_data();
+		$insertedFields            = array();
+		foreach ( $default_member_forms_data as $key => $val ) {
+			$arm_set_id   = 0;
+			$arm_set_name = '';
+			if ( in_array( $key, array( 'login', 'forgot_password', 'change_password' ) ) ) {
+				$arm_set_name = esc_html__( 'Default Set', 'armember-membership' );
+				$arm_set_id   = 1;
+			}
+			$form_data = array(
+				'arm_form_label'        => $val['name'],
+				'arm_form_title'        => $val['name'],
+				'arm_form_type'         => $key,
+				'arm_form_slug'         => $val['form_slug'],
+				'arm_is_default'        => '1',
+				'arm_set_name'          => $arm_set_name,
+				'arm_set_id'            => $arm_set_id,
+				'arm_ref_template'      => '1',
+				'arm_form_updated_date' => current_time( 'mysql' ),
+				'arm_form_created_date' => current_time( 'mysql' ),
+				'arm_form_settings'     => maybe_serialize( $val['settings'] ),
+			);
+			/* Insert Form Data */
+			$wpdb->insert( $tbl_arm_forms, $form_data ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$form_id = $wpdb->insert_id;
+			if ( ! empty( $val['fields'] ) ) {
+				$i = 1;
+				foreach ( $val['fields'] as $field ) {
+					$fid = isset( $field['id'] ) ? $field['id'] : $field['meta_key'];
+					if ( $fid == 'repeat_pass' ) {
+						$field['ref_field_id'] = $insertedFields[ $key ]['user_pass'];
+					}
+					$form_field_data = array(
+						'arm_form_field_form_id'      => $form_id,
+						'arm_form_field_order'        => $i,
+						'arm_form_field_slug'         => isset( $field['meta_key'] ) ? $field['meta_key'] : '',
+						'arm_form_field_created_date' => current_time( 'mysql' ),
+						'arm_form_field_option'       => maybe_serialize( $field ),
+					);
+					/* Insert Form Fields. */
+					$wpdb->insert( $tbl_arm_form_field, $form_field_data ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					$insert_field_id                = $wpdb->insert_id;
+					$insertedFields[ $key ][ $fid ] = $insert_field_id;
+					$i++;
+				}
+			}
+		}
+	}
+}
+
+$arm_lite_newdbversion = '5.3';
 update_option( 'arm_lite_new_version_installed', 1 );
 update_option( 'armlite_version', $arm_lite_newdbversion );
 

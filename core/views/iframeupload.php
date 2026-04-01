@@ -1,3 +1,6 @@
+<?php
+// This file is intentionally left mostly HTML
+?>
 <html>
 	<head></head>
 	<body>

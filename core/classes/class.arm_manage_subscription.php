@@ -26,15 +26,15 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
         function arm_get_upcomming_sub_details_for_grid_func(){
             global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways, $is_multiple_membership_feature, $arm_capabilities_global,$arm_transaction;
 
-            $arm_activity_id = intval($_POST['activity_id']);
+            $arm_activity_id = intval($_POST['activity_id']); //phpcs:ignore
 
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_subscriptions'], '1'); //phpcs:ignore --Reason:Verifying nonce
 
             $grid_columns = array();
-			if(!empty($_REQUEST['exclude_headers']))
+			if(!empty($_REQUEST['exclude_headers'])) //phpcs:ignore
 			{
-				$arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
-				$arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
+				$arm_dt_exclude_keys = explode(',',sanitize_text_field($_REQUEST['exclude_headers'])); //phpcs:ignore 
+				$arm_dt_exclude_label = explode('|~|ARM|~|',sanitize_text_field($_REQUEST['header_label'])); //phpcs:ignore
 				$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
 			}
 
@@ -42,7 +42,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 
             $sql = $wpdb->prepare('SELECT act.*,am.arm_user_login FROM '.$ARMemberLite->tbl_arm_activity.' act LEFT JOIN '.$ARMemberLite->tbl_arm_members.' am ON act.arm_user_id = am.arm_user_id WHERE act.arm_user_id !=%d AND act.arm_action != "eot" AND act.arm_activity_id = %d',0,$arm_activity_id); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_activity and $ARMemberLite->tbl_arm_members are a table names
 
-            $arm_upc_rc = $wpdb->get_row($sql);
+            $arm_upc_rc = $wpdb->get_row($sql); //phpcs:ignore --Reason $sql is a Predefined query
             if(!empty($arm_upc_rc))
             {
 
@@ -198,15 +198,15 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 
         function arm_get_user_activity_details_for_grid_func(){
             global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways, $is_multiple_membership_feature, $arm_capabilities_global,$arm_transaction;
-            $arm_log_id = intval($_POST['log_id']);
+            $arm_log_id = intval($_POST['log_id']); //phpcs:ignore
 
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_subscriptions'], '1'); //phpcs:ignore --Reason:Verifying nonce
 
             $grid_columns = array();
-			if(!empty($_REQUEST['exclude_headers']))
+			if(!empty($_REQUEST['exclude_headers'])) //phpcs:ignore
 			{
-				$arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
-				$arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
+				$arm_dt_exclude_keys = explode(',',sanitize_text_field($_REQUEST['exclude_headers'])); //phpcs:ignore 
+				$arm_dt_exclude_label = explode('|~|ARM|~|',sanitize_text_field($_REQUEST['header_label'])); //phpcs:ignore
 				$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
 			}
 
@@ -214,7 +214,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 
             $sql = $wpdb->prepare( "SELECT pl.arm_log_id,pl.arm_invoice_id,am.arm_user_id,am.arm_user_login,pl.arm_plan_id,pl.arm_payment_gateway,pl.arm_payment_type,pl.arm_transaction_status,pl.arm_payment_date,pl.arm_is_post_payment,pl.arm_paid_post_id,pl.arm_is_gift_payment,pl.arm_payment_mode,pl.arm_amount,pl.arm_currency FROM ".$ARMemberLite->tbl_arm_payment_log." pl LEFT JOIN ".$ARMemberLite->tbl_arm_members." am ON pl.arm_user_id = am.arm_user_id WHERE 1=1 AND pl.arm_log_id = %d ",$arm_log_id); //phpcs:ignore --Reason $ARMember->tbl_arm_payment_log and $ARMember->tbl_arm_members are a table names
 
-            $arm_logs_result = $wpdb->get_row($sql);
+            $arm_logs_result = $wpdb->get_row($sql); //phpcs:ignore --Reason $sql is a Predefined query
 
             if(!empty($arm_logs_result))
             {
@@ -328,14 +328,14 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
         function arm_get_user_subscription_details_for_grid_func(){
             global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways, $is_multiple_membership_feature, $arm_capabilities_global,$arm_transaction;
 
-            $arm_activity_id = intval($_POST['activity_id']);
+            $arm_activity_id = intval($_POST['activity_id']); //phpcs:ignore
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_subscriptions'], '1'); //phpcs:ignore --Reason:Verifying nonce
 
             $grid_columns = array();
-			if(!empty($_REQUEST['exclude_headers']))
+			if(!empty($_REQUEST['exclude_headers'])) //phpcs:ignore
 			{
-				$arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']);
-				$arm_dt_exclude_label = explode(',',$_REQUEST['header_label']);
+				$arm_dt_exclude_keys = explode(',',sanitize_text_field($_REQUEST['exclude_headers'])); //phpcs:ignore 
+				$arm_dt_exclude_label = explode('|~|ARM|~|',sanitize_text_field($_REQUEST['header_label'])); //phpcs:ignore
 				$grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
 			}
             $date_format = $arm_global_settings->arm_get_wp_date_format();
@@ -537,7 +537,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             {
                 $response = array('type'=>'error','msg'=>esc_html__( 'Plan activation failed.', 'armember-membership' ));
             }
-            echo arm_pattern_json_encode($response);
+            echo arm_pattern_json_encode($response); //phpcs:ignore
             die;
         }
         function get_user_all_transaction_details_for_grid(){
@@ -624,7 +624,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 $response['status'] = "success";
                 $response['data'] = $membersData;
             }
-            echo arm_pattern_json_encode($response);
+            echo arm_pattern_json_encode($response); //phpcs:ignore
             die;
         }
         function arm_add_new_subscriptions()
@@ -655,7 +655,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 {
                     $response = array('type' => 'error', 'msg' => esc_html__("Membership plan is already exist for selected member.", 'armember-membership'));
                 }
-                echo arm_pattern_json_encode($response);
+                echo arm_pattern_json_encode($response); //phpcs:ignore
                 die;
             }
             
@@ -882,7 +882,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 
 			if(empty($logid_exit_flag))
 			{
-				echo arm_pattern_json_encode($response);
+				echo arm_pattern_json_encode($response); //phpcs:ignore
 				exit;
 			}
 		}
@@ -923,7 +923,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages(@$errors, @$message);
-			echo arm_pattern_json_encode($return_array);
+			echo arm_pattern_json_encode($return_array); //phpcs:ignore
 			exit;
 		}
         function arm_fetch_activity_data() {
@@ -1977,7 +1977,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     $response = array('type' => 'error', 'message' => esc_html__('Something went wrong please try again', 'armember-membership'));
                 }
             }
-            echo arm_pattern_json_encode($response);
+            echo arm_pattern_json_encode($response); //phpcs:ignore
             die;
         }
     }

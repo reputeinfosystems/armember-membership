@@ -459,7 +459,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 										$arm_is_pro_two_step_enabled_style = apply_filters('arm_two_step_feature_enabled',$arm_is_pro_two_step_enabled_style,$setup_modules); //phpcs:ignore
 									}
 									?>
-									<div class="arm_setup_option_field plan_area_position" <?php echo $arm_is_pro_two_step_enabled_style; //phpcs:ignore?>>
+									<div class="arm_setup_option_field plan_area_position" <?php echo $arm_is_pro_two_step_enabled_style; //phpcs:ignore ?>>
 										<div class="arm_setup_option_label"><?php esc_html_e( 'Plan Selection Area Position', 'armember-membership' ); ?></div>
 										<div class="arm_setup_option_input">
 											<input type='hidden' id="arm_setup_plan_area_position" name="setup_data[setup_modules][style][plan_area_position]" class="arm_setup_plan_area_position" value="<?php echo ( isset( $setup_modules['style']['plan_area_position'] ) ) ? esc_attr($setup_modules['style']['plan_area_position']) : 'before'; ?>" />
@@ -533,20 +533,21 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 											?>
 											<div class="arm_column_layout_types_container arm_form_align">
 												<label class="arm_flex arm_active_label">
-													<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_left.svg" alt="">
-													<img class="arm_active_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_left_hover.svg" alt="">
+													<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_align_left.svg" alt="">
+													<img class="arm_active_img" src="<?php echo esc_url( MEMBERSHIPLITE_IMAGES_URL . '/arm_align_left_hover.svg' ); ?>" alt="">
 													<input type="radio" class="arm_iradio arm_setup_form_position_radio" name="setup_data[setup_modules][style][form_position]" value="left" <?php checked( $formPosition, 'left', true ); ?> id="arm_setup_form_position_left"><span><?php esc_html_e('Left','armember-membership');?></span>
 												</label>
+
 												<label class="arm_flex arm_active_label">
-													<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_center.svg" alt="">
-													<img class="arm_active_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_center_hover.svg" alt="">
-													<input type="radio" class="arm_iradio arm_setup_form_position_radio" name="setup_data[setup_modules][style][form_position]" value="center" <?php checked( $formPosition, 'center', true ); ?> id="arm_setup_form_position_center"><span><?php esc_html_e('Center','armember-membership');?></span>
+													<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_align_center.svg" alt="">
+													<img class="arm_active_img"   src="<?php echo esc_url( MEMBERSHIPLITE_IMAGES_URL . '/arm_align_center_hover.svg' ); ?>" alt="">
+													<input type="radio" class="arm_iradio arm_setup_form_position_radio" name="setup_data[setup_modules][style][form_position]" value="center" <?php checked( $formPosition, 'center', true ); ?> id="arm_setup_form_position_center"><span><?php esc_html_e('Center','armember-membership'); ?></span>
 												</label>
-		
+
 												<label class="arm_flex arm_active_label">
-													<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_right.svg" alt="">
-													<img class="arm_active_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/arm_align_right_hover.svg" alt="">
-													<input type="radio" class="arm_iradio arm_setup_form_position_radio" name="setup_data[setup_modules][style][form_position]" value="right" <?php checked( $formPosition, 'right', true ); ?> id="arm_setup_form_position_right"><span><?php esc_html_e('Right','armember-membership');?></span>
+													<img class="arm_inactive_img" src="<?php echo MEMBERSHIPLITE_IMAGES_URL;//phpcs:ignore ?>/arm_align_right.svg" alt="">
+													<img class="arm_active_img"   src="<?php echo esc_url( MEMBERSHIPLITE_IMAGES_URL . '/arm_align_right_hover.svg' ); ?>" alt="">
+													<input type="radio" class="arm_iradio arm_setup_form_position_radio" name="setup_data[setup_modules][style][form_position]" value="right" <?php checked( $formPosition, 'right', true ); ?> id="arm_setup_form_position_right"><span><?php esc_html_e('Right','armember-membership'); ?></span>
 												</label>
 											</div>
 											
@@ -685,7 +686,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 								}
 	
 							?>
-							<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL.'/arm_loader.gif' //phpcs:ignore?>" id="arm_loader_img_add_setup_loader" class="arm_loader_img arm_submit_btn_loader" style="display: none;" width="20" height="20" />
+							<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL.'/arm_loader.gif' //phpcs:ignore ?>" id="arm_loader_img_add_setup_loader" class="arm_loader_img arm_submit_btn_loader" style="display: none;" width="20" height="20" />
 							<a href="javascript:void(0)" class="arm_setup_preview_btn armemailaddbtn <?php echo esc_attr($arm_is_pro_btn_class); ?>"><?php esc_html_e( 'Preview', 'armember-membership' ); ?></a>
 							<a class="arm_cancel_btn arm_setup_cancel_btn" href="javascript:void(0)"><?php esc_html_e( 'Close', 'armember-membership' ); ?></a>
 							<button class="arm_save_btn arm_setup_save_btn" name="SetupSubmit" type="submit"><?php esc_html_e( 'Save', 'armember-membership' ); ?></button>
@@ -743,8 +744,8 @@ function arm_setup_skin_default_color_array(){
 	arm_setup_skin_array = '<?php echo wp_json_encode( $arm_membership_setup->arm_setup_skin_default_color_array() ); ?>';
 	return arm_setup_skin_array;
 }
-var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete.svg';
-var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete_hover.svg';
+var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/delete.svg';
+var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/delete_hover.svg';
 </script>
 
 <?php

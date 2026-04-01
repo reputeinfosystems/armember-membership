@@ -3,9 +3,9 @@ Contributors: reputeinfosystems, membershippro
 Tags: content restriction,user registration ,membership, member, user profile
 Donate link: https://www.armemberplugin.com/product.php?rdt=t16
 Requires at least: 4.0
-Tested up to: 6.9.1
+Tested up to: 7.0
 Requires PHP: 5.6
-Stable tag: 5.2
+Stable tag: 5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,13 @@ Please follow the steps for installation:
 11. Signup Form
 
 == Changelog ==
+= 5.3 =
+* Added a New 'Member Panel' for the members.
+* Added New Facility to Color Customization for Front-end Appearance.
+* Improved: Setup wizard for new installation.
+* Improved: Content Access Rule page loader.
+* Other minor bug fixes.
+
 = 5.2 =
 * Added a Facility to manage and sort columns on the Admin Panel Manage Members page.
 * Fix: Single checkbox field not saving properly for Add/Edit Member page.

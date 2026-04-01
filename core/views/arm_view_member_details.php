@@ -10,7 +10,7 @@ $arm_loader = $arm_common_lite->arm_loader_img_func();?>
                 <div class="arm_popup_close_btn arm_member_view_detail_close_btn"></div>
             </div>
         </div>
-            <div class="arm_loading_grid arm_view_member_loading"><?php echo $arm_loader;?></div>
+            <div class="arm_loading_grid arm_view_member_loading"><?php echo esc_html($arm_loader);?></div>
             <div class="popup_content_text arm_member_view_detail_popup_text arm_padding_0" id="arm_member_view_detail_popup_text" >
             </div>
         </div>

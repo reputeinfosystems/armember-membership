@@ -96,7 +96,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 									<label for="plan_description"><?php esc_html_e('Plan Description', 'armember-membership'); ?></label>
 								</th>
 								<td>
-									<textarea rows="40" cols="40" name="plan_description" id="plan_description"  placeholder="<?php esc_html_e('Enter plan description', 'armember-membership'); ?>" style="height: 80px;"><?php echo stripslashes( $plan_description); //phpcs:ignore?></textarea>
+									<textarea rows="40" cols="40" name="plan_description" id="plan_description"  placeholder="<?php esc_html_e('Enter plan description', 'armember-membership'); ?>" style="height: 80px;"><?php echo stripslashes( $plan_description); //phpcs:ignore ?></textarea>
 								</td>								
 							</tr>
 							<tr class="form-field arm_member_role_section arm_plan_detail_section_data">
@@ -155,7 +155,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 																foreach ( $all_plans as $p ) {
 																	$p_id = $p['arm_subscription_plan_id'];
 																	if ( $p_id != $plan_id && $p['arm_subscription_plan_status'] == '1' ) {
-																		?><li data-label="<?php echo esc_html(stripslashes($p['arm_subscription_plan_name'])); //phpcs:ignore?>" data-value="<?php echo $p_id ?>"><?php echo esc_html(stripslashes($p['arm_subscription_plan_name'])); //phpcs:ignore?></li><?php
+																		?><li data-label="<?php echo esc_html(stripslashes($p['arm_subscription_plan_name'])); //phpcs:ignore ?>" data-value="<?php echo $p_id ?>"><?php echo esc_html(stripslashes($p['arm_subscription_plan_name'])); //phpcs:ignore ?></li><?php
 																	}
 																}
 															}
@@ -216,14 +216,14 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 									}
 								?>
 								
-								<tr class="form-field paid_subscription_options arm_sub_plan_section <?php echo $arm_subscription_plans_class;?>  <?php echo ( ! in_array( $subscription_type, array( 'free', 'recurring' ) ) ) ? '' : 'hidden_section'; ?>">
+								<tr class="form-field paid_subscription_options arm_sub_plan_section <?php echo esc_attr($arm_subscription_plans_class);?>  <?php echo ( ! in_array( $subscription_type, array( 'free', 'recurring' ) ) ) ? '' : 'hidden_section'; ?>">
 									<th><label><?php esc_html_e( 'Plan Amount', 'armember-membership' ); ?></label></th>   
 									<td class='arm_padding_top_0'>
 										<div class="arm_setup_forms_container">
 											<div class="arm-df__form-field-wrap_text arm-df__form-field-wrap arm-controls arm_display_block" id="arm-df__form-field-wrap_member_plan_amount">
-												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix <?php echo $global_currency_sym_pos_pre;?>"><?php echo $global_currency_sym; ?></span>
-												<input name="arm_subscription_plan_amount" type="text" id="arm-df__form-control_member_plan_amount arm_subscription_plan_amount" value=""  class="arm-df__form-control arm-df__form-control_member_plan arm_material_input arm_no_paste <?php echo $arm_currency_pos_class?>" required="required" data-validation-required-message="<?php esc_html_e( 'Plan amount can not be left blank.', 'armember-membership' ); ?>" onkeypress="javascript:return ArmNumberValidation(event, this)"/>
-												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix <?php echo $global_currency_sym_pos_suf;?>"><?php echo $global_currency_sym; ?></span>
+												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix <?php echo esc_attr($global_currency_sym_pos_pre);?>"><?php echo esc_attr($global_currency_sym); ?></span>
+												<input name="arm_subscription_plan_amount" type="text" id="arm-df__form-control_member_plan_amount arm_subscription_plan_amount" value=""  class="arm-df__form-control arm-df__form-control_member_plan arm_material_input arm_no_paste <?php echo esc_attr($arm_currency_pos_class)?>" required="required" data-validation-required-message="<?php esc_html_e( 'Plan amount can not be left blank.', 'armember-membership' ); ?>" onkeypress="javascript:return ArmNumberValidation(event, this)"/>
+												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix <?php echo esc_attr($global_currency_sym_pos_suf);?>"><?php echo esc_attr($global_currency_sym); ?></span>
 											</div>
 											<div class="armclear"></div>
 										</div>
@@ -376,7 +376,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 											<div class="arm_expiry_fix_date_box arm_position_relative" id="arm_expiry_fix_date_box" >
 												<input type="hidden" name="wordpress_date_format" id="arm_finite_plan_expiry_format" value="<?php echo get_option( 'date_format' ); //phpcs:ignore ?>">
 												<input type="text" id="arm_finite_plan_expiry_date" value="<?php echo ( ( isset( $plan_options['expiry_date'] ) && ! empty( $plan_options['expiry_date'] ) ) ? esc_attr( date( $arm_common_date_format, strtotime( $plan_options['expiry_date']) ) ) : '' ); //phpcs:ignore ?>" data-date_format="<?php echo $arm_common_date_format?>" name="arm_subscription_plan_options[expiry_date]" class="arm_finite_plan_expiry_date" data-editmode="<?php echo ( $edit_mode ) ? '1' : '0'; ?>" data-msg-required="<?php esc_attr_e( 'Please select expiry date.', 'armember-membership' ); ?>"/>
-												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix"><img src="<?php echo MEMBERSHIPLITE_IMAGES_URL?>/date_icon.svg"/></span>
+												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix"><img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/date_icon.svg"/></span>
 											</div>
 										</div>
 										
@@ -453,9 +453,9 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 															<div class="arm_plan_payment_cycle_amount">
 																
 																<div class="arm_plan_payment_cycle_amount_input arm_padding_top_12 arm_padding_bottom_10">
-																	<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix <?php echo $global_currency_sym_pos_pre?>"><?php echo $global_currency_sym; ?></span>
-																	<input type="text" name="arm_subscription_plan_options[payment_cycles][<?php echo esc_attr($arm_pc); ?>][cycle_amount]" value="<?php echo ( isset( $arm_value['cycle_amount'] ) ) ? esc_attr($arm_value['cycle_amount']) : ''; ?>" class="paid_subscription_options_recurring_payment_cycle_amount <?php echo $arm_currency_pos_class; ?>" data-msg-required="<?php esc_html_e( 'Amount should not be blank.', 'armember-membership' ); ?>" onkeypress="javascript:return ArmNumberValidation(event, this)" />
-																	<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix <?php echo $global_currency_sym_pos_suf?>"><?php echo $global_currency_sym; ?></span>
+																	<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix <?php echo esc_attr($global_currency_sym_pos_pre)?>"><?php echo esc_attr($global_currency_sym); ?></span>
+																	<input type="text" name="arm_subscription_plan_options[payment_cycles][<?php echo esc_attr($arm_pc); ?>][cycle_amount]" value="<?php echo ( isset( $arm_value['cycle_amount'] ) ) ? esc_attr($arm_value['cycle_amount']) : ''; ?>" class="paid_subscription_options_recurring_payment_cycle_amount <?php echo esc_attr($arm_currency_pos_class); ?>" data-msg-required="<?php esc_html_e( 'Amount should not be blank.', 'armember-membership' ); ?>" onkeypress="javascript:return ArmNumberValidation(event, this)" />
+																	<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix <?php echo esc_attr( $global_currency_sym_pos_suf);?>"><?php echo esc_attr($global_currency_sym); ?></span>
 																</div>
 															</div>
 														</div>
@@ -534,9 +534,9 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 														<div class="arm_plan_payment_cycle_amount">
 		
 															<div class="arm_plan_payment_cycle_amount_input arm_padding_top_12">
-																<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix <?php echo $global_currency_sym_pos_pre?>"><?php echo $global_currency_sym; ?></span>
-																<input type="text" name="arm_subscription_plan_options[payment_cycles][0][cycle_amount]" value="" class="paid_subscription_options_recurring_payment_cycle_amount <?php echo $arm_currency_pos_class;?>" data-msg-required="<?php esc_html_e( 'Amount should not be blank.', 'armember-membership' ); ?>" onkeypress="javascript:return ArmNumberValidation(event, this)" />
-																<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix <?php echo $global_currency_sym_pos_suf?>"><?php echo $global_currency_sym; ?></span>
+																<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix <?php echo esc_attr($global_currency_sym_pos_pre)?>"><?php echo esc_attr($global_currency_sym); ?></span>
+																<input type="text" name="arm_subscription_plan_options[payment_cycles][0][cycle_amount]" value="" class="paid_subscription_options_recurring_payment_cycle_amount <?php echo esc_attr($arm_currency_pos_class);?>" data-msg-required="<?php esc_html_e( 'Amount should not be blank.', 'armember-membership' ); ?>" onkeypress="javascript:return ArmNumberValidation(event, this)" />
+																<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix <?php echo esc_attr($global_currency_sym_pos_suf)?>"><?php echo esc_attr($global_currency_sym); ?></span>
 															</div>
 														</div>
 													</div>
@@ -653,9 +653,9 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 										<div class="arm_form_fields_wrapper arm_margin_bottom_10">
 											<div class="arm_setup_forms_container">
 												<div class="arm-df__form-field-wrap_text arm-df__form-field-wrap arm-controls " id="arm-df__form-field-wrap_member_plan">
-													<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix <?php echo $global_currency_sym_pos_pre;?>"><?php echo $global_currency_sym; ?></span>
-													<input name="arm_subscription_plan_options[trial][amount]" type="text" id="arm-df__form-control_member_trial_amt" value="<?php echo ( ! empty( $plan_options['trial']['amount'] ) ) ? floatval($plan_options['trial']['amount']) : 0; ?>" class="arm-df__form-control arm-df__form-control_member_trial_amt arm_material_input <?php echo $arm_currency_pos_class;?>">
-													<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix <?php echo $global_currency_sym_pos_suf;?>"><?php echo $global_currency_sym; ?></span>
+													<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix <?php echo esc_attr($global_currency_sym_pos_pre);?>"><?php echo esc_attr($global_currency_sym); ?></span>
+													<input name="arm_subscription_plan_options[trial][amount]" type="text" id="arm-df__form-control_member_trial_amt" value="<?php echo ( ! empty( $plan_options['trial']['amount'] ) ) ? floatval($plan_options['trial']['amount']) : 0; ?>" class="arm-df__form-control arm-df__form-control_member_trial_amt arm_material_input <?php echo esc_attr($arm_currency_pos_class);?>">
+													<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix <?php echo esc_attr($global_currency_sym_pos_suf);?>"><?php echo esc_attr($global_currency_sym); ?></span>
 												</div>
 												<div class="armclear"></div>
 											</div>
@@ -741,7 +741,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 											<div class="arm_form_fields_wrapper">
 												<div class="arm_setup_forms_container">
 													<div class="arm-df__form-field-wrap_select arm-df__form-field-wrap arm-controls " id="arm-df__form-field-wrap_arm_plan_trial_recurring_type">
-														<input class="arm-selectpicker-input-control" type="text" id="arm_plan_trial_recurring_type" name="arm_subscription_plan_options[trial][type]" value="<?php echo  sanitize_text_field($plan_options['trial']['type']);?>"/>
+														<input class="arm-selectpicker-input-control" type="text" id="arm_plan_trial_recurring_type" name="arm_subscription_plan_options[trial][type]" value="<?php echo  esc_attr(sanitize_text_field($plan_options['trial']['type']));?>"/>
 														
 														<dl class="arm_selectbox column_level_dd arm_member_form_dropdown arm_margin_right_0 arm_width_120">
 															<dt>
@@ -888,7 +888,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 										$arm_paid_subscription_action_rec = 'paid_subscription_end_of_term_rec';
 									}
 									?>
-								<tr class="form-field paid_subscription_end_of_term <?php echo $arm_paid_subscription_action_rec; ?> <?php echo ( $subscription_type == 'paid_finite' || $subscription_type == 'recurring' ) ? '' : 'hidden_section'; ?>" >
+								<tr class="form-field paid_subscription_end_of_term <?php echo esc_attr($arm_paid_subscription_action_rec); ?> <?php echo ( $subscription_type == 'paid_finite' || $subscription_type == 'recurring' ) ? '' : 'hidden_section'; ?>" >
 									
 									<th><label><?php esc_html_e( 'End Of Term Action', 'armember-membership' ); ?></label></th>
 									<td class="arm_padding_top_0">
@@ -931,7 +931,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 									$arm_paid_subscription_grace_action_rec = 'paid_subscription_grace_period_end_of_term_rec';
 								}
 								?>
-								<tr class="form-field paid_subscription_grace_period_end_of_term <?php echo $arm_paid_subscription_grace_action_rec;?> <?php echo ( $subscription_type == 'recurring' || $subscription_type == 'paid_finite' ) ? '' : 'hidden_section'; ?>">
+								<tr class="form-field paid_subscription_grace_period_end_of_term <?php echo esc_attr($arm_paid_subscription_grace_action_rec);?> <?php echo ( $subscription_type == 'recurring' || $subscription_type == 'paid_finite' ) ? '' : 'hidden_section'; ?>">
 									<th><label><?php esc_html_e( 'Grace Period End of Term', 'armember-membership' ); ?>&nbsp;<span>(<?php esc_html_e('Days', 'armember-membership');?>)</span></label></th>
 									<td class="arm_padding_top_0">
 										<?php
@@ -991,7 +991,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 											<div class="arm_form_fields_wrapper">
 												<div class="arm_setup_forms_container">
 													<div class="arm-df__form-field-wrap_select arm-df__form-field-wrap arm-controls " id="arm-df__form-field-wrap_arm_plan_payment_failed_action">
-														<input class="arm_plan_payment_failed_action arm-selectpicker-input-control" type="text" id="arm_plan_payment_failed_action" name="arm_subscription_plan_options[payment_failed_action]" value="<?php echo $payment_failed_action; ?>"/>
+														<input class="arm_plan_payment_failed_action arm-selectpicker-input-control" type="text" id="arm_plan_payment_failed_action" name="arm_subscription_plan_options[payment_failed_action]" value="<?php echo esc_attr($payment_failed_action); ?>"/>
 														
 														<dl class="arm_selectbox column_level_dd arm_member_form_dropdown">
 															<dt>
@@ -1187,7 +1187,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 					do_action( 'arm_display_field_add_membership_plan', $plan_options );
 				?>
 				<div class="arm_submit_btn_container">
-					<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL.'/arm_loader.gif' //phpcs:ignore?>" id="arm_loader_img_add_member_plan_loader" class="arm_loader_img arm_submit_btn_loader"  style=" display: none;" width="20" height="20" />
+					<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL.'/arm_loader.gif' //phpcs:ignore ?>" id="arm_loader_img_add_member_plan_loader" class="arm_loader_img arm_submit_btn_loader"  style=" display: none;" width="20" height="20" />
 					<a class="arm_cancel_btn arm_membership_pln_close_btn arm_margin_right_10" href="javascript:void(0)"><?php esc_html_e( 'Close', 'armember-membership' ); ?></a>
 					<button class="arm_save_btn arm_user_plan_save_btn arm_margin_right_143" type="submit"><?php esc_html_e( 'Save', 'armember-membership' ); ?></button>
 				</div>
@@ -1204,21 +1204,21 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
         var BILLINGCYCLE = "<?php esc_html_e('Billing Cycle', 'armember-membership'); ?>";
         var ARMCYCLELABEL = "<?php esc_html_e('Label', 'armember-membership'); ?>";
         var RECURRINGTIME = "<?php esc_html_e('Recurring Time', 'armember-membership'); ?>";
-		var AMOUNTERROR = "<?php esc_html_e( 'Amount should not be blank.', 'armember-membership' ); ?>";
-		var LABELERROR = "<?php esc_html_e( 'Label should not be blank.', 'armember-membership' ); ?>";
+        var AMOUNTERROR = "<?php esc_html_e( 'Amount should not be blank.', 'armember-membership' ); ?>";
+        var LABELERROR = "<?php esc_html_e( 'Label should not be blank.', 'armember-membership' ); ?>";
         var DAY = "<?php esc_html_e('Day(s)', 'armember-membership'); ?>";
         var MONTH = "<?php esc_html_e('Month(s)', 'armember-membership'); ?>";
         var YEAR = "<?php esc_html_e('Year(s)', 'armember-membership'); ?>";
         var INFINITE = "<?php esc_html_e('Infinite', 'armember-membership'); ?>";
         var EMESSAGE = "<?php esc_html_e('You cannot remove all payment cycles.', 'armember-membership'); ?>";
         var ARMREMOVECYCLE = "<?php esc_html_e('Remove Cycle', 'armember-membership'); ?>";
-		var CURRENCYINPUTCLASS = "<?php echo $arm_currency_pos_class; //phpcs:ignore?>";
-        var CURRENCYPREF = "<?php echo $global_currency_sym_pos_pre; //phpcs:ignore?>";
-        var CURRENCYSUF = "<?php echo $global_currency_sym_pos_suf; //phpcs:ignore?>";
-		var CURRENCYSYM = "<?php echo $global_currency_sym; //phpcs:ignore?>";
-        var CURRENCYSYM = "<?php echo $global_currency_sym; //phpcs:ignore?>";
-        var ARM_RR_CLOSE_IMG = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/close_btn.svg'; 
-        var ARM_RR_CLOSE_IMG_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/close_btn_hover.svg';
+        var CURRENCYINPUTCLASS = "<?php echo $arm_currency_pos_class; //phpcs:ignore ?>";
+        var CURRENCYPREF = "<?php echo $global_currency_sym_pos_pre; //phpcs:ignore ?>";
+        var CURRENCYSUF = "<?php echo $global_currency_sym_pos_suf; //phpcs:ignore ?>";
+        var CURRENCYSYM = "<?php echo $global_currency_sym; //phpcs:ignore ?>";
+        var CURRENCYSYM = "<?php echo $global_currency_sym; //phpcs:ignore ?>";
+        var ARM_RR_CLOSE_IMG = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/close_btn.svg'; 
+        var ARM_RR_CLOSE_IMG_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/close_btn_hover.svg';
         var ADDCYCLE = "<?php esc_html_e('Add Payment Cycle', 'armember-membership'); ?>";
         var REMOVECYCLE = "<?php esc_html_e('Remove Payment Cycle', 'armember-membership'); ?>";
 		</script>

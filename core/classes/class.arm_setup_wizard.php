@@ -27,11 +27,15 @@ if (!class_exists('ARM_setup_Wizard_Lite')) {
             $posted_data = $_POST; //phpcs:ignore
             $all_global_settings = $arm_global_settings->arm_get_all_global_settings();
             $general_settings = $arm_global_settings->global_settings;
+            $all_member_panel_settings = $arm_global_settings->arm_get_member_panel_settings();
             // $all_general_settings = $all_global_settings['general_settings'];
             $default_rules = $arm_access_rules->arm_get_default_access_rules();
             if(empty($default_rules))
             {
                 $default_rules = array();
+            }
+            if(empty($all_member_panel_settings)){
+                $all_member_panel_settings = array();
             }
             $payment_gateways = get_option('arm_payment_gateway_settings');
             $general_settings['restrict_site_access'] = !empty($posted_data['arm_restrict_entire_website']) ? inval($posted_data['arm_restrict_entire_website']) : '';
@@ -40,11 +44,13 @@ if (!class_exists('ARM_setup_Wizard_Lite')) {
             $general_settings['arm_new_signup_status'] = ($posted_data['user_register_verification'] != 'auto') ? 3 : 1;
             $general_settings['arm_anonymous_data'] = !empty($posted_data['arm_anonymous_data'])? intval($posted_data['arm_anonymous_data']) : 0;
             $general_settings['paymentcurrency'] = sanitize_text_field( $posted_data['paymentcurrency'] );
+            $all_member_panel_settings['appearance_settings'] = ( !empty($_POST['appearance_settings']) && is_array($posted_data['appearance_settings']) ) ? map_deep($posted_data['appearance_settings'], 'sanitize_text_field') : array();
             
             $all_global_settings['general_settings'] = $general_settings;
 
             update_option('arm_global_settings', $all_global_settings);
             update_option('arm_default_rules', $default_rules);
+            update_option('arm_member_panel_settings', $all_member_panel_settings);
 
             //payment gateways
             
@@ -213,6 +219,8 @@ if (!class_exists('ARM_setup_Wizard_Lite')) {
             $setup_id = $wpdb->insert_id;
             /* Action After Adding Setup Details */
             do_action('arm_saved_membership_setup', $setup_id, $db_data);
+
+            do_action('arm_update_apparance_of_forms');
 
             $create_setup_page = array(
                     'post_title' => 'Setup',

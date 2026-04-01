@@ -158,7 +158,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 								</span>							
 								</div>	
 							</div>	
-								<div id="arm_redirection_login_settings_url" class="arm_redirection_settings_login  arm_form_field_block
+								<div id="arm_redirection_login_settings_url" class="arm_redirection_settings_login  arm_form_field_block arm_redirection_setting_opts
 									<?php
 									if ( $arm_redirection_login_type != 'url' || $arm_redirection_login_type_main != 'fixed' ) {
 										echo 'hidden_section'; }
@@ -167,7 +167,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 										<label class="arm-form-table-label arm_margin_top_32 arm_width_100_pct"><?php esc_html_e( 'Add URL', 'armember-membership' ); ?></label>
 											
 										<input type="text" name="arm_redirection_settings[login][url]" value="<?php echo esc_attr($arm_redirection_login_url); ?>" data-msg-required="<?php esc_attr_e( 'Please enter URL.', 'armember-membership' ); ?>" class="arm_member_form_input arm_login_redirection_url arm_redirection_settings_selectbox arm_margin_top_12 arm_width_100_pct"><br/>
-										<span class="arm_redirection_login_url_selection">
+										<span class="arm_redirection_login_url_selection arm_required_redirection_err">
 												<?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?>
 											</span>
 										<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php esc_html_e( 'Enter URL with http:// or https://.', 'armember-membership' ); ?></span>
@@ -175,7 +175,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 										<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php echo sprintf(esc_html__('Use %s to add current user\'s id in url.', 'armember-membership'),"<strong>{ARMCURRENTUSERID}</strong>"); ?></span><?php //phpcs:ignore ?>
 								</div>
 
-								<div id="arm_redirection_login_settings_referral" class="arm_redirection_settings_login 
+								<div id="arm_redirection_login_settings_referral" class="arm_redirection_settings_login arm_redirection_setting_opts
 									<?php
 									if ( $arm_redirection_login_type != 'referral' || $arm_redirection_login_type_main != 'fixed' ) {
 										echo 'hidden_section'; }
@@ -186,7 +186,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 										<label class="arm_margin_top_32 arm_margin_left_10"><?php esc_html_e( '(If no referrer page.)', 'armember-membership' ); ?></label>
 									</div>
 										<input type="text" name="arm_redirection_settings[login][refferel]" value="<?php echo esc_attr($arm_redirection_login_refferel); ?>" data-msg-required="<?php esc_attr_e( 'Please Enter URL.', 'armember-membership' ); ?>" class="arm_member_form_input arm_login_redirection_referel arm_redirection_settings_selectbox arm_margin_top_12 arm_width_100_pct"><br/>
-										<span class="arm_redirection_login_referel_selection ">
+										<span class="arm_redirection_login_referel_selection arm_required_redirection_err">
 													<?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?>
 												</span>   
 										<span class="arm_info_text arm_padding_0 arm_margin_top_12"><?php esc_html_e( 'Enter URL with http:// or https://.', 'armember-membership' ); ?></span>
@@ -225,7 +225,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 							<div class="arm_login_redirection_condition_sortable_icon ui-sortable-handle armhelptip" title="<?php esc_html_e( 'Set Redirection Priority', 'armember-membership' ); ?>"></div>
 							
 							<a class="arm_remove_login_redirection_condition" href="javascript:void(0)" data-index="0">
-								<img src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg' onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn_hover.svg';" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg';" /> <?php //phpcs:ignore ?>
+								<img src='<?php echo esc_url(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg' onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn_hover.svg';" onmouseout="this.src='<?php echo esc_url(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg';" /> <?php //phpcs:ignore ?>
 							</a>
 
 
@@ -349,7 +349,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 						<li id="arm_login_conditional_redirection_box<?php echo intval($ckey); ?>" class="arm_form_main_content arm_margin_bottom_20">
 							<div class="arm_login_redirection_condition_sortable_icon ui-sortable-handle armhelptip" title="<?php esc_attr_e( 'Set Redirection Priority', 'armember-membership' ); ?>"></div>
 							<a class="arm_remove_login_redirection_condition" href="javascript:void(0)" data-index="<?php echo intval($ckey); ?>">
-								<img src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg' onmouseover="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn_hover.svg';" onmouseout="this.src='<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg';" /> <?php //phpcs:ignore ?>
+								<img src='<?php echo esc_url(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg' onmouseover="this.src='<?php echo esc_url(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn_hover.svg';" onmouseout="this.src='<?php echo esc_url(MEMBERSHIPLITE_IMAGES_URL); ?>/close_btn.svg';" /> <?php //phpcs:ignore ?>
 							</a>
 						<div class="">
 							<div class="arm_login_conditional_redirection_row">
@@ -387,7 +387,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 									<div class="arm_login_redirection_action arm_width_50_pct arm_form_field_block">
 										<label class="arm_rr_login_condition_lbl"><?php esc_html_e( 'Action', 'armember-membership' ); ?></label>
 										<?php $arm_rr_login_condidtional_grid_sec_cls = ($condition == 'before_expire') ? 'arm_grid_col_70_30' : '' ?>
-										<div class="arm_rr_login_condidtional_grid_sec arm_display_grid <?php echo $arm_rr_login_condidtional_grid_sec_cls?>">
+										<div class="arm_rr_login_condidtional_grid_sec arm_display_grid <?php echo esc_attr($arm_rr_login_condidtional_grid_sec_cls)?>">
 											<input type='hidden' id='arm_conditional_redirect_condition_<?php echo intval($ckey); ?>' class="arm_redirection_condition_input" name="arm_redirection_settings[login][conditional_redirect][<?php echo intval($ckey); ?>][condition]" value='<?php echo esc_html($condition); ?>' data-key="<?php echo intval($ckey); ?> " />
 											<dl class="arm_selectbox column_level_dd arm_width_100_pct arm_margin_top_12">
 											<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete arm_padding_top_0 arm_padding_bottom_0"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
@@ -404,7 +404,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 												</dd>
 											</dl>
 											<?php $arm_login_con_exp_cls = ($condition != 'before_expire') ? 'hidden_section' : '' ?>
-											<div id="arm_redirection_expiration_days_<?php echo intval($ckey); ?>" class="arm_redirection_expiration_days arm_margin_top_8 <?php echo $arm_login_con_exp_cls;?>" >
+											<div id="arm_redirection_expiration_days_<?php echo intval($ckey); ?>" class="arm_redirection_expiration_days arm_margin_top_8 <?php echo esc_attr($arm_login_con_exp_cls);?>" >
 												<input type='hidden' id='arm_conditional_redirect_expire_<?php echo intval($ckey); ?>' name="arm_redirection_settings[login][conditional_redirect][<?php echo intval($ckey); ?>][expire]" value='<?php echo esc_attr($expiration_days); ?>' />
 												<dl class="arm_selectbox column_level_dd arm_width_90 arm_min_width_60 arm_margin_right_10">
 														<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
@@ -556,7 +556,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 							</div>
 							
 
-							<div id="arm_redirection_signup_settings_url" class="arm_redirection_signup_common_settings arm_redirection_settings_signup arm_signup_settings_common arm_margin_top_32  arm_form_field_block
+							<div id="arm_redirection_signup_settings_url" class="arm_redirection_signup_common_settings arm_redirection_settings_signup arm_signup_settings_common arm_margin_top_32  arm_form_field_block arm_redirection_setting_opts
 								<?php 
 								if ( $arm_redirection_signup_type != 'url' || $arm_redirection_signup_redirection_type != 'common' ) {
 									echo 'hidden_section'; }
@@ -565,14 +565,14 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 								<label class="arm-form-table-label arm_margin_bottom_12 arm_width_100_pct"><?php esc_html_e( 'Add URL', 'armember-membership' ); ?></label>
 									<div class="arm_default_redirection_txt">
 										<input type="text" name="arm_redirection_settings[signup][url]" value="<?php echo esc_attr($arm_redirection_signup_url); //phpcs:ignore ?>" data-msg-required="<?php esc_attr_e( 'Please enter URL.', 'armember-membership' ); ?>" class="arm_member_form_input arm_signup_redirection_url arm_redirection_settings_selectbox  arm_width_100_pct"><br/>
-										<span class="arm_redirection_signup_url_selection"><?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?></span>           
+										<span class="arm_redirection_signup_url_selection arm_required_redirection_err"><?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?></span>           
 										<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php esc_html_e( 'Enter URL with http:// or https://.', 'armember-membership' ); ?></span>
 										<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php echo sprintf( esc_html__('Use %s to add current user\'s usrename in url.', 'armember-membership'),"<strong>{ARMCURRENTUSERNAME}</strong>"); ?></span><?php //phpcs:ignore ?>
 										<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php echo sprintf(esc_html__('Use %s to add current user\'s id in url.', 'armember-membership'),"<strong>{ARMCURRENTUSERID}</strong>"); ?></span><?php //phpcs:ignore ?>
 									</div>
 								
 								</div>
-								<div id="arm_redirection_signup_settings_referral" class="arm_redirection_signup_common_settings arm_redirection_settings_signup arm_signup_settings_common 
+								<div id="arm_redirection_signup_settings_referral" class="arm_redirection_signup_common_settings arm_redirection_settings_signup arm_signup_settings_common  arm_redirection_setting_opts
 								<?php
 								if ( $arm_redirection_signup_type != 'referral' || $arm_redirection_signup_redirection_type != 'common' ) {
 									echo 'hidden_section'; }
@@ -586,7 +586,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 									</div>
 									<div class="arm_default_redirection_txt ">
 										<input type="text" name="arm_redirection_settings[signup][refferel]" value="<?php echo esc_url($arm_redirection_signup_refferel); //phpcs:ignore ?>" data-msg-required="<?php esc_attr_e( 'Please Enter URL.', 'armember-membership' ); ?>" class="arm_member_form_input arm_signup_redirection_referel arm_redirection_settings_selectbox  arm_margin_top_12 arm_width_100_pct">
-										<span class="arm_redirection_signup_referel_selection">
+										<span class="arm_redirection_signup_referel_selection arm_required_redirection_err">
 													<?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?>
 												</span>   
 										<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php esc_html_e( 'Enter URL with http:// or https://.', 'armember-membership' ); ?></span>
@@ -825,7 +825,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 										</span>
 									</div>
 							</div>					
-							<div id="arm_redirection_settings_setup_signup_url" class="arm_redirection_settings_setup_signup   arm_form_field_block
+							<div id="arm_redirection_settings_setup_signup_url" class="arm_redirection_settings_setup_signup   arm_form_field_block  arm_redirection_setting_opts
 								<?php
 								if ( $arm_redirection_setup_signup_type != 'url' ) {
 									echo 'hidden_section'; }
@@ -834,7 +834,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 								<label class="arm-form-table-label arm_margin_bottom_12 arm_width_100_pct"><?php esc_html_e( 'Add URL', 'armember-membership' ); ?></label>
 								
 								<input type="text" name="arm_redirection_settings[setup_signup][url]" value="<?php echo esc_attr($arm_redirection_setup_signup_url); ?>" data-msg-required="<?php esc_attr_e( 'Please enter URL.', 'armember-membership' ); ?>" class="arm_member_form_input arm_setup_signup_redirection_url arm_redirection_settings_selectbox arm_min_width_0 arm_width_100_pct" id="arm_setup_signup_redirection_url"><br/>
-								<span class="arm_setup_signup_redirection_url_require "><?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?></span>     
+								<span class="arm_setup_signup_redirection_url_require arm_required_redirection_err"><?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?></span>     
 								<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php esc_html_e( 'Enter URL with http:// or https://.', 'armember-membership' ); ?></span>
 								<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php echo sprintf( esc_html__('Use %s to add current user\'s usrename in url.', 'armember-membership'),"<strong>{ARMCURRENTUSERNAME}</strong>"); ?></span><?php //phpcs:ignore ?>
 								<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php echo sprintf(esc_html__('Use %s to add current user\'s id in url.', 'armember-membership'),"<strong>{ARMCURRENTUSERID}</strong>"); ?></span><?php //phpcs:ignore ?>					
@@ -1055,7 +1055,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 									</div>
 						</div>
 
-						<div id="arm_redirection_settings_setup_change_url" class="arm_redirection_settings_setup_change arm_margin_top_32 arm_form_field_block
+						<div id="arm_redirection_settings_setup_change_url" class="arm_redirection_settings_setup_change arm_margin_top_32 arm_form_field_block arm_redirection_setting_opts
 							<?php
 							if ( $arm_redirection_setup_change_type != 'url' ) {
 								echo 'hidden_section'; }
@@ -1063,7 +1063,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 							">
 							<label class="arm-form-table-label arm_margin_bottom_12 arm_width_100_pct"><?php esc_html_e( 'Add URL', 'armember-membership' ); ?></label>
 							<input type="text" name="arm_redirection_settings[setup_change][url]" value="<?php echo esc_attr($arm_redirection_setup_change_url); //phpcs:ignore ?>" data-msg-required="<?php esc_attr_e( 'Please enter URL.', 'armember-membership' ); ?>" class="arm_member_form_input arm_setup_change_redirection_url arm_redirection_settings_selectbox  arm_width_100_pct" id="arm_setup_change_redirection_url"><br/>
-							<span class="arm_form_action_setup_change_url_require"><?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?></span>
+							<span class="arm_form_action_setup_change_url_require arm_required_redirection_err"><?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?></span>
 							<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php esc_html_e( 'Enter URL with http:// or https://.', 'armember-membership' ); ?></span>
 							<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php echo sprintf( esc_html__('Use %s to add current user\'s usrename in url.', 'armember-membership'),"<strong>{ARMCURRENTUSERNAME}</strong>"); ?></span><?php //phpcs:ignore ?>
 							<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php echo sprintf(esc_html__('Use %s to add current user\'s id in url.', 'armember-membership'),"<strong>{ARMCURRENTUSERID}</strong>"); ?></span><?php //phpcs:ignore ?>	  
@@ -1307,9 +1307,9 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 							?>
 							">
 							<label class="arm-form-table-label arm_margin_bottom_12 arm_width_100_pct"><?php esc_html_e( 'Add URL', 'armember-membership' ); ?></label>
-							<div class="arm_default_redirection_txt">
+							<div class="arm_default_redirection_txt arm_redirection_setting_opts">
 								<input type="text" name="arm_redirection_settings[setup_renew][url]" value="<?php echo esc_attr($arm_redirection_setup_renew_url); //phpcs:ignore ?>" data-msg-required="<?php esc_attr_e( 'Please enter URL.', 'armember-membership' ); ?>" class="arm_member_form_input arm_setup_renew_redirection_url arm_redirection_settings_selectbox arm_width_100_pct" id="arm_setup_renew_redirection_url">
-								<span class="arm_setup_renew_redirection_url_require"><?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?></span>
+								<span class="arm_setup_renew_redirection_url_require arm_required_redirection_err"><?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?></span>
 								<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php esc_html_e( 'Enter URL with http:// or https://.', 'armember-membership' ); ?></span>
 								<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php echo sprintf( esc_html__('Use %s to add current user\'s usrename in url.', 'armember-membership'),"<strong>{ARMCURRENTUSERNAME}</strong>"); ?></span><?php //phpcs:ignore ?>
 								<span class="arm_info_text_style arm_padding_0 arm_margin_bottom_0 arm_font_size_14"><?php echo sprintf(esc_html__('Use %s to add current user\'s id in url.', 'armember-membership'),"<strong>{ARMCURRENTUSERID}</strong>"); ?></span><?php //phpcs:ignore ?>
@@ -1503,10 +1503,10 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 					</div>
 					<div class="arm_content_border"></div>
 			
-					<div class="arm_row_wrapper arm_row_wrapper_padding_after arm_display_block">
+					<div class="arm_row_wrapper arm_row_wrapper_padding_after arm_display_block arm_redirection_setting_opts">
 						<label class="arm-form-table-label"><?php esc_html_e( 'Default Redirect to above url if any of above conditions do not match.', 'armember-membership' ); ?></label>
 						<input type="text" name="arm_redirection_settings[setup][default]" value="<?php echo esc_url($arm_default_setup_url); //phpcs:ignore ?>" data-msg-required="<?php esc_attr_e( 'Please enter URL.', 'armember-membership' ); ?>" class="arm_member_form_input arm_setup_signup_default_redirection arm_redirection_settings_selectbox  arm_width_100_pct arm_margin_top_12" id="arm_setup_signup_default_redirection">
-							<span class="arm_redirection_plan_signup_url_selection_require">
+							<span class="arm_redirection_plan_signup_url_selection_require arm_required_redirection_err">
 								<?php esc_html_e( 'Please enter URL.', 'armember-membership' ); ?>                                      
 							</span>
 					</div>
@@ -1615,7 +1615,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 			}
 			?>
 			<div class="arm_submit_btn_container arm_redirection_submit_btn arm_apply_changes_btn_container arm_padding_bottom_32 ">
-				<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif'; //phpcs:ignore ?>" id="arm_loader_img" class="arm_submit_btn_loader" style="display:none;" width="24" height="24" />&nbsp;<button class="arm_save_btn arm_redirection_settings_btn <?php echo  ($ARMemberLite->is_arm_pro_active) ? 'arm_pro' : '';?>" type="submit" id="arm_redirection_settings_btn" name="arm_redirection_settings_btn"><?php esc_html_e( 'Apply Changes', 'armember-membership' ); ?></button>
+				<img src="<?php echo esc_url(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif'; //phpcs:ignore ?>" id="arm_loader_img" class="arm_submit_btn_loader" style="display:none;" width="24" height="24" />&nbsp;<button class="arm_save_btn arm_redirection_settings_btn <?php echo  ($ARMemberLite->is_arm_pro_active) ? 'arm_pro' : '';?>" type="submit" id="arm_redirection_settings_btn" name="arm_redirection_settings_btn"><?php esc_html_e( 'Apply Changes', 'armember-membership' ); ?></button>
 
 				<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>
 				<input type="hidden" name="arm_wp_nonce" value="<?php echo esc_attr($wpnonce);?>"/>
@@ -1673,7 +1673,7 @@ echo wp_json_encode( $new_pages );
 	var IF_FORM_IS = '<?php echo addslashes( esc_html__( 'If SignUp Form is', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var IF_PLAN_IS = '<?php echo addslashes( esc_html__( 'If user selected plan is', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var ARM_RSC_FORM_ID = '<?php echo addslashes( esc_html__( 'Please select signup form.', 'armember-membership' ) ); //phpcs:ignore ?>';
-	var ARM_EDIT_PROFILE_FORM_ID = '<?php echo addslashes( esc_html__('Please select Edit Profile form.', 'armember-membership')); //phpcs:ignore?>';
+	var ARM_EDIT_PROFILE_FORM_ID = '<?php echo addslashes( esc_html__('Please select Edit Profile form.', 'armember-membership')); //phpcs:ignore ?>';
 	var ARM_MEMBERSHIP_PLAN = '<?php echo addslashes( esc_html__( 'Membership Plan', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var ARM_ACTION = '<?php echo addslashes( esc_html__( 'Action', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var ARM_SET_REDIRECTION_PRIORITY = '<?php echo addslashes( esc_html__( 'Set Redirection Priority', 'armember-membership' ) ); //phpcs:ignore ?>';

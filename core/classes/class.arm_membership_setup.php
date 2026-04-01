@@ -27,24 +27,26 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 			add_action('wp_ajax_arm_get_configure_setup_details', array($this, 'arm_get_configure_setup_details_func'));
 			add_action('wp_ajax_get_configure_plans_expand_grid', array($this, 'arm_get_configure_plans_expand_grid_func'));
+
+			add_action('arm_saved_membership_setup',array($this,'arm_update_apparance_of_setup_func'),10,2);
 		}
 
 		function arm_get_configure_plans_expand_grid_func(){
 			global $wpdb, $ARMemberLite, $arm_subscription_plans, $arm_payment_gateways, $arm_global_settings, $arm_capabilities_global, $arm_form_class;
 
-			$setup_id = intval($_POST['log_id']);
+			$setup_id = intval($_POST['log_id']); //phpcs:ignore
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_setups'], '1',1); //phpcs:ignore 
 			
 			$grid_columns = array();
-			if ( ! empty( $_REQUEST['exclude_headers'] ) ) {
-				$keys   = explode( ',', sanitize_text_field( $_REQUEST['exclude_headers'] ) );
-				$labels = explode( ',', sanitize_text_field( $_REQUEST['header_label'] ) );
+			if ( ! empty( $_REQUEST['exclude_headers'] ) ) { //phpcs:ignore
+ 				$keys   = explode( ',', sanitize_text_field( $_REQUEST['exclude_headers'] ) ); //phpcs:ignore
+				$labels = explode( '|~|ARM|~|', sanitize_text_field( $_REQUEST['header_label'] ) );  //phpcs:ignore
 				$grid_columns = array_combine( $keys, $labels );
 			}
 			$date_format = $arm_global_settings->arm_get_wp_date_format();
 
 
-			$setup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$ARMemberLite->tbl_arm_membership_setup} WHERE arm_setup_id = %d", $setup_id));
+			$setup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$ARMemberLite->tbl_arm_membership_setup} WHERE arm_setup_id = %d", $setup_id)); //phpcs:ignore --Reason: $tbl_arm_membership_setup is a table name.
 
 			if(!empty($setup)){
 				$setupID = $setup->arm_setup_id;   
@@ -127,7 +129,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 				$return .= '</div></div></div>';
 			}
 
-			echo $return;
+			echo $return; //phpcs:ignore
 			die;
 		}
 
@@ -145,7 +147,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
             $before_filter = count($results);
 
-            $sSearch = !empty($_REQUEST['sSearch']) ? trim(sanitize_text_field($_REQUEST['sSearch'])) : '';
+            $sSearch = !empty($_REQUEST['sSearch']) ? trim(sanitize_text_field($_REQUEST['sSearch'])) : ''; //phpcs:ignore
 
             if(!empty($sSearch))
             {
@@ -156,16 +158,16 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
             $after_filter_data = $wpdb->get_results($setup_result_sql);//phpcs:ignore --Reason 
             $after_filter = count($after_filter_data);
 
-            $plan_offset = isset($_REQUEST['iDisplayStart']) ? intval($_REQUEST['iDisplayStart']) : 0;
-            $plan_number = isset($_REQUEST['iDisplayLength']) ? intval($_REQUEST['iDisplayLength']) : 10;
+            $plan_offset = isset($_REQUEST['iDisplayStart']) ? intval($_REQUEST['iDisplayStart']) : 0; //phpcs:ignore
+            $plan_number = isset($_REQUEST['iDisplayLength']) ? intval($_REQUEST['iDisplayLength']) : 10; //phpcs:ignore
 
             $phlimit = "LIMIT {$plan_offset},{$plan_number}";
 
-            $setup_result = $wpdb->get_results($setup_result_sql.' '.$phlimit);
+            $setup_result = $wpdb->get_results($setup_result_sql.' '.$phlimit); //phpcs:ignore --Reason $setup_result_sql is a prepareed query
 
             $grid_data = array();
             $ai = 0;
-	    $return = "";
+			$return = "";
             if (!empty($setup_result)) {
 
                 foreach ( $setup_result as $val ) {
@@ -222,7 +224,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
                     $ai++;
                 }
             }
-            $sEcho = isset($_REQUEST['sEcho']) ? intval($_REQUEST['sEcho']) : intval(10);
+            $sEcho = isset($_REQUEST['sEcho']) ? intval($_REQUEST['sEcho']) : intval(10); //phpcs:ignore
             $columns = esc_html__('Setup Name', 'armember-membership') . ',' . esc_html__('Plans', 'armember-membership') . ',' . esc_html__('Gateways', 'armember-membership') . ',' . esc_html__('Member Form', 'armember-membership') . ','. esc_html__('Shortcode', 'armember-membership') . ',';
             $response = array(
                 'sColumns' => $columns,
@@ -2760,14 +2762,14 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 											$plan_name_array = array();
 											foreach ( $current_user_plan_ids as $plan_id ) {
 												$planData                       = get_user_meta( $arm_user_id, 'arm_user_plan_' . $plan_id, true );
-												$arm_user_selected_payment_mode = $planData['arm_payment_mode'];
-												$arm_user_current_plan_detail   = $planData['arm_current_plan_detail'];
+												$arm_user_selected_payment_mode = !empty($planData['arm_payment_mode']) ? $planData['arm_payment_mode'] : '';
+												$arm_user_current_plan_detail   = !empty($planData['arm_current_plan_detail']) ? $planData['arm_current_plan_detail']: array();
 
 												$plan_name_array[] = isset( $arm_user_current_plan_detail['arm_subscription_plan_name'] ) ? stripslashes( $arm_user_current_plan_detail['arm_subscription_plan_name'] ) : '';
 												$plan_id_array[]   = $plan_id;
 
-												$curPlanDetail        = $planData['arm_current_plan_detail'];
-												$completed_recurrence = $planData['arm_completed_recurring'];
+												$curPlanDetail        = !empty( $planData['arm_current_plan_detail'] ) ? $planData['arm_current_plan_detail'] :array();
+												$completed_recurrence = !empty($planData['arm_completed_recurring']) ? $planData['arm_completed_recurring'] : 0;
 												if ( ! empty( $curPlanDetail ) ) {
 													$arm_user_old_plan_info = new ARM_Plan_Lite( 0 );
 													$arm_user_old_plan_info->init( (object) $curPlanDetail );
@@ -5054,7 +5056,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 				}
 				do_action( 'arm_save_membership_setups', $posted_data ); //phpcs:ignore
 			}
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die;
 		}
 
@@ -5078,7 +5080,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 				}
 			}
 			$return_array = $arm_global_settings->handle_return_messages( @$errors, @$message );
-			echo arm_pattern_json_encode( $return_array );
+			echo arm_pattern_json_encode( $return_array ); //phpcs:ignore
 			exit;
 		}
 
@@ -5179,7 +5181,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
             $ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_setups'], '1',1); //phpcs:ignore 
 
-            $setup_id = intval($_REQUEST['id']);
+            $setup_id = intval($_REQUEST['id']); //phpcs:ignore
             $setup_data = $arm_membership_setup->arm_get_membership_setup($setup_id);
             $button_labels = array(
                 'submit' => esc_html__('Submit', 'armember-membership'),
@@ -5208,9 +5210,80 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
                 $response = apply_filters( 'arm_setup_form_custom_response', $response );
             }
-            echo arm_pattern_json_encode( $response );
+            echo arm_pattern_json_encode( $response ); //phpcs:ignore
             die();
 		}
+	function arm_update_apparance_of_setup_func($setup_id, $db_data){
+            global $wpdb, $ARMemberLite, $arm_global_settings;
+        
+            $setup_id = absint($setup_id);
+            if (empty($setup_id) || empty($db_data['arm_setup_modules'])) {
+                return;
+            }
+        
+            $all_default_member_panel_setting = $arm_global_settings->arm_default_member_panel_settings();
+            $arm_default_front_settings  = $all_default_member_panel_setting['appearance_settings'];
+            $arm_default_color_setting  = isset($arm_default_front_settings['color']) ? $arm_default_front_settings['color'] : array();
+            $arm_default_font_setting   = isset($arm_default_front_settings['font']) ? $arm_default_front_settings['font'] : array();
+            
+	    $arm_current_member_panel_settings = $arm_global_settings->arm_get_member_panel_settings();
+	    $arm_current_front_settings = $arm_current_member_panel_settings['appearance_settings'];
+            $arm_current_color_setting  = isset($arm_current_front_settings['color']) ? $arm_current_front_settings['color'] : array();
+            $arm_current_font_setting   = isset($arm_current_front_settings['font']) ? $arm_current_front_settings['font'] : array();
+        
+            $arm_is_color_changed = ($arm_default_color_setting !== $arm_current_color_setting);
+            $arm_is_font_changed  = ($arm_default_font_setting !== $arm_current_font_setting);
+        
+            if ($arm_is_color_changed || $arm_is_font_changed) {
+        
+                $arm_membership_setup_data = maybe_unserialize(wp_unslash($db_data['arm_setup_modules']));
+        
+                if (!is_array($arm_membership_setup_data)) {
+                    return;
+                }
+        
+                if (!isset($arm_membership_setup_data['style']) || !is_array($arm_membership_setup_data['style'])) {
+                    $arm_membership_setup_data['style'] = array();
+                }
+        
+                if ($arm_is_color_changed) {
+        
+                    $arm_current_primary_color = isset($arm_current_color_setting['primary_color']) ? sanitize_hex_color($arm_current_color_setting['primary_color']) : '';
+                    $arm_current_title_color   = isset($arm_current_color_setting['title_text_color']) ? sanitize_hex_color($arm_current_color_setting['title_text_color']) : '';
+                    $arm_current_content_color = isset($arm_current_color_setting['content_color']) ? sanitize_hex_color($arm_current_color_setting['content_color']) : '';
+        
+                    $arm_membership_setup_data['style']['selected_plan_title_font_color'] = $arm_current_primary_color;
+                    $arm_membership_setup_data['style']['selected_price_font_color'] = $arm_current_primary_color;
+                    $arm_membership_setup_data['style']['bg_active_color'] = $arm_current_primary_color;
+        
+                    $arm_membership_setup_data['style']['plan_title_font_color'] = $arm_current_title_color;
+                    $arm_membership_setup_data['style']['selected_plan_desc_font_color'] = $arm_current_title_color;
+                    $arm_membership_setup_data['style']['price_font_color'] = $arm_current_title_color;
+        
+                    $arm_membership_setup_data['style']['summary_font_color'] = $arm_current_content_color;
+                    $arm_membership_setup_data['style']['plan_desc_font_color'] = $arm_current_content_color;
+                }
+        
+                if ($arm_is_font_changed) {
+                    $arm_current_font_family = isset($arm_current_font_setting['font_family']) ? sanitize_text_field($arm_current_font_setting['font_family']) : '';
+                    $arm_membership_setup_data['style']['font_family'] = $arm_current_font_family;
+                }
+        
+                $updated_membership_setup_data = maybe_serialize($arm_membership_setup_data);
+        
+                $wpdb->update(
+                    $ARMemberLite->tbl_arm_membership_setup,
+                    array(
+                        'arm_setup_modules' => $updated_membership_setup_data
+                    ),
+                    array(
+                        'arm_setup_id' => $setup_id
+                    ),
+                    array('%s'),
+                    array('%d')
+                );
+            }
+        }    
 
 	}
 

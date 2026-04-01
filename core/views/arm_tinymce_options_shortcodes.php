@@ -148,7 +148,7 @@ if ( is_rtl() ) {
 						<form class="arm_shortcode_form_opts arm_shortcode_edit_profile_opts arm_hidden" onsubmit="return false;">
 							<div class="arm_group_body">
 								<table class="arm_shortcode_option_table">
-																		<tr class="arm_shortcode_form_select">
+									<tr class="arm_shortcode_form_select">
 										<th><?php esc_html_e( 'Select Form', 'armember-membership' ); ?></th>
 										<td>
 											<input type="hidden" id="arm_shortcode_form_name" class="arm_shortcode_edit_profile_form" name="form_id" value="" />
@@ -162,7 +162,7 @@ if ( is_rtl() ) {
 															foreach ( $arm_forms as $_form ) :
 																?>
 																		  <?php
-																			if ( $_form['arm_form_type'] == 'registration' ) {
+																			if ( $_form['arm_form_type'] == 'edit_profile' ) {
 																				$formTitle = wp_strip_all_tags( stripslashes( $_form['arm_form_label'] ) ) . ' &nbsp;(ID: ' . $_form['arm_form_id'] . ')';
 																				?>
 																 <li class="arm_shortcode_form_id_li_edit_profile <?php echo esc_attr($_form['arm_form_type']); ?>" data-label="<?php echo esc_attr($formTitle); ?>" data-value="<?php echo esc_attr($_form['arm_form_id']); ?>"><?php echo esc_html($formTitle); ?></li>
@@ -193,66 +193,11 @@ if ( is_rtl() ) {
 											<div class="arm_margin_left_10">(<?php esc_html_e( 'With Respect to its container', 'armember-membership' ); ?>)</div>
 										</td>
 									</tr>
-									<tr>
-										<th><?php esc_html_e( 'Title', 'armember-membership' ); ?></th>
-										<td><input type="text" name="title" value="<?php esc_attr_e( 'Edit Profile', 'armember-membership' ); ?>"></td>
-									</tr>
-									<?php if ( $arm_social_feature->isSocialFeature ) : ?>
-									<tr>
-										<th><?php esc_html_e( 'Display Avatar', 'armember-membership' ); ?></th>
-										<td>
-											<label class="form_popup_type_radio">
-												<input type="radio" name="avatar_field" value="yes" class="arm_iradio arm_shortcode_form_popup_opt" checked="checked" />
-												<?php esc_html_e( 'Yes', 'armember-membership' ); ?>
-											</label>
-											<label class="form_popup_type_radio">
-												<input type="radio" name="avatar_field" value="no" class="arm_iradio arm_shortcode_form_popup_opt" />
-												<?php esc_html_e( 'No', 'armember-membership' ); ?>
-											</label>
-										</td>
-									</tr>
-									<tr>
-										<th><?php esc_html_e( 'Display Profile Cover', 'armember-membership' ); ?></th>
-										<td>
-											<label class="edit_form_popup_type_radio">
-												<input type="radio" name="profile_cover_field" value="yes" class="arm_iradio arm_shortcode_form_popup_opt" checked="checked" />
-												<?php esc_html_e( 'Yes', 'armember-membership' ); ?>
-											</label>
-											<label class="edit_form_popup_type_radio">
-												<input type="radio" name="profile_cover_field" value="no" class="arm_iradio arm_shortcode_form_popup_opt" />
-												<?php esc_html_e( 'No', 'armember-membership' ); ?>
-											</label>
-										</td>
-									</tr>
-									<tr class="arm_edit_profile_cover_options">
-										<th><?php esc_html_e( 'Profile Cover Title', 'armember-membership' ); ?></th>
-										<td><input type="text" name="profile_cover_title" value="<?php esc_attr_e( 'Profile Cover', 'armember-membership' ); ?>"></td>
-									</tr>
-									<tr class="arm_edit_profile_cover_options">
-										<th><?php esc_html_e( 'Profile Cover Placeholder', 'armember-membership' ); ?></th>
-										<td><input type="text" name="profile_cover_placeholder" value="<?php esc_attr_e( 'Drop file here or click to select', 'armember-membership' ); ?>"></td>
-									</tr>
-									<?php endif; ?>
-									<tr>
-										<th><?php esc_html_e( 'Message', 'armember-membership' ); ?></th>
-										<td><input type="text" name="message" value="<?php esc_attr_e( 'Your profile has been updated successfully.', 'armember-membership' ); ?>"></td>
-									</tr>
-									<tr>
-										<th><?php esc_html_e( 'View Profile', 'armember-membership' ); ?></th>
-										<td>
-											<input type="checkbox" id='arm_profile_field_view_profile' value="true" class="arm_icheckbox" name="view_profile" id="" checked="checked" />
-										</td>
-									</tr>
-									<tr>
-										<th><?php esc_html_e( 'View Profile Link Label', 'armember-membership' ); ?></th>
-										<td>
-											<input type="text" name="view_profile_link" value="<?php esc_attr_e( 'View Profile', 'armember-membership' ); ?>" />
-										</td>
-									</tr>
 								</table>
 							</div>
 
 						</form>
+
 					</div>
 					<div id="arm-membership-setup" class="arm_tabgroup_content">
 												<form class="arm_shortcode_membership_setup_opts" onsubmit="return false;">
@@ -474,6 +419,7 @@ if ( is_rtl() ) {
 											<dd>
 												<ul data-id="arm_shortcode_other_type">
 													<li data-label="<?php esc_attr_e( 'Select Option', 'armember-membership' ); ?>" data-value=""><?php esc_html_e( 'Select Option', 'armember-membership' ); ?></li>
+													<li data-label="<?php esc_html_e('Member Panel','armember-membership');?>" data-value="arm_member_panel"><?php esc_html_e('Member Panel', 'armember-membership');?></li>
 													<li data-label="<?php esc_attr_e( 'My Profile', 'armember-membership' ); ?>" data-value="arm_account_detail"><?php esc_html_e( 'My Profile', 'armember-membership' ); ?></li>
 													<li data-label="<?php esc_attr_e( 'Payment Transactions', 'armember-membership' ); ?>" data-value="arm_member_transaction"><?php esc_html_e( 'Payment Transactions', 'armember-membership' ); ?></li>
 													<li data-label="<?php esc_attr_e( 'Current Membership', 'armember-membership' ); ?>" data-value="arm_current_membership"><?php esc_html_e( 'Current Membership', 'armember-membership' ); ?></li>
@@ -1150,7 +1096,15 @@ if ( is_rtl() ) {
 												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php esc_html_e( 'Cancel', 'armember-membership' ); ?></a>
 												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_last_login_history" data-code="arm_last_login_history"><?php esc_html_e( 'Add Shortcode', 'armember-membership' ); ?></button>
 											</div>
-									</div>                                
+									</div>
+
+									<div class="arm_group_footer arm_shortcode_other_opts arm_shortcode_other_opts_arm_member_panel arm_hidden">
+											<div class="popup_content_btn_wrapper">
+												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php echo esc_html__('Cancel', 'armember-membership'); ?></a>
+												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_member_panel" data-code="arm_member_panel"><?php echo esc_html__('Add Shortcode', 'armember-membership'); ?></button>
+											</div>
+									</div>';
+
 							</div>
 						   
 							

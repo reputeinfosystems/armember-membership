@@ -61,7 +61,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					if(empty($options[$upload_key])) continue;
 					$base_name=$ARMemberLite->arm_get_basename($options[$upload_key]);
 					if(((is_string($upload_arr) && $upload_arr === $base_name) ||(is_array($upload_arr) && in_array($base_name, $upload_arr))) && "profile_default_cover.png" != $base_name) continue;
-					if(empty($_POST['template_options'][$upload_key]))unset($options[$upload_key]);
+					if(empty($_POST['template_options'][$upload_key]))unset($options[$upload_key]); //phpcs:ignore
 				}
 			}
 			
@@ -196,19 +196,19 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			$default_data['arm_options'] = maybe_unserialize( $options );
 			if ( isset($posted_data['arf_profile_action']) && $posted_data['arf_profile_action'] == 'add_profile' ) {
 				if ( $wpdb->insert( $ARMemberLite->tbl_arm_member_templates, $arguments ) ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-                    echo arm_pattern_json_encode(array('type' => 'success','id' => $wpdb->insert_id, 'message' => esc_html__('Template Saved Successfully','armember-membership'), 'default_data' => $default_data));
+                    echo arm_pattern_json_encode(array('type' => 'success','id' => $wpdb->insert_id, 'message' => esc_html__('Template Saved Successfully','armember-membership'), 'default_data' => $default_data)); //phpcs:ignore
 				} else {
-                    echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while saving template, please try again','armember-membership')));
+                    echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while saving template, please try again','armember-membership'))); //phpcs:ignore
 				}
 			} elseif ( isset($posted_data['arf_profile_action']) && $posted_data['arf_profile_action'] == 'edit_profile' ) {
 				$id = isset( $posted_data['template_id'] ) ? intval( $posted_data['template_id'] ) : 0;
 				if ( $id > 0 && $wpdb->update( $ARMemberLite->tbl_arm_member_templates, $arguments, array( 'arm_id' => $id ) ) ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					echo arm_pattern_json_encode(array('type' => 'success','id' => $id, 'message' => esc_html__('Template Updated Successfully','armember-membership'), 'default_data' => $default_data));
+					echo arm_pattern_json_encode(array('type' => 'success','id' => $id, 'message' => esc_html__('Template Updated Successfully','armember-membership'), 'default_data' => $default_data)); //phpcs:ignore
 				} else {
-					echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while updating template, please try again','armember-membership')));
+					echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while updating template, please try again','armember-membership'))); //phpcs:ignore
 				}
 			} else {
-				echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while saving template, please try again','armember-membership')));
+				echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while saving template, please try again','armember-membership'))); //phpcs:ignore
 			}
 			die;
 		}
@@ -331,7 +331,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			$redirect_link           = admin_url( 'admin.php?page=' . $arm_slugs->profiles_directories );
 			$response['redirect_to'] = $redirect_link;
 
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die();
 		}
 
@@ -525,6 +525,8 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$users[ $user->ID ]['profile_cover'] = '';
 					if ( ! empty( $profileCover ) && file_exists( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $profileCover ) ) ) {
 						$users[ $user->ID ]['profile_cover'] = $profileCover;
+					} else if($arm_global_settings->arm_check_image_validate_url($profileCover)) {
+						$users[$user->ID]['profile_cover'] = $profileCover;
 					} else {
 						if ( isset( $args['template_options']['default_cover'] ) && ! empty( $args['template_options']['default_cover'] ) ) {
 							if ( file_exists( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $args['template_options']['default_cover'] ) ) ) {
@@ -1184,7 +1186,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					}
 				}
 			}
-			echo arm_pattern_json_encode( $return );
+			echo arm_pattern_json_encode( $return ); //phpcs:ignore
 			exit;
 		}
 		function arm_template_options( $tempID = 0, $tempType = 'directory', $tempDetails = array() ) {
@@ -1714,7 +1716,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						'sample'    => 'true',
 						'is_preview' => '1',
 					);
-                    		echo $arm_ajax_pattern_start;
+                    		echo $arm_ajax_pattern_start; //phpcs:ignore
 				?>
 					<div class="arm_template_preview_popup popup_wrapper" style="width:960px;">
 						<div class="popup_wrapper_inner">
@@ -1742,7 +1744,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						</div>
 					</div>
 					<?php
-                    			echo $arm_ajax_pattern_end;
+                    			echo $arm_ajax_pattern_end; //phpcs:ignore
 				}
 			}
 			exit;
@@ -3444,7 +3446,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 
 										$template_data .= "<span class='arm_profile_name_link'>Will Smith</span>";
 										$display_joining_date = ( isset($options['show_joining']) && $options['show_joining'] == 1 ) ? '' : 'hidden_section';
-										$template_data .= "<span class='arm_user_last_active_text ".esc_attr($display_joining_date)."'>".esc_html__('Member Since','armember-membership').' '.date($arm_global_settings->arm_get_wp_date_format())."</span>";
+										$template_data .= "<span class='arm_user_last_active_text ".esc_attr($display_joining_date)."'>".esc_html__('Member Since','armember-membership').' '.date($arm_global_settings->arm_get_wp_date_format())."</span>"; //phpcs:ignore
 										
 										$template_data .= "<div class='armclear'></div>";
 									
@@ -3544,7 +3546,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 			$POST_ID  = intval( $posted_data['id'] );
 			$template = $this->arm_get_profile_editor_template( $profile_template, $profile_fields, $options, $POST_ID, true, $before_content, $after_content, $data_type );
 			$response = array('template' => $template);
-			echo arm_pattern_json_encode($response );
+			echo arm_pattern_json_encode($response ); //phpcs:ignore
 			exit;
 		}
 

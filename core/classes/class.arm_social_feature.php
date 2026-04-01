@@ -149,7 +149,7 @@ if ( ! class_exists( 'ARM_social_feature_Lite' ) ) {
 					'old_settings' => maybe_serialize( $socialOptions ),
 				);
 			}
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die();
 		}
 

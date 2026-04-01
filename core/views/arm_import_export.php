@@ -119,7 +119,7 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 										<div class="custom-file-wrapper">
 										<input type="file" name="import_user" id="arm_import_user" data-msg-required="<?php esc_attr_e( 'Please select a file.', 'armember-membership' ); ?>" class="armImportUpload" accept=".csv,.xml">
 										<input class="arm_file_url" type="hidden" name="import_user" value="">
-										<label for="arm_import_user" id="custom-file-label">Choose File</label>
+										<label class="arm_flex"  for="arm_import_user" id="custom-file-label">Choose File</label>
 										<input class="arm_file_url" type="hidden" name="import_user" value="">
 										<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif'; //phpcs:ignore ?>" class="arm_loader_img_import_user arm_margin_left_10" style="display:none;" width="24" height="24"/>
 									</div>
@@ -155,23 +155,25 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 						</div>
 
 						<div class="form-field arm_margin_top_32">			
-								<div class="arm-form-table-content arm_display_flex">
-								<span class="arm_display_flex arm_width_60_pct arm_sample_csv" style="align-items: center;"><?php esc_html_e( '', 'armember-membership' ); ?><a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=import_export&arm_action=download_sample&_wpnonce='.wp_create_nonce('arm_wp_nonce') ) ); ?>" class="arm_download_sample_csv_link arm_display_flex" target="_blank">
-								<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/download_sample_csv_icon.svg" alt="Download Log Icon"  class="arm-export-import-icon arm_width_20 arm_height_20"/>
-									<?php esc_html_e( 'Download sample csv', 'armember-membership' ); //phpcs:ignore ?></a>
-									</span>
+							<div class="arm-form-table-content arm_display_flex">
+								<span class="arm_display_flex arm_width_60_pct arm_sample_csv" style="align-items: center;">
+									<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=import_export&arm_action=download_sample&_wpnonce='.wp_create_nonce('arm_wp_nonce') ) ); ?>" class="arm_download_sample_csv_link arm_display_flex" target="_blank">
+										<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/download_sample_csv_icon.svg" alt="Download Log Icon"  class="arm-export-import-icon arm_width_20 arm_height_20"/>
+										<?php esc_html_e( 'Download sample csv', 'armember-membership' ); //phpcs:ignore ?>
+									</a>
+								</span>
 								<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>
 								<input type="hidden" name="_wpnonce" value="<?php echo esc_attr($wpnonce);?>"/>
 								<input type="hidden" name="arm_wp_nonce" value="<?php echo esc_attr($wpnonce);?>"/>
 
-									<input type="hidden" name="arm_user_metas_to_import" id="arm_user_metas_to_import" value="" />
+								<input type="hidden" name="arm_user_metas_to_import" id="arm_user_metas_to_import" value="" />
 
-									<button id="arm_user_import_btn" class="armemailaddbtn arm_width_45_pct  import_export_btn" name="arm_action" value="user_import" type="submit">
-									<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/import_icon.svg" alt="Download Log Icon"  class="arm-export-import-icon"/>
-										<?php esc_html_e( 'Import', 'armember-membership' ); ?></button>
-										<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>
-										<input type="hidden" name="arm_wp_nonce" value="<?php echo esc_attr($wpnonce);?>"/>	
-									</div>
+								<button id="arm_user_import_btn" class="armemailaddbtn arm_width_45_pct  import_export_btn" name="arm_action" value="user_import" type="submit">
+								<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/import_icon.svg" alt="Download Log Icon"  class="arm-export-import-icon"/>
+								<?php esc_html_e( 'Import', 'armember-membership' ); ?></button>
+								<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>
+								<input type="hidden" name="arm_wp_nonce" value="<?php echo esc_attr($wpnonce);?>"/>	
+							</div>
 						</div>
 					</div>
 				</form>

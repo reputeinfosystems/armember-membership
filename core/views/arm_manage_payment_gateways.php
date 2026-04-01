@@ -71,14 +71,14 @@ if($ARMemberLite->is_arm_pro_active)
 					<div class="right_content">
 						<div class="armswitch arm_payment_setting_switch arm_margin_right_0">
 							<input type="checkbox"
-								id="arm_<?php echo strtolower( esc_attr($gateway_name) ); ?>_status"
-								<?php echo $arm_status_switchChecked; ?>
+								id="arm_<?php echo esc_attr( strtolower( $gateway_name ) ); ?>_status"
+								<?php echo esc_attr($arm_status_switchChecked); ?>
 								value="1"
 								class="armswitch_input armswitch_payment_input"
-								name="payment_gateway_settings[<?php echo strtolower( esc_attr($gateway_name) ); ?>][status]"
-								data-payment="<?php echo strtolower( esc_attr($gateway_name) ); ?>"
+								name="payment_gateway_settings[<?php echo esc_attr(strtolower( esc_attr($gateway_name) ) ); ?>][status]"
+								data-payment="<?php echo esc_attr(strtolower( esc_attr($gateway_name) ) ); ?>"
 							/>
-							<label for="arm_<?php echo strtolower( esc_attr($gateway_name) ); ?>_status" class="armswitch_label"></label>
+							<label for="arm_<?php echo esc_attr(strtolower( esc_attr($gateway_name) ) ); ?>_status" class="armswitch_label"></label>
 						</div>
 					</div>
 				</div>
@@ -327,8 +327,8 @@ if($ARMemberLite->is_arm_pro_active)
 							<div class="form-field arm_sidebar_content_header arm_margin_top_32 arm_margin_bottom_0">
 								<label class="arm-form-table-label"><?php esc_html_e('Do not allow user to submit transaction data more than one time', 'armember-membership');?></label>
 								<div class="armswitch arm_payment_setting_switch arm_payment_<?php echo esc_attr($gateway_name); ?>_display_switch arm_text_align_right arm_margin_right_0">
-									<input type="checkbox" id="arm_<?php echo esc_attr($gateway_name); ?>_do_not_allow_pending_transaction_switch_status" <?php echo $arm_bank_transfer_allow_switchChecked; //phpcs:ignore?> value="1" class="armswitch_input arm_active_payment_<?php echo esc_attr($gateway_name); ?>" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][arm_bank_transfer_do_not_allow_pending_transaction]" <?php echo $disabled_field_attr; //phpcs:ignore?>/>
-									<label for="arm_<?php echo esc_attr($gateway_name); ?>_do_not_allow_pending_transaction_switch_status" class="armswitch_label arm_active_payment_<?php echo esc_attr($gateway_name); ?>" <?php echo $readonly_field_attr; //phpcs:ignore?>></label>
+									<input type="checkbox" id="arm_<?php echo esc_attr($gateway_name); ?>_do_not_allow_pending_transaction_switch_status" <?php echo $arm_bank_transfer_allow_switchChecked; //phpcs:ignore ?> value="1" class="armswitch_input arm_active_payment_<?php echo esc_attr($gateway_name); ?>" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][arm_bank_transfer_do_not_allow_pending_transaction]" <?php echo $disabled_field_attr; //phpcs:ignore ?>/>
+									<label for="arm_<?php echo esc_attr($gateway_name); ?>_do_not_allow_pending_transaction_switch_status" class="armswitch_label arm_active_payment_<?php echo esc_attr($gateway_name); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>></label>
 								</div>
 							</div>
 							</div>
@@ -359,7 +359,7 @@ if($ARMemberLite->is_arm_pro_active)
 								<label><?php esc_html_e('Card Holder Name Label', 'armember-membership');?></label>
 							</div>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label_name" data-id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name);?>][card_holder_name]" value="<?php echo (!empty($gateway_options['card_holder_name']) ? esc_html(stripslashes($gateway_options['card_holder_name'])) : esc_html__('Card Holder Name', 'armember-membership')); //phpcs:ignore?>" <?php echo $readonly_field_attr; //phpcs:ignore?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label_name" data-id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name);?>][card_holder_name]" value="<?php echo (!empty($gateway_options['card_holder_name']) ? esc_html(stripslashes($gateway_options['card_holder_name'])) : esc_html__('Card Holder Name', 'armember-membership')); //phpcs:ignore ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 						<div class="arm_form_field_block  <?php echo esc_attr($arm_gateway_class_name);?> arm_width_100_pct">
@@ -367,7 +367,7 @@ if($ARMemberLite->is_arm_pro_active)
 								<label><?php esc_html_e('Card Holder Name Description', 'armember-membership');?></label>
 							</div>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label_desc" data-id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name);?>][card_holder_name_description]" value="<?php echo (!empty($gateway_options['card_holder_name_description']) ? esc_html(stripslashes($gateway_options['card_holder_name_description'])) : ""); //phpcs:ignore?>" <?php echo $readonly_field_attr; //phpcs:ignore?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label_desc" data-id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name);?>][card_holder_name_description]" value="<?php echo (!empty($gateway_options['card_holder_name_description']) ? esc_html(stripslashes($gateway_options['card_holder_name_description'])) : ""); //phpcs:ignore ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 					<?php							
@@ -448,8 +448,8 @@ if($ARMemberLite->is_arm_pro_active)
 							</label>
 							<div class="arm-form-table-content">
 								<div class="armswitch arm_payment_setting_switch arm_payment_<?php echo esc_attr($gateway_name); ?>_display_switch arm_margin_right_0">
-									<input type="checkbox" id="arm_<?php echo esc_attr($gateway_name); ?>_debug_mode_switch_status" <?php echo $arm_debug_mode_switchChecked; //phpcs:ignore?> value="1" class="armswitch_input arm_active_payment_<?php echo esc_attr($gateway_name); ?>" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][enable_debug_mode]" <?php echo $disabled_field_attr; //phpcs:ignore?>/>
-									<label for="arm_<?php echo esc_attr($gateway_name); ?>_debug_mode_switch_status" class="armswitch_label arm_active_payment_<?php echo esc_attr($gateway_name); ?>" <?php echo $readonly_field_attr; //phpcs:ignore?>></label>
+									<input type="checkbox" id="arm_<?php echo esc_attr($gateway_name); ?>_debug_mode_switch_status" <?php echo $arm_debug_mode_switchChecked; //phpcs:ignore ?> value="1" class="armswitch_input arm_active_payment_<?php echo esc_attr($gateway_name); ?>" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][enable_debug_mode]" <?php echo $disabled_field_attr; //phpcs:ignore ?>/>
+									<label for="arm_<?php echo esc_attr($gateway_name); ?>_debug_mode_switch_status" class="armswitch_label arm_active_payment_<?php echo esc_attr($gateway_name); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>></label>
 								</div>
 							</div>
 						</div>
@@ -473,10 +473,10 @@ if($ARMemberLite->is_arm_pro_active)
 				<div class="arm_payment_gateway_section arm_mycred_main_container <?php echo ( $gateway_options['status'] == '1' ) ? '' : ' hidden_section'; ?>">
 				<div class="arm_content_border arm_margin_top_24"></div>
 					<div class="form-field arm_margin_top_24 arm_display_flex">
-		                <label class="arm-form-table-label arm_font_weight_600" style="color:var(--arm-dt-black-600)"><?php echo sprintf(esc_html__('%d Point', 'armember-membership'), 1); //phpcs:ignore?> = </label>
+		                <label class="arm-form-table-label arm_font_weight_600" style="color:var(--arm-dt-black-600)"><?php echo sprintf(esc_html__('%d Point', 'armember-membership'), 1); //phpcs:ignore ?> = </label>
 						
 		                <div class="arm-form-table-content">
-		                    <input type="text" class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore?> arm_margin_left_10" id="arm_mycred_point_exchange" name="payment_gateway_settings[mycred][point_exchange]" value="<?php echo esc_attr($point_exchange); ?>">
+		                    <input type="text" class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_left_10" id="arm_mycred_point_exchange" name="payment_gateway_settings[mycred][point_exchange]" value="<?php echo esc_attr($point_exchange); ?>">
 		                </div>
 		            </div>
 				</div>
@@ -500,6 +500,6 @@ if($ARMemberLite->is_arm_pro_active)
 	</div>
 </div>
 <script type="text/javascript">
-	var ARM_REMOVE_IMAGE_ICON = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete.svg';
-	var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL?>/delete_hover.svg';
+	var ARM_REMOVE_IMAGE_ICON = '<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL .'/delete.svg'); ?>';
+	var ARM_REMOVE_IMAGE_ICON_HOVER = '<?php echo esc_url( MEMBERSHIPLITE_IMAGES_URL . '/delete_hover.svg' ); ?>';
 </script>

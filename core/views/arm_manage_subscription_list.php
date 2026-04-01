@@ -1,5 +1,5 @@
 <?php
-global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms ,$arm_subscription_class, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways,$armPrimaryStatus,$arm_common_lite;
+global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms ,$arm_subscription_class, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways,$armPrimaryStatus,$arm_common_lite,$arm_version;
 $date_format = $arm_global_settings->arm_get_wp_date_format();
 $user_roles = get_editable_roles();
 $nowDate = current_time('mysql');
@@ -11,7 +11,8 @@ $filter_gateway = isset($_REQUEST['arm_filter_gateway']) ? sanitize_text_field($
 $filter_plan_id = (!empty($_REQUEST['arm_subs_plan_filter']) && $_REQUEST['arm_subs_plan_filter'] != '0') ? sanitize_text_field($_REQUEST['arm_subs_plan_filter']) : ''; //phpcs:ignore
 $filter_ptype = isset($_REQUEST['arm_filter_ptype']) ? sanitize_text_field($_REQUEST['arm_filter_ptype']) : ''; //phpcs:ignore
 $selected_filtered_tab = isset($_REQUEST['selected_tab']) ? sanitize_text_field($_REQUEST['selected_tab']) : 'activity'; //phpcs:ignore
-
+$arm_is_pro_latest = (!empty($arm_version) && version_compare($arm_version, '7.2', '>' )) ? 'true' : 'false';
+$arm_is_pro_active = (!$ARMemberLite->is_arm_pro_active) ? 'false' : 'true';
 ?>
 
 <style type="text/css" title="currentStyle">
@@ -21,9 +22,11 @@ $selected_filtered_tab = isset($_REQUEST['selected_tab']) ? sanitize_text_field(
 </style>
 
 <script type="text/javascript" charset="utf-8">
-    var ARM_IMAGE_URL = '<?php echo MEMBERSHIPLITE_IMAGES_URL;?>';
+    var ARM_IMAGE_URL = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>';
 // <![CDATA[
-
+    var __ARM_PRO_ACTIVE = "<?php echo esc_html($arm_is_pro_active); ?>";
+    var __ARM_PRO_LATEST = "<?php echo esc_html($arm_is_pro_latest) ?>";
+    var __ARM_SEPERATOR = "|~|ARM|~|";
 jQuery(document).ready(function () {
 
     jQuery(document).on('keyup','#armsubscriptionsearch_new', function (e) {
@@ -224,18 +227,18 @@ function show_grid_loader() {
 }
 
 function arm_load_subscription_list_grid(is_filtered){
-	var __ARM_Showing = '<?php echo addslashes(esc_html__('Showing','armember-membership')); //phpcs:ignore?>';
-    var __ARM_Showing_empty = '<?php echo addslashes(esc_html__('Showing','armember-membership').' <span class="arm-black-350 arm_font_size_15">0</span> - <span class="arm-black-350 arm_font_size_15">0</span> of <span class="arm-black-350 arm_font_size_15">0</span> '.esc_html__('Subscriptions','armember-membership')); //phpcs:ignore?>';
+	var __ARM_Showing = '<?php echo addslashes(esc_html__('Showing','armember-membership')); //phpcs:ignore ?>';
+    var __ARM_Showing_empty = '<?php echo addslashes(esc_html__('Showing','armember-membership').' <span class="arm-black-350 arm_font_size_15">0</span> - <span class="arm-black-350 arm_font_size_15">0</span> of <span class="arm-black-350 arm_font_size_15">0</span> '.esc_html__('Subscriptions','armember-membership')); //phpcs:ignore ?>';
     var __ARM_to = '-';
-    var __ARM_of = '<?php echo addslashes(esc_html__('of','armember-membership')); //phpcs:ignore?>';
-    var __ARM_Entries = ' <?php echo addslashes(esc_html__('Subscriptions','armember-membership')); //phpcs:ignore?>';
-    var __ARM_Show = '<?php echo addslashes(esc_html__('Show','armember-membership')); //phpcs:ignore?> ';
-    var __ARM_NO_FOUND = '<?php echo addslashes(esc_html__('No Subscriptions found.','armember-membership')); //phpcs:ignore?>';
-    var __ARM_NO_MATCHING = '<?php echo addslashes(esc_html__('No matching records found.','armember-membership')); //phpcs:ignore?>';
+    var __ARM_of = '<?php echo addslashes(esc_html__('of','armember-membership')); //phpcs:ignore ?>';
+    var __ARM_Entries = ' <?php echo addslashes(esc_html__('Subscriptions','armember-membership')); //phpcs:ignore ?>';
+    var __ARM_Show = '<?php echo addslashes(esc_html__('Show','armember-membership')); //phpcs:ignore ?> ';
+    var __ARM_NO_FOUND = '<?php echo addslashes(esc_html__('No Subscriptions found.','armember-membership')); //phpcs:ignore ?>';
+    var __ARM_NO_MATCHING = '<?php echo addslashes(esc_html__('No matching records found.','armember-membership')); //phpcs:ignore ?>';
     var __ARM_subscription_List_right = [7];
     
     
-	var ajax_url = '<?php echo admin_url("admin-ajax.php"); //phpcs:ignore?>';
+	var ajax_url = '<?php echo admin_url("admin-ajax.php"); //phpcs:ignore ?>';
 
     var filtered_data = (typeof is_filtered !== 'undefined' && is_filtered !== false) ? true : false;
     var arm_subs_filter = jQuery('#arm_subs_plan_filter').val();
@@ -725,9 +728,12 @@ jQuery(document).ready(function(){
                 tr.addClass('shown');
             }
             else{
+                var arm_pro_seperator = (__ARM_PRO_LATEST == 'true') ? __ARM_SEPERATOR : ',';
+				var seperator = (__ARM_PRO_ACTIVE == 'true') ? arm_pro_seperator : __ARM_SEPERATOR;
+				var header_labels = headers_label.join(seperator);
                 row.child.show();
                 tr.removeClass('hide');
-                row.child(sub_child_format(id,headers,headers_label,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
+                row.child(sub_child_format(id,headers,header_labels,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
                 tr.addClass('shown');
             }
         }
@@ -776,9 +782,12 @@ jQuery(document).ready(function(){
                 tr.addClass('shown');
             }
             else{
+                var arm_pro_seperator = (__ARM_PRO_LATEST == 'true') ? __ARM_SEPERATOR : ',';
+				var seperator = (__ARM_PRO_ACTIVE == 'true') ? arm_pro_seperator : __ARM_SEPERATOR;
+				var header_labels = headers_label.join(seperator);
                 row.child.show();
                 tr.removeClass('hide');
-                row.child(activity_child_format(id,headers,headers_label,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
+                row.child(activity_child_format(id,headers,header_labels,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
                 tr.addClass('shown');
             }
         }
@@ -827,9 +836,12 @@ jQuery(document).ready(function(){
                 tr.addClass('shown');
             }
             else{
+                var arm_pro_seperator = (__ARM_PRO_LATEST == 'true') ? __ARM_SEPERATOR : ',';
+				var seperator = (__ARM_PRO_ACTIVE == 'true') ? arm_pro_seperator : __ARM_SEPERATOR;
+				var header_labels = headers_label.join(seperator);
                 row.child.show();
                 tr.removeClass('hide');
-                row.child(upcycle_child_format(id,headers,headers_label,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
+                row.child(upcycle_child_format(id,headers,header_labels,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
                 tr.addClass('shown');
             }
         }
@@ -838,7 +850,7 @@ jQuery(document).ready(function(){
 });
 function sub_child_format(d,headers,headers_label,_wpnonce) {
     
-    var response1 = '</div><div class="arm_child_row_div_'+d+'" style="justify-self:center;text-align:center"></><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>"div>';
+    var response1 = '</div><div class="arm_child_row_div_'+d+'" style="justify-self:center;text-align:center"></><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>"div>';
     jQuery.ajax({
         type: "POST",
         url: __ARMAJAXURL,
@@ -854,7 +866,7 @@ function sub_child_format(d,headers,headers_label,_wpnonce) {
 
 function upcycle_child_format(d,headers,headers_label,_wpnonce) {
     
-    var response1 = '</div><div class="arm_child_row_div_'+d+'" style="justify-self:center;text-align:center"></><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>"div>';
+    var response1 = '</div><div class="arm_child_row_div_'+d+'" style="justify-self:center;text-align:center"></><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>"div>';
     jQuery.ajax({
         type: "POST",
         url: __ARMAJAXURL,
@@ -870,7 +882,7 @@ function upcycle_child_format(d,headers,headers_label,_wpnonce) {
 
 function activity_child_format(d,headers,headers_label,_wpnonce) {
     
-    var response1 = '</div><div class="arm_child_row_div_'+d+'" style="justify-self:center;text-align:center"></><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>"div>';
+    var response1 = '</div><div class="arm_child_row_div_'+d+'" style="justify-self:center;text-align:center"></><img class="arm_load_subscription_plans" src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_loader.gif" alt="<?php esc_attr_e('Load More', 'armember-membership'); ?>"div>';
     jQuery.ajax({
         type: "POST",
         url: __ARMAJAXURL,
@@ -927,7 +939,7 @@ global $wpdb, $ARMember, $arm_global_settings;
                                 <dd>
                                     <ul data-id="arm_subs_plan_filter" data-placeholder="<?php esc_html_e('Select Memberships', 'armember-membership'); ?>">
                                         <?php foreach ($all_plans as $plan): ?>
-                                            <li data-label="<?php echo stripslashes(esc_attr($plan['arm_subscription_plan_name'])); ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><input type="checkbox" class="arm_icheckbox" value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"/><?php echo stripslashes( esc_html($plan['arm_subscription_plan_name']) ); //phpcs:ignore?></li>
+                                            <li data-label="<?php echo stripslashes(esc_attr($plan['arm_subscription_plan_name'])); ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><input type="checkbox" class="arm_icheckbox" value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"/><?php echo stripslashes( esc_html($plan['arm_subscription_plan_name']) ); //phpcs:ignore ?></li>
                                         <?php endforeach; ?>
                                     </ul>
                                 </dd>
@@ -1055,7 +1067,7 @@ global $wpdb, $ARMember, $arm_global_settings;
 		<div class="page_title">
 			<?php esc_html_e('Manage Subscriptions','armember-membership');?>
 			<div class="arm_add_new_item_box">
-				<a class="greensavebtn arm_add_subscriptions_link" href="javascript:void(0);"><img align="absmiddle" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore?>/add_new_icon.svg"><span><?php esc_html_e('Add Subscription', 'armember-membership') ?></span></a>
+				<a class="greensavebtn arm_add_subscriptions_link" href="javascript:void(0);"><img align="absmiddle" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/add_new_icon.svg"><span><?php esc_html_e('Add Subscription', 'armember-membership') ?></span></a>
 			</div>	
 			<div class="armclear"></div>
 		</div>
@@ -1278,7 +1290,7 @@ global $wpdb, $ARMember, $arm_global_settings;
                                                 foreach ($all_plans as $p) {
                                                     $p_id = $p['arm_subscription_plan_id'];
                                                     if ($p['arm_subscription_plan_status'] == '1' && $p['arm_subscription_plan_type'] != 'free') {
-                                                        ?><li data-label="<?php echo stripslashes( esc_attr($p['arm_subscription_plan_name']) ); //phpcs:ignore?>" data-value="<?php echo esc_attr($p_id) ?>"><?php echo esc_html(stripslashes($p['arm_subscription_plan_name']));?></li><?php
+                                                        ?><li data-label="<?php echo stripslashes( esc_attr($p['arm_subscription_plan_name']) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($p_id) ?>"><?php echo esc_html(stripslashes($p['arm_subscription_plan_name']));?></li><?php
                                                     }
                                                 }
                                             }
@@ -1296,8 +1308,8 @@ global $wpdb, $ARMember, $arm_global_settings;
 				<td class="popup_content_btn popup_footer arm_padding_top_0 arm_padding_bottom_33" style="border-top:none">
 					<div class="popup_content_btn_wrapper arm_subscription_btn_wrapper arm_margin_top_0">
                         <div class="arm_soild_divider arm_margin_0"></div>
-                        <input type="hidden" name="arm_wp_nonce" value="<?php echo esc_attr( wp_create_nonce( 'arm_wp_nonce' ) ); //phpcs:ignore?>" class="valid arm_valid" aria-invalid="false">
-						<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/arm_loader.gif'; //phpcs:ignore?>" id="arm_loader_img_add_subscription" class="arm_loader_img arm_submit_btn_loader"  style="top: 15px;float: <?php echo (is_rtl()) ? 'right' : 'left';?>;display: none;" width="20" height="20" />
+                        <input type="hidden" name="arm_wp_nonce" value="<?php echo esc_attr( wp_create_nonce( 'arm_wp_nonce' ) ); //phpcs:ignore ?>" class="valid arm_valid" aria-invalid="false">
+						<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL).'/arm_loader.gif'; //phpcs:ignore ?>" id="arm_loader_img_add_subscription" class="arm_loader_img arm_submit_btn_loader"  style="top: 15px;float: <?php echo (is_rtl()) ? 'right' : 'left';?>;display: none;" width="20" height="20" />
 						<button class="arm_cancel_btn add_new_subscription_close_btn arm_margin_0 arm_margin_right_10" type="button"><?php esc_html_e('Cancel','armember-membership');?></button>
 						<button class="arm_save_btn arm_new_subscription_button arm_margin_right_0" type="submit" data-type="add"><?php esc_html_e('Save', 'armember-membership') ?></button>
 					</div>
@@ -1311,7 +1323,7 @@ global $wpdb, $ARMember, $arm_global_settings;
 </div>
 <!-- Popup Contnet for transaction list under subscriptions -->
 <div class="arm_members_list_detail_popup popup_wrapper arm_members_list_detail_popup_wrapper" >
-	<div class="arm_loading_grid" id="arm_loading_grid_members" style="display: none;"><?php echo $arm_common_lite->arm_loader_img_func();?></div>
+	<div class="arm_loading_grid" id="arm_loading_grid_members" style="display: none;"><?php echo $arm_common_lite->arm_loader_img_func(); //phpcs:ignore ?></div>
     <div class="popup_wrapper_inner" style="overflow: hidden;">
         <div class="popup_header page_title">
             <span class="popup_close_btn arm_popup_close_btn arm_transction_list_detail_close_btn"></span>

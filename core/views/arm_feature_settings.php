@@ -75,21 +75,21 @@ if ( is_rtl() ) {
 	body:has(.arm-lite-upgrade-pro-wrapper) .popup_wrapper.arm_addon_not_supoported_notice{ background-color: transparent !important; }
 	.arm-lite-upgrade-pro-wrapper{ width: 816px; border-radius: 12px; background-color: #FFF; position: relative; text-align: center; top: 45px; }
 	.arm-lite-upgrade-pro{ padding: 0 58px; }
-	.arm-lite-upgrade-pro-header{ background-image: url(<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm-addon-popup-vactor.webp); width: 624px; height: 95px; background-repeat: no-repeat; margin: 0 auto; }
+	.arm-lite-upgrade-pro-header{ background-image: url(<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm-addon-popup-vactor.webp); width: 624px; height: 95px; background-repeat: no-repeat; margin: 0 auto; }
 	.arm-lite-upgrade-pro-header-heding{ font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 26px; font-weight: 600; line-height: 90px; text-align: center; color: #000000; padding: 22px 0; margin: 0 auto; }
 	.arm-lite-upgrade-pro-hero-section{ margin-top: 35px; }
 	.arm-lite-upgrade-pro-hero-heding{ font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 22px; font-weight: 600; line-height: 64px; text-align: center; color: #1A2538; display: block; }
 	.arm-lite-upgrade-pro-hero-content{ font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 18px; font-weight: 400; line-height: 30px; text-align: center; color: #2F3F5C; margin-top: 15px; }
 	.arm-lite-upgrade-pro-body-section{ margin: 40px auto 60px auto; }
 	.arm-lite-upgrade-pro-body-heding{ font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 26px; font-weight: 600; line-height: 24px; text-align: center; color: #0077ff; }
-	.arm-lite-upgrade-pro-body-heding::after, .arm-lite-upgrade-pro-body-heding::before { content: ''; background-image: url(<?php echo MEMBERSHIPLITE_IMAGES_URL;//phpcs:ignore?>/cs-lifetime-family-plugin-star.webp); width: 22px; height: 22px; display: inline-block;
+	.arm-lite-upgrade-pro-body-heding::after, .arm-lite-upgrade-pro-body-heding::before { content: ''; background-image: url(<?php echo MEMBERSHIPLITE_IMAGES_URL;//phpcs:ignore ?>/cs-lifetime-family-plugin-star.webp); width: 22px; height: 22px; display: inline-block;
 		position: relative; right: -10px; vertical-align: bottom; top: -4px; background-size: 100%; }
 	.arm-lite-upgrade-pro-body-heding::before{ right: unset; left: -10px; }
 	.arm-lite-upgrade-pro-body-fetur-list{ display: flex; margin-bottom: 32px; }
 	.arm-lite-upgrade-pro-body-fetur-list:nth-child(2){ margin-top: 40px; }
 	.arm-lite-upgrade-pro-body-fetur-item{ display: flex; flex-basis: 48%; }
 	.arm-lite-upgrade-pro-body-fetur-item-title { max-width: 90%; word-break: break-word; margin-left: 12px; font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 18px; font-weight: 400; line-height: 24px; color: #2F3F5C; text-align: left; }
-	.arm-lite-upgrade-pro-body-fetur-icon{ background: url(<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/tick-green.webp); width: 26px; height: 24px; background-size: 100%; background-repeat: no-repeat; background-size: 100%; }
+	.arm-lite-upgrade-pro-body-fetur-icon{ background: url(<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/tick-green.webp); width: 26px; height: 24px; background-size: 100%; background-repeat: no-repeat; background-size: 100%; }
 	.arm-addon-popup-upg-btn{ font-family: var(--arm-primary-font), sans-serif, "Trebuchet MS"; font-size: 18px; font-weight: 600; line-height: 20px; color: #FFF; background-color: #0077ff; border: 1px solid #0077ff; border-radius: 8px; padding: 16px 44px; text-decoration: none; }
 	.arm-addon-popup-upg-btn:hover{ color: #0077ff; background-color: #FFF; transition: background-color 0.2s ease-in-out; }
 	.arm-lite-upgrade-pro-footer-wrapper{ background-color: #0077ff0A; padding: 40px 0; margin-top: 80px; }
@@ -1028,7 +1028,7 @@ $addon_content                   = '<span class="arm_confirm_text">' . esc_html_
 }?>
 <script type="text/javascript">
 	var ADDON_NOT_COMPATIBLE_MESSAGE = "<?php esc_html_e( 'This Addon is not compatible with current ARMember version. Please update ARMember to latest version.', 'armember-membership' ); ?>";
-	<?php if ( ! empty( $_REQUEST['arm_activate_social_feature'] ) ) { //phpcs:ignore?>
+	<?php if ( ! empty( $_REQUEST['arm_activate_social_feature'] ) ) { //phpcs:ignore ?>
 		armToast("<?php esc_html_e( 'Please activate the \"Social Feature\" module to make this feature work.', 'armember-membership' ); ?>", 'error', 5000, false);
 	<?php } ?>
 	<?php if($ARMemberLite->is_arm_pro_active){

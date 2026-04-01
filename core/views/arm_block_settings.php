@@ -196,7 +196,7 @@ $arm_all_block_settings['arm_block_ips']                = isset( $arm_all_block_
 				</div>
 			</div>
 
-			<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters  ('arm_load_security_settings_section','') : ''; //phpcs:ignore?>
+			<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters  ('arm_load_security_settings_section','') : ''; //phpcs:ignore ?>
 
 			<div class="arm_submit_btn_container arm_apply_changes_btn_container">
 				<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif'; //phpcs:ignore ?>" class="arm_submit_btn_loader" id="arm_loader_img" style="display:none;" width="24" height="24" />&nbsp;<button class="arm_save_btn arm_block_settings_btn" type="submit" id="arm_block_settings_btn" name="arm_block_settings_btn"><?php esc_html_e( 'Apply Changes', 'armember-membership' ); ?></button>

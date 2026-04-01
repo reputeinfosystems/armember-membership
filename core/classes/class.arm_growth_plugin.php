@@ -95,7 +95,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 				}
 			}
 			
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die();
 			
 		}
@@ -202,7 +202,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 				}
 			}
 			
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die();
 			
 		}
@@ -309,7 +309,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 				}
 			}
 			
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die();
 			
 		}
@@ -334,7 +334,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 					);
 				}
 			}
-			echo arm_pattern_json_encode($response);
+			echo arm_pattern_json_encode($response); //phpcs:ignore
 			die();
 		}
 
@@ -412,7 +412,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 				}
 			}
 			
-			echo arm_pattern_json_encode( $response );
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die();
 			
 		}

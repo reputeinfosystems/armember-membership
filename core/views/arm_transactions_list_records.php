@@ -1,5 +1,5 @@
 <?php
-global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_global_settings,  $arm_payment_gateways, $arm_subscription_plans, $arm_transaction,$arm_common_lite;
+global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_global_settings,  $arm_payment_gateways, $arm_subscription_plans, $arm_transaction,$arm_common_lite,$arm_version;
 $posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST); //phpcs:ignore
 $payment_gateways             = $arm_payment_gateways->arm_get_all_payment_gateways();
 $global_currency              = $arm_payment_gateways->arm_get_global_currency();
@@ -263,10 +263,14 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
         fclose($df); //phpcs:ignore
         exit;
 }
+$arm_is_pro_latest = (!empty($arm_version) && version_compare($arm_version, '7.2', '>' )) ? 'true' : 'false';
+$arm_is_pro_active = (!$ARMemberLite->is_arm_pro_active) ? 'false' : 'true';
 ?>
 <script type="text/javascript" charset="utf-8">
 // <![CDATA[
-
+	var __ARM_PRO_ACTIVE = "<?php echo esc_html($arm_is_pro_active); ?>";
+var __ARM_PRO_LATEST = "<?php echo esc_html($arm_is_pro_latest) ?>";
+var __ARM_SEPERATOR = "|~|ARM|~|";
 	jQuery(document).ready(function () {
 		jQuery('#armember_datatable').dataTable().fnDestroy();
 		arm_load_transaction_list_grid(false);
@@ -516,7 +520,7 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 			"fnDrawCallback": function () {
 				arm_show_data();
 				jQuery('#transactions_list_form .arm_loading_grid').hide();
-				<?php if( !empty($_REQUEST['arm_log_id']) ) { ?>
+				<?php if( !empty($_REQUEST['arm_log_id']) ) { //phpcs:ignore ?>
                 		    arm_preview_log_detail_by_url();
 				<?php } ?>
 				jQuery('#transactions_list_form #armember_datatable_wrapper').show();
@@ -578,10 +582,13 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 							headers_label.push(label);
 						}
 					}
+					var arm_pro_seperator = (__ARM_PRO_LATEST == 'true') ? __ARM_SEPERATOR : ',';
+					var seperator = (__ARM_PRO_ACTIVE == 'true') ? arm_pro_seperator : __ARM_SEPERATOR;
+					var header_labels = headers_label.join(seperator);
 					jQuery.ajax({
 						type: "POST",
 						url: __ARMAJAXURL,
-						data: "action=get_transaction_all_details_for_grid_loads&inv_ids=" + grid_ids + "&exclude_headers="+headers+"&header_label="+headers_label+"&_wpnonce=" + _wpnonce,
+						data: "action=get_transaction_all_details_for_grid_loads&inv_ids=" + grid_ids + "&exclude_headers="+headers+"&header_label="+header_labels+"&_wpnonce=" + _wpnonce,
 						dataType: 'json',
 						success: function (response) {
 							
@@ -705,9 +712,12 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 					tr.addClass('shown');		
 				}
 				else{
+					var arm_pro_seperator = (__ARM_PRO_LATEST == 'true') ? __ARM_SEPERATOR : ',';
+					var seperator = (__ARM_PRO_ACTIVE == 'true') ? arm_pro_seperator : __ARM_SEPERATOR;
+					var header_labels = headers_label.join(seperator);
 					row.child.show();
 					tr.removeClass('hide');
-					row.child(user_format(id,headers,headers_label,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
+					row.child(user_format(id,headers,header_labels,_wpnonce), class_name +" "+"arm_detail_expand_container").show();
 					tr.addClass('shown');
 				}
 			}
@@ -719,7 +729,7 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 	}
 	function user_format(id,headers,headers_label,_wpnonce) {
     // `d` is the original data object for the row
-		var arm_child_row_html = "<div class='arm_child_row_div_"+id+"'><div class='arm_child_row_div'><div class='arm_child_user_data_section'><div class='arm_view_member_left_box arm_no_border arm_margin_top_0' style='display: flex;align-items: center;'><img class='arm_load_subscription_plans' src='<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore?>/arm_loader.gif' alt='<?php esc_attr_e('Load More', 'armember-membership'); ?>' style='margin:30px auto;padding: 10px;width:24px; height:24px;display: flex;align-items: center;'></div></div></div></div>";
+		var arm_child_row_html = "<div class='arm_child_row_div_"+id+"'><div class='arm_child_row_div'><div class='arm_child_user_data_section'><div class='arm_view_member_left_box arm_no_border arm_margin_top_0' style='display: flex;align-items: center;'><img class='arm_load_subscription_plans' src='<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/arm_loader.gif' alt='<?php esc_attr_e('Load More', 'armember-membership'); ?>' style='margin:30px auto;padding: 10px;width:24px; height:24px;display: flex;align-items: center;'></div></div></div></div>";
 		setTimeout(function () { 
         jQuery.ajax({
             type: "POST",
