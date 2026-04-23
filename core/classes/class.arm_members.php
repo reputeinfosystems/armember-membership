@@ -2069,7 +2069,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 										<input id="cb-select-all-1" type="checkbox" class="chkstanard arm_all_import_user_chks">
 									</th>
 									<?php foreach ($grid_columns as $key => $title): if ($key == 'id') continue; ?>
-										<th data-key="<?php echo esc_attr($key); ?>" class="arm_grid_th_<?php echo esc_attr($key); ?>" style="min-width: 100px;"><?php echo esc_html($title); ?></th>
+										<th data-key="<?php echo esc_attr($key); ?>" class="arm_grid_th_<?php echo esc_attr($key); ?>" style="min-width: 100px;"><?php echo esc_html(wp_unslash($title)); ?></th>
 									<?php endforeach; ?>
 								</tr>
 								<?php foreach ($users_array as $value): ?>
@@ -2365,7 +2365,6 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 															$hashed    = $wp_hasher->HashPassword( $key );
 															$key_saved = $wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_main_data['user_login'] ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 														}
-														update_user_meta( $user_id, 'arm_reset_password_key', $key );
 														if ( $change_password_page_id == 0 ) {
 															$rp_link = network_site_url( 'wp-login.php?action=rp&key=' . rawurlencode( $key ) . '&login=' . rawurlencode( $user_main_data['user_login'] ), 'login' );
 														} else {
@@ -2562,7 +2561,6 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 															$hashed    = $wp_hasher->HashPassword( $key );
 															$key_saved = $wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_main_data['user_login'] ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 														}
-														update_user_meta( $user_id, 'arm_reset_password_key', $key );
 														if ( $change_password_page_id == 0 ) {
 															$rp_link = network_site_url( 'wp-login.php?action=rp&key=' . rawurlencode( $key ) . '&login=' . rawurlencode( $user_main_data['user_login'] ), 'login' );
 														} else {
@@ -4758,9 +4756,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 											if ( strpos( $arm_val, ':' ) != false ) {
 												$exp_val                    = explode( ':', $arm_val );
 												$exp_val1                   = $exp_val[1];
-												$value_array[ $exp_val[0] ] = $exp_val[1];
+												$value_array[ $exp_val[0] ] = wp_unslash($exp_val[1]);
 											} else {
-												$value_array[ $arm_val ] = $arm_val;
+												$value_array[ $arm_val ] = wp_unslash($arm_val);
 											}
 										}
 										$user_meta_detail = $ARMemberLite->arm_array_trim( $user_meta_detail );
@@ -4769,7 +4767,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 												foreach ( $user_meta_detail as $u ) {
 													foreach ( $value_array as $arm_key => $arm_val ) {
 														if ( $u == $arm_val ) {
-															array_push( $main_array, $arm_key );
+															array_push( $main_array, wp_unslash($arm_key) );
 														}
 													}
 												}
@@ -5248,7 +5246,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                     }
                     if(!empty($arm_member_form_fields)){
                         foreach ($arm_member_form_fields as $fields_key => $fields_value) {
-                            $arm_member_form_field_slug = $fields_value['arm_form_field_option']['meta_key'];
+                            $arm_member_form_field_slug = !empty($fields_value['arm_form_field_option']['meta_key']) ? $fields_value['arm_form_field_option']['meta_key'] : '';
                             if(in_array($fields_value['arm_form_field_option']['type'], array('file','avatar','profile_cover'))){
                                 $file_meta_key = !empty($fields_value['arm_form_field_option']['meta_key'])?$fields_value['arm_form_field_option']['meta_key']:"";
                                 $file_name = explode(",",$user->$file_meta_key);
@@ -6057,7 +6055,8 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			if(!empty($_REQUEST['exclude_headers'])) //phpcs:ignore
             {
                 $arm_dt_exclude_keys = explode(',',$_REQUEST['exclude_headers']); //phpcs:ignore
-                $arm_dt_exclude_label = explode('|~|ARM|~|',$_REQUEST['header_label']); //phpcs:ignore
+                $arm_dt_exclude_label = explode('|~|ARM|~|', wp_unslash($_REQUEST['header_label'])); //phpcs:ignore
+
                 $grid_columns = array_combine($arm_dt_exclude_keys,$arm_dt_exclude_label);
             }
             $return = array();

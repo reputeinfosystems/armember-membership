@@ -15,7 +15,6 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 			/* update user meta while uploading cover and avatar from profile page */
 			add_action( 'wp_ajax_arm_update_user_meta', array( $this, 'arm_update_user_meta' ) );
-			add_action( 'wp_ajax_nopriv_arm_update_user_meta', array( $this, 'arm_update_user_meta' ) );
 
 			add_action( 'wp_ajax_arm_change_profile_template', array( $this, 'arm_change_profile_template' ) );
 

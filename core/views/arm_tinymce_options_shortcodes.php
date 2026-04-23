@@ -40,7 +40,7 @@ if ( is_rtl() ) {
 						</li>
 						
 						
-												<?php do_action( 'arm_shortcode_add_tab' ); ?>
+						<?php do_action( 'arm_shortcode_add_tab' ); ?>
 					</ul>
 				</div>
 				<div class="arm_tabgroup_content_wrapper">
@@ -1103,7 +1103,7 @@ if ( is_rtl() ) {
 												<a class="arm_cancel_btn popup_close_btn arm_margin_right_12" href="javascript:void(0)"><?php echo esc_html__('Cancel', 'armember-membership'); ?></a>
 												<button type="button" class="arm_shortcode_insert_btn arm_insrt_btn arm_margin_right_0" id="arm_shortcode_other_opts_arm_member_panel" data-code="arm_member_panel"><?php echo esc_html__('Add Shortcode', 'armember-membership'); ?></button>
 											</div>
-									</div>';
+									</div>
 
 							</div>
 						   

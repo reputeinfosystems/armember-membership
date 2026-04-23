@@ -11,6 +11,8 @@
     $arm_all_member_panel_settings = $arm_global_settings->arm_get_member_panel_settings();
     $arm_member_panel_settings = is_array($arm_all_member_panel_settings) ? $arm_all_member_panel_settings : array();
     $arm_member_panel_settings = isset($arm_all_member_panel_settings['tab_settings']) ? $arm_all_member_panel_settings['tab_settings'] : array();
+
+    $arm_member_panel_settings = apply_filters('arm_modify_member_panel_details_externally',$arm_member_panel_settings);
     
     $arm_appearance_panel_settings = isset($arm_all_member_panel_settings['appearance_settings']) ? $arm_all_member_panel_settings['appearance_settings'] : array();
     $arm_mpt_icons = $arm_global_settings->arm_get_memper_panel_tab_icon_array();
@@ -103,7 +105,7 @@
         if (in_array($tab_id, $arm_lite_allowed_tab_id)) {
             $is_allowed_tab = true;
         } else if($ARMemberLite->is_arm_pro_active){
-            $is_allowed_tab = apply_filters('arm_is_member_panel_tab_allowed',false,$tab_id,);
+            $is_allowed_tab = apply_filters('arm_is_member_panel_tab_allowed',false,$tab_id);
         }
 
         if ($is_allowed_tab) {
@@ -143,12 +145,12 @@
                 $target = !empty($tab['url_in_new_tab']) ? ' target="_blank"' : '';
                     $arm_member_tabs_html .= '<a href="' . esc_url($tab['url_content']) . '" class="' . $active_class . 'arm-menu-item" id="' . esc_attr($mpt_tab_id) . '"' . $target . '>'
                     . '<div class="arm-panel-menu-item-icon">' . (isset($arm_mpt_icons[$tab['icon']]) ? $arm_mpt_icons[$tab['icon']] : '') . '</div>'
-                    . '<div class="arm-menu-item-txt" aria-label="' . esc_attr($tab['title']) . '">' . esc_html($tab['title']) . '</div>'
+                    . '<div class="arm-menu-item-txt" aria-label="' . esc_attr($tab['title']) . '">' . esc_html(wp_unslash($tab['title'])) . '</div>'
                     . '</a>';
             } else {
-                    $arm_member_tabs_html .= '<a href="javascript:void(0);" class="' . $active_class . 'arm-menu-item" id="' . esc_attr($mpt_tab_id) . '" onClick="arm_panel_change_tab(\'' . esc_attr($mpt_tab_id) . '\',\'' . esc_attr($tab['title']) . '\');" data-arm_menu_title="' . esc_attr($tab['title']) . '">'
+                    $arm_member_tabs_html .= '<a href="javascript:void(0);" class="' . $active_class . 'arm-menu-item" id="' . esc_attr($mpt_tab_id) . '" onClick="arm_panel_change_tab(\'' . esc_attr($mpt_tab_id) . '\');" data-arm_menu_title="' . esc_attr($tab['title']) . '">'
                     . '<div class="arm-panel-menu-item-icon">' . (isset($arm_mpt_icons[$tab['icon']]) ? $arm_mpt_icons[$tab['icon']] : '') . '</div>'
-                    . '<div class="arm-menu-item-txt" aria-label="' . esc_attr($tab['title']) . '">' . esc_html($tab['title']) . '</div>'
+                    . '<div class="arm-menu-item-txt" aria-label="' . esc_attr(wp_unslash($tab['title'])) . '">' . esc_html(wp_unslash($tab['title'])) . '</div>'
                     . '</a>';
             }
             if ($tab['tab_type'] === 'content') {
@@ -174,7 +176,7 @@
 
                     $arm_member_content_html .= '<div class="arm-panel-detail-' . esc_attr($mpt_tab_id) . ' arm-panel-detail arm-panel-detail-' . esc_attr($map_class) . '" ' . $style . '>
                     <div class="arm-panel-content-header arm-panel-padding">
-                        <div class="arm-panel-tab-heading">' . esc_html($tab['title']) . '</div>
+                        <div class="arm-panel-tab-heading">' . esc_html(wp_unslash($tab['title'])) . '</div>
                     </div>
                     <div class="arm-panel-data-container arm-panel-table">' . $content . '</div>
                 </div>';
@@ -195,6 +197,15 @@
     .arm-tablet .arm-panel-container .arm_panel_menu_mobile,.arm-tablet .arm_profile_dropdown ul{
     background-color: <?php echo $panel_sidebar_color;?>; 
     }
+
+    .arm-tablet .arm_profile_dropdown ul{
+        border: 1px solid <?php echo $border_color;?> !important;
+    }
+
+    .arm-panel-content .arm_paging_wrapper .arm_page_numbers:not(.current):hover svg path{
+        stroke: <?php echo $arm_primary_color;?> !important;
+    }
+
     .arm-panel-content{
         border-left: 0 !important;
     }
@@ -212,6 +223,11 @@
     .arm-panel-sidebar-profile-action.arm_dashboard_logout_link svg path{
         stroke: <?php echo $content_color;?> !important;
     }
+
+    .arm-panel-container .arm-menu-item .arm_edit_profile_icn svg path{
+        fill: <?php echo $content_color;?> !important;
+    }
+
     .arm-panel-sidebar a.arm-panel-menu-item-active svg path{
         stroke: <?php echo $panel_sidebar_color;?> !important;
     }
@@ -264,11 +280,11 @@
         border: 0;   
         border-bottom: 1px solid <?php echo $border_color;?> !important;
     }
-    .arm-panel-sidebar-profile-action:hover svg path{
+    .arm-panel-sidebar-profile-action .arm-panel-logout-icon:hover svg path{
         stroke: #FFF !important;
     }
 
-    .arm-panel-sidebar-profile-action:hover .arm-menu-item-txt{
+    .arm-panel-sidebar-profile-action .arm-panel-logout-icon:hover .arm-menu-item-txt{
         color:var(--arm-cl-white) !important;
     }
 
@@ -292,11 +308,11 @@
         color: <?php echo $content_color;?> !important;
         font-family: <?php echo $frontFontVal?> !important;
     }
-    .arm-panel-data-container .arm_user_transaction_list_table,
     .arm-panel-data-container .arm_shortcode_grid_container .arm_shortcode_grid_table_header th{
         border-bottom: 1px solid <?php echo $border_color;?> !important;
         background: <?php echo $panel_background_color;?>;
     }
+    .arm-panel-data-container .arm_user_transaction_list_table,
     .arm-panel-data-container .arm_user_current_membership_list_table{
         background: <?php echo $panel_background_color;?>;
     }
@@ -318,6 +334,7 @@
         color: <?php echo $title_text_color?> !important;
         font-family: <?php echo $frontFontVal?> !important;
     }
+
     .arm-panel-container_main:not(.arm-tablet) .arm_shortcode_grid_list_item:hover td:not(.arm_no_plan,.arm_current_membership_cancelled_row),
     .arm-panel-container_main:not(.arm-tablet) .arm_expanded_row td,
     .arm-panel-container_main.arm-tablet .arm_expanded_row{
@@ -395,28 +412,27 @@
                             <ul>
                                 <?php if(!empty($arm_edit_profile_tab_title )){ ?>
                                 <li>
-                                    <a href="javascript:void(0);" class="arm-menu-item" id="edit_members" onClick="arm_panel_change_tab('<?php echo $arm_edit_profile_tab_id;?>','<?php esc_html_e('Edit Profile','armember-membership');?>');" data-arm_menu_title="<?php esc_html_e('Edit Profile','armember-membership');?>">
-                                        <div class="arm-panel-menu-item-icon"><svg width="16" height="16" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="ap-front-menu-fill" d="M13.4316 5.82353C13.4316 6.32238 13.3334 6.81635 13.1425 7.27724C12.9516 7.73812 12.6718 8.15689 12.319 8.50964C11.9663 8.86238 11.5475 9.1422 11.0866 9.3331C10.6257 9.524 10.1318 9.62226 9.63291 9.62226C9.13406 9.62226 8.64008 9.524 8.1792 9.3331C7.71832 9.1422 7.29955 8.86238 6.9468 8.50964C6.59406 8.15689 6.31424 7.73812 6.12334 7.27724C5.93243 6.81635 5.83418 6.32238 5.83418 5.82353C5.83418 4.81604 6.2344 3.84982 6.9468 3.13742C7.6592 2.42501 8.62543 2.02479 9.63291 2.02479C10.6404 2.02479 11.6066 2.42502 12.319 3.13742C13.0314 3.84982 13.4316 4.81604 13.4316 5.82353ZM13.6419 9.83255C14.7052 8.76929 15.3025 7.3272 15.3025 5.82353C15.3025 4.31985 14.7052 2.87776 13.6419 1.8145C12.5787 0.751239 11.1366 0.153906 9.63291 0.153906C8.12924 0.153906 6.68714 0.751239 5.62388 1.8145C4.56062 2.87776 3.96329 4.31985 3.96329 5.82353C3.96329 7.3272 4.56062 8.76929 5.62388 9.83255C6.68714 10.8958 8.12924 11.4931 9.63291 11.4931C11.1366 11.4931 12.5787 10.8958 13.6419 9.83255ZM9.63291 12.6856C7.3168 12.6856 5.09555 13.6056 3.45781 15.2434C1.82007 16.8811 0.9 19.1024 0.9 21.4185C0.9 21.6666 0.998555 21.9045 1.17398 22.0799C1.34941 22.2554 1.58735 22.3539 1.83544 22.3539C2.08354 22.3539 2.32147 22.2554 2.4969 22.0799C2.67233 21.9045 2.77089 21.6666 2.77089 21.4185C2.77089 19.5985 3.49385 17.8532 4.78073 16.5663C6.06761 15.2794 7.81299 14.5564 9.63291 14.5564C11.4528 14.5564 13.1982 15.2794 14.4851 16.5663C15.772 17.8532 16.4949 19.5985 16.4949 21.4185C16.4949 21.6666 16.5935 21.9045 16.7689 22.0799C16.9444 22.2554 17.1823 22.3539 17.4304 22.3539C17.6785 22.3539 17.9164 22.2554 18.0918 22.0799C18.2673 21.9045 18.3658 21.6666 18.3658 21.4185C18.3658 19.1024 17.4458 16.8811 15.808 15.2434C14.1703 13.6056 11.949 12.6856 9.63291 12.6856Z" stroke="#2E3645" stroke-width="1.5"></path></svg></div>
-                                        <div class="arm-menu-item-txt" aria-label="<?php echo $arm_edit_profile_tab_title; ?>"><?php echo $arm_edit_profile_tab_title; ?></div>
+                                    <a href="javascript:void(0);" class="arm-menu-item" id="edit_members" onClick="arm_panel_change_tab('<?php echo $arm_edit_profile_tab_id;?>');" data-arm_menu_title="<?php esc_html_e('Edit Profile','armember-membership');?>">
+                                        <div class="arm-panel-menu-item-icon arm_edit_profile_icn"><svg width="16" height="16" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="ap-front-menu-fill" d="M13.4316 5.82353C13.4316 6.32238 13.3334 6.81635 13.1425 7.27724C12.9516 7.73812 12.6718 8.15689 12.319 8.50964C11.9663 8.86238 11.5475 9.1422 11.0866 9.3331C10.6257 9.524 10.1318 9.62226 9.63291 9.62226C9.13406 9.62226 8.64008 9.524 8.1792 9.3331C7.71832 9.1422 7.29955 8.86238 6.9468 8.50964C6.59406 8.15689 6.31424 7.73812 6.12334 7.27724C5.93243 6.81635 5.83418 6.32238 5.83418 5.82353C5.83418 4.81604 6.2344 3.84982 6.9468 3.13742C7.6592 2.42501 8.62543 2.02479 9.63291 2.02479C10.6404 2.02479 11.6066 2.42502 12.319 3.13742C13.0314 3.84982 13.4316 4.81604 13.4316 5.82353ZM13.6419 9.83255C14.7052 8.76929 15.3025 7.3272 15.3025 5.82353C15.3025 4.31985 14.7052 2.87776 13.6419 1.8145C12.5787 0.751239 11.1366 0.153906 9.63291 0.153906C8.12924 0.153906 6.68714 0.751239 5.62388 1.8145C4.56062 2.87776 3.96329 4.31985 3.96329 5.82353C3.96329 7.3272 4.56062 8.76929 5.62388 9.83255C6.68714 10.8958 8.12924 11.4931 9.63291 11.4931C11.1366 11.4931 12.5787 10.8958 13.6419 9.83255ZM9.63291 12.6856C7.3168 12.6856 5.09555 13.6056 3.45781 15.2434C1.82007 16.8811 0.9 19.1024 0.9 21.4185C0.9 21.6666 0.998555 21.9045 1.17398 22.0799C1.34941 22.2554 1.58735 22.3539 1.83544 22.3539C2.08354 22.3539 2.32147 22.2554 2.4969 22.0799C2.67233 21.9045 2.77089 21.6666 2.77089 21.4185C2.77089 19.5985 3.49385 17.8532 4.78073 16.5663C6.06761 15.2794 7.81299 14.5564 9.63291 14.5564C11.4528 14.5564 13.1982 15.2794 14.4851 16.5663C15.772 17.8532 16.4949 19.5985 16.4949 21.4185C16.4949 21.6666 16.5935 21.9045 16.7689 22.0799C16.9444 22.2554 17.1823 22.3539 17.4304 22.3539C17.6785 22.3539 17.9164 22.2554 18.0918 22.0799C18.2673 21.9045 18.3658 21.6666 18.3658 21.4185C18.3658 19.1024 17.4458 16.8811 15.808 15.2434C14.1703 13.6056 11.949 12.6856 9.63291 12.6856Z" fill="#656E81" stroke="#656E81" stroke-width="0.5"></path></svg></div>
+                                        <div class="arm-menu-item-txt" aria-label="<?php echo wp_unslash($arm_edit_profile_tab_title); ?>"><?php echo wp_unslash($arm_edit_profile_tab_title); ?></div>
                                     </a>
                                 </li>
                                 <?php } ?>
                                 <li>
                                     <a href="<?php echo $logout_url;?>" class="arm-menu-item">
-                                        <div class="arm-panel-menu-item-icon"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M11.6041 5.66532C11.3596 2.82604 9.90057 2.5 6.70638 2.5H6.60385C3.07841 2.5 1.66665 3.91175 1.66665 7.4372V12.5795C1.66665 16.1049 3.07841 17.5167 6.60385 17.5167H6.70638C9.87691 17.5167 11.336 17.2064 11.5962 14.4144" stroke="#2E3645" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path d="M8.45989 10.0005H17.4352" stroke="#2E3645" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> <path d="M15.6764 7.3584L18.3185 10.0005L15.6764 12.6426" stroke="#2E3645" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg></div>
+                                        <div class="arm-panel-menu-item-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M11.6041 5.66532C11.3596 2.82604 9.90057 2.5 6.70638 2.5H6.60385C3.07841 2.5 1.66665 3.91175 1.66665 7.4372V12.5795C1.66665 16.1049 3.07841 17.5167 6.60385 17.5167H6.70638C9.87691 17.5167 11.336 17.2064 11.5962 14.4144" stroke="#2E3645" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.45989 10.0004H17.4352" stroke="#2E3645" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.6764 7.35828L18.3185 10.0004L15.6764 12.6425" stroke="#2E3645" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                         <div class="arm-menu-item-txt" aria-label="<?php esc_html_e('Logout','armember-membership');?>"> <?php esc_html_e('Logout','armember-membership');?> </div>
                                     </a>
                                 </li>
                             </ul>
                         </dd>
                     </dl>
-                    <a href='<?php echo $logout_url;?>' class="arm-panel-sidebar-profile-action arm_dashboard_logout_link">
-                        <div tabindex="0" class="arm-panel-logout-icon">
-                            <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="arm-panel-svg-content-color" d="M22.0996 14.5602C21.7896 10.9602 19.9396 9.49023 15.8896 9.49023H15.7596C11.2896 9.49023 9.4996 11.2802 9.4996 15.7502V22.2702C9.4996 26.7402 11.2896 28.5302 15.7596 28.5302H15.8896C19.9096 28.5302 21.7596 27.0802 22.0896 23.5402" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path class="arm-panel-svg-content-color" d="M16.0009 19H27.3809"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path class="arm-panel-svg-content-color" d="M25.15 15.6504L28.5 19.0004L25.15 22.3504"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>                   
+                    <div class="arm-panel-sidebar-profile-action arm_dashboard_logout_link">
+                        <a href='<?php echo $logout_url;?>' tabindex="0" class="arm-panel-logout-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M11.6041 5.66532C11.3596 2.82604 9.90057 2.5 6.70638 2.5H6.60385C3.07841 2.5 1.66665 3.91175 1.66665 7.4372V12.5795C1.66665 16.1049 3.07841 17.5167 6.60385 17.5167H6.70638C9.87691 17.5167 11.336 17.2064 11.5962 14.4144" stroke="#2E3645" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.45989 10.0004H17.4352" stroke="#2E3645" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.6764 7.35828L18.3185 10.0004L15.6764 12.6425" stroke="#2E3645" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             <div class="arm-menu-item-txt" aria-label="<?php esc_html_e('Logout','armember-membership');?>"><?php esc_html_e('Log out','armember-membership');?></div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
                 <div class="arm_panel_menu_items arm_panel_menu_mobile_wrapper" style="display:none;">
                     <div class="arm_panel_menu_items arm_panel_menu_mobile">

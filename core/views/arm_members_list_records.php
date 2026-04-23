@@ -1232,7 +1232,7 @@ jQuery(document).on('change','#arm_manage_bulk_action1',function(){
 						<th class="cb-select-all-th"><input id="cb-select-all-1" type="checkbox" class="chkstanard"></th>
 						<?php if ( ! empty( $grid_columns ) ) {?>
 							<?php foreach ( $grid_columns as $key => $title ) : ?>
-								<th data-key="<?php echo esc_attr($key); ?>" class="arm_grid_th_<?php echo esc_attr($key); ?>" ><?php echo esc_html($title); ?></th>
+								<th data-key="<?php echo esc_attr($key); ?>" class="arm_grid_th_<?php echo esc_attr($key); ?>" ><?php echo esc_html( wp_unslash($title)); ?></th>
 							<?php endforeach; ?>
 						<?php }
 						?>

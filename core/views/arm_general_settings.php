@@ -25,6 +25,14 @@ $g_sub_action = isset($_GET['sub_action']) ? sanitize_text_field($_GET['sub_acti
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'page_setup' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=page_setup' ) ); ?>"><?php esc_html_e( 'Page Setup', 'armember-membership' ); ?></a>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'access_restriction' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=access_restriction' )); ?>"><?php esc_html_e( 'Default Restriction Rules', 'armember-membership' ); ?></a>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'member_panel' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=member_panel' ) ); ?>"><?php esc_html_e( 'Member Panel', 'armember-membership' ); ?></a>
+                <?php
+                if($g_action === 'member_panel') {?>
+                    <div class="arm_submenu_tab_indent">
+                        <a class="arm_general_settings_tab arm_setting_tabs  arm_padding_0 arm_margin_top_5 " href="javascript:void(0)" data-target="#arm_member_panel_tabs_sec"><?php esc_html_e( 'Tab Settings', 'armember-membership' ); ?></a>
+                        <a class="arm_general_settings_tab arm_setting_tabs arm_padding_top_15 arm_padding_left_0 arm_padding_bottom_0" href="javascript:void(0)" data-target="#front_end_appearance_sec"><?php esc_html_e( 'Front-end Appearance', 'armember-membership' ); ?></a>
+                    </div>
+                <?php }
+                ?>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'block_options' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=block_options' )); ?>"><?php esc_html_e( 'Security Options', 'armember-membership' ); ?></a>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'import_export' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=import_export' )); ?>"><?php esc_html_e( 'Import / Export', 'armember-membership' ); ?></a>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'redirection_options' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=redirection_options' )); ?>"><?php esc_html_e( 'Redirection Rules', 'armember-membership' ); ?></a>

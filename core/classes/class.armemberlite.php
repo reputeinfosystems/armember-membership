@@ -80,7 +80,7 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
                     if ( $meta_key == 'profile_cover') {
                         
                         $field_options['required'] = 0;
-                        $content.='<div class="arm_form_fields_wrapper">';
+                        $content.='<div class="arm_form_fields_wrapper arm_profile_prev">';
                             if ( ! empty( $user ) ) {
                                 $field_options['value'] = $user->$meta_key;
                             }
@@ -139,7 +139,7 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
                     if(!wp_style_is('armlite_front_user_dashboard_css', 'enqueued')){
                         wp_enqueue_style('armlite_front_user_dashboard_css');
                     }
-                    wp_register_script('armlite_front_dashboard_js', MEMBERSHIPLITE_URL . '/js/arm_front_dashboard.js', array('jquery'), MEMBERSHIPLITE_URL,false);
+                    wp_register_script('armlite_front_dashboard_js', MEMBERSHIPLITE_URL . '/js/arm_front_dashboard.js', array('jquery'), MEMBERSHIPLITE_VERSION,false);
                     if(!wp_script_is('armlite_front_dashboard_js', 'enqueued')){
                         wp_enqueue_script('armlite_front_dashboard_js');
                     }

@@ -1,7 +1,7 @@
 <?php
 	global $wpdb, $ARMemberLite, $arm_global_settings ,$arm_common_lite;
 
-    $arm_all_member_panel_settings =get_option('arm_member_panel_settings');
+    $arm_all_member_panel_settings = get_option('arm_member_panel_settings');
 
     $arm_all_tab_settings = isset($arm_all_member_panel_settings['tab_settings']) ? $arm_all_member_panel_settings['tab_settings'] : array();
     $arm_all_appearance_settings = isset($arm_all_member_panel_settings['appearance_settings']) ? $arm_all_member_panel_settings['appearance_settings'] : array();
@@ -12,15 +12,18 @@
 
 <div class="arm_loading_grid" style="display: none;"><?php $arm_loader = $arm_common_lite->arm_loader_img_func();
 				echo $arm_loader; //phpcs:ignore ?></div>
-
+<form method="post" action="#" id="arm_member_panel_settings_form" class="arm_member_panel_settings arm_admin_form">
 <div class="arm_global_settings_main_wrapper">
     <div class="page_sub_content">
         <div class="page_sub_title arm_margin_bottom_32">
-            <?php esc_html_e('Member Panel','armember-membership');?>
+            <?php esc_html_e('Member Panel','armember-membership');
+            $after_title_content = "";
+			$after_title_content = apply_filters('arm_after_general_settings_title', $after_title_content); //phpcs:ignore
+			echo $after_title_content; //phpcs:ignore ?>           
         </div>
-        <form method="post" action="#" id="arm_member_panel_settings_form" class="arm_member_panel_settings arm_admin_form">
+        
             <div class="arm_padding_0 arm_margin_top_32">
-                <div class="arm_row_wrapper arm_row_wrapper_padding_before arm_margin_bottom_28 ">
+                <div class="arm_row_wrapper arm_row_wrapper_padding_before arm_margin_bottom_28" id="arm_member_panel_tabs_sec">
                     <div class="left_content">
                         <div class="arm_form_header_label arm-setting-hadding-label" id="arm_member_panel_settings_tab_title">
                             <?php esc_html_e('Tab Settings','armember-membership');?>
@@ -190,6 +193,7 @@
         </div>
     </div>
 </div>
+</form>
 
 <script>
     var ARM_MPT_TITLE = '<?php echo addslashes( esc_html__( 'Title', 'armember-membership' ) ); //phpcs:ignore ?>';

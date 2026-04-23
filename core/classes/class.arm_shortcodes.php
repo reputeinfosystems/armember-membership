@@ -423,8 +423,8 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 		 * Directory Template AJAX Pagination Content
 		 */
 		function arm_directory_paging_action() {
-			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_members_directory, $arm_members_class;
-			if ( isset( $_POST['action'] ) && $_POST['action'] == 'arm_directory_paging_action' ) { //phpcs:ignore
+			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_members_directory, $arm_members_class, $arm_social_feature;
+			if ( isset( $_POST['action'] ) && $_POST['action'] == 'arm_directory_paging_action' && $arm_social_feature->isSocialFeature ) { //phpcs:ignore
 
 				$ARMemberLite->arm_check_user_cap( '', '1' ); //phpcs:ignore --Reason:Verifying nonce
 				
@@ -717,10 +717,10 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						foreach ( array( 'id', 'type', 'user_id', 'role', 'order', 'per_page', 'pagination', 'sample', 'is_preview' ) as $k ) {
 							$content .= '<input type="hidden" class="arm_temp_field_' . esc_attr($k) . '" name="' . esc_attr($k) . '" value="' . esc_attr( $opts[ $k ] ) . '">';
 						}
-						$content .= '</div>';
 						$nonce = wp_create_nonce('arm_wp_nonce');
 						$content .='<input type="hidden" name="arm_wp_nonce" value='.esc_attr( $nonce ).'>';
 						$content .='<input type="hidden" name="arm_wp_nonce_check" value="1">';
+						$content .= '</div>';
 						$content .= '</form>';
 					}
 					$content .= '<div class="armclear"></div>';
@@ -2665,12 +2665,8 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 										}
 										$arm_crm_action_cls = (!empty($atts['arm_member_panel'])) ? 'arm_shortcode_action_container' : '';
 										$content .= "<td id='arm_cm_plan_action_btn_container' data-label='". esc_attr($l_action_btn) ."' class='arm_current_membership_list_item_action_btn_" . esc_attr($user_plan) . " ".$arm_crm_action_cls."'>";
-										if(!empty($atts['arm_member_panel']))
-										{
-
-											$content .= "<div id='arm_cm_plan_action_btn' class='arm_shortcode_grid_action_container'>
-											<div class='arm_current_membership_action_div arm_shortcode_grid_action_div ".$arm_is_plan_cancelled_cls."'>";
-										}
+										
+										$arm_action_content = '';
 
 									if ( ! in_array( $user_plan, $user_future_plans ) ) {
 										if ( $display_renew_button == 'true' && ! $plan_info->is_lifetime() && ! $plan_info->is_free() && $is_plan_cancelled != 'yes' ) {
@@ -2699,10 +2695,10 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 
 												if ( $payment_mode == 'manual_subscription' ) {
 													if ( $recurring_time == 'infinite' ) {
-														$content .= $make_payment_content;
+														$arm_action_content .= $make_payment_content;
 													} else {
 														if ( $remaining_occurence > 0 ) {
-															$content .= $make_payment_content;
+															$arm_action_content .= $make_payment_content;
 														} else {
 
 															$now = current_time( 'mysql' );
@@ -2714,15 +2710,15 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 																if ( ! empty( $expire_plan ) ) {
 
 																	if ( strtotime( $now ) < $expire_plan ) {
-																			$content .= $make_payment_content;
+																			$arm_action_content .= $make_payment_content;
 																	} else {
-																		$content .= $renew_content;
+																		$arm_action_content .= $renew_content;
 																	}
 																} else {
-																					$content .= $make_payment_content;
+																					$arm_action_content .= $make_payment_content;
 																}
 															} else {
-																 $content .= $renew_content;
+																 $arm_action_content .= $renew_content;
 															}
 														}
 													}
@@ -2738,39 +2734,40 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 																if ( ! empty( $expire_plan ) ) {
 																	if ( strtotime( $now ) < $expire_plan ) {
 
-																		$content .= $make_payment_content;
+																		$arm_action_content .= $make_payment_content;
 																	} else {
-																		$content .= $renew_content;
+																		$arm_action_content .= $renew_content;
 																	}
 																} else {
-																	$content .= $make_payment_content;
+																	$arm_action_content .= $make_payment_content;
 																}
 															} else {
-																	  $content .= $renew_content;
+																	  $arm_action_content .= $renew_content;
 															}
 														}
 													}
 												}
 											} else {
-												$content .= $renew_content;
+												$arm_action_content .= $renew_content;
 											}
 											if ( ( isset( $display_cancel_button ) && $display_cancel_button == 'true' ) && ( isset( $is_plan_cancelled ) && $is_plan_cancelled != 'yes' ) && ! $plan_info->is_recurring() ) {
 												if(!empty($atts['arm_member_panel'])){
-													$content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link tooltip" data-tooltip="'.$cancel_text.'" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
+													$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link tooltip" data-tooltip="'.$cancel_text.'" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
 												}
 												else{
-													$content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
+													$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
 												}
 											}
 										}
-
-										if ( $plan_info->is_lifetime() || $plan_info->is_free() ) {
+										
+										if($plan_info->is_lifetime() || $plan_info->is_free()) {
+											
 											if ( ( isset( $display_cancel_button ) && $display_cancel_button == 'true' ) && ( isset( $is_plan_cancelled ) && $is_plan_cancelled != 'yes' ) ) {
 												if(!empty($atts['arm_member_panel'])){
-													$content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link tooltip" data-tooltip="'.$cancel_text.'" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
+													$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link tooltip" data-tooltip="'.$cancel_text.'" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
 												}
 												else{
-													$content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
+													$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
 												}
 											}
 										}
@@ -2788,14 +2785,14 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 														$paypal_url = 'https://www.paypal.com/myaccount/wallet';
 													}
 													if(empty($atts['arm_member_panel'])){
-														$content .= '<div class="arm_cm_update_btn_div"><a href="' . $paypal_url . '" target="_blank"><button type="button" class= "arm_update_card_button_style">' . $update_card_text . '</button></a></div>';
+														$arm_action_content .= '<div class="arm_cm_update_btn_div"><a href="' . $paypal_url . '" target="_blank"><button type="button" class= "arm_update_card_button_style">' . $update_card_text . '</button></a></div>';
 													}
 													else{
-														$content .= '<div class="arm_cm_update_btn_div tooltip arm_margin_0" data-tooltip="' . $update_card_text . '"><a href="' . $paypal_url . '" target="_blank"><button type="button" class= "arm_update_card_button_style"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.3333 7.91663C18.3025 6.03996 18.1583 4.95579 17.4633 4.17746C17.322 4.01936 17.1673 3.87381 17.0008 3.74246C15.955 2.91663 14.3883 2.91663 11.255 2.91663H8.75332C5.61999 2.91663 4.05332 2.91663 3.00666 3.74163C2.84017 3.87324 2.68542 4.01907 2.54416 4.17746C1.66666 5.16079 1.66666 6.63579 1.66666 9.58329C1.66666 12.5308 1.66666 14.005 2.54416 14.9891C2.68527 15.1469 2.83943 15.2919 3.00666 15.4241C4.05332 16.25 5.61999 16.25 8.75332 16.25H9.16666" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.66666 7.08325H18.3333" stroke="#576582" stroke-width="1.5" stroke-linejoin="round"/><path d="M16.1108 10.4166L16.7975 11.0483C16.9467 11.195 17.0208 11.2683 16.995 11.3308C16.9692 11.3933 16.8625 11.3933 16.6517 11.3933H14.065C12.74 11.3933 11.6667 12.4483 11.6667 13.75C11.6667 14.0433 11.7217 14.325 11.8208 14.5833M13.8892 17.0833L13.2025 16.4516C13.0533 16.305 12.9792 16.2316 13.005 16.1691C13.0308 16.1066 13.1375 16.1066 13.3483 16.1066H15.935C17.26 16.1066 18.3333 15.0516 18.3333 13.75C18.3333 13.4566 18.2783 13.175 18.1792 12.9166" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></a></div>';
+														$arm_action_content .= '<div class="arm_cm_update_btn_div tooltip arm_margin_0" data-tooltip="' . $update_card_text . '"><a href="' . $paypal_url . '" target="_blank"><button type="button" class= "arm_update_card_button_style"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.3333 7.91663C18.3025 6.03996 18.1583 4.95579 17.4633 4.17746C17.322 4.01936 17.1673 3.87381 17.0008 3.74246C15.955 2.91663 14.3883 2.91663 11.255 2.91663H8.75332C5.61999 2.91663 4.05332 2.91663 3.00666 3.74163C2.84017 3.87324 2.68542 4.01907 2.54416 4.17746C1.66666 5.16079 1.66666 6.63579 1.66666 9.58329C1.66666 12.5308 1.66666 14.005 2.54416 14.9891C2.68527 15.1469 2.83943 15.2919 3.00666 15.4241C4.05332 16.25 5.61999 16.25 8.75332 16.25H9.16666" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.66666 7.08325H18.3333" stroke="#576582" stroke-width="1.5" stroke-linejoin="round"/><path d="M16.1108 10.4166L16.7975 11.0483C16.9467 11.195 17.0208 11.2683 16.995 11.3308C16.9692 11.3933 16.8625 11.3933 16.6517 11.3933H14.065C12.74 11.3933 11.6667 12.4483 11.6667 13.75C11.6667 14.0433 11.7217 14.325 11.8208 14.5833M13.8892 17.0833L13.2025 16.4516C13.0533 16.305 12.9792 16.2316 13.005 16.1691C13.0308 16.1066 13.1375 16.1066 13.3483 16.1066H15.935C17.26 16.1066 18.3333 15.0516 18.3333 13.75C18.3333 13.4566 18.2783 13.175 18.1792 12.9166" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></a></div>';
 													}
 												}
 												$arm_card_btn_default = '';
-												$content             .= apply_filters( 'arm_get_gateways_update_card_detail_btn', $arm_card_btn_default, $planData, $user_plan, $update_card_text );
+												$arm_action_content             .= apply_filters( 'arm_get_gateways_update_card_detail_btn', $arm_card_btn_default, $planData, $user_plan, $update_card_text );
 											}
 											if ( $display_cancel_button == 'true' ) {
 
@@ -2803,24 +2800,28 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 
 													if ( isset( $is_plan_cancelled ) && $is_plan_cancelled == 'yes' ) {
 
-														$content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button" data-plan_id = "' . esc_attr($user_plan) . '" style="cursor: default;" disabled="disabled">' . esc_html__( 'Cancelled', 'armember-membership' ) . '</button></div>';
+														$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button" data-plan_id = "' . esc_attr($user_plan) . '" style="cursor: default;" disabled="disabled">' . esc_html__( 'Cancelled', 'armember-membership' ) . '</button></div>';
 													} else {
 														if(!empty($atts['arm_member_panel'])){
-															$content .= '<div class="arm_cm_cancel_btn_div tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
+															$arm_action_content .= '<div class="arm_cm_cancel_btn_div tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
 														}
 														else{
-															$content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
+															$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
 														}
 													}
 												}
 											}
 										}
 									}
-									if(!empty($atts['arm_member_panel']))
-									{
-										$content .= '</div></div>';	
-									}
-									$content .= '</td>';
+									if(!empty($atts['arm_member_panel']) && !empty($arm_action_content)){
+                                    $content .= "<div id='arm_cm_plan_action_btn' class='arm_shortcode_grid_action_container'><div class='arm_current_membership_action_div arm_shortcode_grid_action_div ".$arm_is_plan_cancelled_cls."'>";
+                                    $content .= $arm_action_content;
+                                    $content .= '</div>';
+                                }
+                                else{
+                                    $content .= $arm_action_content;
+                                }
+                                $content .= '</div></td>';
 								}
 
 							endif;

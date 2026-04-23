@@ -1409,7 +1409,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 		 * @param Int $total Total Number Of Records
 		 * @param Int $per_page Number Of Records Per Page
 		 */
-		function arm_get_paging_links( $current = 1, $total = 10, $per_page = 10, $type = '' ) {
+		function arm_get_paging_links( $current = 1, $total = 10, $per_page = 10, $type = '',$pagination_label="" ) {
 			global $wp, $wp_rewrite;
 			$return_links = '';
 			$current      = ( ! empty( $current ) && $current != 0 ) ? $current : 1;
@@ -1424,9 +1424,9 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$dots       = false;
 			if ( $current && 1 < $current ) {
 				$prev = $current - 1;
-				$page_links[] = '<a class="arm_prev arm_page_numbers" href="javascript:void(0)" data-page="' . esc_attr( $prev ) . '" data-per_page="' . $per_page . '"></a>';
+				$page_links[] = '<a class="arm_prev arm_page_numbers" href="javascript:void(0)" data-page="' . esc_attr( $prev ) . '" data-per_page="' . $per_page . '"><svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M5.65002 0.650024L0.650024 5.65002L5.65002 10.65" stroke="#576582" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>';
 			} else {
-				$page_links[] = '<a class="arm_prev current arm_page_numbers" href="javascript:void(0)" data-per_page="' . esc_attr($per_page) . '"></a>';
+				$page_links[] = '<a class="arm_prev current arm_page_numbers" href="javascript:void(0)" data-per_page="' . esc_attr($per_page) . '"><svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M5.65002 0.650024L0.650024 5.65002L5.65002 10.65" stroke="#9CA7BD" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>';
 			}
 			for ( $n = 1; $n <= $total_links; $n++ ) {
 				if ( $n == $current ) {
@@ -1444,9 +1444,9 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			}
 			if ( $current && ( $current < $total_links || -1 == $total_links ) ) {
 				$next = $current + 1;
-				$page_links[] = '<a class="arm_next arm_page_numbers" href="javascript:void(0)" data-page="' . esc_attr( $next ) . '" data-per_page="' . esc_attr($per_page) . '"></a>';
+				$page_links[] = '<a class="arm_next arm_page_numbers" href="javascript:void(0)" data-page="' . esc_attr( $next ) . '" data-per_page="' . esc_attr($per_page) . '"><svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M0.650025 0.650024L5.65002 5.65002L0.650025 10.65" stroke="#576582" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>';
 			} else {
-				$page_links[] = '<a class="arm_next current arm_page_numbers" href="javascript:void(0)" data-per_page="' . esc_attr($per_page) . '"></a>';
+				$page_links[] = '<a class="arm_next current arm_page_numbers" href="javascript:void(0)" data-per_page="' . esc_attr($per_page) . '"><svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M0.650025 0.650024L5.65002 5.65002L0.650025 10.65" stroke="#9CA7BD" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>';
 			}
 			if ( ! empty( $page_links ) ) {
 
@@ -1471,7 +1471,8 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 						$return_links .= esc_html__( 'Showing', 'armember-membership' ) . ' ' . esc_html($startNum) . ' - ' . esc_html($endNum) . ' ' . esc_html__( 'of', 'armember-membership' ) . ' ' . esc_html($total) . ' ' . esc_html__( 'transactions', 'armember-membership' );
 						break;
 					default:
-						$return_links .= esc_html__( 'Showing', 'armember-membership' ) . ' ' . esc_html($startNum) . ' - ' . esc_html($endNum) . ' ' . esc_html__( 'of', 'armember-membership' ) . ' ' . esc_html($total) . ' ' . esc_html__( 'records', 'armember-membership' );
+						$pagination_label = !empty($pagination_label) ? esc_html($pagination_label) : esc_html__('records', 'armember-membership');
+						$return_links .= esc_html__( 'Showing', 'armember-membership' ) . ' ' . esc_html($startNum) . ' - ' . esc_html($endNum) . ' ' . esc_html__( 'of', 'armember-membership' ) . ' ' . esc_html($total) . ' ' . $pagination_label;
 						break;
 				}
 				$return_links .= '</div>';
@@ -3741,7 +3742,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 
 			global $arm_global_settings,$ARMemberLiteAllowedHTMLTagsArray;
 
-			$tab_title       = isset($tab_data['title']) ? $tab_data['title'] : '';
+			$tab_title       = isset($tab_data['title']) ? stripslashes_deep($tab_data['title']) : '';
 			$tab_type        = isset($tab_data['tab_type']) ? $tab_data['tab_type'] : 'content';
 			$text_content     = isset($tab_data['text_content']) ? $tab_data['text_content'] : '';
 			$url_content     = isset($tab_data['url_content']) ? $tab_data['url_content'] : '';
@@ -3757,7 +3758,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][is_default_tab]" value="<?php echo $is_default_tab ?>"> 
 				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][icon]" value="<?php echo esc_attr($icon) ?>"> 
 				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][id]" value="<?php echo esc_attr($id) ?>">
-				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][menu_title]" value="<?php echo esc_attr($menu_title) ?>">  
+				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][menu_title]" value="<?php echo esc_attr(stripslashes_deep($menu_title)) ?>">  
 				<input type="hidden" name="tab_index" value="<?php echo $tab_index; ?>">
 
 				<div class="arm_width_100_pct">
@@ -3802,13 +3803,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 								<label><?php esc_html_e('Title', 'armember-membership'); ?></label>
 							</div>
 							<div class="arm_member_panel_title_input_container arm_margin_top_12">
-								<input type="text" 
-										name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][title]" 
-										data-id="<?php echo $tab_index; ?>" 
-										class="arm_max_width_100_pct arm_width_100_pct" 
-										id="arm_new_tab_title" 
-										value="<?php echo esc_attr($tab_title); ?>" 
-										/>
+								<input type="text" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][title]" data-id="<?php echo $tab_index; ?>" class="arm_max_width_100_pct arm_width_100_pct" id="arm_new_tab_title" value="<?php echo esc_attr(wp_unslash($tab_title)); ?>"/>
 							</div>
 						</div>
 						<div>
@@ -3851,11 +3846,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 						<div class="arm_form_field_block arm_new_tab_title_block">
 							<label><?php esc_html_e('Enter URL', 'armember-membership'); ?></label>
 							<div class="arm_member_panel_url_input_container arm_margin_top_12">
-								<input type="text" 
-										name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][url_content]" 
-										class="arm_max_width_100_pct arm_width_100_pct" 
-										id="arm_content_url" 
-										value="<?php echo esc_attr($url_content); ?>" />
+								<input type="text" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][url_content]" class="arm_max_width_100_pct arm_width_100_pct" id="arm_content_url" value="<?php echo esc_attr($url_content); ?>" />
 							</div>
 							<div>
 								<span class="arm_mtp_error arm_member_tab_url_error_<?php echo $tab_index; ?>">

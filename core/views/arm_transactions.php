@@ -163,7 +163,7 @@ jQuery(document).on('mouseout','.arm_export_paid_post_txn_btn',function(){
 });
 
 jQuery(document).on('mouseout','.arm_export_plan_txn_btn',function(){
-    jQuery(this).find('img').attr('src','<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL . 'arm_export_icon_pg.svg');?>');
+    jQuery(this).find('img').attr('src','<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL . '/arm_export_icon_pg.svg');?>');
 });
 // ]]>
 </script>

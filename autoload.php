@@ -112,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '5.3';
+$arm_lite_version = '5.4';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -2102,7 +2102,7 @@ class ARMemberlite {
 
 			wp_register_script( 'arm_bootstrap_datepicker_with_locale_js', MEMBERSHIPLITE_URL . '/bootstrap/js/bootstrap-datetimepicker-with-locale.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
 
-			wp_register_script('armlite_front_dashboard_js', MEMBERSHIPLITE_URL . '/js/arm_front_dashboard.js', array('jquery'), MEMBERSHIPLITE_URL,false);
+			wp_register_script('armlite_front_dashboard_js', MEMBERSHIPLITE_URL . '/js/arm_front_dashboard.js', array('jquery'), MEMBERSHIPLITE_VERSION,false);
 
 			/* Enqueue Javascripts */
 			wp_enqueue_script( 'jquery-ui-core' );
@@ -3759,13 +3759,11 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '5.3',
+			'update_version' => '5.4',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				'Added a New "Member Panel" for the members.',
-				'Added New Facility to Color Customization for Front-end Appearance.',
-				'Improved: Setup wizard for new installation.',
-				'Improved: Content Access Rule page loader.',
+				'Improved: front-end Member Panel.',
+				'Fixed: RTL issues for Member Panel.',
 				'Other minor bug fixes.',
 			),
 			'show_major_title'    => 0,

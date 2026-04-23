@@ -312,13 +312,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 
 						<?php foreach ( $options as $value => $label ) : ?>
 							<div class="arm_sub_plan_selection">
-							<input 
-								type="radio" 
-								class="arm_iradio" 
-								id="user_register_verification_<?php echo esc_attr($value); ?>" 
-								name="arm_general_settings[user_register_verification]" 
-								value="<?php echo esc_attr($value); ?>" 
-								<?php checked( $user_register_verification, $value ); ?> 
+							<input type="radio" class="arm_iradio" id="user_register_verification_<?php echo esc_attr($value); ?>" name="arm_general_settings[user_register_verification]" value="<?php echo esc_attr($value); ?>" <?php checked( $user_register_verification, $value ); ?> 
 							/>
 							<label for="user_register_verification_<?php echo esc_attr($value); ?>" class="arm_margin_left_46"><?php echo esc_html( $label ); ?></label>
 							</div>
@@ -877,8 +871,6 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 						<?php
 						global $arm_member_forms;
 						$dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
-
-
 
 						if ( ! empty( $dbProfileFields['default'] ) ) {
 

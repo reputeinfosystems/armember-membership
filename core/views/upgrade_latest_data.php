@@ -678,8 +678,7 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 	foreach($admin_user_ids as $admin_user_id){
 	
 		$arm_member_hide_show_data = get_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',true );
-		$arm_member_hide_show_data = maybe_unserialize( $arm_member_hide_show_data );
-	
+
 		$grid_columns = array(
 			'avatar'             => esc_html__( 'Avatar', 'armember-membership' ),
 			'ID'                 => esc_html__( 'User ID', 'armember-membership' ),
@@ -695,49 +694,81 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 			'user_registered'    => esc_html__( 'Joined Date', 'armember-membership' ),
 		);
 		$user_meta_keys  = $arm_member_forms->arm_get_db_form_fields( true );
-		if ( ! empty( $user_meta_keys ) ) {
-			$exclude_keys = array( 'user_pass', 'repeat_pass', 'rememberme', 'remember_me', 'section', 'html','arm_captcha');
-			foreach ( $user_meta_keys as $umkey => $val ) {
-				if ( ! in_array( $umkey, $exclude_keys ) ) {
-					if(!empty($val['label'])){
-					$grid_columns[ $umkey ] = stripslashes_deep($val['label']);
-					}else if(empty($grid_columns[$umkey])){
-						$grid_columns[$umkey] = stripslashes_deep($val['label']);
+			if ( ! empty( $user_meta_keys ) ) {
+				$exclude_keys = array( 'user_pass', 'repeat_pass', 'rememberme', 'remember_me', 'section', 'html','arm_captcha');
+				foreach ( $user_meta_keys as $umkey => $val ) {
+					if ( ! in_array( $umkey, $exclude_keys ) ) {
+						if(!empty($val['label'])){
+						$grid_columns[ $umkey ] = stripslashes_deep($val['label']);
+						}else if(empty($grid_columns[$umkey])){
+							$grid_columns[$umkey] = stripslashes_deep($val['label']);
+						}
 					}
 				}
 			}
+			$grid_columns['paid_with'] = esc_html__( 'Paid With', 'armember-membership' );
+
+		if(!empty($arm_member_hide_show_data)){
+			$arm_member_hide_show_data = maybe_unserialize( $arm_member_hide_show_data );
+			if(is_serialized( $arm_member_hide_show_data )){
+				$arm_member_hide_show_data = maybe_unserialize( $arm_member_hide_show_data );
+			}
+			$arm_updated_hide_show_cols = array();
+			
+			if ( !empty( $arm_member_hide_show_data )) {
+				$i = 0;
+				$selected_rows = 0;
+				foreach ( $grid_columns as $column_key => $column_label ) {
+					if($selected_rows == 8){
+						break;
+					}
+					$is_shown = (!empty($arm_member_hide_show_data[$i]) && $arm_member_hide_show_data[$i] == "1" ) ? "1" : "0";
+					if($is_shown == "1")
+                    {
+                        $selected_rows++;
+                    }
+					$arm_updated_hide_show_cols[$column_key] = $is_shown;
+					$i++;
+				}
+				update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
+				update_user_meta($admin_user_id, 'arm_members_column_order_0', array_keys($grid_columns) );
+			}
+			else{
+				$arm_array_show_fields = array('avatar','ID','user_login','user_email','arm_member_type','arm_user_plan','arm_primary_status','roles');
+
+				foreach ( $grid_columns as $column_key => $column_label ) {
+					$is_shown = (in_array($column_key,$arm_array_show_fields)) ? "1" : "0";
+					$arm_updated_hide_show_cols[$column_key] = $is_shown;
+				}
+				update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
+				update_user_meta($admin_user_id, 'arm_members_column_order_0',array_keys($grid_columns) );
+			}
 		}
-		$grid_columns['paid_with'] = esc_html__( 'Paid With', 'armember-membership' );
-		$arm_updated_hide_show_cols = array();
-		$arm_array_show_fields = array('avatar','ID','user_login','user_email','arm_member_type','arm_user_plan','arm_primary_status','roles');
-		if ( !empty( $arm_member_hide_show_data )) {
-			$i = 0;
+		else{
+			$arm_array_show_fields = array('avatar','ID','user_login','user_email','arm_member_type','arm_user_plan','arm_primary_status','roles');
+			
 			foreach ( $grid_columns as $column_key => $column_label ) {
-				$is_shown = (!empty($arm_member_hide_show_data[$i]) && $arm_member_hide_show_data[$i] == "1" ) ? "1" : "0";
+				$is_shown = "0";
+				if(in_array($column_key,$arm_array_show_fields)){
+					$is_shown = "1";
+				}
 				$arm_updated_hide_show_cols[$column_key] = $is_shown;
 				$i++;
 			}
 			update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
 			update_user_meta($admin_user_id, 'arm_members_column_order_0', array_keys($grid_columns) );
 		}
-		else{
-			foreach ( $grid_columns as $column_key => $column_label ) {
-				$is_shown = (in_array($column_key,$arm_array_show_fields)) ? "1" : "0";
-				$arm_updated_hide_show_cols[$column_key] = $is_shown;
-			}
-			update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
-			update_user_meta($admin_user_id, 'arm_members_column_order_0',array_keys($grid_columns) );
-		}
 	}
 }
 
 if(version_compare($arm_lite_newdbversion,'5.3', '<'))
 {
-	global $arm_global_settings,$wp,$wpdb,$ARMemberLite;
+	global $arm_global_settings,$wp,$wpdb,$ARMemberLite, $arm_member_forms;
 	
 	$ARMemberLite->add_default_member_panel_tab();
 
 	$arm_form_tbl = $ARMemberLite->tbl_arm_forms;
+	$tbl_arm_form_field = $ARMemberLite->tbl_arm_form_field;
 
 	$arm_form_data = $wpdb->get_row("SELECT * FROM $arm_form_tbl WHERE arm_form_id = 105"); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
@@ -766,7 +797,7 @@ if(version_compare($arm_lite_newdbversion,'5.3', '<'))
 				'arm_form_settings'     => maybe_serialize( $val['settings'] ),
 			);
 			/* Insert Form Data */
-			$wpdb->insert( $tbl_arm_forms, $form_data ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$wpdb->insert( $arm_form_tbl, $form_data ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$form_id = $wpdb->insert_id;
 			if ( ! empty( $val['fields'] ) ) {
 				$i = 1;
@@ -793,7 +824,7 @@ if(version_compare($arm_lite_newdbversion,'5.3', '<'))
 	}
 }
 
-$arm_lite_newdbversion = '5.3';
+$arm_lite_newdbversion = '5.4';
 update_option( 'arm_lite_new_version_installed', 1 );
 update_option( 'armlite_version', $arm_lite_newdbversion );
 

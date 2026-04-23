@@ -74,23 +74,51 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
             add_filter('arm_edit_profile_section',array($this,'arm_edit_profile_section_func'),10,3);
 
-
+			add_filter('arm_register_form_fields_selection',array($this,'arm_register_form_fields_selection_func'),10,1);
+			add_action('wp_ajax_arm_get_field_html',array($this,'arm_get_field_html_func'));
 		}
 
-		function arm_get_field_html_func($arm_form_content,$form_id, $user_id){
+		function arm_register_form_fields_selection_func($arm_register_forms_fields){
+			global $ARMemberLite;
+			if(!$ARMemberLite->is_arm_pro_active){
+				$arm_selected_form_id = !empty($_REQUEST['arm_form_id']) ? intval($_REQUEST['arm_form_id']) : 101; //phpcs:ignore
+				$arm_register_forms_fields .='<input type="hidden" id="arm_member_form_selection" name="arm_member_form_selection" value="'. esc_attr($arm_selected_form_id).'" data-msg-required="'. esc_html__('Please select signup / registration form.', 'armember-membership').'" />';
+			}
+			return $arm_register_forms_fields;
+		}
+
+		function arm_member_reset_form_cropper_func(){
+			global $wpdb, $ARMemberLite,$arm_capabilities_global,$arm_is_enable_crop;
+			$response = array( 'type' => 'error' );
+            $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1',1);
+			if(!empty($_POST['crop_reset'])){
+				$arm_is_enable_crop = 0;
+				$response = array( 'type' => 'success','msg'=> esc_html__('Cropper has been reseted.','armember-membership') );
+			}
+			echo arm_pattern_json_encode( $response ); //phpcs:ignore
+			die();
+		}
+
+		function arm_get_field_html_func($arm_form_content = '',$form_id='', $user_id=''){
 
             global $wpdb, $armPrimaryStatus, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_social_feature, $is_multiple_membership_feature, $arm_email_settings, $arm_pay_per_post_feature, $arm_lite_members_activity,$arm_capabilities_global,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
 
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1',1);
 
 			$arm_member_include_fields_keys = array('user_email', 'user_pass');
-
+			$arm_is_ajax = 0;
+			if(!empty($_REQUEST['action']) && $_REQUEST['action'] == 'arm_get_field_html'){
+				$arm_is_ajax = 1;
+			}
             $arm_form_id=101;
-            if (isset($form_id)) {
-                $arm_form_id = intval($form_id);
+            if(isset($_REQUEST['arm_form_id']) && empty($form_id)) {
+                $arm_form_id = intval($_REQUEST['arm_form_id']);
                 if (!is_numeric($arm_form_id)) {
                     $arm_form_id=101;
                 } 
+            }
+	    else{
+                $arm_form_id = intval($arm_form_id);
             }
             $user_id = !empty($user_id) ? abs(intval($user_id)) : '';
             $user = $arm_members_class->arm_get_member_detail($user_id);
@@ -567,8 +595,16 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                     </div>
                 </div>
                 </div>';
+		$response = array("type"=>'success',"res"=>$arm_form_content);
             }
-            return $arm_form_content;
+	    if(!empty($arm_is_ajax))
+            {
+                echo $arm_ajax_pattern_start.''.json_encode($response).''.$arm_ajax_pattern_end; //phpcs:ignore
+                die();
+            }
+            else{
+                return $arm_form_content;
+            }
     
         }
 
@@ -1216,7 +1252,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 				if ( ! empty( $ext ) && ! in_array( $ext, $denyExts ) && !empty( $file_name ) && $file_name_arm == 'arm' ) {
 					$file_path = MEMBERSHIPLITE_UPLOAD_DIR . '/' . $file_name;
-							if (file_exists($file_path) && (empty($meta_field_name) || (!empty($meta_field_name) && !empty($_SESSION['arm_file_upload_arr'][$meta_field_name]) && ($_SESSION['arm_file_upload_arr'][$meta_field_name]==$file_name || (is_array($_SESSION['arm_file_upload_arr'][$meta_field_name]) && in_array($file_name,$_SESSION['arm_file_upload_arr'][$meta_field_name])))))) //phpcs:ignore
+							if (file_exists($file_path) && ((!empty($meta_field_name) && !empty($_SESSION['arm_file_upload_arr'][$meta_field_name]) && ($_SESSION['arm_file_upload_arr'][$meta_field_name]==$file_name || (is_array($_SESSION['arm_file_upload_arr'][$meta_field_name]) && in_array($file_name,$_SESSION['arm_file_upload_arr'][$meta_field_name])))))) //phpcs:ignore
 					@unlink( $file_path ); //phpcs:ignore
 
 					if( is_user_logged_in() ) {
@@ -4660,7 +4696,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$file_name_key = array_key_last($temp_data);
 								$file_name = $temp_data[$file_name_key];
 								$output .= '<div class="arm_uploaded_file_info"><a href="'.esc_attr($fileUrl).'" target="_blank"><img alt="" src="' . esc_attr($fileUrl) . '"/><span class="arm_uploaded_file_name">' . $file_name . '</span></a>'; //phpcs:ignore 
-								$output .= '<div class="armFileRemoveContainer"><img src="'.MEMBERSHIPLITE_IMAGES_URL.'/delete.svg" class="armhelptip tipso_style" onmouseover="this.src=\''.MEMBERSHIPLITE_IMAGES_URL.'/delete_hover.svg\';" onmouseout="this.src=\''.MEMBERSHIPLITE_IMAGES_URL.'/delete.svg\';"></div></div>';
+								$output .= '<div class="armFileRemoveContainer"><img src="'.MEMBERSHIPLITE_IMAGES_URL.'/delete.svg" onmouseover="this.src=\''.MEMBERSHIPLITE_IMAGES_URL.'/delete_hover.svg\';" onmouseout="this.src=\''.MEMBERSHIPLITE_IMAGES_URL.'/delete.svg\';"></div></div>';
 							}
 							$output .= '</div>';
 							$output .= '<div class="armbar" style="width:0%;"></div>';
@@ -6190,7 +6226,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 											// $user = get_user_by('login', sanitize_text_field($_POST['login2']));
 											if ( isset( $arm_check_user_reset_obj ) && ! empty( $arm_check_user_reset_obj ) && ! empty( $arm_check_user_reset_obj->ID ) ) {
 												$this->arm_reset_password( $arm_check_user_reset_obj, $newPass );
-												update_user_meta( $arm_check_user_reset_obj->ID, 'arm_reset_password_key', '' );
 
 												$login_page_id = isset( $arm_global_settings->global_settings['login_page_id'] ) ? $arm_global_settings->global_settings['login_page_id'] : 0;
 												if ( $login_page_id == 0 ) {
@@ -7245,8 +7280,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				if ( false === $key_saved ) {
 					return new WP_Error( 'no_password_key_update', esc_html__( 'Could not save password reset key to database.', 'armember-membership' ) );
 				}
-			}
-			update_user_meta( $user_id, 'arm_reset_password_key', $key );
+			}		
 			$change_password_page_id = isset( $arm_global_settings->global_settings['change_password_page_id'] ) ? $arm_global_settings->global_settings['change_password_page_id'] : 0;
 			if ( $change_password_page_id == 0 ) {
 				$rp_link = network_site_url( 'wp-login.php?action=rp&key=' . rawurlencode( $key ) . '&login=' . rawurlencode( $user_login ), 'login' );
@@ -9952,6 +9986,11 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                             text-align:right;
                         }
 
+			$container.arm--material-outline-style .arm-df__form-field-wrap:has(.arm-df__dropdown-control.arm-is-active) .arm-notched-outline .arm-notched-outline__leading,
+			$container.arm--material-outline-style .arm-df__form-field-wrap:has(.arm-df__dropdown-control.arm-is-active) .arm-notched-outline .arm-notched-outline__notch,
+			$container.arm--material-outline-style .arm-df__form-field-wrap:has(.arm-df__dropdown-control.arm-is-active) .arm-notched-outline .arm-notched-outline__trailing{
+				border-color: " . $new_style['field_focus_color'] . " !important;   
+			}
                         $container.arm--material-outline-style .arm-notched-outline__leading {
                             border-top: " . $new_style['field_border_width'] . 'px ' . $new_style['field_border_style'] . ' ' . $new_style['field_border_color'] . ';
                             border-left: ' . $new_style['field_border_width'] . 'px ' . $new_style['field_border_style'] . ' ' . $new_style['field_border_color'] . ';
@@ -10230,8 +10269,10 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
                             border-color: " . $new_style['field_focus_color'] . " !important;
                         }
 
+                         $container .arm-ffw__file-upload-box button.armFileRemoveContainer:hover,
                         $container .arm-ffw__file-upload-box button.armFileRemoveContainer:focus{
                             color: " . $new_style['field_focus_color'] . " !important;
+                            outline:0;
                         }
 
 						$container.arm_form_layout_writer .arm-df__fc-icon.--arm-suffix-icon.arm_visible_password_material:focus,
