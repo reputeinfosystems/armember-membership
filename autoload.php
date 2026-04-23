@@ -112,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '5.4';
+$arm_lite_version = '5.5';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -135,8 +135,8 @@ $ARMemberLite = new ARMemberlite();
 $arm_lite_debug_payment_log_id =0;
 $arm_lite_debug_general_log_id = 0;
 
-$arm_lite_bf_sale_start_time = "1745838000"; //black friday sale start time
-$arm_lite_bf_sale_end_time = "1765044000"; //black friday sale end time
+$arm_lite_bf_sale_start_time = "1776427200"; //black friday sale start time
+$arm_lite_bf_sale_end_time = "1777568400"; //black friday sale end time
 
 if(!$ARMemberLite->is_arm_pro_active){
 	if ( file_exists( MEMBERSHIPLITE_CLASSES_DIR . '/class.arm_members.php' ) ) {
@@ -3759,12 +3759,10 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '5.4',
+			'update_version' => '5.5',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				'Improved: front-end Member Panel.',
-				'Fixed: RTL issues for Member Panel.',
-				'Other minor bug fixes.',
+				'Minor bug fixes.',
 			),
 			'show_major_title'    => 0,
 			'major_title'         => 'Major Changes',

@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ARMember Lite - Membership Plugin v5.4\n"
+"Project-Id-Version: ARMember Lite - Membership Plugin v5.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-21 04:47+0000\n"
-"PO-Revision-Date: 2026-04-15 05:14:34+0000\n"
+"PO-Revision-Date: 2026-04-17 07:05:53+0000\n"
 "Last-Translator: \n"
 "Language-Team: Chinese (China)\n"
 "MIME-Version: 1.0\n"
@@ -151,7 +151,7 @@ msgstr "访问的规则更新的成功。"
 msgid "Account Activated"
 msgstr "帐户被激活"
 
-#: autoload.php:1079
+#: autoload.php:1080
 #@ armember-membership
 msgid "Account Closed"
 msgstr "的帐户关闭"
@@ -204,12 +204,12 @@ msgstr "账户以待"
 msgid "Account Setup"
 msgstr "帐户设置"
 
-#: autoload.php:3986
+#: autoload.php:3985
 #@ armember-membership
 msgid "Achievements Added Successfully."
 msgstr "成就增加成功。"
 
-#: autoload.php:3987
+#: autoload.php:3986
 #@ armember-membership
 msgid "Achievements Updated Successfully."
 msgstr "成就成功更新。"
@@ -299,7 +299,7 @@ msgstr "激活计划"
 msgid "Activation link is expired or invalid."
 msgstr "激活的链接已过期的或无效的。"
 
-#: autoload.php:1072
+#: autoload.php:1073
 #: core/classes/class.arm_manage_subscription.php:475
 #: core/classes/class.arm_manage_subscription.php:1398
 #: core/classes/class.arm_shortcodes.php:2429
@@ -461,7 +461,7 @@ msgstr "添加到菜单"
 msgid "Add URL"
 msgstr "添加URL"
 
-#: autoload.php:3629
+#: autoload.php:3630
 #: core/classes/class.arm_social_feature.php:396
 #@ armember-membership
 msgid "Add-On listing is currently unavailable. Please try again later."
@@ -502,20 +502,20 @@ msgstr "另外注意"
 msgid "Additional Shortcodes"
 msgstr "额外的简"
 
-#: autoload.php:1852
-#: autoload.php:3998
+#: autoload.php:1853
+#: autoload.php:3997
 #@ armember-membership
 msgid "Addon activated successfully."
 msgstr "插件激活的成功。"
 
-#: autoload.php:1853
-#: autoload.php:3999
+#: autoload.php:1854
+#: autoload.php:3998
 #@ armember-membership
 msgid "Addon deactivated successfully."
 msgstr "加活的成功。"
 
-#: autoload.php:1850
-#: autoload.php:3996
+#: autoload.php:1851
+#: autoload.php:3995
 #@ armember-membership
 msgid "Addon installed successfully."
 msgstr "插件的安装成功。"
@@ -577,12 +577,12 @@ msgstr "之后，添加新的菜单项目。 默认的访问规则将适用于�
 msgid "After Basic SignUp Redirection Rules"
 msgstr "后基本重定向注册规则"
 
-#: autoload.php:1786
+#: autoload.php:1787
 #@ armember-membership
 msgid "After certain time of post is modified"
 msgstr "后一定时间后的修改"
 
-#: autoload.php:1785
+#: autoload.php:1786
 #@ armember-membership
 msgid "After certain time of post is published"
 msgstr "后某一时间后发布"
@@ -831,7 +831,7 @@ msgstr "任何条件"
 msgid "Any Date or Time Archive"
 msgstr "任何日期或时间档案"
 
-#: autoload.php:675
+#: autoload.php:676
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:35
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:139
 #: core/classes/arm_builder/class.arm_bricks_builder_restriction.php:48
@@ -943,7 +943,7 @@ msgstr "存档的时间"
 msgid "Archive: Year"
 msgstr "档案：年"
 
-#: autoload.php:1830
+#: autoload.php:1831
 #@ armember-membership
 msgid "Are you sure to delete configuration?"
 msgstr "你确定要删除的配置？"
@@ -965,10 +965,10 @@ msgstr "你确定你想要激活"
 msgid "Are you sure you want to active this plan?"
 msgstr "你确定你想要活动的这种计划？"
 
-#: autoload.php:1854
-#: autoload.php:3925
-#: autoload.php:4000
-#: autoload.php:4003
+#: autoload.php:1855
+#: autoload.php:3924
+#: autoload.php:3999
+#: autoload.php:4002
 #@ armember-membership
 msgid "Are you sure you want to cancel subscription?"
 msgstr "你确定想要取消订阅？"
@@ -1051,15 +1051,15 @@ msgstr "你确定要删除这个交易？"
 msgid "Are you sure you want to delete your account? This will erase all of your account data from the site. To delete your account enter your password below."
 msgstr "你确定要删除你的帐户吗？ 这将删除所有的帐户数据的网站。 删除帐户输入您的密码如下。"
 
-#: autoload.php:1779
-#: autoload.php:3921
+#: autoload.php:1780
+#: autoload.php:3920
 #: core/classes/class.arm_members_directory.php:348
 #@ armember-membership
 msgid "Are you sure you want to remove cover photo?"
 msgstr "你确定你想要去除盖子的照片？"
 
-#: autoload.php:1780
-#: autoload.php:3922
+#: autoload.php:1781
+#: autoload.php:3921
 #: core/classes/class.arm_members_directory.php:349
 #@ armember-membership
 msgid "Are you sure you want to remove profile photo?"
@@ -1157,7 +1157,7 @@ msgstr "ARMember关闭账户"
 msgid "ARMember Current Membership"
 msgstr "ARMember目前的成员"
 
-#: autoload.php:1347
+#: autoload.php:1348
 #@ armember-membership
 msgid "ARMember Debug"
 msgstr "ARMember调试"
@@ -1182,8 +1182,8 @@ msgstr "ARMember形式"
 msgid "ARMember Latest Members"
 msgstr "ARMember最新成员"
 
-#: autoload.php:1230
-#: autoload.php:1233
+#: autoload.php:1231
+#: autoload.php:1234
 #@ armember-membership
 msgid "ARMember Lite"
 msgstr "ARMember Lite"
@@ -1199,12 +1199,12 @@ msgstr "ARMember Lite - Membership Plugin"
 msgid "ARMember Lite - Sorry to see you go"
 msgstr "ARMember Lite - 很遗憾看见您离开"
 
-#: autoload.php:970
+#: autoload.php:971
 #@ armember-membership
 msgid "ARMember Lite recommend to use Minimum PHP version 5.6 or greater."
 msgstr "ARMember Lite 建议使用最低 PHP 版本 5.6 或更高版本。"
 
-#: autoload.php:976
+#: autoload.php:977
 #@ armember-membership
 msgid "ARMember Lite requires PHP GD Extension module at the server. And it seems that it's not installed or activated. Please contact your hosting provider for the same."
 msgstr "ARMember Lite 需要服务器上的 PHP GD 扩展模块。 而且似乎没有安装或激活。 请联系您的托管提供商以获取相同信息。"
@@ -1997,7 +1997,7 @@ msgstr "按钮风格"
 msgid "Button Text"
 msgstr "按钮文本"
 
-#: autoload.php:1078
+#: autoload.php:1079
 #@ armember-membership
 msgid "by admin"
 msgstr "通过管理员"
@@ -2173,7 +2173,7 @@ msgstr "取消用户订阅。"
 msgid "Canceled"
 msgstr "取消"
 
-#: autoload.php:1084
+#: autoload.php:1085
 #: core/classes/class.arm_shortcodes.php:2803
 #: core/views/arm_transactions_add.php:120
 #: core/views/arm_transactions_list_records.php:863
@@ -2191,8 +2191,8 @@ msgstr "取消"
 msgid "Cannot extract data from uploaded file or no file was uploaded."
 msgstr "无法从中提取数据上传文件或没有文件上传。"
 
-#: autoload.php:1843
-#: autoload.php:3989
+#: autoload.php:1844
+#: autoload.php:3988
 #@ armember-membership
 msgid "Cannot Set Past Dates."
 msgstr "不能设置过去的日期。"
@@ -2610,8 +2610,8 @@ msgstr "点击预览"
 msgid "Clone from existing forms"
 msgstr "克隆将从现有的形式"
 
-#: autoload.php:3552
-#: autoload.php:3791
+#: autoload.php:3553
+#: autoload.php:3790
 #: core/classes/class.arm_manage_subscription.php:1485
 #: core/classes/class.arm_members.php:572
 #: core/classes/class.arm_subscription_plans.php:275
@@ -2721,8 +2721,8 @@ msgstr "配置"
 msgid "Configure More Gateways"
 msgstr "配置更多的网关"
 
-#: autoload.php:1248
 #: autoload.php:1249
+#: autoload.php:1250
 #: core/views/arm_membership_setup_list.php:326
 #@ armember-membership
 msgid "Configure Plan + Signup Page"
@@ -2799,8 +2799,8 @@ msgstr "恭喜你！"
 msgid "Content Access"
 msgstr "内容访问"
 
-#: autoload.php:1258
 #: autoload.php:1259
+#: autoload.php:1260
 #: core/views/arm_access_rules.php:95
 #@ armember-membership
 msgid "Content Access Rules"
@@ -2868,7 +2868,7 @@ msgstr "国家/地区"
 msgid "Coupon"
 msgstr "优惠券"
 
-#: autoload.php:1091
+#: autoload.php:1092
 #: core/widgets/arm_elm_widgets/class.arm_latest_user_list_element_add.php:98
 #: core/widgets/class.arm_widgetlatestMembers.php:188
 #@ armember-membership
@@ -2997,7 +2997,7 @@ msgstr "当前用户的个人资料网址的图案"
 msgid "Custom Color"
 msgstr "定制颜色"
 
-#: autoload.php:1858
+#: autoload.php:1859
 #: core/views/arm_global_settings.php:437
 #@ armember-membership
 msgid "Custom Currency"
@@ -3282,8 +3282,8 @@ msgstr "默认的限制"
 msgid "Default Restriction Rules"
 msgstr "默认的规则的限制"
 
-#: autoload.php:1826
-#: autoload.php:3971
+#: autoload.php:1827
+#: autoload.php:3970
 #: core/classes/class.arm_access_rules.php:109
 #@ armember-membership
 msgid "Default Rules Saved Successfully."
@@ -3294,7 +3294,7 @@ msgstr "默认规则救了成功。"
 msgid "Default Selected Plan"
 msgstr "默认选择的计划"
 
-#: autoload.php:3027
+#: autoload.php:3028
 #: core/views/upgrade_latest_data.php:783
 #@ armember-membership
 msgid "Default Set"
@@ -3405,7 +3405,7 @@ msgstr "桌面上看"
 msgid "Digital Transfer"
 msgstr "数字传送"
 
-#: autoload.php:1090
+#: autoload.php:1091
 #: core/widgets/arm_elm_widgets/class.arm_latest_user_list_element_add.php:97
 #: core/widgets/class.arm_widgetlatestMembers.php:187
 #@ armember-membership
@@ -3688,14 +3688,14 @@ msgstr "吉布提"
 msgid "Do not cancel subscription until plan expired"
 msgstr "不要取消预订到计划的过期"
 
-#: autoload.php:3550
+#: autoload.php:3551
 #@ armember-membership
 msgid "Do not show again."
 msgstr "不再次显示。"
 
-#: autoload.php:1312
 #: autoload.php:1313
-#: autoload.php:3785
+#: autoload.php:1314
+#: autoload.php:3784
 #: core/views/arm_setup_wizard.php:1290
 #@ armember-membership
 msgid "Documentation"
@@ -3800,7 +3800,7 @@ msgstr "东帝汶"
 msgid "Ecuador"
 msgstr "厄瓜多尔"
 
-#: autoload.php:1857
+#: autoload.php:1858
 #: core/classes/class.armemberlite.php:96
 #: core/views/arm_email_templates.php:86
 #: core/views/arm_global_settings.php:437
@@ -3989,8 +3989,8 @@ msgstr "电子邮件通知"
 msgid "Email notification scheduler setting"
 msgstr "电子邮件通知预定程序设置"
 
-#: autoload.php:1273
 #: autoload.php:1274
+#: autoload.php:1275
 #: core/views/arm_email_notification.php:9
 #@ armember-membership
 msgid "Email Notifications"
@@ -4016,8 +4016,8 @@ msgstr "电子邮件不应包含不好的话。"
 msgid "Email Subject Required."
 msgstr "电子邮件主题需要。"
 
-#: autoload.php:1840
-#: autoload.php:3983
+#: autoload.php:1841
+#: autoload.php:3982
 #: core/classes/class.arm_email_settings.php:207
 #: core/classes/class.arm_email_settings.php:233
 #@ armember-membership
@@ -4223,7 +4223,7 @@ msgstr "厄立特里亚"
 msgid "ERROR"
 msgstr "错误"
 
-#: autoload.php:3831
+#: autoload.php:3830
 #@ armember-membership
 msgid "Error"
 msgstr "错误"
@@ -4342,8 +4342,8 @@ msgstr "过期的活链接"
 msgid "Expire Date"
 msgstr "到期日期"
 
-#: autoload.php:1845
-#: autoload.php:3991
+#: autoload.php:1846
+#: autoload.php:3990
 #@ armember-membership
 msgid "Expire date can not be earlier than current date."
 msgstr "到期日起不能早于当前的日期。"
@@ -4382,7 +4382,7 @@ msgstr "到期年份的标签"
 msgid "Expire/Next Renewal"
 msgstr "过期/下一次更新"
 
-#: autoload.php:1081
+#: autoload.php:1082
 #: core/classes/class.arm_manage_subscription.php:470
 #: core/classes/class.arm_manage_subscription.php:1393
 #: core/views/arm_manage_subscription_list.php:988
@@ -4464,7 +4464,7 @@ msgstr "延伸天"
 msgid "Facebook"
 msgstr "Facebook"
 
-#: autoload.php:1089
+#: autoload.php:1090
 #: core/widgets/class.arm_widgetlatestMembers.php:186
 #@ armember-membership
 msgid "Fade"
@@ -4519,7 +4519,7 @@ msgstr "法罗群岛"
 msgid "Farsi/Persian"
 msgstr "波斯语/波斯"
 
-#: autoload.php:3786
+#: autoload.php:3785
 #@ armember-membership
 msgid "Feature Request"
 msgstr "功能要求"
@@ -4620,8 +4620,8 @@ msgstr "领域可以包含在付款的形式"
 msgid "Fiji"
 msgstr "斐济"
 
-#: autoload.php:1777
-#: autoload.php:3919
+#: autoload.php:1778
+#: autoload.php:3918
 #@ armember-membership
 msgid "File is not allowed bigger than {SIZE}."
 msgstr "文件不允许大于 {SIZE}。"
@@ -4893,8 +4893,8 @@ msgstr "形式的背景"
 msgid "Form Border"
 msgstr "形式的边界"
 
-#: autoload.php:1805
-#: autoload.php:3950
+#: autoload.php:1806
+#: autoload.php:3949
 #@ armember-membership
 msgid "Form deleted successfully."
 msgstr "形成删除成功。"
@@ -4958,8 +4958,8 @@ msgstr "形式填充"
 msgid "Form Position"
 msgstr "形成位置"
 
-#: autoload.php:1803
-#: autoload.php:3948
+#: autoload.php:1804
+#: autoload.php:3947
 #@ armember-membership
 msgid "Form Set Deleted Successfully."
 msgstr "形成集删除成功。"
@@ -5143,8 +5143,8 @@ msgstr "一般消息"
 msgid "General Options"
 msgstr "一般的选择"
 
-#: autoload.php:1284
 #: autoload.php:1285
+#: autoload.php:1286
 #: core/views/arm_general_settings.php:14
 #: core/views/arm_general_settings.php:51
 #@ armember-membership
@@ -5287,9 +5287,9 @@ msgstr "格陵兰"
 msgid "Grenada"
 msgstr "格林纳达"
 
-#: autoload.php:1119
-#: autoload.php:1317
+#: autoload.php:1120
 #: autoload.php:1318
+#: autoload.php:1319
 #@ armember-membership
 msgid "Growth Plugins"
 msgstr "增长的插件"
@@ -5351,7 +5351,7 @@ msgstr "希伯来语/以色列"
 msgid "Height"
 msgstr "高度"
 
-#: autoload.php:3543
+#: autoload.php:3544
 #@ armember-membership
 msgid "Help Tutorial"
 msgstr "帮助教程"
@@ -5372,7 +5372,7 @@ msgstr "在这里，你会得到所有不同种类的免费/支付计划的会�
 msgid "Here you will get all different types of Payment gateways to purchase a membership plan."
 msgstr "在这里，你会得到所有不同类型的付款网关，以购买一个成员的计划。"
 
-#: autoload.php:636
+#: autoload.php:637
 #, php-format
 #@ armember-membership
 msgid "Hey, you've been using %1$sARMember Lite%2$s for a long time. %3$sCould you please do us a BIG favor and give it a 5-star rating on WordPress to help us spread the word and boost our motivation. %4$sYour help is much appreciated. Thank you very much - %5$sRepute InfoSystems%6$s"
@@ -5422,7 +5422,7 @@ msgstr "隐藏管理栏"
 msgid "Hide admin bar for non-admin users?"
 msgstr "隐藏管理条对非管理的用户？"
 
-#: autoload.php:703
+#: autoload.php:704
 #: core/views/arm_tinymce_options_shortcodes.php:1136
 #: core/widgets/arm_elm_widgets/class.arm_partial_content_restriction_shortcode.php:64
 #@ armember-membership
@@ -5614,7 +5614,7 @@ msgstr "匈牙利"
 msgid "Hurray!! Everything is ready to create your first membership site"
 msgstr "万岁!! 一切都准备好了要创建第一个成员网站"
 
-#: autoload.php:640
+#: autoload.php:641
 #@ armember-membership
 msgid "I already did"
 msgstr "我已经做到了"
@@ -5814,7 +5814,7 @@ msgstr "在审判"
 msgid "Inactivate"
 msgstr "活"
 
-#: autoload.php:1073
+#: autoload.php:1074
 #@ armember-membership
 msgid "Inactive"
 msgstr "不活动"
@@ -6110,7 +6110,7 @@ msgstr "日本"
 msgid "Japanese/Japan"
 msgstr "日本/日本"
 
-#: autoload.php:3787
+#: autoload.php:3786
 #@ armember-membership
 msgid "Join Community"
 msgstr "加入社区"
@@ -6521,9 +6521,9 @@ msgstr "装载更多的链接"
 msgid "Loading"
 msgstr "加载"
 
-#: autoload.php:1784
-#: autoload.php:3926
-#: autoload.php:4004
+#: autoload.php:1785
+#: autoload.php:3925
+#: autoload.php:4003
 #@ armember-membership
 msgid "Loading.."
 msgstr "装载.."
@@ -6570,7 +6570,7 @@ msgstr "登录信息"
 msgid "Logged in Message"
 msgstr "登录信息"
 
-#: autoload.php:677
+#: autoload.php:678
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:37
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:141
 #: core/classes/arm_builder/class.arm_bricks_builder_restriction.php:50
@@ -6600,8 +6600,8 @@ msgstr "登录"
 msgid "Login"
 msgstr "登录"
 
-#: autoload.php:1791
-#: autoload.php:3936
+#: autoload.php:1792
+#: autoload.php:3935
 #@ armember-membership
 msgid "Login attempts cleared successfully."
 msgstr "登录尝试清除成功。"
@@ -6616,8 +6616,8 @@ msgstr "登录失败，请再试一次。"
 msgid "Login Form Options"
 msgstr "登录形式的选择"
 
-#: autoload.php:1792
-#: autoload.php:3937
+#: autoload.php:1793
+#: autoload.php:3936
 #@ armember-membership
 msgid "Login History cleared successfully."
 msgstr "登录的历史清除成功。"
@@ -6752,74 +6752,74 @@ msgstr "马里"
 msgid "Malta"
 msgstr "马耳他"
 
-#: autoload.php:1107
+#: autoload.php:1108
 #@ armember-membership
 msgid "Manage Access Rules"
 msgstr "管理访问的规则"
 
-#: autoload.php:1115
+#: autoload.php:1116
 #@ armember-membership
 msgid "Manage Block Settings"
 msgstr "管理框设置"
 
-#: autoload.php:1111
+#: autoload.php:1112
 #@ armember-membership
 msgid "Manage Communication"
 msgstr "管理通讯"
 
-#: autoload.php:1110
+#: autoload.php:1111
 #@ armember-membership
 msgid "Manage Email Notifications"
 msgstr "管理电子邮件通知"
 
-#: autoload.php:1114
+#: autoload.php:1115
 #@ armember-membership
 msgid "Manage Feature Settings"
 msgstr "管理功能的设置"
 
-#: autoload.php:1106
+#: autoload.php:1107
 #@ armember-membership
 msgid "Manage Form Settings"
 msgstr "管理形式设置"
 
-#: autoload.php:1253
 #: autoload.php:1254
+#: autoload.php:1255
 #: core/views/arm_manage_forms.php:12
 #@ armember-membership
 msgid "Manage Forms"
 msgstr "管理形式"
 
-#: autoload.php:1113
+#: autoload.php:1114
 #@ armember-membership
 msgid "Manage General Settings"
 msgstr "管理一般的设置"
 
-#: autoload.php:1118
+#: autoload.php:1119
 #@ armember-membership
 msgid "Manage Import/Export"
 msgstr "管理进口/出口"
 
-#: autoload.php:1112
+#: autoload.php:1113
 #@ armember-membership
 msgid "Manage Member Templates"
 msgstr "管理成员的模板"
 
-#: autoload.php:1103
-#: autoload.php:1238
+#: autoload.php:1104
 #: autoload.php:1239
+#: autoload.php:1240
 #: core/views/arm_members_list.php:5
 #@ armember-membership
 msgid "Manage Members"
 msgstr "管理成员"
 
-#: autoload.php:1117
+#: autoload.php:1118
 #@ armember-membership
 msgid "Manage Payment Gateways"
 msgstr "管理支付网关"
 
-#: autoload.php:1104
-#: autoload.php:1243
+#: autoload.php:1105
 #: autoload.php:1244
+#: autoload.php:1245
 #: core/views/arm_members_list.php:130
 #@ armember-membership
 msgid "Manage Plans"
@@ -6831,20 +6831,20 @@ msgstr "管理计划"
 msgid "Manage Preset Form Fields"
 msgstr "管理预先设定的形式领域"
 
-#: autoload.php:1105
+#: autoload.php:1106
 #@ armember-membership
 msgid "Manage Setups"
 msgstr "管理的设置"
 
-#: autoload.php:1102
-#: autoload.php:1263
+#: autoload.php:1103
 #: autoload.php:1264
+#: autoload.php:1265
 #: core/views/arm_manage_subscription_list.php:1068
 #@ armember-membership
 msgid "Manage Subscriptions"
 msgstr "管理订阅"
 
-#: autoload.php:1109
+#: autoload.php:1110
 #@ armember-membership
 msgid "Manage Transactions"
 msgstr "管理事务"
@@ -7089,9 +7089,9 @@ msgstr "成员的模板目录"
 msgid "Members Profile Page"
 msgstr "成员的个人资料页"
 
-#: autoload.php:690
-#: autoload.php:694
-#: autoload.php:698
+#: autoload.php:691
+#: autoload.php:695
+#: autoload.php:699
 #: core/classes/class.arm_manage_subscription.php:991
 #: core/classes/class.arm_manage_subscription.php:1224
 #: core/classes/class.arm_manage_subscription.php:1573
@@ -7160,7 +7160,7 @@ msgstr "会员计划"
 msgid "Membership plan is already exist for selected member."
 msgstr "成员资格的计划是已经存在于为选定的部件。"
 
-#: autoload.php:705
+#: autoload.php:706
 #: core/classes/arm_builder/class.arm_bricks_builder_restriction.php:81
 #: core/classes/arm_builder/class.arm_divi_builder_restriction.php:86
 #: core/classes/arm_builder/class.arm_fusion_builder_restriction.php:91
@@ -7202,7 +7202,7 @@ msgstr "成员资格设置导已经成功更新。"
 msgid "MEMBERSHIP SHORTCODES"
 msgstr "成员资格的简"
 
-#: autoload.php:689
+#: autoload.php:690
 #: core/views/arm_tinymce_options_shortcodes.php:21
 #@ armember-membership
 msgid "Membership Shortcodes"
@@ -7241,21 +7241,21 @@ msgstr "消息"
 msgid "Message can not be left blank."
 msgstr "消息可能不会留下空白。"
 
-#: autoload.php:1819
-#: autoload.php:3964
+#: autoload.php:1820
+#: autoload.php:3963
 #: core/classes/class.arm_manage_communication.php:29
 #@ armember-membership
 msgid "Message has been deleted successfully."
 msgstr "信息已删除成功。"
 
-#: autoload.php:1841
-#: autoload.php:3984
+#: autoload.php:1842
+#: autoload.php:3983
 #@ armember-membership
 msgid "Message Updated Successfully."
 msgstr "消息更新的成功。"
 
-#: autoload.php:1821
-#: autoload.php:3966
+#: autoload.php:1822
+#: autoload.php:3965
 #: core/classes/class.arm_manage_communication.php:67
 #@ armember-membership
 msgid "Message(s) has been deleted successfully."
@@ -7510,7 +7510,7 @@ msgstr "纳米比亚"
 msgid "Nauru"
 msgstr "瑙鲁"
 
-#: autoload.php:3793
+#: autoload.php:3792
 #@ armember-membership
 msgid "Need Help?"
 msgstr "需要帮忙吗？"
@@ -7742,8 +7742,8 @@ msgstr "没有任何交易找到。"
 msgid "No cycles due"
 msgstr "没有周期因"
 
-#: autoload.php:3850
-#: autoload.php:3855
+#: autoload.php:3849
+#: autoload.php:3854
 #@ armember-membership
 msgid "No data found"
 msgstr "没有数据发现"
@@ -7909,7 +7909,7 @@ msgstr "没有可用的用户"
 msgid "No Users Found."
 msgstr "不用户找到。"
 
-#: autoload.php:639
+#: autoload.php:640
 #@ armember-membership
 msgid "No, Maybe later"
 msgstr "不，也许以后"
@@ -7929,7 +7929,7 @@ msgstr "没有。"
 msgid "No. Of Members Per Page"
 msgstr "没有。 成员每页"
 
-#: autoload.php:676
+#: autoload.php:677
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:36
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:140
 #: core/classes/arm_builder/class.arm_bricks_builder_restriction.php:49
@@ -8100,7 +8100,7 @@ msgstr "关闭"
 msgid "Ok"
 msgstr "\"确定\""
 
-#: autoload.php:638
+#: autoload.php:639
 #@ armember-membership
 msgid "OK, you deserve it"
 msgstr "好的，你应得的"
@@ -8167,14 +8167,14 @@ msgstr "只有号码"
 msgid "Oops, nothing found"
 msgstr "哎呀，什么都没发现"
 
-#: autoload.php:1856
-#: autoload.php:4005
+#: autoload.php:1857
+#: autoload.php:4004
 #@ armember-membership
 msgid "Oops, nothing found."
 msgstr "哎呀，什么都没发现。"
 
-#: autoload.php:1772
-#: autoload.php:3914
+#: autoload.php:1773
+#: autoload.php:3913
 #@ armember-membership
 msgid "Oops, there was a problem getting your information"
 msgstr "哎呀，有一个问题得到帐户信息"
@@ -8189,7 +8189,7 @@ msgstr "透明度"
 msgid "Open Settings & Styles"
 msgstr "开设置和风格"
 
-#: autoload.php:1828
+#: autoload.php:1829
 #@ armember-membership
 msgid "Opt-ins Settings Saved Successfully."
 msgstr "选择项设置保存的成功。"
@@ -8390,7 +8390,7 @@ msgstr "密码"
 msgid "Password can not be left blank"
 msgstr "密码不能留下空白"
 
-#: autoload.php:1793
+#: autoload.php:1794
 #: core/classes/class.arm_member_forms.php:342
 #: core/classes/class.arm_member_forms.php:838
 #: core/classes/class.arm_member_forms.php:7569
@@ -8539,7 +8539,7 @@ msgstr "付款周期"
 msgid "Payment Date"
 msgstr "付款日期"
 
-#: autoload.php:1083
+#: autoload.php:1084
 #@ armember-membership
 msgid "Payment Failed"
 msgstr "支付失败"
@@ -8604,8 +8604,8 @@ msgstr "支付网关。 如果你会拯救这个设置，于那些支付网关�
 msgid "Payment Gateways"
 msgstr "支付网关"
 
-#: autoload.php:1268
 #: autoload.php:1269
+#: autoload.php:1270
 #: core/views/arm_transactions.php:5
 #: core/views/arm_view_member.php:513
 #@ armember-membership
@@ -8727,7 +8727,7 @@ msgstr "贝宝API的用户名"
 msgid "Paypal API Username ( Sandbox)"
 msgstr "贝宝API用户名(沙箱)"
 
-#: autoload.php:1074
+#: autoload.php:1075
 #: core/classes/class.arm_members.php:3642
 #: core/classes/class.arm_members.php:3655
 #: core/classes/class.arm_members.php:4657
@@ -8871,7 +8871,7 @@ msgstr "计划于这个用户？"
 msgid "Plan has been added successfully."
 msgstr "计划已经增加成功。"
 
-#: autoload.php:3941
+#: autoload.php:3940
 #: core/classes/class.arm_subscription_plans.php:916
 #@ armember-membership
 msgid "Plan has been deleted successfully."
@@ -8955,8 +8955,8 @@ msgstr "计划状态改变了成功。"
 msgid "Plan Type"
 msgstr "计划的类型"
 
-#: autoload.php:1795
-#: autoload.php:3939
+#: autoload.php:1796
+#: autoload.php:3938
 #@ armember-membership
 msgid "Plan(s) has been deleted successfully."
 msgstr "计划(s)已被删除成功。"
@@ -9379,8 +9379,8 @@ msgstr "请选择文件。"
 msgid "Please select one option."
 msgstr "请选一个选项。"
 
-#: autoload.php:1790
-#: autoload.php:3935
+#: autoload.php:1791
+#: autoload.php:3934
 #: core/classes/class.arm_manage_communication.php:53
 #: core/classes/class.arm_members.php:1269
 #: core/classes/class.arm_members.php:2147
@@ -9488,8 +9488,8 @@ msgstr "请选择注册的形式。"
 msgid "Please select user."
 msgstr "请选择\"用户\"。"
 
-#: autoload.php:1789
-#: autoload.php:3934
+#: autoload.php:1790
+#: autoload.php:3933
 #: core/classes/class.arm_manage_communication.php:70
 #: core/classes/class.arm_members.php:1272
 #: core/classes/class.arm_transaction.php:610
@@ -9522,8 +9522,8 @@ msgstr "请指定"
 msgid "Please type your e-mail address."
 msgstr "请输入你的电子邮件地址。"
 
-#: autoload.php:1816
-#: autoload.php:3961
+#: autoload.php:1817
+#: autoload.php:3960
 #@ armember-membership
 msgid "Please upload appropriate file to import users."
 msgstr "请上适当的文件来进口用户。"
@@ -9714,8 +9714,8 @@ msgstr "配置文件的照片"
 msgid "Profile Template Name"
 msgstr "档模板的名字"
 
-#: autoload.php:1279
 #: autoload.php:1280
+#: autoload.php:1281
 #: core/views/arm_profile_editor.php:212
 #: core/views/arm_profiles_directories.php:22
 #@ armember-membership
@@ -10147,7 +10147,7 @@ msgstr "重新设置密码链接是无效的。"
 msgid "RESTRICT CONTENT"
 msgstr "限制内容"
 
-#: autoload.php:701
+#: autoload.php:702
 #: core/classes/arm_builder/class.arm_bricks_builder_restriction.php:69
 #: core/classes/arm_builder/class.arm_divi_builder_restriction.php:69
 #: core/views/arm_tinymce_options_shortcodes.php:1129
@@ -10238,14 +10238,14 @@ msgstr "圆形的风格"
 msgid "RTL"
 msgstr "RTL"
 
-#: autoload.php:1807
-#: autoload.php:3952
+#: autoload.php:1808
+#: autoload.php:3951
 #@ armember-membership
 msgid "Rule has been deleted successfully."
 msgstr "规则已被删除成功。"
 
-#: autoload.php:1809
-#: autoload.php:3954
+#: autoload.php:1810
+#: autoload.php:3953
 #@ armember-membership
 msgid "Rule(s) has been deleted successfully."
 msgstr "规则(s)已被删除成功。"
@@ -10970,8 +10970,8 @@ msgstr "设置在是太难了"
 msgid "Setting(s) has been imported successfully"
 msgstr "设置(s)已导成功"
 
-#: autoload.php:1824
-#: autoload.php:3969
+#: autoload.php:1825
+#: autoload.php:3968
 #@ armember-membership
 msgid "Settings has been saved successfully."
 msgstr "设置已经成功保存。"
@@ -10983,8 +10983,8 @@ msgstr "设置已经成功保存。"
 msgid "Settings Saved Successfully."
 msgstr "设置保存的成功。"
 
-#: autoload.php:1801
-#: autoload.php:3946
+#: autoload.php:1802
+#: autoload.php:3945
 #: core/classes/class.arm_membership_setup.php:5077
 #@ armember-membership
 msgid "Setup has been deleted successfully."
@@ -11007,8 +11007,8 @@ msgstr "安装的名字"
 msgid "Setup name can not be left blank."
 msgstr "设置名称可能不会留下空白。"
 
-#: autoload.php:1799
-#: autoload.php:3944
+#: autoload.php:1800
+#: autoload.php:3943
 #@ armember-membership
 msgid "Setup(s) has been deleted successfully."
 msgstr "设置(s)已被删除成功。"
@@ -11023,7 +11023,7 @@ msgstr "塞舌尔"
 msgid "Short Code"
 msgstr "短短的码"
 
-#: autoload.php:690
+#: autoload.php:691
 #: core/classes/class.arm_member_forms.php:1130
 #: core/classes/class.arm_membership_setup.php:228
 #: core/views/arm_form_editor.php:218
@@ -11125,7 +11125,7 @@ msgstr "显示"
 msgid "Show / Hide columns"
 msgstr "显或隐藏列"
 
-#: autoload.php:702
+#: autoload.php:703
 #: core/views/arm_tinymce_options_shortcodes.php:1137
 #: core/widgets/arm_elm_widgets/class.arm_partial_content_restriction_shortcode.php:65
 #@ armember-membership
@@ -11203,7 +11203,7 @@ msgstr "跳过导和手动设置"
 msgid "Skype"
 msgstr "Skype"
 
-#: autoload.php:1088
+#: autoload.php:1089
 #: core/widgets/arm_elm_widgets/class.arm_latest_user_list_element_add.php:95
 #: core/widgets/class.arm_widgetlatestMembers.php:185
 #@ armember-membership
@@ -11347,8 +11347,8 @@ msgstr "抱歉，事情出了错。 请联系网站管理员。"
 msgid "Sorry, Something went wrong. Please contact to site administrator."
 msgstr "抱歉，事情出了错。 请联系向网站管理员。"
 
-#: autoload.php:1788
-#: autoload.php:3933
+#: autoload.php:1789
+#: autoload.php:3932
 #: core/classes/class.arm_access_rules.php:506
 #: core/classes/class.arm_email_settings.php:188
 #: core/classes/class.arm_email_settings.php:221
@@ -11384,8 +11384,8 @@ msgstr "抱歉，事情出了错。 请再试一次。"
 msgid "Sorry, Something went wrong. please try again."
 msgstr "抱歉，事情出了错。 请再试一次。"
 
-#: autoload.php:1776
-#: autoload.php:3918
+#: autoload.php:1777
+#: autoload.php:3917
 #@ armember-membership
 msgid "Sorry, this file type is not permitted for security reasons."
 msgstr "对不起，这一文件类型是不允许出于安全原因。"
@@ -11403,7 +11403,7 @@ msgstr "对不起，你不能加入这一领域，两次在形成"
 msgid "Sorry, You do not have permission to perform this action"
 msgstr "对不起，你没有权限来执行这个行动"
 
-#: autoload.php:4084
+#: autoload.php:4083
 #: core/classes/class.arm_manage_communication.php:25
 #: core/classes/class.arm_manage_communication.php:56
 #: core/classes/class.arm_manage_subscription.php:909
@@ -11418,13 +11418,13 @@ msgstr "对不起，你没有权限来执行这一行动。"
 msgid "Sorry, You Don't Have Feed Access"
 msgstr "对不起，你没有饲料的访问"
 
-#: autoload.php:4100
+#: autoload.php:4099
 #@ armember-membership
 msgid "Sorry, Your request can not process due to nonce not found."
 msgstr "对不起，你的要求不能过程中由于现时没有找到。"
 
-#: autoload.php:3832
-#: autoload.php:4107
+#: autoload.php:3831
+#: autoload.php:4106
 #@ armember-membership
 msgid "Sorry, Your request can not process due to security reason."
 msgstr "对不起，你的要求不能过程中由于安全原因。"
@@ -11541,8 +11541,8 @@ msgstr "标准样式"
 msgid "Start Date"
 msgstr "开始日期"
 
-#: autoload.php:1844
-#: autoload.php:3990
+#: autoload.php:1845
+#: autoload.php:3989
 #@ armember-membership
 msgid "Start date can not be earlier than current date."
 msgstr "开始日期可能不会早于当前的日期。"
@@ -11787,7 +11787,7 @@ msgstr "摘要文本"
 msgid "Suriname"
 msgstr "苏里南"
 
-#: autoload.php:1080
+#: autoload.php:1081
 #: core/classes/class.arm_manage_subscription.php:458
 #: core/classes/class.arm_manage_subscription.php:1381
 #: core/classes/class.arm_members.php:632
@@ -11928,14 +11928,14 @@ msgstr "模板5"
 msgid "Template found."
 msgstr "模板发现。"
 
-#: autoload.php:1836
-#: autoload.php:3979
+#: autoload.php:1837
+#: autoload.php:3978
 #@ armember-membership
 msgid "Template has been added successfully."
 msgstr "模板已加入成功。"
 
-#: autoload.php:1838
-#: autoload.php:3981
+#: autoload.php:1839
+#: autoload.php:3980
 #@ armember-membership
 msgid "Template has been deleted successfully."
 msgstr "模板已被删除成功。"
@@ -11945,16 +11945,16 @@ msgstr "模板已被删除成功。"
 msgid "Template Name"
 msgstr "模板的名字"
 
-#: autoload.php:1832
-#: autoload.php:3975
+#: autoload.php:1833
+#: autoload.php:3974
 #: core/classes/class.arm_email_settings.php:135
 #: core/classes/class.arm_members_directory.php:1183
 #@ armember-membership
 msgid "Template not found."
 msgstr "模板没有找到。"
 
-#: autoload.php:1833
-#: autoload.php:3976
+#: autoload.php:1834
+#: autoload.php:3975
 #: core/classes/class.arm_members_directory.php:322
 #: core/classes/class.arm_members_directory.php:325
 #@ armember-membership
@@ -11984,7 +11984,7 @@ msgstr "终止"
 msgid "Terminate Members"
 msgstr "终止成员"
 
-#: autoload.php:1075
+#: autoload.php:1076
 #@ armember-membership
 msgid "Terminated"
 msgstr "终止"
@@ -12106,8 +12106,8 @@ msgstr "上载的文件超过upload_max_filesize指令在php.ini。"
 msgid "The uploaded file was only partially uploaded."
 msgstr "上载的文件是仅仅部分上载。"
 
-#: autoload.php:1771
-#: autoload.php:3913
+#: autoload.php:1772
+#: autoload.php:3912
 #@ armember-membership
 msgid "The user chose not to grant permissions or closed the pop-up"
 msgstr "用户还没有授权或关闭的弹出窗口"
@@ -12146,128 +12146,128 @@ msgstr "然后重定向到"
 msgid "There is a error while adding form, Please try again."
 msgstr "有一个错误而增加的形式，请再试一次。"
 
-#: autoload.php:1837
-#: autoload.php:3980
+#: autoload.php:1838
+#: autoload.php:3979
 #@ armember-membership
 msgid "There is a error while adding template, please try again."
 msgstr "有一个错误而增加的模板，请再试一次。"
 
-#: autoload.php:1775
-#: autoload.php:3917
+#: autoload.php:1776
+#: autoload.php:3916
 #@ armember-membership
 msgid "There is a error while closing account, please try again."
 msgstr "有一个错误，同时关闭账户，请再试一次。"
 
-#: autoload.php:1773
-#: autoload.php:3915
+#: autoload.php:1774
+#: autoload.php:3914
 #@ armember-membership
 msgid "There is a error while copying, please try again"
 msgstr "有一个错误而拷贝，请再试一次"
 
-#: autoload.php:1804
-#: autoload.php:3949
+#: autoload.php:1805
+#: autoload.php:3948
 #@ armember-membership
 msgid "There is a error while deleting form set, please try again."
 msgstr "有一个错误，同时删除的形式设定的，请再试一次。"
 
-#: autoload.php:1806
-#: autoload.php:3951
+#: autoload.php:1807
+#: autoload.php:3950
 #@ armember-membership
 msgid "There is a error while deleting form, please try again."
 msgstr "有一个错误，同时删除的形式，请再试一次。"
 
-#: autoload.php:1831
-#: autoload.php:3974
+#: autoload.php:1832
+#: autoload.php:3973
 #@ armember-membership
 msgid "There is a error while deleting member activities, please try again."
 msgstr "有一个错误，同时删除件的活动，请再试一次。"
 
-#: autoload.php:1822
-#: autoload.php:3967
+#: autoload.php:1823
+#: autoload.php:3966
 #@ armember-membership
 msgid "There is a error while deleting Message(s), please try again."
 msgstr "有一个错误，同时删除信(s)，请再试一次。"
 
-#: autoload.php:1820
-#: autoload.php:3965
+#: autoload.php:1821
+#: autoload.php:3964
 #@ armember-membership
 msgid "There is a error while deleting Message, please try again."
 msgstr "有一个错误，同时删除消息，请再试一次。"
 
-#: autoload.php:1796
-#: autoload.php:3940
+#: autoload.php:1797
+#: autoload.php:3939
 #@ armember-membership
 msgid "There is a error while deleting Plan(s), please try again."
 msgstr "有一个错误，同时删除的计划(s)，请再试一次。"
 
-#: autoload.php:1797
-#: autoload.php:3942
+#: autoload.php:1798
+#: autoload.php:3941
 #@ armember-membership
 msgid "There is a error while deleting Plan, please try again."
 msgstr "有一个错误，同时删除的计划，请再试一次。"
 
-#: autoload.php:1810
-#: autoload.php:3955
+#: autoload.php:1811
+#: autoload.php:3954
 #@ armember-membership
 msgid "There is a error while deleting Rule(s), please try again."
 msgstr "有一个错误，同时删除规则的(s)，请再试一次。"
 
-#: autoload.php:1808
-#: autoload.php:3953
+#: autoload.php:1809
+#: autoload.php:3952
 #@ armember-membership
 msgid "There is a error while deleting Rule, please try again."
 msgstr "有一个错误，同时删除规则，请再试一次。"
 
-#: autoload.php:1800
-#: autoload.php:3945
+#: autoload.php:1801
+#: autoload.php:3944
 #@ armember-membership
 msgid "There is a error while deleting Setup(s), please try again."
 msgstr "有一个错误，同时删除Setup(s)，请再试一次。"
 
-#: autoload.php:1802
-#: autoload.php:3947
+#: autoload.php:1803
+#: autoload.php:3946
 #@ armember-membership
 msgid "There is a error while deleting Setup, please try again."
 msgstr "有一个错误，同时删除置，请再试一次。"
 
-#: autoload.php:1839
-#: autoload.php:3982
+#: autoload.php:1840
+#: autoload.php:3981
 #@ armember-membership
 msgid "There is a error while deleting template, please try again."
 msgstr "有一个错误，同时删除的模板，请再试一次。"
 
-#: autoload.php:1815
-#: autoload.php:3960
+#: autoload.php:1816
+#: autoload.php:3959
 #@ armember-membership
 msgid "There is a error while displaying ARMember CSS Class Information, Please Try Again."
 msgstr "有一个错误的话，显示ARMember CSS类信息，请再试一次。"
 
-#: autoload.php:1814
-#: autoload.php:3959
+#: autoload.php:1815
+#: autoload.php:3958
 #@ armember-membership
 msgid "There is a error while displaying members activities detail, Please try again."
 msgstr "有一个错误的话，显示成员活动的细节，请再试一次。"
 
-#: autoload.php:1812
-#: autoload.php:3957
+#: autoload.php:1813
+#: autoload.php:3956
 #@ armember-membership
 msgid "There is a error while generating invoice of transaction detail, Please try again."
 msgstr "有一个错误而产生的发票的交易的细节，请再试一次。"
 
-#: autoload.php:1813
-#: autoload.php:3958
+#: autoload.php:1814
+#: autoload.php:3957
 #@ armember-membership
 msgid "There is a error while generating preview of members detail, Please try again."
 msgstr "有一个错误而产生的预览成员详细说明，请再试一次。"
 
-#: autoload.php:1835
-#: autoload.php:3978
+#: autoload.php:1836
+#: autoload.php:3977
 #@ armember-membership
 msgid "There is a error while generating preview of template, Please try again."
 msgstr "有一个错误而产生的预览的模板，请再试一次。"
 
-#: autoload.php:1811
-#: autoload.php:3956
+#: autoload.php:1812
+#: autoload.php:3955
 #@ armember-membership
 msgid "There is a error while generating preview of transaction detail, Please try again."
 msgstr "有一个错误而产生的预览事务的细节，请再试一次。"
@@ -12277,19 +12277,19 @@ msgstr "有一个错误而产生的预览事务的细节，请再试一次。"
 msgid "There is a error while updating access rules, please try again."
 msgstr "有一个错误，同时更新访问权限的规则，请再试一次。"
 
-#: autoload.php:1829
+#: autoload.php:1830
 #@ armember-membership
 msgid "There is a error while updating opt-ins settings, please try again."
 msgstr "有一个错误，同时更新选择项的设置，请再试一次。"
 
-#: autoload.php:1827
-#: autoload.php:3972
+#: autoload.php:1828
+#: autoload.php:3971
 #@ armember-membership
 msgid "There is a error while updating rules, please try again."
 msgstr "有一个错误，同时更新规则，请再试一次。"
 
-#: autoload.php:1825
-#: autoload.php:3970
+#: autoload.php:1826
+#: autoload.php:3969
 #: core/classes/class.arm_global_settings.php:1761
 #: core/classes/class.arm_members_directory.php:305
 #: core/classes/class.arm_members_directory.php:308
@@ -12298,8 +12298,8 @@ msgstr "有一个错误，同时更新规则，请再试一次。"
 msgid "There is a error while updating settings, please try again."
 msgstr "有一个错误，同时更新设置的，请再试一次。"
 
-#: autoload.php:1834
-#: autoload.php:3977
+#: autoload.php:1835
+#: autoload.php:3976
 #@ armember-membership
 msgid "There is a error while updating template options, please try again."
 msgstr "有一个错误，同时更新的模板，请再试一次。"
@@ -12309,34 +12309,34 @@ msgstr "有一个错误，同时更新的模板，请再试一次。"
 msgid "There is a error while updating template, please try again."
 msgstr "有一个错误，同时更新的模板，请再试一次。"
 
-#: autoload.php:1778
-#: autoload.php:3920
+#: autoload.php:1779
+#: autoload.php:3919
 #@ armember-membership
 msgid "There is an error in uploading file, Please try again."
 msgstr "有一个错误在上传文件，请再试一次。"
 
-#: autoload.php:1851
-#: autoload.php:3997
+#: autoload.php:1852
+#: autoload.php:3996
 #@ armember-membership
 msgid "There is an error while activating addon, Please try agina."
 msgstr "有一个错误，同时激活附件，请试试agina."
 
-#: autoload.php:1849
-#: autoload.php:3995
+#: autoload.php:1850
+#: autoload.php:3994
 #@ armember-membership
 msgid "There is an error while installing addon, Please try again."
 msgstr "有一个错误，同时安插件，请再试一次。"
 
-#: autoload.php:1770
-#: autoload.php:3912
+#: autoload.php:1771
+#: autoload.php:3911
 #@ armember-membership
 msgid "There is an error while loading activities, please try again."
 msgstr "有一个错误的话，装载活动，请再试一次。"
 
-#: autoload.php:1781
-#: autoload.php:1855
-#: autoload.php:3923
-#: autoload.php:4001
+#: autoload.php:1782
+#: autoload.php:1856
+#: autoload.php:3922
+#: autoload.php:4000
 #@ armember-membership
 msgid "There is an error while performing this action, please try again."
 msgstr "有一个错误，同时执行这一行动，请再试一次。"
@@ -12474,8 +12474,8 @@ msgstr "这个文件不可能处理由于限制文件超过。"
 msgid "This first name is invalid. Please enter a valid first name."
 msgstr "这第一名是无效的。 请输入一个有效的第一名。"
 
-#: autoload.php:1848
-#: autoload.php:3994
+#: autoload.php:1849
+#: autoload.php:3993
 #@ armember-membership
 msgid "This Form Name is already exist."
 msgstr "这种形式的名称是已经存在。"
@@ -12533,8 +12533,8 @@ msgstr "这导航菜单的链接，是设置注销链接。"
 msgid "This plan has one or more subscribers. So this plan can not be deleted."
 msgstr "这个计划具有一个或多个订户。 所以这个计划不能被删除。"
 
-#: autoload.php:1847
-#: autoload.php:3993
+#: autoload.php:1848
+#: autoload.php:3992
 #@ armember-membership
 msgid "This Set Name is already exist."
 msgstr "这种定名是已经存在。"
@@ -12796,8 +12796,8 @@ msgstr "交易日期"
 msgid "Transaction Details"
 msgstr "交易的详细信息"
 
-#: autoload.php:1817
-#: autoload.php:3962
+#: autoload.php:1818
+#: autoload.php:3961
 #@ armember-membership
 msgid "Transaction has been deleted successfully."
 msgstr "交易已经删除成功。"
@@ -12879,8 +12879,8 @@ msgstr "交易ID标可能不会留下空白。"
 msgid "Transaction Status"
 msgstr "交易状态"
 
-#: autoload.php:1818
-#: autoload.php:3963
+#: autoload.php:1819
+#: autoload.php:3962
 #: core/classes/class.arm_transaction.php:608
 #@ armember-membership
 msgid "Transaction(s) has been deleted successfully."
@@ -13033,7 +13033,7 @@ msgstr "乌克兰"
 msgid "Ukrainian"
 msgstr "乌克兰"
 
-#: autoload.php:1092
+#: autoload.php:1093
 #: core/widgets/arm_elm_widgets/class.arm_latest_user_list_element_add.php:99
 #: core/widgets/class.arm_widgetlatestMembers.php:189
 #@ armember-membership
@@ -13055,7 +13055,7 @@ msgstr "联合王国"
 msgid "United States"
 msgstr "美国"
 
-#: autoload.php:1095
+#: autoload.php:1096
 #@ armember-membership
 msgid "Unknown"
 msgstr "未知"
@@ -13137,7 +13137,7 @@ msgstr "升级到其他计划之后，目前的计划到期(结束后的期)"
 msgid "Upgrade to Premium"
 msgstr "升级到高级的"
 
-#: autoload.php:1201
+#: autoload.php:1202
 #@ armember-membership
 msgid "Upgrade To Pro"
 msgstr "升级到专业"
@@ -13215,13 +13215,13 @@ msgstr "用户已经用信息"
 msgid "User already loggedIn message for modal forms ( Navigation Popup )"
 msgstr "用户已经用信息的模式表格(导弹)"
 
-#: autoload.php:1082
+#: autoload.php:1083
 #@ armember-membership
 msgid "User Cancelled"
 msgstr "用户取消"
 
-#: autoload.php:1774
-#: autoload.php:3916
+#: autoload.php:1775
+#: autoload.php:3915
 #@ armember-membership
 msgid "User cancelled login or did not fully authorize."
 msgstr "用户已经取消登录或者没有充分授权。"
@@ -13391,9 +13391,9 @@ msgstr "用户的登录/注销的详细信息"
 msgid "User's Signup Details such as Username, Password, First Name, Last Name and Custom Fields value( Address, Gender etc)"
 msgstr "用户注册的详细信息，如用户名、口令、姓名和定义领域值(地址、性别等)"
 
-#: autoload.php:1782
-#: autoload.php:3924
-#: autoload.php:4002
+#: autoload.php:1783
+#: autoload.php:3923
+#: autoload.php:4001
 #@ armember-membership
 msgid "User's subscription has been canceled"
 msgstr "用户的预订已被取消"
@@ -13590,7 +13590,7 @@ msgstr "委内瑞拉"
 msgid "Very Weak Text"
 msgstr "非常薄弱的文字"
 
-#: autoload.php:3789
+#: autoload.php:3788
 #@ armember-membership
 msgid "Video Tutorials"
 msgstr "视频"
@@ -14413,9 +14413,9 @@ msgstr "当前密码"
 msgid "Current password can not be left blank."
 msgstr "当前密码不能为空。"
 
-#: autoload.php:690
-#: autoload.php:694
-#: autoload.php:698
+#: autoload.php:691
+#: autoload.php:695
+#: autoload.php:699
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:45
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:148
 #: core/classes/arm_builder/class.arm_divi_builder_restriction.php:28
@@ -14440,33 +14440,33 @@ msgstr "当前密码不能为空。"
 msgid "ARMember"
 msgstr "ARMember"
 
-#: autoload.php:693
+#: autoload.php:694
 #@ armember-membership
 msgid "Restrict Content Shortcode"
 msgstr "限制内容简码"
 
-#: autoload.php:694
-#: autoload.php:698
+#: autoload.php:695
+#: autoload.php:699
 #@ armember-membership
 msgid "Restriction"
 msgstr "限制"
 
-#: autoload.php:697
+#: autoload.php:698
 #@ armember-membership
 msgid "ARMember Block Restriction"
 msgstr "ARMember 块限制"
 
-#: autoload.php:698
+#: autoload.php:699
 #@ armember-membership
 msgid "Block"
 msgstr "堵塞"
 
-#: autoload.php:699
+#: autoload.php:700
 #@ armember-membership
 msgid "Nest blocks within this wrapper to control the inner block visibility by membership plans or for free membership only."
 msgstr "在此包装器中嵌套块，以通过会员计划或仅限免费会员控制内部块的可见性。"
 
-#: autoload.php:706
+#: autoload.php:707
 #@ armember-membership
 msgid "If any of the following conditions will true then restrictions will apply on content"
 msgstr "如果满足以下任一条件，则内容将受到限制"
@@ -15417,9 +15417,9 @@ msgstr "第三方集成"
 msgid "Upgrade Pro"
 msgstr "升级专业版"
 
-#: autoload.php:1200
-#: autoload.php:1307
+#: autoload.php:1201
 #: autoload.php:1308
+#: autoload.php:1309
 #@ armember-membership
 msgid "Add-ons"
 msgstr "附加组件"
@@ -15580,17 +15580,17 @@ msgstr "试交易"
 msgid "User Email"
 msgstr "用户电子邮件"
 
-#: autoload.php:4546
+#: autoload.php:4545
 #@ armember-membership
 msgid "An Unexpected HTTP Error occurred during the API request."
 msgstr "API 请求期间发生意外 HTTP 错误。"
 
-#: autoload.php:4546
+#: autoload.php:4545
 #@ armember-membership
 msgid "Try again"
 msgstr "再试一次"
 
-#: autoload.php:4551
+#: autoload.php:4550
 #@ armember-membership
 msgid "An unknown error occurred"
 msgstr "发生未知错误"
@@ -15873,7 +15873,7 @@ msgstr "請至少選擇一個支付網關。"
 msgid "At least one payment gateway configuration is required for paid plan(s) selection."
 msgstr "選擇付費方案需要至少配置一個支付網關。"
 
-#: autoload.php:798
+#: autoload.php:799
 #@ armember-membership
 msgid "Dismiss"
 msgstr "解雇"
@@ -16551,12 +16551,12 @@ msgstr "会员卡模板"
 msgid "Edit Card Options"
 msgstr "编辑卡选项"
 
-#: autoload.php:3686
+#: autoload.php:3687
 #@ armember-membership
 msgid "Updates"
 msgstr "更新"
 
-#: autoload.php:3718
+#: autoload.php:3719
 #@ armember-membership
 msgid "View Changelog"
 msgstr "查看变更日志"
@@ -16784,13 +16784,13 @@ msgstr "想要无需编程就能拥有精美表单？"
 msgid "Install ARForms - the most powerful drag-and-drop form builder for WordPress!"
 msgstr "安装 ARForms——功能最强大的 WordPress 拖放式表单构建器！"
 
-#: autoload.php:647
+#: autoload.php:648
 #, php-format
 #@ armember-membership
 msgid "To ensure full compatibility with the ARMember Lite version, please update the ARMember Pro to the latest version. For manual update instructions, please refer to %s"
 msgstr "为确保与 ARMember Lite 版本完全兼容，请将 ARMember Pro 更新至最新版本。有关手动更新说明，请参阅 %s"
 
-#: autoload.php:647
+#: autoload.php:648
 #@ armember-membership
 msgid "our documentation"
 msgstr "我们的文档"
@@ -17105,12 +17105,6 @@ msgstr "会员面板颜色"
 msgid "Font"
 msgstr "字体"
 
-#. translators: plugin header field 'Version'
-#: armember-membership.php:0
-#@ armember-membership
-msgid "5.4"
-msgstr "5.4"
-
 #: core/classes/class.arm_member_forms.php:96
 #@ armember-membership
 msgid "Cropper has been reseted."
@@ -17120,4 +17114,10 @@ msgstr "Cropper 已重置。"
 #@ armember-membership
 msgid "Member Panel Shortcode [arm_member_panel] not found on selected page. Please add shortcode on that page Or please select appropriate page."
 msgstr "所选页面上未找到会员面板短代码 [arm_member_panel]。请在该页面上添加短代码，或请选择合适的页面。"
+
+#. translators: plugin header field 'Version'
+#: armember-membership.php:0
+#@ armember-membership
+msgid "5.5"
+msgstr "5.5"
 

@@ -5923,9 +5923,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 								if (strpos($arm_val, ":") != false) {
 									$exp_val = explode(":", $arm_val);
 									$exp_val1 = $exp_val[1];
-									$value_array[$exp_val[0]] = $exp_val[1];
+									$value_array[$exp_val[0]] = wp_unslash($exp_val[1]);
 								} else {
-									$value_array[$arm_val] = $arm_val;
+									$value_array[$arm_val] = wp_unslash($arm_val);
 								}
 							}
 							$meta_val = '';
@@ -5935,7 +5935,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 									foreach ($user_meta_detail as $u) {
 										foreach ($value_array as $arm_key => $arm_val) {
 											if ($u == $arm_val) {
-												array_push($main_array,$arm_key);
+												array_push($main_array,wp_unslash($arm_key));
 											}
 										}
 									}
@@ -6289,11 +6289,11 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                     if (strpos($arm_val, ":") != false) {
                                         $exp_val = explode(":", $arm_val);
                                         $exp_val1 = $exp_val[1];
-                                        $value_array[$exp_val[0]] = $exp_val[1];
+                                        $value_array[$exp_val[0]] = wp_unslash($exp_val[1]);
                                     } else {
-                                        $value_array[$arm_val] = $arm_val;
+                                        $value_array[$arm_val] = wp_unslash($arm_val);
                                     }
-                                }                           
+                                }
                                 $meta_val = '';
                                 $user_meta_detail = $ARMemberLite->arm_array_trim($user_meta_detail);
                                 if (!empty($value_array)) {
@@ -6301,7 +6301,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                         foreach ($user_meta_detail as $u) {
                                             foreach ($value_array as $arm_key => $arm_val) {
                                                 if ($u == $arm_val) {
-                                                    array_push($main_array,$arm_key);
+                                                    array_push($main_array,wp_unslash($arm_key));
                                                 }
                                             }
                                         }
@@ -6367,8 +6367,8 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                 }
                             }
                             $return['arm_user_id_'.$arm_user_id] .= '<tr class="form-field arm_detail_expand_container_child_row">
-                                <th class="arm-form-table-label">'.stripslashes_deep($mlabel).'</th>
-                                <td class="arm-form-table-content">'.$meta_val.'</td>
+                                <th class="arm-form-table-label">'.wp_unslash($mlabel).'</th>
+                                <td class="arm-form-table-content">'.wp_unslash($meta_val).'</td>
                             </tr>';
                         }
                         $return['arm_user_id_'.$arm_user_id] .= '</tbody></table>

@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ARMember Lite - Membership Plugin v5.4\n"
+"Project-Id-Version: ARMember Lite - Membership Plugin v5.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2026-04-15 05:12:25+0000\n"
+"PO-Revision-Date: 2026-04-17 07:02:57+0000\n"
 "Last-Translator: admin <testrepute123@gmail.com>\n"
 "Language-Team: English (United States)\n"
 "MIME-Version: 1.0\n"
@@ -158,7 +158,7 @@ msgstr "Access Rules Updated Successfully."
 msgid "Account Activated"
 msgstr "Account Activated"
 
-#: autoload.php:1079
+#: autoload.php:1080
 #@ armember-membership
 msgid "Account Closed"
 msgstr "Account Closed"
@@ -211,12 +211,12 @@ msgstr "Account Pending"
 msgid "Account Setup"
 msgstr "Account Setup"
 
-#: autoload.php:3986
+#: autoload.php:3985
 #@ armember-membership
 msgid "Achievements Added Successfully."
 msgstr "Achievements Added Successfully."
 
-#: autoload.php:3987
+#: autoload.php:3986
 #@ armember-membership
 msgid "Achievements Updated Successfully."
 msgstr "Achievements Updated Successfully."
@@ -306,7 +306,7 @@ msgstr "Activate Plan"
 msgid "Activation link is expired or invalid."
 msgstr "Activation link is expired or invalid."
 
-#: autoload.php:1072
+#: autoload.php:1073
 #: core/classes/class.arm_manage_subscription.php:475
 #: core/classes/class.arm_manage_subscription.php:1398
 #: core/classes/class.arm_shortcodes.php:2429
@@ -468,7 +468,7 @@ msgstr "Add to Menu"
 msgid "Add URL"
 msgstr "Add URL"
 
-#: autoload.php:3629
+#: autoload.php:3630
 #: core/classes/class.arm_social_feature.php:396
 #@ armember-membership
 msgid "Add-On listing is currently unavailable. Please try again later."
@@ -509,20 +509,20 @@ msgstr "Additional Note"
 msgid "Additional Shortcodes"
 msgstr "Additional Shortcodes"
 
-#: autoload.php:1852
-#: autoload.php:3998
+#: autoload.php:1853
+#: autoload.php:3997
 #@ armember-membership
 msgid "Addon activated successfully."
 msgstr "Addon activated successfully."
 
-#: autoload.php:1853
-#: autoload.php:3999
+#: autoload.php:1854
+#: autoload.php:3998
 #@ armember-membership
 msgid "Addon deactivated successfully."
 msgstr "Addon deactivated successfully."
 
-#: autoload.php:1850
-#: autoload.php:3996
+#: autoload.php:1851
+#: autoload.php:3995
 #@ armember-membership
 msgid "Addon installed successfully."
 msgstr "Addon installed successfully."
@@ -584,12 +584,12 @@ msgstr "after adding new menu items. Default access rule will be applied to new 
 msgid "After Basic SignUp Redirection Rules"
 msgstr "After Basic SignUp Redirection Rules"
 
-#: autoload.php:1786
+#: autoload.php:1787
 #@ armember-membership
 msgid "After certain time of post is modified"
 msgstr "After certain time of post is modified"
 
-#: autoload.php:1785
+#: autoload.php:1786
 #@ armember-membership
 msgid "After certain time of post is published"
 msgstr "After certain time of post is published"
@@ -838,7 +838,7 @@ msgstr "Any Condition"
 msgid "Any Date or Time Archive"
 msgstr "Any Date or Time Archive"
 
-#: autoload.php:675
+#: autoload.php:676
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:35
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:139
 #: core/classes/arm_builder/class.arm_bricks_builder_restriction.php:48
@@ -950,7 +950,7 @@ msgstr "Archive: Time"
 msgid "Archive: Year"
 msgstr "Archive: Year"
 
-#: autoload.php:1830
+#: autoload.php:1831
 #@ armember-membership
 msgid "Are you sure to delete configuration?"
 msgstr "Are you sure to delete configuration?"
@@ -972,10 +972,10 @@ msgstr "Are you sure you want to activate"
 msgid "Are you sure you want to active this plan?"
 msgstr "Are you sure you want to active this plan?"
 
-#: autoload.php:1854
-#: autoload.php:3925
-#: autoload.php:4000
-#: autoload.php:4003
+#: autoload.php:1855
+#: autoload.php:3924
+#: autoload.php:3999
+#: autoload.php:4002
 #@ armember-membership
 msgid "Are you sure you want to cancel subscription?"
 msgstr "Are you sure you want to cancel subscription?"
@@ -1058,15 +1058,15 @@ msgstr "Are you sure you want to delete this transaction?"
 msgid "Are you sure you want to delete your account? This will erase all of your account data from the site. To delete your account enter your password below."
 msgstr "Are you sure you want to delete your account? This will erase all of your account data from the site. To delete your account enter your password below."
 
-#: autoload.php:1779
-#: autoload.php:3921
+#: autoload.php:1780
+#: autoload.php:3920
 #: core/classes/class.arm_members_directory.php:348
 #@ armember-membership
 msgid "Are you sure you want to remove cover photo?"
 msgstr "Are you sure you want to remove cover photo?"
 
-#: autoload.php:1780
-#: autoload.php:3922
+#: autoload.php:1781
+#: autoload.php:3921
 #: core/classes/class.arm_members_directory.php:349
 #@ armember-membership
 msgid "Are you sure you want to remove profile photo?"
@@ -1164,7 +1164,7 @@ msgstr "ARMember Close Account"
 msgid "ARMember Current Membership"
 msgstr "ARMember Current Membership"
 
-#: autoload.php:1347
+#: autoload.php:1348
 #@ armember-membership
 msgid "ARMember Debug"
 msgstr "ARMember Debug"
@@ -1189,8 +1189,8 @@ msgstr "ARMember Forms"
 msgid "ARMember Latest Members"
 msgstr "ARMember Latest Members"
 
-#: autoload.php:1230
-#: autoload.php:1233
+#: autoload.php:1231
+#: autoload.php:1234
 #@ armember-membership
 msgid "ARMember Lite"
 msgstr "ARMember Lite"
@@ -1206,12 +1206,12 @@ msgstr "ARMember Lite - Membership Plugin"
 msgid "ARMember Lite - Sorry to see you go"
 msgstr "ARMember Lite - Sorry to see you go"
 
-#: autoload.php:970
+#: autoload.php:971
 #@ armember-membership
 msgid "ARMember Lite recommend to use Minimum PHP version 5.6 or greater."
 msgstr "ARMember Lite recommend to use Minimum PHP version 5.6 or greater."
 
-#: autoload.php:976
+#: autoload.php:977
 #@ armember-membership
 msgid "ARMember Lite requires PHP GD Extension module at the server. And it seems that it's not installed or activated. Please contact your hosting provider for the same."
 msgstr "ARMember Lite requires PHP GD Extension module at the server. And it seems that it's not installed or activated. Please contact your hosting provider for the same."
@@ -2004,7 +2004,7 @@ msgstr "Button Style"
 msgid "Button Text"
 msgstr "Button Text"
 
-#: autoload.php:1078
+#: autoload.php:1079
 #@ armember-membership
 msgid "by admin"
 msgstr "by admin"
@@ -2180,7 +2180,7 @@ msgstr "Cancel User's Subscription."
 msgid "Canceled"
 msgstr "Canceled"
 
-#: autoload.php:1084
+#: autoload.php:1085
 #: core/classes/class.arm_shortcodes.php:2803
 #: core/views/arm_transactions_add.php:120
 #: core/views/arm_transactions_list_records.php:863
@@ -2198,8 +2198,8 @@ msgstr "cancelled"
 msgid "Cannot extract data from uploaded file or no file was uploaded."
 msgstr "Cannot extract data from uploaded file or no file was uploaded."
 
-#: autoload.php:1843
-#: autoload.php:3989
+#: autoload.php:1844
+#: autoload.php:3988
 #@ armember-membership
 msgid "Cannot Set Past Dates."
 msgstr "Cannot Set Past Dates."
@@ -2617,8 +2617,8 @@ msgstr "Click to preview"
 msgid "Clone from existing forms"
 msgstr "Clone from existing forms"
 
-#: autoload.php:3552
-#: autoload.php:3791
+#: autoload.php:3553
+#: autoload.php:3790
 #: core/classes/class.arm_manage_subscription.php:1485
 #: core/classes/class.arm_members.php:572
 #: core/classes/class.arm_subscription_plans.php:275
@@ -2728,8 +2728,8 @@ msgstr "Configure"
 msgid "Configure More Gateways"
 msgstr "Configure More Gateways"
 
-#: autoload.php:1248
 #: autoload.php:1249
+#: autoload.php:1250
 #: core/views/arm_membership_setup_list.php:326
 #@ armember-membership
 msgid "Configure Plan + Signup Page"
@@ -2806,8 +2806,8 @@ msgstr "Congratulations!"
 msgid "Content Access"
 msgstr "Content Access"
 
-#: autoload.php:1258
 #: autoload.php:1259
+#: autoload.php:1260
 #: core/views/arm_access_rules.php:95
 #@ armember-membership
 msgid "Content Access Rules"
@@ -2875,7 +2875,7 @@ msgstr "Country/Region"
 msgid "Coupon"
 msgstr "Coupon"
 
-#: autoload.php:1091
+#: autoload.php:1092
 #: core/widgets/arm_elm_widgets/class.arm_latest_user_list_element_add.php:98
 #: core/widgets/class.arm_widgetlatestMembers.php:188
 #@ armember-membership
@@ -3004,7 +3004,7 @@ msgstr "Current user profile URL pattern"
 msgid "Custom Color"
 msgstr "Custom Color"
 
-#: autoload.php:1858
+#: autoload.php:1859
 #: core/views/arm_global_settings.php:437
 #@ armember-membership
 msgid "Custom Currency"
@@ -3289,8 +3289,8 @@ msgstr "Default Restriction"
 msgid "Default Restriction Rules"
 msgstr "Default Restriction Rules"
 
-#: autoload.php:1826
-#: autoload.php:3971
+#: autoload.php:1827
+#: autoload.php:3970
 #: core/classes/class.arm_access_rules.php:109
 #@ armember-membership
 msgid "Default Rules Saved Successfully."
@@ -3301,7 +3301,7 @@ msgstr "Default Rules Saved Successfully."
 msgid "Default Selected Plan"
 msgstr "Default Selected Plan"
 
-#: autoload.php:3027
+#: autoload.php:3028
 #: core/views/upgrade_latest_data.php:783
 #@ armember-membership
 msgid "Default Set"
@@ -3412,7 +3412,7 @@ msgstr "Desktop View"
 msgid "Digital Transfer"
 msgstr "Digital Transfer"
 
-#: autoload.php:1090
+#: autoload.php:1091
 #: core/widgets/arm_elm_widgets/class.arm_latest_user_list_element_add.php:97
 #: core/widgets/class.arm_widgetlatestMembers.php:187
 #@ armember-membership
@@ -3695,14 +3695,14 @@ msgstr "Djibouti"
 msgid "Do not cancel subscription until plan expired"
 msgstr "Do not cancel subscription until plan expired"
 
-#: autoload.php:3550
+#: autoload.php:3551
 #@ armember-membership
 msgid "Do not show again."
 msgstr "Do not show again."
 
-#: autoload.php:1312
 #: autoload.php:1313
-#: autoload.php:3785
+#: autoload.php:1314
+#: autoload.php:3784
 #: core/views/arm_setup_wizard.php:1290
 #@ armember-membership
 msgid "Documentation"
@@ -3807,7 +3807,7 @@ msgstr "East Timor"
 msgid "Ecuador"
 msgstr "Ecuador"
 
-#: autoload.php:1857
+#: autoload.php:1858
 #: core/classes/class.armemberlite.php:96
 #: core/views/arm_email_templates.php:86
 #: core/views/arm_global_settings.php:437
@@ -3996,8 +3996,8 @@ msgstr "Email notification"
 msgid "Email notification scheduler setting"
 msgstr "Email notification scheduler setting"
 
-#: autoload.php:1273
 #: autoload.php:1274
+#: autoload.php:1275
 #: core/views/arm_email_notification.php:9
 #@ armember-membership
 msgid "Email Notifications"
@@ -4023,8 +4023,8 @@ msgstr "Email should not contain bad words."
 msgid "Email Subject Required."
 msgstr "Email Subject Required."
 
-#: autoload.php:1840
-#: autoload.php:3983
+#: autoload.php:1841
+#: autoload.php:3982
 #: core/classes/class.arm_email_settings.php:207
 #: core/classes/class.arm_email_settings.php:233
 #@ armember-membership
@@ -4230,7 +4230,7 @@ msgstr "Eritrea"
 msgid "ERROR"
 msgstr "ERROR"
 
-#: autoload.php:3831
+#: autoload.php:3830
 #@ armember-membership
 msgid "Error"
 msgstr "Error"
@@ -4349,8 +4349,8 @@ msgstr "Expire Activation Link"
 msgid "Expire Date"
 msgstr "Expire Date"
 
-#: autoload.php:1845
-#: autoload.php:3991
+#: autoload.php:1846
+#: autoload.php:3990
 #@ armember-membership
 msgid "Expire date can not be earlier than current date."
 msgstr "Expire date can not be earlier than current date."
@@ -4389,7 +4389,7 @@ msgstr "Expire Year Label"
 msgid "Expire/Next Renewal"
 msgstr "Expire/Next Renewal"
 
-#: autoload.php:1081
+#: autoload.php:1082
 #: core/classes/class.arm_manage_subscription.php:470
 #: core/classes/class.arm_manage_subscription.php:1393
 #: core/views/arm_manage_subscription_list.php:988
@@ -4471,7 +4471,7 @@ msgstr "Extend Days"
 msgid "Facebook"
 msgstr "Facebook"
 
-#: autoload.php:1089
+#: autoload.php:1090
 #: core/widgets/class.arm_widgetlatestMembers.php:186
 #@ armember-membership
 msgid "Fade"
@@ -4526,7 +4526,7 @@ msgstr "Faroese"
 msgid "Farsi/Persian"
 msgstr "Farsi/Persian"
 
-#: autoload.php:3786
+#: autoload.php:3785
 #@ armember-membership
 msgid "Feature Request"
 msgstr "Feature Request"
@@ -4627,8 +4627,8 @@ msgstr "Fields to be included in payment form"
 msgid "Fiji"
 msgstr "Fiji"
 
-#: autoload.php:1777
-#: autoload.php:3919
+#: autoload.php:1778
+#: autoload.php:3918
 #@ armember-membership
 msgid "File is not allowed bigger than {SIZE}."
 msgstr "File is not allowed bigger than {SIZE}."
@@ -4900,8 +4900,8 @@ msgstr "Form Background"
 msgid "Form Border"
 msgstr "Form Border"
 
-#: autoload.php:1805
-#: autoload.php:3950
+#: autoload.php:1806
+#: autoload.php:3949
 #@ armember-membership
 msgid "Form deleted successfully."
 msgstr "Form deleted successfully."
@@ -4965,8 +4965,8 @@ msgstr "Form Padding"
 msgid "Form Position"
 msgstr "Form Position"
 
-#: autoload.php:1803
-#: autoload.php:3948
+#: autoload.php:1804
+#: autoload.php:3947
 #@ armember-membership
 msgid "Form Set Deleted Successfully."
 msgstr "Form Set Deleted Successfully."
@@ -5150,8 +5150,8 @@ msgstr "General Message"
 msgid "General Options"
 msgstr "General Options"
 
-#: autoload.php:1284
 #: autoload.php:1285
+#: autoload.php:1286
 #: core/views/arm_general_settings.php:14
 #: core/views/arm_general_settings.php:51
 #@ armember-membership
@@ -5294,9 +5294,9 @@ msgstr "Greenland"
 msgid "Grenada"
 msgstr "Grenada"
 
-#: autoload.php:1119
-#: autoload.php:1317
+#: autoload.php:1120
 #: autoload.php:1318
+#: autoload.php:1319
 #@ armember-membership
 msgid "Growth Plugins"
 msgstr "Growth Plugins"
@@ -5358,7 +5358,7 @@ msgstr "Hebrew/Israel"
 msgid "Height"
 msgstr "Height"
 
-#: autoload.php:3543
+#: autoload.php:3544
 #@ armember-membership
 msgid "Help Tutorial"
 msgstr "Help Tutorial"
@@ -5379,7 +5379,7 @@ msgstr "Here you will get all different types of Free/Paid membership plans with
 msgid "Here you will get all different types of Payment gateways to purchase a membership plan."
 msgstr "Here you will get all different types of Payment gateways to purchase a membership plan."
 
-#: autoload.php:636
+#: autoload.php:637
 #, php-format
 #@ armember-membership
 msgid "Hey, you've been using %1$sARMember Lite%2$s for a long time. %3$sCould you please do us a BIG favor and give it a 5-star rating on WordPress to help us spread the word and boost our motivation. %4$sYour help is much appreciated. Thank you very much - %5$sRepute InfoSystems%6$s"
@@ -5429,7 +5429,7 @@ msgstr "Hide admin bar"
 msgid "Hide admin bar for non-admin users?"
 msgstr "Hide admin bar for non-admin users?"
 
-#: autoload.php:703
+#: autoload.php:704
 #: core/views/arm_tinymce_options_shortcodes.php:1136
 #: core/widgets/arm_elm_widgets/class.arm_partial_content_restriction_shortcode.php:64
 #@ armember-membership
@@ -5621,7 +5621,7 @@ msgstr "Hungary"
 msgid "Hurray!! Everything is ready to create your first membership site"
 msgstr "Hurray!! Everything is ready to create your first membership site"
 
-#: autoload.php:640
+#: autoload.php:641
 #@ armember-membership
 msgid "I already did"
 msgstr "I already did"
@@ -5833,7 +5833,7 @@ msgstr "In Trial"
 msgid "Inactivate"
 msgstr "Inactivate"
 
-#: autoload.php:1073
+#: autoload.php:1074
 #@ armember-membership
 msgid "Inactive"
 msgstr "Inactive"
@@ -6129,7 +6129,7 @@ msgstr "Japanese"
 msgid "Japanese/Japan"
 msgstr "Japanese/Japan"
 
-#: autoload.php:3787
+#: autoload.php:3786
 #@ armember-membership
 msgid "Join Community"
 msgstr "Join Community"
@@ -6540,9 +6540,9 @@ msgstr "Load More Link"
 msgid "Loading"
 msgstr "Loading"
 
-#: autoload.php:1784
-#: autoload.php:3926
-#: autoload.php:4004
+#: autoload.php:1785
+#: autoload.php:3925
+#: autoload.php:4003
 #@ armember-membership
 msgid "Loading.."
 msgstr "Loading.."
@@ -6589,7 +6589,7 @@ msgstr "Logged In Message"
 msgid "Logged in Message"
 msgstr "Logged in Message"
 
-#: autoload.php:677
+#: autoload.php:678
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:37
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:141
 #: core/classes/arm_builder/class.arm_bricks_builder_restriction.php:50
@@ -6619,8 +6619,8 @@ msgstr "LOGIN"
 msgid "Login"
 msgstr "Login"
 
-#: autoload.php:1791
-#: autoload.php:3936
+#: autoload.php:1792
+#: autoload.php:3935
 #@ armember-membership
 msgid "Login attempts cleared successfully."
 msgstr "Login attempts cleared successfully."
@@ -6635,8 +6635,8 @@ msgstr "Login Failed, please try again."
 msgid "Login Form Options"
 msgstr "Login Form Options"
 
-#: autoload.php:1792
-#: autoload.php:3937
+#: autoload.php:1793
+#: autoload.php:3936
 #@ armember-membership
 msgid "Login History cleared successfully."
 msgstr "Login History cleared successfully."
@@ -6771,74 +6771,74 @@ msgstr "Mali"
 msgid "Malta"
 msgstr "Malta"
 
-#: autoload.php:1107
+#: autoload.php:1108
 #@ armember-membership
 msgid "Manage Access Rules"
 msgstr "Manage Access Rules"
 
-#: autoload.php:1115
+#: autoload.php:1116
 #@ armember-membership
 msgid "Manage Block Settings"
 msgstr "Manage Block Settings"
 
-#: autoload.php:1111
+#: autoload.php:1112
 #@ armember-membership
 msgid "Manage Communication"
 msgstr "Manage Communication"
 
-#: autoload.php:1110
+#: autoload.php:1111
 #@ armember-membership
 msgid "Manage Email Notifications"
 msgstr "Manage Email Notifications"
 
-#: autoload.php:1114
+#: autoload.php:1115
 #@ armember-membership
 msgid "Manage Feature Settings"
 msgstr "Manage Feature Settings"
 
-#: autoload.php:1106
+#: autoload.php:1107
 #@ armember-membership
 msgid "Manage Form Settings"
 msgstr "Manage Form Settings"
 
-#: autoload.php:1253
 #: autoload.php:1254
+#: autoload.php:1255
 #: core/views/arm_manage_forms.php:12
 #@ armember-membership
 msgid "Manage Forms"
 msgstr "Manage Forms"
 
-#: autoload.php:1113
+#: autoload.php:1114
 #@ armember-membership
 msgid "Manage General Settings"
 msgstr "Manage General Settings"
 
-#: autoload.php:1118
+#: autoload.php:1119
 #@ armember-membership
 msgid "Manage Import/Export"
 msgstr "Manage Import/Export"
 
-#: autoload.php:1112
+#: autoload.php:1113
 #@ armember-membership
 msgid "Manage Member Templates"
 msgstr "Manage Member Templates"
 
-#: autoload.php:1103
-#: autoload.php:1238
+#: autoload.php:1104
 #: autoload.php:1239
+#: autoload.php:1240
 #: core/views/arm_members_list.php:5
 #@ armember-membership
 msgid "Manage Members"
 msgstr "Manage Members"
 
-#: autoload.php:1117
+#: autoload.php:1118
 #@ armember-membership
 msgid "Manage Payment Gateways"
 msgstr "Manage Payment Gateways"
 
-#: autoload.php:1104
-#: autoload.php:1243
+#: autoload.php:1105
 #: autoload.php:1244
+#: autoload.php:1245
 #: core/views/arm_members_list.php:130
 #@ armember-membership
 msgid "Manage Plans"
@@ -6850,20 +6850,20 @@ msgstr "Manage Plans"
 msgid "Manage Preset Form Fields"
 msgstr "Manage Preset Form Fields"
 
-#: autoload.php:1105
+#: autoload.php:1106
 #@ armember-membership
 msgid "Manage Setups"
 msgstr "Manage Setups"
 
-#: autoload.php:1102
-#: autoload.php:1263
+#: autoload.php:1103
 #: autoload.php:1264
+#: autoload.php:1265
 #: core/views/arm_manage_subscription_list.php:1068
 #@ armember-membership
 msgid "Manage Subscriptions"
 msgstr "Manage Subscriptions"
 
-#: autoload.php:1109
+#: autoload.php:1110
 #@ armember-membership
 msgid "Manage Transactions"
 msgstr "Manage Transactions"
@@ -7108,9 +7108,9 @@ msgstr "Members Directory Templates"
 msgid "Members Profile Page"
 msgstr "Members Profile Page"
 
-#: autoload.php:690
-#: autoload.php:694
-#: autoload.php:698
+#: autoload.php:691
+#: autoload.php:695
+#: autoload.php:699
 #: core/classes/class.arm_manage_subscription.php:991
 #: core/classes/class.arm_manage_subscription.php:1224
 #: core/classes/class.arm_manage_subscription.php:1573
@@ -7179,7 +7179,7 @@ msgstr "Membership Plan"
 msgid "Membership plan is already exist for selected member."
 msgstr "Membership plan is already exist for selected member."
 
-#: autoload.php:705
+#: autoload.php:706
 #: core/classes/arm_builder/class.arm_bricks_builder_restriction.php:81
 #: core/classes/arm_builder/class.arm_divi_builder_restriction.php:86
 #: core/classes/arm_builder/class.arm_fusion_builder_restriction.php:91
@@ -7221,7 +7221,7 @@ msgstr "Membership setup wizard has been updated successfully."
 msgid "MEMBERSHIP SHORTCODES"
 msgstr "MEMBERSHIP SHORTCODES"
 
-#: autoload.php:689
+#: autoload.php:690
 #: core/views/arm_tinymce_options_shortcodes.php:21
 #@ armember-membership
 msgid "Membership Shortcodes"
@@ -7260,21 +7260,21 @@ msgstr "Message"
 msgid "Message can not be left blank."
 msgstr "Message can not be left blank."
 
-#: autoload.php:1819
-#: autoload.php:3964
+#: autoload.php:1820
+#: autoload.php:3963
 #: core/classes/class.arm_manage_communication.php:29
 #@ armember-membership
 msgid "Message has been deleted successfully."
 msgstr "Message has been deleted successfully."
 
-#: autoload.php:1841
-#: autoload.php:3984
+#: autoload.php:1842
+#: autoload.php:3983
 #@ armember-membership
 msgid "Message Updated Successfully."
 msgstr "Message Updated Successfully."
 
-#: autoload.php:1821
-#: autoload.php:3966
+#: autoload.php:1822
+#: autoload.php:3965
 #: core/classes/class.arm_manage_communication.php:67
 #@ armember-membership
 msgid "Message(s) has been deleted successfully."
@@ -7529,7 +7529,7 @@ msgstr "Namibia"
 msgid "Nauru"
 msgstr "Nauru"
 
-#: autoload.php:3793
+#: autoload.php:3792
 #@ armember-membership
 msgid "Need Help?"
 msgstr "Need Help?"
@@ -7761,8 +7761,8 @@ msgstr "No any transaction found yet."
 msgid "No cycles due"
 msgstr "No cycles due"
 
-#: autoload.php:3850
-#: autoload.php:3855
+#: autoload.php:3849
+#: autoload.php:3854
 #@ armember-membership
 msgid "No data found"
 msgstr "No data found"
@@ -7928,7 +7928,7 @@ msgstr "No Users Available"
 msgid "No Users Found."
 msgstr "No Users Found."
 
-#: autoload.php:639
+#: autoload.php:640
 #@ armember-membership
 msgid "No, Maybe later"
 msgstr "No, Maybe later"
@@ -7948,7 +7948,7 @@ msgstr "No."
 msgid "No. Of Members Per Page"
 msgstr "No. Of Members Per Page"
 
-#: autoload.php:676
+#: autoload.php:677
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:36
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:140
 #: core/classes/arm_builder/class.arm_bricks_builder_restriction.php:49
@@ -8119,7 +8119,7 @@ msgstr "Off"
 msgid "Ok"
 msgstr "Ok"
 
-#: autoload.php:638
+#: autoload.php:639
 #@ armember-membership
 msgid "OK, you deserve it"
 msgstr "OK, you deserve it"
@@ -8186,14 +8186,14 @@ msgstr "Only Numbers"
 msgid "Oops, nothing found"
 msgstr "Oops, nothing found"
 
-#: autoload.php:1856
-#: autoload.php:4005
+#: autoload.php:1857
+#: autoload.php:4004
 #@ armember-membership
 msgid "Oops, nothing found."
 msgstr "Oops, nothing found."
 
-#: autoload.php:1772
-#: autoload.php:3914
+#: autoload.php:1773
+#: autoload.php:3913
 #@ armember-membership
 msgid "Oops, there was a problem getting your information"
 msgstr "Oops, there was a problem getting your information"
@@ -8208,7 +8208,7 @@ msgstr "Opacity"
 msgid "Open Settings & Styles"
 msgstr "Open Settings & Styles"
 
-#: autoload.php:1828
+#: autoload.php:1829
 #@ armember-membership
 msgid "Opt-ins Settings Saved Successfully."
 msgstr "Opt-ins Settings Saved Successfully."
@@ -8409,7 +8409,7 @@ msgstr "Password"
 msgid "Password can not be left blank"
 msgstr "Password can not be left blank"
 
-#: autoload.php:1793
+#: autoload.php:1794
 #: core/classes/class.arm_member_forms.php:342
 #: core/classes/class.arm_member_forms.php:838
 #: core/classes/class.arm_member_forms.php:7569
@@ -8558,7 +8558,7 @@ msgstr "Payment Cycle"
 msgid "Payment Date"
 msgstr "Payment Date"
 
-#: autoload.php:1083
+#: autoload.php:1084
 #@ armember-membership
 msgid "Payment Failed"
 msgstr "Payment Failed"
@@ -8623,8 +8623,8 @@ msgstr "payment gateway. If you will save this settings, than those payment gate
 msgid "Payment Gateways"
 msgstr "Payment Gateways"
 
-#: autoload.php:1268
 #: autoload.php:1269
+#: autoload.php:1270
 #: core/views/arm_transactions.php:5
 #: core/views/arm_view_member.php:513
 #@ armember-membership
@@ -8746,7 +8746,7 @@ msgstr "Paypal API Username"
 msgid "Paypal API Username ( Sandbox)"
 msgstr "Paypal API Username ( Sandbox)"
 
-#: autoload.php:1074
+#: autoload.php:1075
 #: core/classes/class.arm_members.php:3642
 #: core/classes/class.arm_members.php:3655
 #: core/classes/class.arm_members.php:4657
@@ -8890,7 +8890,7 @@ msgstr "plan for this user?"
 msgid "Plan has been added successfully."
 msgstr "Plan has been added successfully."
 
-#: autoload.php:3941
+#: autoload.php:3940
 #: core/classes/class.arm_subscription_plans.php:916
 #@ armember-membership
 msgid "Plan has been deleted successfully."
@@ -8974,8 +8974,8 @@ msgstr "Plan status changed successfully."
 msgid "Plan Type"
 msgstr "Plan Type"
 
-#: autoload.php:1795
-#: autoload.php:3939
+#: autoload.php:1796
+#: autoload.php:3938
 #@ armember-membership
 msgid "Plan(s) has been deleted successfully."
 msgstr "Plan(s) has been deleted successfully."
@@ -9404,8 +9404,8 @@ msgstr "Please select file."
 msgid "Please select one option."
 msgstr "Please select one option."
 
-#: autoload.php:1790
-#: autoload.php:3935
+#: autoload.php:1791
+#: autoload.php:3934
 #: core/classes/class.arm_manage_communication.php:53
 #: core/classes/class.arm_members.php:1269
 #: core/classes/class.arm_members.php:2147
@@ -9513,8 +9513,8 @@ msgstr "Please select signup form."
 msgid "Please select user."
 msgstr "Please select user."
 
-#: autoload.php:1789
-#: autoload.php:3934
+#: autoload.php:1790
+#: autoload.php:3933
 #: core/classes/class.arm_manage_communication.php:70
 #: core/classes/class.arm_members.php:1272
 #: core/classes/class.arm_transaction.php:610
@@ -9547,8 +9547,8 @@ msgstr "Please specify"
 msgid "Please type your e-mail address."
 msgstr "Please type your e-mail address."
 
-#: autoload.php:1816
-#: autoload.php:3961
+#: autoload.php:1817
+#: autoload.php:3960
 #@ armember-membership
 msgid "Please upload appropriate file to import users."
 msgstr "Please upload appropriate file to import users."
@@ -9739,8 +9739,8 @@ msgstr "Profile photo of"
 msgid "Profile Template Name"
 msgstr "Profile Template Name"
 
-#: autoload.php:1279
 #: autoload.php:1280
+#: autoload.php:1281
 #: core/views/arm_profile_editor.php:212
 #: core/views/arm_profiles_directories.php:22
 #@ armember-membership
@@ -10172,7 +10172,7 @@ msgstr "Reset Password Link is invalid."
 msgid "RESTRICT CONTENT"
 msgstr "RESTRICT CONTENT"
 
-#: autoload.php:701
+#: autoload.php:702
 #: core/classes/arm_builder/class.arm_bricks_builder_restriction.php:69
 #: core/classes/arm_builder/class.arm_divi_builder_restriction.php:69
 #: core/views/arm_tinymce_options_shortcodes.php:1129
@@ -10263,14 +10263,14 @@ msgstr "Rounded Style"
 msgid "RTL"
 msgstr "RTL"
 
-#: autoload.php:1807
-#: autoload.php:3952
+#: autoload.php:1808
+#: autoload.php:3951
 #@ armember-membership
 msgid "Rule has been deleted successfully."
 msgstr "Rule has been deleted successfully."
 
-#: autoload.php:1809
-#: autoload.php:3954
+#: autoload.php:1810
+#: autoload.php:3953
 #@ armember-membership
 msgid "Rule(s) has been deleted successfully."
 msgstr "Rule(s) has been deleted successfully."
@@ -10995,8 +10995,8 @@ msgstr "Set up is too difficult"
 msgid "Setting(s) has been imported successfully"
 msgstr "Setting(s) has been imported successfully"
 
-#: autoload.php:1824
-#: autoload.php:3969
+#: autoload.php:1825
+#: autoload.php:3968
 #@ armember-membership
 msgid "Settings has been saved successfully."
 msgstr "Settings has been saved successfully."
@@ -11008,8 +11008,8 @@ msgstr "Settings has been saved successfully."
 msgid "Settings Saved Successfully."
 msgstr "Settings Saved Successfully."
 
-#: autoload.php:1801
-#: autoload.php:3946
+#: autoload.php:1802
+#: autoload.php:3945
 #: core/classes/class.arm_membership_setup.php:5077
 #@ armember-membership
 msgid "Setup has been deleted successfully."
@@ -11032,8 +11032,8 @@ msgstr "Setup name"
 msgid "Setup name can not be left blank."
 msgstr "Setup name can not be left blank."
 
-#: autoload.php:1799
-#: autoload.php:3944
+#: autoload.php:1800
+#: autoload.php:3943
 #@ armember-membership
 msgid "Setup(s) has been deleted successfully."
 msgstr "Setup(s) has been deleted successfully."
@@ -11048,7 +11048,7 @@ msgstr "Seychelles"
 msgid "Short Code"
 msgstr "Short Code"
 
-#: autoload.php:690
+#: autoload.php:691
 #: core/classes/class.arm_member_forms.php:1130
 #: core/classes/class.arm_membership_setup.php:228
 #: core/views/arm_form_editor.php:218
@@ -11150,7 +11150,7 @@ msgstr "Show"
 msgid "Show / Hide columns"
 msgstr "Show / Hide columns"
 
-#: autoload.php:702
+#: autoload.php:703
 #: core/views/arm_tinymce_options_shortcodes.php:1137
 #: core/widgets/arm_elm_widgets/class.arm_partial_content_restriction_shortcode.php:65
 #@ armember-membership
@@ -11228,7 +11228,7 @@ msgstr "Skip The Wizard and Setup Manually"
 msgid "Skype"
 msgstr "Skype"
 
-#: autoload.php:1088
+#: autoload.php:1089
 #: core/widgets/arm_elm_widgets/class.arm_latest_user_list_element_add.php:95
 #: core/widgets/class.arm_widgetlatestMembers.php:185
 #@ armember-membership
@@ -11372,8 +11372,8 @@ msgstr "Sorry, something went wrong. Please contact the site administrator."
 msgid "Sorry, Something went wrong. Please contact to site administrator."
 msgstr "Sorry, Something went wrong. Please contact to site administrator."
 
-#: autoload.php:1788
-#: autoload.php:3933
+#: autoload.php:1789
+#: autoload.php:3932
 #: core/classes/class.arm_access_rules.php:506
 #: core/classes/class.arm_email_settings.php:188
 #: core/classes/class.arm_email_settings.php:221
@@ -11409,8 +11409,8 @@ msgstr "Sorry, Something went wrong. Please try again."
 msgid "Sorry, Something went wrong. please try again."
 msgstr "Sorry, Something went wrong. please try again."
 
-#: autoload.php:1776
-#: autoload.php:3918
+#: autoload.php:1777
+#: autoload.php:3917
 #@ armember-membership
 msgid "Sorry, this file type is not permitted for security reasons."
 msgstr "Sorry, this file type is not permitted for security reasons."
@@ -11428,7 +11428,7 @@ msgstr "Sorry, You can not add this field twice in form"
 msgid "Sorry, You do not have permission to perform this action"
 msgstr "Sorry, You do not have permission to perform this action"
 
-#: autoload.php:4084
+#: autoload.php:4083
 #: core/classes/class.arm_manage_communication.php:25
 #: core/classes/class.arm_manage_communication.php:56
 #: core/classes/class.arm_manage_subscription.php:909
@@ -11443,13 +11443,13 @@ msgstr "Sorry, You do not have permission to perform this action."
 msgid "Sorry, You Don't Have Feed Access"
 msgstr "Sorry, You Don't Have Feed Access"
 
-#: autoload.php:4100
+#: autoload.php:4099
 #@ armember-membership
 msgid "Sorry, Your request can not process due to nonce not found."
 msgstr "Sorry, Your request can not process due to nonce not found."
 
-#: autoload.php:3832
-#: autoload.php:4107
+#: autoload.php:3831
+#: autoload.php:4106
 #@ armember-membership
 msgid "Sorry, Your request can not process due to security reason."
 msgstr "Sorry, Your request can not process due to security reason."
@@ -11566,8 +11566,8 @@ msgstr "Standard Style"
 msgid "Start Date"
 msgstr "Start Date"
 
-#: autoload.php:1844
-#: autoload.php:3990
+#: autoload.php:1845
+#: autoload.php:3989
 #@ armember-membership
 msgid "Start date can not be earlier than current date."
 msgstr "Start date can not be earlier than current date."
@@ -11812,7 +11812,7 @@ msgstr "Summary Text"
 msgid "Suriname"
 msgstr "Suriname"
 
-#: autoload.php:1080
+#: autoload.php:1081
 #: core/classes/class.arm_manage_subscription.php:458
 #: core/classes/class.arm_manage_subscription.php:1381
 #: core/classes/class.arm_members.php:632
@@ -11953,14 +11953,14 @@ msgstr "Template 5"
 msgid "Template found."
 msgstr "Template found."
 
-#: autoload.php:1836
-#: autoload.php:3979
+#: autoload.php:1837
+#: autoload.php:3978
 #@ armember-membership
 msgid "Template has been added successfully."
 msgstr "Template has been added successfully."
 
-#: autoload.php:1838
-#: autoload.php:3981
+#: autoload.php:1839
+#: autoload.php:3980
 #@ armember-membership
 msgid "Template has been deleted successfully."
 msgstr "Template has been deleted successfully."
@@ -11970,16 +11970,16 @@ msgstr "Template has been deleted successfully."
 msgid "Template Name"
 msgstr "Template Name"
 
-#: autoload.php:1832
-#: autoload.php:3975
+#: autoload.php:1833
+#: autoload.php:3974
 #: core/classes/class.arm_email_settings.php:135
 #: core/classes/class.arm_members_directory.php:1183
 #@ armember-membership
 msgid "Template not found."
 msgstr "Template not found."
 
-#: autoload.php:1833
-#: autoload.php:3976
+#: autoload.php:1834
+#: autoload.php:3975
 #: core/classes/class.arm_members_directory.php:322
 #: core/classes/class.arm_members_directory.php:325
 #@ armember-membership
@@ -12009,7 +12009,7 @@ msgstr "Terminate"
 msgid "Terminate Members"
 msgstr "Terminate Members"
 
-#: autoload.php:1075
+#: autoload.php:1076
 #@ armember-membership
 msgid "Terminated"
 msgstr "Terminated"
@@ -12131,8 +12131,8 @@ msgstr "The uploaded file exceeds the upload_max_filesize directive in php.ini."
 msgid "The uploaded file was only partially uploaded."
 msgstr "The uploaded file was only partially uploaded."
 
-#: autoload.php:1771
-#: autoload.php:3913
+#: autoload.php:1772
+#: autoload.php:3912
 #@ armember-membership
 msgid "The user chose not to grant permissions or closed the pop-up"
 msgstr "The user chose not to grant permissions or closed the pop-up"
@@ -12171,128 +12171,128 @@ msgstr "Then Redirect To"
 msgid "There is a error while adding form, Please try again."
 msgstr "There is a error while adding form, Please try again."
 
-#: autoload.php:1837
-#: autoload.php:3980
+#: autoload.php:1838
+#: autoload.php:3979
 #@ armember-membership
 msgid "There is a error while adding template, please try again."
 msgstr "There is a error while adding template, please try again."
 
-#: autoload.php:1775
-#: autoload.php:3917
+#: autoload.php:1776
+#: autoload.php:3916
 #@ armember-membership
 msgid "There is a error while closing account, please try again."
 msgstr "There is a error while closing account, please try again."
 
-#: autoload.php:1773
-#: autoload.php:3915
+#: autoload.php:1774
+#: autoload.php:3914
 #@ armember-membership
 msgid "There is a error while copying, please try again"
 msgstr "There is a error while copying, please try again"
 
-#: autoload.php:1804
-#: autoload.php:3949
+#: autoload.php:1805
+#: autoload.php:3948
 #@ armember-membership
 msgid "There is a error while deleting form set, please try again."
 msgstr "There is a error while deleting form set, please try again."
 
-#: autoload.php:1806
-#: autoload.php:3951
+#: autoload.php:1807
+#: autoload.php:3950
 #@ armember-membership
 msgid "There is a error while deleting form, please try again."
 msgstr "There is a error while deleting form, please try again."
 
-#: autoload.php:1831
-#: autoload.php:3974
+#: autoload.php:1832
+#: autoload.php:3973
 #@ armember-membership
 msgid "There is a error while deleting member activities, please try again."
 msgstr "There is a error while deleting member activities, please try again."
 
-#: autoload.php:1822
-#: autoload.php:3967
+#: autoload.php:1823
+#: autoload.php:3966
 #@ armember-membership
 msgid "There is a error while deleting Message(s), please try again."
 msgstr "There is a error while deleting Message(s), please try again."
 
-#: autoload.php:1820
-#: autoload.php:3965
+#: autoload.php:1821
+#: autoload.php:3964
 #@ armember-membership
 msgid "There is a error while deleting Message, please try again."
 msgstr "There is a error while deleting Message, please try again."
 
-#: autoload.php:1796
-#: autoload.php:3940
+#: autoload.php:1797
+#: autoload.php:3939
 #@ armember-membership
 msgid "There is a error while deleting Plan(s), please try again."
 msgstr "There is a error while deleting Plan(s), please try again."
 
-#: autoload.php:1797
-#: autoload.php:3942
+#: autoload.php:1798
+#: autoload.php:3941
 #@ armember-membership
 msgid "There is a error while deleting Plan, please try again."
 msgstr "There is a error while deleting Plan, please try again."
 
-#: autoload.php:1810
-#: autoload.php:3955
+#: autoload.php:1811
+#: autoload.php:3954
 #@ armember-membership
 msgid "There is a error while deleting Rule(s), please try again."
 msgstr "There is a error while deleting Rule(s), please try again."
 
-#: autoload.php:1808
-#: autoload.php:3953
+#: autoload.php:1809
+#: autoload.php:3952
 #@ armember-membership
 msgid "There is a error while deleting Rule, please try again."
 msgstr "There is a error while deleting Rule, please try again."
 
-#: autoload.php:1800
-#: autoload.php:3945
+#: autoload.php:1801
+#: autoload.php:3944
 #@ armember-membership
 msgid "There is a error while deleting Setup(s), please try again."
 msgstr "There is a error while deleting Setup(s), please try again."
 
-#: autoload.php:1802
-#: autoload.php:3947
+#: autoload.php:1803
+#: autoload.php:3946
 #@ armember-membership
 msgid "There is a error while deleting Setup, please try again."
 msgstr "There is a error while deleting Setup, please try again."
 
-#: autoload.php:1839
-#: autoload.php:3982
+#: autoload.php:1840
+#: autoload.php:3981
 #@ armember-membership
 msgid "There is a error while deleting template, please try again."
 msgstr "There is a error while deleting template, please try again."
 
-#: autoload.php:1815
-#: autoload.php:3960
+#: autoload.php:1816
+#: autoload.php:3959
 #@ armember-membership
 msgid "There is a error while displaying ARMember CSS Class Information, Please Try Again."
 msgstr "There is a error while displaying ARMember CSS Class Information, Please Try Again."
 
-#: autoload.php:1814
-#: autoload.php:3959
+#: autoload.php:1815
+#: autoload.php:3958
 #@ armember-membership
 msgid "There is a error while displaying members activities detail, Please try again."
 msgstr "There is a error while displaying members activities detail, Please try again."
 
-#: autoload.php:1812
-#: autoload.php:3957
+#: autoload.php:1813
+#: autoload.php:3956
 #@ armember-membership
 msgid "There is a error while generating invoice of transaction detail, Please try again."
 msgstr "There is a error while generating invoice of transaction detail, Please try again."
 
-#: autoload.php:1813
-#: autoload.php:3958
+#: autoload.php:1814
+#: autoload.php:3957
 #@ armember-membership
 msgid "There is a error while generating preview of members detail, Please try again."
 msgstr "There is a error while generating preview of members detail, Please try again."
 
-#: autoload.php:1835
-#: autoload.php:3978
+#: autoload.php:1836
+#: autoload.php:3977
 #@ armember-membership
 msgid "There is a error while generating preview of template, Please try again."
 msgstr "There is a error while generating preview of template, Please try again."
 
-#: autoload.php:1811
-#: autoload.php:3956
+#: autoload.php:1812
+#: autoload.php:3955
 #@ armember-membership
 msgid "There is a error while generating preview of transaction detail, Please try again."
 msgstr "There is a error while generating preview of transaction detail, Please try again."
@@ -12302,19 +12302,19 @@ msgstr "There is a error while generating preview of transaction detail, Please 
 msgid "There is a error while updating access rules, please try again."
 msgstr "There is a error while updating access rules, please try again."
 
-#: autoload.php:1829
+#: autoload.php:1830
 #@ armember-membership
 msgid "There is a error while updating opt-ins settings, please try again."
 msgstr "There is a error while updating opt-ins settings, please try again."
 
-#: autoload.php:1827
-#: autoload.php:3972
+#: autoload.php:1828
+#: autoload.php:3971
 #@ armember-membership
 msgid "There is a error while updating rules, please try again."
 msgstr "There is a error while updating rules, please try again."
 
-#: autoload.php:1825
-#: autoload.php:3970
+#: autoload.php:1826
+#: autoload.php:3969
 #: core/classes/class.arm_global_settings.php:1761
 #: core/classes/class.arm_members_directory.php:305
 #: core/classes/class.arm_members_directory.php:308
@@ -12323,8 +12323,8 @@ msgstr "There is a error while updating rules, please try again."
 msgid "There is a error while updating settings, please try again."
 msgstr "There is a error while updating settings, please try again."
 
-#: autoload.php:1834
-#: autoload.php:3977
+#: autoload.php:1835
+#: autoload.php:3976
 #@ armember-membership
 msgid "There is a error while updating template options, please try again."
 msgstr "There is a error while updating template options, please try again."
@@ -12334,34 +12334,34 @@ msgstr "There is a error while updating template options, please try again."
 msgid "There is a error while updating template, please try again."
 msgstr "There is a error while updating template, please try again."
 
-#: autoload.php:1778
-#: autoload.php:3920
+#: autoload.php:1779
+#: autoload.php:3919
 #@ armember-membership
 msgid "There is an error in uploading file, Please try again."
 msgstr "There is an error in uploading file, Please try again."
 
-#: autoload.php:1851
-#: autoload.php:3997
+#: autoload.php:1852
+#: autoload.php:3996
 #@ armember-membership
 msgid "There is an error while activating addon, Please try agina."
 msgstr "There is an error while activating addon, Please try agina."
 
-#: autoload.php:1849
-#: autoload.php:3995
+#: autoload.php:1850
+#: autoload.php:3994
 #@ armember-membership
 msgid "There is an error while installing addon, Please try again."
 msgstr "There is an error while installing addon, Please try again."
 
-#: autoload.php:1770
-#: autoload.php:3912
+#: autoload.php:1771
+#: autoload.php:3911
 #@ armember-membership
 msgid "There is an error while loading activities, please try again."
 msgstr "There is an error while loading activities, please try again."
 
-#: autoload.php:1781
-#: autoload.php:1855
-#: autoload.php:3923
-#: autoload.php:4001
+#: autoload.php:1782
+#: autoload.php:1856
+#: autoload.php:3922
+#: autoload.php:4000
 #@ armember-membership
 msgid "There is an error while performing this action, please try again."
 msgstr "There is an error while performing this action, please try again."
@@ -12499,8 +12499,8 @@ msgstr "This file could not be processed due file limit exceeded."
 msgid "This first name is invalid. Please enter a valid first name."
 msgstr "This first name is invalid. Please enter a valid first name."
 
-#: autoload.php:1848
-#: autoload.php:3994
+#: autoload.php:1849
+#: autoload.php:3993
 #@ armember-membership
 msgid "This Form Name is already exist."
 msgstr "This Form Name is already exist."
@@ -12558,8 +12558,8 @@ msgstr "This navigation menu link is to set Logout Link."
 msgid "This plan has one or more subscribers. So this plan can not be deleted."
 msgstr "This plan has one or more subscribers. So this plan can not be deleted."
 
-#: autoload.php:1847
-#: autoload.php:3993
+#: autoload.php:1848
+#: autoload.php:3992
 #@ armember-membership
 msgid "This Set Name is already exist."
 msgstr "This Set Name is already exist."
@@ -12833,8 +12833,8 @@ msgstr "Transaction Date"
 msgid "Transaction Details"
 msgstr "Transaction Details"
 
-#: autoload.php:1817
-#: autoload.php:3962
+#: autoload.php:1818
+#: autoload.php:3961
 #@ armember-membership
 msgid "Transaction has been deleted successfully."
 msgstr "Transaction has been deleted successfully."
@@ -12916,8 +12916,8 @@ msgstr "Transaction ID Label can not be left blank."
 msgid "Transaction Status"
 msgstr "Transaction Status"
 
-#: autoload.php:1818
-#: autoload.php:3963
+#: autoload.php:1819
+#: autoload.php:3962
 #: core/classes/class.arm_transaction.php:608
 #@ armember-membership
 msgid "Transaction(s) has been deleted successfully."
@@ -13070,7 +13070,7 @@ msgstr "Ukraine"
 msgid "Ukrainian"
 msgstr "Ukrainian"
 
-#: autoload.php:1092
+#: autoload.php:1093
 #: core/widgets/arm_elm_widgets/class.arm_latest_user_list_element_add.php:99
 #: core/widgets/class.arm_widgetlatestMembers.php:189
 #@ armember-membership
@@ -13092,7 +13092,7 @@ msgstr "United Kingdom"
 msgid "United States"
 msgstr "United States"
 
-#: autoload.php:1095
+#: autoload.php:1096
 #@ armember-membership
 msgid "Unknown"
 msgstr "Unknown"
@@ -13174,7 +13174,7 @@ msgstr "Upgrade to other plan after current plan expiration ( After End Of Term)
 msgid "Upgrade to Premium"
 msgstr "Upgrade to Premium"
 
-#: autoload.php:1201
+#: autoload.php:1202
 #@ armember-membership
 msgid "Upgrade To Pro"
 msgstr "Upgrade To Pro"
@@ -13272,13 +13272,13 @@ msgstr "User Already LoggedIn Message"
 msgid "User already loggedIn message for modal forms ( Navigation Popup )"
 msgstr "User already loggedIn message for modal forms ( Navigation Popup )"
 
-#: autoload.php:1082
+#: autoload.php:1083
 #@ armember-membership
 msgid "User Cancelled"
 msgstr "User Cancelled"
 
-#: autoload.php:1774
-#: autoload.php:3916
+#: autoload.php:1775
+#: autoload.php:3915
 #@ armember-membership
 msgid "User cancelled login or did not fully authorize."
 msgstr "User cancelled login or did not fully authorize."
@@ -13448,9 +13448,9 @@ msgstr "User's Logged in / Logout details"
 msgid "User's Signup Details such as Username, Password, First Name, Last Name and Custom Fields value( Address, Gender etc)"
 msgstr "User's Signup Details such as Username, Password, First Name, Last Name and Custom Fields value( Address, Gender etc)"
 
-#: autoload.php:1782
-#: autoload.php:3924
-#: autoload.php:4002
+#: autoload.php:1783
+#: autoload.php:3923
+#: autoload.php:4001
 #@ armember-membership
 msgid "User's subscription has been canceled"
 msgstr "User's subscription has been canceled"
@@ -13647,7 +13647,7 @@ msgstr "Venezuela"
 msgid "Very Weak Text"
 msgstr "Very Weak Text"
 
-#: autoload.php:3789
+#: autoload.php:3788
 #@ armember-membership
 msgid "Video Tutorials"
 msgstr "Video Tutorials"
@@ -14413,9 +14413,9 @@ msgstr "Current Password"
 msgid "Current password can not be left blank."
 msgstr "Current password can not be left blank."
 
-#: autoload.php:690
-#: autoload.php:694
-#: autoload.php:698
+#: autoload.php:691
+#: autoload.php:695
+#: autoload.php:699
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:45
 #: core/classes/arm_builder/class.arm_beaver_builder_restriction.php:148
 #: core/classes/arm_builder/class.arm_divi_builder_restriction.php:28
@@ -14440,33 +14440,33 @@ msgstr "Current password can not be left blank."
 msgid "ARMember"
 msgstr "ARMember"
 
-#: autoload.php:693
+#: autoload.php:694
 #@ armember-membership
 msgid "Restrict Content Shortcode"
 msgstr "Restrict Content Shortcode"
 
-#: autoload.php:694
-#: autoload.php:698
+#: autoload.php:695
+#: autoload.php:699
 #@ armember-membership
 msgid "Restriction"
 msgstr "Restriction"
 
-#: autoload.php:697
+#: autoload.php:698
 #@ armember-membership
 msgid "ARMember Block Restriction"
 msgstr "ARMember Block Restriction"
 
-#: autoload.php:698
+#: autoload.php:699
 #@ armember-membership
 msgid "Block"
 msgstr "Block"
 
-#: autoload.php:699
+#: autoload.php:700
 #@ armember-membership
 msgid "Nest blocks within this wrapper to control the inner block visibility by membership plans or for free membership only."
 msgstr "Nest blocks within this wrapper to control the inner block visibility by membership plans or for free membership only."
 
-#: autoload.php:706
+#: autoload.php:707
 #@ armember-membership
 msgid "If any of the following conditions will true then restrictions will apply on content"
 msgstr "If any of the following conditions will true then restrictions will apply on content"
@@ -15417,9 +15417,9 @@ msgstr "Third-Party Integrations"
 msgid "Upgrade Pro"
 msgstr "Upgrade Pro"
 
-#: autoload.php:1200
-#: autoload.php:1307
+#: autoload.php:1201
 #: autoload.php:1308
+#: autoload.php:1309
 #@ armember-membership
 msgid "Add-ons"
 msgstr "Add-ons"
@@ -15580,17 +15580,17 @@ msgstr "Trial Transaction"
 msgid "User Email"
 msgstr "User Email"
 
-#: autoload.php:4546
+#: autoload.php:4545
 #@ armember-membership
 msgid "An Unexpected HTTP Error occurred during the API request."
 msgstr "An Unexpected HTTP Error occurred during the API request."
 
-#: autoload.php:4546
+#: autoload.php:4545
 #@ armember-membership
 msgid "Try again"
 msgstr "Try again"
 
-#: autoload.php:4551
+#: autoload.php:4550
 #@ armember-membership
 msgid "An unknown error occurred"
 msgstr "An unknown error occurred"
@@ -15873,7 +15873,7 @@ msgstr "Please select at least one payment gateway."
 msgid "At least one payment gateway configuration is required for paid plan(s) selection."
 msgstr "At least one payment gateway configuration is required for paid plan(s) selection."
 
-#: autoload.php:798
+#: autoload.php:799
 #@ armember-membership
 msgid "Dismiss"
 msgstr "Dismiss"
@@ -16551,12 +16551,12 @@ msgstr "Member Card Templates"
 msgid "Edit Card Options"
 msgstr "Edit Card Options"
 
-#: autoload.php:3686
+#: autoload.php:3687
 #@ armember-membership
 msgid "Updates"
 msgstr "Updates"
 
-#: autoload.php:3718
+#: autoload.php:3719
 #@ armember-membership
 msgid "View Changelog"
 msgstr "View Changelog"
@@ -16784,13 +16784,13 @@ msgstr "Want stunning forms without coding?"
 msgid "Install ARForms - the most powerful drag-and-drop form builder for WordPress!"
 msgstr "Install ARForms - the most powerful drag-and-drop form builder for WordPress!"
 
-#: autoload.php:647
+#: autoload.php:648
 #, php-format
 #@ armember-membership
 msgid "To ensure full compatibility with the ARMember Lite version, please update the ARMember Pro to the latest version. For manual update instructions, please refer to %s"
 msgstr "To ensure full compatibility with the ARMember Lite version, please update the ARMember Pro to the latest version. For manual update instructions, please refer to %s"
 
-#: autoload.php:647
+#: autoload.php:648
 #@ armember-membership
 msgid "our documentation"
 msgstr "our documentation"
@@ -17105,12 +17105,6 @@ msgstr "Member Panel Colors"
 msgid "Font"
 msgstr "Font"
 
-#. translators: plugin header field 'Version'
-#: armember-membership.php:0
-#@ armember-membership
-msgid "5.4"
-msgstr "5.4"
-
 #: core/classes/class.arm_member_forms.php:96
 #@ armember-membership
 msgid "Cropper has been reseted."
@@ -17120,4 +17114,10 @@ msgstr "Cropper has been reseted."
 #@ armember-membership
 msgid "Member Panel Shortcode [arm_member_panel] not found on selected page. Please add shortcode on that page Or please select appropriate page."
 msgstr "Member Panel Shortcode [arm_member_panel] not found on selected page. Please add shortcode on that page Or please select appropriate page."
+
+#. translators: plugin header field 'Version'
+#: armember-membership.php:0
+#@ armember-membership
+msgid "5.5"
+msgstr "5.5"
 

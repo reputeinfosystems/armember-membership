@@ -167,14 +167,14 @@ if(!$ARMemberLite->is_arm_pro_active)
 				armBpopup('arm_black_friday_bpopup');
 			});
 			jQuery(document).on('click','.popup_wrapper.arm_black_friday_bpopup .popup_content_text',function(){
-				window.location.replace("https://www.armemberplugin.com/pricing/?utm_source=blackfriday_liteversionpopup&utm_medium=liteversion&utm_campaign=balckfriday");
+				window.location.replace("https://www.armemberplugin.com/pricing/?utm_source=springsale_liteversionpopup&utm_medium=liteversion&utm_campaign=springsale");
 			});
 		</script>
 	<?php
 	}
 	else if(!empty($_REQUEST['arm_upgrade_action']) && 'arm_upgrade_to_premium' == $_REQUEST['arm_upgrade_action'])	//phpcs:ignore
 	{
-		wp_redirect('https://www.armemberplugin.com/pricing/?utm_source=newsletter&utm_medium=email&utm_campaign=Armember_blackfriday_2025&utm_id=armember_1');
+		wp_redirect('https://www.armemberplugin.com/pricing/?utm_source=newsletter&utm_medium=email&utm_campaign=Armember_springsale_2026&utm_id=armember_1');
 		exit;
 	}
 	}
