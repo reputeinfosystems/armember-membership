@@ -25,6 +25,38 @@ class ARM_CSV_Importer {
 		'nickname',
 	);
 
+	/**
+	 * Return all user-created (custom) ARMember form fields as meta_key => label.
+	 * Mirrors ARM_CSV_Exporter::get_arm_custom_fields().
+	 *
+	 * @return array
+	 */
+	public static function get_arm_custom_fields() {
+		$skip_types = array(
+			'section', 'html', 'hidden', 'submit', 'social_fields',
+			'avatar', 'profile_cover', 'file', 'rememberme',
+			'repeat_pass', 'repeat_email', 'info',
+		);
+
+		$preset = maybe_unserialize( get_option( 'arm_preset_form_fields', '' ) );
+		if ( ! is_array( $preset ) ) {
+			return array();
+		}
+
+		$custom = array();
+		$other  = isset( $preset['other'] ) ? $preset['other'] : array();
+		foreach ( $other as $meta_key => $field ) {
+			$type = isset( $field['type'] ) ? $field['type'] : '';
+			if ( in_array( $type, $skip_types, true ) ) {
+				continue;
+			}
+			$label            = ( isset( $field['label'] ) && $field['label'] !== '' ) ? $field['label'] : $meta_key;
+			$custom[ $meta_key ] = $label;
+		}
+
+		return $custom;
+	}
+
 	/** -----------------------------------------------------------------------
 	 * Step 1 – Parse uploaded file and return preview data.
 	 *
@@ -51,12 +83,20 @@ class ARM_CSV_Importer {
 
 		$preview_rows = array_slice( $rows, 0, 5 );
 
+		/*
+		 * Merge core WP fields with all user-created ARMember custom fields
+		 * so the JS column-mapping dropdown offers them as mapping targets.
+		 */
+		$custom_fields      = self::get_arm_custom_fields(); // meta_key => label
+		$all_mappable_fields = array_merge( $this->core_fields, array_keys( $custom_fields ) );
+
 		return array(
-			'headers'      => $headers,
-			'preview_rows' => $preview_rows,
-			'total'        => count( $rows ),
-			'all_rows'     => $rows,
-			'core_fields'  => $this->core_fields,
+			'headers'       => $headers,
+			'preview_rows'  => $preview_rows,
+			'total'         => count( $rows ),
+			'all_rows'      => $rows,
+			'core_fields'   => $all_mappable_fields,
+			'custom_fields' => $custom_fields, // meta_key => label, for JS labelling
 		);
 	}
 

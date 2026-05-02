@@ -133,7 +133,7 @@
         );
 
         /* Column map table */
-        var fieldOptions = buildFieldOptions(data.core_fields);
+        var fieldOptions = buildFieldOptions(data.core_fields, data.custom_fields || {});
         var mapHtml  = '<table class="arm-csv-column-map"><thead><tr>'
                      + '<th>CSV Column</th><th>Sample Value</th><th>Map to Field</th>'
                      + '</tr></thead><tbody>';
@@ -142,7 +142,7 @@
             var sampleVal = (data.preview_rows[0] && data.preview_rows[0][idx] !== undefined)
                           ? escHtml(data.preview_rows[0][idx])
                           : '';
-            var autoMatch = autoMatchField(header.toLowerCase().trim(), data.core_fields);
+            var autoMatch = autoMatchField(header.toLowerCase().trim(), data.core_fields, data.custom_fields || {});
             mapHtml += '<tr>'
                      + '<td><strong>' + escHtml(header) + '</strong></td>'
                      + '<td>' + sampleVal + '</td>'
@@ -256,29 +256,58 @@
        Helpers
        ================================================================== */
 
-    function buildFieldOptions(coreFields) {
-        var fields = ['skip', 'username', 'email', 'first_name', 'last_name',
-                      'display_name', 'password', 'role', 'website',
-                      'description', 'nickname'];
+    function buildFieldOptions(coreFields, customFields) {
+        /* Base WP fields always shown first */
+        var baseFields = ['skip', 'username', 'email', 'first_name', 'last_name',
+                          'display_name', 'password', 'role', 'website',
+                          'description', 'nickname'];
 
-        /* Add any extra core fields not already listed */
+        /* Add any core fields not already in the base list */
         $.each(coreFields, function (_, f) {
-            if (fields.indexOf(f) === -1) {
-                fields.push(f);
+            if (baseFields.indexOf(f) === -1) {
+                baseFields.push(f);
+            }
+        });
+
+        /* Collect custom field meta_keys (those not already covered above) */
+        var customKeys = [];
+        $.each(customFields, function (metaKey) {
+            if (baseFields.indexOf(metaKey) === -1) {
+                customKeys.push(metaKey);
             }
         });
 
         return function (selected) {
             var opts = '';
-            $.each(fields, function (_, f) {
+
+            /* WordPress / core fields group */
+            opts += '<optgroup label="WordPress Fields">';
+            $.each(baseFields, function (_, f) {
                 var sel = (f === selected) ? ' selected' : '';
                 opts += '<option value="' + f + '"' + sel + '>' + f + '</option>';
             });
+            opts += '</optgroup>';
+
+            /* Custom ARMember fields group */
+            if (customKeys.length) {
+                opts += '<optgroup label="Custom Form Fields">';
+                $.each(customKeys, function (_, metaKey) {
+                    var label = customFields[metaKey] ? customFields[metaKey] + ' (' + metaKey + ')' : metaKey;
+                    var sel   = (metaKey === selected) ? ' selected' : '';
+                    opts += '<option value="' + metaKey + '"' + sel + '>' + escHtml(label) + '</option>';
+                });
+                opts += '</optgroup>';
+            }
+
             return opts;
         };
     }
 
-    function autoMatchField(header, coreFields) {
+    function autoMatchField(header, coreFields, customFields) {
+        /* Exact match against a custom field meta_key first */
+        if (customFields && customFields.hasOwnProperty(header)) {
+            return header;
+        }
         var map = {
             'id'            : 'skip',
             'user_login'    : 'username',

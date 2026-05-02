@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/* Fetch plans for dropdowns */
+/* Fetch plans and custom form fields for dropdowns */
 global $wpdb, $ARMemberLite, $arm_subscription_plans;
 
 $plans = array();
@@ -11,6 +11,9 @@ if ( isset( $ARMemberLite ) && isset( $ARMemberLite->tbl_arm_subscription_plans 
 	$tbl   = $ARMemberLite->tbl_arm_subscription_plans;
 	$plans = $wpdb->get_results( "SELECT arm_subscription_plan_id, arm_subscription_plan_name FROM `{$tbl}` ORDER BY arm_subscription_plan_name ASC" ); // phpcs:ignore
 }
+
+/* Custom ARMember form fields (meta_key => label) */
+$arm_custom_fields = ARM_CSV_Exporter::get_arm_custom_fields();
 ?>
 <div class="wrap arm-csv-ie-wrap">
 	<h1><?php esc_html_e( 'CSV Import &amp; Export', 'arm-csv-import-export' ); ?></h1>
@@ -85,12 +88,32 @@ if ( isset( $ARMemberLite ) && isset( $ARMemberLite->tbl_arm_subscription_plans 
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Extra Columns', 'arm-csv-import-export' ); ?></th>
 						<td>
-							<label><input type="checkbox" name="extra_fields[]" value="first_name" checked> <?php esc_html_e( 'First Name', 'arm-csv-import-export' ); ?></label><br>
-							<label><input type="checkbox" name="extra_fields[]" value="last_name" checked> <?php esc_html_e( 'Last Name', 'arm-csv-import-export' ); ?></label><br>
-							<label><input type="checkbox" name="extra_fields[]" value="display_name"> <?php esc_html_e( 'Display Name', 'arm-csv-import-export' ); ?></label><br>
-							<label><input type="checkbox" name="extra_fields[]" value="nickname"> <?php esc_html_e( 'Nickname', 'arm-csv-import-export' ); ?></label><br>
-							<label><input type="checkbox" name="extra_fields[]" value="description"> <?php esc_html_e( 'Bio / Description', 'arm-csv-import-export' ); ?></label><br>
-							<label><input type="checkbox" name="extra_fields[]" value="user_url"> <?php esc_html_e( 'Website URL', 'arm-csv-import-export' ); ?></label>
+							<?php
+							/* Built-in optional columns */
+							$builtin_extras = array(
+								'first_name'   => array( 'label' => __( 'First Name', 'arm-csv-import-export' ),   'checked' => true ),
+								'last_name'    => array( 'label' => __( 'Last Name', 'arm-csv-import-export' ),    'checked' => true ),
+								'display_name' => array( 'label' => __( 'Display Name', 'arm-csv-import-export' ), 'checked' => false ),
+								'nickname'     => array( 'label' => __( 'Nickname', 'arm-csv-import-export' ),     'checked' => false ),
+								'description'  => array( 'label' => __( 'Bio / Description', 'arm-csv-import-export' ), 'checked' => false ),
+								'user_url'     => array( 'label' => __( 'Website URL', 'arm-csv-import-export' ),  'checked' => false ),
+							);
+							foreach ( $builtin_extras as $meta_key => $cfg ) {
+								$checked = $cfg['checked'] ? ' checked' : '';
+								echo '<label><input type="checkbox" name="extra_fields[]" value="' . esc_attr( $meta_key ) . '"' . $checked . '> '
+									. esc_html( $cfg['label'] ) . '</label><br>';
+							}
+
+							/* Custom ARMember form fields */
+							if ( ! empty( $arm_custom_fields ) ) {
+								echo '<hr style="margin:8px 0;">';
+								echo '<strong>' . esc_html__( 'Custom Form Fields', 'arm-csv-import-export' ) . '</strong><br>';
+								foreach ( $arm_custom_fields as $meta_key => $label ) {
+									echo '<label><input type="checkbox" name="extra_fields[]" value="' . esc_attr( $meta_key ) . '" checked> '
+										. esc_html( $label ) . ' <small style="color:#999;">(' . esc_html( $meta_key ) . ')</small></label><br>';
+								}
+							}
+							?>
 						</td>
 					</tr>
 				</table>

@@ -9,6 +9,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 class ARM_CSV_Exporter {
 
 	/**
+	 * Return all user-created (custom) ARMember form fields as meta_key => label.
+	 * Skips structural/non-data field types.
+	 *
+	 * @return array
+	 */
+	public static function get_arm_custom_fields() {
+		$skip_types = array(
+			'section', 'html', 'hidden', 'submit', 'social_fields',
+			'avatar', 'profile_cover', 'file', 'rememberme',
+			'repeat_pass', 'repeat_email', 'info',
+		);
+
+		$preset = maybe_unserialize( get_option( 'arm_preset_form_fields', '' ) );
+		if ( ! is_array( $preset ) ) {
+			return array();
+		}
+
+		$custom = array();
+		$other  = isset( $preset['other'] ) ? $preset['other'] : array();
+		foreach ( $other as $meta_key => $field ) {
+			$type = isset( $field['type'] ) ? $field['type'] : '';
+			if ( in_array( $type, $skip_types, true ) ) {
+				continue;
+			}
+			$label            = ( isset( $field['label'] ) && $field['label'] !== '' ) ? $field['label'] : $meta_key;
+			$custom[ $meta_key ] = $label;
+		}
+
+		return $custom;
+	}
+
+	/**
 	 * Run export: query members, apply filters, stream CSV to browser.
 	 *
 	 * @param array $filters {
@@ -30,7 +62,13 @@ class ARM_CSV_Exporter {
 			return;
 		}
 
-		$extra_fields = isset( $filters['extra_fields'] ) ? (array) $filters['extra_fields'] : array();
+		/*
+		 * Merge explicitly requested extra_fields with every custom ARMember
+		 * form field so they are always present in the export.
+		 */
+		$extra_fields  = isset( $filters['extra_fields'] ) ? (array) $filters['extra_fields'] : array();
+		$custom_fields = array_keys( self::get_arm_custom_fields() );
+		$extra_fields  = array_unique( array_merge( $extra_fields, $custom_fields ) );
 
 		$rows = array();
 		foreach ( $users as $user_obj ) {
