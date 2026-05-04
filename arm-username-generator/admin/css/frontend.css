@@ -1,0 +1,25 @@
+/* ================================================================
+   ARM Username Generator – Frontend Styles
+   ================================================================ */
+
+/* Readonly username field */
+.arm-ugen-username-readonly {
+    background-color: #f9f9f9 !important;
+    border-color:     #ccc     !important;
+    color:            #555     !important;
+    cursor:           not-allowed !important;
+    user-select:      none     !important;
+}
+
+/* Badge shown below the username field */
+.arm-ugen-badge {
+    display:      inline-block;
+    margin-top:   4px;
+    font-size:    11px;
+    color:        #646970;
+    font-style:   italic;
+}
+
+.arm-ugen-badge::before {
+    content: '🔒 ';
+}
