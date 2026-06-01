@@ -649,7 +649,8 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 													$entry_values['payment_done']                 = '1';
 													$entry_values['arm_entry_id']                 = $entry_id;
 													$entry_values['arm_update_user_from_profile'] = 0;
-													$user_id                                      = $arm_member_forms->arm_register_new_member( $entry_values, $armform );
+													$arm_is_hashed_data_flag = 1;
+													$user_id                                      = $arm_member_forms->arm_register_new_member( $entry_values, $armform,'',$arm_is_hashed_data_flag);
 													if ( is_numeric( $user_id ) && ! is_array( $user_id ) ) {
 														if ( $arm_payment_type == 'subscription' ) {
 
@@ -807,7 +808,8 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 												$entry_values['payment_done']                 = '1';
 												$entry_values['arm_entry_id']                 = $entry_id;
 												$entry_values['arm_update_user_from_profile'] = 0;
-												$user_id                                      = $arm_member_forms->arm_register_new_member( $entry_values, $armform );
+												$arm_is_hashed_data_flag = 1;
+												$user_id                                      = $arm_member_forms->arm_register_new_member( $entry_values, $armform ,'',$arm_is_hashed_data_flag);
 
 												if ( is_numeric( $user_id ) && ! is_array( $user_id ) ) {
 													if ( $arm_payment_type == 'subscription' ) {

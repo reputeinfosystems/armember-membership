@@ -570,14 +570,14 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 														}
 														$arm_is_deactive = '';
 														if ( in_array( $fieldMetaKey, $profile_fields_data['profile_fields'] ) ) {
-															$arm_is_deactive = ' class="arm_deactive" ';
+															$arm_is_deactive = 'arm_deactive';
 														}
 														?>
-														<li data-code="<?php echo esc_attr($fieldMetaKey); ?>" data-label="<?php echo esc_attr( stripslashes_deep( $fieldOpt['label']) ); ?>" data-value="<?php echo esc_attr( stripslashes_deep( $fieldOpt['label'] ) ); //phpcs:ignore ?>" <?php echo esc_attr($arm_is_deactive); ?>><?php echo esc_html( stripslashes_deep( $fieldOpt['label'] ) ); //phpcs:ignore ?></li>
+														<li data-code="<?php echo esc_attr($fieldMetaKey); ?>" data-label="<?php echo esc_attr( stripslashes_deep( $fieldOpt['label']) ); ?>" data-value="<?php echo esc_attr( stripslashes_deep( $fieldMetaKey ) ); //phpcs:ignore ?>" class="<?php echo esc_attr($arm_is_deactive); ?>"><?php echo esc_html( stripslashes_deep( $fieldOpt['label'] ) ); //phpcs:ignore ?></li>
 														<?php
 													}
 													$arm_additional_profile_fields_data = '';
-													echo apply_filters('arm_additional_profile_fields_data',$arm_additional_profile_fields_data); //phpcs:ignore
+													echo apply_filters('arm_additional_profile_fields_data',$arm_additional_profile_fields_data,$profile_fields_data['profile_fields']); //phpcs:ignore
 													?>
 												</ul>
 											</dd>

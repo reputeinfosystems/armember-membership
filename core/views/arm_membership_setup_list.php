@@ -78,7 +78,7 @@ function arm_load_setup_list_grid(){
 	var _wpnonce = jQuery('input[name="arm_wp_nonce"]').val();
 	var arm_width_pct = "25%";
 	var arm_width_40_cols = 2;
-	var arm_width_20_cols = [1,4,3];
+	var arm_width_20_cols = [1,4,3,5];
 	var search_term = jQuery('.arm_datatable_searchbox #armmanagesearch_new').val();	
 	var db_search_term = (typeof search_term !== 'undefined' && search_term !== '') ? search_term : '';
 	<?php if($ARMemberLite->is_arm_pro_active)

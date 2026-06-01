@@ -14,7 +14,7 @@ if ( ! class_exists( 'ARM_modal_view_in_menu_Lite' ) ) {
 			}
 
 			add_filter( 'wp_nav_menu', array( $this, 'arm_main_hook_for_exclude' ), 11, 2 );
-				add_action( 'wp_footer', array( $this, 'arm_nav_menu_add_javascript' ) );
+			add_action( 'wp_footer', array( $this, 'arm_nav_menu_add_javascript' ) );
 
 			add_filter( 'wp_nav_menu_objects', array( $this, 'arm_exclude_menu_items' ), 11, 3 );
 

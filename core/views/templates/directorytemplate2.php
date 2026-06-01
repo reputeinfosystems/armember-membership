@@ -2,9 +2,14 @@
 global $arm_member_forms, $arm_shortcodes;
 if ( isset( $user ) && ! empty( $user ) ) {
 	$tempopt              = $templateOpt['arm_options'];
+	$profile_img = '';
+
+	if (!empty($user['profile_picture'])) {
+		$profile_img = strip_tags($user['profile_picture'], '<img>');
+	}
 	$fileContent         .= '<div class="arm_user_block">';
 		$fileContent     .= '<div class="arm_user_block_left">';
-		$fileContent     .= '<a href="' . $user['user_link'] . '" class="arm_dp_user_link"><div class="arm_user_avatar">' . $user['profile_picture'] . '</div></a>';
+		$fileContent     .= '<a href="' . $user['user_link'] . '" class="arm_dp_user_link"><div class="arm_user_avatar">' . $profile_img . '</div></a>';
 		$fileContent     .= '</div>';
 		$fileContent     .= '<div class="arm_user_block_right">';
 			$fileContent .= '<a class="arm_user_link" href="' . $user['user_link'] . '">' . $arm_shortcodes->arm_com_descaped_all_shortcodes($arm_shortcodes->arm_com_escape_all_shortcodes($user['full_name'])) . '</a>';

@@ -36,6 +36,26 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 				$arm_delete_start_date           = date( 'Y-m-d', strtotime( '-30 days' ) ); //phpcs:ignore
 				$arm_delete_faild_login_log_data = $wpdb->query( $wpdb->prepare( "DELETE FROM `{$arm_tbl_arm_failed_login_logs}` WHERE `arm_fail_attempts_datetime` <= %s", $arm_delete_start_date . '' ) );//phpcs:ignore --Reason $arm_tbl_arm_failed_login_logs is a table name
 			}
+
+			//remove password and repeat passwrod from 30 days older entries data 
+
+            $arm_delete_start_date = date('Y-m-d 00:00:00', strtotime('-30 days', current_time('timestamp'))); //phpcs:ignore
+            $arm_older_entries_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM $ARMemberLite->tbl_arm_entries WHERE `arm_created_date` <= %s AND ( arm_entry_value LIKE %s OR arm_entry_value LIKE %s)",$arm_delete_start_date,'%user_pass%','%repeat_pass%'),ARRAY_A);
+            if(!empty($arm_older_entries_data))
+            {
+                foreach($arm_older_entries_data as $key => $entries_data){
+                    $arm_entry_id = intval($entries_data['arm_entry_id']);
+                    $arm_entry_val = maybe_unserialize($entries_data['arm_entry_value']);
+                    if(!empty($arm_entry_val['user_pass']) || !empty($arm_entry_val['repeat_pass']))
+                    {
+                        unset($arm_entry_val['user_pass']);
+                        unset($arm_entry_val['repeat_pass']);
+                    }
+                    $arm_entry_detail = maybe_serialize($arm_entry_val);
+                    $wpdb->update($ARMemberLite->tbl_arm_entries,array('arm_entry_value' => $arm_entry_detail),array('arm_entry_id' => $arm_entry_id));
+                }
+            }
+
 		}
 
 		function arm_add_cron_schedules( $schedules ) {

@@ -199,11 +199,11 @@ if ( isset( $_REQUEST['arm_action'] ) && $_REQUEST['arm_action'] == 'edit_member
 			}
 			$arm_member_form_field_slug = $fields_value['arm_form_field_slug'];
 			if ( $arm_member_form_field_slug != '' ) {
-				if ( ! in_array( $fields_value['arm_form_field_option']['type'], array( 'section', 'html', 'hidden', 'submit', 'social_fields' ) ) ) {
-					$arm_member_include_fields_keys[ $arm_member_form_field_slug ]        = $arm_member_form_field_slug;
-					$dbFormFields[ $arm_member_form_field_slug ]                          = $dbFormFields[ $arm_member_form_field_slug ];
-					$dbFormFields[ $arm_member_form_field_slug ]['label']                 = $fields_value['arm_form_field_option']['label'];
-					$dbFormFields[ $arm_member_form_field_slug ]['options']               = isset( $fields_value['arm_form_field_option']['options'] ) ? $fields_value['arm_form_field_option']['options'] : array();
+				if ( ! in_array( $fields_value['arm_form_field_option']['type'], array( 'section', 'html', 'hidden', 'submit', 'social_fields' ) ) && !empty($dbFormFields[ $arm_member_form_field_slug ]) ) {
+					$arm_member_include_fields_keys[ $arm_member_form_field_slug ] = $arm_member_form_field_slug;
+					$dbFormFields[ $arm_member_form_field_slug ] = $dbFormFields[ $arm_member_form_field_slug ];
+					$dbFormFields[ $arm_member_form_field_slug ]['label'] = $fields_value['arm_form_field_option']['label'];
+					$dbFormFields[ $arm_member_form_field_slug ]['options'] = isset( $fields_value['arm_form_field_option']['options'] ) ? $fields_value['arm_form_field_option']['options'] : array();
 					$dbFormFields['display_member_fields'][ $arm_member_form_field_slug ] = $arm_member_form_field_slug;
 				}
 			}

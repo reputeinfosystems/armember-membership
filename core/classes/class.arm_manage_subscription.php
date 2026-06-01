@@ -813,9 +813,9 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 				</script>
 				<div class="arm_invoice_detail_popup popup_wrapper arm_invoice_detail_popup_wrapper">
 					<div class="popup_wrapper_inner" style="overflow: hidden;">
-						<div class="popup_header arm_text_align_center" >
+						<div class="popup_header arm_text_align_left" >
 							<span class="popup_close_btn arm_popup_close_btn arm_invoice_detail_close_btn"></span>
-							<span class="add_rule_content"><?php esc_html_e('Invoice Detail','armember-membership' );?></span>
+							<span class="add_rule_content"><?php esc_html_e('Invoice Details','armember-membership' );?></span>
 						</div>
 						<div class="popup_content_text arm_invoice_detail_popup_text arm_padding_24" id="arm_invoice_detail_popup_text" >
 							
@@ -1191,16 +1191,16 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             $filter = '';
             $total_results = 0;
             $response_result = array();
+            $arm_is_filtered = 0;
             
             $filter_plans = (!empty($posted_data['arm_subs_filter']) && $posted_data['arm_subs_filter'] != '') ? $posted_data['arm_subs_filter'] : '';
             $filter_status_id = (!empty($posted_data['plan_status']) && $posted_data['plan_status'] != 0) ? intval( $posted_data['plan_status'] ) : '';
             $filter_gateway = (!empty($posted_data['payment_gateway']) && $posted_data['payment_gateway'] != '0') ? sanitize_text_field( $posted_data['payment_gateway'] ) : '';
-            $filter_plan_type = (!empty($posted_data['filter_plan_type']) && $posted_data['filter_plan_type'] != '') ? sanitize_text_field( $posted_data['filter_plan_type'] ) : '';
-            if($filter_plan_type!='one_time' && $filter_plan_type!='subscription')
-            {
-                $filter_plan_type = 0;
-            }
             $filter_tab = (!empty($posted_data['selected_tab']) && $posted_data['selected_tab'] != '') ? esc_attr( $posted_data['selected_tab'] ) : 'activity';
+            if(!empty($filter_plans) || !empty($filter_status_id) || !empty($filter_gateway) || !empty($filter_ptype) || !empty($filter_search))
+            {
+                $arm_is_filtered = 1;
+            }
             if($filter_tab!='activity')
             {
                 $filter_tab = 'subscriptions';
@@ -1304,6 +1304,9 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         {
                             array_push($user_ids,$rc->arm_activity_id);
                         }
+                        else if(empty($plan_status['status']) && $filter_status_id == '4'){
+                            array_push($user_ids,$rc->arm_activity_id);
+                        }
                     }
                 }
                 if(!empty($user_ids))
@@ -1320,15 +1323,31 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             $before_filter_total_results = $wpdb->get_results($sql); //phpcs:ignore --Reason $sql is a Predefined query
             
             $before_filter = count($before_filter_total_results);
+            $response_result = array();
+            $after_filter = 0;
 
-            $get_result_sql = $sql .' '. $filter . ' '.$order_by_qry.' '. $phlimit;
+            if(empty($arm_is_filtered)){
 
-            $response_result = $wpdb->get_results($get_result_sql); //phpcs:ignore --Reason $get_result_sql is a predefined query
+                $get_result_sql = $sql .' '.$order_by_qry.' '. $phlimit;
 
-            $total_results = $wpdb->get_results($sql .' '. $filter . ' '.$order_by_qry);//phpcs:ignore --Reason $sql is a predefined query
+                $response_result = $wpdb->get_results($get_result_sql); //phpcs:ignore --Reason $get_result_sql is a predefined query
 
-           
-            $after_filter = count($total_results);
+                $total_results = $wpdb->get_results($sql . ' '.$order_by_qry);//phpcs:ignore --Reason $sql is a predefined query
+
+                $after_filter = count($total_results);
+            }
+            else{
+                if(!empty($filter))
+                {
+                    $get_result_sql = $sql .' '. $filter . ' '.$order_by_qry.' '. $phlimit;
+
+                    $response_result = $wpdb->get_results($get_result_sql); //phpcs:ignore --Reason $get_result_sql is a predefined query
+
+                    $total_results = $wpdb->get_results($sql .' '. $filter . ' '.$order_by_qry);//phpcs:ignore --Reason $sql is a predefined query
+
+                    $after_filter = count($total_results);
+                }
+            }
             
             if(!empty($response_result))
             {
@@ -1552,7 +1571,6 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             $filter_plans = (!empty($posted_data['arm_subs_filter']) && $posted_data['arm_subs_filter'] != '') ? $posted_data['arm_subs_filter'] : '';
             $filter_status_id = (!empty($posted_data['plan_status']) && $posted_data['plan_status'] != 0) ? intval( $posted_data['plan_status'] ) : '';
             $filter_gateway = (!empty($posted_data['payment_gateway']) && $posted_data['payment_gateway'] != '0') ? sanitize_text_field( $posted_data['payment_gateway'] ) : '';
-            $filter_plan_type = (!empty($posted_data['filter_plan_type']) && $posted_data['filter_plan_type'] != '') ? sanitize_text_field( $posted_data['filter_plan_type'] ) : '';
             $filter_tab = (!empty($posted_data['selected_tab']) && $posted_data['selected_tab'] != '') ? esc_attr( $posted_data['selected_tab'] ) : 'activity';
                        
             $sorting_col = (isset($posted_data['iSortCol_0']) && $posted_data['iSortCol_0'] > 0) ? intval( $posted_data['iSortCol_0'] ) : 1;

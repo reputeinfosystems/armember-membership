@@ -608,7 +608,8 @@ var __ARM_SEPERATOR = "|~|ARM|~|";
 					});
 				}
 			},
-			"aaSorting": [[8, 'desc']],
+			<?php $arm_default_sort_index = ($ARMemberLite->is_arm_pro_active) ? 9 : 8; ?>
+			"aaSorting": [[<?php echo (int)$arm_default_sort_index; ?>, 'desc']],
 			"fnStateSave": function (oSettings, oData) {
 				oData.aaSorting = [];
 				oData.abVisCols = [];

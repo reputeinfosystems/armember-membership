@@ -556,101 +556,94 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			return $notices;
 		}
 
-		function arm_get_default_invoice_template() {
+		function arm_get_default_invoice_template(){
+            $arm_default_invoice_template = '<style>';
+            $arm_default_invoice_template .= '.arm_invoice_container{width:700px;margin:0 auto;background:#fff;border:1px solid #e7ebf0;border-radius:14px;padding:32px;box-sizing:border-box}.arm_invoice_header{padding-bottom:22px;margin-bottom:24px;border-bottom:1px solid #e7ebf0}.arm_invoice_header_table{width:100%;border-collapse:collapse}.arm_invoice_logo{max-width:180px;display:block}.arm_invoice_title{margin:0;padding-top:4px;text-align:right;font-size:32px;font-weight:700;color:#1e3a8a;letter-spacing:.5px}.arm_invoice_meta{padding-bottom:22px;margin-bottom:26px;border-bottom:1px solid #e7ebf0}.arm_invoice_meta_table{width:100%;border-collapse:collapse}.arm_invoice_meta_table td{padding:2px 0;font-size:14px;color:#4b5563}.arm_invoice_meta_label{font-weight:700;color:#111827}.arm_invoice_customer{margin-bottom:24px}.arm_invoice_section_title{margin:0 0 12px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6b7280}.arm_invoice_customer_name{font-size:18px;font-weight:700;color:#111827;margin-bottom:5px}.arm_invoice_customer_email{font-size:13px;color:#6b7280}.arm_invoice_table_wrapper{border:1px solid #dbe2ea;border-radius:12px;overflow:hidden;margin-bottom:16px}.arm_invoice_table{width:100%;border-collapse:collapse}.arm_invoice_table thead th{background:#f8fafc;padding:14px 16px;font-size:14px;font-weight:700;color:#374151;text-align:left;border-bottom:1px solid #dbe2ea}.arm_invoice_table tbody td{padding:14px 16px;font-size:14px;line-height:1.5;color:#4b5563;border-bottom:1px solid #edf1f5;vertical-align:middle;word-break:break-word}.arm_invoice_table tbody tr:last-child td{border-bottom:none}.arm_invoice_transaction_id{color:#374151}.arm_invoice_table th:last-child,.arm_invoice_table td:last-child{text-align:right}.arm_invoice_summary_wrapper{width:320px;margin-left:auto;margin-top:16px;border:1px solid #dbe2ea;border-radius:12px;overflow:hidden}.arm_invoice_summary{width:100%;border-collapse:collapse}.arm_invoice_summary td{padding:16px 18px;font-size:14px;color:#4b5563;border-bottom:1px solid #edf1f5}.arm_invoice_summary td:last-child{text-align:right}.arm_invoice_summary tr:last-child td{border-bottom:none}.arm_invoice_total_row td{background:#f5f8ff;font-size:18px;font-weight:700;color:#1d4ed8}';
+            $arm_default_invoice_template .= '</style>';
+            $custom_logo_id = get_theme_mod( 'custom_logo' );
+ 
+            $site_logo = wp_get_attachment_image_src( $custom_logo_id, 'full' );
+            
+            $site_logo_url = ! empty( $site_logo[0] ) ? $site_logo[0] : '';
+            
+            $site_name = get_bloginfo( 'name' );
+            $ARMember_image_url = !empty($site_logo_url) ? '<img src="'. esc_url( $site_logo_url ).'" alt="'. esc_attr( $site_name ).'" class="arm_invoice_logo">' : '<div class="arm_invoice_logo_text">'. esc_html( $site_name ).'</div>';
+            $arm_default_invoice_template .= '<div class="arm_invoice_container">
+                <div class="arm_invoice_header">
+                    <table class="arm_invoice_header_table">
+                        <tbody>
+                            <tr>
+                                <td valign="middle">'.$ARMember_image_url.'</td>
+                                <td align="right" valign="middle">
+                                    <h1 class="arm_invoice_title">INVOICE</h1>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="arm_invoice_meta">
+                    <table class="arm_invoice_meta_table">
+                        <tbody>
+                            <tr>
+                                <td><span class="arm_invoice_meta_label">Date:</span>
+                                    {ARM_INVOICE_PAYMENTDATE}</td>
+                                <td align="right"><span class="arm_invoice_meta_label">Invoice No:</span>
+                                    {ARM_INVOICE_INVOICEID}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="arm_invoice_customer">
+                    <h3 class="arm_invoice_section_title">Invoiced To</h3>
+                    <div class="arm_invoice_customer_name">{ARM_INVOICE_USERFIRSTNAME} {ARM_INVOICE_USERLASTNAME}</div>
+                    <div class="arm_invoice_customer_email">{ARM_INVOICE_PAYEREMAIL}</div>
+                </div>
+                <div class="arm_invoice_table_wrapper">
+                    <table class="arm_invoice_table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Plan Name</th>
+                                <th>Payment Gateway</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="arm_invoice_transaction_id">{ARM_INVOICE_TRANSACTIONID}</td>
+                                <td>{ARM_INVOICE_SUBSCRIPTIONNAME}</td>
+                                <td>{ARM_INVOICE_GATEWAY}</td>
+                                <td>{ARM_INVOICE_SUBSCRIPTIONAMOUNT}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="arm_invoice_summary_wrapper">
+                    <table class="arm_invoice_summary">
+                        <tbody>
+                            <tr>
+                                <td>Sub Total</td>
+                                <td>{ARM_INVOICE_SUBSCRIPTIONAMOUNT}</td>
+                            </tr>
+                            <tr>
+                                <td>Discount Coupon</td>
+                                <td>{ARM_INVOICE_COUPON_AMOUNT_CODE}</td>
+                            </tr>
+                            <tr>
+                                <td>Tax</td>
+                                <td>{ARM_INVOICE_TAX_PER_AMOUNT}</td>
+                            </tr>
+                            <tr class="arm_invoice_total_row">
+                                <td>Total</td>
+                                <td>{ARM_INVOICE_AMOUNT}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>';
 
-			$arm_default_invoice_template                                      = '<div id="arm_invoice_div" class="entry-content ms-invoice">';
-			$arm_default_invoice_template                                     .= '<style>';
-			$arm_default_invoice_template                                     .= '#arm_invoice_div table, th, td { margin: 0; font-size: 14px; }';
-			$arm_default_invoice_template                                     .= '#arm_invoice_div table { padding: 0; border: 1px solid #DDD; width: 100%; background-color: #FFF; box-shadow: 0 1px 8px #F0F0F0; }';
-			$arm_default_invoice_template                                     .= '#arm_invoice_div th, td { border: 0; padding: 8px; }';
-			$arm_default_invoice_template                                     .= '#arm_invoice_div th { font-weight: bold; text-align: left; text-transform: none; font-size: 13px; }';
-			$arm_default_invoice_template                                     .= '#arm_invoice_div tr.alt { background-color: #F9F9F9; }';
-			$arm_default_invoice_template                                     .= '#arm_invoice_div tr.sep th, #arm_invoice_div tr.sep td { border-top: 1px solid #DDD; padding-top: 16px; }';
-			$arm_default_invoice_template                                     .= '#arm_invoice_div tr.space th, #arm_invoice_div tr.space td { padding-bottom: 16px; }';
-			$arm_default_invoice_template                                     .= '#arm_invoice_div tr.ms-inv-sep th,#arm_invoice_div tr.ms-inv-sep td { line-height: 1px; height: 1px; padding: 0; border-bottom: 1px solid #DDD; background-color: #F9F9F9; }';
-			$arm_default_invoice_template                                     .= '#arm_invoice_div .ms-inv-total .ms-inv-price { font-weight: bold; font-size: 18px; text-align: right; }';
-			$arm_default_invoice_template                                     .= '#arm_invoice_div h2 { text-align: right; padding: 0 10px 0 0; }';
-			$arm_default_invoice_template                                     .= '#arm_invoice_div h2 a { color: #000; }';
-			$arm_default_invoice_template                                     .= '</style>';
-			$arm_default_invoice_template                                     .= '<div class="ms-invoice-details ms-status-paid">';
-										$arm_default_invoice_template         .= '<table class="ms-purchase-table" cellspacing="0">';
-											$arm_default_invoice_template     .= '<tbody>';
-												$arm_default_invoice_template .= '<tr class="ms-inv-title">';
-													$arm_default_invoice_template .= '<td colspan="2">';
-													$arm_default_invoice_template .= '<h2>Invoice {ARM_INVOICE_INVOICEID}</h2>';
-													$arm_default_invoice_template .= '<div style="text-align: right; padding: 0px 10px 10px 0px;">{ARM_INVOICE_PAYMENTDATE}</div>';
-												$arm_default_invoice_template     .= '</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template     .= '<tr class="ms-inv-to alt space sep">';
-													$arm_default_invoice_template .= '<th>Invoice to</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-text">{ARM_INVOICE_USERFIRSTNAME} {ARM_INVOICE_USERLASTNAME} ( {ARM_INVOICE_PAYEREMAIL} )</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template     .= '<tr class="ms-inv-item-name space">';
-													$arm_default_invoice_template .= '<th>Plan Name</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-text">{ARM_INVOICE_SUBSCRIPTIONNAME}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template     .= '<tr class="ms-inv-description alt space">';
-													$arm_default_invoice_template .= '<th>Description</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-text">{ARM_INVOICE_SUBSCRIPTIONDESCRIPTION}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template     .= '<tr class="ms-inv-amount space">';
-													$arm_default_invoice_template .= '<th>Plan Amount</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-price">{ARM_INVOICE_AMOUNT}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template     .= '<tr class="ms-inv-amount alt space">';
-													$arm_default_invoice_template .= '<th>transaction Id</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-price">{ARM_INVOICE_TRANSACTIONID}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template     .= '<tr class="ms-inv-amount space">';
-													$arm_default_invoice_template .= '<th>subscription id</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-price">{ARM_INVOICE_SUBSCRIPTIONID}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template     .= '<tr class="ms-inv-amount space alt">';
-													$arm_default_invoice_template .= '<th>payment gateway</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-price">{ARM_INVOICE_GATEWAY}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template     .= '<tr class="ms-inv-amount space">';
-													$arm_default_invoice_template .= '<th>trial amount</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-price">{ARM_INVOICE_TRIALAMOUNT}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template     .= '<tr class="ms-inv-amount space alt">';
-													$arm_default_invoice_template .= '<th>trial period</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-price">{ARM_INVOICE_TRIALPERIOD}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template     .= '<tr class="ms-inv-amount space">';
-													$arm_default_invoice_template .= '<th>coupon code</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-price">{ARM_INVOICE_COUPONCODE}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template     .= '<tr class="ms-inv-amount alt space">';
-													$arm_default_invoice_template .= '<th>coupon discount</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-price">{ARM_INVOICE_COUPONAMOUNT}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-												$arm_default_invoice_template     .= '<tr class="ms-inv-amount alt space">';
-													$arm_default_invoice_template .= '<th>Tax Percentage</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-price">{ARM_INVOICE_TAXPERCENTAGE}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-												$arm_default_invoice_template     .= '<tr class="ms-inv-amount alt space">';
-													$arm_default_invoice_template .= '<th>Tax Amount</th>';
-													$arm_default_invoice_template .= '<td class="ms-inv-price">{ARM_INVOICE_TAXAMOUNT}</td>';
-												$arm_default_invoice_template     .= '</tr>';
-
-												$arm_default_invoice_template .= '</tbody>';
-											$arm_default_invoice_template     .= '</table>';
-									   $arm_default_invoice_template          .= '</div>';
-									$arm_default_invoice_template             .= '</div>';
-									return $arm_default_invoice_template;
-		}
+            return $arm_default_invoice_template;
+        }
 		function arm_default_global_settings() {
 			global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms;
 			$default_global_settings = array();
@@ -2756,7 +2749,11 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 							if ( isset( $extravars['coupon'] ) ) {
 								$u_plan_discount = isset( $extravars['coupon']['amount'] ) ? $extravars['coupon']['amount'] : 0;
 							} else {
-								$u_plan_discount = $log_detail->arm_coupon_discount . $log_detail->arm_coupon_discount_type;
+								$u_plan_discount = 0;
+								if(!empty($log_detail->arm_coupon_discount) && !empty('$log_detail->arm_coupon_discount_type'))
+								{
+									$u_plan_discount = $log_detail->arm_coupon_discount . $log_detail->arm_coupon_discount_type;
+								}
 							}
 						} else {
 							$u_plan_discount = isset( $extravars['coupon']['amount'] ) ? $extravars['coupon']['amount'] : 0;

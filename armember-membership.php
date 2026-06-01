@@ -2,7 +2,7 @@
 /*
   Plugin Name: ARMember Lite - Membership Plugin
   Description: The most powerful membership plugin to handle any complex membership WordPress sites with super ease.
-  Version: 5.5
+  Version: 5.6
   Requires at least: 5.0
   Requires PHP: 5.6
   Plugin URI: https://www.armemberplugin.com
@@ -13,6 +13,10 @@
   License: GPLv2 or later
   License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
+
+if ( ! defined( 'ABSPATH' ) ) {
+  exit;
+}
 
 if ( ! defined( 'MEMBERSHIPLITE_DIR_NAME' ) ) {
 	define( 'MEMBERSHIPLITE_DIR_NAME', 'armember-membership' );

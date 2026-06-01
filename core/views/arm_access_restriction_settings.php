@@ -103,7 +103,7 @@ $all_roles         = $arm_global_settings->arm_get_all_roles();
 						</div>
 							<select name="arm_default_rules[<?php echo esc_attr($rtype); ?>][]" class="arm_default_rule_select arm_chosen_selectbox " multiple data-placeholder="<?php esc_html_e('Select Plan', 'armember-membership'); ?>" tabindex="-1">
 								<?php
-								if (!empty($all_plans_data)) {
+								if (!empty($all_plans_data) && !empty($default_rules)) {
 									$default_rules[$rtype] = !empty($default_rules[$rtype]) ? $default_rules[$rtype] : array();
 									foreach ($all_plans_data as $plan) {
 										if ($plan['arm_subscription_plan_id'] != '-2') {

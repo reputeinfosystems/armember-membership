@@ -134,7 +134,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 
                     $arm_payment_debug_log_html .= '<td>'.$arm_payment_debug_log_val['arm_payment_log_event_from'].'</td>';*/
 
-                    $arm_payment_debug_log_html .= '<td class="arm_debug_log_raw_data">'.htmlspecialchars(utf8_encode($arm_payment_debug_log_val['arm_payment_log_raw_data'])).'</td>';
+                    $arm_payment_debug_log_html .= '<td class="arm_debug_log_raw_data">'.htmlspecialchars(mb_convert_encoding($arm_payment_debug_log_val['arm_payment_log_raw_data'], "UTF-8", "UTF-8")).'</td>';
 
                     $arm_created_date = date_i18n($date_time_format, strtotime($arm_payment_debug_log_val['arm_payment_log_added_date']));
                     $arm_payment_debug_log_html .= '<td>'.$arm_created_date.'</td>';
@@ -218,7 +218,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
                     foreach($arm_general_debug_log_data as $arm_general_debug_log_key => $arm_general_debug_log_val)
                     {
                         $arm_general_debug_log_val_raw_data = $arm_general_debug_log_val['arm_general_log_raw_data'];
-                        $arm_general_debug_log_val_raw_data = htmlspecialchars(utf8_encode($arm_general_debug_log_val_raw_data));
+                        $arm_general_debug_log_val_raw_data = htmlspecialchars(mb_convert_encoding($arm_general_debug_log_val_raw_data, "UTF-8", "UTF-8"));
                         if($arm_general_debug_log_val['arm_general_log_event']=='email')
                         {
                             $arm_general_debug_log_val_raw_data = str_replace(array("{ARMNL}"), "<br />", $arm_general_debug_log_val_raw_data);

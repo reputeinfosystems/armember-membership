@@ -28,7 +28,6 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 			add_action('wp_ajax_arm_get_configure_setup_details', array($this, 'arm_get_configure_setup_details_func'));
 			add_action('wp_ajax_get_configure_plans_expand_grid', array($this, 'arm_get_configure_plans_expand_grid_func'));
 
-			add_action('arm_saved_membership_setup',array($this,'arm_update_apparance_of_setup_func'),10,2);
 		}
 
 		function arm_get_configure_plans_expand_grid_func(){
@@ -377,12 +376,9 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						if ( isset( $post_data['arm_payment_mode'][ $payment_gateway ] ) ) {
 							$payment_mode_ = ! empty( $post_data['arm_payment_mode'][ $payment_gateway ] ) ? sanitize_text_field( $post_data['arm_payment_mode'][ $payment_gateway ] ) : 'manual_subscription';
 						} else {
-							// $setup_data = $this->arm_get_membership_setup($setup_id);
-							// if (!empty($setup_data) && !empty($setup_data['setup_modules']['modules'])) {
-								$setup_modules = $setup_data['setup_modules'];
-								$modules       = $setup_modules['modules'];
-								$payment_mode_ = $modules['payment_mode'][ $payment_gateway ];
-							// }
+							$setup_modules = $setup_data['setup_modules'];
+							$modules       = $setup_modules['modules'];
+							$payment_mode_ = $modules['payment_mode'][ $payment_gateway ];
 						}
 						$payment_mode = 'manual_subscription';
 						if ( $payment_mode_ == 'both' ) {
@@ -399,7 +395,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					}
 					$post_data['arm_selected_payment_mode'] = $payment_mode;
 					if ( $payment_gateway == 'bank_transfer' ) {
-						if(!empty($post_data['bank_transfer']))
+						if(!empty($post_data['bank_transfer']) && is_array($post_data['bank_transfer']) )
 						{
 							if(!empty($post_data['bank_transfer']['transaction_id']))
 							{
@@ -445,7 +441,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						$current_user_plan = get_user_meta( $user_id, 'arm_user_plan_ids', true );
 						$current_user_plan = ! empty( $current_user_plan ) ? $current_user_plan : array();
 					} else {
-						$entry_email = sanitize_email( $post_data['user_email'] );
+						$entry_email = isset($post_data['user_email']) ? sanitize_email($post_data['user_email']) : '';
 					}
 					$setup_redirect = ARMLITE_HOME_URL;
 
@@ -655,6 +651,16 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						);
 
 						$entry_post_data = $post_data;
+						if(isset($entry_post_data['user_pass']) || isset($entry_post_data['repeat_pass'])){
+                            if(isset($entry_post_data['user_pass'])){
+                                $user_pass_hashed_password = wp_hash_password($entry_post_data['user_pass']);
+                                $entry_post_data['user_pass'] = $user_pass_hashed_password;
+                            }
+                            if(isset($entry_post_data['repeat_pass'])){
+                                $confirm_user_pass_hashed_password = wp_hash_password($entry_post_data['repeat_pass']);
+                                $entry_post_data['repeat_pass'] = $confirm_user_pass_hashed_password;
+                            }
+                        }
 						if ( is_user_logged_in() ) {
 							$user_information = wp_get_current_user();
 							$user_id_info     = $user_information->ID;
@@ -973,7 +979,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						}
 					}
 
-					if ( ! empty( $validate_msgs ) ) {
+					if ( ! empty( $validate_msgs ) && count(array_filter($validate_msgs)) > 0 ) {
 						$response['status']  = 'error';
 						$response['type']    = 'message';
 						$response['message'] = '<div class="arm_error_msg arm-df__fc--validation__wrap"><ul>';
@@ -5213,80 +5219,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
             echo arm_pattern_json_encode( $response ); //phpcs:ignore
             die();
 		}
-	function arm_update_apparance_of_setup_func($setup_id, $db_data){
-            global $wpdb, $ARMemberLite, $arm_global_settings;
-        
-            $setup_id = absint($setup_id);
-            if (empty($setup_id) || empty($db_data['arm_setup_modules'])) {
-                return;
-            }
-        
-            $all_default_member_panel_setting = $arm_global_settings->arm_default_member_panel_settings();
-            $arm_default_front_settings  = $all_default_member_panel_setting['appearance_settings'];
-            $arm_default_color_setting  = isset($arm_default_front_settings['color']) ? $arm_default_front_settings['color'] : array();
-            $arm_default_font_setting   = isset($arm_default_front_settings['font']) ? $arm_default_front_settings['font'] : array();
-            
-	    $arm_current_member_panel_settings = $arm_global_settings->arm_get_member_panel_settings();
-	    $arm_current_front_settings = $arm_current_member_panel_settings['appearance_settings'];
-            $arm_current_color_setting  = isset($arm_current_front_settings['color']) ? $arm_current_front_settings['color'] : array();
-            $arm_current_font_setting   = isset($arm_current_front_settings['font']) ? $arm_current_front_settings['font'] : array();
-        
-            $arm_is_color_changed = ($arm_default_color_setting !== $arm_current_color_setting);
-            $arm_is_font_changed  = ($arm_default_font_setting !== $arm_current_font_setting);
-        
-            if ($arm_is_color_changed || $arm_is_font_changed) {
-        
-                $arm_membership_setup_data = maybe_unserialize(wp_unslash($db_data['arm_setup_modules']));
-        
-                if (!is_array($arm_membership_setup_data)) {
-                    return;
-                }
-        
-                if (!isset($arm_membership_setup_data['style']) || !is_array($arm_membership_setup_data['style'])) {
-                    $arm_membership_setup_data['style'] = array();
-                }
-        
-                if ($arm_is_color_changed) {
-        
-                    $arm_current_primary_color = isset($arm_current_color_setting['primary_color']) ? sanitize_hex_color($arm_current_color_setting['primary_color']) : '';
-                    $arm_current_title_color   = isset($arm_current_color_setting['title_text_color']) ? sanitize_hex_color($arm_current_color_setting['title_text_color']) : '';
-                    $arm_current_content_color = isset($arm_current_color_setting['content_color']) ? sanitize_hex_color($arm_current_color_setting['content_color']) : '';
-        
-                    $arm_membership_setup_data['style']['selected_plan_title_font_color'] = $arm_current_primary_color;
-                    $arm_membership_setup_data['style']['selected_price_font_color'] = $arm_current_primary_color;
-                    $arm_membership_setup_data['style']['bg_active_color'] = $arm_current_primary_color;
-        
-                    $arm_membership_setup_data['style']['plan_title_font_color'] = $arm_current_title_color;
-                    $arm_membership_setup_data['style']['selected_plan_desc_font_color'] = $arm_current_title_color;
-                    $arm_membership_setup_data['style']['price_font_color'] = $arm_current_title_color;
-        
-                    $arm_membership_setup_data['style']['summary_font_color'] = $arm_current_content_color;
-                    $arm_membership_setup_data['style']['plan_desc_font_color'] = $arm_current_content_color;
-                }
-        
-                if ($arm_is_font_changed) {
-                    $arm_current_font_family = isset($arm_current_font_setting['font_family']) ? sanitize_text_field($arm_current_font_setting['font_family']) : '';
-                    $arm_membership_setup_data['style']['font_family'] = $arm_current_font_family;
-                }
-        
-                $updated_membership_setup_data = maybe_serialize($arm_membership_setup_data);
-        
-                $wpdb->update(
-                    $ARMemberLite->tbl_arm_membership_setup,
-                    array(
-                        'arm_setup_modules' => $updated_membership_setup_data
-                    ),
-                    array(
-                        'arm_setup_id' => $setup_id
-                    ),
-                    array('%s'),
-                    array('%d')
-                );
-            }
-        }    
-
 	}
-
 }
 
 global $arm_membership_setup;

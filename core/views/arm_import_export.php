@@ -76,7 +76,12 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 							$defaultMetas = array();
 							if ( ! empty( $dbProfileFields['default'] ) ) {
 								foreach ( $dbProfileFields['default'] as $fieldMetaKey => $fieldOpt ) {
-									if ( ! in_array( $fieldMetaKey, array( 'user_login', 'user_email' ) ) ) {
+									array_push( $defaultMetas, $fieldMetaKey );
+								}
+							}
+							if ( ! empty( $dbProfileFields['other'] ) ) {
+								foreach ( $dbProfileFields['other'] as $fieldMetaKey => $fieldOpt ) {
+									if ( empty( $fieldMetaKey ) || in_array( $fieldOpt['type'], array( 'hidden', 'html', 'section', 'rememberme' ) ) ) {
 										continue;
 									}
 									array_push( $defaultMetas, $fieldMetaKey );
@@ -333,18 +338,29 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 			<div class="popup_wrapper_inner"> 
 				<div class="arm_select_user_meta_close_btn arm_popup_close_btn"></div>
 				<div class="popup_header arm_padding_bottom_0"><?php esc_html_e( 'Select User Meta Fields', 'armember-membership' ); ?></div>
-				<div class="popup_content_text arm_select_user_meta_wrapper arm_padding_bottom_0">
+				<div class="popup_content_text arm_select_user_meta_wrapper arm_select_all_meta_wrapper arm_padding_bottom_0">
 					<?php
-
+				if(!empty($dbProfileFields)){
+						?>
+						<label class="account_detail_radio arm_account_detail_options">
+                            <input type="checkbox" class="arm_icheckbox arm_export_all_user_meta" name="arm_export_all_user_meta" id="arm_export_all_user_meta" checked="checked">
+                            <label for="arm_export_all_user_meta"><?php esc_html_e('Select All Meta','armember-membership');?></label>
+                            <div class="arm_list_sortable_icon"></div>
+                        </label>
+					<?php }
+				?>
+				</div>
+				<div class="popup_content_text arm_select_user_meta_wrapper arm_padding_bottom_0 arm_padding_top_10">
+					<?php
 					if ( ! empty( $dbProfileFields['default'] ) ) {
 
 						foreach ( $dbProfileFields['default'] as $fieldMetaKey => $fieldOpt ) {
 							if ( empty( $fieldMetaKey ) || in_array( $fieldOpt['type'], array( 'hidden', 'html', 'section', 'rememberme' ) ) ) {
 								continue;
 							}
-							$checkedDefault = " checked='checked' disabled='disabled' ";
-							if ( ! in_array( $fieldMetaKey, array( 'user_login', 'user_email' ) ) ) {
-								$checkedDefault = '';
+							$checkedDefault = " checked='checked' ";
+							if ( in_array( $fieldMetaKey, array( 'user_login', 'user_email' ) ) ) {
+								$checkedDefault .= "disabled='disabled'";
 							}
 							if(!empty($fieldOpt['label'])){
 								$fieldOpt['label'] = stripslashes_deep($fieldOpt['label']);
@@ -369,9 +385,10 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 							if(!empty($fieldOpt['label'])){
 								$fieldOpt['label'] = stripslashes_deep($fieldOpt['label']);
 							}
+							$checkedOtherDefault = " checked='checked'";
 							?>
 							<label class = "account_detail_radio arm_account_detail_options">
-								<input type = "checkbox" value = "<?php echo esc_attr($fieldMetaKey); ?>" class = "arm_icheckbox arm_account_detail_fields" name = "export_user_meta[<?php echo esc_attr($fieldMetaKey); ?>]" id = "arm_profile_field_input_<?php echo esc_attr($fieldMetaKey); ?>"/>
+								<input type = "checkbox" value = "<?php echo esc_attr($fieldMetaKey); ?>" class = "arm_icheckbox arm_account_detail_fields" name = "export_user_meta[<?php echo esc_attr($fieldMetaKey); ?>]" id = "arm_profile_field_input_<?php echo esc_attr($fieldMetaKey); ?>" <?php echo $checkedOtherDefault;?>/>
 								<label for="arm_profile_field_input_<?php echo esc_attr($fieldMetaKey); ?>"><?php echo esc_html($fieldOpt['label']); ?></label>
 								<div class="arm_list_sortable_icon"></div>
 							</label>

@@ -1419,7 +1419,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					
 					$content .= '</tr>';
 					$content .= '</thead>';
-					$content .="<tr class='arm_transaction_list_item arm_shortcode_grid_list_item'>";
+					$content .="<tr class='arm_transaction_list_item arm_shortcode_grid_list_item' id='arm_transaction_list_item_no_plan'>";
                     $content .="<td colspan='10' class='arm_no_transaction arm_no_plan'><div class='arm_no_result_div'>
                     <svg width='161' height='160' viewBox='0 0 221 220' fill='none' xmlns='http://www.w3.org/2000/svg'><rect class='ap-empty-data-svg-icon-background-color' width='160' height='160' transform='translate(0.5)'></rect><path class='ap-empty-data-svg-icon-color' d='M162.056 82C172.012 82 176.99 82.0004 180.793 83.9424C184.138 85.6506 186.858 88.3758 188.562 91.7285C190.5 95.54 190.5 100.53 190.5 110.509V151.491C190.5 161.47 190.5 166.46 188.562 170.271C186.859 173.624 184.138 176.35 180.793 178.058C176.99 180 172.012 180 162.056 180H58.9443C48.988 180 44.0099 180 40.207 178.058C36.8619 176.35 34.1419 173.624 32.4375 170.271C30.4998 166.46 30.5 161.47 30.5 151.491V110.509C30.5 100.53 30.4998 95.54 32.4375 91.7285C34.1419 88.3759 36.862 85.6506 40.207 83.9424C44.0099 82.0003 48.988 82 58.9443 82H92.5V97.5869C92.5001 108.227 101.348 117 112.172 117C118.478 117 124.407 113.92 128.172 108.88C130.619 105.52 131.843 101.32 131.843 97.2129C131.843 95.2532 130.243 93.6671 128.267 93.667C126.29 93.667 124.69 95.2531 124.689 97.2129C124.689 99.8262 123.843 102.627 122.337 104.773C119.984 108.04 116.125 110 112.172 110C105.301 110 99.6535 104.4 99.6533 97.5869V82H162.056Z' fill='".$arm_primary_color."' fill-opacity='0.2'></path><path class='ap-empty-data-svg-icon-color' d='M78.0537 56C85.3291 56 88.9673 56.0001 92.2383 57.3447C92.761 57.5596 93.2662 57.8048 93.7666 58.0869C92.9453 60.6203 92.5 63.3243 92.5 66.1338V82H58.9443C48.988 82 44.0099 82.0003 40.207 83.9424C36.862 85.6506 34.1419 88.3759 32.4375 91.7285C30.6 95.3428 30.5069 100.017 30.502 109H30.5V82.5C30.5 74.2688 30.4997 70.1529 31.8545 66.9062C33.6611 62.5775 37.1268 59.1378 41.4883 57.3447C44.7595 56 48.9065 56 57.2002 56H78.0537Z' fill='".$arm_primary_color."' fill-opacity='0.3'></path><path class='ap-empty-data-svg-icon-color' d='M162.055 82H144.266C137.678 82 132.69 75.9333 134.007 69.5867L136.831 48.2133C136.925 47.4667 137.584 47 138.149 47C138.525 47 138.807 47.0933 139.09 47.4667L146.243 55.4H159.985L166.95 47.3733C167.232 47.0933 167.608 46.9067 167.891 46.9067C168.456 46.9067 169.114 47.28 169.208 48.0267L172.314 69.7733C173.538 76.12 168.55 82 162.055 82ZM149.161 74.16C146.431 73.5067 142.102 73.5067 139.278 74.16C138.807 74.2533 138.525 74.72 138.619 75.1867C138.713 75.6533 139.09 75.9333 139.56 75.9333C139.655 75.9333 139.749 75.9333 139.749 75.9333C142.196 75.3733 146.243 75.3733 148.69 75.9333C149.161 76.0267 149.725 75.7467 149.82 75.28C149.914 74.8133 149.631 74.2533 149.161 74.16ZM165.632 74.16C162.902 73.5067 158.573 73.5067 155.749 74.16C155.279 74.2533 154.996 74.72 155.09 75.1867C155.184 75.6533 155.561 75.9333 156.032 75.9333C156.126 75.9333 156.22 75.9333 156.22 75.9333C158.667 75.3733 162.714 75.3733 165.161 75.9333C165.632 76.0267 166.197 75.7467 166.291 75.28C166.385 74.8133 166.103 74.2533 165.632 74.16ZM92.5 66.1333V78.5467V82V97.5867C92.5 108.227 101.347 117 112.171 117C118.477 117 124.407 113.92 128.172 108.88C130.619 105.52 131.843 101.32 131.843 97.2133C131.843 95.2533 130.242 93.6667 128.266 93.6667C126.289 93.6667 124.689 95.2533 124.689 97.2133C124.689 99.8267 123.842 102.627 122.336 104.773C119.983 108.04 116.124 110 112.171 110C105.3 110 99.6532 104.4 99.6532 97.5867V82H137.678C136.549 81.3467 135.513 80.4133 134.666 79.3867C132.313 76.4933 131.372 72.8533 132.125 69.2133L134.948 47.84C135.043 47.1867 135.419 46.6267 135.796 46.16C131.184 42.3333 125.254 40 118.76 40C104.265 40 92.5 51.6667 92.5 66.1333Z' fill='".$arm_primary_color."' fill-opacity='0.8'></path><path class='ap-empty-data-svg-icon-color' d='M187.999 31.0315V29.1704L195.057 18.9477V18.8598H188.636V16H199.389V17.9973L192.485 28.0835V28.1717H199.5V31.0315H187.999ZM178.956 36.0161V34.8119L183.523 28.1972V28.1403H179.368V26.2898H186.326V27.5822L181.858 34.1085V34.1657H186.398V36.0161H178.956ZM171.5 40V39.1242L174.822 34.3135V34.2721H171.8V32.9263H176.86V33.8663L173.611 38.6127V38.6542H176.912V40H171.5Z' fill='".$arm_primary_color."' fill-opacity='0.8'></path></svg>".$message_no_record."</div></td>";
                     $content .="</tr>";
@@ -2127,6 +2127,13 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 				$content           = apply_filters( 'arm_before_current_membership_shortcode_content', $content, $atts );
 				$content          .= "<div class='arm_current_membership_container_loader_img'>";
 				$content          .= '</div>';
+				if(!empty($atts['arm_member_panel']))
+				{
+					$content .= '<div class="arm_renewal_back_content_container" data-show_class="arm_current_membership_container" data-setup_class="arm_current_membership_setup_container" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8L10 12" stroke="#4D5973" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'.esc_html__('Back','armember-membership').'</div>';
+				}
+				$content .= "<div class='arm_membership_setup_container arm_current_membership_setup_container'>";
+				$content .= "<div class='arm_membership_setup_inner_container'></div>";
+				$content .= "</div>";
 				$content          .= "<div class='arm_current_membership_container arm_shortcode_grid_container'>";
 				$frontfontstyle    = $arm_global_settings->arm_get_front_font_style();
 				// $content .=!empty($frontfontstyle['google_font_url']) ? '<link id="google-font" rel="stylesheet" type="text/css" href="' . $frontfontstyle['google_font_url'] . '" />' : '';
@@ -2536,7 +2543,18 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 							}
 							else{
 								$arm_plan_start_date = date_i18n( $date_format, $planData['arm_start_plan'] );
-								$expand_cols_val['current_membership_started_on'] = $arm_plan_start_date;
+								$str_date = $arm_plan_start_date;
+
+								if ( ! empty( $arm_trial_start_date ) ) {
+									if ( $arm_is_user_in_trial == 1 || $arm_is_user_in_trial == '1' ) {
+
+										if ( $arm_trial_start_date < $start_plan && !empty($atts['trial_active']) ) {
+											$str_date .= "<br/><span class='arm_current_membership_trial_active'>(" . $atts['trial_active'] . ')</span>';
+										}
+									}
+								}
+
+								$expand_cols_val['current_membership_started_on'] = $str_date;
 							}
 
 							if ( $has_end_date ){
@@ -2672,7 +2690,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 										if ( $display_renew_button == 'true' && ! $plan_info->is_lifetime() && ! $plan_info->is_free() && $is_plan_cancelled != 'yes' ) {
 											if($has_plan_expand)
 											{
-												$make_payment_content = '<div class="arm_cm_renew_btn_div tooltip" data-tooltip="'.$make_payment_text.'"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan) . '" ' . $arm_disable_button .'><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.0001 10C18.0001 14.4161 14.4161 18.0001 10 18.0001C5.58402 18.0001 2.888 13.5521 2.888 13.5521M2.888 13.5521H6.50402M2.888 13.5521V17.5521M2 10C2 5.58402 5.55202 2 10 2C15.3361 2 18.0001 6.44802 18.0001 6.44802M18.0001 6.44802V2.448M18.0001 6.44802H14.4481" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
+												$make_payment_content = '<div class="arm_cm_renew_btn_div arm_tooltip" data-tooltip="'.$make_payment_text.'"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan) . '" ' . $arm_disable_button .'><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.0001 10C18.0001 14.4161 14.4161 18.0001 10 18.0001C5.58402 18.0001 2.888 13.5521 2.888 13.5521M2.888 13.5521H6.50402M2.888 13.5521V17.5521M2 10C2 5.58402 5.55202 2 10 2C15.3361 2 18.0001 6.44802 18.0001 6.44802M18.0001 6.44802V2.448M18.0001 6.44802H14.4481" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
 											}
 											else{
 												$make_payment_content = '<div class="arm_cm_renew_btn_div"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan) . '" ' . $arm_disable_button .'>'.$make_payment_text.'</button></div>';
@@ -2680,7 +2698,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 											if ( $change_plan == '' || $effective_from == '' || empty( $effective_from ) || empty( $change_plan ) ) {
 												if($has_plan_expand)
 												{
-													$renew_content = '<div class="arm_cm_renew_btn_div"><button type="button" class= "arm_renew_subscription_button tooltip" data-tooltip="'.$renew_text.'" data-plan_id="' . esc_attr($user_plan) . '" ' . $arm_disable_button . '><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.0001 10C18.0001 14.4161 14.4161 18.0001 10 18.0001C5.58402 18.0001 2.888 13.5521 2.888 13.5521M2.888 13.5521H6.50402M2.888 13.5521V17.5521M2 10C2 5.58402 5.55202 2 10 2C15.3361 2 18.0001 6.44802 18.0001 6.44802M18.0001 6.44802V2.448M18.0001 6.44802H14.4481" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
+													$renew_content = '<div class="arm_cm_renew_btn_div arm_tooltip" data-tooltip="'.$renew_text.'"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan) . '" ' . $arm_disable_button . '><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.0001 10C18.0001 14.4161 14.4161 18.0001 10 18.0001C5.58402 18.0001 2.888 13.5521 2.888 13.5521M2.888 13.5521H6.50402M2.888 13.5521V17.5521M2 10C2 5.58402 5.55202 2 10 2C15.3361 2 18.0001 6.44802 18.0001 6.44802M18.0001 6.44802V2.448M18.0001 6.44802H14.4481" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
 												}
 												else{
 													$renew_content = '<div class="arm_cm_renew_btn_div"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan) . '" ' . $arm_disable_button . '>'.$renew_text.'</button></div>';
@@ -2752,7 +2770,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 											}
 											if ( ( isset( $display_cancel_button ) && $display_cancel_button == 'true' ) && ( isset( $is_plan_cancelled ) && $is_plan_cancelled != 'yes' ) && ! $plan_info->is_recurring() ) {
 												if(!empty($atts['arm_member_panel'])){
-													$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link tooltip" data-tooltip="'.$cancel_text.'" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
+													$arm_action_content .= '<div class="arm_cm_cancel_btn_div arm_tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
 												}
 												else{
 													$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
@@ -2764,7 +2782,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 											
 											if ( ( isset( $display_cancel_button ) && $display_cancel_button == 'true' ) && ( isset( $is_plan_cancelled ) && $is_plan_cancelled != 'yes' ) ) {
 												if(!empty($atts['arm_member_panel'])){
-													$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link tooltip" data-tooltip="'.$cancel_text.'" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
+													$arm_action_content .= '<div class="arm_cm_cancel_btn_div arm_tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
 												}
 												else{
 													$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
@@ -2788,7 +2806,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 														$arm_action_content .= '<div class="arm_cm_update_btn_div"><a href="' . $paypal_url . '" target="_blank"><button type="button" class= "arm_update_card_button_style">' . $update_card_text . '</button></a></div>';
 													}
 													else{
-														$arm_action_content .= '<div class="arm_cm_update_btn_div tooltip arm_margin_0" data-tooltip="' . $update_card_text . '"><a href="' . $paypal_url . '" target="_blank"><button type="button" class= "arm_update_card_button_style"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.3333 7.91663C18.3025 6.03996 18.1583 4.95579 17.4633 4.17746C17.322 4.01936 17.1673 3.87381 17.0008 3.74246C15.955 2.91663 14.3883 2.91663 11.255 2.91663H8.75332C5.61999 2.91663 4.05332 2.91663 3.00666 3.74163C2.84017 3.87324 2.68542 4.01907 2.54416 4.17746C1.66666 5.16079 1.66666 6.63579 1.66666 9.58329C1.66666 12.5308 1.66666 14.005 2.54416 14.9891C2.68527 15.1469 2.83943 15.2919 3.00666 15.4241C4.05332 16.25 5.61999 16.25 8.75332 16.25H9.16666" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.66666 7.08325H18.3333" stroke="#576582" stroke-width="1.5" stroke-linejoin="round"/><path d="M16.1108 10.4166L16.7975 11.0483C16.9467 11.195 17.0208 11.2683 16.995 11.3308C16.9692 11.3933 16.8625 11.3933 16.6517 11.3933H14.065C12.74 11.3933 11.6667 12.4483 11.6667 13.75C11.6667 14.0433 11.7217 14.325 11.8208 14.5833M13.8892 17.0833L13.2025 16.4516C13.0533 16.305 12.9792 16.2316 13.005 16.1691C13.0308 16.1066 13.1375 16.1066 13.3483 16.1066H15.935C17.26 16.1066 18.3333 15.0516 18.3333 13.75C18.3333 13.4566 18.2783 13.175 18.1792 12.9166" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></a></div>';
+														$arm_action_content .= '<div class="arm_cm_update_btn_div arm_tooltip arm_margin_0" data-tooltip="' . $update_card_text . '"><a href="' . $paypal_url . '" target="_blank"><button type="button" class= "arm_update_card_button_style"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.3333 7.91663C18.3025 6.03996 18.1583 4.95579 17.4633 4.17746C17.322 4.01936 17.1673 3.87381 17.0008 3.74246C15.955 2.91663 14.3883 2.91663 11.255 2.91663H8.75332C5.61999 2.91663 4.05332 2.91663 3.00666 3.74163C2.84017 3.87324 2.68542 4.01907 2.54416 4.17746C1.66666 5.16079 1.66666 6.63579 1.66666 9.58329C1.66666 12.5308 1.66666 14.005 2.54416 14.9891C2.68527 15.1469 2.83943 15.2919 3.00666 15.4241C4.05332 16.25 5.61999 16.25 8.75332 16.25H9.16666" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.66666 7.08325H18.3333" stroke="#576582" stroke-width="1.5" stroke-linejoin="round"/><path d="M16.1108 10.4166L16.7975 11.0483C16.9467 11.195 17.0208 11.2683 16.995 11.3308C16.9692 11.3933 16.8625 11.3933 16.6517 11.3933H14.065C12.74 11.3933 11.6667 12.4483 11.6667 13.75C11.6667 14.0433 11.7217 14.325 11.8208 14.5833M13.8892 17.0833L13.2025 16.4516C13.0533 16.305 12.9792 16.2316 13.005 16.1691C13.0308 16.1066 13.1375 16.1066 13.3483 16.1066H15.935C17.26 16.1066 18.3333 15.0516 18.3333 13.75C18.3333 13.4566 18.2783 13.175 18.1792 12.9166" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></a></div>';
 													}
 												}
 												$arm_card_btn_default = '';
@@ -2803,7 +2821,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 														$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button" data-plan_id = "' . esc_attr($user_plan) . '" style="cursor: default;" disabled="disabled">' . esc_html__( 'Cancelled', 'armember-membership' ) . '</button></div>';
 													} else {
 														if(!empty($atts['arm_member_panel'])){
-															$arm_action_content .= '<div class="arm_cm_cancel_btn_div tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
+															$arm_action_content .= '<div class="arm_cm_cancel_btn_div arm_tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
 														}
 														else{
 															$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
@@ -3376,7 +3394,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 		}
 
 		function arm_usermeta_func( $atts, $content, $tag ) {
-			global $ARMemberLite, $arm_member_forms;
+			global $ARMemberLite, $arm_member_forms, $arm_check_dbFormFields;
 			$arm_check_is_gutenberg_page = $ARMemberLite->arm_check_is_gutenberg_page();
 			if ( $arm_check_is_gutenberg_page ) {
 				return;
@@ -3413,6 +3431,16 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					default:
 						$return_content    = get_user_meta( $user_id, $meta_name, true );
 						$arm_filed_options = $arm_member_forms->arm_get_field_option_by_meta( $meta_name );
+
+						if(empty($arm_filed_options))
+                        			{
+							if(empty($arm_check_dbFormFields))
+							{
+	                            				$presetFormFields = get_option('arm_preset_form_fields', '');
+	                           				$arm_check_dbFormFields = maybe_unserialize($presetFormFields);
+							}
+                            				$arm_filed_options = !empty($arm_check_dbFormFields['other'][$meta_name]) ? $arm_check_dbFormFields['other'][$meta_name] : array();
+                        			}
 
 						$arm_field_type = ( isset( $arm_filed_options['type'] ) && ! empty( $arm_filed_options['type'] ) ) ? $arm_filed_options['type'] : '';
 						if ( $arm_field_type == 'file' ) {

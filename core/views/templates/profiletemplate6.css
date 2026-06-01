@@ -532,7 +532,7 @@
 
 .arm_template_preview_popup.popup_wrapper.arm_mobile_wrapper .arm_template_wrapper_profiletemplate6 .arm_general_info_container{margin: 0 auto 50px;width: calc(100% - 50px);}
 .arm_template_preview_popup.popup_wrapper.arm_mobile_wrapper .arm_template_wrapper_profiletemplate6 .arm_profile_detail_tbl .arm_profile_detail_row{display: block;column-count: unset;}
-.arm_template_preview_popup.popup_wrapper.arm_mobile_wrapper .arm_template_wrapper_profiletemplate6 .arm_profile_detail_tbl .arm_profile_detail_data{column-count: unset;display: block;padding: 8px 10px 8px 30px; text-align: left !important;}
+.arm_template_preview_popup.popup_wrapper.arm_mobile_wrapper .arm_template_wrapper_profiletemplate6 .arm_profile_detail_tbl .arm_profile_detail_data{column-count: unset;display: block;padding: 8px 10px 8px 30px; text-align: left !important; overflow: hidden; text-overflow: ellipsis;}
 .arm_template_preview_popup.popup_wrapper.arm_mobile_wrapper .arm_template_wrapper_profiletemplate6 .arm_profile_header_info {flex-direction: column;}
 .arm_template_preview_popup.popup_wrapper.arm_mobile_wrapper .arm_template_wrapper_profiletemplate6 .arm_profile_header_info_right {text-align: left;}
 .arm_template_preview_popup.popup_wrapper.arm_mobile_wrapper .arm_template_wrapper_profiletemplate6 .arm_profile_picture_block_inner .arm_profile_header_info .arm_profile_header_info_left {padding-left: 0;}

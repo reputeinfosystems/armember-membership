@@ -220,7 +220,9 @@
     .arm_paging_wrapper .arm_paging_info,
     .arm_paging_wrapper .arm_paging_links .arm_prev,
     .arm_paging_wrapper .arm_paging_links .arm_next,
-    .arm-panel-sidebar-profile-action.arm_dashboard_logout_link svg path{
+    .arm-panel-sidebar-profile-action.arm_dashboard_logout_link svg path,
+    .arm_renewal_back_content_container svg path,
+    .arm_panel_grid_list_item_expand svg path{
         stroke: <?php echo $content_color;?> !important;
     }
 
@@ -277,8 +279,9 @@
     }
     .arm-panel-data-container table.arm_user_current_membership_list_table td,
     .arm-panel-container_main:not(.arm-tablet) .arm-panel-data-container table.arm_user_transaction_list_table tr:not(.arm_expanded) td:not(.arm_no_plan){
-        border: 0;   
+        border: 0 !important;
         border-bottom: 1px solid <?php echo $border_color;?> !important;
+        box-shadow: none !important;
     }
     .arm-panel-sidebar-profile-action .arm-panel-logout-icon:hover svg path{
         stroke: #FFF !important;
@@ -309,6 +312,7 @@
         font-family: <?php echo $frontFontVal?> !important;
     }
     .arm-panel-data-container .arm_shortcode_grid_container .arm_shortcode_grid_table_header th{
+        border: 0 !important;
         border-bottom: 1px solid <?php echo $border_color;?> !important;
         background: <?php echo $panel_background_color;?>;
     }
@@ -340,6 +344,11 @@
     .arm-panel-container_main.arm-tablet .arm_expanded_row{
         background: <?php echo $content_overlayed_color;?> !important;
     }
+
+    .arm-tablet .arm-panel-container .arm-panel-data-container .arm_shortcode_grid_table .arm_shortcode_grid_list_item:not(#arm_current_membership_list_item_no_plan, #arm_transaction_list_item_no_plan){
+        border-color: <?php echo $border_color;?> !important;
+    }
+
     .arm_shortcode_grid_list_item td,
     .arm-panel-data-container .arm_current_membership_container .arm_membership_expand_data td{
         border-bottom: 1px solid <?php echo $border_color;?> !important;
@@ -356,7 +365,6 @@
     .arm-tablet .arm-panel-container .arm_expand_grid_section{
         border-color: <?php echo $border_color;?> !important;
     }
-    .arm-tablet .arm-panel-container .arm_shortcode_grid_container table.arm_user_transaction_list_table tr:not(.arm_membership_expand_data),
     .arm-tablet .arm-panel-container .arm-panel-data-container .arm_user_current_membership_list_table .arm_membership_expand_data td,
     .arm-tablet .arm-panel-container .arm-panel-data-container .arm_membership_expand_data td{
         border: 1px solid <?php echo $border_color;?> !important;

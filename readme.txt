@@ -5,7 +5,7 @@ Donate link: https://www.armemberplugin.com/product.php?rdt=t16
 Requires at least: 4.0
 Tested up to: 7.0
 Requires PHP: 5.6
-Stable tag: 5.5
+Stable tag: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,11 @@ Please follow the steps for installation:
 11. Signup Form
 
 == Changelog ==
+= 5.6 =
+* Added "Back" link in the Member Panel when renewing Membership Plan.
+* Fixed: Member Panel display data issue.
+* Other minor bug fixes.
+
 = 5.5 =
 * Minor bug fixes.
 

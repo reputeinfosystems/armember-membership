@@ -1,4 +1,8 @@
 <?php 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! defined( 'MEMBERSHIPLITE_CORE_DIR' ) ) {
 
 	if ( is_ssl() ) {
@@ -112,7 +116,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '5.5';
+$arm_lite_version = '5.6';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -3759,10 +3763,12 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '5.5',
+			'update_version' => '5.6',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				'Minor bug fixes.',
+				"Added 'Back' link in the Member Panel when renewing Membership Plan.",
+				"Fixed: Member Panel display data issue.",
+				'Other minor bug fixes.',
 			),
 			'show_major_title'    => 0,
 			'major_title'         => 'Major Changes',

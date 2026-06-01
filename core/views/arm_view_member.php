@@ -214,7 +214,7 @@ if(!empty($user_id))
 															}
 														}
                                                     } 
-                                                } else if (in_array($field_options['type'], array('radio', 'checkbox', 'select'))) {
+                                                } else if (in_array($field_options['type'], array('radio', 'select'))) {
                                                     $user_meta_detail = $user->$meta_key;
                                                     $main_array = array();
                                                     $options = $field_options['options'];
@@ -239,7 +239,7 @@ if(!empty($user_id))
                                                                 }
                                                             }
                                                             $user_meta_detail = @implode(', ', $main_array);
-                                                            $popup_content .= esc_html($user_meta_detail);
+                                                            $popup_content .= esc_html(wp_unslash($user_meta_detail));
                                                         } else {
                                                             $exp_val = array();
                                                             /*if (strpos($user_meta_detail, ",") != false) {
@@ -252,12 +252,12 @@ if(!empty($user_id))
                                                                     }
                                                                 }
                                                                 $user_meta_detail = @implode(', ', $main_array);
-                                                                $popup_content .= esc_html($user_meta_detail);
+                                                                $popup_content .= esc_html(wp_unslash($user_meta_detail));
                                                             } else {
                                                                 if (in_array($user_meta_detail, $value_array)) {
-                                                                    $popup_content .= array_search($user_meta_detail,$value_array); //phpcs:ignore
+                                                                    $popup_content .= wp_unslash(array_search($user_meta_detail,$value_array)); //phpcs:ignore
                                                                 } else {
-                                                                    $popup_content .= esc_html($user_meta_detail);
+                                                                    $popup_content .= esc_html(wp_unslash($user_meta_detail));
                                                                 }
                                                             }
                                                         }
@@ -265,12 +265,67 @@ if(!empty($user_id))
                                                         if (is_array($user_meta_detail)) {
 															$user_meta_detail = $ARMemberLite->arm_array_trim($user_meta_detail);
 															$user_meta_detail = @implode(', ', $user_meta_detail);
-															$popup_content .= esc_html($user_meta_detail);
+															$popup_content .= esc_html(wp_unslash($user_meta_detail));
 														} else {
-															$popup_content .= esc_html($user_meta_detail);
+															$popup_content .= esc_html(wp_unslash($user_meta_detail));
 														}
 													}
-												} else {
+												}
+												else if($field_options['type'] == 'checkbox'){
+													$user_meta_detail = $user->$meta_key;
+                                                    $main_array = array();
+                                                    $options = $field_options['options'];
+                                                    $value_array = array();
+                                                    foreach ($options as $arm_key => $arm_val) {
+                                                        if (strpos($arm_val, ":") != false) {
+															$exp_val = explode(":", $arm_val);
+															$exp_val1 = $exp_val[1];
+															$value_array[$exp_val[0]] = wp_unslash($exp_val[1]);
+														} else {
+															$value_array[$arm_val] = wp_unslash($arm_val);
+														}
+													}
+                                                    $user_meta_detail = $ARMemberLite->arm_array_trim($user_meta_detail);
+                                                    if (!empty($value_array)) {
+                                                        if (is_array($user_meta_detail)) {
+                                                            foreach ($user_meta_detail as $u) {
+																foreach ($value_array as $arm_key => $arm_val) {
+                                                                    if ($u == $arm_val) {
+                                                                        array_push($main_array,$arm_key);
+                                                                    }
+                                                                }
+                                                            }
+                                                            $user_meta_detail = @implode(', ', $main_array);
+                                                            $popup_content .= esc_html(wp_unslash($user_meta_detail));
+                                                        } else {
+                                                            $exp_val = array();
+                                                            if (!empty($exp_val)) {
+                                                                foreach ($exp_val as $u) {
+                                                                    if (in_array($u, $value_array)) {
+                                                                        array_push($main_array,array_search($u,$value_array));
+                                                                    }
+                                                                }
+                                                                $user_meta_detail = @implode(', ', $main_array);
+                                                                $popup_content .= esc_html(wp_unslash($user_meta_detail));
+                                                            } else {
+                                                                if (in_array($user_meta_detail, $value_array)) {
+                                                                    $popup_content .= wp_unslash(array_search($user_meta_detail,$value_array)); //phpcs:ignore
+                                                                } else {
+                                                                    $popup_content .= esc_html(wp_unslash($user_meta_detail));
+                                                                }
+                                                            }
+                                                        }
+                                                    } else {
+                                                        if (is_array($user_meta_detail)) {
+															$user_meta_detail = $ARMemberLite->arm_array_trim($user_meta_detail);
+															$user_meta_detail = @implode(', ', $user_meta_detail);
+															$popup_content .= esc_html(wp_unslash($user_meta_detail));
+														} else {
+															$popup_content .= esc_html(wp_unslash($user_meta_detail));
+														}
+													}	
+												}
+												 else {
 													$user_meta_detail = $user->$meta_key;
 													/*
 													$pattern = '/^(date\_(.*))/';
@@ -282,9 +337,9 @@ if(!empty($user_id))
 													if (is_array($user_meta_detail)) {
 														$user_meta_detail = $ARMemberLite->arm_array_trim($user_meta_detail);
 														$user_meta_detail = @implode(', ', $user_meta_detail);
-														$popup_content .= esc_html($user_meta_detail);
+														$popup_content .= esc_html(wp_unslash($user_meta_detail));
 													} else {
-														$popup_content .= esc_html($user_meta_detail);
+														$popup_content .= esc_html(wp_unslash($user_meta_detail));
 													}
 												}
 											} else {
@@ -399,7 +454,7 @@ if(!empty($user_id))
 															}
 															$popup_content .= '<a href="'. esc_url($user->$meta_key).'" target="__blank"> <img src="'. esc_url($thumbUrl).'" class="arm_max_width_100"style="height: auto;"></a>';
 														} 
-													} else if (in_array($field_options['type'], array('radio', 'checkbox', 'select'))) {
+													} else if (in_array($field_options['type'], array('radio', 'select'))) {
 														$user_meta_detail = $user->$meta_key;
 														$main_array = array();
 														$options = $field_options['options'];
@@ -424,7 +479,7 @@ if(!empty($user_id))
 																	}
 																}
 																$user_meta_detail = @implode(', ', $main_array);
-																$popup_content .= esc_html($user_meta_detail); 
+																$popup_content .= esc_html(wp_unslash($user_meta_detail));
 															} else {
 																$exp_val = array();
 																/*if (strpos($user_meta_detail, ",") != false) {
@@ -437,12 +492,12 @@ if(!empty($user_id))
 																		}
 																	}
 																	$user_meta_detail = @implode(', ', $main_array);
-																	$popup_content .= esc_html($user_meta_detail);
+																	$popup_content .= esc_html(wp_unslash($user_meta_detail));
 																} else {
 																	if (in_array($user_meta_detail, $value_array)) {
-																		$popup_content .= array_search($user_meta_detail,$value_array); //phpcs:ignore
+																		$popup_content .= wp_unslash(array_search($user_meta_detail,$value_array)); //phpcs:ignore
 																	} else {
-																		$popup_content .= esc_html($user_meta_detail);
+																		$popup_content .= esc_html(wp_unslash($user_meta_detail));
 																	}
 																}
 															}
@@ -450,9 +505,63 @@ if(!empty($user_id))
 															if (is_array($user_meta_detail)) {
 																$user_meta_detail = $ARMemberLite->arm_array_trim($user_meta_detail);
 																$user_meta_detail = @implode(', ', $user_meta_detail);
-																$popup_content .= esc_html($user_meta_detail);
+																$popup_content .= esc_html(wp_unslash($user_meta_detail));
 															} else {
-																$popup_content .= esc_html($user_meta_detail);
+																$popup_content .= esc_html(wp_unslash($user_meta_detail));
+															}
+														}
+													}
+													else if($field_options['type'] == 'checkbox'){
+														$user_meta_detail = $user->$meta_key;
+														$main_array = array();
+														$options = $field_options['options'];
+														$value_array = array();
+														foreach ($options as $arm_key => $arm_val) {
+															if (strpos($arm_val, ":") != false) {
+																$exp_val = explode(":", $arm_val);
+																$exp_val1 = $exp_val[1];
+																$value_array[$exp_val[0]] = wp_unslash($exp_val[1]);
+															} else {
+																$value_array[$arm_val] = wp_unslash($arm_val);
+															}
+														}
+														$user_meta_detail = $ARMemberLite->arm_array_trim($user_meta_detail);
+														if (!empty($value_array)) {
+															if (is_array($user_meta_detail)) {
+																foreach ($user_meta_detail as $u) {
+																	foreach ($value_array as $arm_key => $arm_val) {
+																		if ($u == $arm_val) {
+																			array_push($main_array,$arm_key);
+																		}
+																	}
+																}
+																$user_meta_detail = @implode(', ', $main_array);
+																$popup_content .= esc_html(wp_unslash($user_meta_detail));
+															} else {
+																$exp_val = array();
+																if (!empty($exp_val)) {
+																	foreach ($exp_val as $u) {
+																		if (in_array($u, $value_array)) {
+																			array_push($main_array,array_search($u,$value_array));
+																		}
+																	}
+																	$user_meta_detail = @implode(', ', $main_array);
+																	$popup_content .= esc_html(wp_unslash($user_meta_detail));
+																} else {
+																	if (in_array($user_meta_detail, $value_array)) {
+																		$popup_content .= wp_unslash(array_search($user_meta_detail,$value_array)); //phpcs:ignore
+																	} else {
+																		$popup_content .= esc_html(wp_unslash($user_meta_detail));
+																	}
+																}
+															}
+														} else {
+															if (is_array($user_meta_detail)) {
+																$user_meta_detail = $ARMemberLite->arm_array_trim($user_meta_detail);
+																$user_meta_detail = @implode(', ', $user_meta_detail);
+																$popup_content .= esc_html(wp_unslash($user_meta_detail));
+															} else {
+																$popup_content .= esc_html(wp_unslash($user_meta_detail));
 															}
 														}
 													} else {

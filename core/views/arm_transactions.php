@@ -85,9 +85,9 @@
 			<?php $log_id = !empty($_REQUEST['log_id']) ? intval($_REQUEST['log_id']) : 0; //phpcs:ignore ?> 
 			<div class="arm_invoice_detail_popup popup_wrapper arm_invoice_detail_popup_wrapper">
                 <div class="popup_wrapper_inner" style="overflow: hidden;">
-                    <div class="popup_header arm_text_align_center" >
+                    <div class="popup_header arm_text_align_left" >
                         <span class="popup_close_btn arm_popup_close_btn arm_invoice_detail_close_btn"></span>
-                        <span class="add_rule_content"><?php esc_html_e('Invoice Detail','armember-membership' );?></span>
+                        <span class="add_rule_content"><?php esc_html_e('Invoice Details','armember-membership' );?></span>
                     </div>
                     <div class="popup_content_text arm_invoice_detail_popup_text arm_padding_24" id="arm_invoice_detail_popup_text" >
 					</div>

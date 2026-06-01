@@ -375,10 +375,6 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                 }
                 $response_data['arm_plan_role'] = $arm_plan_selected_role;
                 $response_data['is_already_used'] = 0;
-                /* $plan = new ARM_Plan($arm_plan_id);
-                $plan_options = $plan;
-                print_r($plan_options);
-                exit; */
                 $response_data['limit'] = (isset($response_data['arm_plan_options']["limit"])) ? $response_data['arm_plan_options']["limit"] : 0; 
                 if($total_users > 0)
                 {
@@ -1482,6 +1478,35 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							}
 						}
 
+						if (!empty($old_plan) && is_array($old_plan)) {
+							$old_plan_id = !empty($old_plan[0])  ? $old_plan[0] : 0;
+							$old_plan = new ARM_Plan_Lite($old_plan_id);
+
+							$plan_upgrade_downgrade_action = '';
+							if ($old_plan->enable_upgrade_downgrade_action == 1) {
+								$change_act = 'immediate';
+								if (!empty($old_plan->downgrade_plans) && in_array($new_plan->ID, $old_plan->downgrade_plans)) {
+									$change_act = $old_plan->downgrade_action;
+									$plan_upgrade_downgrade_action = 'downgrade';
+								}
+								if (!empty($old_plan->upgrade_plans) && in_array($new_plan->ID, $old_plan->upgrade_plans)) {
+									$change_act = $old_plan->upgrade_action;
+									$plan_upgrade_downgrade_action = 'upgrade';
+								}
+							}
+
+							if ($change_act == 'immediate' || $change_act == 'on_expire') {
+								if ($plan_upgrade_downgrade_action == 'downgrade') {
+									$newPlanData['arm_upgrade_from'] = '';
+									$newPlanData['arm_downgrade_from'] = $old_plan_id;
+								}
+								if ($plan_upgrade_downgrade_action == 'upgrade') {
+									$newPlanData['arm_upgrade_from'] = $old_plan_id;
+									$newPlanData['arm_downgrade_from'] = '';
+								}
+							}
+						}
+
 						update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $newPlanData );
 
 						$this->arm_add_membership_history( $user_id, $new_plan_id, 'new_subscription', array(), $action_by );
@@ -1877,6 +1902,36 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$newPlanData['arm_next_due_payment'] = $arm_next_payment_date;
 							}
 							$newPlanData['arm_user_gateway'] = 'bank_transfer';
+
+							if (!empty($old_plan) && is_array($old_plan)) {
+								$old_plan_id = !empty($old_plan[0])  ? $old_plan[0] : 0;
+								$old_plan = new ARM_Plan_Lite($old_plan_id);
+	
+								$plan_upgrade_downgrade_action = '';
+								if ($old_plan->enable_upgrade_downgrade_action == 1) {
+									$change_act = 'immediate';
+									if (!empty($old_plan->downgrade_plans) && in_array($new_plan->ID, $old_plan->downgrade_plans)) {
+										$change_act = $old_plan->downgrade_action;
+										$plan_upgrade_downgrade_action = 'downgrade';
+									}
+									if (!empty($old_plan->upgrade_plans) && in_array($new_plan->ID, $old_plan->upgrade_plans)) {
+										$change_act = $old_plan->upgrade_action;
+										$plan_upgrade_downgrade_action = 'upgrade';
+									}
+								}
+	
+								if ($change_act == 'immediate' || $change_act == 'on_expire') {
+									if ($plan_upgrade_downgrade_action == 'downgrade') {
+										$newPlanData['arm_upgrade_from'] = '';
+										$newPlanData['arm_downgrade_from'] = $old_plan_id;
+									}
+									if ($plan_upgrade_downgrade_action == 'upgrade') {
+										$newPlanData['arm_upgrade_from'] = $old_plan_id;
+										$newPlanData['arm_downgrade_from'] = '';
+									}
+								}
+							}
+
 							update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $newPlanData );
 
 							/**

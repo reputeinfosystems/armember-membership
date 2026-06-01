@@ -1677,8 +1677,10 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			}
 			$arm_datatable_headers = '<th class="arm_min_width_40 arm_padding_right_0"></th><th class="center cb-select-all-th"><input id="cb-select-all-1" type="checkbox" class="chkstanard"></th>';
 			foreach($updated_column_order_array as $key){
-				$arm_show_hide_grid[$key] = $grid_columns[$key];
-				$arm_datatable_headers .= '<th data-key="'. esc_attr($key).'" class="arm_grid_th_'. esc_attr($key).'" >'. esc_html($grid_columns[$key]).'</th>';
+				if (isset($grid_columns[$key])) {
+					$arm_show_hide_grid[$key] = $grid_columns[$key];
+					$arm_datatable_headers .= '<th data-key="'. esc_attr($key).'" class="arm_grid_th_'. esc_attr($key).'" >'. esc_html($grid_columns[$key]).'</th>';
+				}
 			}
 			$arm_datatable_headers .= '<th data-key="armGridActionTD" class="armGridActionTD noVis"></th>';
 
@@ -1704,6 +1706,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				{
 					foreach($updated_column_order_array as $key)
 					{
+						if (!isset($arm_show_hide_grid[$key])) {
+    						continue;
+						}
 						$label = $arm_show_hide_grid[$key];
 							$arm_hide_show_html .= '<li class="arm_grid_col_div">';
 
@@ -3743,7 +3748,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_capabilities_global;
 			$response = array( 
 				'type' => 'error',
-				'msg'  => esc_html__( 'Sorry, Something went wrong. Please try again.', 'armember-membership' ),
+				'msg'  => esc_html__( 'Sorry, email not sent successfully.', 'armember-membership' ),
 			);
 
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_members'], '1' ); //phpcs:ignore --Reason:Verifying nonce
@@ -5202,6 +5207,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
             $ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_members'], '1',1); //phpcs:ignore --Reason:Verifying nonce
             $response = array();
             if (isset($_REQUEST['arm_action']) && $_REQUEST['arm_action'] == 'edit_member' && !empty($_REQUEST['id'])) { //phpcs:ignore
+	    $posted_request_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data_extend'), $_POST ); //phpcs:ignore
                 $armform = new ARM_Form_Lite();
                 $formHiddenFields = '';
                 $arm_default_form_id = 101;
@@ -5360,10 +5366,8 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                         }
                     }
                 }
-				$arm_form_fields = '';
-				$arm_form_fields = apply_filters('arm_get_field_html',$arm_form_fields,$arm_form_id,$user_id);
-				$response['arm_form_fields'] = $arm_form_fields;
-				$response['roles'] = $user->roles;
+		$response['arm_form_fields'] = $arm_member_forms->arm_get_field_html_func($arm_form_id,0,$posted_request_data);			
+		$response['roles'] = $user->roles;
                 $response_form_fields_data = '';
                 $response_form_fields_data = apply_filters('arm_member_member_forms_fields_details',$response_form_fields_data,$user_id,$arm_form_id);
                 $response['arm_form_fields_section'] = $response_form_fields_data;

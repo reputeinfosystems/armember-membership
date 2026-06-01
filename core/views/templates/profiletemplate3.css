@@ -48,6 +48,7 @@
 	display: block;
 	width: 100%;
 	box-sizing: border-box;
+	overflow: visible !important;
 }
 .arm_template_wrapper_profiletemplate3 .arm_profile_picture_block{
 	width: 100%;

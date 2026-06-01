@@ -67,6 +67,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			if( $arm_slug == 'profiletemplate3' ){
 				$arm_template_html = '<div class="arm_profile_detail_wrapper">
                         <div class="arm_profile_picture_block armCoverPhoto" style="{ARM_Profile_Cover_Image}">
+                                {ARM_Cover_Upload_Button}
                             <div class="arm_profile_picture_block_inner">
                                 <div class="arm_profile_header_info">
                                     <span class="arm_profile_name_link">{ARM_Profile_User_Name}</span>
@@ -84,7 +85,6 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
                                 <div class="arm_user_avatar">
                                     {ARM_Profile_Avatar_Image}
                                 </div>
-                                {ARM_Cover_Upload_Button}
                             </div>
                             <div class="arm_profile_defail_container arm_profile_tabs_container">
                                 {ARM_PROFILE_FIELDS_BEFORE_CONTENT}
@@ -582,7 +582,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						}
 					}
 
-					$arm_default_cover                        = isset( $args['template_options']['default_cover'] ) ? $args['template_options']['default_cover'] : '';
+					$arm_default_cover = (isset($args['template_options']['default_cover']) && !empty($args['template_options']['default_cover_photo'])) ? $args['template_options']['default_cover'] : '';
 					$users[ $user->ID ]['cover_upload_btn']   = '';
 					$users[ $user->ID ]['profile_upload_btn'] = '';
 
@@ -612,7 +612,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						}
 
 						if ( ! empty( $profileCover ) ) {
-							$cover_pic_style = 'style="display:block;"';
+							$cover_pic_style = '';
 						} else {
 							$cover_pic_style = 'style="display:none;"';
 						}
@@ -621,7 +621,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 								<label id="armRemoveCover" class="armRemoveCover armhelptip" data-cover="' . basename( $profileCover ) . '" data-default-cover="' . esc_attr( $arm_default_cover ) . '" title="' . esc_attr( $removeCoverPhotoTxt ) . '" ' . $cover_pic_style . '></label>
 							</div>';
 
-						$users[ $user->ID ]['cover_upload_btn'] .= '<div id="arm_cover_delete_confirm" class="arm_confirm_box arm_delete_cover_popup" style="display: none;"><div class="arm_confirm_box_body"><div class="arm_confirm_box_arrow"></div><div class="arm_confirm_box_text">' . esc_html($removecoverPhotoAlert) . '</div><div class="arm_confirm_box_btn_container"><button class="arm_confirm_box_btn armok arm_member_delete_btn" type="button" onclick="arm_remove_cover();">' . esc_html__( 'Delete', 'armember-membership' ) . '</button><button onclick="hideConfirmBoxCallback();" class="arm_confirm_box_btn armcancel" type="button">' . esc_html__( 'Cancel', 'armember-membership' ) . '</button></div></div></div>';
+						$users[ $user->ID ]['cover_upload_btn'] .= '<div id="arm_cover_delete_confirm" class="arm_confirm_box arm_delete_cover_popup" style="display: none;"><div class="arm_confirm_box_body"><div class="arm_confirm_box_arrow"></div><div class="arm_confirm_box_text">' . esc_html($removecoverPhotoAlert) . '</div><div class="arm_confirm_box_btn_container"><button onclick="hideConfirmBoxCallback();" class="arm_confirm_box_btn armcancel" type="button">' . esc_html__( 'Cancel', 'armember-membership' ) . '</button><button class="arm_confirm_box_btn armok arm_member_delete_btn" type="button" onclick="arm_remove_cover();">' . esc_html__( 'Delete', 'armember-membership' ) . '</button></div></div></div>';
 
 						$users[ $user->ID ]['cover_upload_btn']   .= '</div>';
 						$uploaderID_profile                        = 'arm_profile_' . wp_generate_password( 5, false, false );
@@ -645,16 +645,16 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 						/* 23aug 2016  */
 						if ( ! empty( $users[ $user->ID ]['profile_pictuer_url'] ) && file_exists( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $users[ $user->ID ]['profile_pictuer_url'] ) ) ) {
-							$pro_pic_style = ' style="display:block;"';
+							$pro_pic_style = '';
 						} else {
 							$pro_pic_style = ' style="display:none;"';
 						}
 						$arm_lite_load_tipso                       = 1;
-						$users[ $user->ID ]['profile_upload_btn'] .= '<div class="armCoverUploadBtnContainer"  tabindex="-1">
-								<label id="armRemoveProfilePic" class="armRemoveCover armhelptip" data-cover="' . basename( $users[ $user->ID ]['profile_pictuer_url'] ) . '" title="' . esc_attr($removeProfilePhotoTxt) . '"' . esc_attr($pro_pic_style) . '" tabindex="-1" aria-label="'.esc_attr__( 'remove cover', 'armember-membership' ).'"></label>
+						$users[ $user->ID ]['profile_upload_btn'] .= '<div class="armCoverUploadBtnContainer"  tabindex="-1" style="display:inline-block;">
+								<label id="armRemoveProfilePic" class="armRemoveCover armhelptip" data-cover="' . basename( $users[ $user->ID ]['profile_pictuer_url'] ) . '" title="' . esc_attr($removeProfilePhotoTxt) . '"' . $pro_pic_style . '" tabindex="-1" aria-label="'.esc_attr__( 'remove cover', 'armember-membership' ).'"></label>
 							</div>';
 
-						$users[ $user->ID ]['profile_upload_btn'] .= '<div id="arm_profile_delete_confirm" class="arm_confirm_box arm_delete_profile_popup" style="display: none;"><div class="arm_confirm_box_body"><div class="arm_confirm_box_arrow"></div><div class="arm_confirm_box_text">' . esc_html($removeprofilePhotoAlert) . '</div><div class="arm_confirm_box_btn_container"><button class="arm_confirm_box_btn armok arm_member_delete_btn" type="button" onclick="arm_remove_profile();">' . esc_html__( 'Delete', 'armember-membership' ) . '</button><button onclick="hideConfirmBoxCallbackprofile();" class="arm_confirm_box_btn armcancel" type="button">' . esc_html__( 'Cancel', 'armember-membership' ) . '</button></div></div></div>';
+						$users[ $user->ID ]['profile_upload_btn'] .= '<div id="arm_profile_delete_confirm" class="arm_confirm_box arm_delete_profile_popup" style="display: none;"><div class="arm_confirm_box_body"><div class="arm_confirm_box_arrow"></div><div class="arm_confirm_box_text">' . esc_html($removeprofilePhotoAlert) . '</div><div class="arm_confirm_box_btn_container"></div><button onclick="hideConfirmBoxCallbackprofile();" class="arm_confirm_box_btn armcancel" type="button">' . esc_html__( 'Cancel', 'armember-membership' ) . '</button><button class="arm_confirm_box_btn armok arm_member_delete_btn" type="button" onclick="arm_remove_profile();">' . esc_html__( 'Delete', 'armember-membership' ) . '</button></div></div></div>';
 
 						$users[ $user->ID ]['profile_upload_btn'] .= '</div>';
 					}
@@ -865,6 +865,73 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				$orderby = 'user_login';
 			}
 			$order_by_keyword = "u.{$orderby}";
+			$filter = 0;
+            $arm_where = '';
+            $sort_meta_key = '';
+            if( str_contains($orderby,'|'))
+            {
+                $arm_order_by_arr = explode('|',$orderby);
+                if(!empty($arm_order_by_arr) && is_array($arm_order_by_arr) && count($arm_order_by_arr) > 1)
+                {                   
+                    $orderby = $meta_key = isset($arm_order_by_arr[0]) ? $arm_order_by_arr[0] : $orderby;
+                    $sort_meta_key = $meta_key;
+                    $order = !empty($arm_order_by_arr[1]) ? $arm_order_by_arr[1] : 'ASC';
+                    $order_by_keyword = "um.meta_value";
+                    $filter = 1;
+                    $arm_where = $wpdb->prepare(" AND um.meta_key=%s", $meta_key);
+                }
+            }
+            if(strtolower($order)!='desc')
+            {
+	    	    $order='ASC';
+            }
+
+            $orderby_exp_check = explode( ' ', $orderby );
+            if( count($orderby_exp_check) > 1 )
+            {
+	    	    $order_by_keyword = $orderby = 'u.user_registered';
+	        }
+	        else {
+                if($orderby != 'user_registered' && $orderby != 'display_name' && $orderby != 'user_login' && $orderby != 'user_email' && $orderby != 'ID' && $orderby != 'arm_last_login_date')
+	            {
+	                //get preset form fields
+	                $presetFormFields = get_option('arm_preset_form_fields', '');
+	                $dbFormFields     = maybe_unserialize($presetFormFields);
+	                $valid_field_check = 0;
+	                if( !empty($dbFormFields) && is_array($dbFormFields['default']) )
+	                {
+	                    foreach($dbFormFields['default'] as $field_key => $field_label)
+	                    {
+	                        if( $orderby === $field_key )
+	                        {
+	                            $valid_field_check = 1;
+	                        }
+	                    }
+	                }
+
+	                if( empty($valid_field_check) && !empty($dbFormFields) && is_array($dbFormFields['other']) )
+	                {
+	                    foreach($dbFormFields['other'] as $field_key => $field_label)
+	                    {
+	                        if( $orderby === $field_key )
+	                        {
+	                            $valid_field_check = 1;
+	                        }
+	                    }
+	                }
+
+	                if( empty($valid_field_check) )
+	                {
+	                    $orderby = 'user_registered';
+						$order_by_keyword = "u.user_registered";
+                        $arm_where = "";
+                        $filter = 0;
+	                }
+                    else {
+                        $order_by_keyword = "um.meta_value";
+                    }
+	            }
+            }
 			$order_by         = ' ORDER BY ' . $order_by_keyword . ' ' . $order;
 			if ( $orderby === 'arm_last_login_date' ) {
 				$order_by = "um.arm_last_login_date {$order}";
@@ -2628,6 +2695,10 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						border-color: {$tempOptions['border_color']} !important;
                         display: none;
 					}
+					$tempWrapperClass .arm_profile_picture_block{
+						
+						border-color: {$tempOptions['border_color']} !important;
+					}
                     
 					$tempWrapperClass .arm_directory_container .arm_user_desc_box,
 					$tempWrapperClass .arm_directory_container .arm_last_active_text,
@@ -3003,7 +3074,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 
 				'button_font'          => array(
 					'font_family'     => 'Helvetica',
-					'font_size'       => '1',
+					'font_size'       => '14',
 					'font_bold'       => '',
 					'font_italic'     => '',
 					'font_decoration' => '',

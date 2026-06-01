@@ -66,8 +66,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 			add_filter('arm_member_member_forms_fields_details',array($this,'arm_member_member_forms_fields_details_func'),10,3);
 
-			add_filter('arm_get_field_html',array($this,'arm_get_field_html_func'),10,3);
-
 			add_action('arm_update_apparance_of_forms',array($this,'arm_update_apparance_of_forms_func'),10,2);
 
             add_filter('arm_add_new_table_edit_profile_forms',array($this,'arm_add_new_table_edit_profile_forms_func'),10,1);
@@ -99,28 +97,24 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			die();
 		}
 
-		function arm_get_field_html_func($arm_form_content = '',$form_id='', $user_id=''){
+		function arm_get_field_html_func($arm_form_id='', $arm_is_ajax = 1,$post_data=array()){
 
             global $wpdb, $armPrimaryStatus, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_social_feature, $is_multiple_membership_feature, $arm_email_settings, $arm_pay_per_post_feature, $arm_lite_members_activity,$arm_capabilities_global,$arm_ajax_pattern_start,$arm_ajax_pattern_end;
 
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1',1);
 
-			$arm_member_include_fields_keys = array('user_email', 'user_pass');
-			$arm_is_ajax = 0;
-			if(!empty($_REQUEST['action']) && $_REQUEST['action'] == 'arm_get_field_html'){
-				$arm_is_ajax = 1;
-			}
-            $arm_form_id=101;
-            if(isset($_REQUEST['arm_form_id']) && empty($form_id)) {
-                $arm_form_id = intval($_REQUEST['arm_form_id']);
+            $arm_member_include_fields_keys = array('user_email', 'user_pass');
+
+            if (isset($_REQUEST['arm_form_id']) && empty($arm_form_id)) { //phpcs:ignore
+                $arm_form_id = intval($_REQUEST['arm_form_id']); //phpcs:ignore
                 if (!is_numeric($arm_form_id)) {
                     $arm_form_id=101;
                 } 
             }
-	    else{
+            else{
                 $arm_form_id = intval($arm_form_id);
             }
-            $user_id = !empty($user_id) ? abs(intval($user_id)) : '';
+            $user_id = !empty($post_data['id']) ? abs(intval($post_data['id'])) : '';
             $user = $arm_members_class->arm_get_member_detail($user_id);
             $arm_suffix_icon_pass = '<span class="arm_visible_password_admin arm-df__fc-icon --arm-suffix-icon" id="" style=""><i class="armfa armfa-eye"></i></span>';
 
@@ -144,6 +138,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 }
             }
             $required_class = 0;
+
+            $response = array("type"=>'error',"res"=>esc_html__('Form field data not found' , 'armember-membership'));
 
             if($arm_form_id != 0  && $arm_form_id != ''){
                 $arm_member_form_fields = $arm_member_forms->arm_get_member_forms_fields($arm_form_id, 'all');
@@ -270,6 +266,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                             $arm_form_content .= '<input id="arm_username" class="arm_member_form_input" type="text" name="user_login" value="'.esc_attr($username).'" '. esc_attr($disabled) .' data-msg-required="'. esc_html__('Username can not be left blank.', 'armember-membership') .'" required />
                                         </div></td>
                                     </tr>';
+                                    $arm_personal_data_fields = array();
                                 if (!empty($dbFormFields)) {
                                     foreach ($dbFormFields as $meta_key => $field) {
                                         $field_options = maybe_unserialize($field);
@@ -296,8 +293,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                 </td>
                                             </tr>';
 
-                                            
                                         }
+                                        array_push($arm_personal_data_fields,$meta_key);
                                     }
                                 }
                             $arm_form_content .= '</table>
@@ -314,54 +311,54 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								<div class="arm_page_wrap">
 									<div class="arm_admin_form_content">
 										<table class="form-table">';
-											$arm_user_pass_label =  esc_html__( 'Password', 'armember-membership');
+                                            $arm_user_pass_label = esc_html__( 'Password', 'armember-membership');
 
-											if( $required_class != 1 ){
-												$arm_user_pass_label .= '<span class="required_icon">*</span>';
-											}
-											
-											$arm_confirm_pass_lbl = esc_html__( 'Confirm Password', 'armember-membership' ); //phpcs:ignore
-											if ( $required_class != 1 ) {
-												$arm_confirm_pass_lbl .= '<span
-												class="required_icon">*</span>';
-											}
-											$arm_form_content .= '<tr class="form-field arm_user_password_field">
-												<th>
-													<label
-														for="arm_password">'. $arm_user_pass_label .'</label>
-												</th>
-													<td>';
-														$arm_suffix_icon_pass_cls = '';
-														if ( is_rtl() ) {
-															$arm_suffix_icon_pass_cls = 'arm_visible_password_admin_rtl';
-														}
-														$arm_form_content .= '<div class="arm_setup_forms_container">
-															<input id="arm_password" autocomplete="off"
-																class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
-																name="user_pass" type="password" value=""
-																data-msg-required="'. esc_attr__( 'Password can not be left blank.', 'armember-membership' ).'"';
-																$arm_form_content .= '/>
-															'. $arm_suffix_icon_pass.'
-														</div>
-													</td>
-												</tr>
-												<tr class="form-field arm_user_password_field">
-													<th>
-														<label
-															for="arm_repeat_pass">'. $arm_confirm_pass_lbl.'
-														</label>
-													</th>
-													<td>
-														<div class="arm_setup_forms_container">
-															<input id="arm_repeat_pass"
-																class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
-																name="repeat_pass" type="password" value=""
-																data-msg-required="'. esc_attr__( 'Confirm Password can not be left blank.', 'armember-membership' ) .'"';
-																$arm_form_content .= '/>
-															'. $arm_suffix_icon_pass.'
-														</div>
-													</td>
-												</tr>';
+                                            if( $required_class != 1 ){
+                                                $arm_user_pass_label .= '<span class="required_icon">*</span>';
+                                            }
+                                            
+                                            $arm_confirm_pass_lbl = esc_html__( 'Confirm Password', 'armember-membership' ); //phpcs:ignore
+                                                if ( $required_class != 1 ) {
+                                                    $arm_confirm_pass_lbl .= '<span
+                                                    class="required_icon">*</span>';
+                                                }
+                                        $arm_form_content .= '<tr class="form-field arm_user_password_field">
+                                            <th>
+                                                <label
+                                                    for="arm_password">'. $arm_user_pass_label .'</label>
+                                            </th>
+                                            <td>';
+                                                $arm_suffix_icon_pass_cls = '';
+                                                if ( is_rtl() ) {
+                                                    $arm_suffix_icon_pass_cls = 'arm_visible_password_admin_rtl';
+                                                }
+                                                $arm_form_content .= '<div class="arm_setup_forms_container">
+                                                    <input id="arm_password" autocomplete="off"
+                                                        class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
+                                                        name="user_pass" type="password" value=""
+                                                        data-msg-required="'. esc_attr__( 'Password can not be left blank.', 'armember-membership' ).'"';
+                                                        $arm_form_content .= '/>
+                                                    '. $arm_suffix_icon_pass.'
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="form-field arm_user_password_field">
+                                            <th>
+                                                <label
+                                                    for="arm_repeat_pass">'. $arm_confirm_pass_lbl.'
+                                                </label>
+                                            </th>
+                                            <td>
+                                                <div class="arm_setup_forms_container">
+                                                    <input id="arm_repeat_pass"
+                                                        class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
+                                                        name="repeat_pass" type="password" value=""
+                                                        data-msg-required="'. esc_attr__( 'Confirm Password can not be left blank.', 'armember-membership' ) .'"';
+                                                        $arm_form_content .= '/>
+                                                    '. $arm_suffix_icon_pass.'
+                                                </div>
+                                            </td>
+                                        </tr>';
 										$arm_form_content .= '</table>
 									</div>
 								</div>
@@ -406,6 +403,9 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                 
                                 if (!empty($dbFormFields)) {
                                     foreach ($dbFormFields as $meta_key => $field) {
+                                        if(in_array($meta_key,$arm_personal_data_fields)){
+                                            unset($dbFormFields[$meta_key]);
+                                        }
                                         $field_options = maybe_unserialize($field);
                                         $field_options = apply_filters('arm_change_field_options', $field_options);
                                                     
@@ -438,17 +438,19 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                         foreach ($form_settings['hidden_fields'] as $hiddenF) {
                                                             
                                             $hiddenMetaKey = (isset($hiddenF['meta_key']) && !empty($hiddenF['meta_key'])) ? $hiddenF['meta_key'] : sanitize_title('arm_hidden_' . $hiddenF['title']);
-                                            $hiddenValue = get_user_meta($user_id, $hiddenMetaKey, true);
-                                            $hiddenValue = (!empty($hiddenValue)) ? $hiddenValue : $hiddenF['value'];
-                                            $hiddentitle = (!empty($hiddenF['title'])) ? $hiddenF['title'] : '';
+                                            $hiddenValue = get_user_meta($user_id, $hiddenMetaKey, true);                                           
+                                            $hiddenValue = !empty($hiddenValue) ? $hiddenValue : $hiddenF['value'];
+                                            $hiddentitle = (!empty($hiddenF['title'])) ? $hiddenF['title'] : '';                                           
+
+                                            $hiddenValue = !empty($hiden_val) ? $hiden_val : $hiddenValue;
                                                             
                                             $arm_form_content .= '<tr class="form-field"><th><label>'.$hiddentitle.'</label></th><td><input type="text" name="' . $hiddenMetaKey . '" value="' . $hiddenValue . '"/></td></tr>'; //phpcs:ignore
                                                             
                                         }
                                     }
                                 }
-                                                    
                                 if(!isset($arm_member_include_fields_keys['avatar']) && !in_array('avatar', $arm_member_include_fields_keys)){
+
                                     if(!isset($_SESSION['arm_file_upload_arr']['avatar'])){
                                         $arm_lite_members_activity->session_for_file_handle('avatar','');
                                     }
@@ -461,7 +463,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                         'value' => '',
                                         'allow_ext' => '',
                                         'file_size_limit' => '2',
-                                        'meta_key' => 'avatar', //phpcs:ignore
+                                        'meta_key' => 'avatar',
                                         'required' => 0,
                                         'blank_message' => esc_html__('Please select avatar.', 'armember-membership'),
                                         'invalid_message' => esc_html__('Invalid image selected.', 'armember-membership'),
@@ -571,8 +573,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                     $arm_form_content .= '<input type="hidden" id="arm_status_switch_val"
                                         value="1" />';                                   
                                 $arm_form_content .= '</td>
-                            </tr>';
-							if (empty($_REQUEST["arm_action"]) || (!empty($_REQUEST["arm_action"]) && $_REQUEST["arm_action"] === 'add_member') ){ //phpcs:ignore
+                            </tr>';                           
+                            if (empty($_REQUEST["arm_action"]) || (!empty($_REQUEST["arm_action"]) && $_REQUEST["arm_action"] === 'add_member') ){ //phpcs:ignore
 
                                 $arm_all_email_settings       = $arm_email_settings->arm_get_all_email_template();
                                 $email_without_payment_status = isset( $arm_all_email_settings[2]->arm_template_status ) ? $arm_all_email_settings[2]->arm_template_status : '';
@@ -590,14 +592,14 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                         </td>
                                     </tr>';
                                 }
-                            }                        
+                            }
                         $arm_form_content .= '</table>
                     </div>
                 </div>
                 </div>';
-		$response = array("type"=>'success',"res"=>$arm_form_content);
+                $response = array("type"=>'success',"res"=>$arm_form_content);
             }
-	    if(!empty($arm_is_ajax))
+            if(!empty($arm_is_ajax))
             {
                 echo $arm_ajax_pattern_start.''.json_encode($response).''.$arm_ajax_pattern_end; //phpcs:ignore
                 die();
@@ -1267,10 +1269,10 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							delete_user_meta( get_current_user_id(), 'avatar' );
 
 							$avatar = get_avatar( wp_get_current_user()->user_email, '200' );
-							preg_match_all( "/src='([^']+)/", $avatar, $images );
+							preg_match_all('/src=["\']([^"\']+)/', $avatar, $images);
 
 							$avatar_url = isset( $images[1][0] ) ? $images[1][0] : '';
-							echo esc_url($avatar_url);
+							echo htmlspecialchars_decode($avatar_url); //phpcs:ignore
 							exit;
 						}
 					}
@@ -6536,7 +6538,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 		/**
 		 * Register New User.
 		 */
-		function arm_register_new_member( $posted_data = array(), $armform = null, $social_signup = '' ) {
+		function arm_register_new_member( $posted_data = array(), $armform = null, $social_signup = '' , $arm_is_hashed_data_falg = 0) {
 			global $wp, $wpdb, $current_user, $arm_lite_errors, $ARMemberLite, $arm_members_class, $arm_global_settings, $arm_subscription_plans, $payment_done, $arm_email_settings, $arm_login_from_registration, $arm_manage_communication;
 			$arm_lite_errors = new WP_Error();
 
@@ -6583,6 +6585,10 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			}
 
 			$user_id = wp_create_user( $sanitized_user_login, $user_pass, $user_email );
+			wp_cache_delete($user_id, 'users');
+			if(!empty($arm_is_hashed_data_falg) && $arm_is_hashed_data_falg == 1){
+				$wpdb->query( $wpdb->prepare("UPDATE " . $wpdb->users . " SET `user_pass`=%s WHERE ID = %d",$user_pass , $user_id));
+			}
 			if ( ! $user_id ) {
 				$link_tag = '<a href="mailto:' . get_option( 'admin_email' ) . '">' . esc_html__( 'webmaster', 'armember-membership' ) . '</a>';
 				$err_msg  = isset( $arm_global_settings->common_message['arm_user_not_created'] ) ? $arm_global_settings->common_message['arm_user_not_created'] : '';
@@ -11252,6 +11258,30 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 			return null;
 		}
 
+        function arm_darker_color( $hex = '#000000', $percent = 10 ) {
+            $hex = preg_replace( '/[^a-fA-F0-9]/', '', $hex );
+        
+            if ( strlen( $hex ) !== 3 && strlen( $hex ) !== 6 ) {
+                $hex = '000000';
+            }
+        
+            if ( strlen( $hex ) === 3 ) {
+                $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+            }
+        
+            $percent = max( 0, min( 100, (int) $percent ) );
+        
+            $r = hexdec( substr( $hex, 0, 2 ) );
+            $g = hexdec( substr( $hex, 2, 2 ) );
+            $b = hexdec( substr( $hex, 4, 2 ) );
+        
+            $r = (int) max( 0, $r - ( $r * $percent / 100 ) );
+            $g = (int) max( 0, $g - ( $g * $percent / 100 ) );
+            $b = (int) max( 0, $b - ( $b * $percent / 100 ) );
+        
+            return sprintf( '#%02x%02x%02x', $r, $g, $b );
+        }
+
 		function arm_update_apparance_of_forms_func(){
             global $wpdb, $ARMemberLite, $arm_global_settings;
             
@@ -11260,13 +11290,13 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
             $arm_default_color_setting  = isset($arm_default_front_settings['color']) ? $arm_default_front_settings['color'] : array();
             $arm_default_font_setting   = isset($arm_default_front_settings['font']) ? $arm_default_front_settings['font'] : array();
             
-		    $arm_current_member_panel_settings = $arm_global_settings->arm_get_member_panel_settings();
-		    $arm_current_front_settings = $arm_current_member_panel_settings['appearance_settings'];
+	    $arm_current_member_panel_settings = $arm_global_settings->arm_get_member_panel_settings();
+	    $arm_current_front_settings = $arm_current_member_panel_settings['appearance_settings'];
             $arm_current_color_setting  = isset($arm_current_front_settings['color']) ? $arm_current_front_settings['color'] : array();
             $arm_current_font_setting   = isset($arm_current_front_settings['font']) ? $arm_current_front_settings['font'] : array();
             
-            $arm_is_color_changed = ($arm_default_color_setting !== $arm_current_color_setting);
-            $arm_is_font_changed  = ($arm_default_font_setting !== $arm_current_font_setting);
+	    $arm_is_color_changed = ( !empty($arm_default_color_setting) && !empty($arm_current_color_setting) && $arm_default_color_setting !== $arm_current_color_setting );
+	    $arm_is_font_changed  = ( !empty($arm_default_font_setting) && !empty($arm_current_font_setting) && $arm_default_font_setting !== $arm_current_font_setting );
             
             $arm_forms_ids = array(101,102,103,104,105);
             
@@ -11288,12 +11318,23 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
                     }
             
                     if($arm_is_color_changed){
-                        $form_settings_data['style']['form_title_font_color'] = sanitize_text_field($arm_current_color_setting['title_text_color']);
-                        $form_settings_data['style']['form_border_color']     = sanitize_text_field($arm_current_color_setting['border_color']);
-                        $form_settings_data['style']['field_border_color']    = sanitize_text_field($arm_current_color_setting['border_color']);
-                        $form_settings_data['style']['field_font_color']      = sanitize_text_field($arm_current_color_setting['content_color']);
-                        $form_settings_data['style']['lable_font_color']      = sanitize_text_field($arm_current_color_setting['content_color']);
-                        $form_settings_data['style']['button_back_color']     = sanitize_text_field($arm_current_color_setting['primary_color']);
+		    	$arm_hover_color = $this->arm_darker_color( sanitize_text_field($arm_current_color_setting['primary_color']), 10 );                    
+                        $form_settings_data['style']['form_title_font_color']    = sanitize_text_field($arm_current_color_setting['title_text_color']);
+                        $form_settings_data['style']['form_border_color']        = sanitize_text_field($arm_current_color_setting['border_color']);
+                        $form_settings_data['style']['field_border_color']       = sanitize_text_field($arm_current_color_setting['border_color']);
+                        $form_settings_data['style']['prefix_suffix_color']      = sanitize_text_field($arm_current_color_setting['border_color']);
+                        $form_settings_data['style']['field_font_color']         = sanitize_text_field($arm_current_color_setting['content_color']);
+                        $form_settings_data['style']['lable_font_color']         = sanitize_text_field($arm_current_color_setting['content_color']);
+                        $form_settings_data['style']['button_back_color']        = sanitize_text_field($arm_current_color_setting['primary_color']);
+                        $form_settings_data['style']['field_focus_color']        = sanitize_text_field($arm_current_color_setting['primary_color']);
+                        $form_settings_data['style']['button_hover_color']       = sanitize_text_field($arm_hover_color);
+
+                        if(isset($form_settings_data['style']['register_link_font_color'])){
+                            $form_settings_data['style']['register_link_font_color'] = sanitize_text_field($arm_current_color_setting['primary_color']);
+                        }
+                        if(isset($form_settings_data['style']['login_link_font_color'])){
+                            $form_settings_data['style']['login_link_font_color']    = sanitize_text_field($arm_current_color_setting['primary_color']);
+                        }
                     }
             
                     if($arm_is_font_changed){

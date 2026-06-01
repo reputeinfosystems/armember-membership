@@ -12,10 +12,10 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 
 			/* Post Meta Box Functions */
 			add_action( 'arm_add_meta_boxes', array( $this, 'arm_add_meta_boxes_access_rules' ), 10, 3 );
-						add_action( 'wp_insert_post', array( $this, 'arm_insert_new_post_action' ), 10, 3 );
-						add_action( 'save_post', array( $this, 'arm_save_post_rules' ), 20, 3 );
-						add_action( 'created_term', array( $this, 'arm_created_term_rules' ), 10, 3 );
-						add_action( 'arm_reactivate_plugin', array( $this, 'arm_install_plugin_data_reactivation' ), 1000 );
+			add_action( 'wp_insert_post', array( $this, 'arm_insert_new_post_action' ), 10, 3 );
+			add_action( 'save_post', array( $this, 'arm_save_post_rules' ), 20, 3 );
+			add_action( 'created_term', array( $this, 'arm_created_term_rules' ), 10, 3 );
+			add_action( 'arm_reactivate_plugin', array( $this, 'arm_install_plugin_data_reactivation' ), 1000 );
 			add_filter( 'get_post_metadata', array( $this, 'arm_get_post_meta' ), 11, 4 );
 		}
 
