@@ -724,7 +724,9 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$content .= '</form>';
 					}
 					$content .= '<div class="armclear"></div>';
-					$content .= '</div>';
+					if ( $type != 'profile' ) {
+						$content .= '</div>';
+					}
 					$content  = apply_filters( 'arm_change_content_after_display_profile_and_directory', $content, $opts );
 				}
 			}
@@ -3464,6 +3466,13 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 								$return_content = '<div class="arm_old_uploaded_file"><a href="' . esc_url($return_content) . '" target="__blank"><img alt="" src="' . esc_url( $fileUrl ) . '" width="100px"/></a></div>'; //phpcs:ignore 
 							}
 						} elseif ( $arm_field_type == 'select' || $arm_field_type == 'radio' || ( $arm_field_type == 'checkbox' && ! is_array( $return_content ) ) ) {
+							if($arm_field_type == 'select')
+                            {
+                                if(empty($return_content) || $return_content == '0')
+                                {
+                                    $return_content = '';
+                                }
+                            }
 							if ( ! empty( $return_content ) ) {
 								$arm_tmp_select_val = ! empty( $arm_filed_options['options'] ) ? $arm_filed_options['options'] : '';
 								foreach ( $arm_tmp_select_val as $arm_tmp_select_key => $arm_tmp_val ) {
@@ -3475,9 +3484,11 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 									}
 								}
 							}
-						} else {
+						} else if( !empty( $arm_field_type ) ) {
 							$return_content = is_string( $return_content ) ? nl2br( $return_content ) : $return_content;
-						}
+						}else {
+                            return '';
+                        }
 						break;
 				}
 				if ( is_array( $return_content ) ) {

@@ -113,15 +113,6 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
         public function arm_head_func(){
             //load css and js file
             global $ARMemberLite,$wp_query;
-            if($ARMemberLite->is_arm_pro_active){
-                global $ARMember;
-                $ARMember->set_front_css(2);
-                $ARMember->set_front_js(true);
-            }
-            else{
-                $ARMemberLite->set_front_css(2);
-                $ARMemberLite->set_front_js(true);
-            }
 
             $found_matches = array();
             $pattern       = '\[(\[?)(arm_member_panel)(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)';
@@ -143,9 +134,18 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
                     if(!wp_script_is('armlite_front_dashboard_js', 'enqueued')){
                         wp_enqueue_script('armlite_front_dashboard_js');
                     }
+
+                    if($ARMemberLite->is_arm_pro_active){
+                        global $ARMember;
+                        $ARMember->set_front_css(2);
+                        $ARMember->set_front_js(true);
+                    }
+                    else{
+                        $ARMemberLite->set_front_css(2);
+                        $ARMemberLite->set_front_js(true);
+                    }
                 }
             }
-            
         }
 
         public function load(){

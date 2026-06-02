@@ -90,6 +90,25 @@
             ARMLITE_HOME_URL
         );
 
+        $arm_panel_user_plan_ids = get_user_meta($user_id, 'arm_user_plan_ids', true);
+        if($ARMemberLite->is_arm_pro_active) {
+            $arm_panel_user_plan_ids = apply_filters('arm_assign_plan_data', $arm_panel_user_plan_ids, $user_id);
+        }
+        $arm_panel_plan_wise_class = '';
+        
+        if (is_array($arm_panel_user_plan_ids) && !empty($arm_panel_user_plan_ids)) {
+            foreach ($arm_panel_user_plan_ids as $arm_panel_user_plan_id) {
+                $plan_id = absint($arm_panel_user_plan_id);
+        
+                if ($plan_id > 0) {
+                    $arm_panel_plan_wise_class .= ' arm_panel_subscription_plan_' . sanitize_html_class((string) $plan_id);
+                }
+            }
+        }
+        if($ARMemberLite->is_arm_pro_active) {
+            $arm_panel_plan_wise_class = apply_filters('arm_panel_container_modify_css_classes_external', $arm_panel_plan_wise_class, $user_id);
+        }
+
     $arm_member_tabs_html = '';
     $arm_member_content_html = '';
 
@@ -382,7 +401,7 @@
     }
     ?>
     <div class="arm-panel-container_main<?php echo $arm_is_rtl_container; ?>" id="arm-panel-container">
-        <div class="arm-panel-container">
+        <div class="arm-panel-container<?php esc_attr_e($arm_panel_plan_wise_class) ?>">
             <div class="arm-panel-sidebar" style="display:none">
                 <div class="arm_responsive_mobile_menu_icon arm_hide">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="0.5" y="0.5" width="39" height="39" rx="9.5" /><rect x="0.5" y="0.5" width="39" height="39" rx="9.5" stroke="#CFD6E5"/><path d="M14 15H26" stroke="#535D71" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 20H26" stroke="#535D71" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 25H26" stroke="#535D71" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>

@@ -557,6 +557,9 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 		}
 
 		function arm_get_default_invoice_template(){
+            global $arm_global_settings;
+			$default_invoice_lbl = $arm_global_settings->arm_default_invoice_label();
+
             $arm_default_invoice_template = '<style>';
             $arm_default_invoice_template .= '.arm_invoice_container{width:700px;margin:0 auto;background:#fff;border:1px solid #e7ebf0;border-radius:14px;padding:32px;box-sizing:border-box}.arm_invoice_header{padding-bottom:22px;margin-bottom:24px;border-bottom:1px solid #e7ebf0}.arm_invoice_header_table{width:100%;border-collapse:collapse}.arm_invoice_logo{max-width:180px;display:block}.arm_invoice_title{margin:0;padding-top:4px;text-align:right;font-size:32px;font-weight:700;color:#1e3a8a;letter-spacing:.5px}.arm_invoice_meta{padding-bottom:22px;margin-bottom:26px;border-bottom:1px solid #e7ebf0}.arm_invoice_meta_table{width:100%;border-collapse:collapse}.arm_invoice_meta_table td{padding:2px 0;font-size:14px;color:#4b5563}.arm_invoice_meta_label{font-weight:700;color:#111827}.arm_invoice_customer{margin-bottom:24px}.arm_invoice_section_title{margin:0 0 12px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#6b7280}.arm_invoice_customer_name{font-size:18px;font-weight:700;color:#111827;margin-bottom:5px}.arm_invoice_customer_email{font-size:13px;color:#6b7280}.arm_invoice_table_wrapper{border:1px solid #dbe2ea;border-radius:12px;overflow:hidden;margin-bottom:16px}.arm_invoice_table{width:100%;border-collapse:collapse}.arm_invoice_table thead th{background:#f8fafc;padding:14px 16px;font-size:14px;font-weight:700;color:#374151;text-align:left;border-bottom:1px solid #dbe2ea}.arm_invoice_table tbody td{padding:14px 16px;font-size:14px;line-height:1.5;color:#4b5563;border-bottom:1px solid #edf1f5;vertical-align:middle;word-break:break-word}.arm_invoice_table tbody tr:last-child td{border-bottom:none}.arm_invoice_transaction_id{color:#374151}.arm_invoice_table th:last-child,.arm_invoice_table td:last-child{text-align:right}.arm_invoice_summary_wrapper{width:320px;margin-left:auto;margin-top:16px;border:1px solid #dbe2ea;border-radius:12px;overflow:hidden}.arm_invoice_summary{width:100%;border-collapse:collapse}.arm_invoice_summary td{padding:16px 18px;font-size:14px;color:#4b5563;border-bottom:1px solid #edf1f5}.arm_invoice_summary td:last-child{text-align:right}.arm_invoice_summary tr:last-child td{border-bottom:none}.arm_invoice_total_row td{background:#f5f8ff;font-size:18px;font-weight:700;color:#1d4ed8}';
             $arm_default_invoice_template .= '</style>';
@@ -575,7 +578,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                             <tr>
                                 <td valign="middle">'.$ARMember_image_url.'</td>
                                 <td align="right" valign="middle">
-                                    <h1 class="arm_invoice_title">INVOICE</h1>
+                                    <h1 class="arm_invoice_title">'.$default_invoice_lbl['arm_invoice_label'].'</h1>
                                 </td>
                             </tr>
                         </tbody>
@@ -585,16 +588,16 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                     <table class="arm_invoice_meta_table">
                         <tbody>
                             <tr>
-                                <td><span class="arm_invoice_meta_label">Date:</span>
+                                <td><span class="arm_invoice_meta_label">'.$default_invoice_lbl['arm_invoice_date_label'].':</span>
                                     {ARM_INVOICE_PAYMENTDATE}</td>
-                                <td align="right"><span class="arm_invoice_meta_label">Invoice No:</span>
+                                <td align="right"><span class="arm_invoice_meta_label">'.$default_invoice_lbl['arm_invoice_number_label'].':</span>
                                     {ARM_INVOICE_INVOICEID}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="arm_invoice_customer">
-                    <h3 class="arm_invoice_section_title">Invoiced To</h3>
+                    <h3 class="arm_invoice_section_title">'.$default_invoice_lbl['arm_invoice_invoiced_to_label'].'</h3>
                     <div class="arm_invoice_customer_name">{ARM_INVOICE_USERFIRSTNAME} {ARM_INVOICE_USERLASTNAME}</div>
                     <div class="arm_invoice_customer_email">{ARM_INVOICE_PAYEREMAIL}</div>
                 </div>
@@ -602,10 +605,10 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                     <table class="arm_invoice_table">
                         <thead>
                             <tr>
-                                <th>Transaction ID</th>
-                                <th>Plan Name</th>
-                                <th>Payment Gateway</th>
-                                <th>Amount</th>
+                                <th>'.$default_invoice_lbl['arm_invoice_transaction_id_label'].'</th>
+                                <th>'.$default_invoice_lbl['arm_invoice_plan_name_label'].'</th>
+                                <th>'.$default_invoice_lbl['arm_invoice_payment_gateway_label'].'</th>
+                                <th>'.$default_invoice_lbl['arm_invoice_amount_label'].'</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -622,19 +625,19 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                     <table class="arm_invoice_summary">
                         <tbody>
                             <tr>
-                                <td>Sub Total</td>
+                                <td>'.$default_invoice_lbl['arm_invoice_subtotal_label'].'</td>
                                 <td>{ARM_INVOICE_SUBSCRIPTIONAMOUNT}</td>
                             </tr>
                             <tr>
-                                <td>Discount Coupon</td>
+                                <td>'.$default_invoice_lbl['arm_invoice_discount_label'].'</td>
                                 <td>{ARM_INVOICE_COUPON_AMOUNT_CODE}</td>
                             </tr>
                             <tr>
-                                <td>Tax</td>
+                                <td>'.$default_invoice_lbl['arm_invoice_tax_label'].'</td>
                                 <td>{ARM_INVOICE_TAX_PER_AMOUNT}</td>
                             </tr>
                             <tr class="arm_invoice_total_row">
-                                <td>Total</td>
+                                <td>'.$default_invoice_lbl['arm_invoice_total_label'].'</td>
                                 <td>{ARM_INVOICE_AMOUNT}</td>
                             </tr>
                         </tbody>
@@ -648,7 +651,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms;
 			$default_global_settings = array();
 			/* General Settings */
-			$arm_default_invoice_template = $this->arm_get_default_invoice_template();
+			$arm_default_invoice_template = '';
 
 			$default_global_settings['general_settings'] = array(
 				'hide_admin_bar'                      => 0,
@@ -842,6 +845,24 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			);
 			return $all_pages;
 		}
+
+		function arm_default_invoice_label(){
+            $default_inv_lbls = array(
+                'arm_invoice_label' => esc_html__('INVOICE','armember-membership'),
+                'arm_invoice_date_label' => esc_html__('Date','armember-membership'),
+                'arm_invoice_number_label' => esc_html__('Invoice No','armember-membership'),
+                'arm_invoice_invoiced_to_label' => esc_html__('Invoiced To','armember-membership'),
+                'arm_invoice_transaction_id_label' => esc_html__('Transaction ID','armember-membership'),
+                'arm_invoice_plan_name_label' => esc_html__('Plan Name','armember-membership'),
+                'arm_invoice_payment_gateway_label' => esc_html__('Payment Gateway','armember-membership'),
+                'arm_invoice_amount_label' => esc_html__('Amount','armember-membership'),
+                'arm_invoice_subtotal_label' => esc_html__('Sub Total','armember-membership'),
+                'arm_invoice_discount_label' => esc_html__('Discount Coupon','armember-membership'),
+                'arm_invoice_tax_label' => esc_html__('Tax','armember-membership'),
+                'arm_invoice_total_label' => esc_html__('Total','armember-membership')               
+            );
+            return $default_inv_lbls;
+        }
 
 		function arm_default_common_messages() {
 			global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms;
@@ -2462,24 +2483,12 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$reply_to                = ( ! empty( $from ) ) ? $from : $from_email;
 			$message_html = "<html>
             <head>";
-            $message_html .= '<style>
-						table, th, td {
-							border: 1px solid grey;
-							border-collapse: collapse;
-						}
-						table {
-							table-layout: auto;
-						}
-						th, td {
-							padding: 5px;
-							text-align: left;
-						}
-					</style>';
-            
-                $message_html .= "</head><body>";
-            $message_html .= $message;           
+            $message_html .= '<style>table, th, td { border: 1px solid grey; border-collapse: collapse; } table { table-layout: auto; } th, td { padding: 5px; text-align: left; } </style>';
+			
+			$message_html .= "</head><body>";
+            $message_html .= $message;
             $message_html .= "</body></html>";
-            $message = $message_html;		
+            $message = $message_html;
 			$headers = array();
 			 //$headers[] = 'From: "' . $from_name . '" <' . $reply_to . '>'; //changes from v3.0
 			 $headers[] = 'From: "' . $from_name . '" <' . $from_email . '>';
@@ -2487,7 +2496,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			 $headers[] = 'Content-Type: ' . $content_type . '; charset="' . get_option('blog_charset') . '"';
 			 /* Filter Email Subject & Message */
 			 $subject = wp_specialchars_decode(strip_tags(stripslashes($subject)), ENT_QUOTES); //phpcs:ignore
-			 $message = do_shortcode($message);
+			 //$message = do_shortcode($message);
 			 $message = stripslashes($message);
 			 $message = wordwrap(stripslashes($message), 70, "\r\n");
 			 if (@$arm_plain_text) {
@@ -3010,12 +3019,16 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			if ( ! in_array( $r['selected'], $pageIds ) ) {
 				$r['selected'] = '';
 			}
+			$arm_selected_page_label = esc_html__('Select Page', 'armember-membership');
+	                if ( ! empty( $r['selected'] ) ) {
+	        		$arm_selected_page_label = get_the_title( $r['selected'] ) . ' (ID: #' . $r['selected'] . ')';
+	            	}
 
 			$required     = ( $r['required'] ) ? 'required="required"' : '';
 			$required_msg = ( $r['required_msg'] ) ? 'data-msg-required="' . esc_attr($r['required_msg']) . '"' : '';
 			$output      .= "<input type='hidden'  name='" . esc_attr( $r['name'] ) . "' id='" . esc_attr( $r['id'] ) . "' class='" . esc_attr($r['class']) . "' value='" . esc_attr($r['selected']) . "' $required $required_msg/>";
 			$output      .= "<dl class='arm_selectbox column_level_dd arm_width_100_pct arm_margin_top_12'>";
-			$output      .= "<dt class='" . esc_attr($dd_class) . "'><span>" . ( ! empty( $r['selected'] ) ? esc_attr( get_the_title( $r['selected'] ) ) : 'Select Page' ) . "</span><input type='text' style='display:none;' value='" . ( ! empty( $r['selected'] ) ? esc_attr( get_the_title( $r['selected'] ) ) : 'Select Page' ) . "' class='arm_autocomplete'  /><i class='armfa armfa-caret-down armfa-lg'></i></dt>";
+            		$output      .= "<dt class='" . esc_attr( $dd_class ) . "'><span>" . esc_html( $arm_selected_page_label ) . "</span><input type='text' style='display:none;' value='" . esc_attr( $arm_selected_page_label ) . "' class='arm_autocomplete' /><i class='armfa armfa-caret-down armfa-lg'></i></dt>";            $output .= "<dd>";
 			$output      .= '<dd>';
 			$output      .= "<ul data-id='" . esc_attr( $r['id'] ) . "'>";
 
@@ -3037,7 +3050,8 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 					} else {
 						$is_protected = 1;
 					}
-					$output .= "<li data-label='" . esc_attr($p->post_title) . "' data-value='" . esc_attr( $p->ID ) . "' data-protected='" . esc_attr($is_protected) . "' >" . esc_html($p->post_title) . '</li>';
+					$arm_page_title_with_id = esc_html($p->post_title) . "&nbsp;(" . esc_html__('ID:', 'armember-membership') . "&nbsp;#" . esc_html($p->ID) . ")";
+					$output .= "<li data-label='" . esc_attr($arm_page_title_with_id) . "' data-value='" . esc_attr($p->ID) . "' data-protected='" . esc_attr($is_protected) . "'>" . esc_html($arm_page_title_with_id) . "</li>";
 				}
 			}
 			$output .= '</ul>';

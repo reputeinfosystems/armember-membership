@@ -60,7 +60,7 @@ if ( ! empty( $common_messages ) ) {
 											<input type="text" name="arm_common_message_settings[<?php echo esc_attr($f_key); ?>]" id="<?php echo esc_attr($f_key); ?>" value="<?php echo ( ! empty( $common_messages[$f_key] ) ) ? esc_attr($common_messages[$f_key]) : (!empty($default_common_messages[$f_key])? esc_attr($default_common_messages[$f_key]) :""); ?>"/>
 											<?php if(isset($common_messages_key_wise_notice[$f_key]) && !empty($common_messages_key_wise_notice[$f_key])){ ?>
 												<div class="remained_login_attempts_notice arm_margin_top_10">
-												<?php echo esc_html($common_messages_key_wise_notice[$f_key]); ?>
+													<?php echo ($common_messages_key_wise_notice[$f_key]); //phpcs:ignore ?>
 												</div>
 											<?php } ?>
 										</div>
@@ -72,9 +72,9 @@ if ( ! empty( $common_messages ) ) {
 								<div class="arm-form-table-content arm_vertical_align_top arm_margin_top_12">
 									<input type="text" class="arm_width_100_pct  arm_max_width_100_pct" name="arm_common_message_settings[<?php echo esc_attr($field_key); ?>]" id="<?php echo esc_attr($field_key); ?>" value="<?php echo ( ! empty( $common_messages[$field_key] ) ) ? esc_attr($common_messages[$field_key]) : (!empty($default_common_messages[$field_key])? esc_attr($default_common_messages[$field_key]) :""); ?>"/>
 									<?php if(isset($common_messages_key_wise_notice[$field_key]) && !empty($common_messages_key_wise_notice[$field_key])){ ?><br>
-										<span class="remained_login_attempts_notice arm_margin_top_12 arm_display_flex ">
-										<?php echo esc_html($common_messages_key_wise_notice[$field_key]); ?>
-										</span>
+										<div class="remained_login_attempts_notice arm_margin_top_12">
+											<?php echo ($common_messages_key_wise_notice[$field_key]); //phpcs:ignore ?>
+										</div>
 									<?php } ?>
 								</div>
 							</div>

@@ -1681,4 +1681,5 @@ echo wp_json_encode( $new_pages );
 	var ARM_RR_CLOSE_IMG = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/close_btn.svg';
 	var ARM_RR_CLOSE_IMG_HOVER = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/close_btn_hover.svg';
 	var CHOOSEPLAN =  '<?php echo addslashes( esc_html__( 'Choose Plan', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var ARM_PAGE_ID_LABEL =  '<?php echo addslashes( esc_html__( 'ID:', 'armember-membership' ) ); //phpcs:ignore ?>';
 </script>

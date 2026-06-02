@@ -116,7 +116,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '5.6';
+$arm_lite_version = '5.7';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -3079,6 +3079,10 @@ class ARMemberlite {
 		/* Default Global Settings */
 		$arm_settings = $arm_global_settings->arm_default_global_settings();
 		/* Default Pages */
+		$arm_default_invoice_template = $arm_global_settings->arm_get_default_invoice_template();
+
+        $arm_settings['general_settings']['arm_invoice_template'] = $arm_default_invoice_template;
+		
 		$arm_pages = $arm_global_settings->arm_default_pages_content();
 		if ( ! empty( $arm_pages ) ) {
 			foreach ( $arm_pages as $pageIDKey => $page ) {
@@ -3341,38 +3345,40 @@ class ARMemberlite {
 		}
 
 		return array(
-			'userAgent' => $u_agent,
-			'name'      => $bname,
-			'version'   => $version,
-			'platform'  => $platform,
-			'pattern'   => $pattern,
-		);
+            'userAgent' => sanitize_text_field($u_agent),
+            'name' => sanitize_text_field($bname),
+            'version' => sanitize_text_field($version),
+            'platform' => sanitize_text_field($platform),
+            'pattern' => sanitize_text_field($pattern)
+        );
 	}
 
 	/**
 	 * Get Current IP Address of User/Guest
 	 */
 	function arm_get_ip_address() {
-		$ipaddress = '';
-		if ( isset( $_SERVER['HTTP_CLIENT_IP'] ) && ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
-			$ipaddress = sanitize_text_field( $_SERVER['HTTP_CLIENT_IP'] ); //phpcs:ignore
-		} elseif ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) && ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-			$ipaddress = sanitize_text_field( $_SERVER['HTTP_X_FORWARDED_FOR'] ); //phpcs:ignore
-		} elseif ( isset( $_SERVER['HTTP_X_FORWARDED'] ) && ! empty( $_SERVER['HTTP_X_FORWARDED'] ) ) {
-			$ipaddress = sanitize_text_field( $_SERVER['HTTP_X_FORWARDED'] ); //phpcs:ignore
-		} elseif ( isset( $_SERVER['HTTP_FORWARDED_FOR'] ) && ! empty( $_SERVER['HTTP_FORWARDED_FOR'] ) ) {
-			$ipaddress = sanitize_text_field( $_SERVER['HTTP_FORWARDED_FOR'] ); //phpcs:ignore
-		} elseif ( isset( $_SERVER['HTTP_FORWARDED'] ) && ! empty( $_SERVER['HTTP_FORWARDED'] ) ) {
-			$ipaddress = sanitize_text_field( $_SERVER['HTTP_FORWARDED'] ); //phpcs:ignore
-		} elseif ( isset( $_SERVER['REMOTE_ADDR'] ) && ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
-			$ipaddress = sanitize_text_field( $_SERVER['REMOTE_ADDR'] ); //phpcs:ignore
-		} else {
-			$ipaddress = 'UNKNOWN';
-		}
-		/*
-		 For Public IP Address. */
-		/* $publicIP = trim(shell_exec("dig +short myip.opendns.com @resolver1.opendns.com")); */
-		return $ipaddress;
+		$ip_keys = array(
+            'HTTP_CF_CONNECTING_IP',
+            'HTTP_X_FORWARDED_FOR',
+            'HTTP_CLIENT_IP',
+            'HTTP_X_FORWARDED',
+            'HTTP_FORWARDED_FOR',
+            'HTTP_FORWARDED',
+            'REMOTE_ADDR',
+        );
+
+        foreach ($ip_keys as $key) {
+            if (!empty($_SERVER[$key])) {
+                $ips = explode(',', $_SERVER[$key]);
+                foreach ($ips as $ip) {
+                    $ip = trim($ip);
+                    if (filter_var($ip, FILTER_VALIDATE_IP)) {
+                        return sanitize_text_field($ip);
+                    }
+                }
+            }
+        }
+        return 'UNKNOWN';
 	}
 
 	function arm_write_response( $response_data, $file_name = '' ) {
@@ -3763,11 +3769,10 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '5.6',
+			'update_version' => '5.7',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				"Added 'Back' link in the Member Panel when renewing Membership Plan.",
-				"Fixed: Member Panel display data issue.",
+				"Improved: Compatibility with WordPress 7.0",
 				'Other minor bug fixes.',
 			),
 			'show_major_title'    => 0,

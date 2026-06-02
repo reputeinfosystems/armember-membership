@@ -869,8 +869,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 		
 		function arm_get_field_option_by_meta( $meta_key = '', $form_id = 0 ) {
 			global $wpdb, $ARMemberLite;
-			$meta = ( isset( $_GET['meta'] ) ) ? sanitize_text_field( $_GET['meta'] ) : $meta_key; //phpcs:ignore
-			$where = $wpdb->prepare('WHERE `arm_form_field_slug` = %s ',$meta);
+			$meta_key = sanitize_text_field( $meta_key );
+			$where = $wpdb->prepare('WHERE `arm_form_field_slug` = %s ',$meta_key);
 			if ( $form_id != 0 ) {
 				$where .= $wpdb->prepare(' AND arm_form_field_form_id = %d' , $form_id);
 			}
@@ -881,13 +881,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$opts = array_column( $opts_arr, 'arm_form_field_option' );
 				$opts = maybe_unserialize( $opts[0] );
 			}
-			if ( isset( $_GET['meta'] ) ) { //phpcs:ignore
-				$opts = $opts['options'];
-				echo arm_pattern_json_encode( $opts ); //phpcs:ignore
-				exit;
-			} else {
-				return $opts;
-			}
+			return $opts;
 		}
 		function arm_update_preset_form_fields() {
 			global $arm_member_forms, $ARMemberLite, $arm_capabilities_global;
