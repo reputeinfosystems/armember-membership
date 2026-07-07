@@ -29,7 +29,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				$user_id             = get_current_user_id();
 				$column_list         = explode( ',', $column_list );
 				$transaction_columns = maybe_serialize( $column_list );
-				update_user_meta( $user_id, 'arm_transaction_hide_show_columns', $transaction_columns );
+				arm_update_user_meta( $user_id, 'arm_transaction_hide_show_columns', $transaction_columns );
 			}
 			die();
 		}
@@ -70,7 +70,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					}
 					$plan_id          = $log_data->arm_plan_id;
 					$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-					$userPlanDatameta = get_user_meta( $log_data->arm_user_id, 'arm_user_plan_' . $plan_id, true );
+					$userPlanDatameta = arm_get_user_meta( $log_data->arm_user_id, 'arm_user_plan_' . $plan_id, true );
 					$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 					$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 					$planDetail       = $planData['arm_current_plan_detail'];
@@ -119,7 +119,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				}
 				if ( ! empty( $log_detail ) ) {
 					echo $arm_ajax_pattern_start; //phpcs:ignore
-					$extra_vars = ( isset( $log_detail['arm_extra_vars'] ) ) ? maybe_unserialize( $log_detail['arm_extra_vars'] ) : array();
+					$extra_vars = ( isset( $log_detail['arm_extra_vars'] ) ) ? arm_maybe_unserialize( $log_detail['arm_extra_vars'] ) : array();
 					?>
 					
 								<table width="100%" cellspacing="0">
@@ -299,9 +299,9 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 			if(!empty($log_detail))
 			{
 				echo $arm_ajax_pattern_start; //phpcs:ignore
-				$extra_vars = (isset($log_detail['arm_extra_vars'])) ? maybe_unserialize($log_detail['arm_extra_vars']) : array();
-				$arm_is_post_payment = (!empty($log_detail['arm_is_post_payment'])) ? maybe_unserialize($log_detail['arm_is_post_payment']) : 0;
-				$arm_is_gift_payment = (!empty($log_detail['arm_is_gift_payment'])) ? maybe_unserialize($log_detail['arm_is_gift_payment']) : 0;		
+				$extra_vars = (isset($log_detail['arm_extra_vars'])) ? arm_maybe_unserialize($log_detail['arm_extra_vars']) : array();
+				$arm_is_post_payment = (!empty($log_detail['arm_is_post_payment'])) ? arm_maybe_unserialize($log_detail['arm_is_post_payment']) : 0;
+				$arm_is_gift_payment = (!empty($log_detail['arm_is_gift_payment'])) ? arm_maybe_unserialize($log_detail['arm_is_gift_payment']) : 0;		
 
 				$log_detail = apply_filters('arm_filter_preview_log_details', $log_detail, $log_id, $_POST);//phpcs:ignore
 
@@ -605,7 +605,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 								$res_var = $wpdb->delete( $ARMemberLite->tbl_arm_payment_log, array( 'arm_log_id' => $id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 							}
 						}
-						$message = esc_html__( 'Transaction(s) has been deleted successfully.', 'armember-membership' );
+						$message = esc_html__( 'Transaction(s) have been deleted successfully.', 'armember-membership' );
 					} else {
 						$errors[] = esc_html__( 'Please select valid action.', 'armember-membership' );
 					}
@@ -631,7 +631,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 			$ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_transactions'], '1'); //phpcs:ignore --Reason:Verifying Nonce
 			$data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_REQUEST ); //phpcs:ignore
 			$redirect_to = admin_url( 'admin.php?page=' . $arm_slugs->transactions );
-			$response = array("type"=>"error","msg" => esc_html__('Something Went Wrong! Please contact to site administrator','armember-membership'));
+			$response = array("type"=>"error","msg" => esc_html__('Something went wrong! Please contact the site administrator.','armember-membership'));
 			if ( ! empty( $data ) ) {
 				$manual_data = $data['manual_payment'];
 				$user_id     = intval( $data['arm_user_id_hidden'] );
@@ -862,7 +862,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					$membership                              = ( ! empty( $subs_plan ) ) ? $subs_plan : '-';
 					$payment_type                            = ( $rc->arm_payment_type == 'subscription' ) ? esc_html__( 'Subscription', 'armember-membership' ) : esc_html__( 'One Time', 'armember-membership' );
 
-					$extraVars = ( ! empty( $rc->arm_extra_vars ) ) ? maybe_unserialize( $rc->arm_extra_vars ) : array();
+					$extraVars = ( ! empty( $rc->arm_extra_vars ) ) ? arm_maybe_unserialize( $rc->arm_extra_vars ) : array();
 					if ( ! empty( $extraVars ) ) {
 						if ( isset( $extraVars['manual_by'] ) ) {
 							$payment_type .= '<div style="font-size: 12px;"><em>(' . esc_html( $extraVars['manual_by'] ) . ')</em></div>';
@@ -1028,7 +1028,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					'arm_payment_date'             => $data->arm_created_date,
 					'arm_amount'                   => $data->arm_amount,
 					'arm_currency'                 => $data->arm_currency,
-					'arm_extra_vars'               => maybe_unserialize( $data->arm_extra_vars ),
+					'arm_extra_vars'               => arm_maybe_unserialize( $data->arm_extra_vars ),
 
 					'arm_created_date'             => $data->arm_created_date,
 				);
@@ -1288,7 +1288,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 							break;
 					}
 					$log_type  = ( $rc->arm_payment_gateway == 'bank_transfer' ) ? 'bt_log' : 'other';
-					$extraVars = ( isset( $rc->arm_extra_vars ) ) ? maybe_unserialize( $rc->arm_extra_vars ) : array();
+					$extraVars = ( isset( $rc->arm_extra_vars ) ) ? arm_maybe_unserialize( $rc->arm_extra_vars ) : array();
 					$response_data[ $ai ][0] = '<div class="arm_show_user_transactions" id="arm_show_user_more_data_'.$rc->arm_log_id.'" data-id="'.$rc->arm_log_id.'" bis_skin_checked="1"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20" fill="none"><path d="M6 8L10 12L14 8" stroke="#BAC2D1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>';
 					if ( $rc->arm_payment_gateway == 'bank_transfer' ) :
 						$response_data[ $ai ][1] = '<input id="cb-item-action-' . esc_attr( $rc->arm_log_id ) . '" class="chkstanard arm_bt_transaction_bulk_check" type="checkbox" value="' . esc_attr( $rc->arm_log_id ) . '" name="item-action[]">';
@@ -1311,7 +1311,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					}
 					$response_data[ $ai ][4] = $arm_subscription_plans->arm_get_plan_name_by_id( $rc->arm_plan_id );
 
-					$userPlanData = get_user_meta( $rc->arm_user_id, 'arm_user_plan_' . $rc->arm_plan_id, true );
+				$userPlanData = arm_get_user_meta( $rc->arm_user_id, 'arm_user_plan_' . $rc->arm_plan_id, true );
 
 					$change_plan = $subscr_effective = '';
 					if ( ! empty( $userPlanData ) ) {
@@ -1362,7 +1362,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					$response_data[ $ai ][6] = $payment_type_text . ' ' . $user_payment_mode . $arm_trial_tran;
 					$payer_email             = '';
 					if ( $rc->arm_payer_email == '' ) {
-						$extra = maybe_unserialize( $rc->arm_extra_vars );
+						$extra = arm_maybe_unserialize( $rc->arm_extra_vars );
 						if ( $extra != '' ) {
 							if ( array_key_exists( 'manual_by', $extra ) ) {
 
@@ -1498,7 +1498,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					}
 					else if($umkey =='card_number')
 					{
-						$extraVars = ( isset( $phquery['arm_extra_vars'] ) ) ? maybe_unserialize( $phquery['arm_extra_vars'] ) : array();
+						$extraVars = ( isset( $phquery['arm_extra_vars'] ) ) ? arm_maybe_unserialize( $phquery['arm_extra_vars'] ) : array();
 						$phval = ( isset( $extraVars['card_number'] ) && !empty( $extraVars['card_number'] ) ) ? $extraVars['card_number'] : '--';
 					}
 					else if($umkey == 'arm_transaction_status'){
@@ -1634,7 +1634,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 						}
 						else if($umkey =='card_number')
 						{
-							$extraVars = ( isset( $phquery['arm_extra_vars'] ) ) ? maybe_unserialize( $phquery['arm_extra_vars'] ) : array();
+							$extraVars = ( isset( $phquery['arm_extra_vars'] ) ) ? arm_maybe_unserialize( $phquery['arm_extra_vars'] ) : array();
 							$phval = ( isset( $extraVars['card_number'] ) && !empty( $extraVars['card_number'] ) ) ? $extraVars['card_number'] : '--';
 						}
 						else if($umkey == 'arm_transaction_status'){

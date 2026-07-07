@@ -54,7 +54,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 			<td class="popup_content_text arm_rename_wpadmin_wrapper" style="">
 				<ol>
 					<li>
-						<?php esc_html_e('Do Not change permalink structure to default in order to work this option. if you set permalink structure to default, You will need to DELETE or comment (//) line which start with', 'armember-membership');?>: <code>define("ADMIN_COOKIE_PATH","...</code>
+						<?php esc_html_e('Do not change the permalink structure to default in order for this option to work. If you set the permalink structure to default, you will need to DELETE or comment (//) the line which starts with', 'armember-membership');?>: <code>define("ADMIN_COOKIE_PATH","...</code>
 					</li>
 
 					<?php   
@@ -407,7 +407,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 										</div>
 
 										<div class="arm_form_field_block arm_margin_top_20 arm_min_width_0">
-											<label class="arm_padding_left_0"><?php esc_html_e( 'Symbol will be display as', 'armember-membership' ); ?></label>
+											<label class="arm_padding_left_0"><?php esc_html_e( 'Symbol will be displayed as', 'armember-membership' ); ?></label>
 											<input type="hidden" class="custom_currency_place" id="custom_currency_place" name="arm_general_settings[custom_currency][place]" value="<?php echo esc_attr( sanitize_text_field($custom_currency_place) ); ?>">									
 											<dl class="arm_selectbox column_level_dd arm_width_100_pct  arm_margin_top_12 arm_max_width_100_pct">
 												<dt><span><?php esc_html_e('Prefix','armember-membership');?></span><input type="text" style="display:none;" value="" class="arm_autocomplete" wfd-id="id24"><i class="armfa armfa-caret-down armfa-lg"></i></dt>
@@ -654,13 +654,13 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 										<label class="arm-form-table-label"><?php esc_html_e( 'Mail Server', 'armember-membership' ); ?> *</label>
 										<?php $arm_mail_server = ( isset( $all_email_settings['arm_mail_server'] ) ) ? $all_email_settings['arm_mail_server'] : ''; ?>
 										<input type="text" id="arm_mail_server" name="arm_mail_server" value="<?php echo esc_attr( sanitize_text_field($arm_mail_server) ); ?>" class="arm_mail_server_input arm_max_width_360" >
-										<span class="error arm_invalid" id="arm_mail_server_error" style="display: none;"><?php esc_html_e( 'Mail Server can not be left blank.', 'armember-membership' ); ?></span>
+										<span class="error arm_invalid" id="arm_mail_server_error" style="display: none;"><?php esc_html_e( 'Mail Server cannot be left blank.', 'armember-membership' ); ?></span>
 									</div>
 									<div class="arm_form_field_block">
 										<label class="arm-form-table-label"><?php esc_html_e( 'Port', 'armember-membership' ); ?> *</label>
 										<?php $arm_mail_port = ( isset( $all_email_settings['arm_mail_port'] ) ) ? $all_email_settings['arm_mail_port'] : ''; ?>
 										<input type="text" id="arm_port" name="arm_mail_port" value="<?php echo esc_attr( sanitize_text_field($arm_mail_port) ); ?>" class="arm_max_width_360" />
-										<span class="error arm_invalid" id="arm_mail_port_error" style="display: none;"><?php esc_html_e( 'Port can not be left blank.', 'armember-membership' ); ?></span>
+										<span class="error arm_invalid" id="arm_mail_port_error" style="display: none;"><?php esc_html_e( 'Port cannot be left blank.', 'armember-membership' ); ?></span>
 									</div>
 								</div>
 							
@@ -670,14 +670,14 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 										<label class="arm-form-table-label"><?php esc_html_e( 'Login Name', 'armember-membership' ); ?> *</label>
 										<?php $arm_mail_login_name = ( isset( $all_email_settings['arm_mail_login_name'] ) ) ? $all_email_settings['arm_mail_login_name'] : ''; ?>
 										<input type="text" id="arm_login_name" name="arm_mail_login_name" value="<?php echo esc_attr( sanitize_text_field($arm_mail_login_name) ); ?>" class="arm_max_width_360" />
-										<span class="error arm_invalid" id="arm_mail_login_name_error" style="display: none;"><?php esc_html_e( 'Login Name can not be left blank.', 'armember-membership' ); ?></span>
+										<span class="error arm_invalid" id="arm_mail_login_name_error" style="display: none;"><?php esc_html_e( 'Login Name cannot be left blank.', 'armember-membership' ); ?></span>
 									</div>
 
 									<div class="arm_form_field_block arm_mail_authentication_fields">
 										<label class="arm-form-table-label"><?php esc_html_e( 'Password', 'armember-membership' ); ?> *</label>
 										<?php $arm_mail_password = ( isset( $all_email_settings['arm_mail_password'] ) ) ? $all_email_settings['arm_mail_password'] : ''; ?>
 										<input type="password" id="arm_password" name="arm_mail_password" value="<?php echo esc_attr( $arm_mail_password ); ?>" autocomplete="off" class="arm_max_width_360" />
-										<span class="error arm_invalid" id="arm_mail_password_error" style="display: none;"><?php esc_html_e( 'Password can not be left blank.', 'armember-membership' ); ?></span>
+										<span class="error arm_invalid" id="arm_mail_password_error" style="display: none;"><?php esc_html_e( 'Password cannot be left blank.', 'armember-membership' ); ?></span>
 									</div>
 								</div>
 								</div>
@@ -718,7 +718,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 						<div class="left_content">
 							<div class="arm_form_header_label arm-setting-hadding-label arm_display_flex arm_margin_bottom_0 arm_test_email_smtp">
 								<?php esc_html_e( 'Test Email', 'armember-membership' ); ?>
-							<p class="arm_font_weight_400 arm_font_size_15 arm_margin_0" style="color: var(--arm-gray-500);">(<?php esc_html_e(' Test e-mail works only after configure SMTP server settings ', 'armember-membership'); ?>)</p>
+							<p class="arm_font_weight_400 arm_font_size_15 arm_margin_0" style="color: var(--arm-gray-500);">( <?php esc_html_e('Test e-mail works only after configure SMTP server settings', 'armember-membership'); ?> )</p>
 							</div>
 						</div>
 					</div>
@@ -734,14 +734,14 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 							<div class="arm_form_field_block arm_width_100_pct arm_paddin_top_24" style="">
 								<label class="arm-form-table-label arm_width_100_pct"><?php esc_html_e('To', 'armember-membership'); ?> *</label>
 								<input type="text" id="arm_test_email_to" name="arm_test_email_to" class="arm_width_100_pct" value="" />
-								<span class="error arm_invalid" id="arm_test_email_to_error" style="display: none;"><?php esc_html_e('To can not be left blank.', 'armember-membership'); ?></span>
+								<span class="error arm_invalid" id="arm_test_email_to_error" style="display: none;"><?php esc_html_e('To cannot be left blank.', 'armember-membership'); ?></span>
 							</div>
 						</div>
 						<div class="arm_email_setting_flex_group">
 							<div class="arm_form_field_block arm_margin_top_28">
 								<label class="arm-form-table-label"><?php esc_html_e('Message', 'armember-membership'); ?> *</label>
 								<textarea id="arm_test_email_msg" name="arm_test_email_msg" class="arm_max_width_360 arm_height_80"></textarea>
-								<span class="error arm_invalid" id="arm_test_email_msg_error" style="display: none;"><?php esc_html_e('Message can not be left blank.', 'armember-membership'); ?></span>
+								<span class="error arm_invalid" id="arm_test_email_msg_error" style="display: none;"><?php esc_html_e('Message cannot be left blank.', 'armember-membership'); ?></span>
 							</div>
 						</div>
 						<div class="arm_form_field_block arm_margin_top_24">
@@ -849,7 +849,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 					<div>
 						<div class="arm_preset_field_updated_msg">
 								<span class="arm_success_msg"><?php esc_html_e( 'Preset Fields are updated successfully.', 'armember-membership' ); ?></span>
-								<span class="arm_error_msg"><?php esc_html_e( 'Sorry, something went wrong while updating prest fields.', 'armember-membership' ); ?></span>
+								<span class="arm_error_msg"><?php esc_html_e( 'Sorry, something went wrong while updating preset fields.', 'armember-membership' ); ?></span>
 						</div>
 						<div class="arm_submit_btn_container arm_preset_fields">
 							<img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif'; //phpcs:ignore ?>" id="arm_loader_img_preset_update_field" class="arm_loader_img arm_submit_btn_loader" style="display: none; top: 5px;" width="20" height="20" />

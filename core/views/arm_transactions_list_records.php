@@ -36,7 +36,7 @@ if($ARMemberLite->is_arm_pro_active)
 	);
 }
 $user_id                      = get_current_user_id();
-$transaction_show_hide_column = maybe_unserialize( get_user_meta( $user_id, 'arm_transaction_hide_show_columns', true ) );
+$transaction_show_hide_column = arm_maybe_unserialize( arm_get_user_meta( $user_id, 'arm_transaction_hide_show_columns', true ) );
 
 $i           = 1;
 /*$column_hide = '';
@@ -146,7 +146,7 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
         $defaultPlanData = $arm_subscription_plans->arm_default_plan_array();
         $arm_all_plan_arr = array();
         foreach ($payment_log as $row) {
-            $ccn = maybe_unserialize($row["arm_extra_vars"]);
+            $ccn = arm_maybe_unserialize($row["arm_extra_vars"]);
             $arm_transaction_status = $row["arm_transaction_status"];
             switch ($arm_transaction_status) {
                 case '0':
@@ -186,7 +186,7 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
             $log_payment_mode = $row["arm_payment_mode"];
             $plan_id = $row["arm_plan_id"];
             $user_id = $row["arm_user_id"];
-            $userPlanDatameta = get_user_meta($user_id, 'arm_user_plan_' . $plan_id, true);
+            $userPlanDatameta = arm_get_user_meta($user_id, 'arm_user_plan_' . $plan_id, true);
             $userPlanDatameta = !empty($userPlanDatameta) ? $userPlanDatameta : array();
             $oldPlanData = shortcode_atts($defaultPlanData, $userPlanDatameta);
             $arm_old_plan_detail = $oldPlanData['arm_current_plan_detail'];
@@ -401,12 +401,12 @@ var __ARM_SEPERATOR = "|~|ARM|~|";
 	function arm_load_transaction_list_grid(is_filtered) {
 
 	var __ARM_Showing = '<?php echo addslashes( esc_html__( 'Showing', 'armember-membership' ) ); //phpcs:ignore ?>';
-	var __ARM_Showing_empty = '<?php echo addslashes( esc_html__( 'Showing','armember-membership').' <span class="arm-black-350 arm_font_size_15">0<span> '.esc_html__('of', 'armember-membership' ).' <span class="arm-black-350 arm_font_size_15">0</span> of 0 '.esc_html__('payment', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var __ARM_Showing_empty = '<?php echo addslashes( esc_html__( 'Showing','armember-membership').' <span class="arm-black-350 arm_font_size_15">0<span> '.esc_html__('of', 'armember-membership' ).' <span class="arm-black-350 arm_font_size_15">0</span> of 0 '.esc_html__('payments', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var __ARM_to = '-';
 	var __ARM_of = '<?php echo addslashes( esc_html__( 'of', 'armember-membership' ) ); //phpcs:ignore ?>'; 
-	var __ARM_transactions = '<?php esc_html_e( 'payment', 'armember-membership' ); //phpcs:ignore ?>'; 
+	var __ARM_transactions = '<?php esc_html_e( 'payments', 'armember-membership' ); //phpcs:ignore ?>'; 
 	var __ARM_Show = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?>';
-	var __ARM_NO_FOUNT = '<?php echo addslashes( esc_html__( 'No any transaction found yet.', 'armember-membership' ) ); //phpcs:ignore ?>'; 
+	var __ARM_NO_FOUNT = '<?php echo addslashes( esc_html__( 'No transactions found.', 'armember-membership' ) ); //phpcs:ignore ?>'; 
 	var __ARM_NO_MATCHING = '<?php echo addslashes( esc_html__( 'No matching transactions found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 
 		var payment_gateway = jQuery("#arm_filter_gateway").val();
@@ -936,7 +936,7 @@ var __ARM_SEPERATOR = "|~|ARM|~|";
 			<input type="hidden" name="to_grid" id="to_grid" value="<?php esc_attr_e( 'to', 'armember-membership' ); ?>"/>
 			<input type="hidden" name="of_grid" id="of_grid" value="<?php esc_attr_e( 'of', 'armember-membership' ); ?>"/>
 			<input type="hidden" name="no_match_record_grid" id="no_match_record_grid" value="<?php esc_attr_e( 'No matching transactions found', 'armember-membership' ); ?>"/>
-			<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No any transaction found yet.', 'armember-membership' ); ?>"/>
+			<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No transactions found.', 'armember-membership' ); ?>"/>
 			<input type="hidden" name="filter_grid" id="filter_grid" value="<?php esc_attr_e( 'filtered from', 'armember-membership' ); ?>"/>
 			<input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_attr_e( 'total', 'armember-membership' ); ?>"/>
 			<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>

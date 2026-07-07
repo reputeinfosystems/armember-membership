@@ -28,7 +28,7 @@ if ( isset( $user ) && ! empty( $user ) ) {
 			} else {
 				$spfMetaKey = 'arm_social_field_' . $skey;
 				if ( in_array( $skey, $slected_social_fields ) ) {
-					$skey_field = get_user_meta( $user['ID'], $spfMetaKey, true );
+					$skey_field = arm_get_user_meta( $user['ID'], $spfMetaKey, true );
 					$skey_field = $arm_shortcodes->arm_com_escape_all_shortcodes($skey_field);
 					$skey_field = $arm_shortcodes->arm_com_descaped_all_shortcodes($skey_field);
 					if ( isset( $skey_field ) && ! empty( $skey_field ) ) {

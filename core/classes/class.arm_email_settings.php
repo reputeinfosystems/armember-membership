@@ -72,7 +72,7 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 		function arm_get_all_email_settings() {
 			 global $wpdb;
 			$email_settings_unser = get_option( 'arm_email_settings' );
-			$all_email_settings   = maybe_unserialize( $email_settings_unser );
+			$all_email_settings   = arm_maybe_unserialize( $email_settings_unser );
 			$all_email_settings   = apply_filters( 'arm_get_all_email_settings', $all_email_settings );
 			return $all_email_settings;
 		}
@@ -147,7 +147,7 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 			{
 				$response = array(
 					'status' => 'success',
-					'message' => esc_html__('Template reseted to default.','armember-membership'),
+					'message' => esc_html__('Template reset to default.','armember-membership'),
 					'template_subject' => $defaults[$slug]['arm_template_subject'],
 					'template_content' => $defaults[$slug]['arm_template_content'],
 				);
@@ -204,7 +204,7 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 					$update_temp                = $wpdb->update( $ARMemberLite->tbl_arm_email_templates, $temp_data, array( 'arm_template_id' => $template_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					$response                   = array(
 						'type' => 'success',
-						'msg'  => esc_html__( 'Email Template Updated Successfully.', 'armember-membership' ),
+						'msg'  => esc_html__( 'Email template updated successfully.', 'armember-membership' ),
 					);
 				}
 			}
@@ -230,7 +230,7 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 					$update_temp               = $wpdb->update( $ARMemberLite->tbl_arm_email_templates, $temp_data, array( 'arm_template_id' => $template_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					$response                  = array(
 						'type' => 'success',
-						'msg'  => esc_html__( 'Email Template Updated Successfully.', 'armember-membership' ),
+						'msg'  => esc_html__( 'Email template updated successfully.', 'armember-membership' ),
 					);
 				}
 			}

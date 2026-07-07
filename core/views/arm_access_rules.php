@@ -307,7 +307,7 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 							<?php if ( ! empty( $rule_records ) ) { ?>
 							<tr class="arm_grid_main_header">
 								<th class="arm_text_align_left arm_width_100_pct"><?php esc_html_e( 'Title', 'armember-membership' ); ?></th>
-									<th class="arm-no-sort center arm_text_align_center"><label><?php esc_html_e( 'Default Restriction', 'armember-membership' ); ?><i class="arm_helptip_icon_ui arm_fixed_column_icon armfa armfa-question-circle tipso_style" title="<?php esc_html_e( 'If you enable Default Restriction, that item will be restricted for visitors and all the loggedin users except for those users whose plan are allowed here.', 'armember-membership' ); ?>"></i></label></th>
+									<th class="arm-no-sort center arm_text_align_center"><label><?php esc_html_e( 'Default Restriction', 'armember-membership' ); ?><i class="arm_helptip_icon_ui arm_fixed_column_icon armfa armfa-question-circle tipso_style" title="<?php esc_html_e( 'If you enable Default Restriction, that item will be restricted for visitors and all the Logged-In users except for those users whose plan are allowed here.', 'armember-membership' ); ?>"></i></label></th>
 								<?php echo $title_cols; //phpcs:ignore ?>
 							</tr>
 							<tr class="arm_grid_filter_header">
@@ -334,7 +334,7 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 					<input type="hidden" name="to_grid" id="to_grid" value="<?php esc_attr_e( 'to', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="of_grid" id="of_grid" value="<?php esc_attr_e( 'of', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="no_match_record_grid" id="no_match_record_grid" value="<?php esc_attr_e( 'No matching records found.', 'armember-membership' ); ?>"/>
-					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No any record found.', 'armember-membership' ); ?>"/>
+					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No records found.', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="filter_grid" id="filter_grid" value="<?php esc_attr_e( 'filtered from', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_attr_e( 'total', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="original_access_rules" id="original_access_rules" value=""/>					
@@ -352,7 +352,7 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 			</div>
 			<?php else : ?>
 			<h4 class="arm_no_access_rules_message ">
-				<?php esc_html_e( 'There is no any plan configured yet', 'armember-membership' ); ?>, <a href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->manage_plans . '&action=new' ) ); //phpcs:ignore ?>" class="arm_ref_info_links" target="_blank"><?php esc_html_e( 'Please add new plan.', 'armember-membership' ); ?></a>
+				<?php esc_html_e( 'No plans have been configured yet.', 'armember-membership' ); ?>, <a href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->manage_plans . '&action=new' ) ); //phpcs:ignore ?>" class="arm_ref_info_links" target="_blank"><?php esc_html_e( 'Please add new plan.', 'armember-membership' ); ?></a>
 			</h4>
 			<?php endif; ?>
 		</div>
@@ -376,7 +376,7 @@ jQuery(document).ready(function ($){
     var __ARM_to = '-';
     var __ARM_of = '<?php echo addslashes(esc_html__('of','armember-membership')); //phpcs:ignore ?>';
     var __ARM_RECORDS = '<?php echo addslashes(esc_html__('entries','armember-membership')); //phpcs:ignore ?>';   
-    var __ARM_NO_FOUND = '<?php echo addslashes(esc_html__('No any record found.','armember-membership')); //phpcs:ignore ?>';
+    var __ARM_NO_FOUND = '<?php echo addslashes(esc_html__('No records found.','armember-membership')); //phpcs:ignore ?>';
     var __ARM_NO_MATCHING = '<?php echo addslashes(esc_html__('No matching records found.','armember-membership')); //phpcs:ignore ?>';
 	var __ARM_Show = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?> ';
 	var DTable = jQuery('#armember_datatable').dataTable({

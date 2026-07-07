@@ -99,7 +99,7 @@ if($ARMemberLite->is_arm_pro_active)
 						<div class="arm_email_setting_flex_group arm_margin_top_24">
 							<div class="arm_form_field_block arm_mail_authentication_fields arm_max_width_550" style="">
 								<label class="arm-form-table-label arm_font_size_16 arm_font_weight_400 arm_width_100_pct"><?php esc_html_e( 'Merchant Email', 'armember-membership' ); ?> *</label>
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_width_100_pct" id="arm_payment_gateway_merch_email" type="text" name="payment_gateway_settings[paypal][paypal_merchant_email]" value="<?php echo ( ! empty( $gateway_options['paypal_merchant_email'] ) ? esc_attr( sanitize_email($gateway_options['paypal_merchant_email']) ) : '' ); ?>" data-msg-required="<?php esc_attr_e( 'Merchant Email can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_width_100_pct" id="arm_payment_gateway_merch_email" type="text" name="payment_gateway_settings[paypal][paypal_merchant_email]" value="<?php echo ( ! empty( $gateway_options['paypal_merchant_email'] ) ? esc_attr( sanitize_email($gateway_options['paypal_merchant_email']) ) : '' ); ?>" data-msg-required="<?php esc_attr_e( 'Merchant Email cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 						<div class="arm_email_setting_flex_group arm_margin_top_24">
@@ -116,17 +116,17 @@ if($ARMemberLite->is_arm_pro_active)
 						<div class="arm_email_setting_flex_group arm_payment_getway_page">
 							<div class="arm_form_field_block arm_paypal_sandbox_fields <?php echo ( $gateway_options['paypal_payment_mode'] == 'sandbox' ) ? '' : 'hidden_section'; ?>">
 								<label class="arm-form-table-label payment_label"><?php esc_html_e( 'API Username', 'armember-membership' ); ?> *</label>
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" type="text" name="payment_gateway_settings[paypal][sandbox_api_username]" value="<?php echo ( ! empty( $gateway_options['sandbox_api_username'] ) ? esc_attr( sanitize_text_field($gateway_options['sandbox_api_username']) ) : '' ); //phpcs:ignore ?>" data-msg-required="<?php esc_attr_e( 'API Username can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" type="text" name="payment_gateway_settings[paypal][sandbox_api_username]" value="<?php echo ( ! empty( $gateway_options['sandbox_api_username'] ) ? esc_attr( sanitize_text_field($gateway_options['sandbox_api_username']) ) : '' ); //phpcs:ignore ?>" data-msg-required="<?php esc_attr_e( 'API Username cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 
 							<div class="arm_form_field_block arm_paypal_sandbox_fields <?php echo ( $gateway_options['paypal_payment_mode'] == 'sandbox' ) ? '' : 'hidden_section'; ?>">
 								<label class="arm-form-table-label payment_label"><?php esc_html_e( 'API Password', 'armember-membership' ); ?> *</label>
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" type="text" name="payment_gateway_settings[paypal][sandbox_api_password]" value="<?php echo ( ! empty( $gateway_options['sandbox_api_password'] ) ? esc_attr($gateway_options['sandbox_api_password']) : '' ); //phpcs:ignore ?>" data-msg-required="<?php esc_attr_e( 'API Password can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" type="text" name="payment_gateway_settings[paypal][sandbox_api_password]" value="<?php echo ( ! empty( $gateway_options['sandbox_api_password'] ) ? esc_attr($gateway_options['sandbox_api_password']) : '' ); //phpcs:ignore ?>" data-msg-required="<?php esc_attr_e( 'API Password cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 
 							<div class="arm_form_field_block arm_paypal_sandbox_fields <?php echo ( $gateway_options['paypal_payment_mode'] == 'sandbox' ) ? '' : 'hidden_section'; ?>">
 								<label class="arm-form-table-label "><?php esc_html_e( 'API Signature', 'armember-membership' ); ?> *</label>
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); ?>" type="text" name="payment_gateway_settings[paypal][sandbox_api_signature]" value="<?php echo ( ! empty( $gateway_options['sandbox_api_signature'] ) ? esc_attr($gateway_options['sandbox_api_signature']) : '' ); ?>" data-msg-required="<?php esc_attr_e( 'API Signature can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); ?>" type="text" name="payment_gateway_settings[paypal][sandbox_api_signature]" value="<?php echo ( ! empty( $gateway_options['sandbox_api_signature'] ) ? esc_attr($gateway_options['sandbox_api_signature']) : '' ); ?>" data-msg-required="<?php esc_attr_e( 'API Signature cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 
 					
@@ -136,17 +136,17 @@ if($ARMemberLite->is_arm_pro_active)
 						
 							<div class="arm_form_field_block arm_paypal_live_fields  <?php echo ( $gateway_options['paypal_payment_mode'] == 'live' ) ? '' : 'hidden_section'; ?>">
 								<label class="arm-form-table-label payment_label"><?php esc_html_e( 'API Username', 'armember-membership' ); ?> *</label>
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); ?>" type="text" name="payment_gateway_settings[paypal][live_api_username]" value="<?php echo ( ! empty( $gateway_options['live_api_username'] ) ? esc_attr($gateway_options['live_api_username']) : '' ); ?>" data-msg-required="<?php esc_attr_e( 'API Username can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); ?>" type="text" name="payment_gateway_settings[paypal][live_api_username]" value="<?php echo ( ! empty( $gateway_options['live_api_username'] ) ? esc_attr($gateway_options['live_api_username']) : '' ); ?>" data-msg-required="<?php esc_attr_e( 'API Username cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 
 							<div class="arm_form_field_block arm_paypal_live_fields  <?php echo ( $gateway_options['paypal_payment_mode'] == 'live' ) ? '' : 'hidden_section'; ?>">
 								<label class="arm-form-table-label payment_label"><?php esc_html_e( 'API Password', 'armember-membership' ); ?> *</label>
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); ?>" type="text" name="payment_gateway_settings[paypal][live_api_password]" value="<?php echo ( ! empty( $gateway_options['live_api_password'] ) ? esc_attr($gateway_options['live_api_password']) : '' ); ?>" data-msg-required="<?php esc_attr_e( 'API Password can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); ?>" type="text" name="payment_gateway_settings[paypal][live_api_password]" value="<?php echo ( ! empty( $gateway_options['live_api_password'] ) ? esc_attr($gateway_options['live_api_password']) : '' ); ?>" data-msg-required="<?php esc_attr_e( 'API Password cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 
 							<div class="arm_form_field_block arm_paypal_live_fields  <?php echo ( $gateway_options['paypal_payment_mode'] == 'live' ) ? '' : 'hidden_section'; ?>">
 								<label class="arm-form-table-label "><?php esc_html_e( 'API Signature', 'armember-membership' ); ?> *</label>
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" type="text" name="payment_gateway_settings[paypal][live_api_signature]" value="<?php echo ( ! empty( $gateway_options['live_api_signature'] ) ? esc_attr($gateway_options['live_api_signature']) : '' ); ?>" data-msg-required="<?php esc_attr_e( 'API Signature can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" type="text" name="payment_gateway_settings[paypal][live_api_signature]" value="<?php echo ( ! empty( $gateway_options['live_api_signature'] ) ? esc_attr($gateway_options['live_api_signature']) : '' ); ?>" data-msg-required="<?php esc_attr_e( 'API Signature cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 
 					
@@ -286,27 +286,27 @@ if($ARMemberLite->is_arm_pro_active)
 							<div class="arm_email_setting_flex_group arm_margin_top_32 arm_payment_getway_page">
 								<div class="arm_form_field_block">
 									<label class="arm-form-table-label payment_label"><?php esc_html_e( 'Transaction ID Label', 'armember-membership' ); ?></label>
-									<input class="arm_active_payment_<?php echo strtolower( $gateway_name ); //phpcs:ignore ?>" id="arm_bank_transfer_transaction_id_label" type="text" name="payment_gateway_settings[bank_transfer][transaction_id_label]" value="<?php echo ( ! empty( $gateway_options['transaction_id_label'] ) ? esc_attr( stripslashes( $gateway_options['transaction_id_label'] ) ) : esc_html__( 'Transaction ID', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Transaction ID Label can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+									<input class="arm_active_payment_<?php echo strtolower( $gateway_name ); //phpcs:ignore ?>" id="arm_bank_transfer_transaction_id_label" type="text" name="payment_gateway_settings[bank_transfer][transaction_id_label]" value="<?php echo ( ! empty( $gateway_options['transaction_id_label'] ) ? esc_attr( stripslashes( $gateway_options['transaction_id_label'] ) ) : esc_html__( 'Transaction ID', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Transaction ID Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 								</div>
 
 								<div class="arm_form_field_block">
 									<label class="arm-form-table-label payment_label"><?php esc_html_e( 'Bank Name Label', 'armember-membership' ); ?></label>
-									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_bank_name_label" type="text" name="payment_gateway_settings[bank_transfer][bank_name_label]" value="<?php echo ( ! empty( $gateway_options['bank_name_label'] ) ? esc_attr( stripslashes( $gateway_options['bank_name_label'] ) ) : esc_html__( 'Bank Name', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_html_e( 'Bank Name Label can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_bank_name_label" type="text" name="payment_gateway_settings[bank_transfer][bank_name_label]" value="<?php echo ( ! empty( $gateway_options['bank_name_label'] ) ? esc_attr( stripslashes( $gateway_options['bank_name_label'] ) ) : esc_html__( 'Bank Name', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_html_e( 'Bank Name Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 								</div>
 
 								<div class="arm_form_field_block">
 									<label class="arm-form-table-label "><?php esc_html_e( 'Account Holder Name Label', 'armember-membership' ); ?></label>
-									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_account_name_label" type="text" name="payment_gateway_settings[bank_transfer][account_name_label]" value="<?php echo ( ! empty( $gateway_options['account_name_label'] ) ? esc_html( stripslashes( $gateway_options['account_name_label'] ) ) : esc_html__( 'Account Holder Name', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_html_e( 'Account Holder Name Label can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_account_name_label" type="text" name="payment_gateway_settings[bank_transfer][account_name_label]" value="<?php echo ( ! empty( $gateway_options['account_name_label'] ) ? esc_html( stripslashes( $gateway_options['account_name_label'] ) ) : esc_html__( 'Account Holder Name', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_html_e( 'Account Holder Name Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 								</div>
 
 								<div class="arm_form_field_block">
 									<label class="arm-form-table-label payment_label"><?php esc_html_e( 'Additional Info/Note Label', 'armember-membership' ); ?></label>
-									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_additional_info_label" type="text" name="payment_gateway_settings[bank_transfer][additional_info_label]" value="<?php echo ( ! empty( $gateway_options['additional_info_label'] ) ? esc_attr( stripslashes( $gateway_options['additional_info_label'] ) ) : esc_html__( 'Additional Info/Note', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Additional Info/Note Label can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_additional_info_label" type="text" name="payment_gateway_settings[bank_transfer][additional_info_label]" value="<?php echo ( ! empty( $gateway_options['additional_info_label'] ) ? esc_attr( stripslashes( $gateway_options['additional_info_label'] ) ) : esc_html__( 'Additional Info/Note', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Additional Info/Note Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 								</div>
 
 								<div class="arm_form_field_block">
 									<label class="arm-form-table-label payment_label"><?php esc_html_e( 'Payment Method Label', 'armember-membership' ); ?></label>
-									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_payment_mode_label" type="text" name="payment_gateway_settings[bank_transfer][transfer_mode_label]" value="<?php echo ( ! empty( $gateway_options['transfer_mode_label'] ) ? esc_attr( stripslashes( $gateway_options['transfer_mode_label'] ) ) : esc_html__( 'Payment Mode', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Payment Mode Label can not be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_payment_mode_label" type="text" name="payment_gateway_settings[bank_transfer][transfer_mode_label]" value="<?php echo ( ! empty( $gateway_options['transfer_mode_label'] ) ? esc_attr( stripslashes( $gateway_options['transfer_mode_label'] ) ) : esc_html__( 'Payment Mode', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Payment Mode Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 								</div>
 
 								<div class="arm_form_field_block">

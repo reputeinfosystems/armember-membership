@@ -14,7 +14,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			add_action( 'wp_ajax_arm_save_profile_template', array( $this, 'arm_save_profile_template_func' ) );
 
 			/* update user meta while uploading cover and avatar from profile page */
-			add_action( 'wp_ajax_arm_update_user_meta', array( $this, 'arm_update_user_meta' ) );
+			add_action( 'wp_ajax_arm_update_user_meta', array( $this, 'arm_update_user_meta_func' ) );
 
 			add_action( 'wp_ajax_arm_change_profile_template', array( $this, 'arm_change_profile_template' ) );
 
@@ -192,37 +192,37 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				'arm_created_date'         => current_time( 'mysql' ),
 			);
 			$default_data                = $arguments;
-			$default_data['arm_options'] = maybe_unserialize( $options );
+			$default_data['arm_options'] = arm_maybe_unserialize( $options );
 			if ( isset($posted_data['arf_profile_action']) && $posted_data['arf_profile_action'] == 'add_profile' ) {
 				if ( $wpdb->insert( $ARMemberLite->tbl_arm_member_templates, $arguments ) ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery
                     echo arm_pattern_json_encode(array('type' => 'success','id' => $wpdb->insert_id, 'message' => esc_html__('Template Saved Successfully','armember-membership'), 'default_data' => $default_data)); //phpcs:ignore
 				} else {
-                    echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while saving template, please try again','armember-membership'))); //phpcs:ignore
+                    echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('Failed to save the template. Please try again.','armember-membership'))); //phpcs:ignore
 				}
 			} elseif ( isset($posted_data['arf_profile_action']) && $posted_data['arf_profile_action'] == 'edit_profile' ) {
 				$id = isset( $posted_data['template_id'] ) ? intval( $posted_data['template_id'] ) : 0;
 				if ( $id > 0 && $wpdb->update( $ARMemberLite->tbl_arm_member_templates, $arguments, array( 'arm_id' => $id ) ) ) { // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					echo arm_pattern_json_encode(array('type' => 'success','id' => $id, 'message' => esc_html__('Template Updated Successfully','armember-membership'), 'default_data' => $default_data)); //phpcs:ignore
 				} else {
-					echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while updating template, please try again','armember-membership'))); //phpcs:ignore
+					echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('Failed to update the template. Please try again.','armember-membership'))); //phpcs:ignore
 				}
 			} else {
-				echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('There is an error while saving template, please try again','armember-membership'))); //phpcs:ignore
+				echo arm_pattern_json_encode(array('type' => 'error', 'message' => esc_html__('Failed to save the template. Please try again.','armember-membership'))); //phpcs:ignore
 			}
 			die;
 		}
 
 
-		function arm_update_user_meta() {
+		function arm_update_user_meta_func() {
 			$userID = get_current_user_id();
 			if($userID>0)
 			{
 				$posted_url = esc_url_raw( $_POST['image_url'] ); //phpcs:ignore
 				$type       = sanitize_text_field( $_POST['type'] ); //phpcs:ignore
 				if ( $type == 'cover' ) {
-					update_user_meta( $userID, 'profile_cover', $posted_url );
+					arm_update_user_meta( $userID, 'profile_cover', $posted_url );
 				} elseif ( $type == 'avatar' ) {
-					update_user_meta( $userID, 'avatar', $posted_url );
+					arm_update_user_meta( $userID, 'avatar', $posted_url );
 				}
 			}
 		}
@@ -259,8 +259,8 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$GLOBALS['arm_template_data'][ $tempID ] = $tempData;
 				}
 				if ( ! empty( $tempData ) ) {
-					$tempData['options']     = maybe_unserialize( $tempData['arm_options'] );
-					$tempData['arm_options'] = maybe_unserialize( $tempData['arm_options'] );
+					$tempData['options']     = arm_maybe_unserialize( $tempData['arm_options'] );
+					$tempData['arm_options'] = arm_maybe_unserialize( $tempData['arm_options'] );
 				}
 			}
 			return $tempData;
@@ -302,10 +302,10 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_member_templates'], '1' ); //phpcs:ignore --Reason:Verifying nonce
 			$status   = 'error';
-			$message  = esc_html__( 'There is a error while updating settings, please try again.', 'armember-membership' );
+			$message  = esc_html__( 'Failed to update the settings. Please try again.', 'armember-membership' );
 			$response = array(
 				'type'    => 'error',
-				'message' => esc_html__( 'There is a error while updating settings, please try again.', 'armember-membership' ),
+				'message' => esc_html__( 'Failed to update the settings. Please try again.', 'armember-membership' ),
 			);
 			$posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data' ), $_POST ); //phpcs:ignore
 			if ( isset( $posted_data['action'] ) && $posted_data['action'] == 'arm_update_template_options' ) {
@@ -319,10 +319,10 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				$update_temp               = $wpdb->update( $ARMemberLite->tbl_arm_member_templates, $templateData, array( 'arm_id' => $temp_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				if ( $update_temp !== false ) {
 					$status   = 'success';
-					$message  = esc_html__( 'Template options has been saved successfully.', 'armember-membership' );
+					$message  = esc_html__( 'Template options have been saved successfully.', 'armember-membership' );
 					$response = array(
 						'type'    => 'success',
-						'message' => esc_html__( 'Template options has been saved successfully.', 'armember-membership' ),
+						'message' => esc_html__( 'Template options have been saved successfully.', 'armember-membership' ),
 					);
 				}
 			}
@@ -345,8 +345,8 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			$removeCoverPhotoTxt     = ( ! empty( $common_messages['profile_directory_remove_cover_photo'] ) ) ? esc_attr( $common_messages['profile_directory_remove_cover_photo'] ) : esc_html__( 'Remove Cover Photo', 'armember-membership' );
 			$upload_profile_text     = ( ! empty( $common_messages['profile_template_upload_profile_photo'] ) ) ? esc_attr( $common_messages['profile_template_upload_profile_photo'] ) : esc_html__( 'Upload Profile Photo', 'armember-membership' );
 			$removeProfilePhotoTxt   = ( ! empty( $common_messages['profile_template_remove_profile_photo'] ) ) ? esc_attr( $common_messages['profile_template_remove_profile_photo'] ) : esc_html__( 'Remove Profile Photo', 'armember-membership' );
-			$removecoverPhotoAlert   = ( ! empty( $all_alert_message['coverRemoveConfirm'] ) ) ? esc_attr( $all_alert_message['coverRemoveConfirm'] ) : esc_html__( 'Are you sure you want to remove cover photo?', 'armember-membership' );
-			$removeprofilePhotoAlert = ( ! empty( $all_alert_message['profileRemoveConfirm'] ) ) ? esc_attr( $all_alert_message['profileRemoveConfirm'] ) : esc_html__( 'Are you sure you want to remove profile photo?', 'armember-membership' );
+			$removecoverPhotoAlert   = ( ! empty( $all_alert_message['coverRemoveConfirm'] ) ) ? esc_attr( $all_alert_message['coverRemoveConfirm'] ) : esc_html__( 'Are you sure you want to remove the cover photo?', 'armember-membership' );
+			$removeprofilePhotoAlert = ( ! empty( $all_alert_message['profileRemoveConfirm'] ) ) ? esc_attr( $all_alert_message['profileRemoveConfirm'] ) : esc_html__( 'Are you sure you want to remove the profile photo?', 'armember-membership' );
 
 			$ARMemberLite->arm_session_start();
             if(isset($_SESSION['arm_file_upload_arr'])){
@@ -417,11 +417,11 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$users[ $user->ID ] = $defaultKeys;
 					$users[ $user->ID ] = array_merge( $users[ $user->ID ], (array) $user->data );
 					/* Prepare User Meta Details */
-					$user_metas = get_user_meta( $user->ID );
+					$user_metas = arm_get_user_meta( $user->ID );
 
 					if ( ! empty( $user_metas ) ) {
-						foreach ( $user_metas as $key => $val ) {
-							$meta_value = maybe_unserialize( $val[0] );
+							foreach ( $user_metas as $key => $val ) {
+							$meta_value = arm_maybe_unserialize( $val[0]);
 							if($user->ID==$user_id){
 								$arm_lite_members_activity->session_for_file_handle("avatar","");
 								$arm_lite_members_activity->session_for_file_handle("profile_cover","");
@@ -472,7 +472,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 									$users[ $user->ID ][ $key ] = $meta_value;
 									break;
 								default:
-									$meta_value = maybe_unserialize( $meta_value );
+									$meta_value = arm_maybe_unserialize( $meta_value );
 									if ( is_array( $meta_value ) || $meta_value == '' ) {
 										$users[ $user->ID ][ $key ] = $meta_value;
 									} else {
@@ -485,7 +485,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					}
 
 					if ( ! function_exists( 'is_plugin_active' ) ) {
-											include_once ABSPATH . 'wp-admin/includes/plugin.php';
+						include_once ABSPATH . 'wp-admin/includes/plugin.php';
 					}
 
 					/* Prepare Other Details */
@@ -536,7 +536,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 					if ( $args['type'] == 'directory' && $users[ $user->ID ]['profile_cover'] == '' ) {
 						$plansForQuery = ' WHERE 1=1 ';
-						$user_plans    = get_user_meta( $user->ID, 'arm_user_plan_ids', true );
+						$user_plans    = arm_get_user_meta( $user->ID, 'arm_user_plan_ids', true );
 
 						/* Query Monitor Change ONlY VARIABLE */
 						$arm_qm_plans = '';
@@ -574,7 +574,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						}
 						if ( isset( $result ) ) {
 
-							$templateOpt = maybe_unserialize( $result->arm_options );
+							$templateOpt = arm_maybe_unserialize( $result->arm_options );
 						}
 
 						if ( isset( $templateOpt['default_cover_photo'] ) && $templateOpt['default_cover_photo'] == 1 && isset( $templateOpt['default_cover'] ) && $templateOpt['default_cover'] != '' ) {
@@ -704,7 +704,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				$templateOpt         = $template_data;
 
 								$tempopt    = $templateOpt['arm_options'];
-				$templateOpt['arm_options'] = maybe_unserialize( $templateOpt['arm_options'] );
+				$templateOpt['arm_options'] = arm_maybe_unserialize( $templateOpt['arm_options'] );
 
 				$hide_empty_profile_fields = isset( $tempopt['hide_empty_profile_fields'] ) ? $tempopt['hide_empty_profile_fields'] : 0;
 				$common_messages           = $arm_global_settings->arm_get_all_common_message_settings();
@@ -722,7 +722,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						} else {
 							$spfMetaKey = 'arm_social_field_' . $skey;
 							if ( in_array( $skey, $slected_social_profiles ) ) {
-								$skey_field = get_user_meta( $user['ID'], $spfMetaKey, true );
+								$skey_field = arm_get_user_meta( $user['ID'], $spfMetaKey, true );
 								$skey_field = $arm_shortcodes->arm_com_escape_all_shortcodes($skey_field);
 								$skey_field = $arm_shortcodes->arm_com_descaped_all_shortcodes($skey_field);
 								if ( isset( $skey_field ) && ! empty( $skey_field ) ) {
@@ -742,7 +742,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						} else {
 							$spfMetaKey = 'arm_social_field_' . $skey;
 							if ( in_array( $skey, $selected_social_profiles ) ) {
-								$skey_field = get_user_meta( $user['ID'], $spfMetaKey, true );
+								$skey_field = arm_get_user_meta( $user['ID'], $spfMetaKey, true );
 								$skey_field = $arm_shortcodes->arm_com_escape_all_shortcodes($skey_field);
 								$skey_field = $arm_shortcodes->arm_com_descaped_all_shortcodes($skey_field);
 								if ( isset( $skey_field ) && ! empty( $skey_field ) ) {
@@ -896,7 +896,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 	            {
 	                //get preset form fields
 	                $presetFormFields = get_option('arm_preset_form_fields', '');
-	                $dbFormFields     = maybe_unserialize($presetFormFields);
+	                $dbFormFields     = arm_maybe_unserialize($presetFormFields);
 	                $valid_field_check = 0;
 	                if( !empty($dbFormFields) && is_array($dbFormFields['default']) )
 	                {
@@ -1108,7 +1108,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 				foreach ( $total_users_res as $tkey => $tuser ) {
 
-					$plan_ids = get_user_meta( $tuser->ID, 'arm_user_plan_ids', true );
+					$plan_ids = arm_get_user_meta( $tuser->ID, 'arm_user_plan_ids', true );
 					if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 						$return_array = array_intersect( $plan_ids, $opts['template_options']['plans'] );
 						if ( empty( $return_array ) ) {
@@ -1127,7 +1127,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 				foreach ( $users as $key => $user ) {
 
-					$plan_ids = get_user_meta( $user->ID, 'arm_user_plan_ids', true );
+					$plan_ids = arm_get_user_meta( $user->ID, 'arm_user_plan_ids', true );
 					if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 						$treturn_array = array_intersect( $plan_ids, $opts['template_options']['plans'] );
 						if ( empty( $treturn_array ) ) {
@@ -1182,7 +1182,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$arm_member_since_label     = ( isset( $common_messages['arm_profile_member_since'] ) && $common_messages['arm_profile_member_since'] != '' ) ? $common_messages['arm_profile_member_since'] : esc_html__( 'Member Since', 'armember-membership' );
 					$arm_view_profile_label     = ( isset( $common_messages['arm_profile_view_profile'] ) && $common_messages['arm_profile_member_since'] != '' ) ? $common_messages['arm_profile_view_profile'] : esc_html__( 'Member Since', 'armember-membership' );
 					$templateOpt                = $template_data;
-					$templateOpt['arm_options'] = maybe_unserialize( $templateOpt['arm_options'] );
+					$templateOpt['arm_options'] = arm_maybe_unserialize( $templateOpt['arm_options'] );
 					$fileContent                = '';
 					$n                          = 1;
 					$f                          = 0;
@@ -1203,7 +1203,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_member_templates'], '1' ); //phpcs:ignore --Reason:Verifying nonce
 			$return = array(
 				'status'  => 'error',
-				'message' => esc_html__( 'There is a error while updating template, please try again.', 'armember-membership' ),
+				'message' => esc_html__( 'Failed to update the template. Please try again.', 'armember-membership' ),
 				'popup'   => '',
 			);
 			$posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data' ), $_POST ); //phpcs:ignore
@@ -1401,7 +1401,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			if ( $tempType == 'directory' ) {
 				$tempOptHtml     .= '<tr class="arm_basic_details_fields">';
 				$tempOptHtml     .= '<td colspan="2" class="arm_position_relative arm_directory_temp_status_col">';
-				$tempOptHtml     .= '<label for="arm_template_redirect_to_author" class="arm_temp_form_label arm_font_size_16 arm_line_height_24" id="arm_template_redirect_to_author">' . esc_html__( 'Redirect To Author Archive Page', 'armember-membership' ) . ' <span class="arm_info_text arm_margin_top_10">' . esc_html__( 'If Author have no any post than user will be redirect to ARMember Profile Page', 'armember-membership' ) . '</span></label>';
+				$tempOptHtml     .= '<label for="arm_template_redirect_to_author" class="arm_temp_form_label arm_font_size_16 arm_line_height_24" id="arm_template_redirect_to_author">' . esc_html__( 'Redirect To Author Archive Page', 'armember-membership' ) . ' <span class="arm_info_text arm_margin_top_10">' . esc_html__( 'If the author has no posts, the user will be redirected to the ARMember Profile Page.', 'armember-membership' ) . '</span></label>';
 				$tempOptHtml 	 .= '<div class="arm_directory_template_status_field_wrapper">';
 				$tempOptHtml     .= '<div class="arm_temp_switch_wrapper arm_temp_switch_style">';
 				$tempOptHtml     .= '<div class="armswitch arm_global_setting_switch"><input type="checkbox" id="arm_template_redirect_to_author" value="1" class="armswitch_input" name="template_options[redirect_to_author]" ' . checked( $tempOptions['redirect_to_author'], 1, false ) . '/><label for="arm_template_redirect_to_author" class="armswitch_label"></label></div>';

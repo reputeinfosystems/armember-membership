@@ -34,7 +34,7 @@ if ( ! class_exists( 'ARMwidgetForm' ) ) {
 				}
 				echo do_shortcode( '[arm_form id="' . $form_id . '" widget="true" ' . $logged_in_msg . ']' );
 			} else {
-				esc_html_e( 'There is no any form found.', 'armember-membership' );
+				esc_html_e( 'No forms were found.', 'armember-membership' );
 			}
 			echo $args['after_widget']; //phpcs:ignore
 		}

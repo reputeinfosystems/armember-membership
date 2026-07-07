@@ -50,14 +50,14 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 $activity_id =$activityID = $rc->arm_activity_id;
                 $user_id = $rc->arm_user_id;
                 $plan_id = $rc->arm_item_id;
-                $user_first_name = get_user_meta( $user_id,'first_name',true);
-                $user_last_name = get_user_meta( $user_id,'last_name',true);
+                $user_first_name = arm_get_user_meta( $user_id,'first_name',true);
+                $user_last_name = arm_get_user_meta( $user_id,'last_name',true);
                 $plan_name = '';
                 
-                $get_activity_data = maybe_unserialize($rc->arm_content);
+                $get_activity_data = arm_maybe_unserialize($rc->arm_content);
                 $arm_currency = !empty($get_activity_data['arm_currency']) ? $get_activity_data['arm_currency'] : $global_currency;
                 $start_plan_date = !empty($rc->arm_activity_plan_start_date) ? $rc->arm_activity_plan_start_date : '';
-                $user_future_plan_ids = get_user_meta($user_id, 'arm_user_future_plan_ids', true);
+                $user_future_plan_ids = arm_get_user_meta($user_id, 'arm_user_future_plan_ids', true);
                 $membership_data = "<span class='arm_item_status_plan paid_post'>".esc_html__('Plan','armember-membership')."</span>";
                 if(!empty($get_activity_data))
                 {
@@ -66,7 +66,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     $plan_details = explode('&lt;br/&gt;',$plan_text);
                     
                     $plan_detail = (!empty($plan_details[1])) ? wp_strip_all_tags(html_entity_decode($plan_details[1])) : '';
-                    $user_plan_detail = get_user_meta($user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
+                    $user_plan_detail = arm_get_user_meta($user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
                     $membership_start = (!empty($user_plan_detail['arm_start_plan'])) ? $user_plan_detail['arm_start_plan'] : 0;
                     if(!empty($user_plan_detail['arm_is_user_in_grace']) && $user_plan_detail['arm_is_user_in_grace'] == 1)
                     {
@@ -83,7 +83,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     {
                         $arm_subscription_plans_expire = !empty($user_plan_detail['arm_expire_plan']) ? date_i18n($date_format, $user_plan_detail['arm_expire_plan']) : '-';
                     }
-                    $suspended_plan_detail = get_user_meta($user_id, 'arm_user_suspended_plan_ids', true);
+                    $suspended_plan_detail = arm_get_user_meta($user_id, 'arm_user_suspended_plan_ids', true);
                     $plan_name = $get_activity_data['plan_name'];
                     
                     $arm_plan_name = $get_activity_data['plan_name'] . "<br/><span class='arm_plan_style'>".$plan_detail."</span><br/>".$grace_period_data;
@@ -224,8 +224,8 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 $arm_invoice_tax_feature = get_option('arm_is_invoice_tax_feature', 0);
                 $arm_is_post_payment = isset($rc->arm_is_post_payment) ? $rc->arm_is_post_payment : 0;
                 $arm_is_gift_payment = isset($rc->arm_is_gift_payment) ? $rc->arm_is_gift_payment : 0;
-                $user_first_name = get_user_meta( $rc->arm_user_id,'first_name',true);
-                $user_last_name = get_user_meta( $rc->arm_user_id,'last_name',true);
+                $user_first_name = arm_get_user_meta( $rc->arm_user_id,'first_name',true);
+                $user_last_name = arm_get_user_meta( $rc->arm_user_id,'last_name',true);
                 $log_type = ($rc->arm_payment_gateway == 'bank_transfer') ? 'bt_log' : 'other';
                 $arm_invoice_id = '#'.$rc->arm_invoice_id;
     
@@ -346,15 +346,15 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             if(!empty($response_result))
             {
 
-                $get_activity_data = maybe_unserialize($response_result->arm_content);
+                $get_activity_data = arm_maybe_unserialize($response_result->arm_content);
                 
                 $global_currency = $arm_payment_gateways->arm_get_global_currency();
                 $arm_currency = !empty($get_activity_data['arm_currency']) ? $get_activity_data['arm_currency'] : $global_currency;
                 $start_plan_date = !empty($response_result->arm_activity_plan_start_date) ? strtotime($response_result->arm_activity_plan_start_date) : '';
                 $user_id = $response_result->arm_user_id;
-                $user_future_plan_ids = get_user_meta($user_id, 'arm_user_future_plan_ids', true);
+                $user_future_plan_ids = arm_get_user_meta($user_id, 'arm_user_future_plan_ids', true);
                 $arm_plan_id = $response_result->arm_item_id;
-                $user_plan_detail = get_user_meta($user_id, 'arm_user_plan_'.$arm_plan_id, true);
+                $user_plan_detail = arm_get_user_meta($user_id, 'arm_user_plan_'.$arm_plan_id, true);
                 $membership_start = (!empty($user_plan_detail['arm_start_plan'])) ? $user_plan_detail['arm_start_plan'] : 0;
                 if(!empty($user_plan_detail['arm_current_plan_detail']) && !empty($user_plan_detail['arm_current_plan_detail']['arm_subscription_plan_type']) && $user_plan_detail['arm_current_plan_detail']['arm_subscription_plan_type'] == 'recurring')
                 {
@@ -432,8 +432,8 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             }
                             else if($mkey == 'arm_user_full_name'){
                                 $user_data = get_userdata( $user_id );
-                                $user_first_name = get_user_meta( $user_id,'first_name',true);
-                                $user_last_name = get_user_meta( $user_id,'last_name',true);
+                                $user_first_name = arm_get_user_meta( $user_id,'first_name',true);
+                                $user_last_name = arm_get_user_meta( $user_id,'last_name',true);
                                 $meta_val = $user_first_name. ' '. $user_last_name ;
                             }
                             else if($mkey == 'arm_plan_start_date'){
@@ -515,13 +515,13 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             $user    = get_userdata( $user_id );
             $plan_id = intval( $plan_id );
 
-            $user_suspended_plans = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+            $user_suspended_plans = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
             $user_suspended_plans = ! empty( $user_suspended_plans ) ? $user_suspended_plans : array();
 
             if ( ! empty( $user_suspended_plans ) ) {
                 if ( in_array( $plan_id, $user_suspended_plans ) ) {
                     unset( $user_suspended_plans[ array_search( $plan_id, $user_suspended_plans ) ] );
-                    update_user_meta( $user_id, 'arm_user_suspended_plan_ids', array_values( $user_suspended_plans ) );
+                    arm_update_user_meta( $user_id, 'arm_user_suspended_plan_ids', array_values( $user_suspended_plans ) );
                     $is_activated['type'] = 'success';
                 }
             }
@@ -564,11 +564,11 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 $response['data'] = $membersDatasDefault;
                 $rc = (object) $response_result;
                
-                $get_activity_data = maybe_unserialize($rc->arm_content);
+                $get_activity_data = arm_maybe_unserialize($rc->arm_content);
                 $grace_period_data = $plan_detail = $membership_start = '';
                 $user_id = $rc->arm_user_id;
                 $date_format = $arm_global_settings->arm_get_wp_date_format();
-                $user_plan_detail = get_user_meta($user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
+                $user_plan_detail = arm_get_user_meta($user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
                 $start_plan_date = !empty($rc->arm_activity_plan_start_date) ? $rc->arm_activity_plan_start_date : current_time( 'mysql' );
                 $plan_status = $this->get_return_status_data($user_id,$rc->arm_item_id,$user_plan_detail,strtotime($start_plan_date));
                 $canceled_date = !empty($plan_status['canceled_date']) ? $plan_status['canceled_date'] : '';
@@ -645,7 +645,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 $membership_type = isset($posted_data['plan_type']) ? intval($posted_data['plan_type']) : 0;
                 $post_data['arm_subscription_start_date'] = date_i18n($date_format, strtotime(current_time('mysql')));
                 $post_data['user_id'] = isset($posted_data['arm_user_id_hidden']) ? intval($posted_data['arm_user_id_hidden']) : 0;
-                $old_plan_ids = get_user_meta($posted_data['arm_user_id_hidden'], 'arm_user_plan_ids', true);
+                $old_plan_ids = arm_get_user_meta($posted_data['arm_user_id_hidden'], 'arm_user_plan_ids', true);
                 $old_plan_ids = !empty($old_plan_ids) ? $old_plan_ids : array();
                 if(!in_array($post_data['arm_user_plan'],$old_plan_ids))
                 {
@@ -653,7 +653,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 }
                 else
                 {
-                    $response = array('type' => 'error', 'msg' => esc_html__("Membership plan is already exist for selected member.", 'armember-membership'));
+                    $response = array('type' => 'error', 'msg' => esc_html__("Membership plan already exists for the selected member.", 'armember-membership'));
                 }
                 echo arm_pattern_json_encode($response); //phpcs:ignore
                 die;
@@ -691,7 +691,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     unset($post_data['arm_action']);
                     $post_data['action'] = 'update_member';
 
-                    $old_plan_ids = get_user_meta($user_ID, 'arm_user_plan_ids', true);
+                    $old_plan_ids = arm_get_user_meta($user_ID, 'arm_user_plan_ids', true);
                     $old_plan_ids = !empty($old_plan_ids) ? $old_plan_ids : array();
                     $old_plan_id = isset($old_plan_ids[0]) ? $old_plan_ids[0] : 0;
                     if (!empty($old_plan_ids)) {
@@ -724,11 +724,11 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 
             if (isset($response['type']) && $response['type'] == 'success' && $user_ID > 0) 
             {
-                $userPlanIDs = get_user_meta($user_ID, 'arm_user_plan_ids', true);
+                $userPlanIDs = arm_get_user_meta($user_ID, 'arm_user_plan_ids', true);
 
         		if(!empty($userPlanIDs))
         		{
-        			$userPostIDs = get_user_meta($user_ID, 'arm_user_post_ids', true);
+        			$userPostIDs = arm_get_user_meta($user_ID, 'arm_user_post_ids', true);
                     foreach($userPlanIDs as $arm_plan_key => $arm_plan_val)
                     {
                         if(isset($userPostIDs[$arm_plan_val]) && in_array($userPostIDs[$arm_plan_val], $userPostIDs))
@@ -739,7 +739,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     $userPlanIDs = apply_filters('arm_modify_plan_ids_externally',$userPlanIDs,$user_ID);
         		}
                 $arm_all_user_plans = $userPlanIDs;
-                $arm_future_user_plans = get_user_meta($user_ID, 'arm_user_future_plan_ids', true);
+                $arm_future_user_plans = arm_get_user_meta($user_ID, 'arm_user_future_plan_ids', true);
                 
                 if (!empty($arm_future_user_plans)) {
                     $arm_all_user_plans = array_merge($userPlanIDs, $arm_future_user_plans);
@@ -749,7 +749,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 $subscription_effective_from = array();
                 if (!empty($arm_all_user_plans) && is_array($arm_all_user_plans)) {
                     foreach ($arm_all_user_plans as $userPlanID) {
-                        $plan_data = get_user_meta($user_ID, 'arm_user_plan_' . $userPlanID, true);
+                        $plan_data = arm_get_user_meta($user_ID, 'arm_user_plan_' . $userPlanID, true);
 
                         $userPlanDatameta = !empty($plan_data) ? $plan_data : array();
                         $plan_data = shortcode_atts($defaultPlanData, $userPlanDatameta);
@@ -861,7 +861,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
 					 	$arm_subscription_plans->arm_update_user_subscription_for_bank_transfer($user_id, $plan_id, 'bank_transfer', $payment_cycle, $arm_last_payment_status);
 						$wpdb->update($ARMemberLite->tbl_arm_payment_log, array('arm_transaction_status' => 1), array('arm_log_id' => $log_id)); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 						
-						$userPlanData = get_user_meta($user_id, 'arm_user_plan_'.$plan_id, true);						
+						$userPlanData = arm_get_user_meta($user_id, 'arm_user_plan_'.$plan_id, true);						
 						if($is_recurring_payment)
 						{
 							do_action('arm_after_recurring_payment_success_outside', $user_id, $plan_id, 'bank_transfer', $plan_payment_mode);
@@ -1070,8 +1070,8 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     $plan_detail = '';
                     $rc = (Object) $rc;
                     
-                    $user_first_name = get_user_meta( $rc->arm_user_id,'first_name',true);
-                    $user_last_name = get_user_meta( $rc->arm_user_id,'last_name',true);
+                    $user_first_name = arm_get_user_meta( $rc->arm_user_id,'first_name',true);
+                    $user_last_name = arm_get_user_meta( $rc->arm_user_id,'last_name',true);
                     
                     $plan_ID = $rc->arm_plan_id;                       
                     foreach($all_plans as $planData)
@@ -1282,11 +1282,11 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     foreach($filter_response_result as $rc)
                     {
                         $rc = (object) $rc;
-                        $user_plan_detail = get_user_meta($rc->arm_user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
-                        $get_activity_data = maybe_unserialize($rc->arm_content);
+                        $user_plan_detail = arm_get_user_meta($rc->arm_user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
+                        $get_activity_data = arm_maybe_unserialize($rc->arm_content);
                         $start_plan_date = !empty($rc->arm_activity_plan_start_date) ? $rc->arm_activity_plan_start_date : '';
                         $plan_status = $this->get_return_status_data($rc->arm_user_id,$rc->arm_item_id,$user_plan_detail,strtotime($start_plan_date));
-                        $suspended_plan_detail = get_user_meta($rc->arm_user_id, 'arm_user_suspended_plan_ids', true);
+                        $suspended_plan_detail = arm_get_user_meta($rc->arm_user_id, 'arm_user_suspended_plan_ids', true);
                         
                         if(!empty($plan_status['status']) && $plan_status['status'] == 'suspended' && $filter_status_id == '3')
                         {
@@ -1358,14 +1358,14 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     $activity_id = $rc->arm_activity_id;
                     $user_id = $rc->arm_user_id;
                     $plan_id = $rc->arm_item_id;
-                    $user_first_name = get_user_meta( $user_id,'first_name',true);
-                    $user_last_name = get_user_meta( $user_id,'last_name',true);
+                    $user_first_name = arm_get_user_meta( $user_id,'first_name',true);
+                    $user_last_name = arm_get_user_meta( $user_id,'last_name',true);
                     $plan_name = '';
                     $response_data[$ai][1] = $rc->arm_activity_id;
-                    $get_activity_data = maybe_unserialize($rc->arm_content);
+                    $get_activity_data = arm_maybe_unserialize($rc->arm_content);
                     $arm_currency = !empty($get_activity_data['arm_currency']) ? $get_activity_data['arm_currency'] : $global_currency;
                     $start_plan_date = !empty($rc->arm_activity_plan_start_date) ? strtotime($rc->arm_activity_plan_start_date) : '';
-                    $user_future_plan_ids = get_user_meta($user_id, 'arm_user_future_plan_ids', true);
+                    $user_future_plan_ids = arm_get_user_meta($user_id, 'arm_user_future_plan_ids', true);
                     if(!empty($get_activity_data))
                     {
                         $grace_period_data = $plan_detail = $membership_start = '';
@@ -1373,7 +1373,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         $plan_details = explode('&lt;br/&gt;',$plan_text);
                         
                         $plan_detail = (!empty($plan_details[1])) ? wp_strip_all_tags(html_entity_decode($plan_details[1])) : '';
-                        $user_plan_detail = get_user_meta($user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
+                        $user_plan_detail = arm_get_user_meta($user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
                         $membership_start = (!empty($user_plan_detail['arm_start_plan'])) ? $user_plan_detail['arm_start_plan'] : 0;
                         if(!empty($user_plan_detail['arm_is_user_in_grace']) && $user_plan_detail['arm_is_user_in_grace'] == 1)
                         {
@@ -1390,7 +1390,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         {
                             $arm_subscription_plans_expire = !empty($user_plan_detail['arm_expire_plan']) ? date_i18n($date_format, $user_plan_detail['arm_expire_plan']) : '-';
                         }
-                        $suspended_plan_detail = get_user_meta($user_id, 'arm_user_suspended_plan_ids', true);
+                        $suspended_plan_detail = arm_get_user_meta($user_id, 'arm_user_suspended_plan_ids', true);
                         $plan_status = $this->get_return_status_data($user_id,$rc->arm_item_id,$user_plan_detail,$start_plan_date);
                         $status = !empty($plan_status['status']) ? $plan_status['status'] : '';
                         $canceled_date = !empty($plan_status['canceled_date']) ? $plan_status['canceled_date'] : '';
@@ -1649,12 +1649,12 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 foreach($filter_response_result as $rc)
                 {
                     $rc = (object) $rc;
-                    $user_plan_detail = get_user_meta($rc->arm_user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
-                    $suspended_plan_detail = get_user_meta($rc->arm_user_id, 'arm_user_suspended_plan_ids', true);
-                    $suspended_plan_ids = maybe_unserialize( $suspended_plan_detail );
+                    $user_plan_detail = arm_get_user_meta($rc->arm_user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
+                    $suspended_plan_detail = arm_get_user_meta($rc->arm_user_id, 'arm_user_suspended_plan_ids', true);
+                    $suspended_plan_ids = arm_maybe_unserialize( $suspended_plan_detail );
                     if(empty($suspended_plan_ids) || (!empty($suspended_plan_ids) && !in_array($rc->arm_item_id,$suspended_plan_ids)))
                     {
-                        $get_activity_data = maybe_unserialize($rc->arm_content);
+                        $get_activity_data = arm_maybe_unserialize($rc->arm_content);
                         $start_plan_type = !empty($user_plan_detail['arm_current_plan_detail']['arm_subscription_plan_type']) ? $user_plan_detail['arm_current_plan_detail']['arm_subscription_plan_type'] : 'recurring';
                         $arm_subscription_plans_expire = '';
                         if(!empty($user_plan_detail['arm_current_plan_detail']) && $start_plan_type == 'recurring')
@@ -1696,10 +1696,10 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     $activity_id = $rct->arm_activity_id;
                     $user_id = $rct->arm_user_id;
                     $plan_id = $rct->arm_item_id;
-                    $suspended_plan_detail = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+                    $suspended_plan_detail = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
                     $check_if_plan_is_canceled = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $ARMemberLite->tbl_arm_activity WHERE arm_user_id = %d AND arm_item_id =%d AND arm_activity_id > %d AND (arm_action = %s OR arm_action = %s)",$user_id,$plan_id,$activity_id,'cancel_subscription','eot'),ARRAY_A); //phpcs:ignore
 
-                    $planData = get_user_meta( $user_id, 'arm_user_plan_'.$plan_id, true );
+                    $planData = arm_get_user_meta( $user_id, 'arm_user_plan_'.$plan_id, true );
                         $defaultPlanData = $arm_subscription_plans->arm_default_plan_array();
                         $planData = shortcode_atts($defaultPlanData, $planData);
                         $is_plan_cancelled = isset( $planData['arm_cencelled_plan'] ) ? $planData['arm_cencelled_plan'] : 0;
@@ -1746,15 +1746,15 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                         $activity_id =$activityID = $rc->arm_activity_id;
                         $user_id = $rc->arm_user_id;
                         $plan_id = $rc->arm_item_id;
-                        $user_first_name = get_user_meta( $user_id,'first_name',true);
-                        $user_last_name = get_user_meta( $user_id,'last_name',true);
+                        $user_first_name = arm_get_user_meta( $user_id,'first_name',true);
+                        $user_last_name = arm_get_user_meta( $user_id,'last_name',true);
                         $plan_name = '';
                         $response_data[$ai][0] = "<div class='arm_show_user_more_transactions arm_max_width_50' id='arm_show_user_more_transaction_" . esc_attr($activityID) . "' data-id='" . esc_attr($activityID) . "'><svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 20 20' fill='none'><path d='M6 8L10 12L14 8' stroke='#BAC2D1' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg></div>";
                         $response_data[$ai][1] = $rc->arm_activity_id;
-                        $get_activity_data = maybe_unserialize($rc->arm_content);
+                        $get_activity_data = arm_maybe_unserialize($rc->arm_content);
                         $arm_currency = !empty($get_activity_data['arm_currency']) ? $get_activity_data['arm_currency'] : $global_currency;
                         $start_plan_date = !empty($rc->arm_activity_plan_start_date) ? $rc->arm_activity_plan_start_date : '';
-                        $user_future_plan_ids = get_user_meta($user_id, 'arm_user_future_plan_ids', true);
+                        $user_future_plan_ids = arm_get_user_meta($user_id, 'arm_user_future_plan_ids', true);
                         $membership_data = "<span class='arm_item_status_plan paid_post'>".esc_html__('Plan','armember-membership')."</span>";
                         if(!empty($get_activity_data))
                         {
@@ -1763,7 +1763,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             $plan_details = explode('&lt;br/&gt;',$plan_text);
                             
                             $plan_detail = (!empty($plan_details[1])) ? wp_strip_all_tags(html_entity_decode($plan_details[1])) : '';
-                            $user_plan_detail = get_user_meta($user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
+                            $user_plan_detail = arm_get_user_meta($user_id, 'arm_user_plan_'.$rc->arm_item_id, true);
                             $membership_start = (!empty($user_plan_detail['arm_start_plan'])) ? $user_plan_detail['arm_start_plan'] : 0;
                             if(!empty($user_plan_detail['arm_is_user_in_grace']) && $user_plan_detail['arm_is_user_in_grace'] == 1)
                             {
@@ -1780,7 +1780,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             {
                                 $arm_subscription_plans_expire = !empty($user_plan_detail['arm_expire_plan']) ? date_i18n($date_format, $user_plan_detail['arm_expire_plan']) : '-';
                             }
-                            $suspended_plan_detail = get_user_meta($user_id, 'arm_user_suspended_plan_ids', true);
+                            $suspended_plan_detail = arm_get_user_meta($user_id, 'arm_user_suspended_plan_ids', true);
                             $plan_name = $get_activity_data['plan_name'];
                             
                             $response_data[$ai][2] = $get_activity_data['plan_name'] . "<br/><span class='arm_plan_style'>".$plan_detail."</span><br/>".$grace_period_data;
@@ -1892,8 +1892,8 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             global $wp,$wpdb,$ARMemberLite;
             $end_date = '';
             
-            $suspended_plan_detail = get_user_meta($user_id, 'arm_user_suspended_plan_ids', true);
-            $active_plan_detail = get_user_meta($user_id, 'arm_user_plan_ids', true);
+            $suspended_plan_detail = arm_get_user_meta($user_id, 'arm_user_suspended_plan_ids', true);
+            $active_plan_detail = arm_get_user_meta($user_id, 'arm_user_plan_ids', true);
             if(!empty($user_plan_detail['arm_next_due_payment']))
             {
                 $end_date = $user_plan_detail['arm_next_due_payment'];
@@ -1910,7 +1910,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 
                 foreach($get_activity_status as $ract)
                 {
-                    $get_cancel_eot_activity_data = maybe_unserialize($ract->arm_content);
+                    $get_cancel_eot_activity_data = arm_maybe_unserialize($ract->arm_content);
                     $plan_started_date = $get_cancel_eot_activity_data['start'];
                     
                     if( $start_plan_date == $plan_started_date)

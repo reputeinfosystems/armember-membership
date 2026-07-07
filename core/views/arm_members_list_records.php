@@ -50,7 +50,7 @@ $arm_preset_grid_cols = $grid_columns;
 
 /** *************./End Set Member Grid Fields/.************** */
 $user_id                  = get_current_user_id();
-$members_show_hide_column = maybe_unserialize( get_user_meta( $user_id, 'arm_members_hide_show_columns_' . $filter_form_id, true ) );
+$members_show_hide_column = arm_maybe_unserialize( arm_get_user_meta( $user_id, 'arm_members_hide_show_columns_' . $filter_form_id, true ) );
 $column_hide              = '';
 $column_hide_show_arr     = !empty($members_show_hide_column) ? $members_show_hide_column : array();
 $totalCount               = count( $grid_columns ) + 3;
@@ -115,7 +115,7 @@ $arm_colvis         = apply_filters('arm_pro_get_grid_arm_colvis',$arm_colvis,$t
 $arm_exclude_colvis = apply_filters('arm_pro_get_grid_exlcuded_colvis',$arm_exclude_colvis,$total_grid_column);
 $grid_clmn          = apply_filters('arm_pro_get_grid_sortable_columns',$grid_clmn,$total_grid_column);
 $sort_clmn          = apply_filters('arm_pro_get_default_grid_sort_columns',$sort_clmn);
-$saved_column_order_array = maybe_unserialize( get_user_meta( $user_id, 'arm_members_column_order_' . $filter_form_id, true ) );
+$saved_column_order_array = arm_maybe_unserialize( arm_get_user_meta( $user_id, 'arm_members_column_order_' . $filter_form_id, true ) );
 $arm_upgraded_grid = array();
 $i=0;
 if(!empty($saved_column_order_array))
@@ -693,7 +693,7 @@ function user_format(d,headers,headers_label,_wpnonce) {
 		var __ARM_of = '<?php echo addslashes( esc_html__( 'of', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_MEMBERS = ' <?php esc_html_e( 'members', 'armember-membership' ); //phpcs:ignore ?>';
 		var __ARM_Show = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?> ';
-		var __ARM_NO_FOUND = '<?php echo addslashes( esc_html__( 'No any member found.', 'armember-membership' ) ); //phpcs:ignore ?>';
+		var __ARM_NO_FOUND = '<?php echo addslashes( esc_html__( 'No members found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_NO_MATCHING = '<?php echo addslashes( esc_html__( 'No matching records found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 
 		var search_term = jQuery('#armmanagesearch_new').val();
@@ -900,6 +900,7 @@ function user_format(d,headers,headers_label,_wpnonce) {
 			},
 			
 			"fnDrawCallback": function (oSettings) {
+				jQuery('.arm_hide_datatable thead').removeClass('arm_hide');
 				jQuery('.arm_loading_grid').hide();			
 				jQuery('.dataTables_scroll').show();
 				jQuery(".footer").show();
@@ -1226,7 +1227,7 @@ jQuery(document).on('change','#arm_manage_bulk_action1',function(){
 			<?php do_action( 'arm_before_listing_members' ); ?>
 			<div class="armclear"></div>
 			<table cellpadding="0" cellspacing="0" border="0" width="100%" class="display arm_hide_datatable" id="armember_datatable">
-				<thead>
+				<thead class="arm_hide">
 					<tr>
 						<th class="arm_min_width_40 arm_padding_right_0"></th>
 						<th class="cb-select-all-th"><input id="cb-select-all-1" type="checkbox" class="chkstanard"></th>
@@ -1249,7 +1250,7 @@ jQuery(document).on('change','#arm_manage_bulk_action1',function(){
 			<input type="hidden" name="to_grid" id="to_grid" value="<?php esc_attr_e( 'to', 'armember-membership' ); ?>"/>
 			<input type="hidden" name="of_grid" id="of_grid" value="<?php esc_attr_e( 'of', 'armember-membership' ); ?>"/>
 			<input type="hidden" name="no_match_record_grid" id="no_match_record_grid" value="<?php esc_attr_e( 'No matching members found.', 'armember-membership' ); ?>"/>
-			<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No any member found.', 'armember-membership' ); ?>"/>
+			<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No members found.', 'armember-membership' ); ?>"/>
 			<input type="hidden" name="filter_grid" id="filter_grid" value="<?php esc_attr_e( 'filtered from', 'armember-membership' ); ?>"/>
 			<input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_attr_e( 'total', 'armember-membership' ); ?>"/>
 			<input type="hidden" name="total_members_grid_columns" id="total_members_grid_columns" value="<?php echo esc_attr( count( $grid_columns ) ); ?>"/>

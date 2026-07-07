@@ -197,7 +197,7 @@ if ( is_rtl() ) {
 					<div class="arm_feature_active_icon"><div class="arm_check_mark"></div></div>
 					<div class="arm_feature_content">
 						<div class="arm_feature_title"><?php esc_html_e( 'Pro-Rata', 'armember-membership' ); ?></div>
-						<div class="arm_feature_text"><?php esc_html_e( 'Allows member to purchase membership plan through Pro-Rata..', 'armember-membership' ); ?></div>
+						<div class="arm_feature_text"><?php esc_html_e( 'Allows members to purchase a membership plan through Pro-Rata.', 'armember-membership' ); ?></div>
 						<?php if($ARMemberLite->is_arm_pro_active) {
 							$arm_addon_btn = '';
 							echo apply_filters('arm_addon_activate_button_section',$arm_addon_btn,'pro_ration',array()); //phpcs:ignore
@@ -484,9 +484,9 @@ if ( is_rtl() ) {
 					<div class="arm_feature_icon"></div>
 					<div class="arm_feature_active_icon"><div class="arm_check_mark"></div></div>
 					<div class="arm_feature_content">
-						<div class="arm_feature_title"><?php esc_html_e( 'Woocommerce Integration', 'armember-membership' ); ?></div>
-						<div class="arm_feature_text" style=" min-height: 0;"><?php esc_html_e( 'Integrate Woocommerce with ARMember.', 'armember-membership' ); ?>
-						<span class="arm_feature_text arm_woocommerce_feature_version_required_notice"><?php esc_html_e( 'Min Require Version : 3.0.2','armember-membership' ); ?></span>
+						<div class="arm_feature_title"><?php esc_html_e( 'WooCommerce Integration', 'armember-membership' ); ?></div>
+						<div class="arm_feature_text" style=" min-height: 0;"><?php esc_html_e( 'Integrate WooCommerce with ARMember.', 'armember-membership' ); ?>
+						<span class="arm_feature_text arm_woocommerce_feature_version_required_notice"><?php esc_html_e( 'Min Required Version : 3.0.2','armember-membership' ); ?></span>
 						</div>
 						<?php if($ARMemberLite->is_arm_pro_active) {
 							$arm_addon_btn = '';
@@ -831,7 +831,7 @@ if ( is_rtl() ) {
 		
 					if ($resp[0] == 1) {
 					$myplugarr = array();
-					$myplugarr = unserialize(base64_decode($resp[1]));
+					$myplugarr = arm_maybe_unserialize(base64_decode($resp[1]));
 		
 		
 					$is_active = 0;
@@ -1027,7 +1027,7 @@ $addon_content                   = '<span class="arm_confirm_text">' . esc_html_
 	echo apply_filters('arm_addon_activate_license_form',$arm_lincense_activate_form); //phpcs:ignore
 }?>
 <script type="text/javascript">
-	var ADDON_NOT_COMPATIBLE_MESSAGE = "<?php esc_html_e( 'This Addon is not compatible with current ARMember version. Please update ARMember to latest version.', 'armember-membership' ); ?>";
+	var ADDON_NOT_COMPATIBLE_MESSAGE = "<?php esc_html_e( 'This add-on is not compatible with the current ARMember version. Please update ARMember to the latest version.', 'armember-membership' ); ?>";
 	<?php if ( ! empty( $_REQUEST['arm_activate_social_feature'] ) ) { //phpcs:ignore ?>
 		armToast("<?php esc_html_e( 'Please activate the \"Social Feature\" module to make this feature work.', 'armember-membership' ); ?>", 'error', 5000, false);
 	<?php } ?>

@@ -106,7 +106,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field( $_GET['page']) : ''; //p
 					<input type="hidden" name="to_grid" id="to_grid" value="<?php esc_attr_e( 'to', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="of_grid" id="of_grid" value="<?php esc_attr_e( 'of', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="no_match_record_grid" id="no_match_record_grid" value="<?php esc_attr_e( 'No matching templates found.', 'armember-membership' ); ?>"/>
-					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No any email template found.', 'armember-membership' ); ?>"/>
+					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No email templates found.', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="filter_grid" id="filter_grid" value="<?php esc_attr_e( 'filtered from', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_attr_e( 'total', 'armember-membership' ); ?>"/>
 					<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>

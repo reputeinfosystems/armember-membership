@@ -83,7 +83,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 									<div class="arm_form_fields_wrapper">
 										<div class="arm_setup_forms_container">
 											<div class="arm-df__form-field-wrap_text arm-df__form-field-wrap arm-controls " id="arm-df__form-field-wrap_member_plan">
-												<input name="plan_name" type="text" id="arm-df__form-control_member_plan" value="" class="arm-df__form-control arm-df__form-control_member_plan arm_material_input" required="required" data-validation-required-message="<?php esc_html_e( 'Plan name can not be left blank.', 'armember-membership' ); ?>"  placeholder="<?php esc_html_e('Enter Plan Name', 'armember-membership'); ?>"/>
+												<input name="plan_name" type="text" id="arm-df__form-control_member_plan" value="" class="arm-df__form-control arm-df__form-control_member_plan arm_material_input" required="required" data-validation-required-message="<?php esc_html_e( 'Plan name cannot be left blank.', 'armember-membership' ); ?>"  placeholder="<?php esc_html_e('Enter Plan Name', 'armember-membership'); ?>"/>
 											</div>
 											<div class="armclear"></div>
 										</div>
@@ -128,7 +128,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 										</div>
 										<div class="armclear"></div>
 									</div>
-									<span class="arm-note-message --notice arm_badge_size_field_label arm_margin_top_10"><?php esc_html_e('Change of role is not recommended.', 'armember-membership'); ?></span>
+									<span class="arm-note-message --notice arm_badge_size_field_label arm_margin_top_10"><?php esc_html_e('Changing the role is not recommended.', 'armember-membership'); ?></span>
 								</td>
 							</tr>
 							<?php $total_plans = $arm_subscription_plans->arm_get_total_plan_counts(); ?>
@@ -222,7 +222,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 										<div class="arm_setup_forms_container">
 											<div class="arm-df__form-field-wrap_text arm-df__form-field-wrap arm-controls arm_display_block" id="arm-df__form-field-wrap_member_plan_amount">
 												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_prefix <?php echo esc_attr($global_currency_sym_pos_pre);?>"><?php echo esc_attr($global_currency_sym); ?></span>
-												<input name="arm_subscription_plan_amount" type="text" id="arm-df__form-control_member_plan_amount arm_subscription_plan_amount" value=""  class="arm-df__form-control arm-df__form-control_member_plan arm_material_input arm_no_paste <?php echo esc_attr($arm_currency_pos_class)?>" required="required" data-validation-required-message="<?php esc_html_e( 'Plan amount can not be left blank.', 'armember-membership' ); ?>" onkeypress="javascript:return ArmNumberValidation(event, this)"/>
+												<input name="arm_subscription_plan_amount" type="text" id="arm-df__form-control_member_plan_amount arm_subscription_plan_amount" value=""  class="arm-df__form-control arm-df__form-control_member_plan arm_material_input arm_no_paste <?php echo esc_attr($arm_currency_pos_class)?>" required="required" data-validation-required-message="<?php esc_html_e( 'Plan amount cannot be left blank.', 'armember-membership' ); ?>" onkeypress="javascript:return ArmNumberValidation(event, this)"/>
 												<span class="arm_plan_currency_symbol arm_plan_currency_symbol_suffix <?php echo esc_attr($global_currency_sym_pos_suf);?>"><?php echo esc_attr($global_currency_sym); ?></span>
 											</div>
 											<div class="armclear"></div>

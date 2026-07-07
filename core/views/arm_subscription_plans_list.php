@@ -62,12 +62,12 @@ function show_grid_loader(){
 
 function arm_load_plan_list_grid(){
 		var __ARM_Showing = '<?php echo addslashes( esc_html__( 'Showing', 'armember-membership' ) ); //phpcs:ignore ?>';
-		var __ARM_Showing_empty = '<?php echo addslashes(esc_html__('Showing','armember-membership').' <span class="arm-black-350 arm_font_size_15">0</span> - <span class="arm-black-350 arm_font_size_15">0</span> of <span class="arm-black-350 arm_font_size_15">0</span> '.esc_html__('enteries','armember-membership')); //phpcs:ignore ?>';
+		var __ARM_Showing_empty = '<?php echo addslashes(esc_html__('Showing','armember-membership').' <span class="arm-black-350 arm_font_size_15">0</span> - <span class="arm-black-350 arm_font_size_15">0</span> of <span class="arm-black-350 arm_font_size_15">0</span> '.esc_html__('entries','armember-membership')); //phpcs:ignore ?>';
 		var __ARM_to = '-';
 		var __ARM_of = '<?php echo addslashes( esc_html__( 'of', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_PLANS = ' <?php echo addslashes( esc_html__( 'Plans', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_Show = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?> ';
-		var __ARM_NO_FOUND = '<?php echo addslashes( esc_html__( 'No any subscription plan found.', 'armember-membership' ) ); //phpcs:ignore ?>';
+		var __ARM_NO_FOUND = '<?php echo addslashes( esc_html__( 'No subscription plans found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 		var __ARM_NO_MATCHING = '<?php echo addslashes( esc_html__( 'No matching records found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 
 		var __SHOW_PER_PAGE = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?>';
@@ -347,7 +347,7 @@ function activity_child_format(d,headers,headers_label,_wpnonce) {
 					<input type="hidden" name="to_grid" id="to_grid" value="<?php esc_attr_e( 'to', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="of_grid" id="of_grid" value="<?php esc_attr_e( 'of', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="no_match_record_grid" id="no_match_record_grid" value="<?php esc_attr_e( 'No matching plans found', 'armember-membership' ); ?>"/>
-					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No any subscription plan found.', 'armember-membership' ); ?>"/>
+					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No subscription plans found.', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="filter_grid" id="filter_grid" value="<?php esc_attr_e( 'filtered from', 'armember-membership' ); ?>"/>
 					<input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_attr_e( 'total', 'armember-membership' ); ?>"/>
 					<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>

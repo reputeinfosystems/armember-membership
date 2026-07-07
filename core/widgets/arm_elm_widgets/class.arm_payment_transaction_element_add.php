@@ -285,7 +285,7 @@ class arm_payment_transaction_shortcode extends Widget_Base
 				'label' => esc_html__( 'No Records Message', 'armember-membership' ),
 				'type' => Controls_Manager::TEXT,
 				'label_block' => true,
-                'default'=>'There is no any Transactions found.',
+                'default'=> esc_html__( 'No transactions found.','armember-membership' ),
 			]
 		);
 

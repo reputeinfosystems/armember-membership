@@ -159,16 +159,16 @@ if ( isset( $_REQUEST['arm_action'] ) && $_REQUEST['arm_action'] == 'edit_member
 		$primary_status      = $arm_all_user_status['arm_primary_status'];
 		$secondary_status    = $arm_all_user_status['arm_secondary_status'];
 	}
-	$planIDs  = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+	$planIDs  = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 	$planIDs  = ! empty( $planIDs ) ? $planIDs : array();
 	$planID   = isset( $planIDs[0] ) ? $planIDs[0] : 0;
 	$planIDs = apply_filters('arm_pro_modify_plan_ids_externally', $planIDs, $user_id);
 	$planIDs = apply_filters('arm_modify_plan_ids_externally', $planIDs, $user_id);
-	$planData = get_user_meta( $user_id, 'arm_user_plan_' . $planID, true );
+	$planData = arm_get_user_meta( $user_id, 'arm_user_plan_' . $planID, true );
 
 	$plan_start_date = ( isset( $planData['arm_start_plan'] ) && ! empty( $planData['arm_start_plan'] ) ) ? date( $arm_common_date_format, $planData['arm_start_plan'] ) : date( $arm_common_date_format ); //phpcs:ignore
 
-	$futurePlanIDs = get_user_meta( $user_id, 'arm_user_future_plan_ids', true );
+	$futurePlanIDs = arm_get_user_meta( $user_id, 'arm_user_future_plan_ids', true );
 	$futurePlanIDs = ! empty( $futurePlanIDs ) ? $futurePlanIDs : array();
 	$futurePlanIDs = apply_filters('arm_pro_modify_future_plan_ids_externally', $futurePlanIDs, $user_id);
 } else {
@@ -320,7 +320,7 @@ $formHiddenFields = '';
 											if ( empty($_REQUEST['arm_action']) && empty($_REQUEST['id'])) { //phpcs:ignore
 												if ( ! empty( $dbFormFields ) ) {
 													foreach ( $dbFormFields as $meta_key => $field ) {
-														$field_options = maybe_unserialize( $field );
+														$field_options = arm_maybe_unserialize( $field );
 														$field_options = apply_filters( 'arm_change_field_options', $field_options );
 														$meta_key      = isset( $field_options['meta_key'] ) ? $field_options['meta_key'] : $field_options['id'];
 														$field_id      = $meta_key . arm_generate_random_code();
@@ -355,7 +355,7 @@ $formHiddenFields = '';
 															<input id="arm_password" autocomplete="off"
 																class="arm_member_form_input <?php echo esc_html($arm_suffix_icon_pass_cls); ?>"
 																name="user_pass" type="password" value=""
-																data-msg-required="<?php esc_html_e( 'Password can not be left blank.', 'armember-membership' ); ?>"
+																data-msg-required="<?php esc_html_e( 'Password cannot be left blank.', 'armember-membership' ); ?>"
 																<?php if ( $required_class != 1 ) : ?>
 																required<?php endif; ?> />
 															<?php echo $arm_suffix_icon_pass; //phpcs:ignore ?>
@@ -374,7 +374,7 @@ $formHiddenFields = '';
 															<input id="arm_repeat_pass"
 																class="arm_member_form_input <?php echo esc_attr($arm_suffix_icon_pass_cls); ?>"
 																name="repeat_pass" type="password" value=""
-																data-msg-required="<?php esc_attr_e( 'Confirm Password can not be left blank.', 'armember-membership' ); ?>"
+																data-msg-required="<?php esc_attr_e( 'Confirm Password cannot be left blank.', 'armember-membership' ); ?>"
 																<?php if ( $required_class != 1 ) : ?>
 																required<?php endif; ?> />
 															<?php echo $arm_suffix_icon_pass; //phpcs:ignore ?>
@@ -427,7 +427,7 @@ $formHiddenFields = '';
 															<input id="arm_username" class="arm_member_form_input" type="text"
 																name="user_login" value="<?php echo esc_attr($username); ?>"
 																<?php echo $disabled; //phpcs:ignore ?>
-																data-msg-required="<?php esc_attr_e( 'Username can not be left blank.', 'armember-membership' ); ?>"
+																data-msg-required="<?php esc_attr_e( 'Username cannot be left blank.', 'armember-membership' ); ?>"
 																required />
 														</div>
 													</td>
@@ -436,7 +436,7 @@ $formHiddenFields = '';
 		
 																		if ( ! empty( $dbFormFields ) ) {
 																			foreach ( $dbFormFields as $meta_key => $field ) {
-																				$field_options = maybe_unserialize( $field );
+																				$field_options = arm_maybe_unserialize( $field );
 																				$field_options = apply_filters( 'arm_change_field_options', $field_options );
 																				$meta_key      = isset( $field_options['meta_key'] ) ? $field_options['meta_key'] : $field_options['id'];
 																				$field_id      = $meta_key . arm_generate_random_code();
@@ -472,7 +472,7 @@ $formHiddenFields = '';
 															<input id="arm_password" autocomplete="off"
 																class="arm_member_form_input <?php echo esc_attr($arm_suffix_icon_pass_cls); ?>"
 																name="user_pass" type="password" value=""
-																data-msg-required="<?php esc_attr_e( 'Password can not be left blank.', 'armember-membership' ); ?>"
+																data-msg-required="<?php esc_attr_e( 'Password cannot be left blank.', 'armember-membership' ); ?>"
 																<?php  if ( $required_class != 1 ) : ?>
 																required<?php endif; ?> />
 															<?php echo $arm_suffix_icon_pass; //phpcs:ignore ?>
@@ -491,7 +491,7 @@ $formHiddenFields = '';
 															<input id="arm_repeat_pass"
 																class="arm_member_form_input <?php echo esc_attr($arm_suffix_icon_pass_cls); ?>"
 																name="repeat_pass" type="password" value=""
-																data-msg-required="<?php esc_attr_e( 'Confirm Password can not be left blank.', 'armember-membership' ); ?>"
+																data-msg-required="<?php esc_attr_e( 'Confirm Password cannot be left blank.', 'armember-membership' ); ?>"
 																<?php if ( $required_class != 1 ) : ?>
 																required<?php endif; ?> />
 															<?php echo $arm_suffix_icon_pass; //phpcs:ignore ?>
@@ -561,7 +561,7 @@ $formHiddenFields = '';
 																<input id="arm_password" autocomplete="off"
 																	class="arm_member_form_input <?php echo esc_attr($arm_suffix_icon_pass_cls); ?>"
 																	name="user_pass" type="password" value=""
-																	data-msg-required="<?php esc_attr_e( 'Password can not be left blank.', 'armember-membership' ); ?>"
+																	data-msg-required="<?php esc_attr_e( 'Password cannot be left blank.', 'armember-membership' ); ?>"
 																	<?php  if ( $required_class != 1 ) : ?>
 																	required<?php endif; ?> />
 																<?php echo $arm_suffix_icon_pass; //phpcs:ignore ?>
@@ -580,7 +580,7 @@ $formHiddenFields = '';
 																<input id="arm_repeat_pass"
 																	class="arm_member_form_input <?php echo esc_attr($arm_suffix_icon_pass_cls); ?>"
 																	name="repeat_pass" type="password" value=""
-																	data-msg-required="<?php esc_attr_e( 'Confirm Password can not be left blank.', 'armember-membership' ); ?>"
+																	data-msg-required="<?php esc_attr_e( 'Confirm Password cannot be left blank.', 'armember-membership' ); ?>"
 																	<?php if ( $required_class != 1 ) : ?>
 																	required<?php endif; ?> />
 																<?php echo $arm_suffix_icon_pass; //phpcs:ignore ?>
@@ -646,7 +646,7 @@ $formHiddenFields = '';
 											
 											if (!empty($dbFormFields)) {
 												foreach ($dbFormFields as $meta_key => $field) {
-													$field_options = maybe_unserialize($field);
+													$field_options = arm_maybe_unserialize($field);
 													$field_options = apply_filters('arm_change_field_options', $field_options);
 													
 													$meta_key = isset($field_options['meta_key']) ? $field_options['meta_key'] : $field_options['id'];
@@ -684,14 +684,14 @@ $formHiddenFields = '';
 												/**
 												 * Add Form Hidden Fields.
 												 */
-												$form_settings = (isset($armform->settings)) ? maybe_unserialize($armform->settings) : array();
+												$form_settings = (isset($armform->settings)) ? arm_maybe_unserialize($armform->settings) : array();
 												
 												if ($armform->exists() && isset($form_settings['is_hidden_fields']) && $form_settings['is_hidden_fields'] == '1') {
 													if (isset($form_settings['hidden_fields']) && !empty($form_settings['hidden_fields'])) {
 														foreach ($form_settings['hidden_fields'] as $hiddenF) {
 															
 															$hiddenMetaKey = (isset($hiddenF['meta_key']) && !empty($hiddenF['meta_key'])) ? $hiddenF['meta_key'] : sanitize_title('arm_hidden_' . $hiddenF['title']);
-															$hiddenValue = get_user_meta($user_id, $hiddenMetaKey, true);
+															$hiddenValue = arm_get_user_meta($user_id, $hiddenMetaKey, true);
 															$hiddenValue = (!empty($hiddenValue)) ? $hiddenValue : $hiddenF['value'];
 															$hiddentitle = (!empty($hiddenF['title'])) ? $hiddenF['title'] : '';
 															
@@ -863,7 +863,7 @@ $formHiddenFields = '';
 											</div>
 											<?php if ( $primary_status == '1' ) { ?>
 											<?php
-												$arm_user_plans = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+												$arm_user_plans = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 												$arm_user_plans = ! empty( $arm_user_plans ) ? $arm_user_plans : array();
 											}
 											?>
@@ -1005,13 +1005,13 @@ $formHiddenFields = '';
 											<?php
 												$date_format        = $arm_global_settings->arm_get_wp_date_format();
 												$defaultPlanData    = $arm_subscription_plans->arm_default_plan_array();
-												$suspended_plan_ids = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+												$suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
 												$suspended_plan_ids = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 												$count_plans        = 0;
 											if ( ! empty( $planIDs ) ) {
 												foreach ( $planIDs as $pID ) {
 													if ( ! empty( $pID ) ) {
-														$planData = get_user_meta( $user_id, 'arm_user_plan_' . $pID, true );
+														$planData = arm_get_user_meta( $user_id, 'arm_user_plan_' . $pID, true );
 														$planData = ! empty( $planData ) ? $planData : array();
 														if ( ! empty( $planData ) ) {
 															$arm_paid_condition = 1;
@@ -1288,7 +1288,7 @@ $formHiddenFields = '';
 							if ( ! empty( $futurePlanIDs ) ) {	
 								foreach ( $futurePlanIDs as $pID ) {
 									if ( ! empty( $pID ) ) {
-										$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $pID, true );
+										$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $pID, true );
 										$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 										$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 

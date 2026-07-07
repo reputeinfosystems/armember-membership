@@ -76,7 +76,7 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
 				$arm_dashboard_add_ons_list      = wp_remote_get( $arm_dashboard_add_ons_list_url, $arm_dashboard_add_ons_list_args );
 
 				if ( is_wp_error( $arm_dashboard_add_ons_list ) ) {
-					printf( esc_html__( '%1$sThere is something error to retrieve the %2$s add-ons list. Please try again later.%3$s', 'armember-membership' ), "<div class='arm_add_ons_msg'>", 'armember-membership', '</div>' ); //phpcs:ignore
+					printf( esc_html__( '%1$sThere was an error retrieving the %2$s add-ons list. Please try again later.%3$s', 'armember-membership' ), "<div class='arm_add_ons_msg'>", 'armember-membership', '</div>' ); //phpcs:ignore
 				} else {
 					$arm_dashboard_add_ons_list = json_decode( $arm_dashboard_add_ons_list['body'] );
 					$arm_all_addons_list        = apply_filters( 'arm_dashboard_add_more_add_ons', $arm_dashboard_add_ons_list );
@@ -198,7 +198,7 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
 								<td><?php echo esc_html($m->user_email); ?></td>
 								<td>
 								<?php
-								$plan_ids  = get_user_meta( $m->ID, 'arm_user_plan_ids', true );
+								$plan_ids  = arm_get_user_meta( $m->ID, 'arm_user_plan_ids', true );
 								$plan_name = $arm_subscription_plans->arm_get_comma_plan_names_by_ids( $plan_ids );
 								echo ( ! empty( $plan_name ) ) ? $plan_name : '<span class="arm_empty">--</span>'; //phpcs:ignore
 								?>
@@ -215,7 +215,7 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
 				<?php
 			} else {
 				?>
-				<div class="arm_dashboard_error_box"><?php esc_html_e( 'There is no any recent members found.', 'armember-membership' ); ?></div>
+				<div class="arm_dashboard_error_box"><?php esc_html_e( 'No recent members were found.', 'armember-membership' ); ?></div>
 				<?php
 			}
 		}
@@ -316,7 +316,7 @@ if ( ! class_exists( 'armLiteAdminDashboardWidgets' ) ) {
 				<?php
 			} else {
 				?>
-				<div class="arm_dashboard_error_box"><?php esc_html_e( 'There is no any recent transactions found.', 'armember-membership' ); ?></div>
+				<div class="arm_dashboard_error_box"><?php esc_html_e( 'No recent transactions were found.', 'armember-membership' ); ?></div>
 				<?php
 			}
 		}

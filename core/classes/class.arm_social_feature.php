@@ -66,7 +66,7 @@ if ( ! class_exists( 'ARM_social_feature_Lite' ) ) {
 		function arm_get_social_settings() {
 			global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms;
 			$social_settings = get_option( 'arm_social_settings' );
-			$social_settings = maybe_unserialize( $social_settings );
+			$social_settings = arm_maybe_unserialize( $social_settings );
 			if ( ! empty( $social_settings['options'] ) ) {
 				$options                      = $social_settings['options'];
 				$options['facebook']['label'] = esc_html__( 'Facebook', 'armember-membership' );
@@ -119,7 +119,7 @@ if ( ! class_exists( 'ARM_social_feature_Lite' ) ) {
 		function arm_update_social_network_from_form_func() {
 			$response = array(
 				'type'         => 'error',
-				'msg'          => esc_html__( 'There is a error while updating settings, please try again.', 'armember-membership' ),
+				'msg'          => esc_html__( 'Failed to update the settings. Please try again.', 'armember-membership' ),
 				'old_settings' => '',
 			);
 			global $wp, $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings;
@@ -129,7 +129,7 @@ if ( ! class_exists( 'ARM_social_feature_Lite' ) ) {
 					foreach ( $socialOptions as $snk => $snv ) {
 						if ( ! empty( $snv ) ) {
 							$icons = get_option( 'arm_social_icons_' . $snk, array() );
-							$icons = maybe_unserialize( $icons );
+							$icons = arm_maybe_unserialize( $icons );
 							if ( ! empty( $snv['custom_icon'] ) ) {
 								foreach ( $snv['custom_icon'] as $custom_icon ) {
 									$baseName = basename( $custom_icon );
@@ -145,7 +145,7 @@ if ( ! class_exists( 'ARM_social_feature_Lite' ) ) {
 				}
 				$response = array(
 					'type'         => 'success',
-					'msg'          => esc_html__( 'Social Setting(s) has been Saved Successfully.', 'armember-membership' ),
+					'msg'          => esc_html__( 'Social setting(s) have been saved successfully.', 'armember-membership' ),
 					'old_settings' => maybe_serialize( $socialOptions ),
 				);
 			}

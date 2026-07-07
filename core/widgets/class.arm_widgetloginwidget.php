@@ -41,7 +41,7 @@ if ( ! class_exists( 'ARMLoginWidget' ) ) {
 			$profile_template     = $arm_members_directory->arm_get_template_by_id( 1 );
 			$profile_template_opt = $profile_template['arm_options'];
 			$default_cover        = isset( $profile_template_opt['default_cover'] ) ? $profile_template_opt['default_cover'] : '';
-			$profile_cover        = get_user_meta( $user_id, 'profile_cover', true );
+			$profile_cover        = arm_get_user_meta( $user_id, 'profile_cover', true );
 			if ( $profile_cover == '' || empty( $profile_cover ) ) {
 				$profile_cover = $default_cover;
 			}
@@ -63,7 +63,7 @@ if ( ! class_exists( 'ARMLoginWidget' ) ) {
 				$output         .= '</div>';
 				$output         .= "<div class='arm_login_widget_content_wrapper'>";
 				$profile_link    = $arm_global_settings->arm_get_user_profile_url( $user_id );
-				$output         .= "<a href='".esc_attr($profile_link)."' class='arm_login_widget_profile_link'><span>" . get_user_meta( $user_id, 'first_name', true ) . ' ' . get_user_meta( $user_id, 'last_name', true ) . '</span></a>';
+				$output         .= "<a href='".esc_attr($profile_link)."' class='arm_login_widget_profile_link'><span>" . arm_get_user_meta( $user_id, 'first_name', true ) . ' ' . arm_get_user_meta( $user_id, 'last_name', true ) . '</span></a>';
 				$output         .= "<div class='arm_login_widget_user_info'>";
 			if ( $label1 != '' ) {
 				$output     .= "<div class='arm_login_widget_user_info_row'>";
@@ -212,10 +212,10 @@ if ( ! class_exists( 'ARMLoginWidget' ) ) {
 					return $user->data->user_login;
 					break;
 				case 'first_name':
-					return get_user_meta( $user_id, 'first_name', true );
+					return arm_get_user_meta( $user_id, 'first_name', true );
 					break;
 				case 'last_name':
-					return get_user_meta( $user_id, 'last_name', true );
+					return arm_get_user_meta( $user_id, 'last_name', true );
 					break;
 				case 'display_name':
 					return $user->data->display_name;
@@ -224,19 +224,19 @@ if ( ! class_exists( 'ARMLoginWidget' ) ) {
 					return $user->data->user_email;
 					break;
 				case 'gender':
-					return get_user_meta( $user_id, 'gender', true );
+					return arm_get_user_meta( $user_id, 'gender', true );
 					break;
 				case 'joined_date':
 					return date_i18n( $date_format, strtotime( $user->data->user_registered ) );
 					break;
 				case 'description':
-					return get_user_meta( $user_id, 'description', true );
+					return arm_get_user_meta( $user_id, 'description', true );
 					break;
 				case 'url':
 					return $user->data->user_url;
 					break;
 				case 'country':
-					return get_user_meta( $user_id, 'country', true );
+					return arm_get_user_meta( $user_id, 'country', true );
 					break;
 				default:
 					return date_i18n( $date_format, strtotime( $user->data->user_registered ) );

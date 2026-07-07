@@ -125,7 +125,7 @@ $field_options = array(
 	'meta_key'        => 'user_login', // phpcs:ignore
 	'required'        => '1',
 	'hide_username'   => '0',
-	'blank_message'   => esc_html__( 'Username can not be left blank', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username', 'armember-membership' ),
 	'default_field'   => '1',
 );
@@ -152,7 +152,7 @@ $field_options = array(
 	'meta_key'       => 'first_name', // phpcs:ignore
 	'required'       => '1',
 	'hide_firstname' => '0',
-	'blank_message'  => esc_html__( 'First Name can not be left blank.', 'armember-membership' ),
+	'blank_message'  => esc_html__( 'First Name cannot be left blank.', 'armember-membership' ),
 	'default_field'  => '1',
 );
 
@@ -178,7 +178,7 @@ $field_options = array(
 	'meta_key'      => 'last_name', // phpcs:ignore
 	'required'      => '1',
 	'hide_lastname' => '0',
-	'blank_message' => esc_html__( 'Last Name can not be left blank.', 'armember-membership' ),
+	'blank_message' => esc_html__( 'Last Name cannot be left blank.', 'armember-membership' ),
 	'default_field' => '1',
 );
 
@@ -203,7 +203,7 @@ $field_options = array(
 	'type'            => 'email',
 	'meta_key'        => 'user_email', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Email Address can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Email Address cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid email address.', 'armember-membership' ),
 	'default_field'   => '1',
 );
@@ -239,7 +239,7 @@ $field_options = array(
 	),
 	'meta_key'        => 'user_pass', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid password.', 'armember-membership' ),
 );
 
@@ -448,7 +448,7 @@ $field_options = array(
 	),
 	'required'        => '1',
 	'meta_key'        => 'user_login', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -487,7 +487,7 @@ $field_options = array(
 	),
 	'meta_key'        => 'user_pass', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid password', 'armember-membership' ),
 );
 
@@ -591,7 +591,7 @@ $field_options = array(
 	),
 	'required'        => '1',
 	'meta_key'        => 'user_login', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -678,7 +678,7 @@ $field_options = array(
     ),
     'required' => '1',
     'meta_key' => 'current_user_pass', // phpcs:ignore
-    'blank_message' => esc_html__('Password can not be left blank.', 'armember-membership'),
+    'blank_message' => esc_html__('Password cannot be left blank.', 'armember-membership'),
     'prefix' => '',
     'suffix' => '',
     'ref_field_id' => '0'
@@ -715,7 +715,7 @@ $field_options = array(
 	),
 	'required'      => '1',
 	'meta_key'      => 'user_pass', // phpcs:ignore
-	'blank_message' => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message' => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'prefix'        => '',
 	'suffix'        => '',
 	'ref_field_id'  => '0',
@@ -742,7 +742,7 @@ $field_options = array(
 	'label'           => esc_html__( 'Confirm Password', 'armember-membership' ),
 	'required'        => '1',
 	'meta_key'        => 'repeat_pass', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Confirm Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Confirm Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Passwords don\'t match.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -908,7 +908,7 @@ $field_options = array(
 	'meta_key'        => 'user_login', // phpcs:ignore
 	'required'        => '1',
 	'hide_username'   => '0',
-	'blank_message'   => esc_html__( 'Username can not be left blank', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username', 'armember-membership' ),
 	'default_field'   => '1',
 );
@@ -935,7 +935,7 @@ $field_options = array(
 	'meta_key'       => 'first_name', // phpcs:ignore
 	'required'       => '1',
 	'hide_firstname' => '0',
-	'blank_message'  => esc_html__( 'First Name can not be left blank.', 'armember-membership' ),
+	'blank_message'  => esc_html__( 'First Name cannot be left blank.', 'armember-membership' ),
 	'default_field'  => '1',
 );
 
@@ -961,7 +961,7 @@ $field_options = array(
 	'meta_key'      => 'last_name', // phpcs:ignore
 	'required'      => '1',
 	'hide_lastname' => '0',
-	'blank_message' => esc_html__( 'Last Name can not be left blank.', 'armember-membership' ),
+	'blank_message' => esc_html__( 'Last Name cannot be left blank.', 'armember-membership' ),
 	'default_field' => '1',
 );
 
@@ -986,7 +986,7 @@ $field_options = array(
 	'type'            => 'email',
 	'meta_key'        => 'user_email', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Email Address can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Email Address cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid email address.', 'armember-membership' ),
 	'default_field'   => '1',
 );
@@ -1022,7 +1022,7 @@ $field_options = array(
 	),
 	'meta_key'        => 'user_pass', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid password.', 'armember-membership' ),
 );
 
@@ -1206,7 +1206,7 @@ $field_options = array(
 	'required'        => '1',
 	'hide_username'   => 0,
 	'meta_key'        => 'user_login', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -1245,7 +1245,7 @@ $field_options = array(
 	),
 	'meta_key'        => 'user_pass', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid password', 'armember-membership' ),
 );
 
@@ -1349,7 +1349,7 @@ $field_options = array(
 	'required'        => '1',
 	'meta_key'        => 'user_login', // phpcs:ignore
 	'hide_username'   => 0,
-	'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -1436,7 +1436,7 @@ $field_options = array(
     ),
     'required' => '1',
     'meta_key' => 'current_user_pass', // phpcs:ignore
-    'blank_message' => esc_html__('Password can not be left blank.', 'armember-membership'),
+    'blank_message' => esc_html__('Password cannot be left blank.', 'armember-membership'),
     'prefix' => '',
     'suffix' => '',
     'ref_field_id' => '0'
@@ -1473,7 +1473,7 @@ $field_options = array(
 	),
 	'required'      => '1',
 	'meta_key'      => 'user_pass', // phpcs:ignore
-	'blank_message' => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message' => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'prefix'        => '',
 	'suffix'        => '',
 	'ref_field_id'  => '0',
@@ -1500,7 +1500,7 @@ $field_options = array(
 	'label'           => esc_html__( 'Confirm Password', 'armember-membership' ),
 	'required'        => '1',
 	'meta_key'        => 'repeat_pass', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Confirm Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Confirm Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Passwords don\'t match.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -1669,7 +1669,7 @@ $field_options = array(
 	'meta_key'        => 'user_login', // phpcs:ignore
 	'hide_username'   => '0',
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Username can not be left blank', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username', 'armember-membership' ),
 	'default_field'   => '1',
 );
@@ -1696,7 +1696,7 @@ $field_options = array(
 	'meta_key'       => 'first_name', //phpcs:ignore
 	'required'       => '1',
 	'hide_firstname' => '0',
-	'blank_message'  => esc_html__( 'First Name can not be left blank.', 'armember-membership' ),
+	'blank_message'  => esc_html__( 'First Name cannot be left blank.', 'armember-membership' ),
 	'default_field'  => '1',
 );
 
@@ -1722,7 +1722,7 @@ $field_options = array(
 	'meta_key'      => 'last_name', // phpcs:ignore
 	'required'      => '1',
 	'hide_lastname' => '0',
-	'blank_message' => esc_html__( 'Last Name can not be left blank.', 'armember-membership' ),
+	'blank_message' => esc_html__( 'Last Name cannot be left blank.', 'armember-membership' ),
 	'default_field' => '1',
 );
 
@@ -1747,7 +1747,7 @@ $field_options = array(
 	'type'            => 'email',
 	'meta_key'        => 'user_email', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Email Address can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Email Address cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid email address.', 'armember-membership' ),
 	'default_field'   => '1',
 );
@@ -1783,7 +1783,7 @@ $field_options = array(
 	),
 	'meta_key'        => 'user_pass', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid password.', 'armember-membership' ),
 );
 
@@ -1969,7 +1969,7 @@ $field_options = array(
 	'required'        => '1',
 	'hide_username'   => 0,
 	'meta_key'        => 'user_login', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -2008,7 +2008,7 @@ $field_options = array(
 	),
 	'meta_key'        => 'user_pass', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid password', 'armember-membership' ),
 );
 
@@ -2112,7 +2112,7 @@ $field_options = array(
 	'required'        => '1',
 	'hide_username'   => 0,
 	'meta_key'        => 'user_login', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -2199,7 +2199,7 @@ $field_options = array(
     ),
     'required' => '1',
     'meta_key' => 'current_user_pass', // phpcs:ignore
-    'blank_message' => esc_html__('Password can not be left blank.', 'armember-membership'),
+    'blank_message' => esc_html__('Password cannot be left blank.', 'armember-membership'),
     'prefix' => '',
     'suffix' => '',
     'ref_field_id' => '0'
@@ -2236,7 +2236,7 @@ $field_options = array(
 	),
 	'required'      => '1',
 	'meta_key'      => 'user_pass', // phpcs:ignore
-	'blank_message' => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message' => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'prefix'        => '',
 	'suffix'        => '',
 	'ref_field_id'  => '0',
@@ -2264,7 +2264,7 @@ $field_options = array(
 	'placeholder'     => esc_html__( 'Confirm Password', 'armember-membership' ),
 	'required'        => '1',
 	'meta_key'        => 'repeat_pass', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Confirm Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Confirm Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Passwords don\'t match.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -2428,7 +2428,7 @@ $field_options = array(
 	'meta_key'        => 'user_login', // phpcs:ignore
 	'required'        => '1',
 	'hide_username'   => '0',
-	'blank_message'   => esc_html__( 'Username can not be left blank', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username', 'armember-membership' ),
 	'default_field'   => '1',
 );
@@ -2455,7 +2455,7 @@ $field_options = array(
 	'meta_key'       => 'first_name', // phpcs:ignore
 	'required'       => '1',
 	'hide_firstname' => '0',
-	'blank_message'  => esc_html__( 'First Name can not be left blank.', 'armember-membership' ),
+	'blank_message'  => esc_html__( 'First Name cannot be left blank.', 'armember-membership' ),
 	'default_field'  => '1',
 );
 
@@ -2481,7 +2481,7 @@ $field_options = array(
  	'meta_key'      => 'last_name', // phpcs:ignore
 	'required'      => '1',
 	'hide_lastname' => '0',
-	'blank_message' => esc_html__( 'Last Name can not be left blank.', 'armember-membership' ),
+	'blank_message' => esc_html__( 'Last Name cannot be left blank.', 'armember-membership' ),
 	'default_field' => '1',
 );
 
@@ -2506,7 +2506,7 @@ $field_options = array(
 	'type'            => 'email',
 	'meta_key'        => 'user_email', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Email Address can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Email Address cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid email address.', 'armember-membership' ),
 	'default_field'   => '1',
 );
@@ -2542,7 +2542,7 @@ $field_options = array(
 	),
 	'meta_key'        => 'user_pass', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid password.', 'armember-membership' ),
 );
 
@@ -2733,7 +2733,7 @@ $field_options = array(
 	'required'        => '1',
 	'meta_key'        => 'user_login', // phpcs:ignore
 	'hide_username'   => 0,
-	'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -2772,7 +2772,7 @@ $field_options = array(
 	),
 	'meta_key'        => 'user_pass', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid password', 'armember-membership' ),
 );
 
@@ -2877,7 +2877,7 @@ $field_options = array(
 	'required'        => '1',
 	'hide_username'   => 0,
 	'meta_key'        => 'user_login', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -2964,7 +2964,7 @@ $field_options = array(
     ),
     'required' => '1',
     'meta_key' => 'current_user_pass', // phpcs:ignore
-    'blank_message' => esc_html__('Password can not be left blank.', 'armember-membership'),
+    'blank_message' => esc_html__('Password cannot be left blank.', 'armember-membership'),
     'prefix' => '',
     'suffix' => '',
     'ref_field_id' => '0'
@@ -3001,7 +3001,7 @@ $field_options = array(
 	),
 	'required'      => '1',
 	'meta_key'      => 'user_pass', // phpcs:ignore
-	'blank_message' => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message' => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'prefix'        => '',
 	'suffix'        => '',
 	'ref_field_id'  => '0',
@@ -3029,7 +3029,7 @@ $field_options = array(
 	'placeholder'     => esc_html__( 'Confirm Password', 'armember-membership' ),
 	'required'        => '1',
 	'meta_key'        => 'repeat_pass', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Confirm Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Confirm Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Passwords don\'t match.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -3197,7 +3197,7 @@ $field_options = array(
 	'meta_key'        => 'user_login', // phpcs:ignore
 	'required'        => '1',
 	'hide_username'   => '0',
-	'blank_message'   => esc_html__( 'Username can not be left blank', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username', 'armember-membership' ),
 	'default_field'   => '1',
 );
@@ -3224,7 +3224,7 @@ $field_options = array(
 	'meta_key'       => 'first_name', // phpcs:ignore
 	'required'       => '1',
 	'hide_firstname' => '0',
-	'blank_message'  => esc_html__( 'First Name can not be left blank.', 'armember-membership' ),
+	'blank_message'  => esc_html__( 'First Name cannot be left blank.', 'armember-membership' ),
 	'default_field'  => '1',
 );
 
@@ -3250,7 +3250,7 @@ $field_options = array(
 	'meta_key'      => 'last_name', // phpcs:ignore
 	'required'      => '1',
 	'hide_lastname' => '0',
-	'blank_message' => esc_html__( 'Last Name can not be left blank.', 'armember-membership' ),
+	'blank_message' => esc_html__( 'Last Name cannot be left blank.', 'armember-membership' ),
 	'default_field' => '1',
 );
 
@@ -3275,7 +3275,7 @@ $field_options = array(
 	'type'            => 'email',
 	'meta_key'        => 'user_email', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Email Address can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Email Address cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid email address.', 'armember-membership' ),
 	'default_field'   => '1',
 );
@@ -3311,7 +3311,7 @@ $field_options = array(
 	),
 	'meta_key'        => 'user_pass', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid password.', 'armember-membership' ),
 );
 
@@ -3501,7 +3501,7 @@ $field_options = array(
 	'required'        => '1',
 	'hide_username'   => 0,
 	'meta_key'        => 'user_login', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -3540,7 +3540,7 @@ $field_options = array(
 	),
 	'meta_key'        => 'user_pass', // phpcs:ignore
 	'required'        => '1',
-	'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid password', 'armember-membership' ),
 );
 
@@ -3645,7 +3645,7 @@ $field_options = array(
 	'required'        => '1',
 	'hide_username'   => 0,
 	'meta_key'        => 'user_login', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',
@@ -3732,7 +3732,7 @@ $field_options = array(
     ),
     'required' => '1',
     'meta_key' => 'current_user_pass', // phpcs:ignore
-    'blank_message' => esc_html__('Password can not be left blank.', 'armember-membership'),
+    'blank_message' => esc_html__('Password cannot be left blank.', 'armember-membership'),
     'prefix' => '',
     'suffix' => '',
     'ref_field_id' => '0'
@@ -3769,7 +3769,7 @@ $field_options = array(
 	),
 	'required'      => '1',
 	'meta_key'      => 'user_pass', // phpcs:ignore
-	'blank_message' => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+	'blank_message' => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 	'prefix'        => '',
 	'suffix'        => '',
 	'ref_field_id'  => '0',
@@ -3797,7 +3797,7 @@ $field_options = array(
 	'placeholder'     => '',
 	'required'        => '1',
 	'meta_key'        => 'repeat_pass', // phpcs:ignore
-	'blank_message'   => esc_html__( 'Confirm Password can not be left blank.', 'armember-membership' ),
+	'blank_message'   => esc_html__( 'Confirm Password cannot be left blank.', 'armember-membership' ),
 	'invalid_message' => esc_html__( 'Passwords don\'t match.', 'armember-membership' ),
 	'prefix'          => '',
 	'suffix'          => '',

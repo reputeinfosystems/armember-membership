@@ -50,7 +50,7 @@ if ( ! empty( $_GET['form_id'] ) && $_GET['form_id'] != 0 ) { //phpcs:ignore
 	$update_field_status = $wpdb->update( $ARMemberLite->tbl_arm_form_field, array( 'arm_form_field_status' => '1' ), array( 'arm_form_field_form_id' => $form_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 	$form_detail            = $arm_member_forms->arm_get_single_member_forms( $form_id );
-	$form_settings          = ( ! empty( $form_detail['arm_form_settings'] ) ) ? maybe_unserialize( $form_detail['arm_form_settings'] ) : array();
+	$form_settings          = ( ! empty( $form_detail['arm_form_settings'] ) ) ? arm_maybe_unserialize( $form_detail['arm_form_settings'] ) : array();
 	$form_settings['style'] = ( isset( $form_settings['style'] ) ) ? $form_settings['style'] : array();
 	$form_settings['style'] = shortcode_atts( $default_form_style, $form_settings['style'] );
 	$login_regex            = '/template-login(.*?)/';
@@ -400,7 +400,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 						}
 						$otherFormsValues                     = array_values( $otherForms );
 						$firstForm                            = array_shift( $otherFormsValues );
-						$form_settings                        = ( ! empty( $firstForm['arm_form_settings'] ) ) ? maybe_unserialize( $firstForm['arm_form_settings'] ) : array();
+						$form_settings                        = ( ! empty( $firstForm['arm_form_settings'] ) ) ? arm_maybe_unserialize( $firstForm['arm_form_settings'] ) : array();
 						$form_settings['style']               = ( isset( $form_settings['style'] ) ) ? $form_settings['style'] : array();
 						$form_settings['style']               = shortcode_atts( $default_form_style, $form_settings['style'] );
 						$form_settings['style']['form_width'] = ( ! empty( $form_settings['style']['form_width'] ) ) ? $form_settings['style']['form_width'] : '600';
@@ -418,7 +418,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 							$social_networks                           = ( isset( $form_settings['social_networks'] ) && $form_settings['social_networks'] != '' ) ? explode( ',', $form_settings['social_networks'] ) : array();
 							$social_networks_order                     = ( isset( $form_settings['social_networks_order'] ) && $form_settings['social_networks_order'] != '' ) ? explode( ',', $form_settings['social_networks_order'] ) : array();
 							$form_settings['social_networks_settings'] = ( isset( $form_settings['social_networks_settings'] ) ) ? stripslashes_deep( $form_settings['social_networks_settings'] ) : '';
-							$formSocialNetworksSettings                = maybe_unserialize( $form_settings['social_networks_settings'] );
+							$formSocialNetworksSettings                = arm_maybe_unserialize( $form_settings['social_networks_settings'] );
 						} else {
 							$enable_social_btn_separator = 0;
 						}
@@ -556,7 +556,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 												}
 												foreach ( $oform['fields'] as $ffID => $field ) {
                                                 							$form_field_id = !empty($arm_max_field_id) ? $arm_max_field_id : $field['arm_form_field_id'];
-													$field_options = maybe_unserialize( $field['arm_form_field_option'] );
+													$field_options = arm_maybe_unserialize( $field['arm_form_field_option'] );
 													if ( ($isRegister || $isEditProfile) && $field_options['type'] == 'submit' ) {
 														$submitBtnOptions = $field;
 													} elseif ( ( $isRegister || $isEditProfile ) && $field_options['type'] == 'social_fields' ) {
@@ -615,13 +615,13 @@ echo $arm_loader; //phpcs:ignore ?></div>
 											<?php if ( ! empty( $socialFieldsOptions ) && $arm_social_feature->isSocialFeature ) { ?>
 												<?php
 												$socialFieldID = $socialFieldsOptions['arm_form_field_id'];
-												$field_options = maybe_unserialize( $socialFieldsOptions['arm_form_field_option'] );
+												$field_options = arm_maybe_unserialize( $socialFieldsOptions['arm_form_field_option'] );
 												?>
 												<li class="arm-df__form-group arm-df__form-group_social_fields" id="arm-df__form-group_<?php echo $socialFieldID; ?>" data-type="social_fields" data-field_id="<?php echo intval($socialFieldID); ?>"><?php $arm_member_forms->arm_member_form_get_field_html( $oformid, $socialFieldID, $field_options, 'inactive', $armForm ); //phpcs:ignore ?></li>
 											<?php } ?>
 											<?php
 											$form_field_id = $submitBtnOptions['arm_form_field_id'];
-											$field_options = maybe_unserialize( $submitBtnOptions['arm_form_field_option'] );
+											$field_options = arm_maybe_unserialize( $submitBtnOptions['arm_form_field_option'] );
 											?>
 											<li class="arm-df__form-group arm-df__form-group_submit" id="arm-df__form-group_<?php echo intval($form_field_id); ?>" data-field_id="<?php echo intval($form_field_id); ?>" data-type="submit">
 																																	   <?php
@@ -2521,11 +2521,11 @@ if ((!$isRegister && !$isEditProfile)) {
 				}
 				if(jQuery('.arm-df__fields-wrapper_' + form_id + ' li[data-meta_key="user_pass"]').length && field_type == "password")
 				{
-					armToast('<?php echo addslashes( esc_html__( 'You have already added password field in you form.', 'armember-membership' ) ); //phpcs:ignore ?>', 'error');
+					armToast('<?php echo addslashes( esc_html__( 'You have already added password field in your form.', 'armember-membership' ) ); //phpcs:ignore ?>', 'error');
 					return false;
 				}
 				if (check_old > 0) {
-					alert('<?php echo addslashes( esc_html__( 'Sorry, You can not add this field twice in form', 'armember-membership' ) ); //phpcs:ignore ?>');
+					alert('<?php echo addslashes( esc_html__( 'Sorry, You cannot add this field twice in form', 'armember-membership' ) ); //phpcs:ignore ?>');
 				} else {
 					var clone = jQuery(this).clone();
 					jQuery('.arm_main_sortable.arm-df__fields-wrapper_' + form_id + '').append(clone);

@@ -343,7 +343,7 @@ class arm_current_membership_shortcode extends Widget_Base
 				'label' => esc_html__( 'Subscription Cancelled Message', 'armember-membership' ),
 				'type' => Controls_Manager::TEXT,
 				'label_block' => true,
-                'default'=>'Your subscription has been cancelled.',
+                'default'=> esc_html__( 'Your subscription has been canceled.', 'armember-membership' ),
                  'condition'=>['arm_cancel_btn'=>'true'],
 			]
 		);
@@ -432,7 +432,7 @@ class arm_current_membership_shortcode extends Widget_Base
 				'label' => esc_html__( 'No Records Message', 'armember-membership' ),
 				'type' => Controls_Manager::TEXT,
 				'label_block' => true,
-                'default'=>'There is no membership found.',
+                                'default'=> esc_html__( 'No memberships found.', 'armember-membership' ),
 			]
 		);
 

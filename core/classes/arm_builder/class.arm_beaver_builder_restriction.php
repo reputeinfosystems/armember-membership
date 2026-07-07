@@ -33,8 +33,8 @@ if (!class_exists('ARM_lite_beaver_builder_restiction')) {
             $arm_membership_plan = $arm_subscription_plans->arm_get_all_subscription_plans('arm_subscription_plan_id, arm_subscription_plan_name');
             $plans = array();
             $plans['any_plan'] = esc_html__( 'Any Plan', 'armember-membership' );
-            $plans['unregistered'] = esc_html__( 'Non Loggedin Users', 'armember-membership' );
-            $plans['registered'] = esc_html__( 'Loggedin Users', 'armember-membership' );
+            $plans['unregistered'] = esc_html__( 'Non Logged-In Users', 'armember-membership' );
+            $plans['registered'] = esc_html__( 'Logged-In Users', 'armember-membership' );
             if(!empty($arm_membership_plan)) {
                 foreach ( $arm_membership_plan as $plan ) {
                     $plans[ $plan['arm_subscription_plan_id'] ] = $plan['arm_subscription_plan_name'];
@@ -137,8 +137,8 @@ if (!class_exists('ARM_lite_beaver_builder_restiction')) {
                 $arm_membership_plan = $arm_subscription_plans->arm_get_all_subscription_plans('arm_subscription_plan_id, arm_subscription_plan_name');
                 $plans = array();
                 $plans['any_plan'] = esc_html__( 'Any Plan', 'armember-membership' );
-                $plans['unregistered'] = esc_html__( 'Non Loggedin Users', 'armember-membership' );
-                $plans['registered'] = esc_html__( 'Loggedin Users', 'armember-membership' );
+                $plans['unregistered'] = esc_html__( 'Non Logged-In Users', 'armember-membership' );
+                $plans['registered'] = esc_html__( 'Logged-In Users', 'armember-membership' );
                 if(!empty($arm_membership_plan)) {
                     foreach ( $arm_membership_plan as $plan ) {
                         $plans[ $plan['arm_subscription_plan_id'] ] = $plan['arm_subscription_plan_name'];

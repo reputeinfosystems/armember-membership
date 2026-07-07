@@ -21,7 +21,7 @@ if ( version_compare( $arm_lite_newdbversion, '1.8', '<' ) ) {
 	 update_option( 'arm_global_settings', $new_global_settings_result );
 
 	$old_preset_fields     = get_option( 'arm_preset_form_fields' );
-	$old_preset_fields     = maybe_unserialize( maybe_unserialize( $old_preset_fields ) );
+	$old_preset_fields     = arm_maybe_unserialize( arm_maybe_unserialize( $old_preset_fields ) );
 	$default_preset_fields = $arm_member_forms->arm_default_preset_user_fields();
 	if ( isset( $default_preset_fields['country']['options'] ) && ! empty( $default_preset_fields['country']['options'] ) && isset( $old_preset_fields['default']['country'] ) ) {
 		$old_preset_fields['default']['country']['options'] = $default_preset_fields['country']['options'];
@@ -80,8 +80,8 @@ if ( version_compare( $arm_lite_newdbversion, '2.1', '<' ) ) {
 		$bt_payment_log = $wpdb->get_results( $wpdb->prepare('SELECT * FROM `' . $bt_log_table . '`'), ARRAY_A ); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $bt_log_table is a table name
 		if ( count( $bt_payment_log ) > 0 ) {
 			foreach ( $bt_payment_log as $bt_payment_log_data ) {
-				$arm_first_name   = get_user_meta( $bt_payment_log_data['arm_user_id'], 'first_name', true );
-				$arm_last_name    = get_user_meta( $bt_payment_log_data['arm_user_id'], 'last_name', true );
+				$arm_first_name   = arm_get_user_meta( $bt_payment_log_data['arm_user_id'], 'first_name', true );
+				$arm_last_name    = arm_get_user_meta( $bt_payment_log_data['arm_user_id'], 'last_name', true );
 				$arm_payment_mode = ( ! empty( $bt_payment_log_data['arm_payment_mode'] ) ) ? $bt_payment_log_data['arm_payment_mode'] : 'one_time';
 				$arm_payment_type = ( ! empty( $bt_payment_log_data['arm_payment_mode'] ) && $bt_payment_log_data['arm_payment_mode'] == 'manual_subscription' ) ? 'subscription' : 'one_time';
 				$bt_insert_result = $wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
@@ -219,7 +219,7 @@ if ( version_compare( $arm_lite_newdbversion, '3.4.2', '<' ) ) {
 
 				$arm_check_form_user_login_arr = $wpdb->get_row( $wpdb->prepare('SELECT `arm_form_field_option` FROM `' . $ARMemberLite->tbl_arm_form_field . "` WHERE `arm_form_field_form_id`=%d AND `arm_form_field_slug`=%s ",$arm_form_field_form_id,$arm_form_field_slug), ARRAY_A ); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $ARMemberLite->tbl_arm_form_field is a table name
 
-				$arm_form_field_option = maybe_unserialize( $arm_check_form_user_login_arr['arm_form_field_option'] );
+				$arm_form_field_option = arm_maybe_unserialize( $arm_check_form_user_login_arr['arm_form_field_option'] );
 				if ( ! empty( $arm_form_field_option ) && is_array( $arm_form_field_option ) ) {
 					if ( empty( $arm_form_field_option['label'] ) ) {
 						$arm_form_field_option['label'] = $form_field_label;
@@ -308,7 +308,7 @@ if ( version_compare( $arm_lite_newdbversion, '3.4.4', '<' ) ) {
 			'selected_price_font_color'      => '#FFFFFF',
 		);
 		foreach ( $setup_data as $setup_data_key => $setup_data_value ) {
-			$arm_setup_module = maybe_unserialize( $setup_data_value['arm_setup_modules'] );
+			$arm_setup_module = arm_maybe_unserialize( $setup_data_value['arm_setup_modules'] );
 			if ( is_array( $arm_setup_module ) && ! empty( $arm_setup_module ) ) {
 				$arm_setup_module['style'] = $default_setup_style;
 				$arm_setup_id              = $setup_data_value['arm_setup_id'];
@@ -453,7 +453,7 @@ if(version_compare($arm_lite_newdbversion,'4.0.26','<'))
         'options' => array('strength_meter' => 0, 'strong_password' => 0, 'minlength' => 0, 'maxlength' => '', 'special' => 0, 'numeric' => 0, 'uppercase' => 0, 'lowercase' => 0),
         'meta_key' => 'current_user_pass', //phpcs:ignore
         'required' => 1,
-        'blank_message' => esc_html__('Current password can not be left blank.', 'armember-membership'),
+        'blank_message' => esc_html__('Current password cannot be left blank.', 'armember-membership'),
         'invalid_message' => esc_html__('Please enter valid current password.', 'armember-membership'),
         'default_field' => 1,
         'ref_field_id' => 0,
@@ -649,7 +649,7 @@ if(version_compare($arm_lite_newdbversion,'4.0.36','<'))
     /* Update Reset password Common Message Settings (If Reset password Common Message not updated) */
     $common_message_settings = $arm_global_settings->common_message;
     if ( !empty( $common_message_settings['arm_password_reset'] ) && 'Your Password has been reset. [LOGINLINK]Log in [/LOGINLINK]' == $common_message_settings['arm_password_reset'] ) {
-        $common_message_settings['arm_password_reset'] = esc_html__('Password Reset Successfully!', 'armember-membership') . ' [SUBTITLE]' . esc_html__('Your Password has been reset, Login now and get started.', 'armember-membership') . ' [/SUBTITLE]';
+        $common_message_settings['arm_password_reset'] = esc_html__('Password Reset Successfully!', 'armember-membership') . ' [SUBTITLE]' . esc_html__('Your password has been reset. Log in now and get started.', 'armember-membership') . ' [/SUBTITLE]';
         update_option('arm_common_message_settings', $common_message_settings);
     }
 }
@@ -677,7 +677,7 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 	$admin_user_ids = get_users($args);
 	foreach($admin_user_ids as $admin_user_id){
 	
-		$arm_member_hide_show_data = get_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',true );
+		$arm_member_hide_show_data = arm_get_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',true );
 
 		$grid_columns = array(
 			'avatar'             => esc_html__( 'Avatar', 'armember-membership' ),
@@ -709,9 +709,9 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 			$grid_columns['paid_with'] = esc_html__( 'Paid With', 'armember-membership' );
 
 		if(!empty($arm_member_hide_show_data)){
-			$arm_member_hide_show_data = maybe_unserialize( $arm_member_hide_show_data );
+			$arm_member_hide_show_data = arm_maybe_unserialize( $arm_member_hide_show_data );
 			if(is_serialized( $arm_member_hide_show_data )){
-				$arm_member_hide_show_data = maybe_unserialize( $arm_member_hide_show_data );
+				$arm_member_hide_show_data = arm_maybe_unserialize( $arm_member_hide_show_data );
 			}
 			$arm_updated_hide_show_cols = array();
 			
@@ -730,8 +730,8 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 					$arm_updated_hide_show_cols[$column_key] = $is_shown;
 					$i++;
 				}
-				update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
-				update_user_meta($admin_user_id, 'arm_members_column_order_0', array_keys($grid_columns) );
+				arm_update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
+				arm_update_user_meta($admin_user_id, 'arm_members_column_order_0', array_keys($grid_columns) );
 			}
 			else{
 				$arm_array_show_fields = array('avatar','ID','user_login','user_email','arm_member_type','arm_user_plan','arm_primary_status','roles');
@@ -740,8 +740,8 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 					$is_shown = (in_array($column_key,$arm_array_show_fields)) ? "1" : "0";
 					$arm_updated_hide_show_cols[$column_key] = $is_shown;
 				}
-				update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
-				update_user_meta($admin_user_id, 'arm_members_column_order_0',array_keys($grid_columns) );
+				arm_update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
+				arm_update_user_meta($admin_user_id, 'arm_members_column_order_0',array_keys($grid_columns) );
 			}
 		}
 		else{
@@ -755,8 +755,8 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 				$arm_updated_hide_show_cols[$column_key] = $is_shown;
 				$i++;
 			}
-			update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
-			update_user_meta($admin_user_id, 'arm_members_column_order_0', array_keys($grid_columns) );
+			arm_update_user_meta( $admin_user_id, 'arm_members_hide_show_columns_0',  $arm_updated_hide_show_cols);
+			arm_update_user_meta($admin_user_id, 'arm_members_column_order_0', array_keys($grid_columns) );
 		}
 	}
 }
@@ -829,7 +829,7 @@ if(version_compare($arm_lite_newdbversion,'5.5','<'))
 	update_option('arm_lite_display_bf_offers', 1);
 }
 
-$arm_lite_newdbversion = '5.7';
+$arm_lite_newdbversion = '5.8';
 update_option( 'arm_lite_new_version_installed', 1 );
 update_option( 'armlite_version', $arm_lite_newdbversion );
 

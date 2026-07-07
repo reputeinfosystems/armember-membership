@@ -442,7 +442,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 		function arm_get_all_payment_gateways() {
 			global $wpdb, $ARMemberLite;
 			$pay_get_settings_user = get_option( 'arm_payment_gateway_settings', array() );
-			$pay_get_settings      = maybe_unserialize( $pay_get_settings_user );
+			$pay_get_settings      = arm_maybe_unserialize( $pay_get_settings_user );
 			/* General Settings */
 			$payment_gateways = array(
 				'paypal'        => array( 'gateway_name' => $this->arm_gateway_name_by_key( 'paypal' ) ),
@@ -461,7 +461,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 		function arm_get_all_payment_gateways_for_setup() {
 			global $wpdb, $ARMemberLite;
 			$pay_get_settings_unser = get_option( 'arm_payment_gateway_settings', array() );
-			$pay_get_settings       = maybe_unserialize( $pay_get_settings_unser );
+			$pay_get_settings       = arm_maybe_unserialize( $pay_get_settings_unser );
 			/* General Settings */
 			$payment_gateways = array(
 				'paypal'        => array( 'gateway_name' => $this->arm_gateway_name_by_key( 'paypal' ) ),
@@ -493,7 +493,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			global $wpdb, $ARMemberLite;
 			$payment_gateways       = array();
 			$pay_get_settings_unser = $this->arm_get_all_payment_gateways();
-			$pay_get_settings       = maybe_unserialize( $pay_get_settings_unser );
+			$pay_get_settings       = arm_maybe_unserialize( $pay_get_settings_unser );
 			if ( ! empty( $pay_get_settings ) ) {
 				foreach ( $pay_get_settings as $key => $pg ) {
 					if ( isset( $pg['status'] ) && $pg['status'] == 1 ) {
@@ -619,7 +619,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			$not_allow_payment = apply_filters( 'arm_check_currency_status', $not_allow_payment, $global_currency );
 			if ( ! empty( $not_allow_payment ) ) {
 				$pg_settings     = get_option( 'arm_payment_gateway_settings', array() );
-				$new_pg_settings = maybe_unserialize( $pg_settings );
+				$new_pg_settings = arm_maybe_unserialize( $pg_settings );
 				foreach ( $not_allow_payment as $payment ) {
 					if ( isset( $new_pg_settings[ $payment ] ) ) {
 						$new_pg_settings[ $payment ]['status'] = 0;
@@ -676,7 +676,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 
 						foreach ( $subscription_plan as $pid ) {
 							if ( ! empty( $pid ) ) {
-								$userPlanDatameta = get_user_meta( $user_ID, 'arm_user_plan_' . $pid, true );
+								$userPlanDatameta = arm_get_user_meta( $user_ID, 'arm_user_plan_' . $pid, true );
 								$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 								$userPlanData     = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 								$update           = false;
@@ -756,7 +756,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 									}
 								}
 
-								$old_plan_ids = get_user_meta( $user_ID, 'arm_user_plan_ids', true );
+								$old_plan_ids = arm_get_user_meta( $user_ID, 'arm_user_plan_ids', true );
 								$old_plan_ids = ! empty( $old_plan_ids ) ? $old_plan_ids : array();
 								$expire_time  = false;
 								if ( $pgateway == 'bank_transfer' ) {
@@ -835,7 +835,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 									$userPlanData['arm_current_plan_detail']          = $curPlanDetail;
 
 								}
-								update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
+								arm_update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
 								if ( ! in_array( $plan->ID, $old_plan_ids ) ) {
 									if ( $plan->is_recurring()/* && $payment_mode == 'manual_subscription'*/ ) {
 										$allow_trial = true;
@@ -845,7 +845,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 										}
 										$arm_next_payment_due_date            = $arm_members_class->arm_get_next_due_date( $user_ID, $plan->ID, $allow_trial, $payment_cycle, $start_time );
 										$userPlanData['arm_next_due_payment'] = $arm_next_payment_due_date;
-										update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
+										arm_update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
 									}
 								}
 
@@ -874,7 +874,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 										$upData['arm_first_name'] = $arm_first_name;
 										$upData['arm_last_name']  = $arm_last_name;
 										if ( $pgateway != 'bank_transfer' ) {
-											$extra_vars = maybe_unserialize( $log_detail->arm_extra_vars );
+											$extra_vars = arm_maybe_unserialize( $log_detail->arm_extra_vars );
 											if ( isset( $extra_vars['card_number'] ) && ! empty( $extra_vars['card_number'] ) ) {
 												$extra_vars['card_number'] = $extra_vars['card_number'];
 											} else {
@@ -888,13 +888,13 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 									}
 									$posted_data['arm_entry_id'] = ( ! empty( $payment_done['entry_id'] ) ) ? $payment_done['entry_id'] : 0;
 
-									update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
+									arm_update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
 								}
 							}
 						}
 					} else {
 
-						$userPlanDatameta = get_user_meta( $user_ID, 'arm_user_plan_' . $subscription_plan, true );
+						$userPlanDatameta = arm_get_user_meta( $user_ID, 'arm_user_plan_' . $subscription_plan, true );
 						$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 						$userPlanData     = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -958,7 +958,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 							}
 						}
 
-						$old_plan_ids = get_user_meta( $user_ID, 'arm_user_plan_ids', true );
+						$old_plan_ids = arm_get_user_meta( $user_ID, 'arm_user_plan_ids', true );
 						$old_plan_ids = ! empty( $old_plan_ids ) ? $old_plan_ids : array();
 
 						$expire_time = false;
@@ -1038,7 +1038,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 							$userPlanData['arm_current_plan_detail']          = $curPlanDetail;
 
 						}
-						update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
+						arm_update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
 						if ( ! in_array( $plan->ID, $old_plan_ids ) ) {
 							if ( $plan->is_recurring()/* && $payment_mode == 'manual_subscription'*/ ) {
 								$allow_trial = true;
@@ -1050,7 +1050,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 								$arm_next_payment_due_date            = $arm_members_class->arm_get_next_due_date( $user_ID, $plan->ID, $allow_trial, $payment_cycle, $start_time );
 								$userPlanData['arm_next_due_payment'] = $arm_next_payment_due_date;
 
-								update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
+								arm_update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
 							}
 						}
 
@@ -1079,7 +1079,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 								$upData['arm_first_name'] = $arm_first_name;
 								$upData['arm_last_name']  = $arm_last_name;
 								if ( $pgateway != 'bank_transfer' ) {
-									$extra_vars = ! empty( $log_detail->arm_extra_vars ) ? maybe_unserialize( $log_detail->arm_extra_vars ) : array();
+									$extra_vars = ! empty( $log_detail->arm_extra_vars ) ? arm_maybe_unserialize( $log_detail->arm_extra_vars ) : array();
 									if ( isset( $extra_vars['card_number'] ) && ! empty( $extra_vars['card_number'] ) ) {
 										$extra_vars['card_number'] = $extra_vars['card_number'];
 									} else {
@@ -1094,7 +1094,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 							}
 							$posted_data['arm_entry_id'] = ( ! empty( $payment_done['entry_id'] ) ) ? $payment_done['entry_id'] : 0;
 
-							update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
+							arm_update_user_meta( $user_ID, 'arm_user_plan_' . $plan->ID, $userPlanData );
 						}
 					}
 				}
@@ -1115,7 +1115,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 				$meta_key    = 'role';
 				$arm_form_id = isset( $posted_data['arm_form_id'] ) ? intval( $posted_data['arm_form_id'] ) : '';
 
-				$user_form_id = ! empty( $arm_form_id ) ? $arm_form_id : get_user_meta( $user_ID, 'arm_form_id', true );
+				$user_form_id = ! empty( $arm_form_id ) ? $arm_form_id : arm_get_user_meta( $user_ID, 'arm_form_id', true );
 
 				$form = new ARM_Form_Lite( 'id', $user_form_id );
 
@@ -1177,7 +1177,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 				$meta_key    = 'roles';
 				$arm_form_id = isset( $posted_data['arm_form_id'] ) ? $posted_data['arm_form_id'] : '';
 
-				$user_form_id = ! empty( $arm_form_id ) ? $arm_form_id : get_user_meta( $user_ID, 'arm_form_id', true );
+				$user_form_id = ! empty( $arm_form_id ) ? $arm_form_id : arm_get_user_meta( $user_ID, 'arm_form_id', true );
 
 				$form = new ARM_Form_Lite( 'id', $user_form_id );
 
@@ -1261,7 +1261,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 				$entry_data = $this->arm_get_entry_data_by_id( $entry_id );
 				if ( ! empty( $entry_data ) ) {
 					$posted_data = apply_filters( 'arm_handle_bank_transfer_before_payment_from_outside', $posted_data, $entry_data );
-					$arm_entry_values  = maybe_unserialize( $entry_data['arm_entry_value'] );
+					$arm_entry_values  = arm_maybe_unserialize( $entry_data['arm_entry_value'] );
 					if(!empty($arm_entry_values) && isset($arm_entry_values['user_pass'])){
 						unset($arm_entry_values['user_pass']);
 					}
@@ -1270,7 +1270,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 					}
 
 					$user_id       = $entry_data['arm_user_id'];
-					$entry_values  = maybe_unserialize( $entry_data['arm_entry_value'] );
+					$entry_values  = arm_maybe_unserialize( $entry_data['arm_entry_value'] );
 					do_action('arm_payment_log_entry', 'bank_transfer', 'Bank Transfer Entry values', 'armember', $arm_entry_values, $arm_lite_debug_payment_log_id); //phpcs:ignore
 					$payment_cycle = $entry_values['arm_selected_payment_cycle'];
 
@@ -1291,7 +1291,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 						if ( in_array( $plan_id, $arm_user_old_plan ) ) {
 							$is_recurring_payment = $arm_subscription_plans->arm_is_recurring_payment_of_user( $user_id, $plan_id, $payment_mode );
 							if ( $is_recurring_payment ) {
-								$planData      = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+								$planData      = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 								$oldPlanDetail = $planData['arm_current_plan_detail'];
 								if ( ! empty( $oldPlanDetail ) ) {
 									$plan = new ARM_Plan_Lite( 0 );
@@ -1392,7 +1392,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 							);
 						}
 					} else {
-						$err_msg      = esc_html__( 'Selected plan is not valid for bank transfer.', 'armember-membership' );
+						$err_msg      = esc_html__( 'The selected plan is not valid for bank transfer.', 'armember-membership' );
 						$payment_done = array(
 							'status' => false,
 							'error'  => $err_msg,
@@ -1408,8 +1408,8 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			if ( ! empty( $entry_id ) && $entry_id != 0 ) {
 				$entry_data = $wpdb->get_row( $wpdb->prepare("SELECT * FROM `".$ARMemberLite->tbl_arm_entries."` WHERE `arm_entry_id` = %d LIMIT 1",$entry_id), ARRAY_A );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_entries is a table name
 				if ( ! empty( $entry_data ) ) {
-					$entry_data['arm_description'] = maybe_unserialize( $entry_data['arm_description'] );
-					$entry_data['arm_entry_value'] = maybe_unserialize( $entry_data['arm_entry_value'] );
+					$entry_data['arm_description'] = arm_maybe_unserialize( $entry_data['arm_description'] );
+					$entry_data['arm_entry_value'] = arm_maybe_unserialize( $entry_data['arm_entry_value'] );
 				}
 			}
 			return $entry_data;
@@ -1434,28 +1434,28 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 					case 'card_number':
 						$fieldLabel           = ! empty( $gateways_opts['cc_label'] ) ? stripslashes( $gateways_opts['cc_label'] ) : esc_html__( 'Credit Card Number', 'armember-membership' );
 						$fieldDesc            = ! empty( $gateways_opts['cc_desc'] ) ? stripslashes( $gateways_opts['cc_desc'] ) : '';
-						$field_min_length_msg = esc_html__( 'Please enter at least 13 digits.', 'armember-membership' );
-						$field_mx_length_msg  = esc_html__( 'Maximum 19 digits allowed.', 'armember-membership' );
+						$field_min_length_msg = esc_html__( 'Card number must be at least 13 digits.', 'armember-membership' );
+						$field_mx_length_msg  = esc_html__( 'Card number cannot exceed 19 digits.', 'armember-membership' );
 						$fieldAttr            = 'name="' . esc_attr($type) . '[' . esc_attr($key) . ']" minlength="13" data-validation-minlength-message="' . esc_attr($field_min_length_msg) . '" maxlength="19" data-validation-maxlength-message="' . esc_attr($field_mx_length_msg) . '" onkeydown="armvalidatenumber(event);"';
 						$fieldAttr           .= ' data-paymentgateway="' . esc_attr($type) . '" ';
 
 						$err_msg  = $arm_global_settings->common_message['arm_blank_credit_card_number'];
-						$cc_error = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'This field can not be left blank', 'armember-membership' );
+						$cc_error = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'This field cannot be left blank.', 'armember-membership' );
 
 						$fieldAttr .= ' required data-validation-required-message="' . esc_attr($cc_error) . '"';
 						$fieldClass = ' cardNumber';
 
 						$err_msg  = $arm_global_settings->common_message['arm_invalid_credit_card'];
-						$ec_error = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'Please enter correct card details.', 'armember-membership' );
+						$ec_error = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'Please enter valid card details.', 'armember-membership' );
 						$fieldid  = 'arm_' . esc_attr($type) . '_card_number';
 						break;
 					case 'cvc':
 						$fieldLabel          = ! empty( $gateways_opts['cvv_label'] ) ? stripslashes( $gateways_opts['cvv_label'] ) : esc_html__( 'CVV Code', 'armember-membership' );
 						$fieldDesc           = ! empty( $gateways_opts['cvv_desc'] ) ? stripslashes( $gateways_opts['cvv_desc'] ) : '';
-						$field_mx_length_msg = esc_html__( 'Maximum 4 digits allowed.', 'armember-membership' );
+						$field_mx_length_msg = esc_html__( 'CVC cannot exceed 4 digits', 'armember-membership' );
 						$fieldAttr           = 'name="' . esc_attr($type) . '[' . esc_attr($key) . ']"  onkeydown="armvalidatenumber(event);" maxlength="4" data-validation-maxlength-message="' . esc_attr($field_mx_length_msg) . '"';
 						$err_msg             = $arm_global_settings->common_message['arm_blank_cvc_number'];
-						$cvc_error           = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'This field can not be left blank', 'armember-membership' );
+						$cvc_error           = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'This field cannot be left blank.', 'armember-membership' );
 
 						$fieldAttr .= ' required data-validation-required-message="' . esc_attr($cvc_error) . '"';
 						$fieldClass = ' cardCVC';
@@ -1464,10 +1464,10 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 					case 'exp_month':
 						$fieldLabel          = ! empty( $gateways_opts['em_label'] ) ? stripslashes( $gateways_opts['em_label'] ) : esc_html__( 'Expiration Month', 'armember-membership' );
 						$fieldDesc           = ! empty( $gateways_opts['em_desc'] ) ? stripslashes( $gateways_opts['em_desc'] ) : '';
-						$field_mx_length_msg = esc_html__( 'Maximum 2 digits allowed.', 'armember-membership' );
+						$field_mx_length_msg = esc_html__( 'Must not exceed 2 digits.', 'armember-membership' );
 						$fieldAttr           = 'name="' . esc_attr($type) . '[' . esc_attr($key) . ']" onkeydown="armvalidatenumber(event);" maxlength="2" data-validation-maxlength-message="' . esc_attr($field_mx_length_msg) . '" size="2"';
 						$err_msg             = $arm_global_settings->common_message['arm_blank_expire_month'];
-						$em_error            = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'This field can not be left blank', 'armember-membership' );
+						$em_error            = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'This field cannot be left blank.', 'armember-membership' );
 						$fieldAttr          .= ' required data-validation-required-message="' . esc_attr($em_error) . '"';
 						$fieldClass          = ' card-expiry-month';
 						$fieldid             = 'arm_' . esc_attr($type) . '_exp_month';
@@ -1476,10 +1476,10 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 					case 'exp_year':
 						$fieldLabel          = ! empty( $gateways_opts['ey_label'] ) ? stripslashes( $gateways_opts['ey_label'] ) : esc_html__( 'Expiration Year', 'armember-membership' );
 						$fieldDesc           = ! empty( $gateways_opts['ey_desc'] ) ? stripslashes( $gateways_opts['ey_desc'] ) : '';
-						$field_mx_length_msg = esc_html__( 'Maximum 4 digits allowed.', 'armember-membership' );
+						$field_mx_length_msg = esc_html__( 'CVC cannot exceed 4 digits.', 'armember-membership' );
 						$fieldAttr           = 'name="' . esc_attr($type) . '[' . esc_attr($key) . ']" onkeydown="armvalidatenumber(event);" maxlength="4" data-validation-maxlength-message="' . esc_attr($field_mx_length_msg) . '" size="4"';
 						$err_msg             = $arm_global_settings->common_message['arm_blank_expire_year'];
-						$ey_error            = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'This field can not be left blank', 'armember-membership' );
+						$ey_error            = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'This field cannot be left blank.', 'armember-membership' );
 						$fieldAttr          .= ' required data-validation-required-message="' . esc_attr($ey_error) . '"';
 						$fieldClass          = ' card-expiry-year';
 						$fieldid             = 'arm_' . esc_attr($type) . '_exp_year';
@@ -2071,7 +2071,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 					$setups   = $wpdb->get_results( 'SELECT `arm_setup_name`, `arm_setup_modules` FROM `' . $ARMemberLite->tbl_arm_membership_setup . '` ORDER BY `arm_setup_id` DESC', ARRAY_A );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_membership_setup is a table name. No need to Prepare bcz no WHERE Clause in Query
 					if ( ! empty( $setups ) ) {
 						foreach ( $setups as $setup ) {
-							$setupModules = maybe_unserialize( $setup['arm_setup_modules'] );
+							$setupModules = arm_maybe_unserialize( $setup['arm_setup_modules'] );
 							if ( isset( $setupModules['modules']['gateways'] ) && ! empty( $setupModules['modules']['gateways'] ) ) {
 								$diffPG = array_diff( $setupModules['modules']['gateways'], $notAllow );
 								if ( empty( $diffPG ) || count( $diffPG ) <= 1 ) {
@@ -2122,7 +2122,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 					$setups   = $wpdb->get_results( 'SELECT `arm_setup_name`, `arm_setup_modules` FROM `' . $ARMemberLite->tbl_arm_membership_setup . '` ORDER BY `arm_setup_id` DESC', ARRAY_A );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_membership_setup is a table name. No need to Prepare bcz no WHERE Clause in Query
 					if ( ! empty( $setups ) ) {
 						foreach ( $setups as $setup ) {
-							$setupModules = maybe_unserialize( $setup['arm_setup_modules'] );
+							$setupModules = arm_maybe_unserialize( $setup['arm_setup_modules'] );
 							if ( isset( $setupModules['modules']['gateways'] ) && ! empty( $setupModules['modules']['gateways'] ) ) {
 								$diffPG = array_diff( $setupModules['modules']['gateways'], $notAllow );
 								if ( empty( $diffPG ) || count( $diffPG ) <= 1 ) {

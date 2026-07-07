@@ -117,7 +117,7 @@ class ARMLITE_VCExtend {
                         'class' => '',
                         'heading' => esc_html__('Logged in Message','armember-membership'),
                         'param_name' => 'logged_in_message',
-                        'value' => esc_html__('You are already loggedin!', 'armember-membership'),
+                        'value' => esc_html__('You are already Logged-In!', 'armember-membership'),
                         'group' => esc_html__( 'ARMember From', 'armember-membership' ),
                         'dependency' => array(
                             'element' => 'id',
@@ -280,7 +280,7 @@ class ARMLITE_VCExtend {
 
         if($hasaccess) {
             $id = isset($atts['id']) && !empty($atts['id']) ? intval( $atts['id'] ) : '' ;
-            $logged_in_message = isset($atts['logged_in_message']) && !empty($atts['logged_in_message']) ? esc_attr( $atts['logged_in_message']) : esc_html__('You are already loggedin!', 'armember-membership') ;
+            $logged_in_message = isset($atts['logged_in_message']) && !empty($atts['logged_in_message']) ? esc_attr( $atts['logged_in_message']) : esc_html__('You are already Logged-In!', 'armember-membership') ;
             $assign_default_plan = isset($atts['assign_default_plan']) && !empty($atts['assign_default_plan']) ? intval( $atts['assign_default_plan'] ) : 0 ;
             $form_position = isset($atts['form_position']) && !empty($atts['form_position']) ? esc_attr( $atts['form_position'] ) : esc_attr( 'center' ) ;
             $popup = isset($atts['popup']) && !empty($atts['popup']) ? esc_attr( $atts['popup'] ) : 'false' ;
@@ -1006,7 +1006,7 @@ class ARMLITE_VCExtend {
                         'class' => '',
                         'heading' => esc_html__('No Records Message', 'armember-membership'),
                         'param_name' => 'message_no_record',
-                        'value' => esc_html__('There is no any Transactions found', 'armember-membership'),
+                        'value' => esc_html__('No transactions found', 'armember-membership'),
                         'group' => esc_html__( 'ARMember Payment Transaction', 'armember-membership' ),
                     ),
                 )
@@ -1027,7 +1027,7 @@ class ARMLITE_VCExtend {
             $view_invoice_hover_css = isset($atts['view_invoice_hover_css']) && !empty($atts['view_invoice_hover_css']) ? $atts['view_invoice_hover_css'] : esc_html__('View Invoice', 'armember-membership') ;
             $title = isset($atts['title']) && !empty($atts['title']) ? $atts['title'] : esc_html__('Transactions', 'armember-membership') ;
             $per_page = isset($atts['per_page']) && !empty($atts['per_page']) ? $atts['per_page'] : 5 ;
-            $message_no_record = isset($atts['message_no_record']) && !empty($atts['message_no_record']) ? $atts['message_no_record'] : esc_html__('There is no any Transactions found', 'armember-membership') ;
+            $message_no_record = isset($atts['message_no_record']) && !empty($atts['message_no_record']) ? $atts['message_no_record'] : esc_html__('No transactions found', 'armember-membership') ;
 
             return do_shortcode('[arm_member_transaction label="'.$default_field_labels.'" value="'.$default_field_values.'" display_invoice_button="'.$display_invoice_button.'" view_invoice_text="'.$view_invoice_text.'" view_invoice_css="'.$view_invoice_css.'" view_invoice_hover_css="'.$view_invoice_hover_css.'" title="'.$title.'" per_page="'.$per_page.'" message_no_record="'.$message_no_record.'"]');
         } else {
@@ -1635,7 +1635,7 @@ class ARMLITE_VCExtend {
                         'class' => '',
                         'heading' => esc_html__('No Records Message','armember-membership'),
                         'param_name' => 'message_no_record',
-                        'value' => 'There is no membership found.',
+                        'value' => esc_html__( 'No memberships found.','armember-membership' ),
                         'group' => esc_html__( 'ARMember Current Membership', 'armember-membership' ),
                     ),
                 )
@@ -1667,7 +1667,7 @@ class ARMLITE_VCExtend {
             $update_card_css = isset($atts['update_card_css']) && !empty($atts['update_card_css']) ? esc_attr( $atts['update_card_css'] ) : '' ;
             $update_card_hover_css = isset($atts['update_card_hover_css']) && !empty($atts['update_card_hover_css']) ? esc_attr( $atts['update_card_hover_css'] ) : '' ;
             $trial_active = isset($atts['trial_active']) && !empty($atts['trial_active']) ? esc_attr( $atts['trial_active'] ) : esc_attr__('trial active', 'armember-membership') ;
-            $message_no_record = isset($atts['message_no_record']) && !empty($atts['message_no_record']) ? esc_attr( $atts['message_no_record'], 'armember-membership' ) : esc_attr__('There is no membership found.', 'armember-membership') ;
+            $message_no_record = isset($atts['message_no_record']) && !empty($atts['message_no_record']) ? esc_attr( $atts['message_no_record'], 'armember-membership' ) : esc_attr__('No memberships found.', 'armember-membership') ;
 
             return do_shortcode('[arm_membership title="'.$title.'" setup_id="'.$setup_id.'" membership_label="'.$default_field_labels.'" membership_value="'.$default_field_values.'" display_renew_button="'.$display_renew_button.'" renew_text="'.$renew_text.'" renew_css="'.$renew_css.'" renew_hover_css="'.$renew_hover_css.'" make_payment_text="'.$make_payment_text.'" display_cancel_button="'.$display_cancel_button.'" cancel_text="'.$cancel_text.'" cancel_css="'.$cancel_css.'" cancel_hover_css="'.$cancel_hover_css.'" cancel_message="'.$cancel_message.'" display_update_card_button="'.$display_update_card_button.'" update_card_text="'.$update_card_text.'" update_card_css="'.$update_card_css.'" update_card_hover_css="'.$update_card_hover_css.'" trial_active="'.$trial_active.'" message_no_record="'.$message_no_record.'"]');
         } else {

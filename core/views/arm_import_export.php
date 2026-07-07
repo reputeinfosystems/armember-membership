@@ -130,13 +130,13 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 									</div>
 									
 									<div class="arm_info_text_style arm_padding_0 arm_margin_0 arm_margin_top_12">
-									<?php esc_html_e( 'Only ', 'armember-membership' ); ?><span class="file-type">.csv</span> <?php esc_html_e( 'and ', 'armember-membership' ); ?><span class="file-type">.xml</span> <?php esc_html_e( 'files are allowed.', 'armember-membership' ); ?>
+									<?php esc_html_e( 'Only', 'armember-membership' ); ?> <span class="file-type">.csv</span> <?php esc_html_e( 'and', 'armember-membership' ); ?> <span class="file-type">.xml</span> <?php esc_html_e( 'files are allowed.', 'armember-membership' ); ?>
 									</div>
 								</div>
 						</div>
 						<div class="arm_form_field_block arm_margin_top_32">
 							<label class="arm-form-table-label arm_margin_bottom_12"><?php esc_html_e( 'Assign Plan To User', 'armember-membership' ); ?></label>
-							<input type="hidden" id="arm_plan_id" name="plan_id" value="" data-msg-required="<?php esc_attr_e( 'Please select atleast one plan.', 'armember-membership' ); ?>" required/>
+							<input type="hidden" id="arm_plan_id" name="plan_id" value="" data-msg-required="<?php esc_attr_e( 'Please select at least one plan.', 'armember-membership' ); ?>" required/>
 							<dl class="arm_selectbox column_level_dd arm_width_100_pct">
 								<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
 								<dd>
@@ -290,7 +290,7 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 			</div>
 			<div class="popup_content_btn popup_footer arm_padding_top_0 arm_padding_bottom_0">
 				<div class="arm_user_import_password_section arm_padding_top_0">
-					<input type="radio" id="arm_user_password_fixed" name="arm_user_password_create" class="arm_form_field_settings_field_input arm_iradio"  value="set_fix" checked="checked"  onchange="arm_set_user_password('set_fix')" ><label for="arm_user_password_fixed" class="arm_user_import_type"><?php esc_html_e( 'Set fix password', 'armember-membership' ); ?></label>
+					<input type="radio" id="arm_user_password_fixed" name="arm_user_password_create" class="arm_form_field_settings_field_input arm_iradio"  value="set_fix" checked="checked"  onchange="arm_set_user_password('set_fix')" ><label for="arm_user_password_fixed" class="arm_user_import_type"><?php esc_html_e( 'Set fixed password', 'armember-membership' ); ?></label>
 
 					<input type="radio" id="arm_user_password_dynamically" name="arm_user_password_create" class="arm_form_field_settings_field_input arm_iradio"  value="create_dynamic"  onchange="arm_set_user_password('create_dynamic')"><label for="arm_user_password_dynamically"  class="arm_user_import_type"><?php esc_html_e( 'Generate dynamically', 'armember-membership' ); ?></label>
 				

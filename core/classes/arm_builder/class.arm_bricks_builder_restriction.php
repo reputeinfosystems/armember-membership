@@ -46,8 +46,8 @@ if (!class_exists('ARM_lite_bricks_builder_restriction')) {
             $plan_options = array();
             $plan_options = array(
                 'any_plan' => esc_html__( 'Any Plan', 'armember-membership' ),
-                'unregistered' => esc_html__( 'Non Loggedin Users', 'armember-membership' ),
-                'registered' => esc_html__( 'Loggedin Users', 'armember-membership' )
+                'unregistered' => esc_html__( 'Non Logged-In Users', 'armember-membership' ),
+                'registered' => esc_html__( 'Logged-In Users', 'armember-membership' )
             );
             foreach ( $arm_membership_plan as $plan ) {
                 $plan_options[ $plan['arm_subscription_plan_id'] ] = $plan['arm_subscription_plan_name'];

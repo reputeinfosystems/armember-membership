@@ -42,7 +42,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 		function arm_get_default_access_rules() {
 			global $wpdb, $ARMemberLite, $arm_global_settings;
 			$default_access_rules = get_option( 'arm_default_rules' );
-			$default_access_rules = maybe_unserialize( $default_access_rules );
+			$default_access_rules = arm_maybe_unserialize( $default_access_rules );
 			return $default_access_rules;
 		}
 		function arm_update_default_access_rules() {
@@ -54,7 +54,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 
 				$response = array(
 					'type' => 'error',
-					'msg'  => esc_html__( 'There is a error while updating access rules, please try again.', 'armember-membership' ),
+					'msg'  => esc_html__( 'Failed to update the access rules. Please try again.', 'armember-membership' ),
 				);
 				$arm_default_rules = array();
 				$arm_default_rules['arm_allow_content_listing'] = 0;
@@ -106,7 +106,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 				update_option( 'arm_default_rules', $arm_default_rules );
 				$response = array(
 					'type' => 'success',
-					'msg'  => esc_html__( 'Default Rules Saved Successfully.', 'armember-membership' ),
+					'msg'  => esc_html__( 'Default rules saved successfully.', 'armember-membership' ),
 				);
 				if ( isset( $posted_data['action'] ) && $posted_data['action'] == 'arm_update_default_access_rules' ) {
 					echo wp_json_encode( $response );
@@ -133,7 +133,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 		function arm_get_custom_access_rules( $option_name = '' ) {
 			 global $wp, $wpdb, $ARMemberLite, $arm_global_settings, $arm_subscription_plans;
 			$custom_rules = get_option( 'arm_custom_access_rules' );
-			$custom_rules = maybe_unserialize( $custom_rules );
+			$custom_rules = arm_maybe_unserialize( $custom_rules );
 			if ( ! empty( $option_name ) ) {
 				$custom_rules = isset( $custom_rules[ $option_name ] ) ? $custom_rules[ $option_name ] : array();
 			}
@@ -604,11 +604,11 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 						$del_query = $wpdb->query($wpdb->prepare( 'Delete From ' . $wpdb->prefix . 'postmeta where post_id = %d AND meta_key = %s' , $remove_all_plan2[ $key ],'arm_access_plan') ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					}
 					foreach ( $remove_plan as $key => $value ) {
-						$del_query = $wpdb->query('Delete From ' . $wpdb->prefix . 'postmeta where post_id = '. $value);//phpcs:ignore
+						$del_query = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}postmeta WHERE post_id = %d", $value ) );//phpcs:ignore
 					}
 
-					foreach ( $insert_protection_meta as $key => $value ) {
-						$ins_query = $wpdb->query( 'Insert into ' . $wpdb->prefix . 'postmeta (post_id,meta_key,meta_value) VALUES ' . $value );//phpcs:ignore
+					foreach ( $insert_protection_meta as $key => $value ) { 
+						 $ins_query = $wpdb->query( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}postmeta (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", $row['post_id'], $row['meta_key'], $row['meta_value'] ) );//phpcs:ignore
 
 					}
 

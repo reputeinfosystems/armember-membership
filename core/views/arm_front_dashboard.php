@@ -90,7 +90,7 @@
             ARMLITE_HOME_URL
         );
 
-        $arm_panel_user_plan_ids = get_user_meta($user_id, 'arm_user_plan_ids', true);
+        $arm_panel_user_plan_ids = arm_get_user_meta($user_id, 'arm_user_plan_ids', true);
         if($ARMemberLite->is_arm_pro_active) {
             $arm_panel_user_plan_ids = apply_filters('arm_assign_plan_data', $arm_panel_user_plan_ids, $user_id);
         }

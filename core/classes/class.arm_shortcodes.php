@@ -70,7 +70,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			if ( ! empty( $id ) && $id != 0 ) {
 				$user_id = get_current_user_id();
 				if ( ! empty( $user_id ) && $user_id != 0 ) {
-					$user_plans = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+					$user_plans = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 					$user_plans = ! empty( $user_plans ) ? $user_plans : array();
 					if ( in_array( $id, $user_plans ) ) {
 						return do_shortcode( $content );
@@ -99,7 +99,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			if ( ! empty( $id ) && $id != 0 ) {
 				$user_id = get_current_user_id();
 				if ( ! empty( $user_id ) && $user_id != 0 ) {
-					$user_plans = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+					$user_plans = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 					$user_plans = ! empty( $user_plans ) ? $user_plans : array();
 					if ( ! in_array( $id, $user_plans ) ) {
 						return do_shortcode( $content );
@@ -140,10 +140,10 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			$hasaccess       = false;
 			$isLoggedIn      = is_user_logged_in();
 			$current_user_id = get_current_user_id();
-			$arm_user_plan   = get_user_meta( $current_user_id, 'arm_user_plan_ids', true );
+			$arm_user_plan   = arm_get_user_meta( $current_user_id, 'arm_user_plan_ids', true );
 			$arm_user_plan   = ! empty( $arm_user_plan ) ? $arm_user_plan : array();
 			if ( ! empty( $arm_user_plan ) ) {
-				$suspended_plan_ids = get_user_meta( $current_user_id, 'arm_user_suspended_plan_ids', true );
+				$suspended_plan_ids = arm_get_user_meta( $current_user_id, 'arm_user_suspended_plan_ids', true );
 				if ( ! empty( $suspended_plan_ids ) ) {
 					foreach ( $suspended_plan_ids as $suspended_plan_id ) {
 						if ( in_array( $suspended_plan_id, $arm_user_plan ) ) {
@@ -241,14 +241,14 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			$hasaccess = false;
 			if ( is_user_logged_in() ) {
 				$current_user_id = get_current_user_id();
-				$arm_user_plans  = get_user_meta( $current_user_id, 'arm_user_plan_ids', true );
+				$arm_user_plans  = arm_get_user_meta( $current_user_id, 'arm_user_plan_ids', true );
 
 				$hasaccess = false;
 				if ( ! empty( $arm_user_plans ) && is_array( $arm_user_plans ) ) {
 
 					foreach ( $arm_user_plans as $arm_user_plan ) {
 						/* Plans Section */
-						$planData = get_user_meta( $current_user_id, 'arm_user_plan_' . $arm_user_plan, true );
+						$planData = arm_get_user_meta( $current_user_id, 'arm_user_plan_' . $arm_user_plan, true );
 						if ( ! empty( $planData ) ) {
 							$planDetail = $planData['arm_current_plan_detail'];
 							if ( ! empty( $planDetail ) ) {
@@ -300,13 +300,13 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			$hasaccess = false;
 			if ( is_user_logged_in() ) {
 				$current_user_id = get_current_user_id();
-				$arm_user_plans  = get_user_meta( $current_user_id, 'arm_user_plan_ids', true );
+				$arm_user_plans  = arm_get_user_meta( $current_user_id, 'arm_user_plan_ids', true );
 
 				if ( ! empty( $arm_user_plans ) && is_array( $arm_user_plans ) ) {
 					foreach ( $arm_user_plans as $arm_user_plan ) {
 						$hasaccess = false;
 						/* Plans Section */
-						$planData   = get_user_meta( $current_user_id, 'arm_user_plan_' . $arm_user_plan, true );
+						$planData   = arm_get_user_meta( $current_user_id, 'arm_user_plan_' . $arm_user_plan, true );
 						$planDetail = $planData['arm_current_plan_detail'];
 						if ( ! empty( $planDetail ) ) {
 							$plan_info = new ARM_Plan_Lite( 0 );
@@ -375,7 +375,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			/* Check if User is logged in */
 			if ( is_user_logged_in() ) {
 				$user_id       = $current_user->ID;
-				$arm_user_plan = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+				$arm_user_plan = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 				$arm_user_plan = ! empty( $arm_user_plan ) ? $arm_user_plan : array();
 				/* Plans Section */
 				if ( strpos( $plan, ',' ) ) {
@@ -435,7 +435,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$opts = $posted_data; //phpcs:ignore
 						$temp_data = $wpdb->get_row( $wpdb->prepare("SELECT * FROM `".$ARMemberLite->tbl_arm_member_templates."` WHERE `arm_id`=%d AND `arm_type`=%s",$opts['id'],$opts['type']) );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_member_templates is a table name
 						if ( ! empty( $temp_data ) ) {
-							$temp_data->arm_options   = isset( $temp_data->arm_options ) ? maybe_unserialize( $temp_data->arm_options ) : array();
+							$temp_data->arm_options   = isset( $temp_data->arm_options ) ? arm_maybe_unserialize( $temp_data->arm_options ) : array();
 							$opts['template_options'] = $temp_data->arm_options;
 							$opts['current_page']     = ( isset( $opts['current_page'] ) ) ? $opts['current_page'] : 1;
 							$opts['pagination']       = ( isset( $opts['template_options']['pagination'] ) ) ? $opts['template_options']['pagination'] : 'numeric';
@@ -551,7 +551,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 				$id = intval($id);
 				$content = '';
 				if ( $type == 'profile' ) {
-					$user_plans    = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+					$user_plans    = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 					$temp_id_admin = $wpdb->get_row( $wpdb->prepare('SELECT `arm_id` FROM `'.$ARMemberLite->tbl_arm_member_templates.'` WHERE `arm_enable_admin_profile` = %d ORDER BY `arm_id` ASC LIMIT 1',1) );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_member_templates is a table name
 
 					$admin_template_data = array();
@@ -593,7 +593,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 				}
 				if ( ! empty( $temp_data ) ) {
 
-					$temp_data->arm_options   = isset( $temp_data->arm_options ) ? maybe_unserialize( $temp_data->arm_options ) : array();
+					$temp_data->arm_options   = isset( $temp_data->arm_options ) ? arm_maybe_unserialize( $temp_data->arm_options ) : array();
 					$opts['template_options'] = $temp_data->arm_options;
 					$opts['pagination']       = ( isset( $opts['template_options']['pagination'] ) ) ? $opts['template_options']['pagination'] : 'numeric';
 					$opts['per_page']         = ( isset( $opts['template_options']['per_page_users'] ) ) ? $opts['template_options']['per_page_users'] : 10;
@@ -789,7 +789,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 				'title'             => esc_html__( 'Transactions', 'armember-membership' ),
 				'current_page'      => 0,
 				'per_page'          => 5,
-				'message_no_record' => esc_html__( 'There is no any Transactions found', 'armember-membership' ),
+				'message_no_record' => esc_html__( 'No transactions found', 'armember-membership' ),
 				'label'             => 'invoice_id,plan,payment_gateway,payment_type,transaction_status,arm_payment_expand',
 				'value'             => $default_transaction_fields,
 				'arm_member_panel'=> 0
@@ -1135,7 +1135,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						if ( $has_amount ) {
 							$content  .= "<td data-label='".esc_attr($l_amount)."' id='arm_transaction_list_item_td_" . esc_attr($r->arm_transaction_id) . "' data-field_data='amount'>";
 							$plan_amt = '';
-							$extraVars = ( ! empty( $r->arm_extra_vars ) ) ? maybe_unserialize( $r->arm_extra_vars ) : array();
+							$extraVars = ( ! empty( $r->arm_extra_vars ) ) ? arm_maybe_unserialize( $r->arm_extra_vars ) : array();
 							if ( ! empty( $extraVars ) && ! empty( $extraVars['plan_amount'] ) && $extraVars['plan_amount'] != 0 && $extraVars['plan_amount'] != $r->arm_amount ) {
 								$content .= '<span class="arm_transaction_list_plan_amount">' . $arm_payment_gateways->arm_prepare_amount( $r->arm_currency, $extraVars['plan_amount'] ) . '</span>';
 								$plan_amt = $arm_payment_gateways->arm_prepare_amount( $r->arm_currency, $extraVars['plan_amount'] );
@@ -1172,7 +1172,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						}
 						else{
 							$arm_plan_amt = '';
-							$extraVars = ( ! empty( $r->arm_extra_vars ) ) ? maybe_unserialize( $r->arm_extra_vars ) : array();
+							$extraVars = ( ! empty( $r->arm_extra_vars ) ) ? arm_maybe_unserialize( $r->arm_extra_vars ) : array();
 							if ( ! empty( $extraVars ) && ! empty( $extraVars['plan_amount'] ) && $extraVars['plan_amount'] != 0 && $extraVars['plan_amount'] != $r->arm_amount ) {
 								$arm_plan_amt .= '<span class="arm_transaction_list_plan_amount">' . $arm_payment_gateways->arm_prepare_amount( $r->arm_currency, $extraVars['plan_amount'] ) . '</span>';
 								$plan_amt = $arm_payment_gateways->arm_prepare_amount( $r->arm_currency, $extraVars['plan_amount'] );
@@ -1682,7 +1682,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					break;
 				case 'transactions':
 					$tabTitle     = esc_html__( 'Transaction History', 'armember-membership' );
-					$noRecordText = esc_html__( 'There is no any Transactions found', 'armember-membership' );
+					$noRecordText = esc_html__( 'No transactions found', 'armember-membership' );
 					$tabContent   = do_shortcode( '[arm_member_transaction user_id="' . $user_id . '" title="" message_no_record="' . $noRecordText . '"]' );
 					break;
 				case 'close_account':
@@ -1744,7 +1744,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 				$dbFormFields = $arm_member_forms->arm_get_db_form_fields( true );
 				$user_id      = get_current_user_id();
 				$user         = get_user_by( 'id', $user_id );
-				$user_metas   = get_user_meta( $user_id );
+				$user_metas   = arm_get_user_meta( $user_id );
 				$role_names   = $wp_roles->get_names();
 				$content      = '';
 				$content     .= '<div class="arm_view_profile_wrapper arm_account_detail_block">';
@@ -1803,7 +1803,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					foreach ( $social_fields as $sfield ) {
 						if ( isset( $socialProfileFields[ $sfield ] ) ) {
 							$spfMetaKey = 'arm_social_field_' . $sfield;
-							$sfValue    = get_user_meta( $user_id, $spfMetaKey, true );
+							$sfValue    = arm_get_user_meta( $user_id, $spfMetaKey, true );
 							$content   .= '<tr class="form-field">';
 							$content   .= '<th class="arm-form-table-label">' . $socialProfileFields[ $sfield ] . ' :</th>';
 							$content   .= '<td class="arm-form-table-content">' . $sfValue . '</td>';
@@ -1866,7 +1866,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$setform_settings = $wpdb->get_row( $wpdb->prepare("SELECT `arm_form_id`, `arm_form_type`, `arm_form_settings`, `arm_set_name` FROM `".$ARMemberLite->tbl_arm_forms."` WHERE `arm_form_type`=%s AND `arm_is_default`='1' ORDER BY arm_form_id DESC LIMIT 1" ,'login'));//phpcs:ignore --Reason $ARMemberLite->tbl_arm_forms is a table name
 					}
 				}
-				$set_style_option  = maybe_unserialize( $setform_settings->arm_form_settings );
+				$set_style_option  = arm_maybe_unserialize( $setform_settings->arm_form_settings );
 				$form_style        = $set_style_option['style'];
 				$form_style_class  = ' arm_form_close_account';
 				$form_style_class .= ' arm_form_layout_' . $form_style['form_layout'];
@@ -1947,7 +1947,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 				$content .= '<div class="arm-df__form-field">';
 				$content .= '<div class="arm-df__form-field-wrap_password arm-controls arm-df__form-field-wrap">';
 				// $content .= '<label class="arm-df__label-text" for="arm_close_account_pass_' . $formRandomID . '">' . $passwordFieldLabel . '</label>';
-				$content .= '<input name="pass" id="arm_close_account_pass_' . esc_attr($formRandomID) . '" type="password" autocomplete="off" value="" class="arm-df__form-control" required="required" data-validation-required-message="' . ( esc_html__( 'Password can not be left blank', 'armember-membership' ) ) . '" data-msg-invalid="' . ( esc_html__( 'Please enter valid data', 'armember-membership' ) ) . '">';
+				$content .= '<input name="pass" id="arm_close_account_pass_' . esc_attr($formRandomID) . '" type="password" autocomplete="off" value="" class="arm-df__form-control" required="required" data-validation-required-message="' . ( esc_html__( 'Password cannot be left blank', 'armember-membership' ) ) . '" data-msg-invalid="' . ( esc_html__( 'Please enter valid data', 'armember-membership' ) ) . '">';
 				if ( $form_style['form_layout'] == 'writer_border' ) {
 					$content .= '<div class="arm-notched-outline">';
 					$content .= '<div class="arm-notched-outline__leading"></div>';
@@ -2074,7 +2074,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					'setup_id'                   => '',
 					'trial_active'               => esc_html__( 'trial active', 'armember-membership' ),
 					'cancel_message'             => esc_html__( 'Your Subscription has been cancelled.', 'armember-membership' ),
-					'message_no_record'          => esc_html__( 'There is no membership found.', 'armember-membership' ),
+					'message_no_record'          => esc_html__( 'No memberships found.', 'armember-membership' ),
 					'arm_member_panel'=> 0
 				),
 				$atts,
@@ -2114,17 +2114,17 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					$setup_data = $wpdb->get_row( 'SELECT * FROM `'.$ARMemberLite->tbl_arm_membership_setup.'` ORDER BY `arm_setup_id`', ARRAY_A );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_membership_setup is a table name
 					if ( ! empty( $setup_data ) ) {
 						$setup_id                        = isset( $setup_data['arm_setup_id'] ) ? $setup_data['arm_setup_id'] : 0;
-						$setup_data['arm_setup_modules'] = maybe_unserialize( $setup_data['arm_setup_modules'] );
+						$setup_data['arm_setup_modules'] = arm_maybe_unserialize( $setup_data['arm_setup_modules'] );
 						$setup_plans                     = isset( $setup_data['arm_setup_modules']['modules']['plans'] ) ? $setup_data['arm_setup_modules']['modules']['plans'] : array();
 					} else {
 						$setup_plans = $arm_subscription_plans->arm_get_all_active_subscription_plans();
 					}
 				}
 				$user_id    = get_current_user_id();
-				$user_plans = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+				$user_plans = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 				$user_plans = ! empty( $user_plans ) ? $user_plans : array();
 
-				$user_future_plans = get_user_meta( $user_id, 'arm_user_future_plan_ids', true );
+				$user_future_plans = arm_get_user_meta( $user_id, 'arm_user_future_plan_ids', true );
 				$user_future_plans = ! empty( $user_future_plans ) ? $user_future_plans : array();
 				$content           = apply_filters( 'arm_before_current_membership_shortcode_content', $content, $atts );
 				$content          .= "<div class='arm_current_membership_container_loader_img'>";
@@ -2284,7 +2284,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 
 				if ( in_array( 'current_membership_remaining_occurence', $labels ) ) {
 					$label_key             = array_search( 'current_membership_remaining_occurence', $labels );
-					$l_remaining_occurence = ! empty( $values[ $label_key ] ) ? $values[ $label_key ] : esc_html__( 'Remaining Occurence', 'armember-membership' );
+					$l_remaining_occurence = ! empty( $values[ $label_key ] ) ? $values[ $label_key ] : esc_html__( 'Remaining Occurrence', 'armember-membership' );
 					if(!empty($atts['arm_member_panel']) && !empty($arm_panel_labels) && !in_array('current_membership_remaining_occurence',$arm_panel_labels))
 					{
 						$has_remaining_occurence = false;
@@ -2406,7 +2406,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					$sr_no                = 0;
 					$change_plan_to_array = array();
 					foreach ( $user_all_plans as $user_plan ) {
-						$planData      = get_user_meta( $user_id, 'arm_user_plan_' . $user_plan, true );
+						$planData      = arm_get_user_meta( $user_id, 'arm_user_plan_' . $user_plan, true );
 						$curPlanDetail = $planData['arm_current_plan_detail'];
 						$start_plan    = $planData['arm_start_plan'];
 						if ( ! empty( $planData['arm_started_plan_date'] ) && $planData['arm_started_plan_date'] <= $start_plan ) {
@@ -2437,7 +2437,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						}
 						$arm_plan_status = '<span class="arm_activated_plan">' . esc_html__( 'Active', 'armember-membership' ) . '</span>';
 						$arm_plan_is_suspended = '';
-						$suspended_plan_ids    = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+						$suspended_plan_ids    = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
 						$suspended_plan_ids    = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 						if ( ! empty( $suspended_plan_ids ) ) {
 							if ( in_array( $user_plan, $suspended_plan_ids ) ) {
@@ -3001,7 +3001,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			$form_settings = array();
 			if ( isset( $set_id ) && $set_id != '' ) {
 				$setform_settings = $wpdb->get_row( $wpdb->prepare("SELECT `arm_form_id`, `arm_form_type`, `arm_form_settings` FROM `".$ARMemberLite->tbl_arm_forms."` WHERE `arm_form_id` = %d AND `arm_form_type`=%s ORDER BY arm_form_id DESC LIMIT 1",$set_id,'login' ));//phpcs:ignore --Reason $ARMemberLite->tbl_arm_forms is a table name
-				$set_style_option = maybe_unserialize( $setform_settings->arm_form_settings );
+				$set_style_option = arm_maybe_unserialize( $setform_settings->arm_form_settings );
 				if ( isset( $set_style_option['style'] ) ) {
 					$form_settings['style'] = $set_style_option['style'];
 				}
@@ -3045,8 +3045,8 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 				if ( isset( $_POST['pass'] ) ) { //phpcs:ignore
 					if ( $user && wp_check_password( $_POST['pass'], $user->data->user_pass, $user->ID ) ) { //phpcs:ignore
 						arm_set_member_status( $user->ID, 2, 1 );
-						$plan_ids             = get_user_meta( $user->ID, 'arm_user_plan_ids', true );
-						$stop_future_plan_ids = get_user_meta( $user->ID, 'arm_user_future_plan_ids', true );
+						$plan_ids             = arm_get_user_meta( $user->ID, 'arm_user_plan_ids', true );
+						$stop_future_plan_ids = arm_get_user_meta( $user->ID, 'arm_user_future_plan_ids', true );
 						$defaultPlanData      = $arm_subscription_plans->arm_default_plan_array();
 
 						if ( ! empty( $stop_future_plan_ids ) && is_array( $stop_future_plan_ids ) ) {
@@ -3060,12 +3060,12 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 
 							foreach ( $plan_ids as $plan_id ) {
-								$planData                       = get_user_meta( $user->ID, 'arm_user_plan_' . $plan_id, true );
+								$planData                       = arm_get_user_meta( $user->ID, 'arm_user_plan_' . $plan_id, true );
 								$userPlanDatameta               = ! empty( $planData ) ? $planData : array();
 								$planData                       = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 								$plan_detail                    = $planData['arm_current_plan_detail'];
 								$planData['arm_cencelled_plan'] = 'yes';
-								update_user_meta( $user->ID, 'arm_user_plan_' . $plan_id, $planData );
+								arm_update_user_meta( $user->ID, 'arm_user_plan_' . $plan_id, $planData );
 								if ( ! empty( $plan_detail ) ) {
 									$planObj = new ARM_Plan_Lite( 0 );
 									$planObj->init( (object) $plan_detail );
@@ -3364,7 +3364,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			$return_content = '';
 			if ( is_user_logged_in() ) {
 				$user_id        = get_current_user_id();
-				$return_content = get_user_meta( $user_id, 'first_name', true ) . ' ' . get_user_meta( $user_id, 'last_name', true );
+				$return_content = arm_get_user_meta( $user_id, 'first_name', true ) . ' ' . arm_get_user_meta( $user_id, 'last_name', true );
 			}
 			return $return_content;
 		}
@@ -3378,10 +3378,10 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			$user_current_plan_arr = array();
 			if ( is_user_logged_in() ) {
 				$user_id       = get_current_user_id();
-				$all_plans_ids = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+				$all_plans_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 				if ( ! empty( $all_plans_ids ) ) {
 					foreach ( $all_plans_ids as $single_plans_id ) {
-						$single_plan_details = get_user_meta( $user_id, 'arm_user_plan_' . $single_plans_id, true );
+						$single_plan_details = arm_get_user_meta( $user_id, 'arm_user_plan_' . $single_plans_id, true );
 						if ( ! empty( $single_plan_details ) && isset( $single_plan_details['arm_current_plan_detail']['arm_subscription_plan_name'] ) && $single_plan_details['arm_current_plan_detail']['arm_subscription_plan_name'] != '' ) {
 							$plan_name               = $single_plan_details['arm_current_plan_detail']['arm_subscription_plan_name'];
 							$user_current_plan_arr[] = "<span class='arm_plan_" . strtolower( str_replace( ' ', '_', $plan_name ) ) . "' >" . $plan_name . '</span>';
@@ -3431,7 +3431,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$return_content = get_avatar( $user_object->user_email );
 						break;
 					default:
-						$return_content    = get_user_meta( $user_id, $meta_name, true );
+						$return_content    = arm_get_user_meta( $user_id, $meta_name, true );
 						$arm_filed_options = $arm_member_forms->arm_get_field_option_by_meta( $meta_name );
 
 						if(empty($arm_filed_options))
@@ -3439,7 +3439,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 							if(empty($arm_check_dbFormFields))
 							{
 	                            				$presetFormFields = get_option('arm_preset_form_fields', '');
-	                           				$arm_check_dbFormFields = maybe_unserialize($presetFormFields);
+	                           				$arm_check_dbFormFields = arm_maybe_unserialize($presetFormFields);
 							}
                             				$arm_filed_options = !empty($arm_check_dbFormFields['other'][$meta_name]) ? $arm_check_dbFormFields['other'][$meta_name] : array();
                         			}
@@ -3519,7 +3519,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 				if ( isset( $atts['plan_id'] ) && ! empty( $atts['plan_id'] ) ) {
 					$plan_id = $atts['plan_id'];
 
-					$user_plan_ids = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+					$user_plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 					$user_plan_ids = ! empty( $user_plan_ids ) ? $user_plan_ids : array();
 					$date_format   = $arm_global_settings->arm_get_wp_date_format();
 					if ( in_array( $plan_id, $user_plan_ids ) ) {
@@ -3527,7 +3527,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						if ( isset( $atts['plan_info'] ) && ! empty( $atts['plan_info'] ) ) {
 							$plan_info        = trim( $atts['plan_info'] );
 							$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-							$planData         = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+							$planData         = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 							$userPlanDatameta = ! empty( $planData ) ? $planData : array();
 							$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -3584,7 +3584,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 									if ( $planData['arm_payment_cycle'] != '' ) {
 										$user_selected_payment_cycle = $planData['arm_payment_cycle'];
 										$plan_detail                 = $planData['arm_current_plan_detail'];
-										$plan_options                = maybe_unserialize( $plan_detail['arm_subscription_plan_options'] );
+										$plan_options                = arm_maybe_unserialize( $plan_detail['arm_subscription_plan_options'] );
 										$payment_cycle_data          = $plan_options['payment_cycles'];
 
 										if ( ! empty( $payment_cycle_data ) ) {

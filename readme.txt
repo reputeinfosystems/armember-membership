@@ -5,7 +5,7 @@ Donate link: https://www.armemberplugin.com/product.php?rdt=t16
 Requires at least: 4.0
 Tested up to: 7.0
 Requires PHP: 5.6
-Stable tag: 5.7
+Stable tag: 5.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,12 @@ Please follow the steps for installation:
 11. Signup Form
 
 == Changelog ==
+= 5.8 =
+* Updated: Oxygen builder integration support.
+* Fixed: Added compatibility with Wordfence reCAPTCHA for login security.
+* Fixed: Minor design issue of WP Editor and Password field hide/show icon.
+* Other minor bug fixes.
+
 = 5.7 =
 * Improved: Compatibility with WordPress 7.0
 * Other minor bug fixes.

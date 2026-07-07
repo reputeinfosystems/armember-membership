@@ -61,7 +61,7 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 								$t_id              = $ptemp['arm_id'];
 								$t_title           = !empty($ptemp['arm_title']) ? stripslashes_deep($ptemp['arm_title']) : '';
 								$t_type            = $ptemp['arm_type'];
-								$t_options         = maybe_unserialize( $ptemp['arm_options'] );
+								$t_options         = arm_maybe_unserialize( $ptemp['arm_options'] );
 								$t_link_attr       = ' data-id="' . esc_attr($t_id) . '" data-type="' . esc_attr($t_type) . '" ';
 								$t_container_class = '';
 								$t_img_url         = MEMBERSHIPLITE_VIEWS_URL . '/templates/' . $ptemp['arm_slug'] . '.svg';
@@ -181,7 +181,7 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 								$t_id              = $dtemp['arm_id'];
 								$t_title           = !empty($dtemp['arm_title']) ? stripslashes_deep($dtemp['arm_title']) : '';
 								$t_type            = $dtemp['arm_type'];
-								$t_options         = maybe_unserialize( $dtemp['arm_options'] );
+								$t_options         = arm_maybe_unserialize( $dtemp['arm_options'] );
 								$t_link_attr       = 'data-id="' . esc_attr($t_id) . '" data-type="' . esc_attr($t_type) . '"';
 								$t_container_class = '';
 								$t_img_url         = MEMBERSHIPLITE_VIEWS_URL . '/templates/' . $dtemp['arm_slug'] . '.png';
@@ -304,7 +304,7 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 		<?php
 
 		/* **********./Begin Bulk Delete Member Popup/.********** */
-		$arm_template_change_message_popup_content  = '<span class="arm_confirm_text">' . esc_html__( 'Plese confirm that while changing Template, all colors will be reset to default.', 'armember-membership' );
+		$arm_template_change_message_popup_content  = '<span class="arm_confirm_text">' . esc_html__( 'Please confirm that while changing Template, all colors will be reset to default.', 'armember-membership' );
 		$arm_template_change_message_popup_content .= '<input type="hidden" value="false" id="bulk_delete_flag"/>';
 		$arm_template_change_message_popup_arg      = array(
 			'id'             => 'arm_template_change_message',

@@ -40,7 +40,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$arm_lite_newdbversion = get_option( 'armlite_version' );
 			}
 
-			if ( version_compare( $arm_lite_newdbversion, '5.7', '<' ) ) {
+			if ( version_compare( $arm_lite_newdbversion, '5.8', '<' ) ) {
 				$path = MEMBERSHIPLITE_VIEWS_DIR . '/upgrade_latest_data.php';
 				include $path;
 			}
@@ -132,7 +132,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				if ( $type == 'profile' ) {
 
 					if ( $update_meta != 'no' ) {
-						update_user_meta( $user_id, 'avatar', $file );
+						arm_update_user_meta( $user_id, 'avatar', $file );
 						do_action( 'arm_upload_bp_avatar', $user_id );
 					}
 
@@ -143,7 +143,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 					$thumb_h = 320;
 
 					if ( $update_meta != 'no' ) {
-						update_user_meta( $user_id, 'profile_cover', $file );
+						arm_update_user_meta( $user_id, 'profile_cover', $file );
 						do_action( 'arm_upload_bp_profile_cover', $user_id );
 					}
 				}
@@ -258,12 +258,12 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 
 				if ( $type == 'profile' ) {
 					if ( $update_meta != 'no' ) {
-						update_user_meta( $user_id, 'avatar', $file );
+						arm_update_user_meta( $user_id, 'avatar', $file );
 						do_action( 'arm_after_upload_bp_avatar', $user_id );
 					}
 				} elseif ( $type == 'cover' ) {
 					if ( $update_meta != 'no' ) {
-						update_user_meta( $user_id, 'profile_cover', $file );
+						arm_update_user_meta( $user_id, 'profile_cover', $file );
 						do_action( 'arm_after_upload_bp_profile_cover', $user_id );
 					}
 				}
@@ -453,7 +453,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 			$response  = '';
 			$userID    = get_current_user_id();
 			if ( $file_name && ! empty( $userID ) && $userID != 0 ) {
-				// $oldCover = get_user_meta($userID, 'profile_cover', true);
+				// $oldCover = arm_get_user_meta($userID, 'profile_cover', true);
 				$armcontent_length = !empty( $_SERVER['CONTENT_LENGTH'] ) ? $_SERVER['CONTENT_LENGTH'] : ''; //phpcs:ignore
 				$content_length = (int) $armcontent_length;
 				$file_size_new  = number_format( ( $content_length / 1048576 ), 2, '.', '' );
@@ -613,7 +613,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 					$valid_data = $this->arm_check_for_invalid_data( $file_content, $arm_files_arr );
 
 					if ( ! $valid_data ) {
-						echo "<p class='error_upload_size'>" . esc_html__( 'The file could not be uploaded due to security reason as it contains malicious code', 'armember-membership' ) . '</p>';
+						echo "<p class='error_upload_size'>" . esc_html__( 'File upload failed for security reasons: malicious code detected.', 'armember-membership' ) . '</p>';
 						header( 'HTTP/1.0 401 Unauthorized' );
 						die;
 					} else {
@@ -621,7 +621,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 					}
 				}
 			} else {
-				echo "<p class='error_upload_size'>" . esc_html__( 'This file could not be processed due file limit exceeded.', 'armember-membership' ) . '</p>';
+				echo "<p class='error_upload_size'>" . esc_html__( 'This file could not be processed because the file size limit was exceeded.', 'armember-membership' ) . '</p>';
 				die;
 			}
 			return $is_valid_file;
@@ -691,7 +691,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 						armlite_formContainer = $('#armlite-deactivate-form-<?php echo esc_attr( 'armember-membership' ); ?>'),
 						armlite_deactivated = true,
 						armlite_detailsStrings = {
-							'setup-difficult' : '<?php echo esc_html__( 'What was the dificult part?', 'armember-membership' ); ?>',
+							'setup-difficult' : '<?php echo esc_html__( 'What was the difficult part?', 'armember-membership' ); ?>',
 							'docs-improvement' : '<?php echo esc_html__( 'What can we describe more?', 'armember-membership' ); ?>',
 							'features' : '<?php echo esc_html__( 'How could we improve?', 'armember-membership' ); ?>',
 							'better-plugin' : '<?php echo esc_html__( 'Can you mention it?', 'armember-membership' ); ?>',

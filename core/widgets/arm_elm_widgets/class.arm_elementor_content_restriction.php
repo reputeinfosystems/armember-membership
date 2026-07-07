@@ -13,8 +13,27 @@ class ARM_Elementor_Content_Restriction extends ARM_Elementor {
 		add_action( 'elementor/widget/render_content', array( $this, 'arm_elementor_render_content' ), 10, 2 );
 		add_action( 'elementor/frontend/section/should_render', array( $this, 'arm_elementor_should_render' ), 10, 2 );
 		add_action( 'elementor/frontend/container/should_render', array( $this, 'arm_elementor_should_render' ), 10, 2 );
+
+		add_filter('arm_additional_render_content', array($this, 'arm_content_elementor_render_content'), 999, 2);
 		
 	}
+
+	 function arm_content_elementor_render_content($content, $post_id){
+        $is_elementor = get_post_meta($post_id, '_elementor_edit_mode', true) === 'builder';
+
+        // FORCE ELEMENTOR RENDER
+        if ($is_elementor && class_exists('\Elementor\Plugin')) {
+
+            $document = \Elementor\Plugin::$instance->documents->get($post_id);
+
+            if ($document) {
+                ob_start();
+                $document->print_elements_with_wrapper();
+                $content = ob_get_clean();
+            }
+        }
+        return $content;
+    }
     
 	// Register controls to sections and widgets
 	protected function register_controls() {
@@ -32,8 +51,8 @@ class ARM_Elementor_Content_Restriction extends ARM_Elementor {
 	$plan_list = array(
 		'any_plan' => esc_html__( 'Any Plan', 'armember-membership' ),
 		'-2' => esc_html__( 'User Having No Plan', 'armember-membership' ),
-		'unregistered' => esc_html__( 'Non Loggedin Users', 'armember-membership' ),
-		'registered' => esc_html__( 'Loggedin Users', 'armember-membership' )
+		'unregistered' => esc_html__( 'Non Logged-In Users', 'armember-membership' ),
+		'registered' => esc_html__( 'Logged-In Users', 'armember-membership' )
 	);
 		if( !empty( $all_active_plans ) && is_array( $all_active_plans ) )
 		{

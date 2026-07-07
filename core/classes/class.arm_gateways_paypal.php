@@ -20,7 +20,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 			$plan_id = $plan->ID;
 
 			if ( empty( $planData ) ) {
-				$planData = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+				$planData = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 			}
 
 			$payment_mode = ! empty( $planData['arm_payment_mode'] ) ? $planData['arm_payment_mode'] : '';
@@ -56,7 +56,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 				// $ARMemberLite->arm_write_response( 'Error in Paypal Result => ' . wp_json_encode( $PayPalResult ) );
 				if ( ! is_wp_error( $PayPalResult ) && isset( $PayPalResult['ACK'] ) && strtolower( $PayPalResult['ACK'] ) == 'success' ) {
 					$planData['arm_subscr_id'] = '';
-					update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $planData );
+					arm_update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $planData );
 				}
 			} catch ( Exception $e ) {
 				do_action('arm_payment_log_entry', 'paypal', 'cancel subscription error', 'armember', $e->getMessage(), $arm_lite_debug_payment_log_id);
@@ -133,7 +133,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 						$user_email     = $entry_data['arm_entry_email'];
 						$form_id        = $entry_data['arm_form_id'];
 						$user_id        = $entry_data['arm_user_id'];
-						$entry_values   = maybe_unserialize( $entry_data['arm_entry_value'] );
+						$entry_values   = arm_maybe_unserialize( $entry_data['arm_entry_value'] );
 						$return_url     = $entry_values['setup_redirect'];
 						$user_detail    = get_userdata( $user_id );
 						$arm_first_name = isset($user_detail->first_name) ? $user_detail->first_name : '';
@@ -152,7 +152,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 						$plan     = new ARM_Plan_Lite( $plan_id );
 
 						$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-						$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+						$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 						$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 						$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -213,7 +213,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 
 							$remained_days = 0;
 							if ( $plan_action == 'renew_subscription' ) {
-								$user_plan_data   = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+								$user_plan_data   = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 								$plan_expiry_date = $user_plan_data['arm_expire_plan'];
 								$now              = strtotime( current_time( 'mysql' ) );
 
@@ -265,7 +265,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 							$allow_trial = true;
 							if ( is_user_logged_in() ) {
 								$user_id   = get_current_user_id();
-								$user_plan = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+								$user_plan = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 								if ( ! empty( $user_plan ) ) {
 									$allow_trial = false;
 								}
@@ -547,7 +547,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 									'plan_amount' => $_POST['mc_gross'],	 //phpcs:ignore
 									'paid_amount' => $_POST['mc_gross'],	 //phpcs:ignore
 								);
-								$entry_values      = maybe_unserialize( $entry_data['arm_entry_value'] );
+								$entry_values      = arm_maybe_unserialize( $entry_data['arm_entry_value'] );
 								$payment_mode      = $entry_values['arm_selected_payment_mode'];
 								$payment_cycle     = $entry_values['arm_selected_payment_cycle'];
 								$arm_user_old_plan = ( isset( $entry_values['arm_user_old_plan'] ) && ! empty( $entry_values['arm_user_old_plan'] ) ) ? explode( ',', $entry_values['arm_user_old_plan'] ) : array();
@@ -600,7 +600,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 													if ( in_array( $entry_plan, $arm_user_old_plan ) ) {
 														$is_recurring_payment = $arm_subscription_plans->arm_is_recurring_payment_of_user( $user_id, $entry_plan, $payment_mode );
 														if ( $is_recurring_payment ) {
-															$planData      = get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
+															$planData      = arm_get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
 															$oldPlanDetail = $planData['arm_current_plan_detail'];
 															if ( ! empty( $oldPlanDetail ) ) {
 																$plan = new ARM_Plan_Lite( 0 );
@@ -631,7 +631,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 												}
 
 												$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-												$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
+												$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
 												$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 												$userPlanData     = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -655,14 +655,14 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 														if ( $arm_payment_type == 'subscription' ) {
 
 															$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-															$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
+															$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
 															$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 															$userPlanData     = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
 															$userPlanData['arm_subscr_id'] = $arm_token;
-															update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
+															arm_update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
 														}
-														update_user_meta( $user_id, 'arm_entry_id', $entry_id );
+														arm_update_user_meta( $user_id, 'arm_entry_id', $entry_id );
 
 													}
 												} else {
@@ -677,13 +677,13 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 															$now                     = current_time( 'mysql' );
 															$arm_last_payment_status = $wpdb->get_var( $wpdb->prepare( 'SELECT `arm_transaction_status` FROM `' . $ARMemberLite->tbl_arm_payment_log . '` WHERE `arm_user_id`=%d AND `arm_plan_id`=%d AND `arm_created_date`<=%s ORDER BY `arm_log_id` DESC LIMIT 0,1', $user_id, $entry_plan, $now ) );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
 
-															$old_plan_ids = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+															$old_plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 															$old_plan_ids = ! empty( $old_plan_ids ) ? $old_plan_ids : array();
 														if ( ! empty( $old_plan_ids ) ) {
 															$old_plan_id   = isset( $old_plan_ids[0] ) ? $old_plan_id[0] : 0;
 															$oldPlanDetail = array();
 															if ( ! empty( $old_plan_id ) ) {
-																$oldPlanData      = get_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, true );
+																$oldPlanData      = arm_get_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, true );
 																$oldPlanData      = ! empty( $oldPlanData ) ? $oldPlanData : array();
 																$oldPlanData      = shortcode_atts( $defaultPlanData, $oldPlanData );
 																$oldPlanDetail    = $oldPlanData['arm_current_plan_detail'];
@@ -715,20 +715,20 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 																		$is_update_plan                      = false;
 																		$oldPlanData['arm_subscr_effective'] = $subscr_effective;
 																		$oldPlanData['arm_change_plan_to']   = $entry_plan;
-																		update_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, $oldPlanData );
+																		arm_update_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, $oldPlanData );
 																	}
 																}
 															}
 														}
 
-														update_user_meta( $user_id, 'arm_entry_id', $entry_id );
+														arm_update_user_meta( $user_id, 'arm_entry_id', $entry_id );
 														$userPlanData['arm_user_gateway'] = 'paypal';
 
 														if ( ! empty( $arm_token ) ) {
 															$userPlanData['arm_subscr_id'] = $arm_token;
 														}
 
-														update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
+														arm_update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
 
 														if ( $is_update_plan ) {
 															$arm_subscription_plans->arm_update_user_subscription( $user_id, $entry_plan, '', true, $arm_last_payment_status );
@@ -759,7 +759,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 												if ( in_array( $entry_plan, $arm_user_old_plan ) ) {
 													$is_recurring_payment = $arm_subscription_plans->arm_is_recurring_payment_of_user( $user_id, $entry_plan, $payment_mode );
 													if ( $is_recurring_payment ) {
-														$planData      = get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
+														$planData      = arm_get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
 														$oldPlanDetail = $planData['arm_current_plan_detail'];
 														if ( ! empty( $oldPlanDetail ) ) {
 															$plan = new ARM_Plan_Lite( 0 );
@@ -781,7 +781,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 											}
 
 											$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-											$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
+											$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
 											$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 											$userPlanData     = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -814,14 +814,14 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 												if ( is_numeric( $user_id ) && ! is_array( $user_id ) ) {
 													if ( $arm_payment_type == 'subscription' ) {
 
-														$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
+														$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
 														$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 														$userPlanData     = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
 														$userPlanData['arm_subscr_id'] = $arm_token;
-														update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
+														arm_update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
 													}
-													update_user_meta( $user_id, 'arm_entry_id', $entry_id );
+													arm_update_user_meta( $user_id, 'arm_entry_id', $entry_id );
 
 												}
 											} else {
@@ -829,12 +829,12 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 												$user_id = $user_info->ID;
 												if ( ! empty( $user_id ) ) {
 
-														$old_plan_ids        = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+														$old_plan_ids        = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 														$old_plan_id         = isset( $old_plan_ids[0] ) ? $old_plan_ids[0] : 0;
 														$oldPlanDetail       = array();
 														$old_subscription_id = '';
 													if ( ! empty( $old_plan_id ) ) {
-														$oldPlanData         = get_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, true );
+														$oldPlanData         = arm_get_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, true );
 														$oldPlanData         = ! empty( $oldPlanData ) ? $oldPlanData : array();
 														$oldPlanData         = shortcode_atts( $defaultPlanData, $oldPlanData );
 														$oldPlanDetail       = $oldPlanData['arm_current_plan_detail'];
@@ -853,11 +853,11 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 																$arm_user_completed_recurrence = $userPlanData['arm_completed_recurring'];
 																$arm_user_completed_recurrence++;
 																$userPlanData['arm_completed_recurring'] = $arm_user_completed_recurrence;
-																update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
+																arm_update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
 																$arm_next_payment_date = $arm_members_class->arm_get_next_due_date( $user_id, $entry_plan, false, $payment_cycle );
 																if ( $arm_next_payment_date != '' ) {
 																	$userPlanData['arm_next_due_payment'] = $arm_next_payment_date;
-																	update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
+																	arm_update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
 																}
 															} else {
 																	$now                     = current_time( 'mysql' );
@@ -866,22 +866,22 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 																	$arm_user_completed_recurrence = $userPlanData['arm_completed_recurring'];
 																	$arm_user_completed_recurrence++;
 																	$userPlanData['arm_completed_recurring'] = $arm_user_completed_recurrence;
-																	update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
+																	arm_update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
 																	$arm_next_payment_date = $arm_members_class->arm_get_next_due_date( $user_id, $entry_plan, false, $payment_cycle );
 																	if ( $arm_next_payment_date != '' ) {
 																			   $userPlanData['arm_next_due_payment'] = $arm_next_payment_date;
-																			   update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
+																			   arm_update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
 																	}
 																}
 															}
 														}
 
-														$suspended_plan_ids = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+														$suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
 														$suspended_plan_id  = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 
 														if ( in_array( $entry_plan, $suspended_plan_id ) ) {
 															unset( $suspended_plan_id[ array_search( $entry_plan, $suspended_plan_id ) ] );
-															update_user_meta( $user_id, 'arm_user_suspended_plan_ids', array_values( $suspended_plan_id ) );
+															arm_update_user_meta( $user_id, 'arm_user_suspended_plan_ids', array_values( $suspended_plan_id ) );
 														}
 													} else {
 
@@ -926,18 +926,18 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 																	$is_update_plan                      = false;
 																	$oldPlanData['arm_subscr_effective'] = $subscr_effective;
 																	$oldPlanData['arm_change_plan_to']   = $entry_plan;
-																	update_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, $oldPlanData );
+																	arm_update_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, $oldPlanData );
 																}
 															}
 														}
 
-														update_user_meta( $user_id, 'arm_entry_id', $entry_id );
+														arm_update_user_meta( $user_id, 'arm_entry_id', $entry_id );
 														$userPlanData['arm_user_gateway'] = 'paypal';
 
 														if ( ! empty( $arm_token ) ) {
 															$userPlanData['arm_subscr_id'] = $arm_token;
 														}
-														update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
+														arm_update_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, $userPlanData );
 														if ( $is_update_plan ) {
 
 															$arm_subscription_plans->arm_update_user_subscription( $user_id, $entry_plan, '', true, $arm_last_payment_status );
@@ -967,7 +967,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 											$paypalLog['payment_type']   = 'subscr_cancel';
 
 											$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-											$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
+											$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $entry_plan, true );
 											$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 											$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -1018,10 +1018,10 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 										case 'recurring_payment_suspended_due_to_max_failed_payment':
 											$user_info = get_user_by( 'email', $entry_email );
 											$user_id   = $user_info->ID;
-											$plan_ids  = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+											$plan_ids  = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 											if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 												foreach ( $plan_ids as $plan_id ) {
-													$planData = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+													$planData = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 													if ( ! empty( $planData ) ) {
 														$subscr_id = $planData['arm_subscr_id'];
 														if ( $plan_id == $entry_plan && $subscr_id == $arm_token ) {
@@ -1086,7 +1086,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 				$payer_email = $user_detail->user_email;
 
 				$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-				$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+				$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 				$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 				$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -1129,7 +1129,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 							$PayPalResult = $PayPal->ManageRecurringPaymentsProfileStatus($PayPalCancelRequestData);
 							if (!is_wp_error($PayPalResult) && isset($PayPalResult['ACK']) && strtolower($PayPalResult['ACK']) == 'success') {
 								$planData['arm_subscr_id'] = '';
-								update_user_meta($user_id, 'arm_user_plan_' . $plan_id, $planData);
+								arm_update_user_meta($user_id, 'arm_user_plan_' . $plan_id, $planData);
 
 							}
 						}*/

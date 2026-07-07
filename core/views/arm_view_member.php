@@ -33,7 +33,7 @@ if(!empty($user_id))
 		}
 	}
 
-	$user_metas = get_user_meta($user_id);
+	$user_metas = arm_get_user_meta($user_id);
 	//$edit_link = admin_url('admin.php?page=' . $arm_slugs->manage_members . '&action=edit_member&id=' . $user->ID);
 	$userRegForm = array();
 	$armform = '';
@@ -177,7 +177,7 @@ if(!empty($user_id))
                             );
                             if (!empty($dbFormFields)) {
                                 foreach ($dbFormFields as $meta_key => $field) {
-                                    $field_options = maybe_unserialize($field);
+                                    $field_options = arm_maybe_unserialize($field);
                                     $field_options = apply_filters('arm_change_field_options', $field_options);
                                     $meta_key = isset($field_options['meta_key']) ? $field_options['meta_key'] : $field_options['id'];
                                     $field_id = $meta_key . arm_generate_random_code();
@@ -385,7 +385,7 @@ if(!empty($user_id))
 									date_i18n($date_format, strtotime($user->user_registered)).'</td>
 							</tr>
 							<tr class="form-field">
-								<th class="arm-form-table-label">'.esc_html__('Registered/Edited Profile From', 'armember-membership').'</th>
+								<th class="arm-form-table-label">'.esc_html__('Registered/Edited Profile Form', 'armember-membership').'</th>
 								<td class="arm-form-table-content">'; 
 								if (!empty($user_arm_form_id) && $user_arm_form_id != 0) {
 									if (!empty($userRegForm)) {
@@ -395,7 +395,7 @@ if(!empty($user_id))
 									}
 								}
 								else {
-									$arm_is_user_import = get_user_meta($user->ID, 'arm_user_import');
+									$arm_is_user_import = arm_get_user_meta($user->ID, 'arm_user_import');
 									if($arm_is_user_import){
 										$popup_content .= esc_html__('ARMember Admin (Import)', 'armember-membership'); 
 									} else {
@@ -405,7 +405,7 @@ if(!empty($user_id))
 	                                    {
 	                                        $popup_content .= esc_html__('ARMember Admin', 'armember-membership');
 	                                    } else {
-											$popup_content .= esc_html__('Wordpress default', 'armember-membership');
+											$popup_content .= esc_html__('WordPress default', 'armember-membership');
 	                                    }
 	                                }
 								}
@@ -426,7 +426,7 @@ if(!empty($user_id))
 							<table class="form-table">';
 								if (!empty($dbFormFields)) {
 									foreach ($dbFormFields as $meta_key => $field) {
-										$field_options = maybe_unserialize($field);
+										$field_options = arm_maybe_unserialize($field);
 										$field_options = apply_filters('arm_change_field_options', $field_options);
 										$meta_key = isset($field_options['meta_key']) ? $field_options['meta_key'] : $field_options['id'];
 										$field_id = $meta_key . arm_generate_random_code();
@@ -582,12 +582,12 @@ if(!empty($user_id))
 										}
 									}
 								}
-								$form_settings = (isset($armform->settings)) ? maybe_unserialize($armform->settings) : array();
+								$form_settings = (isset($armform->settings)) ? arm_maybe_unserialize($armform->settings) : array();
 								if ($armform->exists() && isset($form_settings['is_hidden_fields']) && $form_settings['is_hidden_fields'] == '1') {
 									if (isset($form_settings['hidden_fields']) && !empty($form_settings['hidden_fields'])) {
 										foreach ($form_settings['hidden_fields'] as $hiddenF) {
 											$hiddenMetaKey = (isset($hiddenF['meta_key']) && !empty($hiddenF['meta_key'])) ? $hiddenF['meta_key'] : sanitize_title('arm_hidden_'.$hiddenF['title']);
-											$hiddenValue = get_user_meta($user_id, $hiddenMetaKey, true);
+											$hiddenValue = arm_get_user_meta($user_id, $hiddenMetaKey, true);
 											$popup_content .= '<tr class="form-field">
 												<th class="arm-form-table-label">'. esc_html($hiddenF['title']).'</th>
 												<td class="arm-form-table-content">'. esc_html($hiddenValue).'</td>

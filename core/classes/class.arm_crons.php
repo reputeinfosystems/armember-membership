@@ -45,7 +45,7 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
             {
                 foreach($arm_older_entries_data as $key => $entries_data){
                     $arm_entry_id = intval($entries_data['arm_entry_id']);
-                    $arm_entry_val = maybe_unserialize($entries_data['arm_entry_value']);
+                    $arm_entry_val = arm_maybe_unserialize($entries_data['arm_entry_value']);
                     if(!empty($arm_entry_val['user_pass']) || !empty($arm_entry_val['repeat_pass']))
                     {
                         unset($arm_entry_val['user_pass']);
@@ -133,11 +133,11 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 			if ( ! empty( $expireUsers ) ) {
 				foreach ( $expireUsers as $usr ) {
 					$user_id  = $usr->ID;
-					$plan_ids = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+					$plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 					$plan_ids = ! empty( $plan_ids ) ? $plan_ids : array();
 					if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 						foreach ( $plan_ids as $plan_id ) {
-							$planData = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+							$planData = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 							if ( ! empty( $planData ) ) {
 								$expireTime        = isset( $planData['arm_expire_plan'] ) ? $planData['arm_expire_plan'] : '';
 								$is_plan_cancelled = $planData['arm_cencelled_plan'];
@@ -231,11 +231,11 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 			if ( ! empty( $expireUsers ) ) {
 				foreach ( $expireUsers as $usr ) {
 					$user_id  = $usr->ID;
-					$plan_ids = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+					$plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 					$plan_ids = ! empty( $plan_ids ) ? $plan_ids : array();
 					if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 						foreach ( $plan_ids as $plan_id ) {
-							$planData = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+							$planData = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 							if ( ! empty( $planData ) ) {
 								$expireTime        = $planData['arm_next_due_payment'];
 								$is_plan_cancelled = $planData['arm_cencelled_plan'];
@@ -328,10 +328,10 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 			if ( ! empty( $expireUsers ) ) {
 				foreach ( $expireUsers as $usr ) {
 					$user_id  = $usr->ID;
-					$plan_ids = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+					$plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 					if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 						foreach ( $plan_ids as $plan_id ) {
-							$planData = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+							$planData = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 							$is_plan_cancelled = isset( $planData['arm_cencelled_plan'] ) ? $planData['arm_cencelled_plan'] : 0;
 							if ( ! empty( $planData ) && empty($is_plan_cancelled) ) {
 
@@ -421,11 +421,11 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 			if ( ! empty( $expireUsers ) ) {
 				foreach ( $expireUsers as $usr ) {
 
-					$plan_ids        = get_user_meta( $usr->ID, 'arm_user_plan_ids', true );
+					$plan_ids        = arm_get_user_meta( $usr->ID, 'arm_user_plan_ids', true );
 					$defaultPlanData = $arm_subscription_plans->arm_default_plan_array();
 					if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 						foreach ( $plan_ids as $plan_id ) {
-							$userPlanDatameta = get_user_meta( $usr->ID, 'arm_user_plan_' . $plan_id, true );
+							$userPlanDatameta = arm_get_user_meta( $usr->ID, 'arm_user_plan_' . $plan_id, true );
 							$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 							$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 							$is_plan_cancelled = isset( $planData['arm_cencelled_plan'] ) ? $planData['arm_cencelled_plan'] : 0;
@@ -459,7 +459,7 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 											$arm_next_due_date = strtotime( '+28 Hours', $actual_arm_next_due_date );
 											if ( $now > $arm_next_due_date ) {
 
-												$suspended_plan_ids = get_user_meta( $usr->ID, 'arm_user_suspended_plan_ids', true );
+												$suspended_plan_ids = arm_get_user_meta( $usr->ID, 'arm_user_suspended_plan_ids', true );
 												$suspended_plan_id  = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 
 												if ( ! in_array( $plan_id, $suspended_plan_id ) ) {
@@ -515,10 +515,10 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 			if ( ! empty( $users ) ) {
 				foreach ( $users as $usr ) {
 					$user_id  = $usr->ID;
-					$plan_ids = get_user_meta( $usr->ID, 'arm_user_plan_ids', true );
+					$plan_ids = arm_get_user_meta( $usr->ID, 'arm_user_plan_ids', true );
 					if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 						foreach ( $plan_ids as $plan_id ) {
-							$planData = get_user_meta( $usr->ID, 'arm_user_plan_' . $plan_id, true );
+							$planData = arm_get_user_meta( $usr->ID, 'arm_user_plan_' . $plan_id, true );
 							if ( ! empty( $planData ) && is_array( $plan_ids ) ) {
 								$arm_subscription_effective = $planData['arm_subscr_effective'];
 								$new_plan                   = $planData['arm_change_plan_to'];
@@ -552,12 +552,12 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 			if ( ! empty( $users ) ) {
 				foreach ( $users as $usr ) {
 					$user_id          = $usr->ID;
-					$plan_ids         = get_user_meta( $usr->ID, 'arm_user_future_plan_ids', true );
-					$current_plan_ids = get_user_meta( $usr->ID, 'arm_user_plan_ids', true );
+					$plan_ids         = arm_get_user_meta( $usr->ID, 'arm_user_future_plan_ids', true );
+					$current_plan_ids = arm_get_user_meta( $usr->ID, 'arm_user_plan_ids', true );
 					$current_plan_ids = ! empty( $current_plan_ids ) ? $current_plan_ids : array();
 					if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 						foreach ( $plan_ids as $plan_id ) {
-							$planData = get_user_meta( $usr->ID, 'arm_user_plan_' . $plan_id, true );
+							$planData = arm_get_user_meta( $usr->ID, 'arm_user_plan_' . $plan_id, true );
 							if ( ! empty( $planData ) && is_array( $plan_ids ) ) {
 								$arm_subscription_effective = $planData['arm_start_plan'];
 								if ( $now >= $arm_subscription_effective ) {
@@ -572,16 +572,16 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 										unset( $plan_ids[ array_search( $plan_id, $plan_ids ) ] );
 
 										$current_plan_ids[] = $plan_id;
-										update_user_meta( $usr->ID, 'arm_user_last_plan', $plan_id );
+										arm_update_user_meta( $usr->ID, 'arm_user_last_plan', $plan_id );
                                         do_action('arm_general_log_entry', 'cron', 'user membership future plan changed', 'armember', 
                                             'user_id='.$user_id.', plan='.$plan_id.', subscription effective='.$arm_subscription_effective);
 									}
 								}
 							}
 						}
-						update_user_meta( $usr->ID, 'arm_user_future_plan_ids', array_values( $plan_ids ) );
+						arm_update_user_meta( $usr->ID, 'arm_user_future_plan_ids', array_values( $plan_ids ) );
 
-						update_user_meta( $usr->ID, 'arm_user_plan_ids', array_values( $current_plan_ids ) );
+						arm_update_user_meta( $usr->ID, 'arm_user_plan_ids', array_values( $current_plan_ids ) );
 					}
 				}
 			}
@@ -618,10 +618,10 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 			if ( ! empty( $trialUsers ) ) {
 				foreach ( $trialUsers as $usr ) {
 					$memberStatus = arm_get_member_status( $usr->ID );
-					$plan_ids     = get_user_meta( $usr->ID, 'arm_user_plan_ids', true );
+					$plan_ids     = arm_get_user_meta( $usr->ID, 'arm_user_plan_ids', true );
 					if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 						foreach ( $plan_ids as $plan_id ) {
-							$planData = get_user_meta( $usr->ID, 'arm_user_plan_' . $plan_id, true );
+							$planData = arm_get_user_meta( $usr->ID, 'arm_user_plan_' . $plan_id, true );
 							if ( ! empty( $planData ) && is_array( $planData ) ) {
 								$is_plan_trial = $planData['arm_is_trial_plan'];
 								$expireTime    = $planData['arm_trial_end'];
@@ -634,10 +634,10 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 									if ( ! in_array( 'trial_finished', $alreadysentmsgs ) ) {
 
 										$planData['arm_is_trial_plan'] = 0;
-										update_user_meta( $usr->ID, 'arm_user_plan_' . $plan_id, $planData );
+										arm_update_user_meta( $usr->ID, 'arm_user_plan_' . $plan_id, $planData );
 
 									} else {
-										$cron_msgs[ $usr->ID ] = esc_html__( 'Mail successfully sent to', 'armember-membership' ) . ' ' . $usr->ID . ' ' . esc_html__( 'for trial period finished.', 'armember-membership' ) . "({$plan_name})";
+										$cron_msgs[ $usr->ID ] = esc_html__( 'Email sent successfully to', 'armember-membership' ) . ' ' . $usr->ID . ' ' . esc_html__( 'for the trial period has finished', 'armember-membership' ) . "({$plan_name})";
 									}
 									do_action('arm_general_log_entry', 'cron', 'trial finished email check email', 'armember', 'user_id='.$usr->ID.', plan='.$plan_id.', expireTime='.$expireTime.', msg='.$cron_msgs[$usr->ID]);
 								}
@@ -732,7 +732,7 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
                     $resp = explode("|^^|", $armember_addons);
                     if ($resp[0] == 1) {
                         $myplugarr = array();
-                        $myplugarr = unserialize(base64_decode($resp[1]));
+                        $myplugarr = arm_maybe_unserialize(base64_decode($resp[1]));
                         $is_active = 0;
                     }
                 }
@@ -767,7 +767,7 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
                 }
 
                 $presetFormFields = get_option('arm_preset_form_fields', '');
-                $dbFormFields = maybe_unserialize($presetFormFields);
+                $dbFormFields = arm_maybe_unserialize($presetFormFields);
                 $armember_total_register_custom_fields = isset($dbFormFields['other']) ? count($dbFormFields['other']) : 0;
                 
                 $total_wp_users =  count_users();

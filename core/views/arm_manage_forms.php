@@ -108,7 +108,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 														$formDeleteHtml .= '<input type="checkbox" class="arm_icheckbox arm_form_field_chk_' . esc_attr($_fid) . '" value="1">';
 														$formDeleteHtml .= '<span>' . esc_html__( 'Delete fields of this specific form.', 'armember-membership' ) . '</span>';
 														$formDeleteHtml .= '</label>';
-														$formDeleteHtml .= '<span class="armnote">(' . esc_html__( 'Fields those which are used somewhere else, will not be deleted.', 'armember-membership' ) . ')</span>';
+														$formDeleteHtml .= '<span class="armnote">(' . esc_html__( 'Fields that are used elsewhere will not be deleted.', 'armember-membership' ) . ')</span>';
 														echo $arm_global_settings->arm_get_confirm_box( $_fid, $formDeleteHtml, 'arm_delete_form_confirm_ok','', esc_html__('Delete', 'armember-membership'), esc_attr__('Cancel', 'armember-membership'), esc_attr__('Delete', 'armember-membership') ); //phpcs:ignore
 														?>
 													<?php endif; ?>
@@ -292,13 +292,13 @@ echo $arm_loader; //phpcs:ignore ?></div>
 				</td>
 				<td class="popup_content_text">
 					<div class="arm_message arm_error_message arm_add_new_form_error">
-						<div class="arm_message_text"><?php esc_html_e( 'There is a error while adding form, Please try again.', 'armember-membership' ); ?></div>
+						<div class="arm_message_text"><?php esc_html_e( 'Failed to add the form. Please try again.', 'armember-membership' ); ?></div>
 					</div>
 					<div class="arm_registration_popup_inner_content_wrapper arm_position_relative" style="min-height: 400px;">
 					<table class="arm_table_label_on_top arm_padding_top_0">
 						<tr>
 							<th class="arm_padding_left_10 arm_padding_top_0 arm_margin_top_12 arm_margin_bottom_12"><label class="arm_font_size_16 "><?php esc_html_e( 'Form Name', 'armember-membership' ); ?><span class="required_star">*</span></label></th>
-							<td class="arm_padding_right_0 arm_padding_top_0"><input type="text" id="unique_form_name" name="arm_new_form[arm_form_label]" value="" required data-msg-required="<?php esc_html_e( 'Form name can not be left blank.', 'armember-membership' ); ?>" class="arm_width_422"></td>
+							<td class="arm_padding_right_0 arm_padding_top_0"><input type="text" id="unique_form_name" name="arm_new_form[arm_form_label]" value="" required data-msg-required="<?php esc_html_e( 'Form name cannot be left blank.', 'armember-membership' ); ?>" class="arm_width_422"></td>
 						</tr>
 						<tr>
 							<th class="arm_padding_top_20 arm_padding_left_10"><label  class="arm_font_size_16"><?php esc_html_e( 'Form Fields', 'armember-membership' ); ?></label></th>

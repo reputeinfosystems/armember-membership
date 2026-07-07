@@ -35,8 +35,8 @@ if (!class_exists('ARM_lite_siteorigin_builder_restriction')) {
             $plan_options[] = array();
             $plan_options = array(
                 'any_plan' => esc_html__( 'Any Plan', 'armember-membership' ),
-                'unregistered' => esc_html__( 'Non Loggedin Users', 'armember-membership' ),
-                'registered' => esc_html__( 'Loggedin Users', 'armember-membership' )
+                'unregistered' => esc_html__( 'Non Logged-In Users', 'armember-membership' ),
+                'registered' => esc_html__( 'Logged-In Users', 'armember-membership' )
             );
             if(!empty($arm_membership_plan)) {
 
@@ -131,8 +131,8 @@ if (!class_exists('ARM_lite_siteorigin_builder_restriction')) {
             $plan_options[] = array();
             $plan_options = array(
                 'any_plan' => esc_html__( 'Any Plan', 'armember-membership' ),
-                'unregistered' => esc_html__( 'Non Loggedin Users', 'armember-membership' ),
-                'registered' => esc_html__( 'Loggedin', 'armember-membership' )
+                'unregistered' => esc_html__( 'Non Logged-In Users', 'armember-membership' ),
+                'registered' => esc_html__( 'Logged-In', 'armember-membership' )
             );
             if(!empty($arm_membership_plan)) {
                 foreach ( $arm_membership_plan as $plan ) {

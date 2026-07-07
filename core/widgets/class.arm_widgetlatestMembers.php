@@ -71,7 +71,7 @@ if ( ! class_exists( 'ARMwidgetlatestMembers' ) ) {
 						$output       .= '}';
 						$output       .= '</style>';
 						$user_id       = $us->ID;
-						$profile_cover = get_user_meta( $user_id, 'profile_cover', true );
+						$profile_cover = arm_get_user_meta( $user_id, 'profile_cover', true );
 					if ( $profile_cover == '' || empty( $profile_cover ) ) {
 						$profile_cover = $default_cover;
 					}
@@ -92,7 +92,7 @@ if ( ! class_exists( 'ARMwidgetlatestMembers' ) ) {
 							$profile_link = $arm_global_settings->arm_get_user_profile_url( $user_id );
 														$common_messages        = $arm_global_settings->arm_get_all_common_message_settings();
 														$arm_member_since_label = ( isset( $common_messages['arm_profile_member_since'] ) && $common_messages['arm_profile_member_since'] != '' ) ? $common_messages['arm_profile_member_since'] : esc_html__( 'Member Since', 'armember-membership' );
-							$output .= "<a href='".esc_attr($profile_link)."' class='arm_slider_widget_profile_link'><span>" . get_user_meta( $user_id, 'first_name', true ) . ' ' . get_user_meta( $user_id, 'last_name', true ) . '</span></a>';
+							$output .= "<a href='".esc_attr($profile_link)."' class='arm_slider_widget_profile_link'><span>" . arm_get_user_meta( $user_id, 'first_name', true ) . ' ' . arm_get_user_meta( $user_id, 'last_name', true ) . '</span></a>';
 
 							$output .= "<div class='arm_slider_widget_user_info'>";
 

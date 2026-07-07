@@ -141,7 +141,7 @@
 							<div class="arm_setting_main_content arm_setting_main_content">
 								<?php
 								$integration_get_settings_unser = get_option('arm_integration_settings', array());
-								$integration_get_settings = !empty($integration_get_settings_unser) ? maybe_unserialize($integration_get_settings_unser) : array();
+								$integration_get_settings = !empty($integration_get_settings_unser) ? arm_maybe_unserialize($integration_get_settings_unser) : array();
 								foreach($arm_get_integrations as $integration_key => $arm_integration_name)
 								{
 									$arm_integration_debug_logs = (!empty($integration_get_settings[$integration_key]['debug_logs']) && $integration_get_settings[$integration_key]['debug_logs'] == '1') ? 'checked="checked"' : '';

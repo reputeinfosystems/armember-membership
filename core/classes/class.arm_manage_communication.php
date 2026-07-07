@@ -45,7 +45,7 @@ if ( ! class_exists( 'ARM_manage_communication_Lite' ) ) {
 				$alreadysentmsgs = array();
 
 				$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-				$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+				$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 				$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 				$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 

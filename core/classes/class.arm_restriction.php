@@ -70,7 +70,7 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 							$current_user_plan       = $current_user->get( 'arm_user_plan_ids' );
 							$current_user_plan_array = ! empty( $current_user_plan ) ? $current_user_plan : array( -2 );
 
-							$suspended_plan_ids = get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
+							$suspended_plan_ids = arm_get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
 							$suspended_plan_ids = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 							if ( ! empty( $current_user_plan_array ) && is_array( $current_user_plan_array ) ) {
 								foreach ( $current_user_plan_array as $cp ) {
@@ -179,8 +179,8 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 				$hide_pages = array( 'wp-login.php', 'wp-signup.php', 'wp-register.php' );
 
 				if ( in_array( $GLOBALS['pagenow'], $hide_pages ) || in_array( $pagenow, $hide_pages ) ) {
-
-					if ( isset( $_GET['arm-key'] ) || isset( $_GET['key'] ) || ( isset( $_GET['action'] ) && in_array( $_GET['action'], array( 'logout', 'armrp', 'resetpass', 'lostpassword', 'retrievepassword', 'postpass' ) ) ) ) { //phpcs:ignore
+                    $arm_action_login = isset($_GET['action']) ? sanitize_text_field( $_GET['action'] ) : ''; //phpcs:ignore
+                    if (isset($_GET['arm-key']) || isset($_GET['key']) || ( in_array($arm_action_login, array('logout', 'armrp', 'resetpass',  'retrievepassword', 'postpass')))) { //phpcs:ignore
 
 						return;
 					} else {
@@ -196,7 +196,14 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 
 							$globalSettings = $arm_global_settings->global_settings;
 
-							$arm_login_page = isset( $globalSettings['login_page_id'] ) ? $globalSettings['login_page_id'] : 0;
+                            if( 'lostpassword'  == $arm_action_login )
+                            {
+                                $arm_login_page = isset($globalSettings['forgot_password_page_id']) ? $globalSettings['forgot_password_page_id'] : 0;
+                            }
+                            else
+                            {
+                                $arm_login_page = isset($globalSettings['login_page_id']) ? $globalSettings['login_page_id'] : 0;
+                            }
 
 							if ( ! empty( $arm_login_page ) && $arm_login_page != 0 ) {
 
@@ -249,7 +256,7 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 			}
 
 			$arm_default_redirection_settings = get_option( 'arm_redirection_settings' );
-			$arm_default_redirection_settings = maybe_unserialize( $arm_default_redirection_settings );
+			$arm_default_redirection_settings =arm_maybe_unserialize( $arm_default_redirection_settings );
 
 			$access_rules_options = $arm_default_redirection_settings['default_access_rules'];
 			if ( ! empty( $access_rules_options['non_logged_in'] ) ) {
@@ -384,7 +391,7 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 				if ( is_user_logged_in() ) {
 					$extraVars = array(
 						'current_user_id' => get_current_user_id(),
-						'current_plan_id' => get_user_meta( get_current_user_id(), 'arm_user_plan_ids', true ),
+						'current_plan_id' => arm_get_user_meta( get_current_user_id(), 'arm_user_plan_ids', true ),
 					);
 				}
 				$redirect_url  = apply_filters( 'arm_restricted_site_access_redirect_url', $redirect_url, $wp, $extraVars );
@@ -433,7 +440,7 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 				$current_user_plan = $current_user->get( 'arm_user_plan_ids' );
 				$current_user_plan = ( ! empty( $current_user_plan ) ) ? $current_user_plan : array( -2 );
 
-				$suspended_plan_ids = get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
+				$suspended_plan_ids = arm_get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
 				$suspended_plan_ids = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 				if ( ! empty( $current_user_plan ) && is_array( $current_user_plan ) ) {
 					foreach ( $current_user_plan as $cp ) {
@@ -451,7 +458,7 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 				}
 
 				$arm_default_redirection_settings = get_option( 'arm_redirection_settings' );
-				$arm_default_redirection_settings = maybe_unserialize( $arm_default_redirection_settings );
+				$arm_default_redirection_settings = arm_maybe_unserialize( $arm_default_redirection_settings );
 				$access_rules_options             = $arm_default_redirection_settings['default_access_rules'];
 
 				$page_settings = $arm_global_settings->arm_get_single_global_settings( 'page_settings' );
@@ -653,10 +660,10 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 
 					if ( is_user_logged_in() ) {
 						$user_id           = get_current_user_id();
-						$current_user_plan = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+						$current_user_plan = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 						$current_user_plan = ! empty( $current_user_plan ) ? $current_user_plan : array( -2 );
 
-						$suspended_plan_ids = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+						$suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
 						$suspended_plan_ids = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 						if ( ! empty( $current_user_plan ) && is_array( $current_user_plan ) ) {
 							foreach ( $current_user_plan as $cp ) {
@@ -707,7 +714,7 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 							// for multisite
 							if ( is_multisite() && $arm_multisite_restriction == 1 ) {
 								$arm_current_blog_id  = get_current_blog_id();
-								$arm_cur_user_blog_id = get_user_meta( $user_id, 'primary_blog', true );
+								$arm_cur_user_blog_id = arm_get_user_meta( $user_id, 'primary_blog', true );
 								if ( $arm_current_blog_id != $arm_cur_user_blog_id && ! empty( $obj_plans ) ) {
 									$allowed = false;
 								}
@@ -754,7 +761,7 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 									// for multisite
 									if ( is_multisite() && $arm_multisite_restriction == 1 ) {
 										$arm_current_blog_id  = get_current_blog_id();
-										$arm_cur_user_blog_id = get_user_meta( $user_id, 'primary_blog', true );
+										$arm_cur_user_blog_id = arm_get_user_meta( $user_id, 'primary_blog', true );
 										if ( $arm_current_blog_id != $arm_cur_user_blog_id && ! empty( $obj_plans ) ) {
 											$allowed = false;
 										}
@@ -884,10 +891,10 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 					}
 				} else {
 					$user_id    = $current_user->ID;
-					$user_plans = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+					$user_plans = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 					$user_plans = ! empty( $user_plans ) ? $user_plans : array( -2 );
 
-					$suspended_plan_ids = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+					$suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
 					$suspended_plan_ids = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 					if ( ! empty( $user_plans ) && is_array( $user_plans ) ) {
 						foreach ( $user_plans as $cp ) {
@@ -1317,10 +1324,10 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 
 			if ( ! is_admin() && ! current_user_can( 'administrator' ) ) {
 				if ( is_user_logged_in() ) {
-					$current_user_plan = get_user_meta( $current_user->ID, 'arm_user_plan_ids', true );
+					$current_user_plan = arm_get_user_meta( $current_user->ID, 'arm_user_plan_ids', true );
 					$current_user_plan = ! empty( $current_user_plan ) ? $current_user_plan : array( -2 );
 
-					$suspended_plan_ids = get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
+					$suspended_plan_ids = arm_get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
 					$suspended_plan_ids = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 					if ( ! empty( $current_user_plan ) && is_array( $current_user_plan ) ) {
 						foreach ( $current_user_plan as $cp ) {
@@ -1413,10 +1420,10 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 
 				if ( is_user_logged_in() ) {
 
-					$current_user_plan = get_user_meta( $current_user->ID, 'arm_user_plan_ids', true );
+					$current_user_plan = arm_get_user_meta( $current_user->ID, 'arm_user_plan_ids', true );
 					$current_user_plan = ! empty( $current_user_plan ) ? $current_user_plan : array( -2 );
 
-					$suspended_plan_ids = get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
+					$suspended_plan_ids = arm_get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
 					$suspended_plan_ids = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 					if ( ! empty( $current_user_plan ) && is_array( $current_user_plan ) ) {
 						foreach ( $current_user_plan as $cp ) {
@@ -1479,10 +1486,10 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 				$restrict_pages = array();
 				$result_pages   = array();
 				if ( is_user_logged_in() ) {
-					$current_user_plan = get_user_meta( $current_user->ID, 'arm_user_plan_ids', true );
+					$current_user_plan = arm_get_user_meta( $current_user->ID, 'arm_user_plan_ids', true );
 					$current_user_plan = ! empty( $current_user_plan ) ? $current_user_plan : array( -2 );
 
-					$suspended_plan_ids = get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
+					$suspended_plan_ids = arm_get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
 					$suspended_plan_ids = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 					if ( ! empty( $current_user_plan ) && is_array( $current_user_plan ) ) {
 						foreach ( $current_user_plan as $cp ) {
@@ -1531,10 +1538,10 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 			global $wp, $wpdb, $current_user, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_access_rules;
 			$this->arm_add_required_core_file();
 			if ( is_user_logged_in() ) {
-				$current_user_plan = get_user_meta( $current_user->ID, 'arm_user_plan_ids', true );
+				$current_user_plan = arm_get_user_meta( $current_user->ID, 'arm_user_plan_ids', true );
 				$current_user_plan = ! empty( $current_user_plan ) ? $current_user_plan : array( -2 );
 
-				$suspended_plan_ids = get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
+				$suspended_plan_ids = arm_get_user_meta( $current_user->ID, 'arm_user_suspended_plan_ids', true );
 				$suspended_plan_ids = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 
 				if ( ! empty( $current_user_plan ) && is_array( $current_user_plan ) ) {
@@ -1656,10 +1663,10 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 			}
 
 			if ( $current_user->ID > 0 ) {
-				$feed_key = get_user_meta( $current_user->ID, '_arm_feed_key', true );
+				$feed_key = arm_get_user_meta( $current_user->ID, '_arm_feed_key', true );
 				if ( empty( $feed_key ) ) {
 					$feed_key = md5( $current_user->ID . $current_user->user_pass . time() );
-					update_user_meta( $current_user->ID, '_arm_feed_key', $feed_key );
+					arm_update_user_meta( $current_user->ID, '_arm_feed_key', $feed_key );
 				}
 				if ( ! empty( $feed_key ) ) {
 					$feed_link = $arm_global_settings->add_query_arg( 'k', $feed_key, untrailingslashit( $feed_link ) );
@@ -1713,7 +1720,7 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 						$user_id = $this->find_user_by_feed_key( $key );
 						$user_id = (int) $user_id;
 						if ( $user_id > 0 ) {
-							$user_plan = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+							$user_plan = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 							$user_plan = ( ! empty( $user_plan ) ) ? $user_plan : array( -2 );
 
 							$arm_primary_status = arm_get_member_status( $user_id );
@@ -1778,10 +1785,10 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
             $hasaccess = FALSE;
             $isLoggedIn = is_user_logged_in();
             $current_user_id = get_current_user_id();
-            $arm_user_plan = get_user_meta($current_user_id, 'arm_user_plan_ids', true);
+            $arm_user_plan = arm_get_user_meta($current_user_id, 'arm_user_plan_ids', true);
             $arm_user_plan = !empty($arm_user_plan) ? $arm_user_plan : array();
             if(!empty($arm_user_plan)){
-                $suspended_plan_ids = get_user_meta($current_user_id, 'arm_user_suspended_plan_ids', true);
+                $suspended_plan_ids = arm_get_user_meta($current_user_id, 'arm_user_suspended_plan_ids', true);
                 if( ! empty($suspended_plan_ids)) {
                     foreach ($suspended_plan_ids as $suspended_plan_id) {
                         if(in_array($suspended_plan_id, $arm_user_plan)) {
@@ -2084,7 +2091,7 @@ if ( ! function_exists( 'armEmailVerificationMail' ) ) {
 			$user_id            = $user->ID;
 			$user_login         = stripslashes( $user->user_login );
 			$user_email         = $user->user_email;
-			$activation_key     = get_user_meta( $user->ID, 'arm_user_activation_key', true );
+			$activation_key     = arm_get_user_meta( $user->ID, 'arm_user_activation_key', true );
 			$temp_detail_verify = $arm_email_settings->arm_get_email_template( $arm_email_settings->templates->email_verify_user );
 			/* New Member Signup Verification Mail */
 			if ( $temp_detail_verify->arm_template_status == '1' ) {
@@ -2112,12 +2119,12 @@ if ( ! function_exists( 'armMemberSignUpCompleteMail' ) ) {
 		do_action( 'arm_before_signup_complete_notification', $user );
 		$user_login         = stripslashes( $user->user_login );
 		$user_email         = $user->user_email;
-		$activation_key     = get_user_meta( $user->ID, 'arm_user_activation_key', true );
-		$arm_last_user_plan = get_user_meta( $user_id, 'arm_user_last_plan', true );
+		$activation_key     = arm_get_user_meta( $user->ID, 'arm_user_activation_key', true );
+		$arm_last_user_plan = arm_get_user_meta( $user_id, 'arm_user_last_plan', true );
 		$planID             = ! empty( $arm_last_user_plan ) ? $arm_last_user_plan : 0;
 		$plan_detail        = array();
 		if ( ! empty( $planID ) ) {
-			$planData    = get_user_meta( $user_id, 'arm_user_plan_' . $planID, true );
+			$planData    = arm_get_user_meta( $user_id, 'arm_user_plan_' . $planID, true );
 			$plan_detail = $planData['arm_current_plan_detail'];
 		}
 		if ( ! empty( $plan_detail ) ) {
@@ -2210,7 +2217,7 @@ if ( ! function_exists( 'wp_update_user_notification' ) ) {
 		if ( $user->exists() && 0 !== strcasecmp( $user->user_email, get_option( 'admin_email' ) ) ) {
 
 			$arm_get_email_option     = get_option( 'arm_email_settings' );
-			$arm_email_settings_array = maybe_unserialize( $arm_get_email_option );
+			$arm_email_settings_array = arm_maybe_unserialize( $arm_get_email_option );
 			$user_email               = $user->user_email;
 			$user_template            = $arm_email_settings->arm_get_email_template( $arm_email_settings->templates->profile_updated_user );
 			if ( $user_template->arm_template_status == '1' ) {
@@ -2305,7 +2312,7 @@ if ( ! function_exists( 'wp_authenticate' ) ) {
 		$login_failed_msg     = str_replace( '[LOCKDURATION]', $temporary_lockdown_duration, $login_failed_msg );
 		$permanent_locked_msg = str_replace( '[LOCKDURATION]', $permanent_lockdown_duration, $permanent_locked_msg );
 
-		$invalid_login_deatil_msg = ( ! empty( $arm_global_settings->common_message['arm_no_registered_email'] ) ) ? $arm_global_settings->common_message['arm_no_registered_email'] : '<strong>' . esc_html__( 'ERROR', 'armember-membership' ) . ': </strong>' . esc_html__( 'Invalid username or incorrect password.', 'armember-membership' );
+		$invalid_login_deatil_msg = ( ! empty( $arm_global_settings->common_message['arm_no_registered_email'] ) ) ? $arm_global_settings->common_message['arm_no_registered_email'] : '<strong>' . esc_html__( 'ERROR', 'armember-membership' ) . ': </strong>' . esc_html__( 'Invalid username or password.', 'armember-membership' );
 
 		$user_info = get_user_by( 'login', $username );
 		if ( $user_info === false ) {
@@ -2460,9 +2467,9 @@ if ( ! function_exists( 'wp_authenticate' ) ) {
 					$user                 = new WP_Error( 'pending_user', $invalid_username_msg );
 				} else {
 					/*                     * ******************Update Last Login Info For Successfull Login******************** */
-					update_user_meta( $user->ID, 'arm_last_login_date', current_time( 'mysql' ) );
+					arm_update_user_meta( $user->ID, 'arm_last_login_date', current_time( 'mysql' ) );
 					$ip_address = $ARMemberLite->arm_get_ip_address();
-					update_user_meta( $user->ID, 'arm_last_login_ip', $ip_address );
+					arm_update_user_meta( $user->ID, 'arm_last_login_ip', $ip_address );
 				}
 			}
 		}

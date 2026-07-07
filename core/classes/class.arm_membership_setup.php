@@ -49,7 +49,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 			if(!empty($setup)){
 				$setupID = $setup->arm_setup_id;   
-				$modules = maybe_unserialize($setup->arm_setup_modules);
+				$modules = arm_maybe_unserialize($setup->arm_setup_modules);
 				$plans    = isset($modules['modules']['plans']) ? (array) $modules['modules']['plans'] : array();
 				$gateways = isset($modules['modules']['gateways']) ? (array) $modules['modules']['gateways'] : array();
 				$form_id  = isset($modules['modules']['forms']) ? intval($modules['modules']['forms']) : 0;
@@ -176,7 +176,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$return .= '<tr class="arm_child_transaction_row">';
                     $grid_data[$ai][1] = '<a href="javascript:void(0)" class="arm_get_form_link arm_edit_setup_form_link" data-form_id="'. intval($setupID).'">' . stripslashes( $val->arm_setup_name ) . '</a>';
                     $setup_type = esc_html__('Membership Plan','armember-membership');
-                    $arm_setup_modules = maybe_unserialize( $val->arm_setup_modules );
+                    $arm_setup_modules = arm_maybe_unserialize( $val->arm_setup_modules );
                     $module_plans       = ( isset( $arm_setup_modules['modules']['plans'] ) ) ? $arm_setup_modules['modules']['plans'] : array();
                     $plan_title         = $arm_subscription_plans->arm_get_comma_plan_names_by_ids( $module_plans );
 
@@ -270,7 +270,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_transaction, $arm_payment_gateways, $arm_manage_communication;
 			if ( ! empty( $user_id ) && $user_id != 0 && ! empty( $plan_id ) && $plan_id != 0 ) {
 				$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-				$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+				$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 				$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 				$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -438,7 +438,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$user_id           = $user_info->ID;
 					if ( ! empty( $user_info->ID ) ) {
 						$entry_email       = $user_info->user_email;
-						$current_user_plan = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+						$current_user_plan = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 						$current_user_plan = ! empty( $current_user_plan ) ? $current_user_plan : array();
 					} else {
 						$entry_email = isset($post_data['user_email']) ? sanitize_email($post_data['user_email']) : '';
@@ -446,7 +446,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$setup_redirect = ARMLITE_HOME_URL;
 
 					$redirection_settings  = get_option( 'arm_redirection_settings' );
-					$redirection_settings  = maybe_unserialize( $redirection_settings );
+					$redirection_settings  = arm_maybe_unserialize( $redirection_settings );
 					$arm_default_setup_url = ( isset( $redirection_settings['setup']['default'] ) && ! empty( $redirection_settings['setup']['default'] ) ) ? $redirection_settings['setup']['default'] : ARMLITE_HOME_URL;
 
 					if ( is_user_logged_in() ) {
@@ -460,7 +460,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						if ( in_array( $plan_id, $current_user_plan ) ) {
 
 							// renew or recurring
-							$PlanData = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+							$PlanData = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 							if ( ! empty( $PlanData ) ) {
 								$PlanDetail = isset( $PlanData['arm_current_plan_detail'] ) ? $PlanData['arm_current_plan_detail'] : array();
 								if ( ! empty( $PlanData ) ) {
@@ -624,7 +624,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 								}
 								if ( $payment_gateway == 'bank_transfer' && $payment_mode_bt == '' ) {
 									$validate                       = false;
-									$validate_msgs['bank_transfer'] = esc_html__( 'Selected plan is not valid for bank transfer.', 'armember-membership' );
+									$validate_msgs['bank_transfer'] = esc_html__( 'The selected plan is not valid for bank transfer.', 'armember-membership' );
 								} else {
 
 									$pg_errors = apply_filters( 'arm_validate_payment_gateway_fields', true, $post_data, $payment_gateway, $gateway_options );
@@ -706,13 +706,13 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 								if ( ! empty( $modules['plans'] ) ) {
 
 									$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-									$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+									$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 									$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 									$userPlanData     = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
 									$post_data['old_plan_id'] = ( isset( $current_user_plan ) && ! empty( $current_user_plan ) ) ? implode( ',', $current_user_plan ) : 0;
 									$old_plan_id              = isset( $current_user_plan[0] ) ? $current_user_plan[0] : 0;
-									$oldPlanData              = get_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, true );
+									$oldPlanData              = arm_get_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, true );
 									$oldPlanData              = ! empty( $oldPlanData ) ? $oldPlanData : array();
 									$oldPlanData              = shortcode_atts( $defaultPlanData, $oldPlanData );
 									$oldPlanDetail            = isset( $oldPlanData['arm_current_plan_detail'] ) ? $oldPlanData['arm_current_plan_detail'] : array();
@@ -771,7 +771,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 													$is_update_plan                      = false;
 													$oldPlanData['arm_subscr_effective'] = $subscr_effective;
 													$oldPlanData['arm_change_plan_to']   = $plan_id;
-													update_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, $oldPlanData );
+													arm_update_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, $oldPlanData );
 												}
 											}
 											if ( $is_update_plan && $old_plan->is_recurring() ) {
@@ -795,8 +795,8 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 												$arm_user_old_plan_details['arm_user_old_payment_mode'] = $userPlanData['arm_payment_mode'];
 												$userPlanData['arm_current_plan_detail']                = $arm_user_old_plan_details;
 
-												update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $userPlanData );
-												update_user_meta( $user_id, 'arm_entry_id', $entry_id );
+												arm_update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $userPlanData );
+												arm_update_user_meta( $user_id, 'arm_entry_id', $entry_id );
 
 												if ( ! $plan->is_recurring() || $payment_mode_bt == 'manual_subscription' ) {
 													$arm_payment_gateways->arm_bank_transfer_payment_gateway_action( $payment_gateway, $payment_gateway_options, $post_data, $entry_id );
@@ -806,7 +806,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 													$response['message'] = '<script data-cfasync="false" type="text/javascript" language="javascript">window.location.href="' . $setup_redirect . '"</script>';
 												} else {
-													$validate_msgs['payment_failed'] = esc_html__( 'Selected plan is not valid for bank transfer.', 'armember-membership' );
+													$validate_msgs['payment_failed'] = esc_html__( 'The selected plan is not valid for bank transfer.', 'armember-membership' );
 												}
 											} else {
 
@@ -823,7 +823,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 													$pgs_arrays = apply_filters( 'arm_update_new_subscr_gateway_outside', array() );
 													$log_id     = $payment_done['log_id'];
 													$log_detail = $wpdb->get_row( $wpdb->prepare('SELECT `arm_log_id`, `arm_user_id`, `arm_token`, `arm_transaction_id`, `arm_extra_vars` FROM `' . $ARMemberLite->tbl_arm_payment_log . "` WHERE `arm_log_id`=%d",$log_id) );//phpcs:ignore --Reason: $ARMemberLite->tbl_arm_payment_log is a table name. False Positive Alarm
-													update_user_meta( $user_id, 'arm_entry_id', $entry_id );
+													arm_update_user_meta( $user_id, 'arm_entry_id', $entry_id );
 
 													$userPlanData['arm_user_gateway']                       = $payment_gateway;
 													$arm_user_old_plan_details                              = ( isset( $userPlanData['arm_current_plan_detail'] ) && ! empty( $userPlanData['arm_current_plan_detail'] ) ) ? $userPlanData['arm_current_plan_detail'] : array();
@@ -838,7 +838,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 														$userPlanData['arm_payment_cycle'] = '';
 													}
 
-													update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $userPlanData );
+													arm_update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $userPlanData );
 													do_action( 'arm_update_user_meta_after_renew_outside', $user_id, $log_detail, $plan_id, $payment_gateway );
 
 													if ( $is_update_plan ) {
@@ -849,7 +849,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 													}
 
 													if ( $plan->is_recurring() ) {
-														$userPlanData = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+														$userPlanData = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 													}
 													$response['status']  = 'success';
 													$response['type']    = 'redirect';
@@ -893,7 +893,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 												$response['type']    = 'redirect';
 												$response['message'] = '<script data-cfasync="false" type="text/javascript" language="javascript">window.location.href="' . $setup_redirect . '"</script>';
 											} else {
-												$validate_msgs['payment_failed'] = esc_html__( 'Selected plan is not valid for bank transfer.', 'armember-membership' );
+												$validate_msgs['payment_failed'] = esc_html__( 'The selected plan is not valid for bank transfer.', 'armember-membership' );
 											}
 										} else {
 											$post_data = apply_filters( 'arm_change_posted_data_before_payment_outside', $post_data, $payment_gateway, $payment_gateway_options, $entry_id );
@@ -1062,7 +1062,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 				$setupID = $args['id'];
 				if ( $isPreview && ! empty( $args['setup_data'] ) ) {
-					$setup_data                     = maybe_unserialize( $args['setup_data'] );
+					$setup_data                     = arm_maybe_unserialize( $args['setup_data'] );
 					$setup_data['arm_setup_labels'] = $setup_data['setup_labels'];
 				} else {
 					$setup_data = $this->arm_get_membership_setup( $setupID );
@@ -1075,13 +1075,13 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$setupRandomID         = $setupID . '_' . arm_generate_random_code();
 					$global_currency       = $arm_payment_gateways->arm_get_global_currency();
 					$current_user_id       = get_current_user_id();
-					$current_user_plan_ids = get_user_meta( $current_user_id, 'arm_user_plan_ids', true );
+					$current_user_plan_ids = arm_get_user_meta( $current_user_id, 'arm_user_plan_ids', true );
 					$current_user_plan_ids = ! empty( $current_user_plan_ids ) ? $current_user_plan_ids : array();
 					$current_user_plan     = '';
 					$current_plan_data     = array();
 					if ( ! empty( $current_user_plan_ids ) ) {
 						$current_user_plan = current( $current_user_plan_ids );
-						$current_plan_data = get_user_meta( $current_user_id, 'arm_user_plan_' . $current_user_plan, true );
+						$current_plan_data = arm_get_user_meta( $current_user_id, 'arm_user_plan_' . $current_user_plan, true );
 					}
 					$setup_name         = ( ! empty( $setup_data['setup_name'] ) ) ? stripslashes( $setup_data['setup_name'] ) : '';
 					$button_labels      = $setup_data['setup_labels']['button_labels'];
@@ -1190,7 +1190,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 							}
 							$GLOBALS['arm_setup_form_settings'][ $modules['forms'] ] = $form_settings;
 						}
-						$form_settings = ( ! empty( $form_settings ) ) ? maybe_unserialize( $form_settings ) : array();
+						$form_settings = ( ! empty( $form_settings ) ) ? arm_maybe_unserialize( $form_settings ) : array();
 					}
 					$plan_payment_cycles = array();
 
@@ -1221,7 +1221,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 									if ( ! empty( $current_user_plan_ids ) ) {
 										$plan_name_array = array();
 										foreach ( $current_user_plan_ids as $plan_id ) {
-											$planData                       = get_user_meta( $arm_user_id, 'arm_user_plan_' . $plan_id, true );
+											$planData                       = arm_get_user_meta( $arm_user_id, 'arm_user_plan_' . $plan_id, true );
 											$arm_user_selected_payment_mode = $planData['arm_payment_mode'];
 											$arm_user_current_plan_detail   = $planData['arm_current_plan_detail'];
 
@@ -2565,7 +2565,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 				$setupID = $args['id'];
 				if ( $isPreview && ! empty( $args['setup_data'] ) ) {
-					$setup_data                     = maybe_unserialize( $args['setup_data'] );
+					$setup_data                     = arm_maybe_unserialize( $args['setup_data'] );
 					$setup_data['arm_setup_labels'] = $setup_data['setup_labels'];
 				} else {
 					$setup_data = $this->arm_get_membership_setup( $setupID );
@@ -2580,10 +2580,10 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$setupRandomID         = $setupID . '_' . arm_generate_random_code();
 					$global_currency       = $arm_payment_gateways->arm_get_global_currency();
 					$current_user_id       = get_current_user_id();
-					$current_user_plan_ids = get_user_meta( $current_user_id, 'arm_user_plan_ids', true );
+					$current_user_plan_ids = arm_get_user_meta( $current_user_id, 'arm_user_plan_ids', true );
 					$current_user_plan_ids = ! empty( $current_user_plan_ids ) ? $current_user_plan_ids : array();
 
-					$user_posts = get_user_meta( $current_user_id, 'arm_user_post_ids', true );
+					$user_posts = arm_get_user_meta( $current_user_id, 'arm_user_post_ids', true );
 					$user_posts = ! empty( $user_posts ) ? $user_posts : array();
 
 					if ( ! empty( $current_user_plan_ids ) && ! empty( $user_posts ) ) {
@@ -2604,7 +2604,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$current_plan_data = array();
 					if ( ! empty( $current_user_plan_ids ) ) {
 						$current_user_plan = current( $current_user_plan_ids );
-						$current_plan_data = get_user_meta( $current_user_id, 'arm_user_plan_' . $current_user_plan, true );
+						$current_plan_data = arm_get_user_meta( $current_user_id, 'arm_user_plan_' . $current_user_plan, true );
 					}
 					$setup_name         = ( ! empty( $setup_data['setup_name'] ) ) ? stripslashes( $setup_data['setup_name'] ) : '';
 					$button_labels      = $setup_data['setup_labels']['button_labels'];
@@ -2735,7 +2735,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 							}
 							$GLOBALS['arm_setup_form_settings'][ $modules['forms'] ] = $form_settings;
 						}
-						$form_settings = ( ! empty( $form_settings ) ) ? maybe_unserialize( $form_settings ) : array();
+						$form_settings = ( ! empty( $form_settings ) ) ? arm_maybe_unserialize( $form_settings ) : array();
 					}
 					$plan_payment_cycles = array();
 
@@ -2767,7 +2767,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 										if ( ! empty( $current_user_plan_ids ) ) {
 											$plan_name_array = array();
 											foreach ( $current_user_plan_ids as $plan_id ) {
-												$planData                       = get_user_meta( $arm_user_id, 'arm_user_plan_' . $plan_id, true );
+												$planData                       = arm_get_user_meta( $arm_user_id, 'arm_user_plan_' . $plan_id, true );
 												$arm_user_selected_payment_mode = !empty($planData['arm_payment_mode']) ? $planData['arm_payment_mode'] : '';
 												$arm_user_current_plan_detail   = !empty($planData['arm_current_plan_detail']) ? $planData['arm_current_plan_detail']: array();
 
@@ -3534,7 +3534,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 										}
 
 										if ( in_array( $payment_cycle_plan_id, $current_user_plan_ids ) ) {
-											$current_plan_data = get_user_meta( $current_user_id, 'arm_user_plan_' . $payment_cycle_plan_id, true );
+											$current_plan_data = arm_get_user_meta( $current_user_id, 'arm_user_plan_' . $payment_cycle_plan_id, true );
 
 											$arm_user_selected_payment_cycle = ( isset( $current_plan_data['arm_payment_cycle'] ) && ! empty( $current_plan_data['arm_payment_cycle'] ) ) ? $current_plan_data['arm_payment_cycle'] : 0;
 										}
@@ -4347,8 +4347,8 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						$country_tax_amount = isset( $general_settings['arm_country_tax_val'] ) ? $general_settings['arm_country_tax_val'] : '';
 						if ( ! empty( $country_tax_amount ) ) {
 							global $wpdb;
-							$country_tax_amount                        = maybe_unserialize( $country_tax_amount );
-							$country_tax_field_opts                    = maybe_unserialize( $country_tax_field_opts );
+							$country_tax_amount                        = arm_maybe_unserialize( $country_tax_amount );
+							$country_tax_field_opts                    = arm_maybe_unserialize( $country_tax_field_opts );
 							$return_arr['tax_type']                    = $tax_type;
 							$return_arr['country_tax_field']           = $country_tax_field;
 							$return_arr['country_tax_field_opts_json'] = wp_json_encode( $country_tax_field_opts );
@@ -4697,7 +4697,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 				} else {
 					$module_box .= '<span class="arm_setup_plan_error_msg error" style="display: none;">' . esc_html__( 'Please select at least one plan.', 'armember-membership' ) . '</span>';
 					$module_box .= '<a href="javascript:void(0)" class="arm_setup_module_refresh" data-module="plans" title="' . esc_html__( 'Reload Plan List', 'armember-membership' ) . '"><i class="armfa armfa-refresh"></i></a>';
-					$module_box .= '<div class="arm_setup_items_empty_msg">' . esc_html__( 'There is no any plan configured yet.', 'armember-membership' );
+					$module_box .= '<div class="arm_setup_items_empty_msg">' . esc_html__( 'No plans have been configured yet.', 'armember-membership' );
 					$module_box .= ' <a href="' . $add_plan_link . '" target="_blank">' . esc_html__( 'Please click here to add plan.', 'armember-membership' ) . '</a>';
 					$module_box .= ' ' . esc_html__( 'After adding plan, click on refresh button', 'armember-membership' );
 					$module_box .= ' (<a style="float: none;padding: 3px;" href="javascript:void(0)" class="arm_setup_module_refresh" data-module="plans"><i class="armfa armfa-refresh"></i></a>) ' . esc_html__( 'to get added plans.', 'armember-membership' );
@@ -4731,7 +4731,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 							$pddata       = $arm_subscription_plans->arm_get_subscription_plan( $pID, 'arm_subscription_plan_name, arm_subscription_plan_type, arm_subscription_plan_options' );
 							$s_plan_name  = $pddata['arm_subscription_plan_name'];
 							$plan_type    = $pddata['arm_subscription_plan_type'];
-							$plan_options = maybe_unserialize( $pddata['arm_subscription_plan_options'] );
+							$plan_options = arm_maybe_unserialize( $pddata['arm_subscription_plan_options'] );
 							$payment_type = isset( $plan_options['payment_type'] ) ? $plan_options['payment_type'] : '';
 							if ( $plan_type == 'paid' && $payment_type == 'subscription' ) {
 								if ( in_array( 'bank_transfer', $selected_items ) ) {
@@ -4985,8 +4985,8 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 				}
 				if ( ! empty( $setup_data ) ) {
 					$setup_data['arm_setup_name']    = ( ! empty( $setup_data['arm_setup_name'] ) ) ? stripslashes( $setup_data['arm_setup_name'] ) : '';
-					$setup_data['arm_setup_modules'] = maybe_unserialize( $setup_data['arm_setup_modules'] );
-					$setup_data['arm_setup_labels']  = maybe_unserialize( $setup_data['arm_setup_labels'] );
+					$setup_data['arm_setup_modules'] = arm_maybe_unserialize( $setup_data['arm_setup_modules'] );
+					$setup_data['arm_setup_labels']  = arm_maybe_unserialize( $setup_data['arm_setup_labels'] );
 					if(!empty($setup_data['arm_setup_labels'])){
 						$setup_data['arm_setup_labels'] = stripslashes_deep($setup_data['arm_setup_labels']);
 					}
@@ -5080,7 +5080,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					} else {
 						$res_var = $wpdb->delete( $ARMemberLite->tbl_arm_membership_setup, array( 'arm_setup_id' => $id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 						if ( $res_var ) {
-							$message = esc_html__( 'Setup has been deleted successfully.', 'armember-membership' );
+							$message = esc_html__( 'The setup has been deleted successfully.', 'armember-membership' );
 						}
 					}
 				}

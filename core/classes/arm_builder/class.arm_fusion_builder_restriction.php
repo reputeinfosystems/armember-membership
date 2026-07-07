@@ -47,8 +47,8 @@ if (!class_exists('ARM_lite_fusion_builder_restriction')) {
                 $plan_options[] = array();
                 $plan_options = array(
                     'any_plan' => esc_attr__( 'Any Plan', 'armember-membership' ),
-                    'unregistered' => esc_attr__( 'Non Loggedin Users', 'armember-membership' ),
-                    'registered' => esc_attr__( 'Loggedin Users', 'armember-membership' )
+                    'unregistered' => esc_attr__( 'Non Logged-In Users', 'armember-membership' ),
+                    'registered' => esc_attr__( 'Logged-In Users', 'armember-membership' )
                 );
                 foreach ( $arm_membership_plan as $plan ) {
                     $plan_options[ $plan['arm_subscription_plan_id'] ] = $plan['arm_subscription_plan_name'];
@@ -58,7 +58,7 @@ if (!class_exists('ARM_lite_fusion_builder_restriction')) {
                     array(
                         'type'        => 'radio_button_set',
                         'heading'     => esc_attr__( 'Enable Content Restriction', 'armember-membership' ),
-                        'description' => esc_attr__( 'Enable this option to apply access or restriction..', 'armember-membership' ),
+                        'description' => esc_attr__( 'Enable this option to apply access or restriction.', 'armember-membership' ),
                         'param_name'  => 'armember_restriction_access',
                         'value'       => array(
                             'yes' => esc_attr__( 'Yes', 'armember-membership' ),

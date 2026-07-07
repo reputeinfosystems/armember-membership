@@ -180,8 +180,8 @@ if ( ( isset( $get_action ) && $get_action == 'edit_profile') || (isset($_GET['a
 	$default_data              = $data;
 	unset($default_data->arm_template_html);
 	$temp_slug                 = $data->arm_slug;
-	$options                   = maybe_unserialize( $data->arm_options );
-	$default_data->arm_options = maybe_unserialize( $options );
+	$options                   = arm_maybe_unserialize( $data->arm_options );
+	$default_data->arm_options = arm_maybe_unserialize( $options );
 
 	$display_admin_profile = $data->arm_enable_admin_profile;
 	$is_default_template   = $data->arm_default;

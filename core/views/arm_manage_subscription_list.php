@@ -1120,7 +1120,7 @@ global $wpdb, $ARMember, $arm_global_settings;
 					<input type="hidden" name="to_grid" id="to_grid" value="<?php esc_attr_e('to','armember-membership');?>"/>
 					<input type="hidden" name="of_grid" id="of_grid" value="<?php esc_attr_e('of','armember-membership');?>"/>
 					<input type="hidden" name="no_match_record_grid" id="no_match_record_grid" value="<?php esc_attr_e('No matching plans found','armember-membership');?>"/>
-					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e('No any subscriptions found.','armember-membership');?>"/>
+					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e('No subscriptions found.','armember-membership');?>"/>
 					<input type="hidden" name="filter_grid" id="filter_grid" value="<?php esc_attr_e('filtered from','armember-membership');?>"/>
 					<input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_attr_e('total','armember-membership');?>"/>
 					<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>
@@ -1155,7 +1155,7 @@ global $wpdb, $ARMember, $arm_global_settings;
 					<input type="hidden" name="to_grid" id="to_grid" value="<?php esc_attr_e('to','armember-membership');?>"/>
 					<input type="hidden" name="of_grid" id="of_grid" value="<?php esc_attr_e('of','armember-membership');?>"/>
 					<input type="hidden" name="no_match_record_grid" id="no_match_record_grid" value="<?php esc_attr_e('No matching plans found','armember-membership');?>"/>
-					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e('No any subscriptions found.','armember-membership');?>"/>
+					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e('No subscriptions found.','armember-membership');?>"/>
 					<input type="hidden" name="filter_grid" id="filter_grid" value="<?php esc_attr_e('filtered from','armember-membership');?>"/>
 					<input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_attr_e('total','armember-membership');?>"/>
 					<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>
@@ -1187,7 +1187,7 @@ global $wpdb, $ARMember, $arm_global_settings;
 					<input type="hidden" name="to_grid" id="to_grid" value="<?php esc_html_e('to','armember-membership');?>"/>
 					<input type="hidden" name="of_grid" id="of_grid" value="<?php esc_html_e('of','armember-membership');?>"/>
 					<input type="hidden" name="no_match_record_grid" id="no_match_record_grid" value="<?php esc_html_e('No matching plans found','armember-membership');?>"/>
-					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_html_e('No any subscriptions found.','armember-membership');?>"/>
+					<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_html_e('No subscriptions found.','armember-membership');?>"/>
 					<input type="hidden" name="filter_grid" id="filter_grid" value="<?php esc_html_e('filtered from','armember-membership');?>"/>
 					<input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_html_e('total','armember-membership');?>"/>
 					<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>
@@ -1279,7 +1279,7 @@ global $wpdb, $ARMember, $arm_global_settings;
                         <div class="form-field form-required arm_transaction_membership_plan_wrapper arm_padding_0 arm_margin_top_28">
                             <span class="arm_edit_plan_lbl arm_margin_bottom_12"><?php esc_html_e('Select Membership Plan','armember-membership'); ?></span>
                             <div class="arm_display_flex">
-                                <input type="text" class="arm-selectpicker-input-control arm_user_plan_change_input_get_cycle" id="arm_plan_id" name="membership_plan" value="" data-manage-plan-grid="1" data-msg-required="<?php esc_attr_e('Please select atleast one membership', 'armember-membership');?>"/>
+                                <input type="text" class="arm-selectpicker-input-control arm_user_plan_change_input_get_cycle" id="arm_plan_id" name="membership_plan" value="" data-manage-plan-grid="1" data-msg-required="<?php esc_attr_e('Please select at least one membership', 'armember-membership');?>"/>
                                 <dl class="arm_selectbox column_level_dd">
                                     <dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
                                     <dd>
@@ -1350,7 +1350,7 @@ global $wpdb, $ARMember, $arm_global_settings;
             <input type="hidden" name="to_grid" id="to_grid" value="<?php esc_html_e('to','armember-membership');?>"/>
             <input type="hidden" name="of_grid" id="of_grid" value="<?php esc_html_e('of','armember-membership');?>"/>
             <input type="hidden" name="no_match_record_grid" id="no_match_record_grid" value="<?php esc_html_e('No matching members found','armember-membership');?>"/>
-            <input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_html_e('There is no any member found.','armember-membership');?>"/>
+            <input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_html_e('No member found','armember-membership');?>"/>
             <input type="hidden" name="filter_grid" id="filter_grid" value="<?php esc_html_e('filtered from','armember-membership');?>"/>
             <input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_html_e('total','armember-membership');?>"/>
             <?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>
@@ -1366,7 +1366,7 @@ global $wpdb, $ARMember, $arm_global_settings;
     __ARM_of = '<?php esc_html_e('of','armember-membership'); ?>';
     __ARM_members = '<?php esc_html_e('transactions','armember-membership'); ?>';
     __ARM_Show = '<?php esc_html_e('Show','armember-membership'); ?>';
-    __ARM_NO_FOUNT = '<?php esc_html_e('No any transactions found.','armember-membership'); ?>';
+    __ARM_NO_FOUNT = '<?php esc_html_e('No transactions found.','armember-membership'); ?>';
     __ARM_NO_MATCHING = '<?php esc_html_e('No matching transactions found.','armember-membership'); ?>';
 </script>
 <?php

@@ -517,7 +517,7 @@ if ( is_rtl() ) {
 									<tr>
 										<th><?php esc_html_e( 'No Records Message', 'armember-membership' ); ?></th>
 										<td>
-											<input type="text" class="arm_member_transaction_opts" name="message_no_record" value="<?php esc_attr_e( 'There is no any Transactions found', 'armember-membership' ); ?>">
+											<input type="text" class="arm_member_transaction_opts" name="message_no_record" value="<?php esc_attr_e( 'No transactions found', 'armember-membership' ); ?>">
 										</td>
 									</tr>
 								</table>
@@ -789,7 +789,7 @@ if ( is_rtl() ) {
 									<tr>
 										<th><?php esc_html_e( 'No Records Message', 'armember-membership' ); ?></th>
 										<td>
-											<input type="text" class="arm_member_current_membership_opts" name="message_no_record" value="<?php esc_html_e( 'There is no membership found.', 'armember-membership' ); ?>">
+											<input type="text" class="arm_member_current_membership_opts" name="message_no_record" value="<?php esc_html_e( 'No memberships found.', 'armember-membership' ); ?>">
 										</td>
 									</tr>
 								</table>
@@ -1144,8 +1144,8 @@ if ( is_rtl() ) {
 							<th><?php esc_html_e( 'Target Users', 'armember-membership' ); ?></th>
 							<td>
 								<select name="plan" class="arm_chosen_selectbox arm_width_350" multiple data-placeholder="<?php esc_attr_e( 'Everyone', 'armember-membership' ); ?>" tabindex="-1" >
-									<option value="registered"><?php esc_html_e( 'Loggedin Users', 'armember-membership' ); ?></option>
-									<option value="unregistered"><?php esc_html_e( 'Non Loggedin Users', 'armember-membership' ); ?></option>
+									<option value="registered"><?php esc_html_e( 'Logged-In Users', 'armember-membership' ); ?></option>
+									<option value="unregistered"><?php esc_html_e( 'Non Logged-In Users', 'armember-membership' ); ?></option>
 									<?php
 									if ( ! empty( $all_plans ) ) {
 										foreach ( $all_plans as $plan ) {

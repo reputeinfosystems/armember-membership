@@ -82,8 +82,8 @@ if (!class_exists('ARM_lite_wpbakery_builder_restriction')) {
             $plan_options = array();
             $plan_options = array(
                 '&nbsp;'.esc_html__( 'Any Plan', 'armember-membership' ) => 'any_plan',
-                '&nbsp;'.esc_html__( 'Non Loggedin Users', 'armember-membership' ) => 'unregistered',
-                '&nbsp;'.esc_html__( 'Loggedin Users', 'armember-membership' ) => 'registered'
+                '&nbsp;'.esc_html__( 'Non Logged-In Users', 'armember-membership' ) => 'unregistered',
+                '&nbsp;'.esc_html__( 'Logged-In Users', 'armember-membership' ) => 'registered'
             );
             foreach ( $arm_membership_plan as $plan ) {
                 $plan_options[ '&nbsp;'.$plan['arm_subscription_plan_name'] ] = $plan['arm_subscription_plan_id'];
@@ -98,7 +98,7 @@ if (!class_exists('ARM_lite_wpbakery_builder_restriction')) {
                             'type' => 'dropdown',
                             'class' => 'arm_element_dropdown',
                             'heading'  => esc_html__( 'Enable Content Restriction', 'armember-membership' ),
-                            'description' => esc_html__( 'Enable this option to apply access or restriction..', 'armember-membership' ),
+                            'description' => esc_html__( 'Enable this option to apply access or restriction.', 'armember-membership' ),
                             'param_name' => 'armember_restriction_access',
                             'default' => 'no',
                             'value' => $restriction_content_access,

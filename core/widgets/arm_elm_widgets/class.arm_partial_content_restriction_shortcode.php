@@ -70,8 +70,8 @@ class arm_partial_content_restriction_shortcode extends Widget_Base
 		);
 
 		$plans = array();
-		$plans['registered'] = esc_html__('LoggedIn Users','armember-membership');
-		$plans['unregistered'] = esc_html__('Non LoggedIn Users','armember-membership');
+		$plans['registered'] = esc_html__('Logged-In Users','armember-membership');
+		$plans['unregistered'] = esc_html__('Non Logged-In Users','armember-membership');
 		if( !empty( $all_plans ) && is_array( $all_plans ) )
 		{
 			foreach($all_plans as $plan) {

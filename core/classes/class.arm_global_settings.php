@@ -169,7 +169,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 
 			$arm_deleted_fields = array();
 			$presetFormFields   = get_option( 'arm_preset_form_fields', '' );
-			$dbFormFields       = maybe_unserialize( $presetFormFields );
+			$dbFormFields       = arm_maybe_unserialize( $presetFormFields );
 
 			if ( isset( $arm_posted_data ) && ! empty( $arm_posted_data ) ) {
 				foreach ( $arm_posted_data as $key => $arm_field_key ) {
@@ -872,16 +872,16 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				'arm_attempts_login_failed'             => esc_html__( 'Remaining Login Attempts :', 'armember-membership' ) . '&nbsp;' . '[ATTEMPTS]',
 				'arm_attempts_many_login_failed'        => esc_html__( 'Your Account is locked for', 'armember-membership' ) . ' [LOCKDURATION] ' . esc_html__( 'minutes.', 'armember-membership' ),
 				'arm_permanent_locked_message'          => esc_html__( 'Your Account is locked for', 'armember-membership' ) . ' [LOCKDURATION] ' . esc_html__( 'hours.', 'armember-membership' ),
-				'arm_not_authorized_login'              => esc_html__( 'Your account is inactive, you are not authorized to login.', 'armember-membership' ),
+				'arm_not_authorized_login'              => esc_html__( 'Your account is inactive. You are not authorized to log in.', 'armember-membership' ),
 				'arm_spam_msg'                          => esc_html__( 'Spam detected.', 'armember-membership' ),
-				'social_login_failed_msg'               => esc_html__( 'Login Failed, please try again.', 'armember-membership' ),
-				'arm_no_registered_email'               => esc_html__( 'There is no user registered with that email address/Username.', 'armember-membership' ),
+				'social_login_failed_msg'               => esc_html__( 'Login failed. Please try again.', 'armember-membership' ),
+				'arm_no_registered_email'               => esc_html__( 'No user is registered with that email address or username.', 'armember-membership' ),
 				'arm_reset_pass_not_allow'              => esc_html__( 'Password reset is not allowed for this user.', 'armember-membership' ),
-				'arm_email_not_sent'                    => esc_html__( 'Email could not sent, please contact site admin.', 'armember-membership' ),
-				'arm_password_reset'                    => esc_html__('Password Reset Successfully!', 'armember-membership') . ' [SUBTITLE]' . esc_html__('Your Password has been reset, Login now and get started', 'armember-membership') . ' [/SUBTITLE]',
+				'arm_email_not_sent'                    => esc_html__( 'Email could not be sent, please contact site admin.', 'armember-membership' ),
+				'arm_password_reset'                    => esc_html__('Password Reset Successfully!', 'armember-membership') . ' [SUBTITLE]' . esc_html__('Your password has been reset. Log in now and get started', 'armember-membership') . ' [/SUBTITLE]',
 				'arm_password_reset_loginlink'          => esc_html__('Login Now', 'armember-membership'),
-				'arm_password_enter_new_pwd'            => esc_html__( 'Please enter new password', 'armember-membership' ),
-				'arm_password_reset_pwd_link_expired'   => esc_html__( 'Reset Password Link is invalid.', 'armember-membership' ),
+				'arm_password_enter_new_pwd'            => esc_html__( 'Please enter a new password', 'armember-membership' ),
+				'arm_password_reset_pwd_link_expired'   => esc_html__( 'The password reset link is invalid.', 'armember-membership' ),
 				'arm_form_title_close_account'          => esc_html__( 'Close Account', 'armember-membership' ),
 				'arm_form_description_close_account'    => esc_html__( 'Are you sure you want to delete your account? This will erase all of your account data from the site. To delete your account enter your password below.', 'armember-membership' ),
 				'arm_password_label_close_account'      => esc_html__( 'Your Password', 'armember-membership' ),
@@ -895,25 +895,25 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				'arm_profile_cover_label'               => esc_html__( 'Profile Cover.', 'armember-membership' ),
 				'arm_maxlength_invalid'                 => esc_html__( 'Maximum', 'armember-membership' ) . ' [MAXVALUE]' . esc_html__( ' characters allowed.', 'armember-membership' ),
 				'arm_minlength_invalid'                 => esc_html__( 'Please enter at least', 'armember-membership' ) . ' [MINVALUE]' . esc_html__( ' characters.', 'armember-membership' ),
-				'arm_expire_activation_link'            => esc_html__( 'Activation link is expired or invalid.', 'armember-membership' ),
-				'arm_expire_reset_password_activation_link' => esc_html__( 'Reset Password Link is expired.', 'armember-membership' ),
-				'arm_email_activation_manual_pending'   => esc_html__( 'Your account is not activated yet. Please contact site administrator.', 'armember-membership' ),
+				'arm_expire_activation_link'            => esc_html__( 'The activation link has expired or is invalid.', 'armember-membership' ),
+				'arm_expire_reset_password_activation_link' => esc_html__( 'The password reset link has expired.', 'armember-membership' ),
+				'arm_email_activation_manual_pending'   => esc_html__( 'Your account has not been activated yet. Please contact the site administrator.', 'armember-membership' ),
 				'arm_already_active_account'            => esc_html__( 'Your account has been activated.', 'armember-membership' ),
 				'arm_account_disabled'                  => esc_html__( 'Your account is disabled. Please contact system administrator.', 'armember-membership' ),
 				'arm_account_inactive'                  => esc_html__( 'Your account is currently not active. Please contact the system administrator.', 'armember-membership' ),
 				'arm_account_pending'                   => esc_html__( 'Your account is currently not active. An administrator needs to activate your account before you can login.', 'armember-membership' ),
-				'arm_account_expired'                   => esc_html__( 'Your account has expired. Please contact system administrator.', 'armember-membership' ),
+				'arm_account_expired'                   => esc_html__( 'Your account has expired. Please contact the site administrator.', 'armember-membership' ),
 
 				'arm_invalid_credit_card'               => esc_html__( 'Please enter the correct card details.', 'armember-membership' ),
-				'arm_unauthorized_credit_card'          => esc_html__( 'Card details could not be authorized, please use other card detail.', 'armember-membership' ),
-				'arm_credit_card_declined'              => esc_html__( 'Your Card is declined.', 'armember-membership' ),
+				'arm_unauthorized_credit_card'          => esc_html__( 'Your card could not be authorized. Please use a different card.', 'armember-membership' ),
+				'arm_credit_card_declined'              => esc_html__( 'Your card was declined.', 'armember-membership' ),
 				'arm_blank_expire_month'                => esc_html__( 'Expiry month should not be blank.', 'armember-membership' ),
 				'arm_blank_expire_year'                 => esc_html__( 'Expiry year should not be blank.', 'armember-membership' ),
 				'arm_blank_cvc_number'                  => esc_html__( 'CVC Number should not be blank.', 'armember-membership' ),
 				'arm_blank_credit_card_number'          => esc_html__( 'Card Number should not be blank.', 'armember-membership' ),
 				'arm_invalid_plan_select'               => esc_html__( 'Selected plan is not valid.', 'armember-membership' ),
 				'arm_no_select_payment_geteway'         => esc_html__( 'Your selected plan is paid, please select a payment method.', 'armember-membership' ),
-				'arm_inactive_payment_gateway'          => esc_html__( 'Payment gateway is not active, please contact the site administrator.', 'armember-membership' ),
+				'arm_inactive_payment_gateway'          => esc_html__( 'The selected payment gateway is not active. Please contact the site administrator.', 'armember-membership' ),
 				'arm_general_msg'                       => esc_html__( 'Sorry, something went wrong. Please contact the site administrator.', 'armember-membership' ),
 				'arm_search_result_found'               => esc_html__( 'No Search Result Found.', 'armember-membership' ),
 				'arm_armif_invalid_argument'            => esc_html__( 'Invalid conditional argument(s).', 'armember-membership' ),
@@ -927,7 +927,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				'directory_sort_by_recently_joined'     => esc_html__( 'Recently Joined', 'armember-membership' ),
 				'arm_profile_member_since'              => esc_html__( 'Member Since', 'armember-membership' ),
 				'arm_profile_view_profile'              => esc_html__( 'View profile', 'armember-membership' ),
-				'arm_disabled_submission'               => esc_html__( 'Sorry! Submit Button is disable to avoid any issues because you are logged in as an administrator.', 'armember-membership' ),
+				'arm_disabled_submission'               => esc_html__( 'Sorry! The Submit button is disabled to prevent issues while you are logged in as an administrator.', 'armember-membership' ),
 			);
 			return $common_messages;
 		}
@@ -937,23 +937,23 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 
             $common_settings = array(
                 "Login Related Messages" => array(
-									"arm_user_not_exist" => esc_html__("Incorrect Username/Email",'armember-membership'),
-									"arm_invalid_password_login" => esc_html__("Incorrect Password",'armember-membership'),
-									"arm_attempts_many_login_failed" => esc_html__("Too Many Failed Login Attempts(Temporary)",'armember-membership'),
-									"arm_permanent_locked_message" => esc_html__("Too Many Failed Login Attempts(Permanent)",'armember-membership'),
-									"arm_attempts_login_failed" => esc_html__("Remained Login Attempts Warning",'armember-membership'),
-									"arm_armif_already_logged_in" => esc_html__("User Already LoggedIn Message",'armember-membership'),
+									"arm_user_not_exist" => esc_html__("The username or email you entered is incorrect.",'armember-membership'),
+									"arm_invalid_password_login" => esc_html__("The password you entered is incorrect.",'armember-membership'),
+									"arm_attempts_many_login_failed" => esc_html__("Too Many Failed Login Attempts (Temporary)",'armember-membership'),
+									"arm_permanent_locked_message" => esc_html__("Too Many Failed Login Attempts (Permanent)",'armember-membership'),
+									"arm_attempts_login_failed" => esc_html__("Remaining login attempts warning",'armember-membership'),
+									"arm_armif_already_logged_in" => esc_html__("User Already Logged-In Message",'armember-membership'),
 									"arm_spam_msg" => esc_html__("System Detected Spam Robots",'armember-membership'),
 								),
 				"Forgot Password Messages" => array(
-									"arm_no_registered_email" => esc_html__("Incorrect Username/Email",'armember-membership'),
-									"arm_reset_pass_not_allow" => esc_html__("Password Reset Not Allowed",'armember-membership'),
+									"arm_no_registered_email" => esc_html__("The username or email you entered is incorrect.",'armember-membership'),
+									"arm_reset_pass_not_allow" => esc_html__("Password reset is not allowed",'armember-membership'),
 									"arm_email_not_sent" => esc_html__("Email Not Sent",'armember-membership'),
 								),
 				"Change Password Messages" => array(
 									"arm_password_reset" => esc_html__("Your password has been reset",'armember-membership'),
                                     'arm_password_reset_loginlink' => esc_html__("Login Now", 'armember-membership'),
-									"arm_password_enter_new_pwd" => esc_html__("Please enter new password",'armember-membership'),
+									"arm_password_enter_new_pwd" => esc_html__("Please enter a new password",'armember-membership'),
 									"arm_password_reset_pwd_link_expired" => esc_html__("Reset Password Link is invalid",'armember-membership'),
 								),
 				"Close Account Messages" => array(
@@ -966,15 +966,15 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 								),
 				"Registration / Edit Profile Labels" => array(
 									"arm_user_not_created" => esc_html__("User Not Created",'armember-membership'),
-									"arm_username_exist" => esc_html__("Username Already Exist",'armember-membership'),
-									"arm_email_exist" => esc_html__("Email Already Exist",'armember-membership'),
+									"arm_username_exist" => esc_html__("Username Already Exists",'armember-membership'),
+									"arm_email_exist" => esc_html__("Email Already Exists",'armember-membership'),
 									"arm_avtar_label" => esc_html__("Avatar Field Label( Edit Profile )",'armember-membership'),
 									"arm_profile_cover_label" => esc_html__("Profile Cover Field Label( Edit Profile )",'armember-membership'),
 									"arm_minlength_invalid" => esc_html__("Minlength",'armember-membership'),
 									"arm_maxlength_invalid" => esc_html__("Maxlength",'armember-membership'),
 								),
 				"Account Related Messages" => array(
-									"arm_expire_activation_link" => esc_html__("Expire Activation Link",'armember-membership'),
+									"arm_expire_activation_link" => esc_html__("The activation link has expired.",'armember-membership'),
 									"arm_already_active_account" => esc_html__("Account Activated",'armember-membership'),
 									"arm_account_pending" => esc_html__("Account Pending",'armember-membership'),
 									"arm_account_inactive" => esc_html__("Account Inactivated",'armember-membership'),
@@ -989,7 +989,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 									"profile_directory_remove_cover_photo" => esc_html__("Remove Cover Photo",'armember-membership'),
 									"profile_template_upload_profile_photo" => esc_html__("Upload Profile Photo",'armember-membership'),
 									"profile_template_remove_profile_photo" => esc_html__("Remove Profile Photo",'armember-membership'),
-									"directory_sort_by_alphabatically" => esc_html__("Alphabatically (Directory Filter)",'armember-membership'),
+									"directory_sort_by_alphabatically" => esc_html__("Alphabetically (Directory Filter)",'armember-membership'),
 									"directory_sort_by_recently_joined" => esc_html__("Recently Joined (Directory Filter)",'armember-membership'),
 									"arm_profile_member_since" => esc_html__("Member Since",'armember-membership'),
 									"arm_profile_view_profile" => esc_html__("View profile",'armember-membership'),
@@ -1010,16 +1010,16 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
         }
         function get_common_messages_key_wise_notice(){
             $common_messages_notice = array(
-                "arm_attempts_many_login_failed" => esc_html__("To display the duration of locked account, use",'armember-membership')." <b>[LOCKDURATION]</b> " . esc_html__("shortcode in a message.",'armember-membership'),
-                "arm_permanent_locked_message" => esc_html__("To display the duration of locked account, use",'armember-membership')." <b>[LOCKDURATION]</b> " . esc_html__("shortcode in a message.",'armember-membership'),
-                "arm_attempts_login_failed" => esc_html__("To display the number of remaining attempts use",'armember-membership')." <b>[ATTEMPTS]</b> " . esc_html__("shortcode in a message.",'armember-membership'),
-                "arm_armif_already_logged_in" => esc_html__("User already loggedIn message for modal forms ( Navigation Popup )",'armember-membership'),
-                "arm_password_reset" => esc_html__("To display password reset message use",'armember-membership'). " <b>[SUBTITLE]".esc_html__("Success message description",'armember-membership')."[/SUBTITLE]</b> " . esc_html__("shortcode in message.",'armember-membership')."<br>".esc_html__("(This message will be used only when password is changed from password reset link sent in mail)",'armember-membership'),
-                "arm_password_reset_loginlink" => esc_html__("(This text will be displayed in reset password success message link after password reset successfully)",'armember-membership'),
-                "arm_password_enter_new_pwd" => esc_html__("(This message will be displayed in reset password form where user comes by clicking on reset password link)",'armember-membership'),
-                "arm_password_reset_pwd_link_expired" => esc_html__("(This message will be displayed on page where user comes by clicking expired reset password link)",'armember-membership'),
-                "arm_minlength_invalid" => esc_html__("To display allowed minimum characters use",'armember-membership')." <b>[MINVALUE]</b> " . esc_html__("shortcode in message.",'armember-membership'),
-                "arm_maxlength_invalid" => esc_html__("To display allowed maximum characters",'armember-membership')." <b>[MAXVALUE]</b> " . esc_html__("shortcode in message.",'armember-membership'),
+                "arm_attempts_many_login_failed" => esc_html__("To display the account lock duration, use",'armember-membership')." <b>[LOCKDURATION]</b> " . esc_html__("shortcode in a message.",'armember-membership'),
+                "arm_permanent_locked_message" => esc_html__("To display the account lock duration, use",'armember-membership')." <b>[LOCKDURATION]</b> " . esc_html__("shortcode in a message.",'armember-membership'),
+                "arm_attempts_login_failed" => esc_html__("To display the number of remaining attempts, use",'armember-membership')." <b>[ATTEMPTS]</b> " . esc_html__("shortcode in a message.",'armember-membership'),
+                "arm_armif_already_logged_in" => esc_html__("User already logged in message for modal forms (Navigation Popup)",'armember-membership'),
+                "arm_password_reset" => esc_html__("To display the password reset message, use",'armember-membership'). " <b>[SUBTITLE]".esc_html__("Success message description",'armember-membership')."[/SUBTITLE]</b> " . esc_html__("shortcode in the message.",'armember-membership')."<br>".esc_html__("(This message is used only when the password is changed using the password reset link sent by email.)",'armember-membership'),
+                "arm_password_reset_loginlink" => esc_html__("(This text is displayed as the link in the password reset success message after the password has been reset successfully.)",'armember-membership'),
+                "arm_password_enter_new_pwd" => esc_html__("(This message is displayed on the password reset form when the user opens the password reset link.)",'armember-membership'),
+                "arm_password_reset_pwd_link_expired" => esc_html__("(This message is displayed when the user opens an expired password reset link.)",'armember-membership'),
+                "arm_minlength_invalid" => esc_html__("To display allowed minimum characters use",'armember-membership')." <b>[MINVALUE]</b> " . esc_html__("shortcode in the message.",'armember-membership'),
+                "arm_maxlength_invalid" => esc_html__("To display the maximum allowed characters",'armember-membership')." <b>[MAXVALUE]</b> " . esc_html__("shortcode in the message.",'armember-membership'),
             );
             
             return $common_messages_notice;
@@ -1053,7 +1053,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                     'is_enable'      => 1,
                     'title'          => esc_html__('Subscriptions', 'armember-membership' ),
                     'tab_type'       => 'content',
-                    'text_content'   => '[arm_membership title="' . esc_html__('Current Membership', 'armember-membership' ) . '" display_renew_button="true" renew_text="' . esc_html__('Renew', 'armember-membership' ) . '" make_payment_text="' . esc_html__('Make Payment', 'armember-membership' ) . '" renew_css="" renew_hover_css="" display_cancel_button="true" cancel_text="' . esc_html__('Cancel', 'armember-membership' ) . '" cancel_css="" cancel_hover_css="" cancel_message="' . esc_html__('Your subscription has been cancelled.', 'armember-membership' ) . '" display_update_card_button="true" update_card_text="' . esc_html__('Update Card', 'armember-membership' ) . '" update_card_css="" update_card_hover_css="" trial_active="' . esc_html__('trial active', 'armember-membership' ) . '" per_page="10" message_no_record="' . esc_html__('There is no membership found.', 'armember-membership' ) . '" membership_label="current_membership_is,current_membership_recurring_profile,current_membership_started_on,current_membership_expired_on,current_membership_next_billing_date,action_button," membership_value="' . esc_html__('Membership Plan', 'armember-membership' ) . ',' . esc_html__('Plan Type', 'armember-membership' ) . ',' . esc_html__('Starts On', 'armember-membership' ) . ',' . esc_html__('Expires On', 'armember-membership' ) . ',' . esc_html__('Cycle Date', 'armember-membership' ) . ',' . esc_html__('Action', 'armember-membership' ) . ',"]',
+                    'text_content'   => '[arm_membership title="' . esc_html__('Current Membership', 'armember-membership' ) . '" display_renew_button="true" renew_text="' . esc_html__('Renew', 'armember-membership' ) . '" make_payment_text="' . esc_html__('Make Payment', 'armember-membership' ) . '" renew_css="" renew_hover_css="" display_cancel_button="true" cancel_text="' . esc_html__('Cancel', 'armember-membership' ) . '" cancel_css="" cancel_hover_css="" cancel_message="' . esc_html__('Your subscription has been cancelled.', 'armember-membership' ) . '" display_update_card_button="true" update_card_text="' . esc_html__('Update Card', 'armember-membership' ) . '" update_card_css="" update_card_hover_css="" trial_active="' . esc_html__('trial active', 'armember-membership' ) . '" per_page="10" message_no_record="' . esc_html__('No memberships found.', 'armember-membership' ) . '" membership_label="current_membership_is,current_membership_recurring_profile,current_membership_started_on,current_membership_expired_on,current_membership_next_billing_date,action_button," membership_value="' . esc_html__('Membership Plan', 'armember-membership' ) . ',' . esc_html__('Plan Type', 'armember-membership' ) . ',' . esc_html__('Starts On', 'armember-membership' ) . ',' . esc_html__('Expires On', 'armember-membership' ) . ',' . esc_html__('Cycle Date', 'armember-membership' ) . ',' . esc_html__('Action', 'armember-membership' ) . ',"]',
                     'url_content'    => '',
                     'url_in_new_tab' => 0,
                 ),
@@ -1065,7 +1065,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                     'is_enable'      => 1,
                     'title'          => esc_html__('Transactions', 'armember-membership' ),
                     'tab_type'       => 'content',
-                    'text_content'   => '[arm_member_transaction display_invoice_button="true" view_invoice_text="' . esc_html__('View Invoice', 'armember-membership' ) . '" view_invoice_css="" view_invoice_hover_css="" title="' . esc_html__('Transactions', 'armember-membership' ) . '" per_page="10" message_no_record="' . esc_html__('There is no any Transactions found', 'armember-membership' ) . '" label="transaction_id,invoice_id,plan,payment_gateway,payment_type,transaction_status,amount,used_coupon_code,used_coupon_discount,payment_date,tax_percentage,tax_amount," value="' . esc_html__('Transaction ID', 'armember-membership' ) . ',' . esc_html__('Invoice ID', 'armember-membership' ) . ',' . esc_html__('Plan', 'armember-membership' ) . ',' . esc_html__('Payment Gateway', 'armember-membership' ) . ',' . esc_html__('Payment Type', 'armember-membership' ) . ',' . esc_html__('Transaction Status', 'armember-membership' ) . ',' . esc_html__('Amount', 'armember-membership' ) . ',' . esc_html__('Used coupon Code', 'armember-membership' ) . ',' . esc_html__('Used coupon Discount', 'armember-membership' ) . ',' . esc_html__('Payment Date', 'armember-membership' ) . ',' . esc_html__('TAX Percentage', 'armember-membership' ) . ',' . esc_html__('TAX Amount', 'armember-membership' ) . ',"]',
+                    'text_content'   => '[arm_member_transaction display_invoice_button="true" view_invoice_text="' . esc_html__('View Invoice', 'armember-membership' ) . '" view_invoice_css="" view_invoice_hover_css="" title="' . esc_html__('Transactions', 'armember-membership' ) . '" per_page="10" message_no_record="' . esc_html__('No transactions found', 'armember-membership' ) . '" label="transaction_id,invoice_id,plan,payment_gateway,payment_type,transaction_status,amount,used_coupon_code,used_coupon_discount,payment_date,tax_percentage,tax_amount," value="' . esc_html__('Transaction ID', 'armember-membership' ) . ',' . esc_html__('Invoice ID', 'armember-membership' ) . ',' . esc_html__('Plan', 'armember-membership' ) . ',' . esc_html__('Payment Gateway', 'armember-membership' ) . ',' . esc_html__('Payment Type', 'armember-membership' ) . ',' . esc_html__('Transaction Status', 'armember-membership' ) . ',' . esc_html__('Amount', 'armember-membership' ) . ',' . esc_html__('Used coupon Code', 'armember-membership' ) . ',' . esc_html__('Used coupon Discount', 'armember-membership' ) . ',' . esc_html__('Payment Date', 'armember-membership' ) . ',' . esc_html__('TAX Percentage', 'armember-membership' ) . ',' . esc_html__('TAX Amount', 'armember-membership' ) . ',"]',
                     'url_content'    => '',
                     'url_in_new_tab' => 0,
                 ),
@@ -1527,7 +1527,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			}
 
 			if ( ! empty( $user_id ) ) {
-				$avatar_url = get_user_meta( $user_id, 'avatar', true );
+				$avatar_url = arm_get_user_meta( $user_id, 'avatar', true );
 				if ( ! empty( $avatar_url ) && file_exists( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $avatar_url ) ) ) {
 					return $avatar_url;
 				} else {
@@ -1563,7 +1563,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				$user_id = 0;
 			}
 			$user             = get_user_by( 'id', $user_id );
-			$avatar_url       = get_user_meta( $user_id, 'avatar', true );
+			$avatar_url       = arm_get_user_meta( $user_id, 'avatar', true );
 			$avatar_w_h_class = '';
 			$arm_is_avatar_url_valid = false;
 			if ( ! empty( $avatar_url ) && file_exists( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $avatar_url ) ) ) {
@@ -1685,7 +1685,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms;
 			$default_global_settings = $this->arm_default_global_settings();
 			$global_settings         = get_option( 'arm_global_settings', $default_global_settings );
-			$all_global_settings     = maybe_unserialize( $global_settings );
+			$all_global_settings     = arm_maybe_unserialize( $global_settings  );
 			$all_global_settings     = apply_filters( 'arm_get_all_global_settings', $all_global_settings );
 			if ( $merge ) {
 				$all_global_settings['general_settings'] = isset( $all_global_settings['general_settings'] ) ? $all_global_settings['general_settings'] : $default_global_settings['general_settings'];
@@ -1717,13 +1717,13 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				'permanent_lockdown_duration' => 24,
 
 				'arm_block_usernames'         => '',
-				'arm_block_usernames_msg'     => esc_html__( 'Username should not contain bad words.', 'armember-membership' ),
+				'arm_block_usernames_msg'     => esc_html__( 'The username cannot contain restricted words.', 'armember-membership' ),
 				'arm_block_emails'            => '',
-				'arm_block_emails_msg'        => esc_html__( 'Email Address should not contain bad words.', 'armember-membership' ),
+				'arm_block_emails_msg'        => esc_html__( 'The email address cannot contain restricted words.', 'armember-membership' ),
 
 			);
 			$block_settings     = get_option( 'arm_block_settings', $default_block_settings );
-			$all_block_settings = maybe_unserialize( $block_settings );
+			$all_block_settings = arm_maybe_unserialize( $block_settings );
 			if ( ! is_array( $all_block_settings ) ) {
 				$all_block_settings = array();
 			}
@@ -1755,7 +1755,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms;
 			$arm_default_common_messages = $this->arm_default_common_messages();
 			$common_message_settings     = get_option( 'arm_common_message_settings', $arm_default_common_messages );
-			$all_common_message_settings = maybe_unserialize( $common_message_settings );
+			$all_common_message_settings = arm_maybe_unserialize( $common_message_settings );
 			$all_common_message_settings = ( ! empty( $all_common_message_settings ) ) ? $all_common_message_settings : array();
 			if ( ! empty( $all_common_message_settings ) ) {
 				foreach ( $all_common_message_settings as $key => $val ) {
@@ -1772,7 +1772,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 
 			$response                = array(
 				'type' => 'error',
-				'msg'  => esc_html__( 'There is a error while updating settings, please try again.', 'armember-membership' ),
+				'msg'  => esc_html__( 'Failed to update the settings. Please try again.', 'armember-membership' ),
 			);
 			$is_new_wp_admin_path    = false;
 			$default_global_settings = $this->arm_default_global_settings();
@@ -1800,7 +1800,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 
 				$flush_rewrite_rules = false;
 
-				$all_saved_global_settings = maybe_unserialize( get_option( 'arm_global_settings' ) );
+				$all_saved_global_settings = arm_maybe_unserialize( get_option( 'arm_global_settings' ) );
 
 				$logout = true;
 
@@ -1917,7 +1917,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				} else {
 					$response = array(
 						'type' => 'error',
-						'msg'  => esc_html__( 'Some of users are having administrator previlegs. So those cant be block.', 'armember-membership' ),
+						'msg'  => esc_html__( 'Some users have administrator privileges. Therefore, they cannot be blocked.', 'armember-membership' ),
 					);
 				}
 			}
@@ -1942,7 +1942,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				} else {
 					$response = array(
 						'type' => 'error',
-						'msg'  => esc_html__( 'Some of users are having administrator previlegs. So those cant be block.', 'armember-membership' ),
+						'msg'  => esc_html__( 'Some users have administrator privileges. Therefore, they cannot be blocked.', 'armember-membership' ),
 					);
 				}
 			}
@@ -2291,7 +2291,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				if ( isset( $_POST[ $param ] ) ) { //phpcs:ignore
 					$value = stripslashes_deep( $_POST[ $param ] ); //phpcs:ignore
 				} elseif ( isset( $str[ $param ] ) ) {
-					$value = stripslashes_deep( maybe_unserialize( $str[ $param ] ) );
+					$value = stripslashes_deep( arm_maybe_unserialize( $str[ $param ] ) );
 				} else {
 					$value = $default;
 				}
@@ -2638,13 +2638,13 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				$arm_is_user_in_grace    = 0;
 				$arm_user_grace_end_date = '';
 				$plan_detail             = array();
-				$user_plans              = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+				$user_plans              = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 				$user_plan               = 0;
 				$using_gateway           = '';
 				$payment_cycle           = 0;
 				if ( ! empty( $plan_id ) ) {
 					$user_plan = $plan_id;
-					$planData  = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+					$planData  = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 					if ( ! empty( $planData ) ) {
 						$arm_is_user_in_grace    = ( isset( $planData['arm_is_user_in_grace'] ) && ! empty( $planData['arm_is_user_in_grace'] ) ) ? $planData['arm_is_user_in_grace'] : 0;
 						$arm_user_grace_end_date = $planData['arm_grace_period_end'];
@@ -2659,7 +2659,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 					$datediff            = $arm_user_grace_end_date - $now;
 					$u_grace_period_days = floor( $datediff / ( 60 * 60 * 24 ) );
 				}
-				$activation_key = get_user_meta( $user_id, 'arm_user_activation_key', true );
+				$activation_key = arm_get_user_meta( $user_id, 'arm_user_activation_key', true );
 				$login_page_id  = isset( $this->global_settings['login_page_id'] ) ? $this->global_settings['login_page_id'] : 0;
 				if ( $login_page_id == 0 ) {
 					$arm_login_page_url = wp_login_url();
@@ -2692,7 +2692,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				$plan_expire       = '';
 
 				if ( ! empty( $plan_detail ) ) {
-					$plan_detail = maybe_unserialize( $plan_detail );
+					$plan_detail = arm_maybe_unserialize( $plan_detail );
 					if ( ! empty( $plan_detail ) ) {
 						$planObj = new ARM_Plan_Lite( 0 );
 						$planObj->init( (object) $plan_detail );
@@ -2752,7 +2752,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 					if ( ! empty( $log_detail ) ) {
 						$u_transaction_id = $log_detail->arm_transaction_id;
 
-						$extravars = maybe_unserialize( $log_detail->arm_extra_vars );
+						$extravars = arm_maybe_unserialize( $log_detail->arm_extra_vars );
 
 						if ( $using_gateway == 'bank_transfer' ) {
 							if ( isset( $extravars['coupon'] ) ) {
@@ -2778,11 +2778,11 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				}
 
 				if ( empty( $user_plans ) ) {
-					$arm_user_entry_id = get_user_meta( $user_id, 'arm_entry_id', true );
+					$arm_user_entry_id = arm_get_user_meta( $user_id, 'arm_entry_id', true );
 					if ( isset( $arm_user_entry_id ) && $arm_user_entry_id != '' ) {
 						$armentryTable            = $ARMemberLite->tbl_arm_entries;
 						$arm_user_entry_data_ser  = $wpdb->get_var( $wpdb->prepare("SELECT `arm_entry_value` FROM `".$armentryTable."` WHERE `arm_entry_id` =%d",$arm_user_entry_id) );//phpcs:ignore --Reason: $armentryTable is a table name. False Positive Alarm
-						$arm_user_entry_data      = maybe_unserialize( $arm_user_entry_data_ser );
+						$arm_user_entry_data      = arm_maybe_unserialize( $arm_user_entry_data_ser );
 						$arm_user_payment_gateway = '';
 
 						if ( isset( $arm_user_entry_data['arm_front_gateway_skin_type'] ) && $arm_user_entry_data['arm_front_gateway_skin_type'] == 'dropdown' ) {
@@ -2846,7 +2846,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 								$u_transaction_id = $log_detail->arm_transaction_id;
 								$u_payable_amount = $log_detail->arm_amount;
 
-								$extravars = maybe_unserialize( $log_detail->arm_extra_vars );
+								$extravars = arm_maybe_unserialize( $log_detail->arm_extra_vars );
 
 								if ( ! empty( $log_detail->arm_is_trial ) && $log_detail->arm_is_trial == 1 ) {
 									$u_trial_amount = isset( $extravars['trial']['amount'] ) ? $extravars['trial']['amount'] : 0;
@@ -2871,7 +2871,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 						$arm_reset_password_link      = $arm_change_password_page_url;
 					}
 
-					$varification_key = get_user_meta( $user_id, 'arm_user_activation_key', true );
+					$varification_key = arm_get_user_meta( $user_id, 'arm_user_activation_key', true );
 					$user_status      = arm_get_member_status( $user_id );
 					if ( $user_status == 3 ) {
 						$rp_link = $arm_global_settings->add_query_arg( 'varify_key', rawurlencode( $varification_key ), $arm_reset_password_link );
@@ -2928,7 +2928,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 						$meta_val = '';
 						if ( ! empty( $key ) ) {
 							$meta_val = do_shortcode('[arm_usermeta id='.$user_id.' meta="'.$key.'"]',true);
-							/* $meta_val = get_user_meta( $user_id, $key, true );
+							/* $meta_val = arm_get_user_meta( $user_id, $key, true );
 							if ( is_array( $meta_val ) ) {
 								$meta_val = implode( ',', $meta_val );
 							} */
@@ -3163,6 +3163,10 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$confirmText = sanitize_text_field( $confirmText );
 			$btnClass = esc_attr( $btnClass );
 			$deleteType = esc_attr( $deleteType );
+			$arm_cancel_btn_cls ='';
+            if(str_contains($btnClass,'arm_plan_delete_btn_not')){
+                $arm_cancel_btn_cls = 'arm_display_block';
+            }
 
 			$deleteText = !empty($deleteText) ? sanitize_text_field( $deleteText ) : esc_html__('Delete', 'armember-membership');
 			$cancelText = !empty($cancelText) ? sanitize_text_field( $cancelText ) : esc_html__('Cancel', 'armember-membership');
@@ -3172,7 +3176,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$confirmBox .= "<div class='arm_confirm_box_text_title'>".$confirmTextTitle."</div>";
 			$confirmBox .= "<div class='arm_confirm_box_text'>".esc_html($confirmText)."</div>";
 			$confirmBox .= "<div class='arm_confirm_box_btn_container'>";
-			$confirmBox .= "<button type='button' class='arm_confirm_box_btn armcancel' onclick='hideConfirmBoxCallback();'>" . esc_html($cancelText) . '</button>';
+			$confirmBox .= "<button type='button' class='arm_confirm_box_btn armcancel ".esc_attr($arm_cancel_btn_cls)."' onclick='hideConfirmBoxCallback();'>" . esc_html($cancelText) . '</button>';
 			$confirmBox .= "<button type='button' class='arm_confirm_box_btn armok ".esc_attr($btnClass).
 			"' data-item_id='".esc_attr($item_id)."' data-type='".esc_attr($deleteType)."'>" . esc_html($deleteText) . '</button>';
 			$confirmBox .= '</div>';
@@ -3537,13 +3541,13 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                                     die();
                                 } else {
                                     update_option($features_options, 0);
-                                    $response = array('type' => 'beaver_builder_error', 'msg' => esc_html__('Please activate Beaver Builder and try to active this add-on.', 'armember-membership'));
+                                    $response = array('type' => 'beaver_builder_error', 'msg' => esc_html__('Please activate Beaver Builder and try to activate this add-on.', 'armember-membership'));
                                     echo wp_json_encode($response);
                                     die();
                                 }
                             } else {
                                 update_option($features_options, 0);
-                                $response = array('type' => 'beaver_builder_error', 'msg' => esc_html__('Please install Beaver Builder and try to active this add-on.', 'armember-membership'));
+                                $response = array('type' => 'beaver_builder_error', 'msg' => esc_html__('Please install Beaver Builder and try to activate this add-on.', 'armember-membership'));
                                 echo wp_json_encode($response);
                                 die();
                             }
@@ -3557,13 +3561,13 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                                     die();
                                 } else {
                                     update_option($features_options, 0);
-                                    $response = array('type' => 'divi_builder_error', 'msg' => esc_html__('Please activate Divi Builder or Divi Theme and try to active this add-on.', 'armember-membership'));
+                                    $response = array('type' => 'divi_builder_error', 'msg' => esc_html__('Please activate Divi Builder or Divi Theme and try to activate this add-on.', 'armember-membership'));
                                     echo wp_json_encode($response);
                                     die();
                                 }
                             } else {
                                 update_option($features_options, 0);
-                                $response = array('type' => 'beaver_builder_error', 'msg' => esc_html__('Please install Divi Builder or Divi Theme and try to active this add-on.', 'armember-membership'));
+                                $response = array('type' => 'beaver_builder_error', 'msg' => esc_html__('Please install Divi Builder or Divi Theme and try to activate this add-on.', 'armember-membership'));
                                 echo wp_json_encode($response);
                                 die();
                             }
@@ -3577,13 +3581,13 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                                     die();
                                 } else {
                                     update_option($features_options, 0);
-                                    $response = array('type' => 'wpbakery_page_builder_error', 'msg' => esc_html__('Please activate WPBakery Page Builder and try to active this add-on.', 'armember-membership'));
+                                    $response = array('type' => 'wpbakery_page_builder_error', 'msg' => esc_html__('Please activate WPBakery Page Builder and try to activate this add-on.', 'armember-membership'));
                                     echo wp_json_encode($response);
                                     die();
                                 }
                             } else {
                                 update_option($features_options, 0);
-                                $response = array('type' => 'wpbakery_page_builder_error', 'msg' => esc_html__('Please install WPBakery Page Builder and try to active this add-on.', 'armember-membership'));
+                                $response = array('type' => 'wpbakery_page_builder_error', 'msg' => esc_html__('Please install WPBakery Page Builder and try to activate this add-on.', 'armember-membership'));
                                 echo wp_json_encode($response);
                                 die();
                             }
@@ -3597,37 +3601,50 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                                     die();
                                 } else {
                                     update_option($features_options, 0);
-                                    $response = array('type' => 'fusion_builder_error', 'msg' => esc_html__('Please activate Fusion Builder or Avada Theme and try to active this add-on.', 'armember-membership'));
+                                    $response = array('type' => 'fusion_builder_error', 'msg' => esc_html__('Please activate Fusion Builder or Avada Theme and try to activate this add-on.', 'armember-membership'));
                                     echo wp_json_encode($response);
                                     die();
                                 }
                             } else {
                                 update_option($features_options, 0);
-                                $response = array('type' => 'fusion_builder_error', 'msg' => esc_html__('Please install Fusion Builder or Avada Theme and try to active this add-on.', 'armember-membership'));
+                                $response = array('type' => 'fusion_builder_error', 'msg' => esc_html__('Please install Fusion Builder or Avada Theme and try to activate this add-on.', 'armember-membership'));
                                 echo wp_json_encode($response);
                                 die();
                             }
                         } else if ($features_options == 'arm_is_oxygen_builder_restriction_feature') {
-                            if (file_exists( WP_PLUGIN_DIR . "/oxygen/functions.php") ) {
-                                if (is_plugin_active('oxygen/functions.php') ) {
-                                    update_option($features_options, $arm_features_status);
-                                    update_option('arm_is_oxygen_builder_restriction_feature_old', $arm_features_status);
-                                    $response = array('type' => 'success', 'msg' => esc_html__('Features Settings Updated Successfully.', 'armember-membership'));
-                                    echo wp_json_encode($response);
-                                    die();
-                                } else {
-                                    update_option($features_options, 0);
-                                    $response = array('type' => 'oxygen_builder_error', 'msg' => esc_html__('Please activate Oxygen Builder and try to active this add-on.', 'armember-membership'));
-                                    echo wp_json_encode($response);
-                                    die();
-                                }
-                            } else {
-                                update_option($features_options, 0);
-                                $response = array('type' => 'oxygen_builder_error', 'msg' => esc_html__('Please install Oxygen Builder and try to active this add-on.', 'armember-membership'));
-                                echo wp_json_encode($response);
-                                die();
-                            }
-                        } else if ($features_options == 'arm_is_siteorigin_builder_restriction_feature') {
+				$oxygen_plugin = '';
+						
+				if (file_exists(WP_PLUGIN_DIR . '/oxygen/plugin.php') && is_plugin_active('oxygen/plugin.php')) {
+					$oxygen_plugin = 'oxygen/plugin.php';
+				} elseif (file_exists(WP_PLUGIN_DIR . '/oxygen/functions.php') && is_plugin_active('oxygen/functions.php')) {
+					$oxygen_plugin = 'oxygen/functions.php';
+				}
+						
+				if (!empty($oxygen_plugin)) {
+					update_option($features_options, $arm_features_status);
+					update_option('arm_is_oxygen_builder_restriction_feature_old', $arm_features_status);
+						
+					$response = array(
+						'type' => 'success',
+						'msg'  => esc_html__('Features Settings Updated Successfully.', 'armember-membership')
+					);
+						
+					echo wp_json_encode($response);
+					die();
+						
+				} else {
+					if (file_exists(WP_PLUGIN_DIR . '/oxygen/plugin.php') || file_exists(WP_PLUGIN_DIR . '/oxygen/functions.php')) {
+						update_option($features_options, 0);
+						$response = array('type' => 'oxygen_builder_error','msg'  => esc_html__('Please activate Oxygen Builder and try to activate this add-on.', 'armember-membership'));
+					} else {
+						update_option($features_options, 0);
+						$response = array('type' => 'oxygen_builder_error','msg'  => esc_html__('Please install Oxygen Builder and try to activate this add-on.', 'armember-membership'));
+					}
+						
+					echo wp_json_encode($response);
+					die();
+				}
+			} else if ($features_options == 'arm_is_siteorigin_builder_restriction_feature') {
                             if (file_exists( WP_PLUGIN_DIR . "/siteorigin-panels/siteorigin-panels.php") ) {
                                 if (is_plugin_active('siteorigin-panels/siteorigin-panels.php') ) {
                                     update_option($features_options, $arm_features_status);
@@ -3637,13 +3654,13 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                                     die();
                                 } else {
                                     update_option($features_options, 0);
-                                    $response = array('type' => 'siteorigin_builder_error', 'msg' => esc_html__('Please activate SiteOrigin Builder and try to active this add-on.', 'armember-membership'));
+                                    $response = array('type' => 'siteorigin_builder_error', 'msg' => esc_html__('Please activate SiteOrigin Builder and try to activate this add-on.', 'armember-membership'));
                                     echo wp_json_encode($response);
                                     die();
                                 }
                             } else {
                                 update_option($features_options, 0);
-                                $response = array('type' => 'siteorigin_builder_error', 'msg' => esc_html__('Please install SiteOrigin Builder and try to active this add-on.', 'armember-membership'));
+                                $response = array('type' => 'siteorigin_builder_error', 'msg' => esc_html__('Please install SiteOrigin Builder and try to activate this add-on.', 'armember-membership'));
                                 echo wp_json_encode($response);
                                 die();
                             }
@@ -3657,13 +3674,13 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
                                     die();
                                 } else {
                                     update_option($features_options, 0);
-                                    $response = array('type' => 'bricks_builder_error', 'msg' => esc_html__('Please activate Bricks Builder and try to active this add-on.', 'armember-membership'));
+                                    $response = array('type' => 'bricks_builder_error', 'msg' => esc_html__('Please activate Bricks Builder and try to activate this add-on.', 'armember-membership'));
                                     echo wp_json_encode($response);
                                     die();
                                 }
                             } else {
                                 update_option($features_options, 0);
-                                $response = array('type' => 'bricks_builder_error', 'msg' => esc_html__('Please install Bricks Builder and try to active this add-on.', 'armember-membership'));
+                                $response = array('type' => 'bricks_builder_error', 'msg' => esc_html__('Please install Bricks Builder and try to activate this add-on.', 'armember-membership'));
                                 echo wp_json_encode($response);
                                 die();
                             }
@@ -3870,7 +3887,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 								<div class="armswitch arm_global_setting_switch arm_margin_right_0">
 									<input id="arm_open_url_in_new_tab_<?php echo $tab_index; ?>" class="armswitch_input" type="checkbox" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][url_in_new_tab]" value="1" <?php echo ($open_in_new_tab ? 'checked' : ''); ?>><label for="arm_open_url_in_new_tab_<?php echo $tab_index; ?>" class="armswitch_label"></label>
 								</div>
-								<span class="arm_padding_left_10"><?php esc_html_e('Open URL in the new tab', 'armember-membership'); ?></span>
+								<span class="arm_padding_left_10"><?php esc_html_e('Open URL in a new tab', 'armember-membership'); ?></span>
 							</div>
 						</div>
 					</div>

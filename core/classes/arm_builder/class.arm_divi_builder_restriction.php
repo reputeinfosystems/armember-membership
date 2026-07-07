@@ -263,8 +263,8 @@ if (!function_exists('arm_membership_plans')) {
 			}
 		}
 		$plans['any_plan'] = esc_html__( 'Any Plan', 'armember-membership' );
-		$plans['unregistered'] = esc_html__( 'Non Loggedin Users', 'armember-membership' );
-		$plans['registered'] = esc_html__( 'Loggedin Users', 'armember-membership' );
+		$plans['unregistered'] = esc_html__( 'Non Logged-In Users', 'armember-membership' );
+		$plans['registered'] = esc_html__( 'Logged-In Users', 'armember-membership' );
 		return $plans;
 	}
 }

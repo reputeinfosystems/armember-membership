@@ -61,7 +61,7 @@ $arm_all_block_settings['arm_block_ips']                = isset( $arm_all_block_
 				
 				<div class="arm_email_setting_flex_group arm_margin_top_24 arm_security_options">
 					<div class="arm_form_field_block arm_max_width_360">
-						<label class="arm-form-table-label payment_label"><span class="arm_failed_login_before_label"><?php esc_html_e( 'Permanent lock user after login attempts', 'armember-membership' ); ?></span></label>	
+						<label class="arm-form-table-label payment_label"><span class="arm_failed_login_before_label"><?php esc_html_e( 'Permanently lock user after login attempts.', 'armember-membership' ); ?></span></label>	
 						<input  type="text" id="permanent_login_retries" value="<?php echo intval($arm_all_block_settings['permanent_login_retries']); ?>" class="arm_general_input arm_margin_top_12 arm_width_100_pct"  name="arm_block_settings[permanent_login_retries]" onkeypress="return isNumber(event)" />
 						<span class="arm_permanent_login_retries_error arm_error_msg" style="display:none;"><?php esc_html_e( 'Please enter number of login attempts after user permanent lock.', 'armember-membership' ); ?></span>
 					</div>
@@ -108,7 +108,7 @@ $arm_all_block_settings['arm_block_ips']                = isset( $arm_all_block_
 						<div class="arm_position_relative arm_margin_top_12 arm_failed_history">
 							<a href="javascript:void(0)" id="arm_failed_login_attempts_history" class="arm_failed_login_attempts_history arm_ref_info_links"><?php esc_html_e( 'View Failed Login Attempts History', 'armember-membership' ); ?></a>
 						</div>	
-						<span class="arm_info_text arm_info_text_style arm-note-message --attempt arm_margin_top_15"><?php esc_html_e( 'Note', 'armember-membership' ); ?>: <?php esc_html_e( ' Failed login attempt history will automatically be cleared which is older than 30 days.', 'armember-membership' ); ?></span>
+						<span class="arm_info_text arm_info_text_style arm-note-message --attempt arm_margin_top_15"><?php esc_html_e( 'Note', 'armember-membership' ); ?> : <?php esc_html_e( 'Failed login attempt history older than 30 days will automatically be cleared.', 'armember-membership' ); ?></span>
 
 						<div class="arm_content_border arm_margin_top_24"></div>
 						
@@ -188,7 +188,7 @@ $arm_all_block_settings['arm_block_ips']                = isset( $arm_all_block_
 					</div>
 					<div class="form-field arm_margin_top_32">
 						<label for="arm_block_emails_msg arm-form-table-label"><?php esc_html_e( 'Blocked Email Addresses Message', 'armember-membership' ); ?></label>
-						<i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_html_e( 'This message will be display when member tries to register with blocked email address.', 'armember-membership' ); ?>"></i>
+						<i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_html_e( 'This message will be displayed when member tries to register with blocked email address.', 'armember-membership' ); ?>"></i>
 						<div class="">
 							<input type="text" name="arm_block_settings[arm_block_emails_msg]" class="arm_max_width_100_pct arm_width_100_pct arm_margin_top_12" id="arm_block_emails_msg" value="<?php echo ( ! empty( $arm_all_block_settings['arm_block_emails_msg'] ) ) ? esc_attr( stripslashes( $arm_all_block_settings['arm_block_emails_msg'] ) ) : ''; ?>"/>
 						</div>

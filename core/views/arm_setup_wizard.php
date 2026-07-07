@@ -656,7 +656,7 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 					</div>
 				</div>
 			</div>
-			<span id="arm_no_payment_gateway-error" class="error arm_invalid" style="display:none;"><?php esc_html_e('Please enable atleast one payment.','armember-membership');?></span>  
+			<span id="arm_no_payment_gateway-error" class="error arm_invalid" style="display:none;"><?php esc_html_e('Please enable at least one payment.','armember-membership');?></span>  
 		</div>
 	</div>
 	<div class="arm-ws-footer-wrapper">
@@ -891,7 +891,7 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 							}
 						}
 					?>
-					<select id="arm_access_for_membership_plans" class="arm_chosen_selectbox arm_width_500" name="arm_access_rules_pages_ids[]" data-placeholder="<?php esc_attr_e('Select Pages(s)..', 'armember-membership');?>" multiple="multiple" >
+					<select id="arm_access_for_membership_plans" class="arm_chosen_selectbox arm_width_500" name="arm_access_rules_pages_ids[]" data-placeholder="<?php esc_attr_e('Select Pages..', 'armember-membership');?>" multiple="multiple" >
 							<?php
 								if (!empty($rule_records)){
 									foreach ($rule_records as $rules_page) {
@@ -1250,7 +1250,7 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 		<div class="arm-setup-comp-video arm-setup-comp-congrats arm-setup-wizard-celebration-show">
 			
 			<div class="arm-thank-you-text"><?php esc_html_e('Congratulations!','armember-membership');?></div>
-			<div class="arm-thank-you-disc"><?php esc_html_e('Hurray!! Everything is ready to create your first membership site','armember-membership');?></div>
+			<div class="arm-thank-you-disc"><?php esc_html_e('Hurray! Everything is ready to create your first membership site.','armember-membership');?></div>
 			<div class="arm-thank-you-content"><?php esc_html_e('Your site is ready & below are the details','armember-membership');?></div>
 		</div>
 		<div class="arm-thank-you-short-code-list-row"> 

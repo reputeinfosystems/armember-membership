@@ -64,7 +64,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							if ($arm_is_multisite) {
 								if(is_user_member_of_blog($arm_user->user_id, $arm_current_blog_id))
 								{
-									$arm_user_array[$arm_user->user_id] = maybe_unserialize($arm_user->meta_value);
+									$arm_user_array[$arm_user->user_id] = arm_maybe_unserialize($arm_user->meta_value);
 								}
 								else
 								{
@@ -72,7 +72,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								}
 							}
 							else {
-								$arm_user_array[$arm_user->user_id] = maybe_unserialize($arm_user->meta_value);
+								$arm_user_array[$arm_user->user_id] = arm_maybe_unserialize($arm_user->meta_value);
 							}
 						}
 					}
@@ -213,7 +213,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                             if ($arm_is_multisite) {
                                 if(is_user_member_of_blog($arm_user->user_id, $arm_current_blog_id))
                                 {
-                                    $arm_user_array[$arm_user->user_id] = maybe_unserialize($arm_user->meta_value);
+                                    $arm_user_array[$arm_user->user_id] = arm_maybe_unserialize($arm_user->meta_value);
                                 }
                                 else
                                 {
@@ -221,7 +221,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                                 }
                             }
                             else {
-                                $arm_user_array[$arm_user->user_id] = maybe_unserialize($arm_user->meta_value);
+                                $arm_user_array[$arm_user->user_id] = arm_maybe_unserialize($arm_user->meta_value);
                             }
                         }
                     }
@@ -270,9 +270,9 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                         $gridAction .= "<a href='javascript:void(0)'  class='arm_edit_plan_data' data-plan_id='".$planID."'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M13.2594 3.60022L5.04936 12.2902C4.73936 12.6202 4.43936 13.2702 4.37936 13.7202L4.00936 16.9602C3.87936 18.1302 4.71936 18.9302 5.87936 18.7302L9.09936 18.1802C9.54936 18.1002 10.1794 17.7702 10.4894 17.4302L18.6994 8.74022C20.1194 7.24022 20.7594 5.53022 18.5494 3.44022C16.3494 1.37022 14.6794 2.10022 13.2594 3.60022Z' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M11.8906 5.0498C12.3206 7.8098 14.5606 9.9198 17.3406 10.1998' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/><path d='M3 22H21' stroke='#617191' stroke-width='1.5' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/></svg></a>";
                         $gridAction .= "<a href='javascript:void(0)' onclick='showConfirmBoxCallback({$planID});' class='arm_grid_delete_action'><svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M3 5.33333H21M16.5 5.33333L16.1956 4.43119C15.9005 3.55694 15.7529 3.11982 15.4793 2.79664C15.2376 2.51126 14.9274 2.29036 14.5768 2.1542C14.1798 2 13.7134 2 12.7803 2H11.2197C10.2866 2 9.8202 2 9.4232 2.1542C9.07266 2.29036 8.76234 2.51126 8.5207 2.79664C8.24706 3.11982 8.09954 3.55694 7.80447 4.43119L7.5 5.33333M18.75 5.33333V16.6667C18.75 18.5336 18.75 19.4669 18.3821 20.18C18.0586 20.8072 17.5423 21.3171 16.9072 21.6367C16.1852 22 15.2402 22 13.35 22H10.65C8.75982 22 7.81473 22 7.09278 21.6367C6.45773 21.3171 5.94143 20.8072 5.61785 20.18C5.25 19.4669 5.25 18.5336 5.25 16.6667V5.33333M14.25 9.77778V17.5556M9.75 9.77778V17.5556' stroke='#617191' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg></a>";
                         if (empty($planMembers) || $planMembers == 0) {
-                            $gridAction .= $arm_global_settings->arm_get_confirm_box($planID, esc_html__("Are you sure you want to delete this plan?", 'armember-membership'), 'arm_plan_delete_btn','', esc_html__('Delete', 'armember-membership'), esc_attr__('Cancel', 'armember-membership'), esc_attr__('Delete', 'armember-membership'));
+                            $gridAction .= $arm_global_settings->arm_get_confirm_box($planID, esc_html__("Are you sure you want to delete this plan?", 'armember-membership'), 'arm_plan_delete_btn arm_display_block','', esc_html__('Delete', 'armember-membership'), esc_attr__('Cancel', 'armember-membership'), esc_attr__('Delete', 'armember-membership'));
                         } else {
-                            $gridAction .= $arm_global_settings->arm_get_confirm_box($planID, esc_html__("This plan has one or more subscribers. So this plan can not be deleted.", 'armember-membership'), 'arm_plan_delete_btn_not arm_hide','','',esc_html__("Close",'armember-membership'),esc_attr__('Delete', 'armember-membership'));
+                            $gridAction .= $arm_global_settings->arm_get_confirm_box($planID, esc_html__("This plan has one or more subscribers. So this plan cannot be deleted.", 'armember-membership'), 'arm_plan_delete_btn_not arm_hide','','',esc_html__("Close",'armember-membership'),esc_attr__('Delete', 'armember-membership'));
                         }
                     }
 
@@ -323,7 +323,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                             if ($arm_is_multisite) {
                                 if(is_user_member_of_blog($arm_user->user_id, $arm_current_blog_id))
                                 {
-                                    $arm_user_array[$arm_user->user_id] = maybe_unserialize($arm_user->meta_value);
+                                    $arm_user_array[$arm_user->user_id] = arm_maybe_unserialize($arm_user->meta_value);
                                 }
                                 else
                                 {
@@ -331,7 +331,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                                 }
                             }
                             else {
-                                $arm_user_array[$arm_user->user_id] = maybe_unserialize($arm_user->meta_value);
+                                $arm_user_array[$arm_user->user_id] = arm_maybe_unserialize($arm_user->meta_value);
                             }
                         }
                     }
@@ -352,7 +352,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                 $response_data['arm_plan_name'] = !empty($arm_plan_result_data['arm_subscription_plan_name']) ?  stripslashes($arm_plan_result_data['arm_subscription_plan_name']) : '';
                 $response_data['arm_plan_desc'] = !empty($arm_plan_result_data['arm_subscription_plan_description']) ? stripslashes($arm_plan_result_data['arm_subscription_plan_description']) : '';
                 $response_data['arm_plan_type'] = $arm_plan_result_data['arm_subscription_plan_type'];
-                $response_data['arm_plan_options'] = maybe_unserialize($arm_plan_result_data['arm_subscription_plan_options']);
+                $response_data['arm_plan_options'] = arm_maybe_unserialize($arm_plan_result_data['arm_subscription_plan_options']);
                 $plan_expire_date = !empty($response_data['arm_plan_options']['expiry_date']) ? $response_data['arm_plan_options']['expiry_date'] : '';
 
                 $arm_common_date_format = 'm/d/Y'; 
@@ -399,7 +399,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_plans'], '1' ); //phpcs:ignore --Reason:Verifying nonce
 
-			$response = array("status"=>"error","message"=>esc_html__("Something went wrong!Please try again",'armember-membership'));
+			$response = array("status"=>"error","message"=>esc_html__("Something went wrong! Please try again",'armember-membership'));
 			//$posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data_extend' ), $_POST );//phpcs:ignore
 			$posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST ); //phpcs:ignore
 
@@ -577,7 +577,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						$plan_data['arm_subscription_plan_description'] = stripslashes( $plan_data['arm_subscription_plan_description'] );
 					}
 					if ( isset( $plan_data['arm_subscription_plan_options'] ) ) {
-						$plan_data['arm_subscription_plan_options'] = maybe_unserialize( $plan_data['arm_subscription_plan_options'] );
+						$plan_data['arm_subscription_plan_options'] = arm_maybe_unserialize( $plan_data['arm_subscription_plan_options'] );
 					}
 				}
 				return $plan_data;
@@ -698,7 +698,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						$sp['arm_subscription_plan_description'] = stripslashes( $sp['arm_subscription_plan_description'] );
 					}
 					if ( isset( $sp['arm_subscription_plan_options'] ) ) {
-						$sp['arm_subscription_plan_options'] = maybe_unserialize( $sp['arm_subscription_plan_options'] );
+						$sp['arm_subscription_plan_options'] = arm_maybe_unserialize( $sp['arm_subscription_plan_options'] );
 					}
 					$plans_data[ $plnID ] = $sp;
 				}
@@ -732,7 +732,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$sp->arm_subscription_plan_description = stripslashes( $sp->arm_subscription_plan_description );
 							}
 							if ( isset( $sp->arm_subscription_plan_options ) ) {
-								$sp->arm_subscription_plan_options = maybe_unserialize( $sp->arm_subscription_plan_options );
+								$sp->arm_subscription_plan_options = arm_maybe_unserialize( $sp->arm_subscription_plan_options );
 							}
 						} else {
 							$plnID = $sp['arm_subscription_plan_id'];
@@ -743,7 +743,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$sp['arm_subscription_plan_description'] = stripslashes( $sp['arm_subscription_plan_description'] );
 							}
 							if ( isset( $sp['arm_subscription_plan_options'] ) ) {
-								$sp['arm_subscription_plan_options'] = maybe_unserialize( $sp['arm_subscription_plan_options'] );
+								$sp['arm_subscription_plan_options'] = arm_maybe_unserialize( $sp['arm_subscription_plan_options'] );
 							}
 						}
 						$plans_data[ $plnID ] = $sp;
@@ -800,7 +800,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$sp->arm_subscription_plan_description = stripslashes( $sp->arm_subscription_plan_description );
 							}
 							if ( isset( $sp->arm_subscription_plan_options ) ) {
-								$sp->arm_subscription_plan_options = maybe_unserialize( $sp->arm_subscription_plan_options );
+								$sp->arm_subscription_plan_options = arm_maybe_unserialize( $sp->arm_subscription_plan_options );
 							}
 						} else {
 							$plnID = $sp['arm_subscription_plan_id'];
@@ -811,7 +811,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$sp['arm_subscription_plan_description'] = stripslashes( $sp['arm_subscription_plan_description'] );
 							}
 							if ( isset( $sp['arm_subscription_plan_options'] ) ) {
-								$sp['arm_subscription_plan_options'] = maybe_unserialize( $sp['arm_subscription_plan_options'] );
+								$sp['arm_subscription_plan_options'] = arm_maybe_unserialize( $sp['arm_subscription_plan_options'] );
 							}
 						}
 						$plans_data[ $plnID ] = $sp;
@@ -847,7 +847,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					foreach ( $results as $sp ) {
 						$sp['arm_subscription_plan_name']              = stripslashes( $sp['arm_subscription_plan_name'] );
 						$sp['arm_subscription_plan_description']       = stripslashes( $sp['arm_subscription_plan_description'] );
-						$sp['arm_subscription_plan_options']           = maybe_unserialize( $sp['arm_subscription_plan_options'] );
+						$sp['arm_subscription_plan_options']           = arm_maybe_unserialize( $sp['arm_subscription_plan_options'] );
 						$plans_data[ $sp['arm_subscription_plan_id'] ] = $sp;
 					}
 				}
@@ -964,13 +964,13 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 				$action_opt       = '';
 				$secondary_status = 5;
-				$user_plans       = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+				$user_plans       = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 				$user_plans       = ! empty( $user_plans ) ? $user_plans : array();
 
 				if ( in_array( $plan_id, $user_plans ) ) {
 
 					$defaultPlanData  = $this->arm_default_plan_array();
-					$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+					$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 					$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 					$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -1048,7 +1048,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							$planData['arm_grace_period_end']    = $graceEndDate;
 							$planData['arm_grace_period_action'] = $action;
 
-							update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $planData );
+							arm_update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $planData );
 							if ( isset( $temp_detail_user ) && $temp_detail_user->arm_template_status == '1' ) {
 								$subject        = $arm_global_settings->arm_filter_email_with_user_detail( $temp_detail_user->arm_template_subject, $user_id, $plan_id );
 								$message        = $arm_global_settings->arm_filter_email_with_user_detail( $temp_detail_user->arm_template_content, $user_id, $plan_id );
@@ -1081,12 +1081,12 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 											$completed_recurrence = $planData['arm_completed_recurring'];
 											$completed_recurrence++;
 											$planData['arm_completed_recurring'] = $completed_recurrence;
-											// update_user_meta($user_id, 'arm_user_plan_' . $plan_id, $planData);
+											// arm_update_user_meta($user_id, 'arm_user_plan_' . $plan_id, $planData);
 											$arm_next_payment_date            = $arm_members_class->arm_get_next_due_date( $user_id, $plan_id, false, $payment_cycle );
 											$planData['arm_next_due_payment'] = $arm_next_payment_date;
 
-											update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $planData );
-											update_user_meta( $user_id, 'arm_user_failed_payment_plan_status_' . $plan_id, 'yes' );
+											arm_update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $planData );
+											arm_update_user_meta( $user_id, 'arm_user_failed_payment_plan_status_' . $plan_id, 'yes' );
 										}
 
 										// if ($payment_mode == 'manual_subscription') {
@@ -1113,14 +1113,14 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 											$payment_log_id          = $arm_payment_gateways->arm_save_payment_log( $payment_data );
 											// }
 
-											$total_user_plans = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+											$total_user_plans = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 											if ( ! empty( $total_user_plans ) ) {
-												$suspended_plan_ids = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+												$suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
 												$suspended_plan_id  = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 
 												if ( ! in_array( $plan_id, $suspended_plan_id ) ) {
 													$suspended_plan_id[] = $plan_id;
-													update_user_meta( $user_id, 'arm_user_suspended_plan_ids', array_values( $suspended_plan_id ) );
+													arm_update_user_meta( $user_id, 'arm_user_suspended_plan_ids', array_values( $suspended_plan_id ) );
 												}
 											}
 									}
@@ -1129,7 +1129,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							$planData['arm_is_user_in_grace']    = '0';
 							$planData['arm_grace_period_end']    = '';
 							$planData['arm_grace_period_action'] = '';
-							update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $planData );
+							arm_update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $planData );
 						}
 					} /* End `($curPlan->exists() && $user_plan == $plan_id)` */
 				}
@@ -1178,7 +1178,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 			}
 
 			$defaultPlanData  = $this->arm_default_plan_array();
-			$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+			$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 			$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 
 			$planDataDefault = shortcode_atts( $defaultPlanData, $userPlanDatameta );
@@ -1197,7 +1197,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 				if ( ( $plan->is_paid() && ! $plan->is_lifetime() && $plan->is_recurring() ) || ( $plan->is_paid() || $plan->is_lifetime() || $plan->is_free() ) ) {
 					$planData['arm_cencelled_plan'] = 'yes';
-					update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $planData );
+					arm_update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $planData );
 					$cancel_plan_action = apply_filters( 'arm_before_cancel_subscription', $cancel_plan_action, $plan, $user_id );
 					if ( $cancel_plan_action == 'immediate' ) {
 						if ( $plan->is_paid() && ! $plan->is_lifetime() && $plan->is_recurring() ) {
@@ -1249,7 +1249,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 				$user             = get_userdata( $user_id );
 				$defaultPlanData  = $this->arm_default_plan_array();
-				$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+				$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 				$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 				$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -1278,7 +1278,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 				} else {
 
-					$arm_changed_expiry_date_plan = get_user_meta( $user_id, 'arm_changed_expiry_date_plans', true );
+					$arm_changed_expiry_date_plan = arm_get_user_meta( $user_id, 'arm_changed_expiry_date_plans', true );
 					$arm_changed_expiry_date_plan = ! empty( $arm_changed_expiry_date_plan ) ? $arm_changed_expiry_date_plan : array();
 					if ( ! empty( $arm_changed_expiry_date_plan ) ) {
 						if ( in_array( $plan_id, $arm_changed_expiry_date_plan ) ) {
@@ -1302,13 +1302,13 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						}
 					}
 
-					$user_plan_ids = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+					$user_plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 					$user_plan_ids = ! empty( $user_plan_ids ) ? $user_plan_ids : array();
 
-					$user_future_plan_ids = get_user_meta( $user_id, 'arm_user_future_plan_ids', true );
+					$user_future_plan_ids = arm_get_user_meta( $user_id, 'arm_user_future_plan_ids', true );
 					$user_future_plan_ids = ! empty( $user_future_plan_ids ) ? $user_future_plan_ids : array();
 
-					$user_suspended_plan_ids = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+					$user_suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
 					$user_suspended_plan_ids = ! empty( $user_suspended_plan_ids ) ? $user_suspended_plan_ids : array();
 
 					if ( in_array( $plan_id, $user_plan_ids ) ) {
@@ -1321,13 +1321,13 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 					if ( in_array( $plan_id, $user_suspended_plan_ids ) ) {
 						unset( $user_suspended_plan_ids[ array_search( $plan_id, $user_suspended_plan_ids ) ] );
-						update_user_meta( $user_id, 'arm_user_suspended_plan_ids', array_values( $user_suspended_plan_ids ) );
+						arm_update_user_meta( $user_id, 'arm_user_suspended_plan_ids', array_values( $user_suspended_plan_ids ) );
 					}
 
 					if ( empty( $user_future_plan_ids ) ) {
 						delete_user_meta( $user_id, 'arm_user_future_plan_ids' );
 					} else {
-						update_user_meta( $user_id, 'arm_user_future_plan_ids', array_values( $user_future_plan_ids ) );
+						arm_update_user_meta( $user_id, 'arm_user_future_plan_ids', array_values( $user_future_plan_ids ) );
 					}
 
 					if ( empty( $user_plan_ids ) ) {
@@ -1338,7 +1338,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						delete_user_meta( $user_id, 'arm_user_suspended_plan_ids' );
 						delete_user_meta( $user_id, 'arm_changed_expiry_date_plans', true );
 					} else {
-						update_user_meta( $user_id, 'arm_user_plan_ids', array_values( $user_plan_ids ) );
+						arm_update_user_meta( $user_id, 'arm_user_plan_ids', array_values( $user_plan_ids ) );
 					}
 				}
 			}
@@ -1351,7 +1351,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 		function arm_before_update_user_subscription_action( $user_id = 0, $new_plan_id = 0 ) {
 			global $wp, $wpdb, $ARMemberLite, $arm_global_settings, $arm_payment_gateways;
 			if ( ! empty( $user_id ) && $user_id != 0 ) {
-				$old_plan_ids = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+				$old_plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 				$old_plan_ids = ! empty( $old_plan_ids ) ? $old_plan_ids : array();
 				if ( ! empty( $old_plan_ids ) && ! in_array( $new_plan_id, $old_plan_ids ) ) {
 					// Cancel User's Last Subscription
@@ -1371,14 +1371,14 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				/* Only update plan if Member is active */
 
 				$user               = new WP_User( $user_id );
-				$old_plan_ids       = get_user_meta( $user_id, 'arm_user_plan_ids', true );
-				$suspended_plan_ids = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+				$old_plan_ids       = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
+				$suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
 				$suspended_plan_ids = ! empty( $suspended_plan_ids ) ? $suspended_plan_ids : array();
 				$old_plan           = ( isset( $old_plan_ids ) && ! empty( $old_plan_ids ) ) ? $old_plan_ids : array();
 				$old_plans          = $old_plan;
 				if ( in_array( $new_plan_id, $suspended_plan_ids ) ) {
 					unset( $suspended_plan_ids[ array_search( $new_plan_id, $suspended_plan_ids ) ] );
-					update_user_meta( $user_id, 'arm_user_suspended_plan_ids', $suspended_plan_ids );
+					arm_update_user_meta( $user_id, 'arm_user_suspended_plan_ids', $suspended_plan_ids );
 				}
 
 				if ( ! in_array( $new_plan_id, $old_plan ) ) {
@@ -1396,7 +1396,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						}
 							$mail_type = ( empty( $old_plan ) ) ? 'new_subscription' : $arm_change_subscription_mail_type;
 
-							update_user_meta( $user_id, 'arm_user_plan_ids', array( $new_plan_id ) );
+							arm_update_user_meta( $user_id, 'arm_user_plan_ids', array( $new_plan_id ) );
 
 						if ( ! empty( $old_plan ) ) {
 							foreach ( $old_plan as $old_plan_id ) {
@@ -1420,11 +1420,11 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							$user->set_role( $new_plan->plan_role );
 						}
 
-						update_user_meta( $user_id, 'arm_user_last_plan', $new_plan_id );
+						arm_update_user_meta( $user_id, 'arm_user_last_plan', $new_plan_id );
 
 						$user->add_cap( 'armember_access_plan_' . $new_plan_id );
 						$defaultPlanData  = $this->arm_default_plan_array();
-						$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, true );
+						$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, true );
 						$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 						$newPlanData      = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -1469,7 +1469,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						$curPlanDetail['arm_user_selected_payment_cycle'] = $payment_cycle;
 
 						$newPlanData['arm_current_plan_detail'] = $curPlanDetail;
-						update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $newPlanData );
+						arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $newPlanData );
 
 						if ( $new_plan->is_recurring() ) {
 							$arm_next_payment_date = $arm_members_class->arm_get_next_due_date( $user_id, $new_plan_id, $allow_trial, $payment_cycle );
@@ -1507,7 +1507,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							}
 						}
 
-						update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $newPlanData );
+						arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $newPlanData );
 
 						$this->arm_add_membership_history( $user_id, $new_plan_id, 'new_subscription', array(), $action_by );
 						/**
@@ -1539,7 +1539,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						}
 
 						$defaultPlanData  = $this->arm_default_plan_array();
-						$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, true );
+						$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, true );
 						$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 						$oldPlanData      = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -1606,7 +1606,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$curPlanDetail                                    = (array) $new_plan->plan_detail;
 								$curPlanDetail['arm_user_selected_payment_cycle'] = $payment_cycle;
 								$oldPlanData['arm_current_plan_detail']           = $curPlanDetail;
-								update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+								arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 
 								$arm_next_payment_date = $arm_members_class->arm_get_next_due_date( $user_id, $new_plan_id, false, $payment_cycle );
 								if ( $arm_next_payment_date != '' ) {
@@ -1624,7 +1624,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$oldPlanData['arm_subscr_effective']    = '';
 								$oldPlanData['arm_change_plan_to']      = '';
 
-								update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+								arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 
 								$this->arm_add_membership_history( $user_id, $new_plan_id, 'renew_subscription' );
 								$arm_manage_communication->arm_user_plan_status_action_mail(
@@ -1646,7 +1646,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 									if ( $arm_last_payment_status != 'failed' ) {
 										$completed_rec                          = ! empty( $completed_rec ) ? $completed_rec : 0;
 										$oldPlanData['arm_completed_recurring'] = ( $completed_rec + 1 );
-										update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+										arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 										$arm_next_payment_date = $arm_members_class->arm_get_next_due_date( $user_id, $new_plan_id, false, $payment_cycle );
 										if ( $arm_next_payment_date != '' ) {
 											$oldPlanData['arm_next_due_payment'] = $arm_next_payment_date;
@@ -1656,7 +1656,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 									$completed_rec                          = ! empty( $completed_rec ) ? $completed_rec : 0;
 									$oldPlanData['arm_completed_recurring'] = ( $completed_rec + 1 );
-									update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+									arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 									$arm_next_payment_date = $arm_members_class->arm_get_next_due_date( $user_id, $new_plan_id, false, $payment_cycle );
 									if ( $arm_next_payment_date != '' ) {
 										$oldPlanData['arm_next_due_payment'] = $arm_next_payment_date;
@@ -1667,7 +1667,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$oldPlanData['arm_grace_period_end']    = '';
 								$oldPlanData['arm_grace_period_action'] = '';
 
-								update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+								arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 								do_action( 'arm_after_user_recurring_payment_done', $user_id, $new_plan_id );
 							}
 						} else {
@@ -1718,7 +1718,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							$oldPlanData['arm_grace_period_action'] = '';
 							if ( $planObj->is_recurring() ) {
 								$oldPlanData['arm_completed_recurring'] = 1;
-								update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+								arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 								$arm_next_payment_date = $arm_members_class->arm_get_next_due_date( $user_id, $new_plan_id, false, $payment_cycle );
 								if ( $arm_next_payment_date != '' ) {
 									$oldPlanData['arm_next_due_payment'] = $arm_next_payment_date;
@@ -1731,7 +1731,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							$oldPlanData['arm_subscr_effective'] = '';
 							$oldPlanData['arm_change_plan_to']   = '';
 
-							update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+							arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 
 							$this->arm_add_membership_history( $user_id, $new_plan_id, 'renew_subscription' );
 							$arm_manage_communication->arm_user_plan_status_action_mail(
@@ -1757,8 +1757,8 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				arm_set_member_status( $user_id, 1 );
 				/* Only update plan if Member is active */
 
-				$old_plan_ids       = get_user_meta( $user_id, 'arm_user_plan_ids', true );
-				$suspended_plan_ids = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+				$old_plan_ids       = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
+				$suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
 				$suspended_plan_ids = ! empty( $suspended_plan_ids ) ? $suspended_plan_ids : array();
 				$old_plan           = ( isset( $old_plan_ids ) && ! empty( $old_plan_ids ) ) ? $old_plan_ids : array();
 				$old_plans          = $old_plan;
@@ -1766,7 +1766,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 				if ( ! empty( $suspended_plan_ids ) && in_array( $new_plan_id, $suspended_plan_ids ) ) {
 					unset( $suspended_plan_ids[ array_search( $new_plan_id, $suspended_plan_ids ) ] );
-					update_user_meta( $user_id, 'arm_user_suspended_plan_ids', $suspended_plan_ids );
+					arm_update_user_meta( $user_id, 'arm_user_suspended_plan_ids', $suspended_plan_ids );
 				}
 
 				if ( !in_array( $new_plan_id, $old_plan ) ) {
@@ -1783,7 +1783,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						if ( ! empty( $old_plan ) ) {
 							$defaultPlanData = $this->arm_default_plan_array();
 							$old_plan_id     = isset( $old_plans[0] ) ? $old_plans[0] : 0;
-							$oldPlanData     = get_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, true );
+							$oldPlanData     = arm_get_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, true );
 							$oldPlanData     = ! empty( $oldPlanData ) ? $oldPlanData : array();
 							$oldPlanData     = shortcode_atts( $defaultPlanData, $oldPlanData );
 							$oldPlanDetail   = isset( $oldPlanData['arm_current_plan_detail'] ) ? $oldPlanData['arm_current_plan_detail'] : array();
@@ -1812,14 +1812,14 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 										$is_update_plan                      = false;
 										$oldPlanData['arm_subscr_effective'] = $subscr_effective;
 										$oldPlanData['arm_change_plan_to']   = $new_plan_id;
-										update_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, $oldPlanData );
+										arm_update_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, $oldPlanData );
 									}
 								}
 							}
 						}
 
 						if ( $is_update_plan ) {
-							update_user_meta( $user_id, 'arm_user_plan_ids', array( $new_plan_id ) );
+							arm_update_user_meta( $user_id, 'arm_user_plan_ids', array( $new_plan_id ) );
 
 							if ( ! empty( $old_plan ) ) {
 								foreach ( $old_plan as $old_plan_id ) {
@@ -1847,12 +1847,12 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 						if ( $is_update_plan ) {
 							$defaultPlanData     = $this->arm_default_plan_array();
-							$userPlanDatameta    = get_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, true );
+							$userPlanDatameta    = arm_get_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, true );
 							$userPlanDatameta    = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 							$newPlanData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 							$arm_old_plan_detail = $newPlanData['arm_current_plan_detail'];
 
-							update_user_meta( $user_id, 'arm_user_last_plan', $new_plan_id );
+							arm_update_user_meta( $user_id, 'arm_user_last_plan', $new_plan_id );
 
 							$user->add_cap( 'armember_access_plan_' . $new_plan_id );
 
@@ -1895,7 +1895,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							$newPlanData['arm_current_plan_detail']           = $curPlanDetail;
 							$newPlanData['arm_payment_mode']                  = $payment_mode;
 							$newPlanData['arm_payment_cycle']                 = $payment_cycle;
-							update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $newPlanData );
+							arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $newPlanData );
 
 							$arm_next_payment_date = $arm_members_class->arm_get_next_due_date( $user_id, $new_plan_id, true, $payment_cycle );
 							if ( $arm_next_payment_date != '' ) {
@@ -1932,7 +1932,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								}
 							}
 
-							update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $newPlanData );
+							arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $newPlanData );
 
 							/**
 							 * Update User's Achievements.
@@ -1966,7 +1966,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						}
 
 						$defaultPlanData  = $this->arm_default_plan_array();
-						$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, true );
+						$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, true );
 						$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 						$oldPlanData      = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -1999,7 +1999,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							$oldPlanData['arm_payment_mode']  = 'manual_subscription';
 							$oldPlanData['arm_payment_cycle'] = $payment_cycle;
 
-							update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+							arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 							if ( ( ( $completed_rec == $total_recurrence || $completed_rec === '' ) && $total_recurrence != 'infinite' ) || $plan_action == 'renew_subscription' ) {
 								do_action( 'arm_before_renew_user_plans', $user_id, $old_plan, $new_plan_id, $new_plan );
 								$start_time = $expiry_time;
@@ -2023,7 +2023,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$curPlanDetail                                    = (array) $new_plan->plan_detail;
 								$curPlanDetail['arm_user_selected_payment_cycle'] = $payment_cycle;
 								$oldPlanData['arm_current_plan_detail']           = $curPlanDetail;
-								update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+								arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 								$arm_next_payment_date = $arm_members_class->arm_get_next_due_date( $user_id, $new_plan_id, true, $payment_cycle );
 								if ( $arm_next_payment_date != '' ) {
 									$oldPlanData['arm_next_due_payment'] = $arm_next_payment_date;
@@ -2039,7 +2039,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$oldPlanData['arm_subscr_effective']    = '';
 								$oldPlanData['arm_change_plan_to']      = '';
 								$oldPlanData['arm_user_gateway']        = 'bank_transfer';
-								update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+								arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 								$this->arm_add_membership_history( $user_id, $new_plan_id, 'renew_subscription' );
 								$arm_manage_communication->arm_user_plan_status_action_mail(
 									array(
@@ -2060,7 +2060,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 									if ( $arm_last_payment_status != 'failed' ) {
 										$completed_rec                          = ! empty( $completed_rec ) ? $completed_rec : 0;
 										$oldPlanData['arm_completed_recurring'] = ( $completed_rec + 1 );
-										update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+										arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 										$arm_next_payment_date = $arm_members_class->arm_get_next_due_date( $user_id, $new_plan_id, false, $payment_cycle );
 										if ( $arm_next_payment_date != '' ) {
 											$oldPlanData['arm_next_due_payment'] = $arm_next_payment_date;
@@ -2069,7 +2069,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								} else {
 									$completed_rec                          = ! empty( $completed_rec ) ? $completed_rec : 0;
 									$oldPlanData['arm_completed_recurring'] = ( $completed_rec + 1 );
-									update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+									arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 									$arm_next_payment_date = $arm_members_class->arm_get_next_due_date( $user_id, $new_plan_id, false, $payment_cycle );
 									if ( $arm_next_payment_date != '' ) {
 										$oldPlanData['arm_next_due_payment'] = $arm_next_payment_date;
@@ -2079,7 +2079,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$oldPlanData['arm_is_user_in_grace']    = 0;
 								$oldPlanData['arm_grace_period_end']    = '';
 								$oldPlanData['arm_grace_period_action'] = '';
-								update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+								arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 								do_action( 'arm_after_user_recurring_payment_done', $user_id, $new_plan_id );
 							}
 						} else {
@@ -2133,7 +2133,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							$oldPlanData['arm_change_plan_to']      = '';
 							$oldPlanData['arm_user_gateway']        = 'bank_transfer';
 
-							update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
+							arm_update_user_meta( $user_id, 'arm_user_plan_' . $new_plan_id, $oldPlanData );
 							$this->arm_add_membership_history( $user_id, $new_plan_id, 'renew_subscription' );
 							$arm_manage_communication->arm_user_plan_status_action_mail(
 								array(
@@ -2164,7 +2164,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				$membershipData['plan_id']      = $plan_id;
 				$membershipData['action_by']    = $action_by;
 				$defaultPlanData                = $this->arm_default_plan_array();
-				$userPlanDatameta               = get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
+				$userPlanDatameta               = arm_get_user_meta( $user_id, 'arm_user_plan_' . $plan_id, true );
 				$userPlanDatameta               = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 				$planData                       = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 				$planDetail                     = !empty($userPlanDatameta['arm_current_plan_detail']) ? $userPlanDatameta['arm_current_plan_detail'] : $planData['arm_current_plan_detail'];
@@ -2273,12 +2273,12 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				$historyRecords = $wpdb->get_results( $wpdb->prepare("SELECT * FROM `".$ARMemberLite->tbl_arm_activity."` WHERE `arm_type`=%s AND `arm_user_id`=%d AND `arm_action` != %s ORDER BY `arm_activity_id` DESC ".$historyLimit,'membership',$user_id,'recurring_subscription'), ARRAY_A );//phpcs:ignore --Reason $tbl_arm_activity is a table name
 				if ( ! empty( $historyRecords ) ) {
 
-					$user_plans = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+					$user_plans = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 
 					$user_plans = ! empty( $user_plans ) ? $user_plans : array();
 					$user_plan  = isset( $user_plans[0] ) ? $user_plans[0] : 0;
 
-					$user_suspended_plans = get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
+					$user_suspended_plans = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
 					$user_suspended_plans = ( isset( $user_suspended_plans ) && ! empty( $user_suspended_plans ) ) ? $user_suspended_plans : array();
 
 					$curPlanName = isset( $plan_id_name_array[ $user_plan ] ) ? $plan_id_name_array[ $user_plan ] : '';
@@ -2303,7 +2303,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 					foreach ( $historyRecords as $mh ) {
 
-						$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $mh['arm_item_id'], true );
+						$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $mh['arm_item_id'], true );
 						$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 						$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 						if ( ! empty( $planData['arm_change_plan_to'] ) ) {
@@ -2315,7 +2315,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					}
 
 					foreach ( $historyRecords as $mh ) {
-						$mh_content = maybe_unserialize( $mh['arm_content'] );
+						$mh_content = arm_maybe_unserialize( $mh['arm_content'] );
 						if ( $user_plan == $mh['arm_item_id'] ) {
 							$default_plan_name = $curPlanName;
 						} else {
@@ -2477,7 +2477,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						$activity_id             = $mh['arm_activity_id'];
 						$mh['arm_type']          = $actType;
 						$mh['arm_user_id']       = $user_id;
-						$mh['arm_content']       = maybe_unserialize( $mh['arm_content'] );
+						$mh['arm_content']       = arm_maybe_unserialize( $mh['arm_content'] );
 						$history[ $activity_id ] = $mh;
 					}
 				}
@@ -2537,7 +2537,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				$users    = get_users( $user_arg );
 				$res      = 0;
 				foreach ( $users as $user ) {
-					$plan_ids = get_user_meta( $user->ID, 'arm_user_plan_ids', true );
+					$plan_ids = arm_get_user_meta( $user->ID, 'arm_user_plan_ids', true );
 					if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 						if ( in_array( $plan_id, $plan_ids ) ) {
 							$res++;
@@ -2554,7 +2554,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 			if ( ! empty( $plan_id ) && $plan_id != 0 ) {
 				$res         = $wpdb->get_row( $wpdb->prepare("SELECT `arm_subscription_plan_type`, `arm_subscription_plan_options`, `arm_subscription_plan_amount` FROM ".$ARMemberLite->tbl_arm_subscription_plans." WHERE `arm_subscription_plan_id`=%d",$plan_id) );//phpcs:ignore --Reason: $ARMemberLite->tbl_arm_subscription_plans is a table name. False Positive alarm
 				$plan_type   = $res->arm_subscription_plan_type;
-				$plan_option = maybe_unserialize( $res->arm_subscription_plan_options );
+				$plan_option = arm_maybe_unserialize( $res->arm_subscription_plan_options );
 				$plan_amount = $res->arm_subscription_plan_amount;
 				if ( isset( $plan_option['access_type'] ) && $plan_option['access_type'] == 'lifetime' ) {
 					$array_return = array(
@@ -2707,7 +2707,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						$page_settings = $arm_global_settings->arm_get_single_global_settings( 'page_settings' );
 
 						$arm_default_redirection_settings = get_option( 'arm_redirection_settings' );
-						$arm_default_redirection_settings = maybe_unserialize( $arm_default_redirection_settings );
+						$arm_default_redirection_settings = arm_maybe_unserialize( $arm_default_redirection_settings );
 						$default_access_rules             = $arm_default_redirection_settings['default_access_rules'];
 
 						unset( $page_settings['member_profile_page_id'] );
@@ -2749,7 +2749,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 			if ( empty( $user ) || user_can( $user, 'administrator' ) ) {
 				return false;
 			}
-			$old_plan_ids = get_user_meta( $user_id, 'arm_user_plan_ids', true );
+			$old_plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 			$old_plan_ids = ! empty( $old_plan_ids ) ? $old_plan_ids : array();
 			$old_plan_id  = isset( $old_plan_ids[0] ) ? $old_plan_ids[0] : 0;
 			$arm_members_class->arm_new_plan_assigned_by_system( $plan_id, $old_plan_id, $user_id );
@@ -2793,7 +2793,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 			$arm_user_plan = $plan_id;
 
 			$defaultPlanData  = $arm_subscription_plans->arm_default_plan_array();
-			$userPlanDatameta = get_user_meta( $user_id, 'arm_user_plan_' . $arm_user_plan, true );
+			$userPlanDatameta = arm_get_user_meta( $user_id, 'arm_user_plan_' . $arm_user_plan, true );
 			$userPlanDatameta = ! empty( $userPlanDatameta ) ? $userPlanDatameta : array();
 			$planData         = shortcode_atts( $defaultPlanData, $userPlanDatameta );
 
@@ -2836,7 +2836,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				foreach ( $results as $sp ) {
 					$plnID                          = $sp['arm_subscription_plan_id'];
 					$plnName                        = stripslashes( $sp['arm_subscription_plan_name'] );
-					$plan_options                   = maybe_unserialize( $sp['arm_subscription_plan_options'] );
+					$plan_options                   = arm_maybe_unserialize( $sp['arm_subscription_plan_options'] );
 					$plan_options['payment_cycles'] = ( isset( $plan_options['payment_cycles'] ) && ! empty( $plan_options['payment_cycles'] ) ) ? $plan_options['payment_cycles'] : array();
 					if ( ! empty( $plan_options['payment_cycles'] ) ) {
 						$plans_data[ $plnID ] = $plan_options['payment_cycles'];
@@ -2854,7 +2854,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 				$user_meta_value_array = array();
 				if ( ! empty( $user_meta_value ) ) {
-					$user_meta_value_arr = maybe_unserialize( $user_meta_value );
+					$user_meta_value_arr = arm_maybe_unserialize( $user_meta_value );
 					if ( ! empty( $user_meta_value_arr ) && is_array( $user_meta_value_arr ) ) {
 						foreach ( $user_meta_value_arr as $user_meta_value ) {
 							$user_meta_value_array[] = (int) $user_meta_value;
@@ -2868,7 +2868,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 				$user_meta_value_array = array();
 				if ( ! empty( $user_meta_value ) ) {
-					$user_meta_value_arr = maybe_unserialize( $user_meta_value );
+					$user_meta_value_arr = arm_maybe_unserialize( $user_meta_value );
 					if ( ! empty( $user_meta_value_arr ) && is_array( $user_meta_value_arr ) ) {
 						foreach ( $user_meta_value_arr as $user_meta_value ) {
 							$user_meta_value_array[] = (int) $user_meta_value;
@@ -2953,8 +2953,8 @@ if ( ! class_exists( 'ARM_Plan_Lite' ) ) {
 			$this->type                            = ( isset( $data->arm_subscription_plan_type ) ) ? $data->arm_subscription_plan_type : 'free';
 			$this->status                          = ( isset( $data->arm_subscription_plan_status ) ) ? $data->arm_subscription_plan_status : 1;
 			$this->amount                          = ( isset( $data->arm_subscription_plan_amount ) ) ? number_format( (float) $data->arm_subscription_plan_amount, 2 ) : 0;
-			$this->options                         = ( isset( $data->arm_subscription_plan_options ) ) ? maybe_unserialize( $data->arm_subscription_plan_options ) : array();
-			$this->arm_subscription_plan_options   = ( isset( $data->arm_subscription_plan_options ) ) ? maybe_unserialize( $data->arm_subscription_plan_options ) : array();
+			$this->options                         = ( isset( $data->arm_subscription_plan_options ) ) ? arm_maybe_unserialize( $data->arm_subscription_plan_options ) : array();
+			$this->arm_subscription_plan_options   = ( isset( $data->arm_subscription_plan_options ) ) ? arm_maybe_unserialize( $data->arm_subscription_plan_options ) : array();
 			$this->payment_type                    = ( isset( $this->options['payment_type'] ) ) ? $this->options['payment_type'] : '';
 			$this->plan_role                       = ( isset( $data->arm_subscription_plan_role ) ) ? $data->arm_subscription_plan_role : '';
 			$this->recurring_data                  = $this->prepare_recurring_data();

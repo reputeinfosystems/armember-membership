@@ -202,7 +202,7 @@
     var ARM_MPT_URL = '<?php echo addslashes( esc_html__( 'URL', 'armember-membership' ) ); //phpcs:ignore ?>';
     var ARM_MPT_ENTER_URL = '<?php echo addslashes( esc_html__( 'Enter URL', 'armember-membership' ) ); //phpcs:ignore ?>';
     var ARM_MPT_ENABLE_TAB = '<?php echo addslashes( esc_html__( 'Enable Tab', 'armember-membership' ) ); //phpcs:ignore ?>';
-    var ARM_MPT_URL_IN_NEW_TAB = '<?php echo addslashes( esc_html__( 'Open URL in the new tab', 'armember-membership' ) ); //phpcs:ignore ?>';
+    var ARM_MPT_URL_IN_NEW_TAB = '<?php echo addslashes( esc_html__( 'Open URL in a new tab', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var ARM_MPT_COMMON_ERR_MSG = '<?php echo addslashes( esc_html__( 'This field is required.', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var ARM_MPT_INVALID_URL_ERR = '<?php echo addslashes( esc_html__( 'Please enter a valid URL.', 'armember-membership' ) ); //phpcs:ignore ?>';
 </script>

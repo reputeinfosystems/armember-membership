@@ -91,7 +91,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_members'], '1',1);
 			if(!empty($_POST['crop_reset'])){
 				$arm_is_enable_crop = 0;
-				$response = array( 'type' => 'success','msg'=> esc_html__('Cropper has been reseted.','armember-membership') );
+				$response = array( 'type' => 'success','msg'=> esc_html__('Cropper has been reset.','armember-membership') );
 			}
 			echo arm_pattern_json_encode( $response ); //phpcs:ignore
 			die();
@@ -263,13 +263,13 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                 $username = $user->user_login;
                                                 $disabled = 'disabled="disabled" ';
                                             }
-                                            $arm_form_content .= '<input id="arm_username" class="arm_member_form_input" type="text" name="user_login" value="'.esc_attr($username).'" '. esc_attr($disabled) .' data-msg-required="'. esc_html__('Username can not be left blank.', 'armember-membership') .'" required />
+                                            $arm_form_content .= '<input id="arm_username" class="arm_member_form_input" type="text" name="user_login" value="'.esc_attr($username).'" '. esc_attr($disabled) .' data-msg-required="'. esc_html__('Username cannot be left blank.', 'armember-membership') .'" required />
                                         </div></td>
                                     </tr>';
                                     $arm_personal_data_fields = array();
                                 if (!empty($dbFormFields)) {
                                     foreach ($dbFormFields as $meta_key => $field) {
-                                        $field_options = maybe_unserialize($field);
+                                        $field_options = arm_maybe_unserialize($field);
                                         $field_options = apply_filters('arm_change_field_options', $field_options);
                                         $meta_key = isset($field_options['meta_key']) ? $field_options['meta_key'] : $field_options['id'];
                                         $field_id = $meta_key . arm_generate_random_code();
@@ -336,7 +336,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                     <input id="arm_password" autocomplete="off"
                                                         class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
                                                         name="user_pass" type="password" value=""
-                                                        data-msg-required="'. esc_attr__( 'Password can not be left blank.', 'armember-membership' ).'"';
+                                                        data-msg-required="'. esc_attr__( 'Password cannot be left blank.', 'armember-membership' ).'"';
                                                         $arm_form_content .= '/>
                                                     '. $arm_suffix_icon_pass.'
                                                 </div>
@@ -353,7 +353,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                     <input id="arm_repeat_pass"
                                                         class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
                                                         name="repeat_pass" type="password" value=""
-                                                        data-msg-required="'. esc_attr__( 'Confirm Password can not be left blank.', 'armember-membership' ) .'"';
+                                                        data-msg-required="'. esc_attr__( 'Confirm Password cannot be left blank.', 'armember-membership' ) .'"';
                                                         $arm_form_content .= '/>
                                                     '. $arm_suffix_icon_pass.'
                                                 </div>
@@ -406,7 +406,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                         if(in_array($meta_key,$arm_personal_data_fields)){
                                             unset($dbFormFields[$meta_key]);
                                         }
-                                        $field_options = maybe_unserialize($field);
+                                        $field_options = arm_maybe_unserialize($field);
                                         $field_options = apply_filters('arm_change_field_options', $field_options);
                                                     
                                         $meta_key = isset($field_options['meta_key']) ? $field_options['meta_key'] : $field_options['id'];
@@ -431,14 +431,14 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                         }
                                     }
                                 }
-                                $form_settings = (isset($armform->settings)) ? maybe_unserialize($armform->settings) : array();
+                                $form_settings = (isset($armform->settings)) ? arm_maybe_unserialize($armform->settings) : array();
                                                 
                                 if ($armform->exists() && isset($form_settings['is_hidden_fields']) && $form_settings['is_hidden_fields'] == '1') {
                                     if (isset($form_settings['hidden_fields']) && !empty($form_settings['hidden_fields'])) {
                                         foreach ($form_settings['hidden_fields'] as $hiddenF) {
                                                             
                                             $hiddenMetaKey = (isset($hiddenF['meta_key']) && !empty($hiddenF['meta_key'])) ? $hiddenF['meta_key'] : sanitize_title('arm_hidden_' . $hiddenF['title']);
-                                            $hiddenValue = get_user_meta($user_id, $hiddenMetaKey, true);                                           
+                                            $hiddenValue = arm_get_user_meta($user_id, $hiddenMetaKey, true);                                           
                                             $hiddenValue = !empty($hiddenValue) ? $hiddenValue : $hiddenF['value'];
                                             $hiddentitle = (!empty($hiddenF['title'])) ? $hiddenF['title'] : '';                                           
 
@@ -764,12 +764,12 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                 $username = $user->user_login;
                                                 $disabled = 'disabled="disabled" ';
                                             }
-                                            $arm_form_content .= '<input id="arm_username" class="arm_member_form_input" type="text" name="user_login" value="'.esc_attr($username).'" '. esc_attr($disabled) .' data-msg-required="'. esc_html__('Username can not be left blank.', 'armember-membership') .'" required />
+                                            $arm_form_content .= '<input id="arm_username" class="arm_member_form_input" type="text" name="user_login" value="'.esc_attr($username).'" '. esc_attr($disabled) .' data-msg-required="'. esc_html__('Username cannot be left blank.', 'armember-membership') .'" required />
                                         </div></td>
                                     </tr>';
                                 if (!empty($dbFormFields)) {
                                     foreach ($dbFormFields as $meta_key => $field) {
-                                        $field_options = maybe_unserialize($field);
+                                        $field_options = arm_maybe_unserialize($field);
                                         $field_options = apply_filters('arm_change_field_options', $field_options);
                                         $meta_key = isset($field_options['meta_key']) ? $field_options['meta_key'] : $field_options['id'];
                                         $field_id = $meta_key . arm_generate_random_code();
@@ -837,7 +837,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 													<input id="arm_password" autocomplete="off"
 														class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
 														name="user_pass" type="password" value=""
-														data-msg-required="'. esc_attr__( 'Password can not be left blank.', 'armember-membership' ).'" >'. $arm_suffix_icon_pass.'
+														data-msg-required="'. esc_attr__( 'Password cannot be left blank.', 'armember-membership' ).'" >'. $arm_suffix_icon_pass.'
 												</div>
 											</td>
 										</tr>
@@ -852,7 +852,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 													<input id="arm_repeat_pass"
 														class="arm_member_form_input '. esc_attr($arm_suffix_icon_pass_cls).'"
 														name="repeat_pass" type="password" value=""
-														data-msg-required="'. esc_attr__( 'Confirm Password can not be left blank.', 'armember-membership' ).'"> '. $arm_suffix_icon_pass.'
+														data-msg-required="'. esc_attr__( 'Confirm Password cannot be left blank.', 'armember-membership' ).'"> '. $arm_suffix_icon_pass.'
 												</div>
 											</td>
 										</tr>';
@@ -879,7 +879,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			$opts     = array();
 			if ( ! empty( $opts_arr ) ) {
 				$opts = array_column( $opts_arr, 'arm_form_field_option' );
-				$opts = maybe_unserialize( $opts[0] );
+				$opts = arm_maybe_unserialize( $opts[0] );
 			}
 			return $opts;
 		}
@@ -895,7 +895,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$arm_posted_data = isset( $_POST['preset_fields'] )? $_POST['preset_fields'] : array(); //phpcs:ignore
 				$arm_posted_data  = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data_extend'), $arm_posted_data ); //phpcs:ignore
 				$presetFormFields = get_option( 'arm_preset_form_fields', '' );
-				$dbFormFields     = maybe_unserialize( $presetFormFields );
+				$dbFormFields     = arm_maybe_unserialize( $presetFormFields );
 				$new_options      = array();
 
 				if ( isset( $arm_posted_data ) && ! empty( $arm_posted_data ) ) {
@@ -968,7 +968,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 											$content     .= '</th>';
 									$content             .= '</tr>';
 					foreach ( $dbFormFields as $meta_key => $field ) {
-						$field_options = maybe_unserialize( $field );
+						$field_options = arm_maybe_unserialize( $field );
 						$field_options = apply_filters( 'arm_change_field_options', $field_options );
 						$exclude_keys  = array(
 							'repeat_pass',
@@ -1165,7 +1165,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                         $formDeleteHtml .= '<input type="checkbox" class="arm_icheckbox arm_form_field_chk_' . $_fid . '" value="1">';
                                                         $formDeleteHtml .= '<span>'.esc_html__("Delete fields of this specific form.", 'armember-membership').'</span>';
                                                         $formDeleteHtml .= '</label>';
-                                                        $formDeleteHtml .= '<span class="armnote">('.esc_html__("Fields those which are used somewhere else, will not be deleted.", 'armember-membership').')</span>';
+                                                        $formDeleteHtml .= '<span class="armnote">('.esc_html__("Fields that are used elsewhere will not be deleted.", 'armember-membership').')</span>';
                                                         $arm_add_new_form_table .= $arm_global_settings->arm_get_confirm_box($_fid, $formDeleteHtml, 'arm_delete_form_confirm_ok','', esc_html__('Delete', 'armember-membership'), esc_attr__('Cancel', 'armember-membership'), esc_attr__('Delete', 'armember-membership') ); //phpcs:ignore
                                                     }
                                                     $arm_add_new_form_table .='</div>
@@ -1450,7 +1450,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				if ( isset( $atts['form_id'] ) && ! empty( $atts['form_id'] ) ) {
 					$user_form_id = $atts['form_id'];
 				} else {
-					$user_form_id = get_user_meta( $user_id, 'arm_form_id', true );
+					$user_form_id = arm_get_user_meta( $user_id, 'arm_form_id', true );
 				}
 				$form = new ARM_Form_Lite( 'id', $user_form_id );
 				if ( ! $form->exists() || $form->type != 'registration' ) {
@@ -1543,7 +1543,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$content           .= '<button class="arm_reset_button arm_img_setting armhelptip tipso_style" data_id="' . esc_attr($formRandomID) . '" title="' . esc_html__( 'Reset', 'armember-membership' ) . '" data-method="reset"><span class="armfa armfa-refresh"></span></button>';
 						$content           .= '<button id="arm_skip_avtr_crop_nav_front" class="arm_avtr_done_front" data_id="' . esc_attr($formRandomID) . '">' . esc_html__( 'Done', 'armember-membership' ) . '</button>';
 						$content           .= '</div>';
-						$content           .= '<p class="arm_discription">' . sprintf( addslashes(esc_html__('(Use Cropper to set image and %suse mouse scroller for zoom image.)', 'armember-membership') ),'<br/>' ) . '</p>'; //phpcs:ignore
+						$content           .= '<p class="arm_discription">' . sprintf( addslashes(esc_html__('(Use Cropper to set the image and %suse the mouse scroller to zoom the image.)', 'armember-membership') ),'<br/>' ) . '</p>'; //phpcs:ignore
 						$content           .= '</div>';
 
 						$content .= '<div id="arm_crop_cover_div_wrapper" class="arm_crop_cover_div_wrapper" style="display:none;" data_id="' . esc_attr($formRandomID) . '">';
@@ -1604,7 +1604,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						if ( isset( $form_settings['hidden_fields'] ) && ! empty( $form_settings['hidden_fields'] ) ) {
 							foreach ( $form_settings['hidden_fields'] as $hiddenF ) {
 								$hiddenMetaKey = ( isset( $hiddenF['meta_key'] ) && ! empty( $hiddenF['meta_key'] ) ) ? $hiddenF['meta_key'] : sanitize_title( $hiddenF['title'] );
-								$hiddenValue   = get_user_meta( $user_id, $hiddenMetaKey, true );
+								$hiddenValue   = arm_get_user_meta( $user_id, $hiddenMetaKey, true );
 								$hiddenValue   = ( ! empty( $hiddenValue ) ) ? $hiddenValue : $hiddenF['value'];
 								$content      .= '<input type="hidden" name="' . esc_attr( $hiddenMetaKey ) . '" value="' . esc_attr( $hiddenValue ) . '"/>';
 							}
@@ -1901,7 +1901,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						if ( isset( $form_settings['hidden_fields'] ) && ! empty( $form_settings['hidden_fields'] ) ) {
 							foreach ( $form_settings['hidden_fields'] as $hiddenF ) {
 								$hiddenMetaKey = ( isset( $hiddenF['meta_key'] ) && ! empty( $hiddenF['meta_key'] ) ) ? $hiddenF['meta_key'] : sanitize_title( $hiddenF['title'] );
-								$hiddenValue   = get_user_meta( $user_id, $hiddenMetaKey, true );
+								$hiddenValue   = arm_get_user_meta( $user_id, $hiddenMetaKey, true );
 								$hiddenValue   = ( ! empty( $hiddenValue ) ) ? $hiddenValue : $hiddenF['value'];
 								$content      .= '<input type="hidden" name="' . esc_attr( $hiddenMetaKey ) . '" value="' . esc_attr( $hiddenValue ) . '"/>';
 							}
@@ -1999,7 +1999,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			$user_data      = get_user_by( 'email', $user_email );
 			$activation_key = '';
 			if ( isset( $user_data ) && ! empty( $user_data ) ) {
-				$activation_key = get_user_meta( $user_data->ID, 'arm_user_activation_key', true );
+				$activation_key = arm_get_user_meta( $user_data->ID, 'arm_user_activation_key', true );
 			}
 
 			if ( ! empty( $user_data ) && ( empty( $activation_key ) || $activation_key == '' ) ) {
@@ -2015,18 +2015,18 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				/* Update Activation Status */
 				arm_set_member_status( $user_data->ID, 1 );
 
-				$total_user_plans = get_user_meta( $user_data->ID, 'arm_user_plan_ids', true );
+				$total_user_plans = arm_get_user_meta( $user_data->ID, 'arm_user_plan_ids', true );
 				$total_user_plans = ( isset( $total_user_plans ) && ! empty( $total_user_plans ) ) ? $total_user_plans : array();
 
 				if ( ! empty( $total_user_plans ) ) {
-					$total_user_suspended_plans = get_user_meta( $user_data->ID, 'arm_user_suspended_plan_ids', true );
+					$total_user_suspended_plans = arm_get_user_meta( $user_data->ID, 'arm_user_suspended_plan_ids', true );
 					$total_user_suspended_plans = ( isset( $total_user_suspended_plans ) && ! empty( $total_user_suspended_plans ) ) ? $total_user_suspended_plans : array();
 					foreach ( $total_user_plans as $tp ) {
 						if ( in_array( $tp, $total_user_suspended_plans ) ) {
 							unset( $total_user_suspended_plans[ array_search( $tp, $total_user_suspended_plans ) ] );
 						}
 					}
-					update_user_meta( $user_data->ID, 'arm_user_suspended_plan_ids', $total_user_suspended_plans );
+					arm_update_user_meta( $user_data->ID, 'arm_user_suspended_plan_ids', $total_user_suspended_plans );
 				}
 
 				/* Send New User Notification Mail */
@@ -2041,7 +2041,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				);
 			} else {
 
-				$err_msg     = ( ! empty( $arm_global_settings->common_message['arm_expire_activation_link'] ) ) ? $arm_global_settings->common_message['arm_expire_activation_link'] : esc_html__( 'Activation link is expired or invalid.', 'armember-membership' );
+				$err_msg     = ( ! empty( $arm_global_settings->common_message['arm_expire_activation_link'] ) ) ? $arm_global_settings->common_message['arm_expire_activation_link'] : esc_html__( 'The activation link has expired or is invalid.', 'armember-membership' );
 				$arm_message = array(
 					'status'  => 'error',
 					'message' => $err_msg,
@@ -2069,20 +2069,20 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			if ( ! $user || is_wp_error( $user ) ) {
 
 				if ( $user && $user->get_error_code() === 'expired_key' ) {
-					$err_msg     = ( ! empty( $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] ) ) ? $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] : esc_html__( 'Reset Password Link is expired.', 'armember-membership' );
+					$err_msg     = ( ! empty( $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] ) ) ? $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] : esc_html__( 'The password reset link has expired.', 'armember-membership' );
 					$arm_message = array(
 						'status'  => 'error',
 						'message' => $err_msg,
 					);
 				} else {
-					$err_msg     = ( ! empty( $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] ) ) ? $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] : esc_html__( 'Reset Password Link is invalid.', 'armember-membership' );
+					$err_msg     = ( ! empty( $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] ) ) ? $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] : esc_html__( 'The password reset link is invalid.', 'armember-membership' );
 					$arm_message = array(
 						'status'  => 'error',
 						'message' => $err_msg,
 					);
 				}
 			} else {
-				$err_msg     = ( ! empty( $arm_global_settings->common_message['arm_password_enter_new_pwd'] ) ) ? $arm_global_settings->common_message['arm_password_enter_new_pwd'] : esc_html__( 'Please enter new password.', 'armember-membership' );
+				$err_msg     = ( ! empty( $arm_global_settings->common_message['arm_password_enter_new_pwd'] ) ) ? $arm_global_settings->common_message['arm_password_enter_new_pwd'] : esc_html__( 'Please enter a new password.', 'armember-membership' );
 				$arm_message = array(
 					'status'  => 'success',
 					'message' => $err_msg,
@@ -2425,7 +2425,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$form_content .= '<input type="hidden" name="isAdmin" value="' . ( ( is_admin() ) ? '1' : '0' ) . '"/>';
 
 					$arm_default_redirection_settings = get_option( 'arm_redirection_settings' );
-					$arm_default_redirection_settings = maybe_unserialize( $arm_default_redirection_settings );
+					$arm_default_redirection_settings = arm_maybe_unserialize( $arm_default_redirection_settings );
 					$login_redirection_rules_options  = $arm_default_redirection_settings['login'];
 					$signup_redirection_rules_options = $arm_default_redirection_settings['signup'];
 
@@ -2491,7 +2491,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							$form_content      .= '<button class="arm_reset_button arm_img_setting armhelptip tipso_style" data_id="' . esc_attr($formRandomID) . '" title="' . esc_html__( 'Reset', 'armember-membership' ) . '" data-method="reset"><span class="armfa armfa-refresh"></span></button>';
 							$form_content      .= '<button id="arm_skip_avtr_crop_nav_front" class="arm_avtr_done_front" data_id="' . esc_attr($formRandomID) . '">' . esc_html__( 'Done', 'armember-membership' ) . '</button>';
 							$form_content      .= '</div>';
-							$form_content           .= '<p class="arm_discription">' .sprintf( addslashes( esc_html__('(Use Cropper to set image and %suse mouse scroller for zoom image.)', 'armember-membership') ),'<br/>' ) . '</p>';//phpcs:ignore
+							$form_content           .= '<p class="arm_discription">' .sprintf( addslashes( esc_html__('(Use Cropper to set the image and %suse the mouse scroller to zoom the image.)', 'armember-membership') ),'<br/>' ) . '</p>';//phpcs:ignore
 							$form_content      .= '</div>';
 						}
 						/* For User Avatar Cropper */
@@ -2791,7 +2791,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							continue;
 						}
 
-						$field_options = maybe_unserialize( $field['arm_form_field_option'] );
+						$field_options = arm_maybe_unserialize( $field['arm_form_field_option'] );
 						if ( ! in_array( $field_options['type'], array( 'html', 'hidden' ) ) ) {
 							$field_options = apply_filters( 'arm_change_field_options', $field_options );
 						}
@@ -2821,7 +2821,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							continue;
 						}
 
-						$field_options = maybe_unserialize( $field['arm_form_field_option'] );
+						$field_options = arm_maybe_unserialize( $field['arm_form_field_option'] );
 						if ( ! in_array( $field_options['type'], array( 'html', 'hidden' ) ) ) {
 							$field_options = apply_filters( 'arm_change_field_options', $field_options );
 						}
@@ -3109,7 +3109,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 		function arm_member_form_get_field_html( $form_id = 0, $form_field_id = 0, $field_options = array(), $form_type = 'inactive', $form = '' ) {
 			global $wp, $wpdb, $current_user, $arm_slugs, $ARMemberLite, $arm_subscription_plans, $arm_global_settings;
-			$field_options = maybe_unserialize( $field_options );
+			$field_options = arm_maybe_unserialize( $field_options );
 			$field_options = apply_filters( 'arm_change_field_options', $field_options );
 			if ( function_exists( 'extract' ) ) {
 				extract( $field_options );
@@ -3485,7 +3485,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 																	<input type="checkbox" value="1" <?php checked( $is_strength_meter, 1 ); ?> class="arm_icheckbox arm_form_field_settings_field_input arm_form_field_settings_strength_meter_field" name="<?php echo esc_attr($prefix_name); ?>[<?php echo esc_attr($form_field_id); ?>][options][strength_meter]" />
 																</label>
 																<p class="description">
-														<?php esc_html_e( 'It will not visible in editor / preview. Please check at front-end.', 'armember-membership' ); ?>
+														<?php esc_html_e( 'It will not be visible in editor / preview. Please check at front-end.', 'armember-membership' ); ?>
 																</p>
 															</div>
 														</div>
@@ -3533,7 +3533,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 																	<label>
 																		<input type="checkbox" value="1" <?php checked( $options['special'], 1 ); ?> class="arm_icheckbox" name="<?php echo esc_attr($prefix_name); ?>[<?php echo esc_attr($form_field_id); ?>][options][special]" />
 																		<span class="arm_form_field_settings_notice">
-														<?php esc_html_e( 'Require Special Charecter?', 'armember-membership' ); ?>
+														<?php esc_html_e( 'Require Special Character?', 'armember-membership' ); ?>
 																		</span></label>
 																	<label>
 																		<input type="checkbox" value="1" <?php checked( $options['numeric'], 1 ); ?> class="arm_icheckbox" name="<?php echo esc_attr($prefix_name); ?>[<?php echo esc_attr($form_field_id); ?>][options][numeric]" />
@@ -4038,7 +4038,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 													<div class="arm_form_field_settings_field_label"></div>
 													<div class="arm_form_field_settings_field_val">
 														<input type="hidden" name="<?php echo esc_attr($prefix_name); ?>[<?php echo esc_attr($form_field_id); ?>][ref_field_id]" value="<?php echo esc_attr($ref_field_id); ?>" class="arm_form_field_ref_field_id arm_form_field_ref_field_<?php echo esc_attr($ref_field_id); ?>"/>
-														<button class="arm_save_btn arm_form_field_settings_field_val_ok_btn" type="button" name="arm_settings_form_addnew_form_btn" field_id='<?php echo esc_attr($form_field_id); ?>'>
+														<button class="arm_save_btn arm_form_field_settings_field_val_ok_btn arm_margin_right_0" type="button" name="arm_settings_form_addnew_form_btn" field_id='<?php echo esc_attr($form_field_id); ?>'>
 														<?php esc_html_e( 'Ok', 'armember-membership' ); ?>
 														</button>
 														<img src="<?php echo MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif'; //phpcs:ignore ?>" class="arm_field_loader_img" style="display:none;" width="24" height="24" /> </div>
@@ -4109,7 +4109,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$_SESSION['arm_additional_form_fields'] = array();
 							}
 							$_SESSION['arm_additional_form_fields'][$form_id][] = $spfMetaKey;
-							$spfMetaValue = get_user_meta( $user_id, $spfMetaKey, true );
+							$spfMetaValue = arm_get_user_meta( $user_id, $spfMetaKey, true );
 						}
 
 						$arm_allow_notched_outline = 0;
@@ -4429,6 +4429,18 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$field_attr .= 'data-validation-regex-regex="^(((https?|ftp)\:\/\/)?((\[?(\d{1,3}\.){3}\d{1,3}\]?)|(([-a-zA-Z0-9]+\.)+[a-zA-Z]{2,4}))(\:\d+)?(\/[-a-zA-Z0-9._]+)*?)$" data-validation-regex-message="' . htmlentities( stripcslashes( $value['invalid_message'] ) ) . '"';
 					}
 					if ( $form_type == 'active' && ! empty( $form ) && $form->type == 'registration' ) {
+						if (in_array($name, array('first_name', 'last_name'))) {
+			                            $class .= " flnamecheck";
+			                            $namecheck_msg = '';
+			                            if ($name == 'first_name') {
+			                                $namecheck_msg = $invalid_firstname;
+			                            }
+			                            if ($name == 'last_name') {
+			                                $namecheck_msg = $invalid_lastname;
+			                            }
+			                            $field_attr .= ' data-validation-flnamecheck-callback="arm_flnamecheck_function" data-validation-flnamecheck-message="' .  stripcslashes($namecheck_msg) . '"';
+                            
+			                        }
 						if ( $name == 'user_login' ) {
 							$class .= ' usernamecheck existcheck';
 							if ( empty( $regular_expression ) ) {
@@ -5384,7 +5396,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			global $wp, $wpdb, $current_user, $arm_slugs, $arm_lite_errors, $ARMemberLite, $arm_members_class, $arm_global_settings, $arm_subscription_plans, $arm_manage_communication, $arm_capabilities_global,$arm_social_feature;
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_members'], '1' );
 			//$redirect_to = admin_url( 'admin.php?page=' . $arm_slugs->manage_members );
-			$response = array("type"=>"error","msg" => esc_html__("Something Went Wrong while sumbitting a form",'armember-membership'));
+			$response = array("type"=>"error","msg" => esc_html__("Something went wrong while submitting a form.",'armember-membership'));
 			$member_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data_extend'), $_POST); //phpcs:ignore
 			$member_data['user_pass'] = !empty($_POST['user_pass']) ? $_POST['user_pass'] : ''; //phpcs:ignore
 			$member_data['repeat_pass'] = !empty($_POST['repeat_pass']) ? $_POST['repeat_pass'] : ''; //phpcs:ignore
@@ -5397,6 +5409,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				}
 				
 				$arm_file_upload_arr= isset( $_SESSION['arm_file_upload_arr'] ) ? $_SESSION['arm_file_upload_arr'] : array(); //phpcs:ignore
+
+				add_filter( 'wordfence_ls_require_captcha', '__return_false' ); //WordFence Captcha Changes
 
 				// sesion handling
 				if(!empty($arm_file_upload_arr)){
@@ -5484,7 +5498,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 					$user_ID = wp_update_user( $update_data );
 					if ( ! empty( $member_data['form'] ) ) {
-						update_user_meta( $user_ID, 'arm_form_id', $member_data['form'] );
+						arm_update_user_meta( $user_ID, 'arm_form_id', $member_data['form'] );
 					}
 					$success_message = esc_html__( 'New member has been added successfully.', 'armember-membership' );
 					$response = array("type"=>"success","msg" => $success_message);
@@ -5568,10 +5582,10 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$secondary_status                    = 0;
 								$member_data['arm_secondary_status'] = $secondary_status;
 
-								$old_plan_ids = get_user_meta( $user_ID, 'arm_user_plan_ids', true );
+								$old_plan_ids = arm_get_user_meta( $user_ID, 'arm_user_plan_ids', true );
 								if ( ! empty( $old_plan_ids ) && is_array( $old_plan_ids ) ) {
 									foreach ( $old_plan_ids as $old_plan_id ) {
-										$planData = get_user_meta( $user_ID, 'arm_user_plan_' . $old_plan_id, true );
+										$planData = arm_get_user_meta( $user_ID, 'arm_user_plan_' . $old_plan_id, true );
 										if ( ! empty( $planData ) ) {
 											$plan_detail = $planData['arm_current_plan_detail'];
 											if ( ! empty( $plan_detail ) ) {
@@ -5611,7 +5625,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					unset( $member_data['arm_user_stop_user_plan'] );
 					$old_plan_id   = 0;
 					$old_plan_data = array();
-					$old_plan_ids  = get_user_meta( $user_ID, 'arm_user_plan_ids', true );
+					$old_plan_ids  = arm_get_user_meta( $user_ID, 'arm_user_plan_ids', true );
 					$old_plan_ids  = ! empty( $old_plan_ids ) ? $old_plan_ids : array();
 					if ( ! isset( $member_data['arm_user_plan'] ) ) {
 						$member_data['arm_user_plan'] = 0;
@@ -5635,7 +5649,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					}
 
 					$arm_user_suspended_plan_ids = isset( $member_data['arm_user_suspended_plan'] ) ? $member_data['arm_user_suspended_plan'] : array();
-					update_user_meta( $user_ID, 'arm_user_suspended_plan_ids', $arm_user_suspended_plan_ids );
+					arm_update_user_meta( $user_ID, 'arm_user_suspended_plan_ids', $arm_user_suspended_plan_ids );
 
 					unset( $member_data['arm_user_suspended_plan'] );
 
@@ -5663,13 +5677,13 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					do_action( 'arm_member_update_meta', $user_ID, $member_data, $admin_save_flag );
 
 					if ( ! empty( $member_data['arm_user_plan'] ) ) {
-						$arm_changed_expiry_date_plan = get_user_meta( $user_ID, 'arm_changed_expiry_date_plans', true );
+						$arm_changed_expiry_date_plan = arm_get_user_meta( $user_ID, 'arm_changed_expiry_date_plans', true );
 						$arm_changed_expiry_date_plan = ! empty( $arm_changed_expiry_date_plan ) ? $arm_changed_expiry_date_plan : array();
 						if ( is_array( $member_data['arm_user_plan'] ) ) {
 							foreach ( $member_data['arm_user_plan'] as $key => $mpid ) {
 
 								if ( isset( $member_data[ 'arm_subscription_expiry_date_' . $mpid ] ) && ! empty( $member_data[ 'arm_subscription_expiry_date_' . $mpid ] ) ) {
-									$user_plan_data = get_user_meta( $user_ID, 'arm_user_plan_' . $mpid, true );
+									$user_plan_data = arm_get_user_meta( $user_ID, 'arm_user_plan_' . $mpid, true );
 
 									if ( $user_plan_data['arm_expire_plan'] != strtotime( $member_data[ 'arm_subscription_expiry_date_' . $mpid ] ) ) {
 										if ( ! in_array( $mpid, $arm_changed_expiry_date_plan ) ) {
@@ -5678,33 +5692,33 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 									}
 
 									$user_plan_data['arm_expire_plan'] = strtotime( $member_data[ 'arm_subscription_expiry_date_' . $mpid ] );
-									update_user_meta( $user_ID, 'arm_user_plan_' . $mpid, $user_plan_data );
-									update_user_meta( $user_ID, 'arm_changed_expiry_date_plans', $arm_changed_expiry_date_plan );
+									arm_update_user_meta( $user_ID, 'arm_user_plan_' . $mpid, $user_plan_data );
+									arm_update_user_meta( $user_ID, 'arm_changed_expiry_date_plans', $arm_changed_expiry_date_plan );
 								}
 							}
 						} else {
 							if ( isset( $member_data[ 'arm_subscription_expiry_date_' . $member_data['arm_user_plan'] ] ) && ! empty( $member_data[ 'arm_subscription_expiry_date_' . $member_data['arm_user_plan'] ] ) ) {
-								$user_plan_data = get_user_meta( $user_ID, 'arm_user_plan_' . $member_data['arm_user_plan'], true );
+								$user_plan_data = arm_get_user_meta( $user_ID, 'arm_user_plan_' . $member_data['arm_user_plan'], true );
 
 								if ( $user_plan_data['arm_expire_plan'] != strtotime( $member_data[ 'arm_subscription_expiry_date_' . $member_data['arm_user_plan'] ] ) ) {
 									if ( ! in_array( $member_data['arm_user_plan'], $arm_changed_expiry_date_plan ) ) {
 										$arm_changed_expiry_date_plan[] = $member_data['arm_user_plan'];
 									}
 								}
-								update_user_meta( $user_ID, 'arm_changed_expiry_date_plans', $arm_changed_expiry_date_plan );
+								arm_update_user_meta( $user_ID, 'arm_changed_expiry_date_plans', $arm_changed_expiry_date_plan );
 								$user_plan_data['arm_expire_plan'] = strtotime( $member_data[ 'arm_subscription_expiry_date_' . $member_data['arm_user_plan'] ] );
-								update_user_meta( $user_ID, 'arm_user_plan_' . $member_data['arm_user_plan'], $user_plan_data );
+								arm_update_user_meta( $user_ID, 'arm_user_plan_' . $member_data['arm_user_plan'], $user_plan_data );
 							}
 						}
 					}
 
 					if ( ! empty( $member_data['arm_user_future_plan'] ) ) {
-						$arm_changed_expiry_date_plan = get_user_meta( $user_ID, 'arm_changed_expiry_date_plans', true );
+						$arm_changed_expiry_date_plan = arm_get_user_meta( $user_ID, 'arm_changed_expiry_date_plans', true );
 						$arm_changed_expiry_date_plan = ! empty( $arm_changed_expiry_date_plan ) ? $arm_changed_expiry_date_plan : array();
 						if ( is_array( $member_data['arm_user_future_plan'] ) ) {
 							foreach ( $member_data['arm_user_future_plan'] as $fkey => $fmpid ) {
 								if ( isset( $member_data[ 'arm_subscription_expiry_date_' . $fmpid ] ) && ! empty( $member_data[ 'arm_subscription_expiry_date_' . $fmpid ] ) ) {
-									$user_plan_data = get_user_meta( $user_ID, 'arm_user_plan_' . $fmpid, true );
+									$user_plan_data = arm_get_user_meta( $user_ID, 'arm_user_plan_' . $fmpid, true );
 
 									if ( $user_plan_data['arm_expire_plan'] != strtotime( $member_data[ 'arm_subscription_expiry_date_' . $fmpid ] ) ) {
 										if ( ! in_array( $fmpid, $arm_changed_expiry_date_plan ) ) {
@@ -5713,8 +5727,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 									}
 
 									$user_plan_data['arm_expire_plan'] = strtotime( $member_data[ 'arm_subscription_expiry_date_' . $fmpid ] );
-									update_user_meta( $user_ID, 'arm_user_plan_' . $fmpid, $user_plan_data );
-									update_user_meta( $user_ID, 'arm_changed_expiry_date_plans', $arm_changed_expiry_date_plan );
+									arm_update_user_meta( $user_ID, 'arm_user_plan_' . $fmpid, $user_plan_data );
+									arm_update_user_meta( $user_ID, 'arm_changed_expiry_date_plans', $arm_changed_expiry_date_plan );
 								}
 							}
 						}
@@ -5725,12 +5739,12 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					if ( ! empty( $old_plan_ids ) && is_array( $old_plan_ids ) ) {
 
 						$old_plan_id   = isset( $old_plan_ids[0] ) ? $old_plan_ids[0] : 0;
-						$old_plan_data = get_user_meta( $user_ID, 'arm_user_plan_' . $old_plan_id, true );
+						$old_plan_data = arm_get_user_meta( $user_ID, 'arm_user_plan_' . $old_plan_id, true );
 
 						$extend_renewal_date_plan_ids = array();
 						$count                        = 0;
 						foreach ( $old_plan_ids as $old_pid ) {
-							$old_plan_data = get_user_meta( $user_ID, 'arm_user_plan_' . $old_pid, true );
+							$old_plan_data = arm_get_user_meta( $user_ID, 'arm_user_plan_' . $old_pid, true );
 							if ( ! empty( $old_plan_data ) ) {
 								$oldPlanDetail = $old_plan_data['arm_current_plan_detail'];
 								if ( ! empty( $oldPlanDetail ) ) {
@@ -5749,11 +5763,11 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							}
 						}
 						if ( ! empty( $extend_renewal_date_plan_ids ) && is_array( $extend_renewal_date_plan_ids ) ) {
-							$user_suspended_plans_ids_array = get_user_meta( $user_ID, 'arm_user_suspended_plan_ids', true );
+							$user_suspended_plans_ids_array = arm_get_user_meta( $user_ID, 'arm_user_suspended_plan_ids', true );
 							$removed_suspended_plans        = 0;
 							foreach ( $extend_renewal_date_plan_ids as $extend_renewal_date_plan_id ) {
 
-								$old_plan_data = get_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, true );
+								$old_plan_data = arm_get_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, true );
 
 								if ( isset( $member_data[ 'arm_user_grace_plus_' . $extend_renewal_date_plan_id ] ) && $member_data[ 'arm_user_grace_plus_' . $extend_renewal_date_plan_id ] !== 0 ) {
 									$arm_old_next_payment_due_date = $old_plan_data['arm_next_due_payment'];
@@ -5787,7 +5801,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 										$old_plan_data['arm_expire_plan'] = strtotime( date( 'Y-m-d', strtotime( "+$grace_period days", $arm_plan_expire ) ) ); //phpcs:ignore
 									}
 
-									update_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, $old_plan_data );
+									arm_update_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, $old_plan_data );
 								}
 
 								$wpdb->query( $wpdb->prepare( 'DELETE FROM `' . $wpdb->usermeta . "` WHERE  `meta_key` LIKE  %s",'arm_user_grace_plus\_%' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
@@ -5808,7 +5822,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 											} else {
 												$old_plan_data['arm_completed_recurring'] = 1;
 											}
-											update_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, $old_plan_data );
+											arm_update_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, $old_plan_data );
 
 											$arm_next_payment_due_date             = $arm_members_class->arm_get_next_due_date( $user_ID, $extend_renewal_date_plan_id, false, $payment_cycle );
 											$old_plan_data['arm_next_due_payment'] = $arm_next_payment_due_date;
@@ -5818,7 +5832,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 											$old_plan_data['arm_grace_period_end']    = '';
 											$old_plan_data['arm_grace_period_action'] = '';
 
-											update_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, $old_plan_data );
+											arm_update_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, $old_plan_data );
 										}
 									} else {
 
@@ -5827,7 +5841,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 										} else {
 											$old_plan_data['arm_completed_recurring'] = 1;
 										}
-										update_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, $old_plan_data );
+										arm_update_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, $old_plan_data );
 
 										$arm_next_payment_due_date             = $arm_members_class->arm_get_next_due_date( $user_ID, $extend_renewal_date_plan_id, false, $payment_cycle );
 										$old_plan_data['arm_next_due_payment'] = $arm_next_payment_due_date;
@@ -5837,7 +5851,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 										$old_plan_data['arm_grace_period_end']    = '';
 										$old_plan_data['arm_grace_period_action'] = '';
 
-										update_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, $old_plan_data );
+										arm_update_user_meta( $user_ID, 'arm_user_plan_' . $extend_renewal_date_plan_id, $old_plan_data );
 									}
 
 									if ( ! empty( $user_suspended_plans_ids_array ) ) {
@@ -5852,7 +5866,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$wpdb->query( $wpdb->prepare( 'DELETE FROM `' . $wpdb->usermeta . "` WHERE  `meta_key` LIKE  %s",'arm_skip_next_renewal\_%' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 							}
 							if ( $removed_suspended_plans == 1 ) {
-								update_user_meta( $user_ID, 'arm_user_suspended_plan_ids', array_values( $user_suspended_plans_ids_array ) );
+								arm_update_user_meta( $user_ID, 'arm_user_suspended_plan_ids', array_values( $user_suspended_plans_ids_array ) );
 							}
 						}
 					}
@@ -6010,6 +6024,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					}
 				}
 				$posted_data['form_type'] = $form_type;
+				add_filter('wordfence_ls_require_captcha', '__return_false'); //WordFence Captcha Changes
 				do_action( 'arm_before_form_submit_action', $armform, $posted_data );
 				$all_errors = $this->arm_member_validate_meta_details( $armform, $posted_data );
 				if ( $all_errors === true ) {
@@ -6024,7 +6039,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							if ( is_numeric( $user_id ) && ! is_array( $user_id ) ) {
 
 								$arm_default_redirection_settings = get_option( 'arm_redirection_settings' );
-								$arm_default_redirection_settings = maybe_unserialize( $arm_default_redirection_settings );
+								$arm_default_redirection_settings = arm_maybe_unserialize( $arm_default_redirection_settings );
 								$login_redirection_rules_options  = $arm_default_redirection_settings['signup'];
 								$referral_url                     = isset( $posted_data['referral_url'] ) ? esc_url_raw( $posted_data['referral_url'] ) : '';
 
@@ -6066,7 +6081,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 							if ( is_numeric( $user_id ) && ! is_array( $user_id ) ) {
 
-								update_user_meta( $user_id, 'arm_form_id', $form_id );
+								arm_update_user_meta( $user_id, 'arm_form_id', $form_id );
 
 								$return['status']  = 'success';
 								$return['message'] = $success_message;
@@ -6085,7 +6100,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$referral_url                = isset( $posted_data['referral_url'] ) ? esc_url_raw( $posted_data['referral_url'] ) : '';
 								if ( is_multisite() ) {
 									$user       = get_user_by( 'login', $login_data['user_login'] );
-									$is_deleted = get_user_meta( $user->ID, 'arm_site_' . $GLOBALS['blog_id'] . '_deleted', true );
+									$is_deleted = arm_get_user_meta( $user->ID, 'arm_site_' . $GLOBALS['blog_id'] . '_deleted', true );
 									if ( $is_deleted != '' && $is_deleted == 1 ) {
 										$all_errors        = array( esc_html__( 'User is deleted from current site. Please Contact Administrator.', 'armember-membership' ) );
 										$return['status']  = 'error';
@@ -6114,7 +6129,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 											$redirect_to = get_admin_url();
 										} else {
 											$arm_default_redirection_settings = get_option( 'arm_redirection_settings' );
-											$arm_default_redirection_settings = maybe_unserialize( $arm_default_redirection_settings );
+											$arm_default_redirection_settings = arm_maybe_unserialize( $arm_default_redirection_settings );
 											$login_redirection_rules_options  = $arm_default_redirection_settings['login'];
 
 											if ( isset( $login_redirection_rules_options['main_type'] ) && $login_redirection_rules_options['main_type'] == 'fixed' ) {
@@ -6134,7 +6149,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 											$redirect_to = str_replace( '{ARMCURRENTUSERID}', $user->data->ID, $redirect_to );
 										}
 
-										update_user_meta( $user->ID, 'arm_firsttime_login', 1 );
+										arm_update_user_meta( $user->ID, 'arm_firsttime_login', 1 );
 										$login_message     = $redirect_to;
 										$return['status']  = 'success';
 										$return['type']    = 'redirect';
@@ -6212,10 +6227,10 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 										if ( ! $arm_check_user_reset_obj || is_wp_error( $arm_check_user_reset_obj ) ) {
 
 											if ( $arm_check_user_reset_obj && $arm_check_user_reset_obj->get_error_code() === 'expired_key' ) {
-												$err_msg    = ( ! empty( $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] ) ) ? $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] : esc_html__( 'Reset Password Link is expired.', 'armember-membership' );
+												$err_msg    = ( ! empty( $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] ) ) ? $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] : esc_html__( 'The password reset link has expired.', 'armember-membership' );
 												$all_errors = array( $err_msg );
 											} else {
-												$err_msg    = ( ! empty( $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] ) ) ? $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] : esc_html__( 'Reset Password Link is invalid.', 'armember-membership' );
+												$err_msg    = ( ! empty( $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] ) ) ? $arm_global_settings->common_message['arm_password_reset_pwd_link_expired'] : esc_html__( 'The password reset link is invalid.', 'armember-membership' );
 												$all_errors = array( $err_msg );
 											}
 										} else {
@@ -6236,7 +6251,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                 $loginlink = "<a href='" . $rp_link . "'>";
                                                 $login_link_taxt = isset($arm_global_settings->common_message['arm_password_reset_loginlink']) ? $arm_global_settings->common_message['arm_password_reset_loginlink'] : esc_html__('Login Now', 'armember-membership');
 
-                                                $err_msg = (!empty($err_msg)) ? $err_msg : esc_html__('Password Reset Successfully!', 'armember-membership') . ' [SUBTITLE]' . esc_html__('Your Password has been reset, Login now and get started', 'armember-membership') . ' [/SUBTITLE]';
+                                                $err_msg = (!empty($err_msg)) ? $err_msg : esc_html__('Password Reset Successfully!', 'armember-membership') . ' [SUBTITLE]' . esc_html__('Your password has been reset. Log in now and get started', 'armember-membership') . ' [/SUBTITLE]';
                                                 $err_msg = str_replace("[LOGINLINK]", $loginlink, $err_msg);
                                                 $err_msg = str_replace("[/LOGINLINK]", "</a>", $err_msg);
                                                 $err_msg = explode('[SUBTITLE]', $err_msg);
@@ -6335,7 +6350,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			}
             else {
                 $presetFormFields = get_option('arm_preset_form_fields', '');
-                $dbFormFields = maybe_unserialize($presetFormFields);
+                $dbFormFields = arm_maybe_unserialize($presetFormFields);
                 $armember_form_custom_fields = isset($dbFormFields['other']) ? $dbFormFields['other'] : array();
                 if(!empty($armember_form_custom_fields))
                 {
@@ -6416,7 +6431,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 										continue;
 									}
 
-									$blank_message         = ( ! empty( $form_field_option['blank_message'] ) ) ? $form_field_option['blank_message'] : $form_field_option['label'] . ' can not be left blank';
+									$blank_message         = ( ! empty( $form_field_option['blank_message'] ) ) ? $form_field_option['blank_message'] : $form_field_option['label'] . ' cannot be left blank';
 									$errors[ $field_name ] = $blank_message;
 								} elseif ( $form_field_option['type'] == 'email' && ( $form_field_option['required'] != 0 ) ) {
 									/* Input Type Email Validation */
@@ -6432,7 +6447,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 									/* Check Abusive Words In Username */
 									$bad_usernames = ( isset( $block_list['arm_block_usernames'] ) ) ? $block_list['arm_block_usernames'] : array();
 									if ( !empty( $bad_usernames ) && preg_match_all( '/(' . implode( '|', $bad_usernames ) . ')/i', $sanitized_user_login, $matches ) > 0 ) {
-										$bad_username_msg      = ! empty( $block_list['arm_block_usernames_msg'] ) ? $block_list['arm_block_usernames_msg'] : esc_html__( 'Username should not contain bad words.', 'armember-membership' );
+										$bad_username_msg      = ! empty( $block_list['arm_block_usernames_msg'] ) ? $block_list['arm_block_usernames_msg'] : esc_html__( 'The username cannot contain restricted words.', 'armember-membership' );
 										$errors[ $field_name ] = $bad_username_msg;
 									} else {
 										$chk_user_login = $arm_members_class->arm_validate_username( $sanitized_user_login, $invalid_username );
@@ -6479,12 +6494,12 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							/* Check if there is file upload */
 							if ( $form_field_option['type'] == 'file' || $form_field_option['type'] == 'avatar' || 'profile_cover' == $form_field_option['type'] ) {
 								$phpFileUploadErrors = array(
-									0 => esc_html__( 'There is no error, the file uploaded with success.', 'armember-membership' ),
+									0 => esc_html__( 'The file was uploaded successfully.', 'armember-membership' ),
 									1 => esc_html__( 'The uploaded file exceeds the upload_max_filesize directive in php.ini.', 'armember-membership' ),
 									2 => esc_html__( 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.', 'armember-membership' ),
 									3 => esc_html__( 'The uploaded file was only partially uploaded.', 'armember-membership' ),
 									4 => esc_html__( 'No file was uploaded.', 'armember-membership' ),
-									6 => esc_html__( 'Missing a temporary folder.', 'armember-membership' ),
+									6 => esc_html__( 'A temporary folder is missing.', 'armember-membership' ),
 									7 => esc_html__( 'Failed to write file to disk.', 'armember-membership' ),
 									8 => esc_html__( 'A PHP extension stopped the file upload.', 'armember-membership' ),
 								);
@@ -6539,6 +6554,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			$posted_data = apply_filters( 'arm_before_member_register', $posted_data );
 			$user_login  = ( isset( $posted_data['user_login'] ) && ! empty( $posted_data['user_login'] ) ) ? $posted_data['user_login'] : $posted_data['user_email'];
 			$user_email  = ( isset( $posted_data['user_email'] ) ) ? $posted_data['user_email'] : '';
+
+			add_filter( 'wordfence_ls_require_captcha', '__return_false' ); //WordFence Captcha Changes
 
 			if ( $social_signup == 'social_signup' ) {
 				$user_pass = wp_generate_password();
@@ -6674,9 +6691,9 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				if ( ( isset( $form_settings['auto_login'] ) && $form_settings['auto_login'] == '1' ) && $member_status == '1' && ( ! in_array( $pgateway, $user_pending_pgway ) || $is_free_plan ) ) {
 					wp_set_auth_cookie( $user_id );
 					wp_set_current_user( $user_id, $user_login );
-					update_user_meta( $user_id, 'arm_last_login_date', current_time( 'mysql' ) );
+					arm_update_user_meta( $user_id, 'arm_last_login_date', current_time( 'mysql' ) );
 					$ip_address = $ARMemberLite->arm_get_ip_address();
-					update_user_meta( $user_id, 'arm_last_login_ip', $ip_address );
+					arm_update_user_meta( $user_id, 'arm_last_login_ip', $ip_address );
 					$user_to_pass                = wp_get_current_user();
 					$arm_login_from_registration = 1;
 					do_action( 'wp_login', $user_id, $user_to_pass );
@@ -6865,7 +6882,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$get_arm_setup_modules = $wpdb->get_var( $wpdb->prepare( "SELECT `arm_setup_modules` FROM `" . $ARMemberLite->tbl_arm_membership_setup . "` WHERE `arm_setup_id` = %d", $arm_setup_id ) ); //phpcs:ignore --Reason: $ARMemberLite->tbl_arm_membership_setup is a table name
 					if(!empty($get_arm_setup_modules))
 					{
-						$get_arm_setup_modules = maybe_unserialize($get_arm_setup_modules);
+						$get_arm_setup_modules = arm_maybe_unserialize($get_arm_setup_modules);
 						$form_id = isset($get_arm_setup_modules['modules']['forms']) ? $get_arm_setup_modules['modules']['forms'] : 0;
 					}
 				}
@@ -6887,7 +6904,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				{
 					foreach($arm_form_fields_arr as $arm_form_fields_check_key => $arm_form_fields_check_val)
 					{
-						$arm_form_fields_check_val_option = !empty($arm_form_fields_check_val['arm_form_field_option']) ? maybe_unserialize($arm_form_fields_check_val['arm_form_field_option']) : array();
+						$arm_form_fields_check_val_option = !empty($arm_form_fields_check_val['arm_form_field_option']) ? arm_maybe_unserialize($arm_form_fields_check_val['arm_form_field_option']) : array();
 						$arm_form_field_slug = !empty($arm_form_fields_check_val['arm_form_field_slug']) ? $arm_form_fields_check_val['arm_form_field_slug'] : '';
 						if(!empty($arm_form_field_slug) && $arm_form_field_slug == 'social_fields')
 						{
@@ -6935,7 +6952,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					}
 					else 
 					{
-						$arm_form_field_option_array_field_option = !empty($arm_form_field_option_array[$posted_data_key]['arm_form_field_option']) ? maybe_unserialize($arm_form_field_option_array[$posted_data_key]['arm_form_field_option']) : array();
+						$arm_form_field_option_array_field_option = !empty($arm_form_field_option_array[$posted_data_key]['arm_form_field_option']) ? arm_maybe_unserialize($arm_form_field_option_array[$posted_data_key]['arm_form_field_option']) : array();
 
 						if(!empty($arm_form_field_option_array_field_option))
 						{
@@ -7037,7 +7054,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 			if ( ! empty( $user_ID ) && ! empty( $posted_data ) ) {
 				$user         = new WP_User( $user_ID );
-				$old_plan_ids = get_user_meta( $user_ID, 'arm_user_plan_ids', true );
+				$old_plan_ids = arm_get_user_meta( $user_ID, 'arm_user_plan_ids', true );
 				$old_plan_ids = ! empty( $old_plan_ids ) ? $old_plan_ids : array();
 				$old_plan     = isset( $old_plan_ids[0] ) ? $old_plan_ids[0] : 0;
 				$new_plan     = $old_plan;
@@ -7084,8 +7101,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 									$user->remove_cap( 'armember_access_plan_' . $old_plan );
 									delete_user_meta( $user_ID, 'arm_user_plan_' . $old_plan );
 								if ( $payment_gateway != 'bank_transfer' ) {
-									update_user_meta( $user_ID, 'arm_user_plan_ids', array( $new_plan ) );
-									update_user_meta( $user_ID, 'arm_user_last_plan', $new_plan );
+									arm_update_user_meta( $user_ID, 'arm_user_plan_ids', array( $new_plan ) );
+									arm_update_user_meta( $user_ID, 'arm_user_last_plan', $new_plan );
 									if ( $start_time <= strtotime( current_time( 'mysql' ) ) ) {
 
 										if ( ! empty( $planObj->plan_role ) ) {
@@ -7102,7 +7119,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								}
 							} else {
 								if ( $payment_gateway != 'bank_transfer' ) {
-									update_user_meta( $user_ID, 'arm_user_plan_ids', array_values( $old_plan_ids ) );
+									arm_update_user_meta( $user_ID, 'arm_user_plan_ids', array_values( $old_plan_ids ) );
 
 								}
 							}
@@ -7132,7 +7149,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 						if ( ! empty( $val ) ) {
 
-							$current_user_plan_ids = get_user_meta( $user_ID, 'arm_user_plan_ids', true );
+							$current_user_plan_ids = arm_get_user_meta( $user_ID, 'arm_user_plan_ids', true );
 							$current_user_plan_ids = ! empty( $current_user_plan_ids ) ? $current_user_plan_ids : array();
 
 								$user_future_plan_arrays = array();
@@ -7141,7 +7158,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								if ( $start_time > strtotime( current_time( 'mysql' ) ) ) {
 									if ( in_array( $val, $current_user_plan_ids ) ) {
 
-										$current_user_plan_data = get_user_meta( $user_ID, 'arm_user_plan_' . $val, true );
+										$current_user_plan_data = arm_get_user_meta( $user_ID, 'arm_user_plan_' . $val, true );
 										$is_user_in_trial       = isset( $current_user_plan_data['arm_is_trial_plan'] ) ? $current_user_plan_data['arm_is_trial_plan'] : 0;
 										if ( $is_user_in_trial != 1 ) {
 											unset( $current_user_plan_ids[ array_search( $val, $current_user_plan_ids ) ] );
@@ -7150,8 +7167,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 									}
 								}
 							}
-							update_user_meta( $user_ID, 'arm_user_future_plan_ids', array_values( $user_future_plan_arrays ) );
-							update_user_meta( $user_ID, 'arm_user_plan_ids', array_values( $current_user_plan_ids ) );
+							arm_update_user_meta( $user_ID, 'arm_user_future_plan_ids', array_values( $user_future_plan_arrays ) );
+							arm_update_user_meta( $user_ID, 'arm_user_plan_ids', array_values( $current_user_plan_ids ) );
 
 						}
 
@@ -7165,12 +7182,12 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						arm_set_member_status( $user_ID, $val, $secondary_status );
 					} elseif ( $key == 'arm_user_future_plan' ) {
 						if ( ! empty( $val ) ) {
-							$future_user_plan_ids = get_user_meta( $user_ID, 'arm_user_future_plan_ids', true );
+							$future_user_plan_ids = arm_get_user_meta( $user_ID, 'arm_user_future_plan_ids', true );
 							$future_user_plan_ids = ! empty( $future_user_plan_ids ) ? $future_user_plan_ids : array();
 							if ( ! empty( $future_user_plan_ids ) ) {
 								$common_future_plans = array_intersect( $future_user_plan_ids, $val );
 								$common_future_plans = ! empty( $common_future_plans ) ? $common_future_plans : array();
-								update_user_meta( $user_ID, 'arm_user_future_plan_ids', array_values( $common_future_plans ) );
+								arm_update_user_meta( $user_ID, 'arm_user_future_plan_ids', array_values( $common_future_plans ) );
 							}
 							$diff_future_plans = array_diff( $future_user_plan_ids, $val );
 							if ( ! empty( $diff_future_plans ) ) {
@@ -7189,7 +7206,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                         $key = str_replace('_arm_hidden', '', $key);
                         unset($posted_data[$key]);
                     }
-					update_user_meta( $user_ID, $key, $val );
+					arm_update_user_meta( $user_ID, $key, $val );
 				}
 			}
 		}
@@ -7206,7 +7223,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$is_user_data_exist = 1;
 				if ( empty( $user_data ) ) {
 					$err_msg = isset( $arm_global_settings->common_message['arm_no_registered_email'] ) ? $arm_global_settings->common_message['arm_no_registered_email'] : '';
-					$err_msg = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'There is no user registered with that email address.', 'armember-membership' );
+					$err_msg = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'No user is registered with that email address.', 'armember-membership' );
 					$arm_lite_errors->add( 'invalid_email', $err_msg );
 				}
 			} else {
@@ -7214,7 +7231,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$user_data = get_user_by( 'login', $login );
 				if ( empty( $user_data ) ) {
 					$err_msg = isset( $arm_global_settings->common_message['arm_no_registered_email'] ) ? $arm_global_settings->common_message['arm_no_registered_email'] : '';
-					$err_msg = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'There is no user registered with that username.', 'armember-membership' );
+					$err_msg = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'No user is registered with that username.', 'armember-membership' );
 					$arm_lite_errors->add( 'invalid_username', $err_msg );
 				}
 				$is_user_data_exist = 1;
@@ -7295,7 +7312,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$rp_link = $arm_change_password_page_url;
 			}
 
-			$varification_key = get_user_meta( $user_id, 'arm_user_activation_key', true );
+			$varification_key = arm_get_user_meta( $user_id, 'arm_user_activation_key', true );
 			$user_status      = arm_get_member_status( $user_id );
 			if ( $user_status == 3 ) {
 				$rp_link = $arm_global_settings->add_query_arg( 'varify_key', rawurlencode( $varification_key ), $rp_link );
@@ -7443,7 +7460,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				'hide_username'       => 0,
 				'hide_firstname'      => 0,
 				'hide_lastname'       => 0,
-				'blank_message'       => esc_html__( 'This field can not be left blank.', 'armember-membership' ),
+				'blank_message'       => esc_html__( 'This field cannot be left blank.', 'armember-membership' ),
 				'validation_type'     => 'custom_validation_none',
 				'regular_expression'  => '',
 				'invalid_message'     => esc_html__( 'Please enter valid data.', 'armember-membership' ),
@@ -7533,7 +7550,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						case 'html':
 							break;
 						default:
-							$field_options['value'] = get_user_meta( $user_info->ID, $field_options['meta_key'], true );
+							$field_options['value'] = arm_get_user_meta( $user_info->ID, $field_options['meta_key'], true );
 							break;
 					}
 				}
@@ -7550,7 +7567,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					'placeholder'   => '',
 					'type'          => 'text',
 					'required'      => 0,
-					'blank_message' => esc_html__( 'Text field can not be left blank.', 'armember-membership' ),
+					'blank_message' => esc_html__( 'Text field cannot be left blank.', 'armember-membership' ),
 				),
 				'password'     => array(
 					'label'           => esc_html__( 'Password', 'armember-membership' ),
@@ -7566,7 +7583,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						'lowercase'       => 1,
 					),
 					'required'        => 0,
-					'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+					'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 					'invalid_message' => esc_html__( 'Please enter valid password.', 'armember-membership' ),
 				),
 				'textarea'     => array(
@@ -7574,7 +7591,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					'placeholder'   => '',
 					'type'          => 'textarea',
 					'required'      => 0,
-					'blank_message' => esc_html__( 'This Field can not be left blank.', 'armember-membership' ),
+					'blank_message' => esc_html__( 'This field cannot be left blank.', 'armember-membership' ),
 				),
 				'checkbox'     => array(
 					'label'         => esc_html__( 'Checkbox', 'armember-membership' ),
@@ -7705,7 +7722,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					),
 					'meta_key'        => 'repeat_pass', // phpcs:ignore
 					'required'        => 1,
-					'blank_message'   => esc_html__( 'Confirm Password can not be left blank.', 'armember-membership' ),
+					'blank_message'   => esc_html__( 'Confirm Password cannot be left blank.', 'armember-membership' ),
 					'invalid_message' => esc_html__( 'Passwords don\'t match.', 'armember-membership' ),
 				),
 				'repeat_email' => array(
@@ -7716,7 +7733,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					'type'            => 'repeat_email',
 					'meta_key'        => 'repeat_email', // phpcs:ignore
 					'required'        => 1,
-					'blank_message'   => esc_html__( 'Confirm Email Address can not be left blank.', 'armember-membership' ),
+					'blank_message'   => esc_html__( 'Confirm Email Address cannot be left blank.', 'armember-membership' ),
 					'invalid_message' => esc_html__( 'Please enter email address again.', 'armember-membership' ),
 				),
 			);
@@ -7796,7 +7813,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					'meta_key'        => 'user_login', // phpcs:ignore
 					'required'        => 1,
 					'hide_username'   => 0,
-					'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+					'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 					'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 				),
 				'user_email'    => array(
@@ -7808,7 +7825,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					'options'         => array( 'is_confirm_email' => 0 ),
 					'meta_key'        => 'user_email', // phpcs:ignore
 					'required'        => 1,
-					'blank_message'   => esc_html__( 'Email Address can not be left blank.', 'armember-membership' ),
+					'blank_message'   => esc_html__( 'Email Address cannot be left blank.', 'armember-membership' ),
 					'invalid_message' => esc_html__( 'Please enter valid email address.', 'armember-membership' ),
 				),
 				'user_pass'     => array(
@@ -7830,7 +7847,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					),
 					'meta_key'        => 'user_pass', // phpcs:ignore
 					'required'        => 1,
-					'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+					'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 					'invalid_message' => esc_html__( 'Please enter valid password.', 'armember-membership' ),
 				),
 				'gender'        => array(
@@ -7855,7 +7872,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					'placeholder'     => '',
 					'meta_key'        => 'user_url', // phpcs:ignore
 					'required'        => 0,
-					'blank_message'   => esc_html__( 'Website (URL) can not be left blank.', 'armember-membership' ),
+					'blank_message'   => esc_html__( 'Website (URL) cannot be left blank.', 'armember-membership' ),
 					'invalid_message' => esc_html__( 'Invalid URL', 'armember-membership' ),
 				),
 				'country'       => array(
@@ -7877,7 +7894,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					'placeholder'   => '',
 					'meta_key'      => 'description', // phpcs:ignore
 					'required'      => 0,
-					'blank_message' => esc_html__( 'Biography can not be left blank.', 'armember-membership' ),
+					'blank_message' => esc_html__( 'Biography cannot be left blank.', 'armember-membership' ),
 				),
 				'social_fields' => array(
 					'_builtin'      => 1,
@@ -7897,7 +7914,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 		function arm_get_db_form_fields( $merge = false ) {
 			global $wp, $wpdb, $current_user, $ARMemberLite;
 			$presetFormFields = get_option( 'arm_preset_form_fields', '' );
-			$dbFormFields     = maybe_unserialize( $presetFormFields );
+			$dbFormFields     = arm_maybe_unserialize( $presetFormFields );
 			if ( ! is_array( $dbFormFields ) ) {
 				$dbFormFields = array();
 			}
@@ -7938,11 +7955,11 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						'allow_ext'         => '',
 						'file_size_limit'   => 2,
 						'meta_key'          => $fieldMetaKey, // phpcs:ignore
-						'blank_message'     => esc_html__( 'This field can not be left blank.', 'armember-membership' ),
-						'invalid_username'  => esc_html__( 'TThis username is invalid. Please enter a valid username.', 'armember-membership' ),
+						'blank_message'     => esc_html__( 'This field cannot be left blank.', 'armember-membership' ),
+						'invalid_username'  => esc_html__( 'This username is invalid. Please enter a valid username.', 'armember-membership' ),
 						'invalid_firstname' => esc_html__( 'This first name is invalid. Please enter a valid first name.', 'armember-membership' ),
 						'invalid_lastname'  => esc_html__( 'This last name is invalid. Please enter a valid last name.', 'armember-membership' ),
-						'invalid_message'   => esc_html__( 'Please enter valid detail.', 'armember-membership' ),
+						'invalid_message'   => esc_html__( 'Please enter valid details.', 'armember-membership' ),
 						'prefix'            => '',
 						'suffix'            => '',
 						'default_val'       => array(),
@@ -8026,7 +8043,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_forms'], '1' ); //phpcs:ignore --Reason:Verifying nonce
 
 			$field_type_options            = $this->arm_default_field_options();
-			$field_type_options            = maybe_unserialize( $field_type_options );
+			$field_type_options            = arm_maybe_unserialize( $field_type_options );
 			$form_id                       = ( ! empty( $form_id ) && $form_id != 0 ) ? $form_id : intval( $_POST['form_id'] ); //phpcs:ignore
 			$type                          = ( ! empty( $type ) ) ? $type : sanitize_text_field( $_POST['type'] ); //phpcs:ignore
 			$refFieldID                    = ( ! empty( $refFieldID ) ) ? $refFieldID : ( isset( $_POST['ref_field_id'] ) ? intval( $_POST['ref_field_id'] ) : 0 ); //phpcs:ignore
@@ -8075,7 +8092,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_forms'], '1' ); //phpcs:ignore --Reason:Verifying nonce
 
 			$field_type_options = $this->arm_default_preset_user_fields();
-			$field_type_options = maybe_unserialize( $field_type_options );
+			$field_type_options = arm_maybe_unserialize( $field_type_options );
 			$field_options      = $field_type_options['social_fields'];
 			$form_id            = intval( $_POST['form_id'] ); //phpcs:ignore
 			$form               = new ARM_Form_Lite( 'id', $form_id );
@@ -8127,7 +8144,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_forms'], '1' ); //phpcs:ignore --Reason:Verifying nonce	
 
 			$field_type_options      = $this->arm_default_field_options();
-			$field_type_options      = maybe_unserialize( $field_type_options );
+			$field_type_options      = arm_maybe_unserialize( $field_type_options );
 			$form_id                 = intval( $_POST['form_id'] ); //phpcs:ignore
 			$field_id                = intval( $_POST['field_id'] ); //phpcs:ignore
 			$field_options           = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST['arm_forms'][ $form_id ][ $field_id ] ); //phpcs:ignore
@@ -8163,14 +8180,14 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			$field_type = sanitize_text_field( $_POST['field_type'] ); //phpcs:ignore
 			$response   = array(
 				'type' => 'error',
-				'msg'  => 'There is a error while deleting field, please try again.',
+				'msg'  => esc_html__( 'Failed to delete the field. Please try again.', 'armember-membership' ),
 			);
 			if ( ! empty( $field_id ) ) {
 				$old_field        = $wpdb->get_row( $wpdb->prepare('SELECT `arm_form_field_slug`, `arm_form_field_status`, `arm_form_field_option` FROM `' . $ARMemberLite->tbl_arm_form_field . "` WHERE `arm_form_field_id`=%d LIMIT 1",$field_id), ARRAY_A );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_form_field is a table name
 				if(!empty($old_field)) {
 					$old_field_status = $old_field['arm_form_field_status'];
 					
-					$field_options    = maybe_unserialize( $old_field['arm_form_field_option'] );
+					$field_options    = arm_maybe_unserialize( $old_field['arm_form_field_option'] );
 					if ( $old_field_status == 2 ) {
 						$field_status_update = $wpdb->delete( $ARMemberLite->tbl_arm_form_field, array( 'arm_form_field_id' => $field_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					} else {
@@ -8179,7 +8196,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				}
 				$response = array(
 					'type' => 'success',
-					'msg'  => 'Field deleted Successfully.',
+					'msg'  => esc_html__( 'Field deleted successfully.', 'armember-membership' ),
 				);
 			}
 			echo arm_pattern_json_encode( $response ); //phpcs:ignore
@@ -8200,7 +8217,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 'meta_key' => 'first_name', // phpcs:ignore
                 'required' => 1,
                 'hide_firstname' => 0,
-                'blank_message' => esc_html__('First Name can not be left blank.', 'armember-membership'),
+                'blank_message' => esc_html__('First Name cannot be left blank.', 'armember-membership'),
                 'invalid_firstname' => esc_html__('This first name is invalid. Please enter a valid first name.', 'armember-membership'),
                 'default_field' => 0,
             );
@@ -8212,7 +8229,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 'meta_key' => 'last_name', // phpcs:ignore
                 'required' => 1,
                 'hide_lastname' => 0,
-                'blank_message' => esc_html__('Last Name can not be left blank.', 'armember-membership'),
+                'blank_message' => esc_html__('Last Name cannot be left blank.', 'armember-membership'),
                 'invalid_Lastname' => esc_html__('This last name is invalid. Please enter a valid last name.', 'armember-membership'),
                 'default_field' => 0,
             );
@@ -8224,7 +8241,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 'meta_key' => 'user_login', // phpcs:ignore
                 'required' => 1,
                 'hide_username' => 0,
-                'blank_message' => esc_html__('Username can not be left blank.', 'armember-membership'),
+                'blank_message' => esc_html__('Username cannot be left blank.', 'armember-membership'),
                 'invalid_message' => esc_html__('Please enter valid username.', 'armember-membership'),
                 'invalid_username' => esc_html__('This username is invalid. Please enter a valid username.', 'armember-membership'),
                 'default_field' => 0
@@ -8237,7 +8254,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 'type' => 'email',
                 'meta_key' => 'user_email', // phpcs:ignore
                 'required' => 1,
-                'blank_message' => esc_html__('Email Address can not be left blank.', 'armember-membership'),
+                'blank_message' => esc_html__('Email Address cannot be left blank.', 'armember-membership'),
                 'invalid_message' => esc_html__('Please enter valid email address.', 'armember-membership'),
                 'default_field' => 0,
                 'ref_field_id' => 0,
@@ -8251,7 +8268,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 'options' => array('strength_meter' => 1, 'strong_password' => 0, 'minlength' => 6, 'maxlength' => '', 'special' => 1, 'numeric' => 1, 'uppercase' => 1, 'lowercase' => 1),
                 'meta_key' => 'user_pass', // phpcs:ignore
                 'required' => 1,
-                'blank_message' => esc_html__('Password can not be left blank.', 'armember-membership'),
+                'blank_message' => esc_html__('Password cannot be left blank.', 'armember-membership'),
                 'invalid_message' => esc_html__('Please enter valid password.', 'armember-membership'),
             );
             $profile_submit = array(
@@ -8281,7 +8298,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				'meta_key'          => 'first_name', // phpcs:ignore
 				'required'          => 1,
 				'hide_firstname'    => 0,
-				'blank_message'     => esc_html__( 'First Name can not be left blank.', 'armember-membership' ),
+				'blank_message'     => esc_html__( 'First Name cannot be left blank.', 'armember-membership' ),
 				'invalid_firstname' => esc_html__( 'This first name is invalid. Please enter a valid first name.', 'armember-membership' ),
 				'default_field'     => 1,
 			);
@@ -8293,7 +8310,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				'meta_key'         => 'last_name', // phpcs:ignore
 				'required'         => 1,
 				'hide_lastname'    => 0,
-				'blank_message'    => esc_html__( 'Last Name can not be left blank.', 'armember-membership' ),
+				'blank_message'    => esc_html__( 'Last Name cannot be left blank.', 'armember-membership' ),
 				'invalid_Lastname' => esc_html__( 'This last name is invalid. Please enter a valid last name.', 'armember-membership' ),
 				'default_field'    => 1,
 			);
@@ -8305,7 +8322,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				'meta_key'         => 'user_login', // phpcs:ignore
 				'required'         => 1,
 				'hide_username'    => 0,
-				'blank_message'    => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+				'blank_message'    => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 				'invalid_message'  => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 				'invalid_username' => esc_html__( 'This username is invalid. Please enter a valid username.', 'armember-membership' ),
 				'default_field'    => 1,
@@ -8317,7 +8334,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				'type'            => 'text',
 				'meta_key'        => 'user_login', // phpcs:ignore
 				'required'        => 1,
-				'blank_message'   => esc_html__( 'Username can not be left blank.', 'armember-membership' ),
+				'blank_message'   => esc_html__( 'Username cannot be left blank.', 'armember-membership' ),
 				'invalid_message' => esc_html__( 'Please enter valid username.', 'armember-membership' ),
 				'default_field'   => 1,
 			);
@@ -8328,7 +8345,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				'type'                => 'email',
 				'meta_key'            => 'user_email', // phpcs:ignore
 				'required'            => 1,
-				'blank_message'       => esc_html__( 'Email Address can not be left blank.', 'armember-membership' ),
+				'blank_message'       => esc_html__( 'Email Address cannot be left blank.', 'armember-membership' ),
 				'invalid_message'     => esc_html__( 'Please enter valid email address.', 'armember-membership' ),
 				'default_field'       => 1,
 				'ref_field_id'        => 0,
@@ -8351,7 +8368,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				),
 				'meta_key'        => 'user_pass', // phpcs:ignore
 				'required'        => 1,
-				'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+				'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 				'invalid_message' => esc_html__( 'Please enter valid password.', 'armember-membership' ),
 			);
 			$user_pass_login            = array(
@@ -8371,7 +8388,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				),
 				'meta_key'        => 'user_pass', // phpcs:ignore
 				'required'        => 1,
-				'blank_message'   => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+				'blank_message'   => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 				'invalid_message' => esc_html__( 'Please enter valid password.', 'armember-membership' ),
 				'default_field'   => 1,
 			);
@@ -8383,7 +8400,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 'options' => array('strength_meter' => 0, 'strong_password' => 0, 'minlength' => 0, 'maxlength' => '', 'special' => 1, 'numeric' => 1, 'uppercase' => 1, 'lowercase' => 1),
                 'meta_key' => 'current_user_pass', // phpcs:ignore
                 'required' => 1,
-                'blank_message' => esc_html__('Current password can not be left blank.', 'armember-membership'),
+                'blank_message' => esc_html__('Current Password cannot be left blank.', 'armember-membership'),
                 'invalid_message' => esc_html__('Please enter valid current password.', 'armember-membership'),
                 'default_field' => 1,
                 'ref_field_id' => 0,
@@ -8406,7 +8423,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				),
 				'meta_key'            => 'user_pass', // phpcs:ignore
 				'required'            => 1,
-				'blank_message'       => esc_html__( 'Password can not be left blank.', 'armember-membership' ),
+				'blank_message'       => esc_html__( 'Password cannot be left blank.', 'armember-membership' ),
 				'invalid_message'     => esc_html__( 'Please enter valid password.', 'armember-membership' ),
 				'default_field'       => 1,
 				'ref_field_id'        => 0,
@@ -8429,7 +8446,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				),
 				'meta_key'            => 'repeat_pass', // phpcs:ignore
 				'required'            => 1,
-				'blank_message'       => esc_html__( 'Confirm Password can not be left blank.', 'armember-membership' ),
+				'blank_message'       => esc_html__( 'Confirm Password cannot be left blank.', 'armember-membership' ),
 				'invalid_message'     => esc_html__( 'Passwords don\'t match.', 'armember-membership' ),
 				'default_field'       => 1,
 				'ref_field_id'        => 0,
@@ -8536,7 +8553,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 'meta_key' => 'first_name', // phpcs:ignore
                 'required' => 1,
                 'hide_firstname' => 0,
-                'blank_message' => esc_html__('First Name can not be left blank.', 'armember-membership'),
+                'blank_message' => esc_html__('First Name cannot be left blank.', 'armember-membership'),
                 'invalid_firstname' => esc_html__('This first name is invalid. Please enter a valid first name.', 'armember-membership'),
                 'default_field' => 0,
             );
@@ -8548,7 +8565,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 'meta_key' => 'last_name', // phpcs:ignore
                 'required' => 1,
                 'hide_lastname' => 0,
-                'blank_message' => esc_html__('Last Name can not be left blank.', 'armember-membership'),
+                'blank_message' => esc_html__('Last Name cannot be left blank.', 'armember-membership'),
                 'invalid_Lastname' => esc_html__('This last name is invalid. Please enter a valid last name.', 'armember-membership'),
                 'default_field' => 0,
             );
@@ -8560,7 +8577,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 'meta_key' => 'user_login', // phpcs:ignore
                 'required' => 1,
                 'hide_username' => 0,
-                'blank_message' => esc_html__('Username can not be left blank.', 'armember-membership'),
+                'blank_message' => esc_html__('Username cannot be left blank.', 'armember-membership'),
                 'invalid_message' => esc_html__('Please enter valid username.', 'armember-membership'),
                 'invalid_username' => esc_html__('This username is invalid. Please enter a valid username.', 'armember-membership'),
                 'default_field' => 0
@@ -8573,7 +8590,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 'type' => 'email',
                 'meta_key' => 'user_email', // phpcs:ignore
                 'required' => 1,
-                'blank_message' => esc_html__('Email Address can not be left blank.', 'armember-membership'),
+                'blank_message' => esc_html__('Email Address cannot be left blank.', 'armember-membership'),
                 'invalid_message' => esc_html__('Please enter valid email address.', 'armember-membership'),
                 'default_field' => 0,
                 'ref_field_id' => 0,
@@ -8587,7 +8604,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                 'options' => array('strength_meter' => 1, 'strong_password' => 0, 'minlength' => 6, 'maxlength' => '', 'special' => 1, 'numeric' => 1, 'uppercase' => 1, 'lowercase' => 1),
                 'meta_key' => 'user_pass', // phpcs:ignore
                 'required' => 1,
-                'blank_message' => esc_html__('Password can not be left blank.', 'armember-membership'),
+                'blank_message' => esc_html__('Password cannot be left blank.', 'armember-membership'),
                 'invalid_message' => esc_html__('Please enter valid password.', 'armember-membership'),
             );
             $profile_submit = array(
@@ -8695,7 +8712,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$forms_data = $wpdb->get_row( $wpdb->prepare("SELECT {$selectFields}, `arm_form_id` FROM `" . $ARMemberLite->tbl_arm_forms . "` WHERE `arm_form_id`=%d ORDER BY `arm_form_id` ASC LIMIT 1",$form_id), ARRAY_A );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_formsis a table name. False Positive alarm
 				if ( ! empty( $forms_data ) ) {
 					$forms_data['arm_form_label']    = ( ! empty( $forms_data['arm_form_label'] ) ) ? stripslashes( $forms_data['arm_form_label'] ) : '';
-					$forms_data['arm_form_settings'] = ( ! empty( $forms_data['arm_form_settings'] ) ) ? maybe_unserialize( $forms_data['arm_form_settings'] ) : array();
+					$forms_data['arm_form_settings'] = ( ! empty( $forms_data['arm_form_settings'] ) ) ? arm_maybe_unserialize( $forms_data['arm_form_settings'] ) : array();
 					if ( $isFormFields ) {
 						/* Get Form Fields */
 						$forms_data['fields'] = $this->arm_get_member_forms_fields( $forms_data['arm_form_id'] );
@@ -8715,7 +8732,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$id = $form['arm_form_id'];
 						/* Get Form Fields */
 						$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? stripslashes( $form['arm_form_label'] ) : '';
-						$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? maybe_unserialize( $form['arm_form_settings'] ) : array();
+						$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? arm_maybe_unserialize( $form['arm_form_settings'] ) : array();
 						$login_regex               = '/template-login(.*?)/';
 						$register_regex            = '/template-registration(.*?)/';
 						$forgot_regex              = '/template-forgot-password(.*?)/';
@@ -8753,7 +8770,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$set_id = $form['arm_set_id'];
 					/* Get Form Fields */
 					$form['arm_form_label']     = ( ! empty( $form['arm_form_label'] ) ) ? stripslashes( $form['arm_form_label'] ) : '';
-					$form['arm_form_settings']  = ( ! empty( $form['arm_form_settings'] ) ) ? maybe_unserialize( $form['arm_form_settings'] ) : array();
+					$form['arm_form_settings']  = ( ! empty( $form['arm_form_settings'] ) ) ? arm_maybe_unserialize( $form['arm_form_settings'] ) : array();
 					$set_data[ $set_id ][ $id ] = $form;
 				}
 			}
@@ -8770,7 +8787,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$id = $form['arm_form_id'];
 						/* Get Form Fields */
 						$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? stripslashes( $form['arm_form_label'] ) : '';
-						$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? maybe_unserialize( $form['arm_form_settings'] ) : array();
+						$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? arm_maybe_unserialize( $form['arm_form_settings'] ) : array();
 						if ( $isFormFields ) {
 							$form['fields'] = $this->arm_get_member_forms_fields( $id );
 						}
@@ -8797,7 +8814,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$id = $form['arm_form_id'];
 						/* Get Form Fields */
 						$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? stripslashes( $form['arm_form_label'] ) : '';
-						$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? maybe_unserialize( $form['arm_form_settings'] ) : array();
+						$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? arm_maybe_unserialize( $form['arm_form_settings'] ) : array();
 						if ( $isFormFields ) {
 							$form['fields'] = $this->arm_get_member_forms_fields( $id );
 						}
@@ -8822,7 +8839,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				foreach ( $form_result as $form ) {
 					$id                        = $form['arm_form_id'];
 					$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? stripslashes( $form['arm_form_label'] ) : '';
-					$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? maybe_unserialize( $form['arm_form_settings'] ) : array();
+					$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? arm_maybe_unserialize( $form['arm_form_settings'] ) : array();
 					if ( $isFormFields ) {
 						/* Get Form Fields */
 						$form['fields'] = $this->arm_get_member_forms_fields( $id );
@@ -8849,7 +8866,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			if ( ! empty( $form_id ) && $form_id != 0 ) {
 				$field_result = $wpdb->get_results( $wpdb->prepare("SELECT {$selectColumns}, `arm_form_field_id`, `arm_form_field_form_id` FROM `" . $ARMemberLite->tbl_arm_form_field . "` WHERE `arm_form_field_form_id`=%d AND `arm_form_field_status` != %d ORDER BY `arm_form_field_order` ASC",$form_id,2), ARRAY_A );//phpcs:ignore --Reason:  $ARMemberLite->tbl_arm_form_field is a table name false Positive Alarm
 				foreach ( $field_result as $field ) {
-					$field['arm_form_field_option'] = ( isset( $field['arm_form_field_option'] ) ) ? maybe_unserialize( $field['arm_form_field_option'] ) : array();
+					$field['arm_form_field_option'] = ( isset( $field['arm_form_field_option'] ) ) ? arm_maybe_unserialize( $field['arm_form_field_option'] ) : array();
 					$fields[]                       = $field;
 				}
 			}
@@ -9507,7 +9524,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					foreach ( $arm_form_field_results as $arm_field_result ) {
 						$fieldID        = $arm_field_result['arm_form_field_id'];
 						$fieldSlug      = $arm_field_result['arm_form_field_slug'];
-						$fieldIdOptions = maybe_unserialize( $arm_field_result['arm_form_field_option'] );
+						$fieldIdOptions = arm_maybe_unserialize( $arm_field_result['arm_form_field_option'] );
 						$fieldPrefix    = $fieldPrefix_type = $fieldSuffix_type = $fieldSuffix = '';
 						if ( isset( $fieldIdOptions['prefix'] ) && $fieldIdOptions['prefix'] != '' ) {
 							$fieldPrefix      = $fieldIdOptions['prefix'];
@@ -10261,8 +10278,7 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 						{
 							border: " . $new_style['field_border_width'] . 'px ' . $new_style['field_border_style'] . ' ' . $new_style['field_focus_color'] . ' !important;
 							border-color: ' . $new_style['field_focus_color'] . " !important;
-							border-top-right-radius: 50% !important;
-							border-bottom-right-radius: 50% !important;
+							border-radius: ".$new_style['field_border_radius']."px !important;
 						}
 
                         $container .arm-ffw__file-upload-box:focus-within{
@@ -10811,7 +10827,7 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 				$form_social_fields = $wpdb->get_row( $wpdb->prepare( "SELECT arm_form_field_option FROM `".$ARMemberLite->tbl_arm_form_field."`  WHERE arm_form_field_form_id = %d AND arm_form_field_slug = %s ", $form_id, 'social_fields' ) );//phpcs:ignore --Reason: $ARMemberLite->tbl_arm_form_field is a table name.
 				$active_spf         = array();
 				if ( ! empty( $form_social_fields ) ) {
-					$field_options = maybe_unserialize( $form_social_fields->arm_form_field_option );
+					$field_options = arm_maybe_unserialize( $form_social_fields->arm_form_field_option );
 					$active_spf    = $field_options['options'];
 					$content      .= "<div class='arm_social_field_popup_wrapper'>";
 					foreach ( $all_spfields as $SPFKey => $SPFLabel ) {
@@ -11093,7 +11109,7 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 					$wpdb->query( $wpdb->prepare( "UPDATE `{$login_history_table}` SET `arm_logout_date` = %s, `arm_login_duration` = %s, `arm_user_current_status` = %d WHERE `arm_history_id` = %d AND `arm_history_session` = %s AND `arm_user_id` = %d", $logged_out_time, $arm_login_duration, 0, $wp_insert_id, $session_id, $user_id ) );//phpcs:ignore --Reason: $login_history_table is a table name. False Positive Alarm
 				}
 				unset( $_COOKIE[ 'arm_cookie_' . $user_id ] );
-				update_user_meta( $user_id, 'arm_autolock_cookie', '' );
+				arm_update_user_meta( $user_id, 'arm_autolock_cookie', '' );
 
 			}
 		}
@@ -11226,7 +11242,7 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 				$old_meta_value = $meta_value;
 
 				$presetFormFields = get_option( 'arm_preset_form_fields', '' );
-				$dbFormFields     = maybe_unserialize( $presetFormFields );
+				$dbFormFields     = arm_maybe_unserialize( $presetFormFields );
 				if ( ! empty( $dbFormFields ) && isset( $dbFormFields['default']['country'] ) ) {
 					$preset_country = $dbFormFields['default']['country']['options'];
 					if ( ! empty( $preset_country ) ) {
@@ -11305,7 +11321,7 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
                         continue;
                     }
             
-                    $form_settings_data = maybe_unserialize($form_settings_serialize_data['arm_form_settings']);
+                    $form_settings_data = arm_maybe_unserialize($form_settings_serialize_data['arm_form_settings']);
             
                     if(!is_array($form_settings_data) || !isset($form_settings_data['style'])){
                         continue;
@@ -11429,7 +11445,7 @@ if ( ! class_exists( 'ARM_Form_Lite' ) ) {
 			$this->set_id      = $data->arm_set_id;
 			$this->updated     = $data->arm_form_updated_date;
 			$this->created     = $data->arm_form_created_date;
-			$this->settings    = maybe_unserialize( $data->arm_form_settings );
+			$this->settings    = arm_maybe_unserialize( $data->arm_form_settings );
 			$this->fields      = $data->fields;
 			$this->form_detail = (array) $data;
 			$this->template    = ( $data->arm_is_template == '1' ) ? true : false;
@@ -11447,7 +11463,7 @@ if ( ! class_exists( 'ARM_Form_Lite' ) ) {
 				$GLOBALS['arm_forms'][ $value ] = $form_data;
 			}
 			if ( ! empty( $form_data ) ) {
-				$form_data->arm_form_settings = ( ! empty( $form_data->arm_form_settings ) ) ? maybe_unserialize( $form_data->arm_form_settings ) : array();
+				$form_data->arm_form_settings = ( ! empty( $form_data->arm_form_settings ) ) ? arm_maybe_unserialize( $form_data->arm_form_settings ) : array();
 				/* Get Form Fields */
 				$form_data->fields = self::get_form_fields( $form_data->arm_form_id );
 			}
@@ -11469,7 +11485,7 @@ if ( ! class_exists( 'ARM_Form_Lite' ) ) {
 				}
 				$i = 1;
 				foreach ( $field_result as $field ) {
-					$field['arm_form_field_option'] = maybe_unserialize( $field['arm_form_field_option'] );
+					$field['arm_form_field_option'] = arm_maybe_unserialize( $field['arm_form_field_option'] );
 					$fields[ $i ]                   = $field;
 					$i++;
 				}

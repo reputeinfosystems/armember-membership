@@ -139,7 +139,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
                 </div>
 				<div class="armclear"></div>
 				<div class="arm_setup_admin_form_container arm_admin_form_content">
-					<span class="arm_setup_main_error_msg error" style="display: none;"><?php esc_html_e( 'This membership setup can not be saved because in some cases, payment gateway will not be available. So setup cannot be processed.', 'armember-membership' ); ?></span>
+					<span class="arm_setup_main_error_msg error" style="display: none;"><?php esc_html_e( 'This membership setup cannot be saved because in some cases, payment gateway will not be available. So setup cannot be processed.', 'armember-membership' ); ?></span>
 					
 					<div class="arm_setup_modules_container">
 						<div class="arm_right_border"></div>
@@ -153,7 +153,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 										<div class="arm_setup_option_label"><?php esc_html_e( 'Setup Name', 'armember-membership' ); ?></div>
 										<div class="arm_setup_option_input arm_setup_forms_container arm_width_100_pct">
 											<div class="arm_setup_module_box">
-												<input name="setup_data[setup_name]" id="setup_name"  class="arm_width_100_pct" type="text"  title="Setup name" value="<?php echo esc_attr($setup_name); ?>" data-msg-required="<?php esc_attr_e( 'Setup name can not be left blank.', 'armember-membership' ); ?>" placeholder="<?php esc_attr_e( 'Setup name', 'armember-membership' ); ?>" required />
+												<input name="setup_data[setup_name]" id="setup_name"  class="arm_width_100_pct" type="text"  title="Setup name" value="<?php echo esc_attr($setup_name); ?>" data-msg-required="<?php esc_attr_e( 'Setup name cannot be left blank.', 'armember-membership' ); ?>" placeholder="<?php esc_attr_e( 'Setup name', 'armember-membership' ); ?>" required />
 												<span class="arm_setup_error_msg"></span>
 											</div>
 											<div class="armclear"></div>
@@ -221,7 +221,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 												array_push( $plan_detail, $pddata );
 												$s_plan_name         = $pddata['arm_subscription_plan_name'];
 												$plan_type           = $pddata['arm_subscription_plan_type'];
-												$plan_options        = maybe_unserialize( $pddata['arm_subscription_plan_options'] );
+												$plan_options        = arm_maybe_unserialize( $pddata['arm_subscription_plan_options'] );
 												$plan_payment_cycles = ( isset( $plan_options['payment_cycles'] ) && ! empty( $plan_options['payment_cycles'] ) ) ? $plan_options['payment_cycles'] : array();
 												if ( empty( $plan_payment_cycles ) ) {
 													$plan_payment_cycles = array(
@@ -674,7 +674,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 						<div class="arm_membership_setup_shortcode_box">
 							<span class="arm_font_size_15 arm_margin_right_10 arm-black-350"><?php esc_html_e('Shortcode','armember-membership');?></span>
 							<span class="arm_shortcode_text">
-								<span style="display: block;font-size: 12px;line-height: normal;text-align: left;"><?php esc_html_e('Shortcode will be display here once you save current setup.','armember-membership');?></span>
+								<span style="display: block;font-size: 12px;line-height: normal;text-align: left;"><?php esc_html_e('Shortcode will be displayed here once you save current setup.','armember-membership');?></span>
 							</span>
 						</div>
 						<div class="arm_membership_setup_action_box">

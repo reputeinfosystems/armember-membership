@@ -72,7 +72,7 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
                 }
             }
             foreach ( $dbFormFields as $meta_key => $field ) {
-                $field_options = maybe_unserialize( $field );
+            $field_options = arm_maybe_unserialize( $field );
                 $field_options = apply_filters( 'arm_change_field_options', $field_options );
                 $meta_key      = isset( $field_options['meta_key'] ) ? $field_options['meta_key'] : $field_options['id'];
                 $field_id      = $meta_key . arm_generate_random_code();
@@ -206,7 +206,7 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
                     $resp = explode("|^^|", $avav_resp);
                     if ($resp[0] == 1) {
                         $avallav = array();
-                        $avallav = unserialize(base64_decode($resp[1]));
+                        $avallav = arm_maybe_unserialize(base64_decode($resp[1]));
                         if (is_array($avallav) && count($avallav) > 0) {
                             foreach ($avallav as $key => $avpl_details) {
                                 foreach ($avpl_details as $key_1 => $avav_details) {                                   
@@ -452,7 +452,7 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
 
             $arm_expand_cols = array_diff($arm_current_member_columns, $expand_visible_columns);
 
-            $planData      = get_user_meta( $user_id, 'arm_user_plan_' . $membership_id, true );
+            $planData      = arm_get_user_meta( $user_id, 'arm_user_plan_' . $membership_id, true );
             
             $curPlanDetail = !empty($planData['arm_current_plan_detail']) ? $planData['arm_current_plan_detail'] : array();
             $start_plan    = !empty( $planData['arm_start_plan'] ) ? $planData['arm_start_plan'] : '';

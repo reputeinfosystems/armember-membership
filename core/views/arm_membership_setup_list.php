@@ -33,7 +33,7 @@ var __ARM_SEPERATOR = "|~|ARM|~|";
 function ChangeID(id){
 	document.getElementById('delete_id').value = id;
 }
-var add_setup_shortcode_text = '<span style="display: block;font-size: 12px;line-height: normal;text-align: left;"><?php esc_html_e('Shortcode will be display here once you save current setup.', 'armember-membership');?> </span>';
+var add_setup_shortcode_text = '<span style="display: block;font-size: 12px;line-height: normal;text-align: left;"><?php esc_html_e('Shortcode will be displayed here once you save current setup.', 'armember-membership');?> </span>';
 
 jQuery(document).ready( function () {
 	jQuery('#armember_datatable').dataTable().fnDestroy();
@@ -70,7 +70,7 @@ function arm_load_setup_list_grid(){
 	var __ARM_of = '<?php echo addslashes( esc_html__( 'of', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var __ARM_SETUPS = ' <?php echo addslashes( esc_html__( 'setups', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var __ARM_Show = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?> ';
-	var __ARM_NO_FOUND = '<?php echo addslashes( esc_html__( 'No any membership setup found.', 'armember-membership' ) ); //phpcs:ignore ?>';
+	var __ARM_NO_FOUND = '<?php echo addslashes( esc_html__( 'No membership setups found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 	var __ARM_NO_MATCHING = '<?php echo addslashes( esc_html__( 'No matching records found.', 'armember-membership' ) ); //phpcs:ignore ?>';
 
 	var __ARM_PER_PAGE = '<?php echo addslashes( esc_html__( 'Show', 'armember-membership' ) ); //phpcs:ignore ?>';
@@ -366,7 +366,7 @@ function activity_child_format(d,headers,headers_label,_wpnonce) {
 				<input type="hidden" name="to_grid" id="to_grid" value="<?php esc_attr_e( 'to', 'armember-membership' ); ?>"/>
 				<input type="hidden" name="of_grid" id="of_grid" value="<?php esc_attr_e( 'of', 'armember-membership' ); ?>"/>
 				<input type="hidden" name="no_match_record_grid" id="no_match_record_grid" value="<?php esc_attr_e( 'No matching setup found', 'armember-membership' ); ?>"/>
-				<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No any membership setup found.', 'armember-membership' ); ?>"/>
+				<input type="hidden" name="no_record_grid" id="no_record_grid" value="<?php esc_attr_e( 'No membership setups found.', 'armember-membership' ); ?>"/>
 				<input type="hidden" name="filter_grid" id="filter_grid" value="<?php esc_attr_e( 'filtered from', 'armember-membership' ); ?>"/>
 				<input type="hidden" name="totalwd_grid" id="totalwd_grid" value="<?php esc_attr_e( 'total', 'armember-membership' ); ?>"/>
 				<?php $wpnonce = wp_create_nonce( 'arm_wp_nonce' );?>

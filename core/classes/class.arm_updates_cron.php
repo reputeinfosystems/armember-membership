@@ -51,11 +51,11 @@ if (!class_exists('ARM_updates_cron_Lite')) {
                 {
                     printf("<div class='notice notice-info arm_dismiss_update_db_notice' style='display:block;margin: 40px 40px 0px;border-left-color: var(--arm-pt-orange) !important;min-height:150px'><p style='font-size:calc(24px);'>". esc_html__('ARMember Database Update Required', 'armember-membership')."</p><p>ARMember has been updated! To keep things running smoothly, we have to update your database to the newest version. The database update process runs in the background and may take a little while, so please be patience.</p><button class='armemailaddbtn' style='margin-top:15px;margin-bottom:20px;'>". esc_html__('Update ARMember Database', 'armember-membership')."</button></div>");
 
-                    printf("<div class='notice notice-info arm_dismiss_updated_db_notice' style='display:none;margin: 40px 40px 0px;border-left-color: var(--arm-pt-orange) !important;height:110px'><p style='font-size:calc(24px);'>". esc_html__('ARMember database Updation in Progress', 'armember-membership')."</p><p>ARMember has started a data updation in background. The database update process may take a little while, so please be patience.</p></div>");
+                    printf("<div class='notice notice-info arm_dismiss_updated_db_notice' style='display:none;margin: 40px 40px 0px;border-left-color: var(--arm-pt-orange) !important;height:110px'><p style='font-size:calc(24px);'>". esc_html__('ARMember database update in progress', 'armember-membership')."</p><p>ARMember has started a data updation in background. The database update process may take a little while, so please be patience.</p></div>");
                 }
                 else if($arm_updates_cron_db_notice=="1" || $arm_updates_cron_db_activity_notice=="1")
                 {
-                    printf("<div class='notice notice-info arm_dismiss_updated_db_notice' style='display:block;margin: 40px 40px 0px;border-left-color: var(--arm-pt-orange) !important;height:110px'><p style='font-size:calc(24px);'>". esc_html__('ARMember database Updation in Progress', 'armember-membership')."</p><p>ARMember has started a data updation in background. The database update process may take a little while, so please be patience.</p></div>");
+                    printf("<div class='notice notice-info arm_dismiss_updated_db_notice' style='display:block;margin: 40px 40px 0px;border-left-color: var(--arm-pt-orange) !important;height:110px'><p style='font-size:calc(24px);'>". esc_html__('ARMember database update in progress', 'armember-membership')."</p><p>ARMember has started a data updation in background. The database update process may take a little while, so please be patience.</p></div>");
                 }
                 else if($arm_updates_cron_db_notice=="2" || $arm_updates_cron_db_activity_notice=="2")
                 {
@@ -128,12 +128,12 @@ if (!class_exists('ARM_updates_cron_Lite')) {
                 {
                     $user_id = $user->data->ID;
                     //$user_id = $user['ID'];
-                    $arm_user_plan_ids_value = get_user_meta($user_id,'arm_user_plan_ids',true);
+                    $arm_user_plan_ids_value = arm_get_user_meta($user_id,'arm_user_plan_ids',true);
 
                     $user_meta_value_array = array();
                     if(!empty($arm_user_plan_ids_value))
                     {
-                        $user_meta_value_arr = maybe_unserialize($arm_user_plan_ids_value);
+                        $user_meta_value_arr = arm_maybe_unserialize($arm_user_plan_ids_value);
                         if(!empty($user_meta_value_arr) && is_array($user_meta_value_arr))
                         {
                             foreach($user_meta_value_arr as $arm_user_plan_id)
@@ -144,12 +144,12 @@ if (!class_exists('ARM_updates_cron_Lite')) {
                     }
                     $user_meta_value_array = maybe_serialize($user_meta_value_array);
 
-                    $arm_user_suspended_plan_ids_value = get_user_meta($user_id,'arm_user_suspended_plan_ids',true);
+                    $arm_user_suspended_plan_ids_value = arm_get_user_meta($user_id,'arm_user_suspended_plan_ids',true);
 
                     $user_suspended_plan_meta_value_array = array();
                     if(!empty($arm_user_suspended_plan_ids_value))
                     {
-                        $user_suspended_plan_meta_value_arr = maybe_unserialize($arm_user_suspended_plan_ids_value);
+                        $user_suspended_plan_meta_value_arr = arm_maybe_unserialize($arm_user_suspended_plan_ids_value);
                         if(!empty($user_suspended_plan_meta_value_arr) && is_array($user_suspended_plan_meta_value_arr))
                         {
                             foreach($user_suspended_plan_meta_value_arr as $arm_user_plan_id)
@@ -199,7 +199,7 @@ if (!class_exists('ARM_updates_cron_Lite')) {
                 foreach($get_all_activity as $arm_content)
                 {
                     $arm_act_id = $arm_content['arm_activity_id'];
-                    $arm_content_data = maybe_unserialize($arm_content['arm_content']);
+                    $arm_content_data = arm_maybe_unserialize($arm_content['arm_content']);
 
                     $user_id = $arm_content['arm_user_id'];
                     $plan_id = $arm_content['arm_item_id'];
@@ -223,8 +223,8 @@ if (!class_exists('ARM_updates_cron_Lite')) {
                     }
                     if($arm_plan_type == 'recurring')
                     {
-                        $plan_usermeta = get_user_meta( $user_id, 'arm_user_plan_'.$plan_id, true );
-                        $arm_plan_detail = maybe_unserialize($plan_usermeta);
+                        $plan_usermeta = arm_get_user_meta( $user_id, 'arm_user_plan_'.$plan_id, true );
+                        $arm_plan_detail = arm_maybe_unserialize($plan_usermeta);
                         $arm_plan_next_cycle_date = !empty($arm_plan_detail['arm_next_due_payment']) ? date('Y-m-d H:i:s',$arm_plan_detail['arm_next_due_payment']) : ''; //phpcs:ignore
                     }
                     $data = array(
