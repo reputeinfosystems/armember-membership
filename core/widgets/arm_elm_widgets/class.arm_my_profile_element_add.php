@@ -152,7 +152,7 @@ class arm_my_profile_shortcode extends Widget_Base
 		$settings = $this->get_settings_for_display();
 
 		echo '<h5 class="title">';
-		echo $settings['title']; //phpcs:ignore
+		echo esc_html($settings['title']); //phpcs:ignore
 		echo '</h5>';
 		echo '<div class="arm_select">';
 			$arm_shortcode='';

@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ARMember Lite - Membership Plugin v6.0\n"
+"Project-Id-Version: ARMember Lite - Membership Plugin v6.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2026-08-26 12:30:41+0000\n"
+"PO-Revision-Date: 2026-09-12 12:07:05+0000\n"
 "Last-Translator: admin <testrepute123@gmail.com>\n"
 "Language-Team: English (United States)\n"
 "MIME-Version: 1.0\n"
@@ -135,7 +135,7 @@ msgstr "A PHP extension stopped the file upload."
 msgid "Access Rules"
 msgstr "Access Rules"
 
-#: core/classes/class.arm_access_rules.php:731
+#: core/classes/class.arm_access_rules.php:734
 #@ armember-membership
 msgid "Access Rules Updated Successfully."
 msgstr "Access Rules Updated Successfully."
@@ -193,12 +193,12 @@ msgstr "Account Pending"
 msgid "Account Setup"
 msgstr "Account Setup"
 
-#: autoload.php:4045
+#: autoload.php:4044
 #@ armember-membership
 msgid "Achievements Added Successfully."
 msgstr "Achievements Added Successfully."
 
-#: autoload.php:4046
+#: autoload.php:4045
 #@ armember-membership
 msgid "Achievements Updated Successfully."
 msgstr "Achievements Updated Successfully."
@@ -479,19 +479,19 @@ msgid "Additional Shortcodes"
 msgstr "Additional Shortcodes"
 
 #: autoload.php:1860
-#: autoload.php:4057
+#: autoload.php:4056
 #@ armember-membership
 msgid "Addon activated successfully."
 msgstr "Addon activated successfully."
 
 #: autoload.php:1861
-#: autoload.php:4058
+#: autoload.php:4057
 #@ armember-membership
 msgid "Addon deactivated successfully."
 msgstr "Addon deactivated successfully."
 
 #: autoload.php:1858
-#: autoload.php:4055
+#: autoload.php:4054
 #@ armember-membership
 msgid "Addon installed successfully."
 msgstr "Addon installed successfully."
@@ -528,7 +528,7 @@ msgstr "Advanced Fields"
 msgid "Advanced Security"
 msgstr "Advanced Security"
 
-#: core/classes/class.arm_member_forms.php:10602
+#: core/classes/class.arm_member_forms.php:10603
 #@ armember-membership
 msgid "Afghanistan"
 msgstr "Afghanistan"
@@ -583,7 +583,7 @@ msgstr "After Membership/Plan obtaining Redirection Rules"
 msgid "After Registration Form"
 msgstr "After Registration Form"
 
-#: core/classes/class.arm_member_forms.php:10603
+#: core/classes/class.arm_member_forms.php:10604
 #@ armember-membership
 msgid "Albania"
 msgstr "Albania"
@@ -593,7 +593,7 @@ msgstr "Albania"
 msgid "Albanian"
 msgstr "Albanian"
 
-#: core/classes/class.arm_member_forms.php:10604
+#: core/classes/class.arm_member_forms.php:10605
 #@ armember-membership
 msgid "Algeria"
 msgstr "Algeria"
@@ -698,7 +698,7 @@ msgstr "Alphabetically"
 msgid "Already have an account?"
 msgstr "Already have an account?"
 
-#: core/classes/class.arm_member_forms.php:10605
+#: core/classes/class.arm_member_forms.php:10606
 #@ armember-membership
 msgid "American Samoa"
 msgstr "American Samoa"
@@ -757,27 +757,27 @@ msgstr "and"
 msgid "and the field type will be"
 msgstr "and the field type will be"
 
-#: core/classes/class.arm_member_forms.php:10606
+#: core/classes/class.arm_member_forms.php:10607
 #@ armember-membership
 msgid "Andorra"
 msgstr "Andorra"
 
-#: core/classes/class.arm_member_forms.php:10607
+#: core/classes/class.arm_member_forms.php:10608
 #@ armember-membership
 msgid "Angola"
 msgstr "Angola"
 
-#: core/classes/class.arm_member_forms.php:10608
+#: core/classes/class.arm_member_forms.php:10609
 #@ armember-membership
 msgid "Anguilla"
 msgstr "Anguilla"
 
-#: core/classes/class.arm_member_forms.php:10609
+#: core/classes/class.arm_member_forms.php:10610
 #@ armember-membership
 msgid "Antarctica"
 msgstr "Antarctica"
 
-#: core/classes/class.arm_member_forms.php:10610
+#: core/classes/class.arm_member_forms.php:10611
 #@ armember-membership
 msgid "Antigua and Barbuda"
 msgstr "Antigua and Barbuda"
@@ -1011,12 +1011,12 @@ msgstr "Are you sure you want to resend verification email?"
 msgid "ARForms Successfully installed."
 msgstr "ARForms Successfully installed."
 
-#: core/classes/class.arm_member_forms.php:10611
+#: core/classes/class.arm_member_forms.php:10612
 #@ armember-membership
 msgid "Argentina"
 msgstr "Argentina"
 
-#: core/classes/class.arm_access_rules.php:1011
+#: core/classes/class.arm_access_rules.php:1014
 #@ armember-membership
 msgid "ARMember Access Rules"
 msgstr "ARMember Access Rules"
@@ -1276,7 +1276,7 @@ msgstr "ARMember Username"
 msgid "ARMember Warning"
 msgstr "ARMember Warning"
 
-#: core/classes/class.arm_member_forms.php:10612
+#: core/classes/class.arm_member_forms.php:10613
 #@ armember-membership
 msgid "Armenia"
 msgstr "Armenia"
@@ -1291,7 +1291,7 @@ msgstr "Armenian"
 msgid "ARPrice Successfully installed."
 msgstr "ARPrice Successfully installed."
 
-#: core/classes/class.arm_member_forms.php:10613
+#: core/classes/class.arm_member_forms.php:10614
 #@ armember-membership
 msgid "Aruba"
 msgstr "Aruba"
@@ -1337,12 +1337,12 @@ msgstr "Assign Plan To User"
 msgid "Associated Plans:"
 msgstr "Associated Plans:"
 
-#: core/classes/class.arm_member_forms.php:10614
+#: core/classes/class.arm_member_forms.php:10615
 #@ armember-membership
 msgid "Australia"
 msgstr "Australia"
 
-#: core/classes/class.arm_member_forms.php:10615
+#: core/classes/class.arm_member_forms.php:10616
 #@ armember-membership
 msgid "Austria"
 msgstr "Austria"
@@ -1424,7 +1424,7 @@ msgstr "Automatic Subscription Label"
 #: core/classes/class.arm_member_forms.php:2926
 #: core/classes/class.arm_member_forms.php:2953
 #: core/classes/class.arm_member_forms.php:7697
-#: core/classes/class.arm_member_forms.php:11208
+#: core/classes/class.arm_member_forms.php:11209
 #: core/classes/class.arm_members.php:1673
 #: core/classes/class.arm_members.php:4207
 #: core/views/arm_form_editor.php:374
@@ -1443,7 +1443,7 @@ msgstr "Avatar"
 msgid "Avatar Field Label( Edit Profile )"
 msgstr "Avatar Field Label( Edit Profile )"
 
-#: core/classes/class.arm_member_forms.php:10616
+#: core/classes/class.arm_member_forms.php:10617
 #@ armember-membership
 msgid "Azerbaijan"
 msgstr "Azerbaijan"
@@ -1502,17 +1502,17 @@ msgstr "Background Color"
 msgid "Background Overlay"
 msgstr "Background Overlay"
 
-#: core/classes/class.arm_member_forms.php:10617
+#: core/classes/class.arm_member_forms.php:10618
 #@ armember-membership
 msgid "Bahamas"
 msgstr "Bahamas"
 
-#: core/classes/class.arm_member_forms.php:10618
+#: core/classes/class.arm_member_forms.php:10619
 #@ armember-membership
 msgid "Bahrain"
 msgstr "Bahrain"
 
-#: core/classes/class.arm_member_forms.php:10619
+#: core/classes/class.arm_member_forms.php:10620
 #@ armember-membership
 msgid "Bangladesh"
 msgstr "Bangladesh"
@@ -1554,7 +1554,7 @@ msgstr "Bank transfer request has been approved."
 msgid "Bank transfer request has been cancelled."
 msgstr "Bank transfer request has been cancelled."
 
-#: core/classes/class.arm_member_forms.php:10620
+#: core/classes/class.arm_member_forms.php:10621
 #@ armember-membership
 msgid "Barbados"
 msgstr "Barbados"
@@ -1601,32 +1601,32 @@ msgstr "Before Registration Form"
 msgid "Before you deactivate the ARMember Lite plugin, would you quickly give us your reason for doing so?"
 msgstr "Before you deactivate the ARMember Lite plugin, would you quickly give us your reason for doing so?"
 
-#: core/classes/class.arm_member_forms.php:10621
+#: core/classes/class.arm_member_forms.php:10622
 #@ armember-membership
 msgid "Belarus"
 msgstr "Belarus"
 
-#: core/classes/class.arm_member_forms.php:10622
+#: core/classes/class.arm_member_forms.php:10623
 #@ armember-membership
 msgid "Belgium"
 msgstr "Belgium"
 
-#: core/classes/class.arm_member_forms.php:10623
+#: core/classes/class.arm_member_forms.php:10624
 #@ armember-membership
 msgid "Belize"
 msgstr "Belize"
 
-#: core/classes/class.arm_member_forms.php:10624
+#: core/classes/class.arm_member_forms.php:10625
 #@ armember-membership
 msgid "Benin"
 msgstr "Benin"
 
-#: core/classes/class.arm_member_forms.php:10625
+#: core/classes/class.arm_member_forms.php:10626
 #@ armember-membership
 msgid "Bermuda"
 msgstr "Bermuda"
 
-#: core/classes/class.arm_member_forms.php:10626
+#: core/classes/class.arm_member_forms.php:10627
 #@ armember-membership
 msgid "Bhutan"
 msgstr "Bhutan"
@@ -1704,7 +1704,7 @@ msgstr "Blog URL"
 msgid "Body Content Color"
 msgstr "Body Content Color"
 
-#: core/classes/class.arm_member_forms.php:10627
+#: core/classes/class.arm_member_forms.php:10628
 #@ armember-membership
 msgid "Bolivia"
 msgstr "Bolivia"
@@ -1735,7 +1735,7 @@ msgstr "Border Color"
 msgid "Border Radius"
 msgstr "Border Radius"
 
-#: core/classes/class.arm_member_forms.php:10628
+#: core/classes/class.arm_member_forms.php:10629
 #@ armember-membership
 msgid "Bosnia and Herzegovina"
 msgstr "Bosnia and Herzegovina"
@@ -1750,7 +1750,7 @@ msgstr "Bosnian"
 msgid "Both (allow user to select payment method)"
 msgstr "Both (allow user to select payment method)"
 
-#: core/classes/class.arm_member_forms.php:10629
+#: core/classes/class.arm_member_forms.php:10630
 #@ armember-membership
 msgid "Botswana"
 msgstr "Botswana"
@@ -1770,12 +1770,12 @@ msgstr "Bottom"
 msgid "Box Hover Effect"
 msgstr "Box Hover Effect"
 
-#: core/classes/class.arm_member_forms.php:10630
+#: core/classes/class.arm_member_forms.php:10631
 #@ armember-membership
 msgid "Brazil"
 msgstr "Brazil"
 
-#: core/classes/class.arm_member_forms.php:10631
+#: core/classes/class.arm_member_forms.php:10632
 #@ armember-membership
 msgid "Brunei"
 msgstr "Brunei"
@@ -1785,7 +1785,7 @@ msgstr "Brunei"
 msgid "Buddypress/Buddyboss Integration"
 msgstr "Buddypress/Buddyboss Integration"
 
-#: core/classes/class.arm_member_forms.php:10632
+#: core/classes/class.arm_member_forms.php:10633
 #@ armember-membership
 msgid "Bulgaria"
 msgstr "Bulgaria"
@@ -1801,12 +1801,12 @@ msgstr "Bulgarian"
 msgid "Bulk Actions"
 msgstr "Bulk Actions"
 
-#: core/classes/class.arm_member_forms.php:10633
+#: core/classes/class.arm_member_forms.php:10634
 #@ armember-membership
 msgid "Burkina Faso"
 msgstr "Burkina Faso"
 
-#: core/classes/class.arm_member_forms.php:10634
+#: core/classes/class.arm_member_forms.php:10635
 #@ armember-membership
 msgid "Burundi"
 msgstr "Burundi"
@@ -1942,12 +1942,12 @@ msgstr "Calendar Localization"
 msgid "Calendar Style"
 msgstr "Calendar Style"
 
-#: core/classes/class.arm_member_forms.php:10635
+#: core/classes/class.arm_member_forms.php:10636
 #@ armember-membership
 msgid "Cambodia"
 msgstr "Cambodia"
 
-#: core/classes/class.arm_member_forms.php:10636
+#: core/classes/class.arm_member_forms.php:10637
 #@ armember-membership
 msgid "Cameroon"
 msgstr "Cameroon"
@@ -1957,7 +1957,7 @@ msgstr "Cameroon"
 msgid "Can you mention it?"
 msgstr "Can you mention it?"
 
-#: core/classes/class.arm_member_forms.php:10637
+#: core/classes/class.arm_member_forms.php:10638
 #@ armember-membership
 msgid "Canada"
 msgstr "Canada"
@@ -2101,7 +2101,7 @@ msgstr "cancelled"
 msgid "Cannot extract data from uploaded file or no file was uploaded."
 msgstr "Cannot extract data from uploaded file or no file was uploaded."
 
-#: core/classes/class.arm_member_forms.php:10638
+#: core/classes/class.arm_member_forms.php:10639
 #@ armember-membership
 msgid "Cape Verde"
 msgstr "Cape Verde"
@@ -2136,7 +2136,7 @@ msgstr "category is restricted by admin"
 msgid "category(s)"
 msgstr "category(s)"
 
-#: core/classes/class.arm_member_forms.php:10639
+#: core/classes/class.arm_member_forms.php:10640
 #@ armember-membership
 msgid "Cayman Islands"
 msgstr "Cayman Islands"
@@ -2158,12 +2158,12 @@ msgstr "Cayman Islands"
 msgid "Center"
 msgstr "Center"
 
-#: core/classes/class.arm_member_forms.php:10640
+#: core/classes/class.arm_member_forms.php:10641
 #@ armember-membership
 msgid "Central African Republic"
 msgstr "Central African Republic"
 
-#: core/classes/class.arm_member_forms.php:10641
+#: core/classes/class.arm_member_forms.php:10642
 #@ armember-membership
 msgid "Chad"
 msgstr "Chad"
@@ -2303,12 +2303,12 @@ msgstr "Checkbox"
 msgid "Cheque"
 msgstr "Cheque"
 
-#: core/classes/class.arm_member_forms.php:10642
+#: core/classes/class.arm_member_forms.php:10643
 #@ armember-membership
 msgid "Chile"
 msgstr "Chile"
 
-#: core/classes/class.arm_member_forms.php:10643
+#: core/classes/class.arm_member_forms.php:10644
 #@ armember-membership
 msgid "China"
 msgstr "China"
@@ -2510,7 +2510,7 @@ msgid "Clone from existing forms"
 msgstr "Clone from existing forms"
 
 #: autoload.php:3639
-#: autoload.php:3843
+#: autoload.php:3842
 #: core/classes/class.arm_manage_subscription.php:1468
 #: core/classes/class.arm_members.php:599
 #: core/classes/class.arm_subscription_plans.php:279
@@ -2558,7 +2558,7 @@ msgstr "Close Account"
 msgid "Code Copied"
 msgstr "Code Copied"
 
-#: core/classes/class.arm_member_forms.php:10644
+#: core/classes/class.arm_member_forms.php:10645
 #@ armember-membership
 msgid "Colombia"
 msgstr "Colombia"
@@ -2578,7 +2578,7 @@ msgstr "Color Scheme"
 msgid "Common Messages"
 msgstr "Common Messages"
 
-#: core/classes/class.arm_member_forms.php:10645
+#: core/classes/class.arm_member_forms.php:10646
 #@ armember-membership
 msgid "Comoros"
 msgstr "Comoros"
@@ -2658,7 +2658,7 @@ msgstr "Confirm Password"
 msgid "Confirmation"
 msgstr "Confirmation"
 
-#: core/classes/class.arm_member_forms.php:10646
+#: core/classes/class.arm_member_forms.php:10647
 #@ armember-membership
 msgid "Congo"
 msgstr "Congo"
@@ -2719,7 +2719,7 @@ msgstr "Content Width"
 msgid "Continue"
 msgstr "Continue"
 
-#: core/classes/class.arm_member_forms.php:10647
+#: core/classes/class.arm_member_forms.php:10648
 #@ armember-membership
 msgid "Costa Rica"
 msgstr "Costa Rica"
@@ -2773,7 +2773,7 @@ msgstr "Credit Card Label"
 msgid "Credit Card Number"
 msgstr "Credit Card Number"
 
-#: core/classes/class.arm_member_forms.php:10648
+#: core/classes/class.arm_member_forms.php:10649
 #@ armember-membership
 msgid "Croatia"
 msgstr "Croatia"
@@ -2804,7 +2804,7 @@ msgstr "Crop"
 msgid "crop"
 msgstr "crop"
 
-#: core/classes/class.arm_member_forms.php:10649
+#: core/classes/class.arm_member_forms.php:10650
 #@ armember-membership
 msgid "Cuba"
 msgstr "Cuba"
@@ -2951,7 +2951,7 @@ msgstr "Cycle Date"
 msgid "cycles due"
 msgstr "cycles due"
 
-#: core/classes/class.arm_member_forms.php:10650
+#: core/classes/class.arm_member_forms.php:10651
 #@ armember-membership
 msgid "Cyprus"
 msgstr "Cyprus"
@@ -2961,7 +2961,7 @@ msgstr "Cyprus"
 msgid "Czech"
 msgstr "Czech"
 
-#: core/classes/class.arm_member_forms.php:10651
+#: core/classes/class.arm_member_forms.php:10652
 #@ armember-membership
 msgid "Czech Republic"
 msgstr "Czech Republic"
@@ -3151,7 +3151,7 @@ msgstr "Default Redirect URL"
 msgid "Default Redirection url is required."
 msgstr "Default Redirection url is required."
 
-#: core/classes/class.arm_access_rules.php:1042
+#: core/classes/class.arm_access_rules.php:1045
 #: core/views/arm_access_rules.php:312
 #@ armember-membership
 msgid "Default Restriction"
@@ -3254,7 +3254,7 @@ msgstr "Delete Transaction(s)"
 msgid "Delicious"
 msgstr "Delicious"
 
-#: core/classes/class.arm_member_forms.php:10652
+#: core/classes/class.arm_member_forms.php:10653
 #@ armember-membership
 msgid "Denmark"
 msgstr "Denmark"
@@ -3552,7 +3552,7 @@ msgstr "Divi Builder Restriction"
 msgid "Divider"
 msgstr "Divider"
 
-#: core/classes/class.arm_member_forms.php:10653
+#: core/classes/class.arm_member_forms.php:10654
 #@ armember-membership
 msgid "Djibouti"
 msgstr "Djibouti"
@@ -3569,18 +3569,18 @@ msgstr "Do not show again."
 
 #: autoload.php:1318
 #: autoload.php:1319
-#: autoload.php:3837
+#: autoload.php:3836
 #: core/views/arm_setup_wizard.php:1296
 #@ armember-membership
 msgid "Documentation"
 msgstr "Documentation"
 
-#: core/classes/class.arm_member_forms.php:10654
+#: core/classes/class.arm_member_forms.php:10655
 #@ armember-membership
 msgid "Dominica"
 msgstr "Dominica"
 
-#: core/classes/class.arm_member_forms.php:10655
+#: core/classes/class.arm_member_forms.php:10656
 #@ armember-membership
 msgid "Dominican Republic"
 msgstr "Dominican Republic"
@@ -3637,8 +3637,8 @@ msgstr "Drop file here or click to select"
 #: core/classes/class.arm_member_forms.php:4624
 #: core/classes/class.arm_member_forms.php:7687
 #: core/classes/class.arm_member_forms.php:7698
-#: core/classes/class.arm_member_forms.php:11209
-#: core/classes/class.arm_member_forms.php:11227
+#: core/classes/class.arm_member_forms.php:11210
+#: core/classes/class.arm_member_forms.php:11228
 #@ armember-membership
 msgid "Drop file here or click to select."
 msgstr "Drop file here or click to select."
@@ -3664,12 +3664,12 @@ msgstr "Dutch/Netherlands"
 msgid "e.g."
 msgstr "e.g."
 
-#: core/classes/class.arm_member_forms.php:10656
+#: core/classes/class.arm_member_forms.php:10657
 #@ armember-membership
 msgid "East Timor"
 msgstr "East Timor"
 
-#: core/classes/class.arm_member_forms.php:10657
+#: core/classes/class.arm_member_forms.php:10658
 #@ armember-membership
 msgid "Ecuador"
 msgstr "Ecuador"
@@ -3776,12 +3776,12 @@ msgstr "Edit Template Options"
 msgid "Effective from"
 msgstr "Effective from"
 
-#: core/classes/class.arm_member_forms.php:10658
+#: core/classes/class.arm_member_forms.php:10659
 #@ armember-membership
 msgid "Egypt"
 msgstr "Egypt"
 
-#: core/classes/class.arm_member_forms.php:10659
+#: core/classes/class.arm_member_forms.php:10660
 #@ armember-membership
 msgid "El Salvador"
 msgstr "El Salvador"
@@ -4045,12 +4045,12 @@ msgstr "Enter Usermeta Name"
 msgid "entries"
 msgstr "entries"
 
-#: core/classes/class.arm_member_forms.php:10660
+#: core/classes/class.arm_member_forms.php:10661
 #@ armember-membership
 msgid "Equatorial Guinea"
 msgstr "Equatorial Guinea"
 
-#: core/classes/class.arm_member_forms.php:10661
+#: core/classes/class.arm_member_forms.php:10662
 #@ armember-membership
 msgid "Eritrea"
 msgstr "Eritrea"
@@ -4062,7 +4062,7 @@ msgstr "Eritrea"
 msgid "ERROR"
 msgstr "ERROR"
 
-#: autoload.php:3883
+#: autoload.php:3882
 #@ armember-membership
 msgid "Error"
 msgstr "Error"
@@ -4112,7 +4112,7 @@ msgstr "Eskimo Aleut/Anguilla"
 msgid "Esperanto"
 msgstr "Esperanto"
 
-#: core/classes/class.arm_member_forms.php:10662
+#: core/classes/class.arm_member_forms.php:10663
 #@ armember-membership
 msgid "Estonia"
 msgstr "Estonia"
@@ -4122,7 +4122,7 @@ msgstr "Estonia"
 msgid "Estonian"
 msgstr "Estonian"
 
-#: core/classes/class.arm_member_forms.php:10663
+#: core/classes/class.arm_member_forms.php:10664
 #@ armember-membership
 msgid "Ethiopia"
 msgstr "Ethiopia"
@@ -4347,7 +4347,7 @@ msgstr "Faroese"
 msgid "Farsi/Persian"
 msgstr "Farsi/Persian"
 
-#: autoload.php:3838
+#: autoload.php:3837
 #@ armember-membership
 msgid "Feature Request"
 msgstr "Feature Request"
@@ -4437,12 +4437,12 @@ msgstr "Field Width"
 msgid "Fields to be included in payment form"
 msgstr "Fields to be included in payment form"
 
-#: core/classes/class.arm_member_forms.php:10664
+#: core/classes/class.arm_member_forms.php:10665
 #@ armember-membership
 msgid "Fiji"
 msgstr "Fiji"
 
-#: autoload.php:3978
+#: autoload.php:3977
 #@ armember-membership
 msgid "File is not allowed bigger than {SIZE}."
 msgstr "File is not allowed bigger than {SIZE}."
@@ -4489,7 +4489,7 @@ msgstr "Filter Options"
 msgid "filtered from"
 msgstr "filtered from"
 
-#: core/classes/class.arm_member_forms.php:10665
+#: core/classes/class.arm_member_forms.php:10666
 #@ armember-membership
 msgid "Finland"
 msgstr "Finland"
@@ -4698,7 +4698,7 @@ msgid "Form Border"
 msgstr "Form Border"
 
 #: autoload.php:1813
-#: autoload.php:4009
+#: autoload.php:4008
 #@ armember-membership
 msgid "Form deleted successfully."
 msgstr "Form deleted successfully."
@@ -4805,7 +4805,7 @@ msgstr "Found a better plugin"
 msgid "Francais/Canada"
 msgstr "Francais/Canada"
 
-#: core/classes/class.arm_member_forms.php:10666
+#: core/classes/class.arm_member_forms.php:10667
 #@ armember-membership
 msgid "France"
 msgstr "France"
@@ -4848,12 +4848,12 @@ msgstr "Free Plan"
 msgid "French"
 msgstr "French"
 
-#: core/classes/class.arm_member_forms.php:10667
+#: core/classes/class.arm_member_forms.php:10668
 #@ armember-membership
 msgid "French Guiana"
 msgstr "French Guiana"
 
-#: core/classes/class.arm_member_forms.php:10668
+#: core/classes/class.arm_member_forms.php:10669
 #@ armember-membership
 msgid "French Polynesia"
 msgstr "French Polynesia"
@@ -4885,12 +4885,12 @@ msgstr "From Transaction Day"
 msgid "Future Membership"
 msgstr "Future Membership"
 
-#: core/classes/class.arm_member_forms.php:10669
+#: core/classes/class.arm_member_forms.php:10670
 #@ armember-membership
 msgid "Gabon"
 msgstr "Gabon"
 
-#: core/classes/class.arm_member_forms.php:10670
+#: core/classes/class.arm_member_forms.php:10671
 #@ armember-membership
 msgid "Gambia"
 msgstr "Gambia"
@@ -4949,7 +4949,7 @@ msgstr "General Settings"
 msgid "Generate dynamically"
 msgstr "Generate dynamically"
 
-#: core/classes/class.arm_member_forms.php:10671
+#: core/classes/class.arm_member_forms.php:10672
 #@ armember-membership
 msgid "Georgia"
 msgstr "Georgia"
@@ -4964,7 +4964,7 @@ msgstr "German"
 msgid "German/Germany"
 msgstr "German/Germany"
 
-#: core/classes/class.arm_member_forms.php:10672
+#: core/classes/class.arm_member_forms.php:10673
 #@ armember-membership
 msgid "Germany"
 msgstr "Germany"
@@ -4984,12 +4984,12 @@ msgstr "Getting Started"
 msgid "Getting Started With Setup"
 msgstr "Getting Started With Setup"
 
-#: core/classes/class.arm_member_forms.php:10673
+#: core/classes/class.arm_member_forms.php:10674
 #@ armember-membership
 msgid "Ghana"
 msgstr "Ghana"
 
-#: core/classes/class.arm_member_forms.php:10674
+#: core/classes/class.arm_member_forms.php:10675
 #@ armember-membership
 msgid "Gibraltar"
 msgstr "Gibraltar"
@@ -5021,7 +5021,7 @@ msgstr "Go to the General Settings menu from the admin interface. Here you will 
 msgid "Good Text"
 msgstr "Good Text"
 
-#: core/classes/class.arm_member_forms.php:10531
+#: core/classes/class.arm_member_forms.php:10532
 #@ armember-membership
 msgid "Google Fonts"
 msgstr "Google Fonts"
@@ -5060,7 +5060,7 @@ msgstr "grace period expires on"
 msgid "Grace Period Failed Payment"
 msgstr "Grace Period Failed Payment"
 
-#: core/classes/class.arm_member_forms.php:10675
+#: core/classes/class.arm_member_forms.php:10676
 #@ armember-membership
 msgid "Greece"
 msgstr "Greece"
@@ -5070,12 +5070,12 @@ msgstr "Greece"
 msgid "Greek"
 msgstr "Greek"
 
-#: core/classes/class.arm_member_forms.php:10676
+#: core/classes/class.arm_member_forms.php:10677
 #@ armember-membership
 msgid "Greenland"
 msgstr "Greenland"
 
-#: core/classes/class.arm_member_forms.php:10677
+#: core/classes/class.arm_member_forms.php:10678
 #@ armember-membership
 msgid "Grenada"
 msgstr "Grenada"
@@ -5087,12 +5087,12 @@ msgstr "Grenada"
 msgid "Growth Plugins"
 msgstr "Growth Plugins"
 
-#: core/classes/class.arm_member_forms.php:10678
+#: core/classes/class.arm_member_forms.php:10679
 #@ armember-membership
 msgid "Guam"
 msgstr "Guam"
 
-#: core/classes/class.arm_member_forms.php:10679
+#: core/classes/class.arm_member_forms.php:10680
 #@ armember-membership
 msgid "Guatemala"
 msgstr "Guatemala"
@@ -5102,12 +5102,12 @@ msgstr "Guatemala"
 msgid "Guest page"
 msgstr "Guest page"
 
-#: core/classes/class.arm_member_forms.php:10680
+#: core/classes/class.arm_member_forms.php:10681
 #@ armember-membership
 msgid "Guinea"
 msgstr "Guinea"
 
-#: core/classes/class.arm_member_forms.php:10681
+#: core/classes/class.arm_member_forms.php:10682
 #@ armember-membership
 msgid "Guinea-Bissau"
 msgstr "Guinea-Bissau"
@@ -5117,12 +5117,12 @@ msgstr "Guinea-Bissau"
 msgid "Gutenberg Block Restriction"
 msgstr "Gutenberg Block Restriction"
 
-#: core/classes/class.arm_member_forms.php:10682
+#: core/classes/class.arm_member_forms.php:10683
 #@ armember-membership
 msgid "Guyana"
 msgstr "Guyana"
 
-#: core/classes/class.arm_member_forms.php:10683
+#: core/classes/class.arm_member_forms.php:10684
 #@ armember-membership
 msgid "Haiti"
 msgstr "Haiti"
@@ -5299,12 +5299,12 @@ msgstr "Hide username field and assign username with email"
 msgid "Home Page"
 msgstr "Home Page"
 
-#: core/classes/class.arm_member_forms.php:10684
+#: core/classes/class.arm_member_forms.php:10685
 #@ armember-membership
 msgid "Honduras"
 msgstr "Honduras"
 
-#: core/classes/class.arm_member_forms.php:10685
+#: core/classes/class.arm_member_forms.php:10686
 #@ armember-membership
 msgid "Hong Kong"
 msgstr "Hong Kong"
@@ -5397,7 +5397,7 @@ msgstr "https://www.armemberplugin.com"
 msgid "Hungarian"
 msgstr "Hungarian"
 
-#: core/classes/class.arm_member_forms.php:10686
+#: core/classes/class.arm_member_forms.php:10687
 #@ armember-membership
 msgid "Hungary"
 msgstr "Hungary"
@@ -5407,7 +5407,7 @@ msgstr "Hungary"
 msgid "I already did"
 msgstr "I already did"
 
-#: core/classes/class.arm_member_forms.php:10687
+#: core/classes/class.arm_member_forms.php:10688
 #@ armember-membership
 msgid "Iceland"
 msgstr "Iceland"
@@ -5430,7 +5430,7 @@ msgstr "Icon Color"
 msgid "ID"
 msgstr "ID"
 
-#: core/classes/class.arm_access_rules.php:1049
+#: core/classes/class.arm_access_rules.php:1052
 #@ armember-membership
 msgid "If Default Restriction is ON then ONLY the selected plan members below can access this page."
 msgstr "If Default Restriction is ON then ONLY the selected plan members below can access this page."
@@ -5620,12 +5620,12 @@ msgstr "Inactive Members"
 msgid "Incompatible with theme or plugin"
 msgstr "Incompatible with theme or plugin"
 
-#: core/classes/class.arm_member_forms.php:10688
+#: core/classes/class.arm_member_forms.php:10689
 #@ armember-membership
 msgid "India"
 msgstr "India"
 
-#: core/classes/class.arm_member_forms.php:10689
+#: core/classes/class.arm_member_forms.php:10690
 #@ armember-membership
 msgid "Indonesia"
 msgstr "Indonesia"
@@ -5654,7 +5654,7 @@ msgstr "Info"
 msgid "Inherit Access Rules Of Membership Plan"
 msgstr "Inherit Access Rules Of Membership Plan"
 
-#: core/classes/class.arm_member_forms.php:10524
+#: core/classes/class.arm_member_forms.php:10525
 #@ armember-membership
 msgid "Inherit Fonts"
 msgstr "Inherit Fonts"
@@ -5757,8 +5757,8 @@ msgstr "Invalid file uploaded."
 #: core/classes/class.arm_member_forms.php:506
 #: core/classes/class.arm_member_forms.php:2944
 #: core/classes/class.arm_member_forms.php:2992
-#: core/classes/class.arm_member_forms.php:11217
-#: core/classes/class.arm_member_forms.php:11235
+#: core/classes/class.arm_member_forms.php:11218
+#: core/classes/class.arm_member_forms.php:11236
 #: core/views/arm_member_add.php:732
 #: core/views/arm_member_add.php:780
 #@ armember-membership
@@ -5801,17 +5801,17 @@ msgstr "Invalid username or e-mail."
 msgid "Invoice and Tax"
 msgstr "Invoice and Tax"
 
-#: core/classes/class.arm_member_forms.php:10690
+#: core/classes/class.arm_member_forms.php:10691
 #@ armember-membership
 msgid "Iran"
 msgstr "Iran"
 
-#: core/classes/class.arm_member_forms.php:10691
+#: core/classes/class.arm_member_forms.php:10692
 #@ armember-membership
 msgid "Iraq"
 msgstr "Iraq"
 
-#: core/classes/class.arm_member_forms.php:10692
+#: core/classes/class.arm_member_forms.php:10693
 #@ armember-membership
 msgid "Ireland"
 msgstr "Ireland"
@@ -5827,7 +5827,7 @@ msgstr "is inactive"
 msgid "is meta field name."
 msgstr "is meta field name."
 
-#: core/classes/class.arm_member_forms.php:10693
+#: core/classes/class.arm_member_forms.php:10694
 #@ armember-membership
 msgid "Israel"
 msgstr "Israel"
@@ -5842,17 +5842,17 @@ msgstr "Italian"
 msgid "Italian/Italy"
 msgstr "Italian/Italy"
 
-#: core/classes/class.arm_member_forms.php:10694
+#: core/classes/class.arm_member_forms.php:10695
 #@ armember-membership
 msgid "Italy"
 msgstr "Italy"
 
-#: core/classes/class.arm_member_forms.php:10695
+#: core/classes/class.arm_member_forms.php:10696
 #@ armember-membership
 msgid "Jamaica"
 msgstr "Jamaica"
 
-#: core/classes/class.arm_member_forms.php:10696
+#: core/classes/class.arm_member_forms.php:10697
 #@ armember-membership
 msgid "Japan"
 msgstr "Japan"
@@ -5867,7 +5867,7 @@ msgstr "Japanese"
 msgid "Japanese/Japan"
 msgstr "Japanese/Japan"
 
-#: autoload.php:3839
+#: autoload.php:3838
 #@ armember-membership
 msgid "Join Community"
 msgstr "Join Community"
@@ -5899,22 +5899,22 @@ msgstr "Joined Date"
 msgid "Joining Date"
 msgstr "Joining Date"
 
-#: core/classes/class.arm_member_forms.php:10697
+#: core/classes/class.arm_member_forms.php:10698
 #@ armember-membership
 msgid "Jordan"
 msgstr "Jordan"
 
-#: core/classes/class.arm_member_forms.php:10698
+#: core/classes/class.arm_member_forms.php:10699
 #@ armember-membership
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
 
-#: core/classes/class.arm_member_forms.php:10699
+#: core/classes/class.arm_member_forms.php:10700
 #@ armember-membership
 msgid "Kenya"
 msgstr "Kenya"
 
-#: core/classes/class.arm_member_forms.php:10700
+#: core/classes/class.arm_member_forms.php:10701
 #@ armember-membership
 msgid "Kiribati"
 msgstr "Kiribati"
@@ -5929,12 +5929,12 @@ msgstr "Korean"
 msgid "Korean/South Korea"
 msgstr "Korean/South Korea"
 
-#: core/classes/class.arm_member_forms.php:10703
+#: core/classes/class.arm_member_forms.php:10704
 #@ armember-membership
 msgid "Kuwait"
 msgstr "Kuwait"
 
-#: core/classes/class.arm_member_forms.php:10704
+#: core/classes/class.arm_member_forms.php:10705
 #@ armember-membership
 msgid "Kyrgyzstan"
 msgstr "Kyrgyzstan"
@@ -5992,7 +5992,7 @@ msgstr "Lack of documentation"
 msgid "Language"
 msgstr "Language"
 
-#: core/classes/class.arm_member_forms.php:10705
+#: core/classes/class.arm_member_forms.php:10706
 #@ armember-membership
 msgid "Laos"
 msgstr "Laos"
@@ -6032,7 +6032,7 @@ msgstr "Last Modified"
 msgid "Last Name"
 msgstr "Last Name"
 
-#: core/classes/class.arm_member_forms.php:10706
+#: core/classes/class.arm_member_forms.php:10707
 #@ armember-membership
 msgid "Latvia"
 msgstr "Latvia"
@@ -6058,7 +6058,7 @@ msgstr "Leave blank for allow all file types."
 msgid "Leave blank to display all plan's members."
 msgstr "Leave blank to display all plan's members."
 
-#: core/classes/class.arm_member_forms.php:10707
+#: core/classes/class.arm_member_forms.php:10708
 #@ armember-membership
 msgid "Lebanon"
 msgstr "Lebanon"
@@ -6087,7 +6087,7 @@ msgstr "Lebanon"
 msgid "Left"
 msgstr "Left"
 
-#: core/classes/class.arm_member_forms.php:10708
+#: core/classes/class.arm_member_forms.php:10709
 #@ armember-membership
 msgid "Lesotho"
 msgstr "Lesotho"
@@ -6097,17 +6097,17 @@ msgstr "Lesotho"
 msgid "Let users get benefit of discounts coupons while making payment with your site."
 msgstr "Let users get benefit of discounts coupons while making payment with your site."
 
-#: core/classes/class.arm_member_forms.php:10709
+#: core/classes/class.arm_member_forms.php:10710
 #@ armember-membership
 msgid "Liberia"
 msgstr "Liberia"
 
-#: core/classes/class.arm_member_forms.php:10710
+#: core/classes/class.arm_member_forms.php:10711
 #@ armember-membership
 msgid "Libya"
 msgstr "Libya"
 
-#: core/classes/class.arm_member_forms.php:10711
+#: core/classes/class.arm_member_forms.php:10712
 #@ armember-membership
 msgid "Liechtenstein"
 msgstr "Liechtenstein"
@@ -6218,7 +6218,7 @@ msgstr "LinkedIn"
 msgid "List"
 msgstr "List"
 
-#: core/classes/class.arm_member_forms.php:10712
+#: core/classes/class.arm_member_forms.php:10713
 #@ armember-membership
 msgid "Lithuania"
 msgstr "Lithuania"
@@ -6266,8 +6266,8 @@ msgid "Loading"
 msgstr "Loading"
 
 #: autoload.php:1792
-#: autoload.php:3985
-#: autoload.php:4063
+#: autoload.php:3984
+#: autoload.php:4062
 #@ armember-membership
 msgid "Loading.."
 msgstr "Loading.."
@@ -6330,7 +6330,7 @@ msgid "Login"
 msgstr "Login"
 
 #: autoload.php:1799
-#: autoload.php:3995
+#: autoload.php:3994
 #@ armember-membership
 msgid "Login attempts cleared successfully."
 msgstr "Login attempts cleared successfully."
@@ -6395,17 +6395,17 @@ msgstr "lowercase"
 msgid "LTR"
 msgstr "LTR"
 
-#: core/classes/class.arm_member_forms.php:10713
+#: core/classes/class.arm_member_forms.php:10714
 #@ armember-membership
 msgid "Luxembourg"
 msgstr "Luxembourg"
 
-#: core/classes/class.arm_member_forms.php:10714
+#: core/classes/class.arm_member_forms.php:10715
 #@ armember-membership
 msgid "Macedonia"
 msgstr "Macedonia"
 
-#: core/classes/class.arm_member_forms.php:10715
+#: core/classes/class.arm_member_forms.php:10716
 #@ armember-membership
 msgid "Madagascar"
 msgstr "Madagascar"
@@ -6430,27 +6430,27 @@ msgstr "Make Payment"
 msgid "Make Payment Text"
 msgstr "Make Payment Text"
 
-#: core/classes/class.arm_member_forms.php:10716
+#: core/classes/class.arm_member_forms.php:10717
 #@ armember-membership
 msgid "Malawi"
 msgstr "Malawi"
 
-#: core/classes/class.arm_member_forms.php:10717
+#: core/classes/class.arm_member_forms.php:10718
 #@ armember-membership
 msgid "Malaysia"
 msgstr "Malaysia"
 
-#: core/classes/class.arm_member_forms.php:10718
+#: core/classes/class.arm_member_forms.php:10719
 #@ armember-membership
 msgid "Maldives"
 msgstr "Maldives"
 
-#: core/classes/class.arm_member_forms.php:10719
+#: core/classes/class.arm_member_forms.php:10720
 #@ armember-membership
 msgid "Mali"
 msgstr "Mali"
 
-#: core/classes/class.arm_member_forms.php:10720
+#: core/classes/class.arm_member_forms.php:10721
 #@ armember-membership
 msgid "Malta"
 msgstr "Malta"
@@ -6602,7 +6602,7 @@ msgstr "Manual payment has been added successfully."
 msgid "Margin"
 msgstr "Margin"
 
-#: core/classes/class.arm_member_forms.php:10721
+#: core/classes/class.arm_member_forms.php:10722
 #@ armember-membership
 msgid "Marshall Islands"
 msgstr "Marshall Islands"
@@ -6619,12 +6619,12 @@ msgstr "Material Outline"
 msgid "Material Style"
 msgstr "Material Style"
 
-#: core/classes/class.arm_member_forms.php:10722
+#: core/classes/class.arm_member_forms.php:10723
 #@ armember-membership
 msgid "Mauritania"
 msgstr "Mauritania"
 
-#: core/classes/class.arm_member_forms.php:10723
+#: core/classes/class.arm_member_forms.php:10724
 #@ armember-membership
 msgid "Mauritius"
 msgstr "Mauritius"
@@ -6790,7 +6790,7 @@ msgstr "Members Profile Page"
 msgid "Membership"
 msgstr "Membership"
 
-#: core/classes/class.arm_crons.php:542
+#: core/classes/class.arm_crons.php:533
 #@ armember-membership
 msgid "membership has been changed to"
 msgstr "membership has been changed to"
@@ -6842,7 +6842,7 @@ msgstr "Membership Plan"
 #: core/classes/arm_builder/class.arm_divi_builder_restriction.php:88
 #: core/classes/arm_builder/class.arm_fusion_builder_restriction.php:93
 #: core/classes/arm_builder/class.arm_wpbakery_builder_restriction.php:130
-#: core/classes/class.arm_access_rules.php:1053
+#: core/classes/class.arm_access_rules.php:1056
 #: core/views/arm_import_export.php:27
 #: core/views/arm_profile_editor.php:660
 #: core/widgets/arm_elm_widgets/class.arm_current_membership_element_add.php:128
@@ -6909,14 +6909,14 @@ msgid "Message"
 msgstr "Message"
 
 #: autoload.php:1827
-#: autoload.php:4023
+#: autoload.php:4022
 #: core/classes/class.arm_manage_communication.php:31
 #@ armember-membership
 msgid "Message has been deleted successfully."
 msgstr "Message has been deleted successfully."
 
 #: autoload.php:1829
-#: autoload.php:4025
+#: autoload.php:4024
 #@ armember-membership
 msgid "Message(s) has been deleted successfully."
 msgstr "Message(s) has been deleted successfully."
@@ -6942,12 +6942,12 @@ msgstr "Meta Key"
 msgid "Meta Value"
 msgstr "Meta Value"
 
-#: core/classes/class.arm_member_forms.php:10724
+#: core/classes/class.arm_member_forms.php:10725
 #@ armember-membership
 msgid "Mexico"
 msgstr "Mexico"
 
-#: core/classes/class.arm_member_forms.php:10725
+#: core/classes/class.arm_member_forms.php:10726
 #@ armember-membership
 msgid "Micronesia"
 msgstr "Micronesia"
@@ -6985,22 +6985,22 @@ msgstr "minutes."
 msgid "Mobile View"
 msgstr "Mobile View"
 
-#: core/classes/class.arm_member_forms.php:10726
+#: core/classes/class.arm_member_forms.php:10727
 #@ armember-membership
 msgid "Moldova"
 msgstr "Moldova"
 
-#: core/classes/class.arm_member_forms.php:10727
+#: core/classes/class.arm_member_forms.php:10728
 #@ armember-membership
 msgid "Monaco"
 msgstr "Monaco"
 
-#: core/classes/class.arm_member_forms.php:10728
+#: core/classes/class.arm_member_forms.php:10729
 #@ armember-membership
 msgid "Mongolia"
 msgstr "Mongolia"
 
-#: core/classes/class.arm_member_forms.php:10729
+#: core/classes/class.arm_member_forms.php:10730
 #@ armember-membership
 msgid "Montenegro"
 msgstr "Montenegro"
@@ -7076,7 +7076,7 @@ msgstr "months"
 msgid "Months(s)"
 msgstr "Months(s)"
 
-#: core/classes/class.arm_member_forms.php:10730
+#: core/classes/class.arm_member_forms.php:10731
 #@ armember-membership
 msgid "Montserrat"
 msgstr "Montserrat"
@@ -7108,7 +7108,7 @@ msgstr "Montserrat"
 msgid "More Info"
 msgstr "More Info"
 
-#: core/classes/class.arm_member_forms.php:10731
+#: core/classes/class.arm_member_forms.php:10732
 #@ armember-membership
 msgid "Morocco"
 msgstr "Morocco"
@@ -7119,7 +7119,7 @@ msgstr "Morocco"
 msgid "Move"
 msgstr "Move"
 
-#: core/classes/class.arm_member_forms.php:10732
+#: core/classes/class.arm_member_forms.php:10733
 #@ armember-membership
 msgid "Mozambique"
 msgstr "Mozambique"
@@ -7134,7 +7134,7 @@ msgstr "Multiple Membership/Plans"
 msgid "My Profile"
 msgstr "My Profile"
 
-#: core/classes/class.arm_member_forms.php:10733
+#: core/classes/class.arm_member_forms.php:10734
 #@ armember-membership
 msgid "Myanmar"
 msgstr "Myanmar"
@@ -7155,27 +7155,27 @@ msgstr "myCRED Integration"
 msgid "Name"
 msgstr "Name"
 
-#: core/classes/class.arm_member_forms.php:10734
+#: core/classes/class.arm_member_forms.php:10735
 #@ armember-membership
 msgid "Namibia"
 msgstr "Namibia"
 
-#: core/classes/class.arm_member_forms.php:10735
+#: core/classes/class.arm_member_forms.php:10736
 #@ armember-membership
 msgid "Nauru"
 msgstr "Nauru"
 
-#: autoload.php:3845
+#: autoload.php:3844
 #@ armember-membership
 msgid "Need Help?"
 msgstr "Need Help?"
 
-#: core/classes/class.arm_member_forms.php:10736
+#: core/classes/class.arm_member_forms.php:10737
 #@ armember-membership
 msgid "Nepal"
 msgstr "Nepal"
 
-#: core/classes/class.arm_member_forms.php:10737
+#: core/classes/class.arm_member_forms.php:10738
 #@ armember-membership
 msgid "Netherlands"
 msgstr "Netherlands"
@@ -7265,7 +7265,7 @@ msgstr "New User Approval"
 msgid "New user approval"
 msgstr "New user approval"
 
-#: core/classes/class.arm_member_forms.php:10738
+#: core/classes/class.arm_member_forms.php:10739
 #@ armember-membership
 msgid "New Zealand"
 msgstr "New Zealand"
@@ -7286,7 +7286,7 @@ msgstr "Next"
 msgid "Next Due Date"
 msgstr "Next Due Date"
 
-#: core/classes/class.arm_member_forms.php:10739
+#: core/classes/class.arm_member_forms.php:10740
 #@ armember-membership
 msgid "Nicaragua"
 msgstr "Nicaragua"
@@ -7297,12 +7297,12 @@ msgstr "Nicaragua"
 msgid "Nick Name"
 msgstr "Nick Name"
 
-#: core/classes/class.arm_member_forms.php:10740
+#: core/classes/class.arm_member_forms.php:10741
 #@ armember-membership
 msgid "Niger"
 msgstr "Niger"
 
-#: core/classes/class.arm_member_forms.php:10741
+#: core/classes/class.arm_member_forms.php:10742
 #@ armember-membership
 msgid "Nigeria"
 msgstr "Nigeria"
@@ -7355,8 +7355,8 @@ msgstr "No"
 msgid "No cycles due"
 msgstr "No cycles due"
 
-#: autoload.php:3902
-#: autoload.php:3907
+#: autoload.php:3901
+#: autoload.php:3906
 #@ armember-membership
 msgid "No data found"
 msgstr "No data found"
@@ -7542,12 +7542,12 @@ msgstr "No."
 msgid "No. Of Members Per Page"
 msgstr "No. Of Members Per Page"
 
-#: core/classes/class.arm_spam_filter.php:162
+#: core/classes/class.arm_spam_filter.php:165
 #@ armember-membership
 msgid "Nonce is between 12 and 24 hours old"
 msgstr "Nonce is between 12 and 24 hours old"
 
-#: core/classes/class.arm_spam_filter.php:158
+#: core/classes/class.arm_spam_filter.php:161
 #@ armember-membership
 msgid "Nonce is less than 12 hours old"
 msgstr "Nonce is less than 12 hours old"
@@ -7559,17 +7559,17 @@ msgstr "Nonce is less than 12 hours old"
 msgid "None"
 msgstr "None"
 
-#: core/classes/class.arm_member_forms.php:10701
+#: core/classes/class.arm_member_forms.php:10702
 #@ armember-membership
 msgid "North Korea"
 msgstr "North Korea"
 
-#: core/classes/class.arm_member_forms.php:10743
+#: core/classes/class.arm_member_forms.php:10744
 #@ armember-membership
 msgid "Northern Mariana Islands"
 msgstr "Northern Mariana Islands"
 
-#: core/classes/class.arm_member_forms.php:10742
+#: core/classes/class.arm_member_forms.php:10743
 #@ armember-membership
 msgid "Norway"
 msgstr "Norway"
@@ -7702,7 +7702,7 @@ msgstr "Ok"
 msgid "OK, you deserve it"
 msgstr "OK, you deserve it"
 
-#: core/classes/class.arm_member_forms.php:10744
+#: core/classes/class.arm_member_forms.php:10745
 #@ armember-membership
 msgid "Oman"
 msgstr "Oman"
@@ -7765,7 +7765,7 @@ msgid "Oops, nothing found"
 msgstr "Oops, nothing found"
 
 #: autoload.php:1864
-#: autoload.php:4064
+#: autoload.php:4063
 #@ armember-membership
 msgid "Oops, nothing found."
 msgstr "Oops, nothing found."
@@ -7909,32 +7909,32 @@ msgstr "Paid Plan (infinite)"
 msgid "Paid With"
 msgstr "Paid With"
 
-#: core/classes/class.arm_member_forms.php:10745
+#: core/classes/class.arm_member_forms.php:10746
 #@ armember-membership
 msgid "Pakistan"
 msgstr "Pakistan"
 
-#: core/classes/class.arm_member_forms.php:10746
+#: core/classes/class.arm_member_forms.php:10747
 #@ armember-membership
 msgid "Palau"
 msgstr "Palau"
 
-#: core/classes/class.arm_member_forms.php:10747
+#: core/classes/class.arm_member_forms.php:10748
 #@ armember-membership
 msgid "Palestine"
 msgstr "Palestine"
 
-#: core/classes/class.arm_member_forms.php:10748
+#: core/classes/class.arm_member_forms.php:10749
 #@ armember-membership
 msgid "Panama"
 msgstr "Panama"
 
-#: core/classes/class.arm_member_forms.php:10749
+#: core/classes/class.arm_member_forms.php:10750
 #@ armember-membership
 msgid "Papua New Guinea"
 msgstr "Papua New Guinea"
 
-#: core/classes/class.arm_member_forms.php:10750
+#: core/classes/class.arm_member_forms.php:10751
 #@ armember-membership
 msgid "Paraguay"
 msgstr "Paraguay"
@@ -8294,12 +8294,12 @@ msgstr "Pending Members"
 msgid "Permanent lockdown Duration"
 msgstr "Permanent lockdown Duration"
 
-#: core/classes/class.arm_member_forms.php:10751
+#: core/classes/class.arm_member_forms.php:10752
 #@ armember-membership
 msgid "Peru"
 msgstr "Peru"
 
-#: core/classes/class.arm_member_forms.php:10752
+#: core/classes/class.arm_member_forms.php:10753
 #@ armember-membership
 msgid "Philippines"
 msgstr "Philippines"
@@ -8402,7 +8402,7 @@ msgstr "plan for this user?"
 msgid "Plan has been added successfully."
 msgstr "Plan has been added successfully."
 
-#: autoload.php:4000
+#: autoload.php:3999
 #: core/classes/class.arm_subscription_plans.php:919
 #@ armember-membership
 msgid "Plan has been deleted successfully."
@@ -8846,7 +8846,7 @@ msgstr "Please select a page."
 
 #: core/classes/class.arm_member_forms.php:470
 #: core/classes/class.arm_member_forms.php:2943
-#: core/classes/class.arm_member_forms.php:11216
+#: core/classes/class.arm_member_forms.php:11217
 #: core/views/arm_member_add.php:731
 #@ armember-membership
 msgid "Please select avatar."
@@ -8881,7 +8881,7 @@ msgid "Please select one option."
 msgstr "Please select one option."
 
 #: autoload.php:1798
-#: autoload.php:3994
+#: autoload.php:3993
 #: core/classes/class.arm_members.php:1296
 #: core/classes/class.arm_members.php:2179
 #: core/classes/class.arm_transaction.php:592
@@ -8944,7 +8944,7 @@ msgstr "Please select plan."
 
 #: core/classes/class.arm_member_forms.php:505
 #: core/classes/class.arm_member_forms.php:2991
-#: core/classes/class.arm_member_forms.php:11234
+#: core/classes/class.arm_member_forms.php:11235
 #: core/views/arm_member_add.php:779
 #@ armember-membership
 msgid "Please select profile cover."
@@ -8989,7 +8989,7 @@ msgid "Please select user."
 msgstr "Please select user."
 
 #: autoload.php:1797
-#: autoload.php:3993
+#: autoload.php:3992
 #: core/classes/class.arm_members.php:1299
 #: core/classes/class.arm_transaction.php:612
 #@ armember-membership
@@ -9017,7 +9017,7 @@ msgid "Please type your e-mail address."
 msgstr "Please type your e-mail address."
 
 #: autoload.php:1824
-#: autoload.php:4020
+#: autoload.php:4019
 #@ armember-membership
 msgid "Please upload appropriate file to import users."
 msgstr "Please upload appropriate file to import users."
@@ -9027,7 +9027,7 @@ msgstr "Please upload appropriate file to import users."
 msgid "Please upload file."
 msgstr "Please upload file."
 
-#: core/classes/class.arm_member_forms.php:10753
+#: core/classes/class.arm_member_forms.php:10754
 #@ armember-membership
 msgid "Poland"
 msgstr "Poland"
@@ -9047,7 +9047,7 @@ msgstr "Polish/Poland"
 msgid "Port"
 msgstr "Port"
 
-#: core/classes/class.arm_member_forms.php:10754
+#: core/classes/class.arm_member_forms.php:10755
 #@ armember-membership
 msgid "Portugal"
 msgstr "Portugal"
@@ -9147,7 +9147,7 @@ msgstr "Profile"
 #: core/classes/class.arm_member_forms.php:511
 #: core/classes/class.arm_member_forms.php:2927
 #: core/classes/class.arm_member_forms.php:2980
-#: core/classes/class.arm_member_forms.php:11226
+#: core/classes/class.arm_member_forms.php:11227
 #: core/views/arm_member_add.php:771
 #: core/views/arm_member_add.php:786
 #@ armember-membership
@@ -9211,12 +9211,12 @@ msgstr "Profiles & Directories"
 msgid "Publish your site content based on different time intervals by enabling this feature."
 msgstr "Publish your site content based on different time intervals by enabling this feature."
 
-#: core/classes/class.arm_member_forms.php:10755
+#: core/classes/class.arm_member_forms.php:10756
 #@ armember-membership
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
-#: core/classes/class.arm_member_forms.php:10756
+#: core/classes/class.arm_member_forms.php:10757
 #@ armember-membership
 msgid "Qatar"
 msgstr "Qatar"
@@ -9606,7 +9606,7 @@ msgstr "RESTRICT CONTENT"
 msgid "Restriction Type"
 msgstr "Restriction Type"
 
-#: core/classes/class.arm_member_forms.php:10757
+#: core/classes/class.arm_member_forms.php:10758
 #@ armember-membership
 msgid "Reunion Island"
 msgstr "Reunion Island"
@@ -9651,7 +9651,7 @@ msgstr "Role"
 msgid "Roles"
 msgstr "Roles"
 
-#: core/classes/class.arm_member_forms.php:10758
+#: core/classes/class.arm_member_forms.php:10759
 #@ armember-membership
 msgid "Romania"
 msgstr "Romania"
@@ -9693,7 +9693,7 @@ msgstr "RTL"
 msgid "Rusia/Rusia"
 msgstr "Rusia/Rusia"
 
-#: core/classes/class.arm_member_forms.php:10759
+#: core/classes/class.arm_member_forms.php:10760
 #@ armember-membership
 msgid "Russia"
 msgstr "Russia"
@@ -9703,32 +9703,32 @@ msgstr "Russia"
 msgid "Russian"
 msgstr "Russian"
 
-#: core/classes/class.arm_member_forms.php:10760
+#: core/classes/class.arm_member_forms.php:10761
 #@ armember-membership
 msgid "Rwanda"
 msgstr "Rwanda"
 
-#: core/classes/class.arm_member_forms.php:10761
+#: core/classes/class.arm_member_forms.php:10762
 #@ armember-membership
 msgid "Saint Kitts and Nevis"
 msgstr "Saint Kitts and Nevis"
 
-#: core/classes/class.arm_member_forms.php:10762
+#: core/classes/class.arm_member_forms.php:10763
 #@ armember-membership
 msgid "Saint Lucia"
 msgstr "Saint Lucia"
 
-#: core/classes/class.arm_member_forms.php:10763
+#: core/classes/class.arm_member_forms.php:10764
 #@ armember-membership
 msgid "Saint Vincent and the Grenadines"
 msgstr "Saint Vincent and the Grenadines"
 
-#: core/classes/class.arm_member_forms.php:10764
+#: core/classes/class.arm_member_forms.php:10765
 #@ armember-membership
 msgid "Samoa"
 msgstr "Samoa"
 
-#: core/classes/class.arm_member_forms.php:10765
+#: core/classes/class.arm_member_forms.php:10766
 #@ armember-membership
 msgid "San Marino"
 msgstr "San Marino"
@@ -9738,12 +9738,12 @@ msgstr "San Marino"
 msgid "Sandbox"
 msgstr "Sandbox"
 
-#: core/classes/class.arm_member_forms.php:10766
+#: core/classes/class.arm_member_forms.php:10767
 #@ armember-membership
 msgid "Sao Tome and Principe"
 msgstr "Sao Tome and Principe"
 
-#: core/classes/class.arm_member_forms.php:10767
+#: core/classes/class.arm_member_forms.php:10768
 #@ armember-membership
 msgid "Saudi Arabia"
 msgstr "Saudi Arabia"
@@ -10328,7 +10328,7 @@ msgstr "Send Signup Email Notification to User"
 msgid "Send test mail"
 msgstr "Send test mail"
 
-#: core/classes/class.arm_member_forms.php:10768
+#: core/classes/class.arm_member_forms.php:10769
 #@ armember-membership
 msgid "Senegal"
 msgstr "Senegal"
@@ -10339,7 +10339,7 @@ msgstr "Senegal"
 msgid "Separate values format should be label:value."
 msgstr "Separate values format should be label:value."
 
-#: core/classes/class.arm_member_forms.php:10769
+#: core/classes/class.arm_member_forms.php:10770
 #@ armember-membership
 msgid "Serbia and Montenegro"
 msgstr "Serbia and Montenegro"
@@ -10396,7 +10396,7 @@ msgstr "Setup Name"
 msgid "Setup name"
 msgstr "Setup name"
 
-#: core/classes/class.arm_member_forms.php:10770
+#: core/classes/class.arm_member_forms.php:10771
 #@ armember-membership
 msgid "Seychelles"
 msgstr "Seychelles"
@@ -10539,7 +10539,7 @@ msgstr "Showing"
 msgid "Showing 0 to 0 of 0 entries"
 msgstr "Showing 0 to 0 of 0 entries"
 
-#: core/classes/class.arm_member_forms.php:10771
+#: core/classes/class.arm_member_forms.php:10772
 #@ armember-membership
 msgid "Sierra Leone"
 msgstr "Sierra Leone"
@@ -10549,7 +10549,7 @@ msgstr "Sierra Leone"
 msgid "signup"
 msgstr "signup"
 
-#: core/classes/class.arm_member_forms.php:10772
+#: core/classes/class.arm_member_forms.php:10773
 #@ armember-membership
 msgid "Singapore"
 msgstr "Singapore"
@@ -10592,12 +10592,12 @@ msgstr "Slider"
 msgid "Slovak"
 msgstr "Slovak"
 
-#: core/classes/class.arm_member_forms.php:10773
+#: core/classes/class.arm_member_forms.php:10774
 #@ armember-membership
 msgid "Slovakia"
 msgstr "Slovakia"
 
-#: core/classes/class.arm_member_forms.php:10774
+#: core/classes/class.arm_member_forms.php:10775
 #@ armember-membership
 msgid "Slovenia"
 msgstr "Slovenia"
@@ -10643,12 +10643,12 @@ msgstr "Social Fields"
 msgid "Social Profile Fields"
 msgstr "Social Profile Fields"
 
-#: core/classes/class.arm_member_forms.php:10775
+#: core/classes/class.arm_member_forms.php:10776
 #@ armember-membership
 msgid "Solomon Islands"
 msgstr "Solomon Islands"
 
-#: core/classes/class.arm_member_forms.php:10776
+#: core/classes/class.arm_member_forms.php:10777
 #@ armember-membership
 msgid "Somalia"
 msgstr "Somalia"
@@ -10693,7 +10693,7 @@ msgid "Sorry, Something went wrong. Please contact to site administrator."
 msgstr "Sorry, Something went wrong. Please contact to site administrator."
 
 #: autoload.php:1796
-#: autoload.php:3992
+#: autoload.php:3991
 #: core/classes/class.arm_access_rules.php:508
 #: core/classes/class.arm_email_settings.php:190
 #: core/classes/class.arm_email_settings.php:223
@@ -10729,7 +10729,7 @@ msgid "Sorry, Something went wrong. please try again."
 msgstr "Sorry, Something went wrong. please try again."
 
 #: autoload.php:1784
-#: autoload.php:3977
+#: autoload.php:3976
 #@ armember-membership
 msgid "Sorry, this file type is not permitted for security reasons."
 msgstr "Sorry, this file type is not permitted for security reasons."
@@ -10742,7 +10742,7 @@ msgstr "Sorry, this file type is not permitted for security reasons."
 msgid "Sorry, You do not have permission to perform this action"
 msgstr "Sorry, You do not have permission to perform this action"
 
-#: autoload.php:4145
+#: autoload.php:4144
 #: core/classes/class.arm_manage_communication.php:27
 #: core/classes/class.arm_manage_subscription.php:873
 #: core/classes/class.arm_transaction.php:556
@@ -10766,17 +10766,17 @@ msgstr "Sort By"
 msgid "Sort Field Order"
 msgstr "Sort Field Order"
 
-#: core/classes/class.arm_member_forms.php:10777
+#: core/classes/class.arm_member_forms.php:10778
 #@ armember-membership
 msgid "South Africa"
 msgstr "South Africa"
 
-#: core/classes/class.arm_member_forms.php:10702
+#: core/classes/class.arm_member_forms.php:10703
 #@ armember-membership
 msgid "South Korea"
 msgstr "South Korea"
 
-#: core/classes/class.arm_member_forms.php:10778
+#: core/classes/class.arm_member_forms.php:10779
 #@ armember-membership
 msgid "Spain"
 msgstr "Spain"
@@ -10826,7 +10826,7 @@ msgstr "Specific Page"
 msgid "Specific URL"
 msgstr "Specific URL"
 
-#: core/classes/class.arm_member_forms.php:10779
+#: core/classes/class.arm_member_forms.php:10780
 #@ armember-membership
 msgid "Sri Lanka"
 msgstr "Sri Lanka"
@@ -11087,7 +11087,7 @@ msgstr "Success"
 msgid "success"
 msgstr "success"
 
-#: core/classes/class.arm_member_forms.php:10780
+#: core/classes/class.arm_member_forms.php:10781
 #@ armember-membership
 msgid "Sudan"
 msgstr "Sudan"
@@ -11104,7 +11104,7 @@ msgstr "Suffix"
 msgid "Summary Text"
 msgstr "Summary Text"
 
-#: core/classes/class.arm_member_forms.php:10781
+#: core/classes/class.arm_member_forms.php:10782
 #@ armember-membership
 msgid "Suriname"
 msgstr "Suriname"
@@ -11125,12 +11125,12 @@ msgstr "Suriname"
 msgid "Suspended"
 msgstr "Suspended"
 
-#: core/classes/class.arm_member_forms.php:10782
+#: core/classes/class.arm_member_forms.php:10783
 #@ armember-membership
 msgid "Swaziland"
 msgstr "Swaziland"
 
-#: core/classes/class.arm_member_forms.php:10783
+#: core/classes/class.arm_member_forms.php:10784
 #@ armember-membership
 msgid "Sweden"
 msgstr "Sweden"
@@ -11145,12 +11145,12 @@ msgstr "Swedish"
 msgid "Swedish/Sweden"
 msgstr "Swedish/Sweden"
 
-#: core/classes/class.arm_member_forms.php:10784
+#: core/classes/class.arm_member_forms.php:10785
 #@ armember-membership
 msgid "Switzerland"
 msgstr "Switzerland"
 
-#: core/classes/class.arm_member_forms.php:10785
+#: core/classes/class.arm_member_forms.php:10786
 #@ armember-membership
 msgid "Syria"
 msgstr "Syria"
@@ -11165,12 +11165,12 @@ msgstr "System Detected Spam Robots"
 msgid "Tablet View"
 msgstr "Tablet View"
 
-#: core/classes/class.arm_member_forms.php:10786
+#: core/classes/class.arm_member_forms.php:10787
 #@ armember-membership
 msgid "Taiwan"
 msgstr "Taiwan"
 
-#: core/classes/class.arm_member_forms.php:10787
+#: core/classes/class.arm_member_forms.php:10788
 #@ armember-membership
 msgid "Tajikistan"
 msgstr "Tajikistan"
@@ -11180,7 +11180,7 @@ msgstr "Tajikistan"
 msgid "Tamil"
 msgstr "Tamil"
 
-#: core/classes/class.arm_member_forms.php:10788
+#: core/classes/class.arm_member_forms.php:10789
 #@ armember-membership
 msgid "Tanzania"
 msgstr "Tanzania"
@@ -11246,13 +11246,13 @@ msgid "Template found."
 msgstr "Template found."
 
 #: autoload.php:1844
-#: autoload.php:4038
+#: autoload.php:4037
 #@ armember-membership
 msgid "Template has been added successfully."
 msgstr "Template has been added successfully."
 
 #: autoload.php:1846
-#: autoload.php:4040
+#: autoload.php:4039
 #@ armember-membership
 msgid "Template has been deleted successfully."
 msgstr "Template has been deleted successfully."
@@ -11263,7 +11263,7 @@ msgid "Template Name"
 msgstr "Template Name"
 
 #: autoload.php:1840
-#: autoload.php:4034
+#: autoload.php:4033
 #: core/classes/class.arm_email_settings.php:137
 #: core/classes/class.arm_members_directory.php:1277
 #@ armember-membership
@@ -11335,7 +11335,7 @@ msgstr "Thai"
 msgid "Thai/Thailand"
 msgstr "Thai/Thailand"
 
-#: core/classes/class.arm_member_forms.php:10789
+#: core/classes/class.arm_member_forms.php:10790
 #@ armember-membership
 msgid "Thailand"
 msgstr "Thailand"
@@ -11669,7 +11669,7 @@ msgstr "To remove specific form fields with its value, click on this button, pop
 msgid "To reset your password, visit the following address:"
 msgstr "To reset your password, visit the following address:"
 
-#: core/classes/class.arm_member_forms.php:10790
+#: core/classes/class.arm_member_forms.php:10791
 #@ armember-membership
 msgid "Togo"
 msgstr "Togo"
@@ -11680,7 +11680,7 @@ msgstr "Togo"
 msgid "Token"
 msgstr "Token"
 
-#: core/classes/class.arm_member_forms.php:10791
+#: core/classes/class.arm_member_forms.php:10792
 #@ armember-membership
 msgid "Tonga"
 msgstr "Tonga"
@@ -11757,7 +11757,7 @@ msgid "Transaction Details"
 msgstr "Transaction Details"
 
 #: autoload.php:1825
-#: autoload.php:4021
+#: autoload.php:4020
 #@ armember-membership
 msgid "Transaction has been deleted successfully."
 msgstr "Transaction has been deleted successfully."
@@ -11908,7 +11908,7 @@ msgstr "Trial Period"
 msgid "Trial Start Date"
 msgstr "Trial Start Date"
 
-#: core/classes/class.arm_member_forms.php:10792
+#: core/classes/class.arm_member_forms.php:10793
 #@ armember-membership
 msgid "Trinidad and Tobago"
 msgstr "Trinidad and Tobago"
@@ -11918,12 +11918,12 @@ msgstr "Trinidad and Tobago"
 msgid "Tumblr"
 msgstr "Tumblr"
 
-#: core/classes/class.arm_member_forms.php:10793
+#: core/classes/class.arm_member_forms.php:10794
 #@ armember-membership
 msgid "Tunisia"
 msgstr "Tunisia"
 
-#: core/classes/class.arm_member_forms.php:10794
+#: core/classes/class.arm_member_forms.php:10795
 #@ armember-membership
 msgid "Turkey"
 msgstr "Turkey"
@@ -11933,12 +11933,12 @@ msgstr "Turkey"
 msgid "Turkish"
 msgstr "Turkish"
 
-#: core/classes/class.arm_member_forms.php:10795
+#: core/classes/class.arm_member_forms.php:10796
 #@ armember-membership
 msgid "Turkmenistan"
 msgstr "Turkmenistan"
 
-#: core/classes/class.arm_member_forms.php:10796
+#: core/classes/class.arm_member_forms.php:10797
 #@ armember-membership
 msgid "Tuvalu"
 msgstr "Tuvalu"
@@ -11962,12 +11962,12 @@ msgstr "Type"
 msgid "Type username to select user"
 msgstr "Type username to select user"
 
-#: core/classes/class.arm_member_forms.php:10797
+#: core/classes/class.arm_member_forms.php:10798
 #@ armember-membership
 msgid "Uganda"
 msgstr "Uganda"
 
-#: core/classes/class.arm_member_forms.php:10798
+#: core/classes/class.arm_member_forms.php:10799
 #@ armember-membership
 msgid "Ukraine"
 msgstr "Ukraine"
@@ -11984,17 +11984,17 @@ msgstr "Ukrainian"
 msgid "Uncover"
 msgstr "Uncover"
 
-#: core/classes/class.arm_member_forms.php:10799
+#: core/classes/class.arm_member_forms.php:10800
 #@ armember-membership
 msgid "United Arab Emirates"
 msgstr "United Arab Emirates"
 
-#: core/classes/class.arm_member_forms.php:10800
+#: core/classes/class.arm_member_forms.php:10801
 #@ armember-membership
 msgid "United Kingdom"
 msgstr "United Kingdom"
 
-#: core/classes/class.arm_member_forms.php:10801
+#: core/classes/class.arm_member_forms.php:10802
 #@ armember-membership
 msgid "United States"
 msgstr "United States"
@@ -12117,7 +12117,7 @@ msgstr "Upload Profile Photo"
 msgid "uppercase"
 msgstr "uppercase"
 
-#: core/classes/class.arm_member_forms.php:10802
+#: core/classes/class.arm_member_forms.php:10803
 #@ armember-membership
 msgid "Uruguay"
 msgstr "Uruguay"
@@ -12320,8 +12320,8 @@ msgid "User's Signup Details such as Username, Password, First Name, Last Name a
 msgstr "User's Signup Details such as Username, Password, First Name, Last Name and Custom Fields value( Address, Gender etc)"
 
 #: autoload.php:1790
-#: autoload.php:3983
-#: autoload.php:4061
+#: autoload.php:3982
+#: autoload.php:4060
 #@ armember-membership
 msgid "User's subscription has been canceled"
 msgstr "User's subscription has been canceled"
@@ -12395,7 +12395,7 @@ msgstr "Username"
 msgid "Username OR Email Address"
 msgstr "Username OR Email Address"
 
-#: core/classes/class.arm_access_rules.php:1061
+#: core/classes/class.arm_access_rules.php:1064
 #: core/classes/class.arm_subscription_plans.php:785
 #: core/classes/class.arm_subscription_plans.php:848
 #: core/views/arm_access_rules.php:295
@@ -12403,7 +12403,7 @@ msgstr "Username OR Email Address"
 msgid "Users Having No Plan"
 msgstr "Users Having No Plan"
 
-#: core/classes/class.arm_member_forms.php:10803
+#: core/classes/class.arm_member_forms.php:10804
 #@ armember-membership
 msgid "Uzbekistan"
 msgstr "Uzbekistan"
@@ -12450,17 +12450,17 @@ msgstr "Validation URL"
 msgid "Value"
 msgstr "Value"
 
-#: core/classes/class.arm_member_forms.php:10804
+#: core/classes/class.arm_member_forms.php:10805
 #@ armember-membership
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
-#: core/classes/class.arm_member_forms.php:10805
+#: core/classes/class.arm_member_forms.php:10806
 #@ armember-membership
 msgid "Vatican City"
 msgstr "Vatican City"
 
-#: core/classes/class.arm_member_forms.php:10806
+#: core/classes/class.arm_member_forms.php:10807
 #@ armember-membership
 msgid "Venezuela"
 msgstr "Venezuela"
@@ -12470,12 +12470,12 @@ msgstr "Venezuela"
 msgid "Very Weak Text"
 msgstr "Very Weak Text"
 
-#: autoload.php:3841
+#: autoload.php:3840
 #@ armember-membership
 msgid "Video Tutorials"
 msgstr "Video Tutorials"
 
-#: core/classes/class.arm_member_forms.php:10807
+#: core/classes/class.arm_member_forms.php:10808
 #@ armember-membership
 msgid "Vietnam"
 msgstr "Vietnam"
@@ -12537,12 +12537,12 @@ msgstr "View Profile Link Label"
 msgid "Vine"
 msgstr "Vine"
 
-#: core/classes/class.arm_member_forms.php:10808
+#: core/classes/class.arm_member_forms.php:10809
 #@ armember-membership
 msgid "Virgin Islands, British"
 msgstr "Virgin Islands, British"
 
-#: core/classes/class.arm_member_forms.php:10809
+#: core/classes/class.arm_member_forms.php:10810
 #@ armember-membership
 msgid "Virgin Islands, U.S."
 msgstr "Virgin Islands, U.S."
@@ -12845,7 +12845,7 @@ msgstr "Years"
 msgid "years"
 msgstr "years"
 
-#: core/classes/class.arm_member_forms.php:10810
+#: core/classes/class.arm_member_forms.php:10811
 #@ armember-membership
 msgid "Yemen"
 msgstr "Yemen"
@@ -13104,12 +13104,12 @@ msgstr "Your test mail is successfully sent."
 msgid "Youtube"
 msgstr "Youtube"
 
-#: core/classes/class.arm_member_forms.php:10811
+#: core/classes/class.arm_member_forms.php:10812
 #@ armember-membership
 msgid "Zambia"
 msgstr "Zambia"
 
-#: core/classes/class.arm_member_forms.php:10812
+#: core/classes/class.arm_member_forms.php:10813
 #@ armember-membership
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
@@ -14183,17 +14183,17 @@ msgstr "Trial Transaction"
 msgid "User Email"
 msgstr "User Email"
 
-#: autoload.php:4608
+#: autoload.php:4607
 #@ armember-membership
 msgid "An Unexpected HTTP Error occurred during the API request."
 msgstr "An Unexpected HTTP Error occurred during the API request."
 
-#: autoload.php:4608
+#: autoload.php:4607
 #@ armember-membership
 msgid "Try again"
 msgstr "Try again"
 
-#: autoload.php:4613
+#: autoload.php:4612
 #@ armember-membership
 msgid "An unknown error occurred"
 msgstr "An unknown error occurred"
@@ -15644,37 +15644,37 @@ msgid "Total"
 msgstr "Total"
 
 #: autoload.php:1778
-#: autoload.php:3971
+#: autoload.php:3970
 #@ armember-membership
 msgid "Failed to load activities. Please try again."
 msgstr "Failed to load activities. Please try again."
 
 #: autoload.php:1779
-#: autoload.php:3972
+#: autoload.php:3971
 #@ armember-membership
 msgid "The user chose not to grant permission or closed the pop-up."
 msgstr "The user chose not to grant permission or closed the pop-up."
 
 #: autoload.php:1780
-#: autoload.php:3973
+#: autoload.php:3972
 #@ armember-membership
 msgid "Oops! There was a problem retrieving your information."
 msgstr "Oops! There was a problem retrieving your information."
 
 #: autoload.php:1781
-#: autoload.php:3974
+#: autoload.php:3973
 #@ armember-membership
 msgid "Failed to copy. Please try again."
 msgstr "Failed to copy. Please try again."
 
 #: autoload.php:1782
-#: autoload.php:3975
+#: autoload.php:3974
 #@ armember-membership
 msgid "The user canceled the login or did not fully authorize it."
 msgstr "The user canceled the login or did not fully authorize it."
 
 #: autoload.php:1783
-#: autoload.php:3976
+#: autoload.php:3975
 #@ armember-membership
 msgid "Failed to close the account. Please try again."
 msgstr "Failed to close the account. Please try again."
@@ -15685,20 +15685,20 @@ msgid "File size must not exceed {SIZE}."
 msgstr "File size must not exceed {SIZE}."
 
 #: autoload.php:1786
-#: autoload.php:3979
+#: autoload.php:3978
 #@ armember-membership
 msgid "Failed to upload the file. Please try again."
 msgstr "Failed to upload the file. Please try again."
 
 #: autoload.php:1787
-#: autoload.php:3980
+#: autoload.php:3979
 #: core/classes/class.arm_members_directory.php:352
 #@ armember-membership
 msgid "Are you sure you want to remove the cover photo?"
 msgstr "Are you sure you want to remove the cover photo?"
 
 #: autoload.php:1788
-#: autoload.php:3981
+#: autoload.php:3980
 #: core/classes/class.arm_members_directory.php:353
 #@ armember-membership
 msgid "Are you sure you want to remove the profile photo?"
@@ -15706,14 +15706,14 @@ msgstr "Are you sure you want to remove the profile photo?"
 
 #: autoload.php:1789
 #: autoload.php:1863
-#: autoload.php:3982
-#: autoload.php:4060
+#: autoload.php:3981
+#: autoload.php:4059
 #@ armember-membership
 msgid "Failed to perform this action. Please try again."
 msgstr "Failed to perform this action. Please try again."
 
 #: autoload.php:1800
-#: autoload.php:3996
+#: autoload.php:3995
 #@ armember-membership
 msgid "Login history cleared successfully."
 msgstr "Login history cleared successfully."
@@ -15755,134 +15755,134 @@ msgid "Password cannot be left blank."
 msgstr "Password cannot be left blank."
 
 #: autoload.php:1803
-#: autoload.php:3998
+#: autoload.php:3997
 #@ armember-membership
 msgid "Plan(s) have been deleted successfully."
 msgstr "Plan(s) have been deleted successfully."
 
 #: autoload.php:1804
-#: autoload.php:3999
+#: autoload.php:3998
 #@ armember-membership
 msgid "Failed to delete plan(s). Please try again."
 msgstr "Failed to delete plan(s). Please try again."
 
 #: autoload.php:1805
-#: autoload.php:4001
+#: autoload.php:4000
 #@ armember-membership
 msgid "Failed to delete the plan. Please try again."
 msgstr "Failed to delete the plan. Please try again."
 
 #: autoload.php:1808
-#: autoload.php:4004
+#: autoload.php:4003
 #@ armember-membership
 msgid "Failed to delete setup(s). Please try again."
 msgstr "Failed to delete setup(s). Please try again."
 
 #: autoload.php:1809
-#: autoload.php:4005
+#: autoload.php:4004
 #: core/classes/class.arm_membership_setup.php:5136
 #@ armember-membership
 msgid "The setup has been deleted successfully."
 msgstr "The setup has been deleted successfully."
 
 #: autoload.php:1810
-#: autoload.php:4006
+#: autoload.php:4005
 #@ armember-membership
 msgid "Failed to delete the setup. Please try again."
 msgstr "Failed to delete the setup. Please try again."
 
 #: autoload.php:1811
-#: autoload.php:4007
+#: autoload.php:4006
 #@ armember-membership
 msgid "Form set deleted successfully."
 msgstr "Form set deleted successfully."
 
 #: autoload.php:1812
-#: autoload.php:4008
+#: autoload.php:4007
 #@ armember-membership
 msgid "Failed to delete the form set. Please try again."
 msgstr "Failed to delete the form set. Please try again."
 
 #: autoload.php:1814
-#: autoload.php:4010
+#: autoload.php:4009
 #@ armember-membership
 msgid "Failed to delete the form. Please try again."
 msgstr "Failed to delete the form. Please try again."
 
 #: autoload.php:1815
-#: autoload.php:4011
+#: autoload.php:4010
 #@ armember-membership
 msgid "The rule has been deleted successfully."
 msgstr "The rule has been deleted successfully."
 
 #: autoload.php:1816
-#: autoload.php:4012
+#: autoload.php:4011
 #@ armember-membership
 msgid "Failed to delete the rule. Please try again."
 msgstr "Failed to delete the rule. Please try again."
 
 #: autoload.php:1817
-#: autoload.php:4013
+#: autoload.php:4012
 #@ armember-membership
 msgid "Rule(s) have been deleted successfully."
 msgstr "Rule(s) have been deleted successfully."
 
 #: autoload.php:1818
-#: autoload.php:4014
+#: autoload.php:4013
 #@ armember-membership
 msgid "Failed to delete rule(s). Please try again."
 msgstr "Failed to delete rule(s). Please try again."
 
 #: autoload.php:1819
-#: autoload.php:4015
+#: autoload.php:4014
 #@ armember-membership
 msgid "Failed to generate the transaction details preview. Please try again."
 msgstr "Failed to generate the transaction details preview. Please try again."
 
 #: autoload.php:1820
-#: autoload.php:4016
+#: autoload.php:4015
 #@ armember-membership
 msgid "Failed to generate the transaction invoice. Please try again."
 msgstr "Failed to generate the transaction invoice. Please try again."
 
 #: autoload.php:1821
-#: autoload.php:4017
+#: autoload.php:4016
 #@ armember-membership
 msgid "Failed to generate the member details preview. Please try again."
 msgstr "Failed to generate the member details preview. Please try again."
 
 #: autoload.php:1822
-#: autoload.php:4018
+#: autoload.php:4017
 #@ armember-membership
 msgid "Failed to display member activity details. Please try again."
 msgstr "Failed to display member activity details. Please try again."
 
 #: autoload.php:1823
-#: autoload.php:4019
+#: autoload.php:4018
 #@ armember-membership
 msgid "Failed to display ARMember CSS class information. Please try again."
 msgstr "Failed to display ARMember CSS class information. Please try again."
 
 #: autoload.php:1828
-#: autoload.php:4024
+#: autoload.php:4023
 #@ armember-membership
 msgid "Failed to delete the message. Please try again."
 msgstr "Failed to delete the message. Please try again."
 
 #: autoload.php:1830
-#: autoload.php:4026
+#: autoload.php:4025
 #@ armember-membership
 msgid "Failed to delete the message(s). Please try again."
 msgstr "Failed to delete the message(s). Please try again."
 
 #: autoload.php:1832
-#: autoload.php:4028
+#: autoload.php:4027
 #@ armember-membership
 msgid "Settings have been saved successfully."
 msgstr "Settings have been saved successfully."
 
 #: autoload.php:1833
-#: autoload.php:4029
+#: autoload.php:4028
 #: core/classes/class.arm_global_settings.php:1784
 #: core/classes/class.arm_members_directory.php:309
 #: core/classes/class.arm_members_directory.php:312
@@ -15891,14 +15891,14 @@ msgid "Failed to update the settings. Please try again."
 msgstr "Failed to update the settings. Please try again."
 
 #: autoload.php:1834
-#: autoload.php:4030
+#: autoload.php:4029
 #: core/classes/class.arm_access_rules.php:111
 #@ armember-membership
 msgid "Default rules saved successfully."
 msgstr "Default rules saved successfully."
 
 #: autoload.php:1835
-#: autoload.php:4031
+#: autoload.php:4030
 #@ armember-membership
 msgid "Failed to update the rules. Please try again."
 msgstr "Failed to update the rules. Please try again."
@@ -15919,13 +15919,13 @@ msgid "Are you sure you want to delete this configuration?"
 msgstr "Are you sure you want to delete this configuration?"
 
 #: autoload.php:1839
-#: autoload.php:4033
+#: autoload.php:4032
 #@ armember-membership
 msgid "Failed to delete member activities. Please try again."
 msgstr "Failed to delete member activities. Please try again."
 
 #: autoload.php:1841
-#: autoload.php:4035
+#: autoload.php:4034
 #: core/classes/class.arm_members_directory.php:326
 #: core/classes/class.arm_members_directory.php:329
 #@ armember-membership
@@ -15933,31 +15933,31 @@ msgid "Template options have been saved successfully."
 msgstr "Template options have been saved successfully."
 
 #: autoload.php:1842
-#: autoload.php:4036
+#: autoload.php:4035
 #@ armember-membership
 msgid "Failed to update the template options. Please try again."
 msgstr "Failed to update the template options. Please try again."
 
 #: autoload.php:1843
-#: autoload.php:4037
+#: autoload.php:4036
 #@ armember-membership
 msgid "Failed to generate the template preview. Please try again."
 msgstr "Failed to generate the template preview. Please try again."
 
 #: autoload.php:1845
-#: autoload.php:4039
+#: autoload.php:4038
 #@ armember-membership
 msgid "Failed to add the template. Please try again."
 msgstr "Failed to add the template. Please try again."
 
 #: autoload.php:1847
-#: autoload.php:4041
+#: autoload.php:4040
 #@ armember-membership
 msgid "Failed to delete the template. Please try again."
 msgstr "Failed to delete the template. Please try again."
 
 #: autoload.php:1848
-#: autoload.php:4042
+#: autoload.php:4041
 #: core/classes/class.arm_email_settings.php:209
 #: core/classes/class.arm_email_settings.php:235
 #@ armember-membership
@@ -15965,63 +15965,63 @@ msgid "Email template updated successfully."
 msgstr "Email template updated successfully."
 
 #: autoload.php:1849
-#: autoload.php:4043
+#: autoload.php:4042
 #@ armember-membership
 msgid "Message updated successfully."
 msgstr "Message updated successfully."
 
 #: autoload.php:1851
-#: autoload.php:4048
+#: autoload.php:4047
 #@ armember-membership
 msgid "Cannot set past dates."
 msgstr "Cannot set past dates."
 
 #: autoload.php:1852
-#: autoload.php:4049
+#: autoload.php:4048
 #@ armember-membership
 msgid "The start date cannot be earlier than the current date."
 msgstr "The start date cannot be earlier than the current date."
 
 #: autoload.php:1853
-#: autoload.php:4050
+#: autoload.php:4049
 #@ armember-membership
 msgid "The expiration date cannot be earlier than the current date."
 msgstr "The expiration date cannot be earlier than the current date."
 
 #: autoload.php:1855
-#: autoload.php:4052
+#: autoload.php:4051
 #@ armember-membership
 msgid "This set name already exists."
 msgstr "This set name already exists."
 
 #: autoload.php:1856
-#: autoload.php:4053
+#: autoload.php:4052
 #@ armember-membership
 msgid "This form name already exists."
 msgstr "This form name already exists."
 
 #: autoload.php:1857
-#: autoload.php:4054
+#: autoload.php:4053
 #@ armember-membership
 msgid "Failed to install the add-on. Please try again."
 msgstr "Failed to install the add-on. Please try again."
 
 #: autoload.php:1859
-#: autoload.php:4056
+#: autoload.php:4055
 #@ armember-membership
 msgid "Failed to activate the add-on. Please try again."
 msgstr "Failed to activate the add-on. Please try again."
 
 #: autoload.php:1862
-#: autoload.php:3984
-#: autoload.php:4059
-#: autoload.php:4062
+#: autoload.php:3983
+#: autoload.php:4058
+#: autoload.php:4061
 #@ armember-membership
 msgid "Are you sure you want to cancel the subscription?"
 msgstr "Are you sure you want to cancel the subscription?"
 
 #: autoload.php:1807
-#: autoload.php:4003
+#: autoload.php:4002
 #@ armember-membership
 msgid "Setup(s) have been deleted successfully."
 msgstr "Setup(s) have been deleted successfully."
@@ -16031,12 +16031,12 @@ msgstr "Setup(s) have been deleted successfully."
 msgid "Failed to update the access rules. Please try again."
 msgstr "Failed to update the access rules. Please try again."
 
-#: core/classes/class.arm_crons.php:654
+#: core/classes/class.arm_crons.php:642
 #@ armember-membership
 msgid "Email sent successfully to"
 msgstr "Email sent successfully to"
 
-#: core/classes/class.arm_crons.php:654
+#: core/classes/class.arm_crons.php:642
 #@ armember-membership
 msgid "for the trial period has finished"
 msgstr "for the trial period has finished"
@@ -16524,13 +16524,13 @@ msgstr "Logged-In Users"
 msgid "ARMember Lite recommends using a minimum PHP version of 5.6 or greater."
 msgstr "ARMember Lite recommends using a minimum PHP version of 5.6 or greater."
 
-#: autoload.php:3884
-#: autoload.php:4169
+#: autoload.php:3883
+#: autoload.php:4168
 #@ armember-membership
 msgid "Sorry, Your request cannot process due to security reason."
 msgstr "Sorry, Your request cannot process due to security reason."
 
-#: autoload.php:4162
+#: autoload.php:4161
 #@ armember-membership
 msgid "Sorry, Your request cannot process due to nonce not found."
 msgstr "Sorry, Your request cannot process due to nonce not found."
@@ -17054,7 +17054,7 @@ msgid "Sorry, something went wrong while updating preset fields."
 msgstr "Sorry, something went wrong while updating preset fields."
 
 #: autoload.php:1826
-#: autoload.php:4022
+#: autoload.php:4021
 #: core/classes/class.arm_transaction.php:610
 #@ armember-membership
 msgid "Transaction(s) have been deleted successfully."
@@ -17141,14 +17141,14 @@ msgstr "Sorry, Plan is not allowed in this membership setup"
 msgid "Search Members..."
 msgstr "Search Members..."
 
-#. translators: plugin header field 'Version'
-#: armember-membership.php:0
-#@ armember-membership
-msgid "6.0"
-msgstr "6.0"
-
 #: core/classes/class.arm_members.php:194
 #@ armember-membership
 msgid "Invalid user."
 msgstr "Invalid user."
+
+#. translators: plugin header field 'Version'
+#: armember-membership.php:0
+#@ armember-membership
+msgid "6.0.1"
+msgstr "6.0.1"
 

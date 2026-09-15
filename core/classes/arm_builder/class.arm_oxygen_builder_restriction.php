@@ -80,7 +80,7 @@ if (!class_exists('ARM_lite_oxygen_builder_restriction')) {
                                     }
                                     else {
                                         global $arm_global_settings;
-                                        $arm_global_settings_general_settings = !empty($arm_global_settings->global_settings['arm_pay_per_post_default_content']) ? wp_unslash($arm_global_settings->global_settings['arm_pay_per_post_default_content']) : esc_html__('Content is Restricted. Buy this post to get access to full content.', 'ARMember');
+                                        $arm_global_settings_general_settings = !empty($arm_global_settings->global_settings['arm_pay_per_post_default_content']) ? wp_unslash($arm_global_settings->global_settings['arm_pay_per_post_default_content']) : esc_html__('Content is Restricted. Buy this post to get access to full content.', 'armember-membership');
                                         
                                         $arm_global_settings_general_settings = apply_filters('arm_modified_paid_post_settings_alternative_content_externally', $arm_global_settings_general_settings);
 

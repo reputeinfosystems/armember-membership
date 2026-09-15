@@ -38,6 +38,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			add_filter( 'arm_change_field_options', array( $this, 'arm_filter_form_field_options' ) );
 			add_action( 'arm_before_render_form', array( $this, 'arm_check_form_include_js_css' ), 10, 2 );
 
+			add_action( 'arm_before_render_close_account_form', array($this,  'arm_check_close_account_form_include_js_css'), 10, 1 );
+
 			add_action( 'arm_member_update_meta', array( $this, 'arm_member_update_meta_details' ), 10, 3 );
 			add_action( 'wp_ajax_arm_admin_save_member_details', array( $this, 'arm_admin_save_member_details_func' ) );
 
@@ -5985,7 +5987,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						    $form_settings = $armform->settings;
                         }
                         else {
-                            $armform   = "";
+                            $form_settings = array();
                         }
 					}
 				} else if ( !is_user_logged_in() ) {
@@ -9592,6 +9594,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$reg_link_margin['right']    = ( isset( $reg_link_margin['right'] ) && is_numeric( $reg_link_margin['right'] ) ) ? $reg_link_margin['right'] : 0;
 				$reg_link_margin['bottom']   = ( isset( $reg_link_margin['bottom'] ) && is_numeric( $reg_link_margin['bottom'] ) ) ? $reg_link_margin['bottom'] : 0;
 				$new_style                   = shortcode_atts( $default_form_style, $new_style );
+				$fp_link_margin['top']       = apply_filters('arm_adjust_fp_link_margin_top', $fp_link_margin['top'], $form_settings);
 				$formBGImage                 = '';
 				if ( isset( $new_style['form_bg'] ) && ! empty( $new_style['form_bg'] ) ) {
 					if ( file_exists( MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $new_style['form_bg'] ) ) ) {
@@ -10822,6 +10825,28 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 			}
 			$ARMemberLite->set_front_css( false, $form_style );
 			$ARMemberLite->set_front_js( true );
+		}
+
+
+		function arm_check_close_account_form_include_js_css( $atts ) {
+			global $ARMemberLite, $wpdb;
+		
+			$form_style = "";
+		
+			if ( empty($atts['set_id']) ) {
+				$setform_id = $wpdb->get_var( $wpdb->prepare( "SELECT `arm_form_id` FROM `" . $ARMemberLite->tbl_arm_forms . "` WHERE `arm_form_type`=%s AND `arm_is_default`=%d ORDER BY `arm_form_id` DESC LIMIT 1", 'login', 1 ) ); // phpcs:ignore --Reason $ARMember->tbl_arm_forms is a table name
+				$atts['set_id'] = $setform_id;
+			}
+		
+			$form_id = (int) $atts['set_id'];
+			$form = new ARM_Form_Lite('id', $form_id);
+		
+			if ( !empty($form) ) {
+				$form_style = isset($form->settings['style']['form_layout']) ? $form->settings['style']['form_layout'] : '';
+			}
+		
+			$ARMemberLite->set_front_css(false, $form_style);
+			$ARMemberLite->set_front_js(true);
 		}
 
 		function arm_get_spf_in_tinymce() {

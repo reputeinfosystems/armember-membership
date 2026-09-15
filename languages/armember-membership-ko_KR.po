@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ARMember Lite - Membership Plugin v6.0\n"
+"Project-Id-Version: ARMember Lite - Membership Plugin v6.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-21 08:55+0000\n"
-"PO-Revision-Date: 2026-08-26 12:32:20+0000\n"
+"PO-Revision-Date: 2026-09-12 12:07:34+0000\n"
 "Last-Translator: \n"
 "Language-Team: Korean\n"
 "MIME-Version: 1.0\n"
@@ -135,7 +135,7 @@ msgstr "PHP 확장 프로그램이 파일 업로드를 중지했습니다."
 msgid "Access Rules"
 msgstr "액세스 규칙"
 
-#: core/classes/class.arm_access_rules.php:731
+#: core/classes/class.arm_access_rules.php:734
 #@ armember-membership
 msgid "Access Rules Updated Successfully."
 msgstr "액세스 규칙이 성공적으로 업데이트되었습니다."
@@ -193,12 +193,12 @@ msgstr "계정 보류 중"
 msgid "Account Setup"
 msgstr "계정 설정"
 
-#: autoload.php:4045
+#: autoload.php:4044
 #@ armember-membership
 msgid "Achievements Added Successfully."
 msgstr "업적이 성공적으로 추가되었습니다."
 
-#: autoload.php:4046
+#: autoload.php:4045
 #@ armember-membership
 msgid "Achievements Updated Successfully."
 msgstr "업적이 성공적으로 업데이트되었습니다."
@@ -479,19 +479,19 @@ msgid "Additional Shortcodes"
 msgstr "추가 단축 코드"
 
 #: autoload.php:1860
-#: autoload.php:4057
+#: autoload.php:4056
 #@ armember-membership
 msgid "Addon activated successfully."
 msgstr "애드온이 성공적으로 활성화되었습니다."
 
 #: autoload.php:1861
-#: autoload.php:4058
+#: autoload.php:4057
 #@ armember-membership
 msgid "Addon deactivated successfully."
 msgstr "애드온이 성공적으로 비활성화되었습니다."
 
 #: autoload.php:1858
-#: autoload.php:4055
+#: autoload.php:4054
 #@ armember-membership
 msgid "Addon installed successfully."
 msgstr "애드온이 성공적으로 설치되었습니다."
@@ -528,7 +528,7 @@ msgstr "고급 필드"
 msgid "Advanced Security"
 msgstr "고급 보안"
 
-#: core/classes/class.arm_member_forms.php:10602
+#: core/classes/class.arm_member_forms.php:10603
 #@ armember-membership
 msgid "Afghanistan"
 msgstr "아프가니스탄"
@@ -583,7 +583,7 @@ msgstr "멤버십/플랜이 리디렉션 규칙을 획득한 후"
 msgid "After Registration Form"
 msgstr "등록 후"
 
-#: core/classes/class.arm_member_forms.php:10603
+#: core/classes/class.arm_member_forms.php:10604
 #@ armember-membership
 msgid "Albania"
 msgstr "알바니아"
@@ -593,7 +593,7 @@ msgstr "알바니아"
 msgid "Albanian"
 msgstr "알바니아"
 
-#: core/classes/class.arm_member_forms.php:10604
+#: core/classes/class.arm_member_forms.php:10605
 #@ armember-membership
 msgid "Algeria"
 msgstr "알제리"
@@ -698,7 +698,7 @@ msgstr "알파벳순"
 msgid "Already have an account?"
 msgstr "이미 계정이 있나요?"
 
-#: core/classes/class.arm_member_forms.php:10605
+#: core/classes/class.arm_member_forms.php:10606
 #@ armember-membership
 msgid "American Samoa"
 msgstr "아메리칸사모아"
@@ -757,27 +757,27 @@ msgstr "그리고"
 msgid "and the field type will be"
 msgstr "필드 유형은 다음과 같습니다."
 
-#: core/classes/class.arm_member_forms.php:10606
+#: core/classes/class.arm_member_forms.php:10607
 #@ armember-membership
 msgid "Andorra"
 msgstr "안도라"
 
-#: core/classes/class.arm_member_forms.php:10607
+#: core/classes/class.arm_member_forms.php:10608
 #@ armember-membership
 msgid "Angola"
 msgstr "앙골라"
 
-#: core/classes/class.arm_member_forms.php:10608
+#: core/classes/class.arm_member_forms.php:10609
 #@ armember-membership
 msgid "Anguilla"
 msgstr "앵귈라"
 
-#: core/classes/class.arm_member_forms.php:10609
+#: core/classes/class.arm_member_forms.php:10610
 #@ armember-membership
 msgid "Antarctica"
 msgstr "남극 대륙"
 
-#: core/classes/class.arm_member_forms.php:10610
+#: core/classes/class.arm_member_forms.php:10611
 #@ armember-membership
 msgid "Antigua and Barbuda"
 msgstr "앤티가바부다"
@@ -1011,12 +1011,12 @@ msgstr "확인 이메일을 다시 보내시겠습니까?"
 msgid "ARForms Successfully installed."
 msgstr "ARForms가 성공적으로 설치되었습니다."
 
-#: core/classes/class.arm_member_forms.php:10611
+#: core/classes/class.arm_member_forms.php:10612
 #@ armember-membership
 msgid "Argentina"
 msgstr "아르헨티나"
 
-#: core/classes/class.arm_access_rules.php:1011
+#: core/classes/class.arm_access_rules.php:1014
 #@ armember-membership
 msgid "ARMember Access Rules"
 msgstr "ARMember 액세스 규칙"
@@ -1276,7 +1276,7 @@ msgstr "ARMember 사용자 이름"
 msgid "ARMember Warning"
 msgstr "ARMember 경고"
 
-#: core/classes/class.arm_member_forms.php:10612
+#: core/classes/class.arm_member_forms.php:10613
 #@ armember-membership
 msgid "Armenia"
 msgstr "아르메니아"
@@ -1291,7 +1291,7 @@ msgstr "아르메니아 사람"
 msgid "ARPrice Successfully installed."
 msgstr "ARPrice가 성공적으로 설치되었습니다."
 
-#: core/classes/class.arm_member_forms.php:10613
+#: core/classes/class.arm_member_forms.php:10614
 #@ armember-membership
 msgid "Aruba"
 msgstr "아루바"
@@ -1337,12 +1337,12 @@ msgstr "사용자에게 계획 할당"
 msgid "Associated Plans:"
 msgstr "관련 계획:"
 
-#: core/classes/class.arm_member_forms.php:10614
+#: core/classes/class.arm_member_forms.php:10615
 #@ armember-membership
 msgid "Australia"
 msgstr "호주"
 
-#: core/classes/class.arm_member_forms.php:10615
+#: core/classes/class.arm_member_forms.php:10616
 #@ armember-membership
 msgid "Austria"
 msgstr "오스트리아"
@@ -1424,7 +1424,7 @@ msgstr "자동 구독 라벨"
 #: core/classes/class.arm_member_forms.php:2926
 #: core/classes/class.arm_member_forms.php:2953
 #: core/classes/class.arm_member_forms.php:7697
-#: core/classes/class.arm_member_forms.php:11208
+#: core/classes/class.arm_member_forms.php:11209
 #: core/classes/class.arm_members.php:1673
 #: core/classes/class.arm_members.php:4207
 #: core/views/arm_form_editor.php:374
@@ -1443,7 +1443,7 @@ msgstr "화신"
 msgid "Avatar Field Label( Edit Profile )"
 msgstr "아바타 필드 라벨( 프로필 편집 )"
 
-#: core/classes/class.arm_member_forms.php:10616
+#: core/classes/class.arm_member_forms.php:10617
 #@ armember-membership
 msgid "Azerbaijan"
 msgstr "아제르바이잔"
@@ -1502,17 +1502,17 @@ msgstr "배경색"
 msgid "Background Overlay"
 msgstr "배경 오버레이"
 
-#: core/classes/class.arm_member_forms.php:10617
+#: core/classes/class.arm_member_forms.php:10618
 #@ armember-membership
 msgid "Bahamas"
 msgstr "바하마 제도"
 
-#: core/classes/class.arm_member_forms.php:10618
+#: core/classes/class.arm_member_forms.php:10619
 #@ armember-membership
 msgid "Bahrain"
 msgstr "바레인"
 
-#: core/classes/class.arm_member_forms.php:10619
+#: core/classes/class.arm_member_forms.php:10620
 #@ armember-membership
 msgid "Bangladesh"
 msgstr "방글라데시"
@@ -1554,7 +1554,7 @@ msgstr "은행 송금 요청이 승인되었습니다."
 msgid "Bank transfer request has been cancelled."
 msgstr "은행송금 요청이 취소되었습니다."
 
-#: core/classes/class.arm_member_forms.php:10620
+#: core/classes/class.arm_member_forms.php:10621
 #@ armember-membership
 msgid "Barbados"
 msgstr "바베이도스"
@@ -1601,32 +1601,32 @@ msgstr "등록 전"
 msgid "Before you deactivate the ARMember Lite plugin, would you quickly give us your reason for doing so?"
 msgstr "ARMember Lite 플러그인을 비활성화하기 전에 그렇게 하는 이유를 신속히 알려주시겠습니까?"
 
-#: core/classes/class.arm_member_forms.php:10621
+#: core/classes/class.arm_member_forms.php:10622
 #@ armember-membership
 msgid "Belarus"
 msgstr "벨라루스"
 
-#: core/classes/class.arm_member_forms.php:10622
+#: core/classes/class.arm_member_forms.php:10623
 #@ armember-membership
 msgid "Belgium"
 msgstr "벨기에"
 
-#: core/classes/class.arm_member_forms.php:10623
+#: core/classes/class.arm_member_forms.php:10624
 #@ armember-membership
 msgid "Belize"
 msgstr "벨리즈"
 
-#: core/classes/class.arm_member_forms.php:10624
+#: core/classes/class.arm_member_forms.php:10625
 #@ armember-membership
 msgid "Benin"
 msgstr "베냉"
 
-#: core/classes/class.arm_member_forms.php:10625
+#: core/classes/class.arm_member_forms.php:10626
 #@ armember-membership
 msgid "Bermuda"
 msgstr "버뮤다"
 
-#: core/classes/class.arm_member_forms.php:10626
+#: core/classes/class.arm_member_forms.php:10627
 #@ armember-membership
 msgid "Bhutan"
 msgstr "부탄"
@@ -1704,7 +1704,7 @@ msgstr "블로그 URL"
 msgid "Body Content Color"
 msgstr "본문 내용 색상"
 
-#: core/classes/class.arm_member_forms.php:10627
+#: core/classes/class.arm_member_forms.php:10628
 #@ armember-membership
 msgid "Bolivia"
 msgstr "볼리비아"
@@ -1735,7 +1735,7 @@ msgstr "테두리 색상"
 msgid "Border Radius"
 msgstr "테두리 반경"
 
-#: core/classes/class.arm_member_forms.php:10628
+#: core/classes/class.arm_member_forms.php:10629
 #@ armember-membership
 msgid "Bosnia and Herzegovina"
 msgstr "보스니아 헤르체고비나"
@@ -1750,7 +1750,7 @@ msgstr "보스니아어"
 msgid "Both (allow user to select payment method)"
 msgstr "둘 다(사용자가 결제 방법을 선택할 수 있음)"
 
-#: core/classes/class.arm_member_forms.php:10629
+#: core/classes/class.arm_member_forms.php:10630
 #@ armember-membership
 msgid "Botswana"
 msgstr "보츠와나"
@@ -1770,12 +1770,12 @@ msgstr "맨 아래"
 msgid "Box Hover Effect"
 msgstr "박스 호버 효과"
 
-#: core/classes/class.arm_member_forms.php:10630
+#: core/classes/class.arm_member_forms.php:10631
 #@ armember-membership
 msgid "Brazil"
 msgstr "브라질"
 
-#: core/classes/class.arm_member_forms.php:10631
+#: core/classes/class.arm_member_forms.php:10632
 #@ armember-membership
 msgid "Brunei"
 msgstr "브루나이"
@@ -1785,7 +1785,7 @@ msgstr "브루나이"
 msgid "Buddypress/Buddyboss Integration"
 msgstr "Buddypress/Buddyboss 통합"
 
-#: core/classes/class.arm_member_forms.php:10632
+#: core/classes/class.arm_member_forms.php:10633
 #@ armember-membership
 msgid "Bulgaria"
 msgstr "불가리아"
@@ -1801,12 +1801,12 @@ msgstr "불가리아 사람"
 msgid "Bulk Actions"
 msgstr "일괄 작업"
 
-#: core/classes/class.arm_member_forms.php:10633
+#: core/classes/class.arm_member_forms.php:10634
 #@ armember-membership
 msgid "Burkina Faso"
 msgstr "부키 나 파소"
 
-#: core/classes/class.arm_member_forms.php:10634
+#: core/classes/class.arm_member_forms.php:10635
 #@ armember-membership
 msgid "Burundi"
 msgstr "부룬디"
@@ -1942,12 +1942,12 @@ msgstr "캘린더 현지화"
 msgid "Calendar Style"
 msgstr "달력 스타일"
 
-#: core/classes/class.arm_member_forms.php:10635
+#: core/classes/class.arm_member_forms.php:10636
 #@ armember-membership
 msgid "Cambodia"
 msgstr "캄보디아"
 
-#: core/classes/class.arm_member_forms.php:10636
+#: core/classes/class.arm_member_forms.php:10637
 #@ armember-membership
 msgid "Cameroon"
 msgstr "카메룬"
@@ -1957,7 +1957,7 @@ msgstr "카메룬"
 msgid "Can you mention it?"
 msgstr "언급해주실 수 있나요?"
 
-#: core/classes/class.arm_member_forms.php:10637
+#: core/classes/class.arm_member_forms.php:10638
 #@ armember-membership
 msgid "Canada"
 msgstr "캐나다"
@@ -2101,7 +2101,7 @@ msgstr "취소 된"
 msgid "Cannot extract data from uploaded file or no file was uploaded."
 msgstr "업로드된 파일에서 데이터를 추출할 수 없거나 업로드된 파일이 없습니다."
 
-#: core/classes/class.arm_member_forms.php:10638
+#: core/classes/class.arm_member_forms.php:10639
 #@ armember-membership
 msgid "Cape Verde"
 msgstr "카보베르데"
@@ -2136,7 +2136,7 @@ msgstr "카테고리가 관리자에 의해 제한되었습니다"
 msgid "category(s)"
 msgstr "카테고리"
 
-#: core/classes/class.arm_member_forms.php:10639
+#: core/classes/class.arm_member_forms.php:10640
 #@ armember-membership
 msgid "Cayman Islands"
 msgstr "케이맨 제도"
@@ -2158,12 +2158,12 @@ msgstr "케이맨 제도"
 msgid "Center"
 msgstr "센터"
 
-#: core/classes/class.arm_member_forms.php:10640
+#: core/classes/class.arm_member_forms.php:10641
 #@ armember-membership
 msgid "Central African Republic"
 msgstr "중앙 아프리카 공화국"
 
-#: core/classes/class.arm_member_forms.php:10641
+#: core/classes/class.arm_member_forms.php:10642
 #@ armember-membership
 msgid "Chad"
 msgstr "차드"
@@ -2303,12 +2303,12 @@ msgstr "체크박스"
 msgid "Cheque"
 msgstr "확인하다"
 
-#: core/classes/class.arm_member_forms.php:10642
+#: core/classes/class.arm_member_forms.php:10643
 #@ armember-membership
 msgid "Chile"
 msgstr "칠레"
 
-#: core/classes/class.arm_member_forms.php:10643
+#: core/classes/class.arm_member_forms.php:10644
 #@ armember-membership
 msgid "China"
 msgstr "중국"
@@ -2510,7 +2510,7 @@ msgid "Clone from existing forms"
 msgstr "기존 양식에서 복제"
 
 #: autoload.php:3639
-#: autoload.php:3843
+#: autoload.php:3842
 #: core/classes/class.arm_manage_subscription.php:1468
 #: core/classes/class.arm_members.php:599
 #: core/classes/class.arm_subscription_plans.php:279
@@ -2558,7 +2558,7 @@ msgstr "계정을 닫다"
 msgid "Code Copied"
 msgstr "코드 복사됨"
 
-#: core/classes/class.arm_member_forms.php:10644
+#: core/classes/class.arm_member_forms.php:10645
 #@ armember-membership
 msgid "Colombia"
 msgstr "콜롬비아"
@@ -2578,7 +2578,7 @@ msgstr "색 구성표"
 msgid "Common Messages"
 msgstr "일반적인 메시지"
 
-#: core/classes/class.arm_member_forms.php:10645
+#: core/classes/class.arm_member_forms.php:10646
 #@ armember-membership
 msgid "Comoros"
 msgstr "콜롬비아"
@@ -2658,7 +2658,7 @@ msgstr "비밀번호 확인"
 msgid "Confirmation"
 msgstr "확인"
 
-#: core/classes/class.arm_member_forms.php:10646
+#: core/classes/class.arm_member_forms.php:10647
 #@ armember-membership
 msgid "Congo"
 msgstr "콩고"
@@ -2719,7 +2719,7 @@ msgstr "콘텐츠 너비"
 msgid "Continue"
 msgstr "계속하다"
 
-#: core/classes/class.arm_member_forms.php:10647
+#: core/classes/class.arm_member_forms.php:10648
 #@ armember-membership
 msgid "Costa Rica"
 msgstr "코스타리카"
@@ -2773,7 +2773,7 @@ msgstr "신용카드 라벨"
 msgid "Credit Card Number"
 msgstr "신용 카드 번호"
 
-#: core/classes/class.arm_member_forms.php:10648
+#: core/classes/class.arm_member_forms.php:10649
 #@ armember-membership
 msgid "Croatia"
 msgstr "크로아티아"
@@ -2804,7 +2804,7 @@ msgstr "수확고"
 msgid "crop"
 msgstr "수확고"
 
-#: core/classes/class.arm_member_forms.php:10649
+#: core/classes/class.arm_member_forms.php:10650
 #@ armember-membership
 msgid "Cuba"
 msgstr "쿠바"
@@ -2951,7 +2951,7 @@ msgstr "주기 날짜"
 msgid "cycles due"
 msgstr "주기 마감일"
 
-#: core/classes/class.arm_member_forms.php:10650
+#: core/classes/class.arm_member_forms.php:10651
 #@ armember-membership
 msgid "Cyprus"
 msgstr "키프로스"
@@ -2961,7 +2961,7 @@ msgstr "키프로스"
 msgid "Czech"
 msgstr "체코 사람"
 
-#: core/classes/class.arm_member_forms.php:10651
+#: core/classes/class.arm_member_forms.php:10652
 #@ armember-membership
 msgid "Czech Republic"
 msgstr "체코 공화국"
@@ -3151,7 +3151,7 @@ msgstr "기본 리디렉션 URL"
 msgid "Default Redirection url is required."
 msgstr "기본 리디렉션 URL이 필요합니다."
 
-#: core/classes/class.arm_access_rules.php:1042
+#: core/classes/class.arm_access_rules.php:1045
 #: core/views/arm_access_rules.php:312
 #@ armember-membership
 msgid "Default Restriction"
@@ -3254,7 +3254,7 @@ msgstr "거래 삭제"
 msgid "Delicious"
 msgstr "맛있는"
 
-#: core/classes/class.arm_member_forms.php:10652
+#: core/classes/class.arm_member_forms.php:10653
 #@ armember-membership
 msgid "Denmark"
 msgstr "덴마크"
@@ -3552,7 +3552,7 @@ msgstr "Divi Builder 제한 사항"
 msgid "Divider"
 msgstr "분할기"
 
-#: core/classes/class.arm_member_forms.php:10653
+#: core/classes/class.arm_member_forms.php:10654
 #@ armember-membership
 msgid "Djibouti"
 msgstr "지부티"
@@ -3569,18 +3569,18 @@ msgstr "다시 표시하지 않습니다."
 
 #: autoload.php:1318
 #: autoload.php:1319
-#: autoload.php:3837
+#: autoload.php:3836
 #: core/views/arm_setup_wizard.php:1296
 #@ armember-membership
 msgid "Documentation"
 msgstr "선적 서류 비치"
 
-#: core/classes/class.arm_member_forms.php:10654
+#: core/classes/class.arm_member_forms.php:10655
 #@ armember-membership
 msgid "Dominica"
 msgstr "도미니카"
 
-#: core/classes/class.arm_member_forms.php:10655
+#: core/classes/class.arm_member_forms.php:10656
 #@ armember-membership
 msgid "Dominican Republic"
 msgstr "도미니카 공화국"
@@ -3637,8 +3637,8 @@ msgstr "여기에 파일을 놓거나 클릭하여 선택하세요."
 #: core/classes/class.arm_member_forms.php:4624
 #: core/classes/class.arm_member_forms.php:7687
 #: core/classes/class.arm_member_forms.php:7698
-#: core/classes/class.arm_member_forms.php:11209
-#: core/classes/class.arm_member_forms.php:11227
+#: core/classes/class.arm_member_forms.php:11210
+#: core/classes/class.arm_member_forms.php:11228
 #@ armember-membership
 msgid "Drop file here or click to select."
 msgstr "여기에 파일을 놓거나 클릭하여 선택하세요."
@@ -3664,12 +3664,12 @@ msgstr "네덜란드/네덜란드"
 msgid "e.g."
 msgstr "예를 들어"
 
-#: core/classes/class.arm_member_forms.php:10656
+#: core/classes/class.arm_member_forms.php:10657
 #@ armember-membership
 msgid "East Timor"
 msgstr "동 티모르"
 
-#: core/classes/class.arm_member_forms.php:10657
+#: core/classes/class.arm_member_forms.php:10658
 #@ armember-membership
 msgid "Ecuador"
 msgstr "에콰도르"
@@ -3776,12 +3776,12 @@ msgstr "템플릿 옵션 편집"
 msgid "Effective from"
 msgstr "발효일:"
 
-#: core/classes/class.arm_member_forms.php:10658
+#: core/classes/class.arm_member_forms.php:10659
 #@ armember-membership
 msgid "Egypt"
 msgstr "이집트"
 
-#: core/classes/class.arm_member_forms.php:10659
+#: core/classes/class.arm_member_forms.php:10660
 #@ armember-membership
 msgid "El Salvador"
 msgstr "구세주"
@@ -4045,12 +4045,12 @@ msgstr "사용자 메타 이름을 입력하세요"
 msgid "entries"
 msgstr "항목"
 
-#: core/classes/class.arm_member_forms.php:10660
+#: core/classes/class.arm_member_forms.php:10661
 #@ armember-membership
 msgid "Equatorial Guinea"
 msgstr "적도 기니"
 
-#: core/classes/class.arm_member_forms.php:10661
+#: core/classes/class.arm_member_forms.php:10662
 #@ armember-membership
 msgid "Eritrea"
 msgstr "에리트레아"
@@ -4062,7 +4062,7 @@ msgstr "에리트레아"
 msgid "ERROR"
 msgstr "오류"
 
-#: autoload.php:3883
+#: autoload.php:3882
 #@ armember-membership
 msgid "Error"
 msgstr "오류"
@@ -4112,7 +4112,7 @@ msgstr "에스키모 알류트/앵귈라"
 msgid "Esperanto"
 msgstr "에스페란토 말"
 
-#: core/classes/class.arm_member_forms.php:10662
+#: core/classes/class.arm_member_forms.php:10663
 #@ armember-membership
 msgid "Estonia"
 msgstr "에스토니아"
@@ -4122,7 +4122,7 @@ msgstr "에스토니아"
 msgid "Estonian"
 msgstr "에스토니아 사람"
 
-#: core/classes/class.arm_member_forms.php:10663
+#: core/classes/class.arm_member_forms.php:10664
 #@ armember-membership
 msgid "Ethiopia"
 msgstr "에티오피아"
@@ -4347,7 +4347,7 @@ msgstr "페로어"
 msgid "Farsi/Persian"
 msgstr "페르시아어/페르시아어"
 
-#: autoload.php:3838
+#: autoload.php:3837
 #@ armember-membership
 msgid "Feature Request"
 msgstr "기능 요청"
@@ -4437,12 +4437,12 @@ msgstr "필드 너비"
 msgid "Fields to be included in payment form"
 msgstr "결제 양식에 포함될 필드"
 
-#: core/classes/class.arm_member_forms.php:10664
+#: core/classes/class.arm_member_forms.php:10665
 #@ armember-membership
 msgid "Fiji"
 msgstr "피지"
 
-#: autoload.php:3978
+#: autoload.php:3977
 #@ armember-membership
 msgid "File is not allowed bigger than {SIZE}."
 msgstr "{SIZE}보다 큰 파일은 허용되지 않습니다."
@@ -4489,7 +4489,7 @@ msgstr "필터 옵션"
 msgid "filtered from"
 msgstr "필터링된"
 
-#: core/classes/class.arm_member_forms.php:10665
+#: core/classes/class.arm_member_forms.php:10666
 #@ armember-membership
 msgid "Finland"
 msgstr "핀란드"
@@ -4698,7 +4698,7 @@ msgid "Form Border"
 msgstr "양식 테두리"
 
 #: autoload.php:1813
-#: autoload.php:4009
+#: autoload.php:4008
 #@ armember-membership
 msgid "Form deleted successfully."
 msgstr "양식이 삭제되었습니다."
@@ -4805,7 +4805,7 @@ msgstr "더 나은 플러그인을 찾았습니다"
 msgid "Francais/Canada"
 msgstr "프랑세즈/캐나다"
 
-#: core/classes/class.arm_member_forms.php:10666
+#: core/classes/class.arm_member_forms.php:10667
 #@ armember-membership
 msgid "France"
 msgstr "프랑스"
@@ -4848,12 +4848,12 @@ msgstr "무료 플랜"
 msgid "French"
 msgstr "프랑스 국민"
 
-#: core/classes/class.arm_member_forms.php:10667
+#: core/classes/class.arm_member_forms.php:10668
 #@ armember-membership
 msgid "French Guiana"
 msgstr "프랑스령 기아나"
 
-#: core/classes/class.arm_member_forms.php:10668
+#: core/classes/class.arm_member_forms.php:10669
 #@ armember-membership
 msgid "French Polynesia"
 msgstr "프랑스 령 폴리네시아의"
@@ -4885,12 +4885,12 @@ msgstr "거래일부터"
 msgid "Future Membership"
 msgstr "미래 회원"
 
-#: core/classes/class.arm_member_forms.php:10669
+#: core/classes/class.arm_member_forms.php:10670
 #@ armember-membership
 msgid "Gabon"
 msgstr "가봉"
 
-#: core/classes/class.arm_member_forms.php:10670
+#: core/classes/class.arm_member_forms.php:10671
 #@ armember-membership
 msgid "Gambia"
 msgstr "감비아"
@@ -4949,7 +4949,7 @@ msgstr "일반 설정"
 msgid "Generate dynamically"
 msgstr "동적으로 생성"
 
-#: core/classes/class.arm_member_forms.php:10671
+#: core/classes/class.arm_member_forms.php:10672
 #@ armember-membership
 msgid "Georgia"
 msgstr "그루지야"
@@ -4964,7 +4964,7 @@ msgstr "독일 사람"
 msgid "German/Germany"
 msgstr "독일/독일"
 
-#: core/classes/class.arm_member_forms.php:10672
+#: core/classes/class.arm_member_forms.php:10673
 #@ armember-membership
 msgid "Germany"
 msgstr "독일"
@@ -4984,12 +4984,12 @@ msgstr "시작하기"
 msgid "Getting Started With Setup"
 msgstr "설정 시작하기"
 
-#: core/classes/class.arm_member_forms.php:10673
+#: core/classes/class.arm_member_forms.php:10674
 #@ armember-membership
 msgid "Ghana"
 msgstr "가나"
 
-#: core/classes/class.arm_member_forms.php:10674
+#: core/classes/class.arm_member_forms.php:10675
 #@ armember-membership
 msgid "Gibraltar"
 msgstr "지브롤터"
@@ -5021,7 +5021,7 @@ msgstr "관리 인터페이스에서 일반 설정 메뉴로 이동합니다. �
 msgid "Good Text"
 msgstr "좋은 텍스트"
 
-#: core/classes/class.arm_member_forms.php:10531
+#: core/classes/class.arm_member_forms.php:10532
 #@ armember-membership
 msgid "Google Fonts"
 msgstr "구글 글꼴"
@@ -5060,7 +5060,7 @@ msgstr "유예 기간이 만료됩니다."
 msgid "Grace Period Failed Payment"
 msgstr "유예기간 결제 실패"
 
-#: core/classes/class.arm_member_forms.php:10675
+#: core/classes/class.arm_member_forms.php:10676
 #@ armember-membership
 msgid "Greece"
 msgstr "그리스"
@@ -5070,12 +5070,12 @@ msgstr "그리스"
 msgid "Greek"
 msgstr "그리스 어"
 
-#: core/classes/class.arm_member_forms.php:10676
+#: core/classes/class.arm_member_forms.php:10677
 #@ armember-membership
 msgid "Greenland"
 msgstr "그린란드"
 
-#: core/classes/class.arm_member_forms.php:10677
+#: core/classes/class.arm_member_forms.php:10678
 #@ armember-membership
 msgid "Grenada"
 msgstr "그레나다"
@@ -5087,12 +5087,12 @@ msgstr "그레나다"
 msgid "Growth Plugins"
 msgstr "성장 플러그인"
 
-#: core/classes/class.arm_member_forms.php:10678
+#: core/classes/class.arm_member_forms.php:10679
 #@ armember-membership
 msgid "Guam"
 msgstr "괌"
 
-#: core/classes/class.arm_member_forms.php:10679
+#: core/classes/class.arm_member_forms.php:10680
 #@ armember-membership
 msgid "Guatemala"
 msgstr "과테말라"
@@ -5102,12 +5102,12 @@ msgstr "과테말라"
 msgid "Guest page"
 msgstr "게스트 페이지"
 
-#: core/classes/class.arm_member_forms.php:10680
+#: core/classes/class.arm_member_forms.php:10681
 #@ armember-membership
 msgid "Guinea"
 msgstr "기니"
 
-#: core/classes/class.arm_member_forms.php:10681
+#: core/classes/class.arm_member_forms.php:10682
 #@ armember-membership
 msgid "Guinea-Bissau"
 msgstr "기니비사우"
@@ -5117,12 +5117,12 @@ msgstr "기니비사우"
 msgid "Gutenberg Block Restriction"
 msgstr "구텐베르크 블록 제한"
 
-#: core/classes/class.arm_member_forms.php:10682
+#: core/classes/class.arm_member_forms.php:10683
 #@ armember-membership
 msgid "Guyana"
 msgstr "가이아나"
 
-#: core/classes/class.arm_member_forms.php:10683
+#: core/classes/class.arm_member_forms.php:10684
 #@ armember-membership
 msgid "Haiti"
 msgstr "아이티"
@@ -5299,12 +5299,12 @@ msgstr "사용자 이름 필드를 숨기고 이메일로 사용자 이름 할�
 msgid "Home Page"
 msgstr "홈 페이지"
 
-#: core/classes/class.arm_member_forms.php:10684
+#: core/classes/class.arm_member_forms.php:10685
 #@ armember-membership
 msgid "Honduras"
 msgstr "온두라스"
 
-#: core/classes/class.arm_member_forms.php:10685
+#: core/classes/class.arm_member_forms.php:10686
 #@ armember-membership
 msgid "Hong Kong"
 msgstr "홍콩"
@@ -5397,7 +5397,7 @@ msgstr "https://www.armemberplugin.com"
 msgid "Hungarian"
 msgstr "헝가리 인"
 
-#: core/classes/class.arm_member_forms.php:10686
+#: core/classes/class.arm_member_forms.php:10687
 #@ armember-membership
 msgid "Hungary"
 msgstr "헝가리"
@@ -5407,7 +5407,7 @@ msgstr "헝가리"
 msgid "I already did"
 msgstr "난 이미 그랬어"
 
-#: core/classes/class.arm_member_forms.php:10687
+#: core/classes/class.arm_member_forms.php:10688
 #@ armember-membership
 msgid "Iceland"
 msgstr "아이슬란드"
@@ -5430,7 +5430,7 @@ msgstr "아이콘 색상"
 msgid "ID"
 msgstr "ID"
 
-#: core/classes/class.arm_access_rules.php:1049
+#: core/classes/class.arm_access_rules.php:1052
 #@ armember-membership
 msgid "If Default Restriction is ON then ONLY the selected plan members below can access this page."
 msgstr "기본 제한이 켜져 있으면 선택한 플랜 아래의 구성원만 이 페이지에 액세스할 수 있습니다."
@@ -5608,12 +5608,12 @@ msgstr "비활성 회원"
 msgid "Incompatible with theme or plugin"
 msgstr "테마 또는 플러그인과 호환되지 않음"
 
-#: core/classes/class.arm_member_forms.php:10688
+#: core/classes/class.arm_member_forms.php:10689
 #@ armember-membership
 msgid "India"
 msgstr "인도"
 
-#: core/classes/class.arm_member_forms.php:10689
+#: core/classes/class.arm_member_forms.php:10690
 #@ armember-membership
 msgid "Indonesia"
 msgstr "인도네시아"
@@ -5642,7 +5642,7 @@ msgstr "정보"
 msgid "Inherit Access Rules Of Membership Plan"
 msgstr "멤버십 플랜의 액세스 규칙 상속"
 
-#: core/classes/class.arm_member_forms.php:10524
+#: core/classes/class.arm_member_forms.php:10525
 #@ armember-membership
 msgid "Inherit Fonts"
 msgstr "글꼴 상속"
@@ -5745,8 +5745,8 @@ msgstr "잘못된 파일이 업로드되었습니다."
 #: core/classes/class.arm_member_forms.php:506
 #: core/classes/class.arm_member_forms.php:2944
 #: core/classes/class.arm_member_forms.php:2992
-#: core/classes/class.arm_member_forms.php:11217
-#: core/classes/class.arm_member_forms.php:11235
+#: core/classes/class.arm_member_forms.php:11218
+#: core/classes/class.arm_member_forms.php:11236
 #: core/views/arm_member_add.php:732
 #: core/views/arm_member_add.php:780
 #@ armember-membership
@@ -5789,17 +5789,17 @@ msgstr "사용자 이름이나 이메일이 잘못되었습니다."
 msgid "Invoice and Tax"
 msgstr "송장 및 세금"
 
-#: core/classes/class.arm_member_forms.php:10690
+#: core/classes/class.arm_member_forms.php:10691
 #@ armember-membership
 msgid "Iran"
 msgstr "이란"
 
-#: core/classes/class.arm_member_forms.php:10691
+#: core/classes/class.arm_member_forms.php:10692
 #@ armember-membership
 msgid "Iraq"
 msgstr "이라크"
 
-#: core/classes/class.arm_member_forms.php:10692
+#: core/classes/class.arm_member_forms.php:10693
 #@ armember-membership
 msgid "Ireland"
 msgstr "아일랜드"
@@ -5815,7 +5815,7 @@ msgstr "비활성 상태입니다"
 msgid "is meta field name."
 msgstr "메타 필드 이름입니다."
 
-#: core/classes/class.arm_member_forms.php:10693
+#: core/classes/class.arm_member_forms.php:10694
 #@ armember-membership
 msgid "Israel"
 msgstr "이스라엘"
@@ -5830,17 +5830,17 @@ msgstr "이탈리아 사람"
 msgid "Italian/Italy"
 msgstr "이탈리아/이탈리아"
 
-#: core/classes/class.arm_member_forms.php:10694
+#: core/classes/class.arm_member_forms.php:10695
 #@ armember-membership
 msgid "Italy"
 msgstr "이탈리아"
 
-#: core/classes/class.arm_member_forms.php:10695
+#: core/classes/class.arm_member_forms.php:10696
 #@ armember-membership
 msgid "Jamaica"
 msgstr "자메이카"
 
-#: core/classes/class.arm_member_forms.php:10696
+#: core/classes/class.arm_member_forms.php:10697
 #@ armember-membership
 msgid "Japan"
 msgstr "일본"
@@ -5855,7 +5855,7 @@ msgstr "일본어"
 msgid "Japanese/Japan"
 msgstr "일본/일본"
 
-#: autoload.php:3839
+#: autoload.php:3838
 #@ armember-membership
 msgid "Join Community"
 msgstr "커뮤니티 가입"
@@ -5887,22 +5887,22 @@ msgstr "가입 날짜"
 msgid "Joining Date"
 msgstr "가입 날짜"
 
-#: core/classes/class.arm_member_forms.php:10697
+#: core/classes/class.arm_member_forms.php:10698
 #@ armember-membership
 msgid "Jordan"
 msgstr "요르단"
 
-#: core/classes/class.arm_member_forms.php:10698
+#: core/classes/class.arm_member_forms.php:10699
 #@ armember-membership
 msgid "Kazakhstan"
 msgstr "카자흐스탄"
 
-#: core/classes/class.arm_member_forms.php:10699
+#: core/classes/class.arm_member_forms.php:10700
 #@ armember-membership
 msgid "Kenya"
 msgstr "케냐"
 
-#: core/classes/class.arm_member_forms.php:10700
+#: core/classes/class.arm_member_forms.php:10701
 #@ armember-membership
 msgid "Kiribati"
 msgstr "키리바시"
@@ -5917,12 +5917,12 @@ msgstr "한국인"
 msgid "Korean/South Korea"
 msgstr "한국어/한국"
 
-#: core/classes/class.arm_member_forms.php:10703
+#: core/classes/class.arm_member_forms.php:10704
 #@ armember-membership
 msgid "Kuwait"
 msgstr "쿠웨이트"
 
-#: core/classes/class.arm_member_forms.php:10704
+#: core/classes/class.arm_member_forms.php:10705
 #@ armember-membership
 msgid "Kyrgyzstan"
 msgstr "키르기스스탄"
@@ -5980,7 +5980,7 @@ msgstr "문서 부족"
 msgid "Language"
 msgstr "언어"
 
-#: core/classes/class.arm_member_forms.php:10705
+#: core/classes/class.arm_member_forms.php:10706
 #@ armember-membership
 msgid "Laos"
 msgstr "라오스"
@@ -6020,7 +6020,7 @@ msgstr "마지막 수정"
 msgid "Last Name"
 msgstr "성"
 
-#: core/classes/class.arm_member_forms.php:10706
+#: core/classes/class.arm_member_forms.php:10707
 #@ armember-membership
 msgid "Latvia"
 msgstr "라트비아"
@@ -6046,7 +6046,7 @@ msgstr "모든 파일 형식을 허용하려면 비워 두세요."
 msgid "Leave blank to display all plan's members."
 msgstr "모든 계획의 구성원을 표시하려면 비워 두세요."
 
-#: core/classes/class.arm_member_forms.php:10707
+#: core/classes/class.arm_member_forms.php:10708
 #@ armember-membership
 msgid "Lebanon"
 msgstr "레바논"
@@ -6075,7 +6075,7 @@ msgstr "레바논"
 msgid "Left"
 msgstr "왼쪽"
 
-#: core/classes/class.arm_member_forms.php:10708
+#: core/classes/class.arm_member_forms.php:10709
 #@ armember-membership
 msgid "Lesotho"
 msgstr "레소토"
@@ -6085,17 +6085,17 @@ msgstr "레소토"
 msgid "Let users get benefit of discounts coupons while making payment with your site."
 msgstr "사용자가 사이트에서 결제하는 동안 할인 쿠폰 혜택을 받을 수 있도록 하세요."
 
-#: core/classes/class.arm_member_forms.php:10709
+#: core/classes/class.arm_member_forms.php:10710
 #@ armember-membership
 msgid "Liberia"
 msgstr "라이베리아"
 
-#: core/classes/class.arm_member_forms.php:10710
+#: core/classes/class.arm_member_forms.php:10711
 #@ armember-membership
 msgid "Libya"
 msgstr "리비아"
 
-#: core/classes/class.arm_member_forms.php:10711
+#: core/classes/class.arm_member_forms.php:10712
 #@ armember-membership
 msgid "Liechtenstein"
 msgstr "리히텐슈타인"
@@ -6206,7 +6206,7 @@ msgstr "링크드인"
 msgid "List"
 msgstr "목록"
 
-#: core/classes/class.arm_member_forms.php:10712
+#: core/classes/class.arm_member_forms.php:10713
 #@ armember-membership
 msgid "Lithuania"
 msgstr "리투아니아"
@@ -6254,8 +6254,8 @@ msgid "Loading"
 msgstr "로드 중"
 
 #: autoload.php:1792
-#: autoload.php:3985
-#: autoload.php:4063
+#: autoload.php:3984
+#: autoload.php:4062
 #@ armember-membership
 msgid "Loading.."
 msgstr "로드 중.."
@@ -6318,7 +6318,7 @@ msgid "Login"
 msgstr "로그인"
 
 #: autoload.php:1799
-#: autoload.php:3995
+#: autoload.php:3994
 #@ armember-membership
 msgid "Login attempts cleared successfully."
 msgstr "로그인 시도가 성공적으로 지워졌습니다."
@@ -6383,17 +6383,17 @@ msgstr "소문자"
 msgid "LTR"
 msgstr "LTR"
 
-#: core/classes/class.arm_member_forms.php:10713
+#: core/classes/class.arm_member_forms.php:10714
 #@ armember-membership
 msgid "Luxembourg"
 msgstr "룩셈부르크"
 
-#: core/classes/class.arm_member_forms.php:10714
+#: core/classes/class.arm_member_forms.php:10715
 #@ armember-membership
 msgid "Macedonia"
 msgstr "마케도니아"
 
-#: core/classes/class.arm_member_forms.php:10715
+#: core/classes/class.arm_member_forms.php:10716
 #@ armember-membership
 msgid "Madagascar"
 msgstr "마다가스카르"
@@ -6418,27 +6418,27 @@ msgstr "결제하기"
 msgid "Make Payment Text"
 msgstr "결제 문자 보내기"
 
-#: core/classes/class.arm_member_forms.php:10716
+#: core/classes/class.arm_member_forms.php:10717
 #@ armember-membership
 msgid "Malawi"
 msgstr "말라위"
 
-#: core/classes/class.arm_member_forms.php:10717
+#: core/classes/class.arm_member_forms.php:10718
 #@ armember-membership
 msgid "Malaysia"
 msgstr "말레이시아"
 
-#: core/classes/class.arm_member_forms.php:10718
+#: core/classes/class.arm_member_forms.php:10719
 #@ armember-membership
 msgid "Maldives"
 msgstr "몰디브"
 
-#: core/classes/class.arm_member_forms.php:10719
+#: core/classes/class.arm_member_forms.php:10720
 #@ armember-membership
 msgid "Mali"
 msgstr "말리"
 
-#: core/classes/class.arm_member_forms.php:10720
+#: core/classes/class.arm_member_forms.php:10721
 #@ armember-membership
 msgid "Malta"
 msgstr "몰타"
@@ -6590,7 +6590,7 @@ msgstr "수동결제가 추가되었습니다."
 msgid "Margin"
 msgstr "여유"
 
-#: core/classes/class.arm_member_forms.php:10721
+#: core/classes/class.arm_member_forms.php:10722
 #@ armember-membership
 msgid "Marshall Islands"
 msgstr "마샬 군도"
@@ -6607,12 +6607,12 @@ msgstr "소재개요"
 msgid "Material Style"
 msgstr "소재 스타일"
 
-#: core/classes/class.arm_member_forms.php:10722
+#: core/classes/class.arm_member_forms.php:10723
 #@ armember-membership
 msgid "Mauritania"
 msgstr "모리타니"
 
-#: core/classes/class.arm_member_forms.php:10723
+#: core/classes/class.arm_member_forms.php:10724
 #@ armember-membership
 msgid "Mauritius"
 msgstr "모리셔스"
@@ -6778,7 +6778,7 @@ msgstr "회원 프로필 페이지"
 msgid "Membership"
 msgstr "회원"
 
-#: core/classes/class.arm_crons.php:542
+#: core/classes/class.arm_crons.php:533
 #@ armember-membership
 msgid "membership has been changed to"
 msgstr "회원가입이 변경되었습니다"
@@ -6830,7 +6830,7 @@ msgstr "멤버십 플랜"
 #: core/classes/arm_builder/class.arm_divi_builder_restriction.php:88
 #: core/classes/arm_builder/class.arm_fusion_builder_restriction.php:93
 #: core/classes/arm_builder/class.arm_wpbakery_builder_restriction.php:130
-#: core/classes/class.arm_access_rules.php:1053
+#: core/classes/class.arm_access_rules.php:1056
 #: core/views/arm_import_export.php:27
 #: core/views/arm_profile_editor.php:660
 #: core/widgets/arm_elm_widgets/class.arm_current_membership_element_add.php:128
@@ -6897,14 +6897,14 @@ msgid "Message"
 msgstr "메시지"
 
 #: autoload.php:1827
-#: autoload.php:4023
+#: autoload.php:4022
 #: core/classes/class.arm_manage_communication.php:31
 #@ armember-membership
 msgid "Message has been deleted successfully."
 msgstr "메시지가 성공적으로 삭제되었습니다."
 
 #: autoload.php:1829
-#: autoload.php:4025
+#: autoload.php:4024
 #@ armember-membership
 msgid "Message(s) has been deleted successfully."
 msgstr "메시지가 성공적으로 삭제되었습니다."
@@ -6930,12 +6930,12 @@ msgstr "메타 키"
 msgid "Meta Value"
 msgstr "메타값"
 
-#: core/classes/class.arm_member_forms.php:10724
+#: core/classes/class.arm_member_forms.php:10725
 #@ armember-membership
 msgid "Mexico"
 msgstr "멕시코"
 
-#: core/classes/class.arm_member_forms.php:10725
+#: core/classes/class.arm_member_forms.php:10726
 #@ armember-membership
 msgid "Micronesia"
 msgstr "미크로네시아"
@@ -6973,22 +6973,22 @@ msgstr "분."
 msgid "Mobile View"
 msgstr "모바일 보기"
 
-#: core/classes/class.arm_member_forms.php:10726
+#: core/classes/class.arm_member_forms.php:10727
 #@ armember-membership
 msgid "Moldova"
 msgstr "몰도바"
 
-#: core/classes/class.arm_member_forms.php:10727
+#: core/classes/class.arm_member_forms.php:10728
 #@ armember-membership
 msgid "Monaco"
 msgstr "모나코"
 
-#: core/classes/class.arm_member_forms.php:10728
+#: core/classes/class.arm_member_forms.php:10729
 #@ armember-membership
 msgid "Mongolia"
 msgstr "몽골리아"
 
-#: core/classes/class.arm_member_forms.php:10729
+#: core/classes/class.arm_member_forms.php:10730
 #@ armember-membership
 msgid "Montenegro"
 msgstr "몬테네그로"
@@ -7064,7 +7064,7 @@ msgstr "개월"
 msgid "Months(s)"
 msgstr "개월"
 
-#: core/classes/class.arm_member_forms.php:10730
+#: core/classes/class.arm_member_forms.php:10731
 #@ armember-membership
 msgid "Montserrat"
 msgstr "몬세라트"
@@ -7096,7 +7096,7 @@ msgstr "몬세라트"
 msgid "More Info"
 msgstr "더 많은 정보"
 
-#: core/classes/class.arm_member_forms.php:10731
+#: core/classes/class.arm_member_forms.php:10732
 #@ armember-membership
 msgid "Morocco"
 msgstr "모로코"
@@ -7107,7 +7107,7 @@ msgstr "모로코"
 msgid "Move"
 msgstr "이동하다"
 
-#: core/classes/class.arm_member_forms.php:10732
+#: core/classes/class.arm_member_forms.php:10733
 #@ armember-membership
 msgid "Mozambique"
 msgstr "모잠비크"
@@ -7122,7 +7122,7 @@ msgstr "다중 멤버십/플랜"
 msgid "My Profile"
 msgstr "내 프로필"
 
-#: core/classes/class.arm_member_forms.php:10733
+#: core/classes/class.arm_member_forms.php:10734
 #@ armember-membership
 msgid "Myanmar"
 msgstr "미얀마"
@@ -7143,27 +7143,27 @@ msgstr "myCRED 통합"
 msgid "Name"
 msgstr "이름"
 
-#: core/classes/class.arm_member_forms.php:10734
+#: core/classes/class.arm_member_forms.php:10735
 #@ armember-membership
 msgid "Namibia"
 msgstr "나미비아"
 
-#: core/classes/class.arm_member_forms.php:10735
+#: core/classes/class.arm_member_forms.php:10736
 #@ armember-membership
 msgid "Nauru"
 msgstr "나우루"
 
-#: autoload.php:3845
+#: autoload.php:3844
 #@ armember-membership
 msgid "Need Help?"
 msgstr "도움이 필요하다?"
 
-#: core/classes/class.arm_member_forms.php:10736
+#: core/classes/class.arm_member_forms.php:10737
 #@ armember-membership
 msgid "Nepal"
 msgstr "네팔"
 
-#: core/classes/class.arm_member_forms.php:10737
+#: core/classes/class.arm_member_forms.php:10738
 #@ armember-membership
 msgid "Netherlands"
 msgstr "네덜란드"
@@ -7253,7 +7253,7 @@ msgstr "신규 사용자 승인"
 msgid "New user approval"
 msgstr "신규 사용자 승인"
 
-#: core/classes/class.arm_member_forms.php:10738
+#: core/classes/class.arm_member_forms.php:10739
 #@ armember-membership
 msgid "New Zealand"
 msgstr "뉴질랜드"
@@ -7274,7 +7274,7 @@ msgstr "다음"
 msgid "Next Due Date"
 msgstr "다음 기한"
 
-#: core/classes/class.arm_member_forms.php:10739
+#: core/classes/class.arm_member_forms.php:10740
 #@ armember-membership
 msgid "Nicaragua"
 msgstr "니카라과"
@@ -7285,12 +7285,12 @@ msgstr "니카라과"
 msgid "Nick Name"
 msgstr "닉네임"
 
-#: core/classes/class.arm_member_forms.php:10740
+#: core/classes/class.arm_member_forms.php:10741
 #@ armember-membership
 msgid "Niger"
 msgstr "니제르"
 
-#: core/classes/class.arm_member_forms.php:10741
+#: core/classes/class.arm_member_forms.php:10742
 #@ armember-membership
 msgid "Nigeria"
 msgstr "나이지리아"
@@ -7343,8 +7343,8 @@ msgstr "아니요"
 msgid "No cycles due"
 msgstr "주기가 만료되지 않음"
 
-#: autoload.php:3902
-#: autoload.php:3907
+#: autoload.php:3901
+#: autoload.php:3906
 #@ armember-membership
 msgid "No data found"
 msgstr "데이터가 없습니다"
@@ -7530,12 +7530,12 @@ msgstr "아니요"
 msgid "No. Of Members Per Page"
 msgstr "페이지당 회원 수"
 
-#: core/classes/class.arm_spam_filter.php:162
+#: core/classes/class.arm_spam_filter.php:165
 #@ armember-membership
 msgid "Nonce is between 12 and 24 hours old"
 msgstr "Nonce는 12시간에서 24시간 사이입니다."
 
-#: core/classes/class.arm_spam_filter.php:158
+#: core/classes/class.arm_spam_filter.php:161
 #@ armember-membership
 msgid "Nonce is less than 12 hours old"
 msgstr "Nonce는 12시간 이내에 생성되었습니다."
@@ -7547,17 +7547,17 @@ msgstr "Nonce는 12시간 이내에 생성되었습니다."
 msgid "None"
 msgstr "없음"
 
-#: core/classes/class.arm_member_forms.php:10701
+#: core/classes/class.arm_member_forms.php:10702
 #@ armember-membership
 msgid "North Korea"
 msgstr "북한"
 
-#: core/classes/class.arm_member_forms.php:10743
+#: core/classes/class.arm_member_forms.php:10744
 #@ armember-membership
 msgid "Northern Mariana Islands"
 msgstr "북마리아나 제도"
 
-#: core/classes/class.arm_member_forms.php:10742
+#: core/classes/class.arm_member_forms.php:10743
 #@ armember-membership
 msgid "Norway"
 msgstr "노르웨이"
@@ -7690,7 +7690,7 @@ msgstr "좋아요"
 msgid "OK, you deserve it"
 msgstr "알았어, 넌 그럴 자격이 있어"
 
-#: core/classes/class.arm_member_forms.php:10744
+#: core/classes/class.arm_member_forms.php:10745
 #@ armember-membership
 msgid "Oman"
 msgstr "오만"
@@ -7753,7 +7753,7 @@ msgid "Oops, nothing found"
 msgstr "죄송합니다. 아무것도 발견되지 않았습니다."
 
 #: autoload.php:1864
-#: autoload.php:4064
+#: autoload.php:4063
 #@ armember-membership
 msgid "Oops, nothing found."
 msgstr "죄송합니다. 아무것도 발견되지 않았습니다."
@@ -7897,32 +7897,32 @@ msgstr "유료 플랜(무한)"
 msgid "Paid With"
 msgstr "지불 대상"
 
-#: core/classes/class.arm_member_forms.php:10745
+#: core/classes/class.arm_member_forms.php:10746
 #@ armember-membership
 msgid "Pakistan"
 msgstr "파키스탄"
 
-#: core/classes/class.arm_member_forms.php:10746
+#: core/classes/class.arm_member_forms.php:10747
 #@ armember-membership
 msgid "Palau"
 msgstr "팔라우"
 
-#: core/classes/class.arm_member_forms.php:10747
+#: core/classes/class.arm_member_forms.php:10748
 #@ armember-membership
 msgid "Palestine"
 msgstr "팔레스타인"
 
-#: core/classes/class.arm_member_forms.php:10748
+#: core/classes/class.arm_member_forms.php:10749
 #@ armember-membership
 msgid "Panama"
 msgstr "파나마"
 
-#: core/classes/class.arm_member_forms.php:10749
+#: core/classes/class.arm_member_forms.php:10750
 #@ armember-membership
 msgid "Papua New Guinea"
 msgstr "파푸아 뉴기니"
 
-#: core/classes/class.arm_member_forms.php:10750
+#: core/classes/class.arm_member_forms.php:10751
 #@ armember-membership
 msgid "Paraguay"
 msgstr "파라과이"
@@ -8282,12 +8282,12 @@ msgstr "대기 중인 회원"
 msgid "Permanent lockdown Duration"
 msgstr "영구 폐쇄 기간"
 
-#: core/classes/class.arm_member_forms.php:10751
+#: core/classes/class.arm_member_forms.php:10752
 #@ armember-membership
 msgid "Peru"
 msgstr "페루"
 
-#: core/classes/class.arm_member_forms.php:10752
+#: core/classes/class.arm_member_forms.php:10753
 #@ armember-membership
 msgid "Philippines"
 msgstr "필리핀 제도"
@@ -8390,7 +8390,7 @@ msgstr "이 사용자에 대한 계획은 무엇입니까?"
 msgid "Plan has been added successfully."
 msgstr "계획이 성공적으로 추가되었습니다."
 
-#: autoload.php:4000
+#: autoload.php:3999
 #: core/classes/class.arm_subscription_plans.php:919
 #@ armember-membership
 msgid "Plan has been deleted successfully."
@@ -8828,7 +8828,7 @@ msgstr "페이지를 선택하세요."
 
 #: core/classes/class.arm_member_forms.php:470
 #: core/classes/class.arm_member_forms.php:2943
-#: core/classes/class.arm_member_forms.php:11216
+#: core/classes/class.arm_member_forms.php:11217
 #: core/views/arm_member_add.php:731
 #@ armember-membership
 msgid "Please select avatar."
@@ -8863,7 +8863,7 @@ msgid "Please select one option."
 msgstr "옵션을 하나 선택해주세요."
 
 #: autoload.php:1798
-#: autoload.php:3994
+#: autoload.php:3993
 #: core/classes/class.arm_members.php:1296
 #: core/classes/class.arm_members.php:2179
 #: core/classes/class.arm_transaction.php:592
@@ -8926,7 +8926,7 @@ msgstr "요금제를 선택해주세요."
 
 #: core/classes/class.arm_member_forms.php:505
 #: core/classes/class.arm_member_forms.php:2991
-#: core/classes/class.arm_member_forms.php:11234
+#: core/classes/class.arm_member_forms.php:11235
 #: core/views/arm_member_add.php:779
 #@ armember-membership
 msgid "Please select profile cover."
@@ -8971,7 +8971,7 @@ msgid "Please select user."
 msgstr "사용자를 선택해 주세요."
 
 #: autoload.php:1797
-#: autoload.php:3993
+#: autoload.php:3992
 #: core/classes/class.arm_members.php:1299
 #: core/classes/class.arm_transaction.php:612
 #@ armember-membership
@@ -8999,7 +8999,7 @@ msgid "Please type your e-mail address."
 msgstr "이메일 주소를 입력해주세요."
 
 #: autoload.php:1824
-#: autoload.php:4020
+#: autoload.php:4019
 #@ armember-membership
 msgid "Please upload appropriate file to import users."
 msgstr "사용자를 가져오려면 적절한 파일을 업로드하세요."
@@ -9009,7 +9009,7 @@ msgstr "사용자를 가져오려면 적절한 파일을 업로드하세요."
 msgid "Please upload file."
 msgstr "파일을 업로드해주세요."
 
-#: core/classes/class.arm_member_forms.php:10753
+#: core/classes/class.arm_member_forms.php:10754
 #@ armember-membership
 msgid "Poland"
 msgstr "폴란드"
@@ -9029,7 +9029,7 @@ msgstr "폴란드어/폴란드"
 msgid "Port"
 msgstr "도"
 
-#: core/classes/class.arm_member_forms.php:10754
+#: core/classes/class.arm_member_forms.php:10755
 #@ armember-membership
 msgid "Portugal"
 msgstr "포르투갈"
@@ -9129,7 +9129,7 @@ msgstr "프로필"
 #: core/classes/class.arm_member_forms.php:511
 #: core/classes/class.arm_member_forms.php:2927
 #: core/classes/class.arm_member_forms.php:2980
-#: core/classes/class.arm_member_forms.php:11226
+#: core/classes/class.arm_member_forms.php:11227
 #: core/views/arm_member_add.php:771
 #: core/views/arm_member_add.php:786
 #@ armember-membership
@@ -9193,12 +9193,12 @@ msgstr "프로필 및 디렉토리"
 msgid "Publish your site content based on different time intervals by enabling this feature."
 msgstr "이 기능을 활성화하면 다양한 시간 간격에 따라 사이트 콘텐츠를 게시할 수 있습니다."
 
-#: core/classes/class.arm_member_forms.php:10755
+#: core/classes/class.arm_member_forms.php:10756
 #@ armember-membership
 msgid "Puerto Rico"
 msgstr "푸에르토 리코"
 
-#: core/classes/class.arm_member_forms.php:10756
+#: core/classes/class.arm_member_forms.php:10757
 #@ armember-membership
 msgid "Qatar"
 msgstr "카타르"
@@ -9588,7 +9588,7 @@ msgstr "콘텐츠 제한"
 msgid "Restriction Type"
 msgstr "제한 유형"
 
-#: core/classes/class.arm_member_forms.php:10757
+#: core/classes/class.arm_member_forms.php:10758
 #@ armember-membership
 msgid "Reunion Island"
 msgstr "레위니옹 섬"
@@ -9633,7 +9633,7 @@ msgstr "역할"
 msgid "Roles"
 msgstr "역할"
 
-#: core/classes/class.arm_member_forms.php:10758
+#: core/classes/class.arm_member_forms.php:10759
 #@ armember-membership
 msgid "Romania"
 msgstr "루마니아"
@@ -9675,7 +9675,7 @@ msgstr "RTL"
 msgid "Rusia/Rusia"
 msgstr "러시아/러시아"
 
-#: core/classes/class.arm_member_forms.php:10759
+#: core/classes/class.arm_member_forms.php:10760
 #@ armember-membership
 msgid "Russia"
 msgstr "러시아"
@@ -9685,32 +9685,32 @@ msgstr "러시아"
 msgid "Russian"
 msgstr "러시아인"
 
-#: core/classes/class.arm_member_forms.php:10760
+#: core/classes/class.arm_member_forms.php:10761
 #@ armember-membership
 msgid "Rwanda"
 msgstr "르완다"
 
-#: core/classes/class.arm_member_forms.php:10761
+#: core/classes/class.arm_member_forms.php:10762
 #@ armember-membership
 msgid "Saint Kitts and Nevis"
 msgstr "세인트키츠네비스"
 
-#: core/classes/class.arm_member_forms.php:10762
+#: core/classes/class.arm_member_forms.php:10763
 #@ armember-membership
 msgid "Saint Lucia"
 msgstr "세인트 루시아"
 
-#: core/classes/class.arm_member_forms.php:10763
+#: core/classes/class.arm_member_forms.php:10764
 #@ armember-membership
 msgid "Saint Vincent and the Grenadines"
 msgstr "세인트 빈센트 그레나딘"
 
-#: core/classes/class.arm_member_forms.php:10764
+#: core/classes/class.arm_member_forms.php:10765
 #@ armember-membership
 msgid "Samoa"
 msgstr "사모아"
 
-#: core/classes/class.arm_member_forms.php:10765
+#: core/classes/class.arm_member_forms.php:10766
 #@ armember-membership
 msgid "San Marino"
 msgstr "산 마리노"
@@ -9720,12 +9720,12 @@ msgstr "산 마리노"
 msgid "Sandbox"
 msgstr "모래 상자"
 
-#: core/classes/class.arm_member_forms.php:10766
+#: core/classes/class.arm_member_forms.php:10767
 #@ armember-membership
 msgid "Sao Tome and Principe"
 msgstr "상투메 프린시페"
 
-#: core/classes/class.arm_member_forms.php:10767
+#: core/classes/class.arm_member_forms.php:10768
 #@ armember-membership
 msgid "Saudi Arabia"
 msgstr "사우디 아라비아"
@@ -10310,7 +10310,7 @@ msgstr "사용자에게 가입 이메일 알림 보내기"
 msgid "Send test mail"
 msgstr "테스트 메일 보내기"
 
-#: core/classes/class.arm_member_forms.php:10768
+#: core/classes/class.arm_member_forms.php:10769
 #@ armember-membership
 msgid "Senegal"
 msgstr "세네갈"
@@ -10321,7 +10321,7 @@ msgstr "세네갈"
 msgid "Separate values format should be label:value."
 msgstr "별도의 값 형식은 라벨:값이어야 합니다."
 
-#: core/classes/class.arm_member_forms.php:10769
+#: core/classes/class.arm_member_forms.php:10770
 #@ armember-membership
 msgid "Serbia and Montenegro"
 msgstr "세르비아 및 몬테네그로"
@@ -10378,7 +10378,7 @@ msgstr "설정 이름"
 msgid "Setup name"
 msgstr "설정 이름"
 
-#: core/classes/class.arm_member_forms.php:10770
+#: core/classes/class.arm_member_forms.php:10771
 #@ armember-membership
 msgid "Seychelles"
 msgstr "세이셸"
@@ -10521,7 +10521,7 @@ msgstr "전시"
 msgid "Showing 0 to 0 of 0 entries"
 msgstr "0개 항목 중 0개에서 0개 표시 중"
 
-#: core/classes/class.arm_member_forms.php:10771
+#: core/classes/class.arm_member_forms.php:10772
 #@ armember-membership
 msgid "Sierra Leone"
 msgstr "시에라리온"
@@ -10531,7 +10531,7 @@ msgstr "시에라리온"
 msgid "signup"
 msgstr "가입하기"
 
-#: core/classes/class.arm_member_forms.php:10772
+#: core/classes/class.arm_member_forms.php:10773
 #@ armember-membership
 msgid "Singapore"
 msgstr "싱가포르"
@@ -10574,12 +10574,12 @@ msgstr "슬라이더"
 msgid "Slovak"
 msgstr "슬로바키아 사람"
 
-#: core/classes/class.arm_member_forms.php:10773
+#: core/classes/class.arm_member_forms.php:10774
 #@ armember-membership
 msgid "Slovakia"
 msgstr "슬로바키아"
 
-#: core/classes/class.arm_member_forms.php:10774
+#: core/classes/class.arm_member_forms.php:10775
 #@ armember-membership
 msgid "Slovenia"
 msgstr "슬로베니아"
@@ -10625,12 +10625,12 @@ msgstr "소셜 필드"
 msgid "Social Profile Fields"
 msgstr "소셜 프로필 필드"
 
-#: core/classes/class.arm_member_forms.php:10775
+#: core/classes/class.arm_member_forms.php:10776
 #@ armember-membership
 msgid "Solomon Islands"
 msgstr "솔로몬 제도"
 
-#: core/classes/class.arm_member_forms.php:10776
+#: core/classes/class.arm_member_forms.php:10777
 #@ armember-membership
 msgid "Somalia"
 msgstr "소말리아"
@@ -10675,7 +10675,7 @@ msgid "Sorry, Something went wrong. Please contact to site administrator."
 msgstr "죄송합니다. 문제가 발생했습니다. 사이트 관리자에게 문의하시기 바랍니다."
 
 #: autoload.php:1796
-#: autoload.php:3992
+#: autoload.php:3991
 #: core/classes/class.arm_access_rules.php:508
 #: core/classes/class.arm_email_settings.php:190
 #: core/classes/class.arm_email_settings.php:223
@@ -10711,7 +10711,7 @@ msgid "Sorry, Something went wrong. please try again."
 msgstr "죄송합니다. 문제가 발생했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1784
-#: autoload.php:3977
+#: autoload.php:3976
 #@ armember-membership
 msgid "Sorry, this file type is not permitted for security reasons."
 msgstr "죄송합니다. 이 파일 형식은 보안상의 이유로 허용되지 않습니다."
@@ -10724,7 +10724,7 @@ msgstr "죄송합니다. 이 파일 형식은 보안상의 이유로 허용되�
 msgid "Sorry, You do not have permission to perform this action"
 msgstr "죄송합니다. 이 작업을 수행할 권한이 없습니다."
 
-#: autoload.php:4145
+#: autoload.php:4144
 #: core/classes/class.arm_manage_communication.php:27
 #: core/classes/class.arm_manage_subscription.php:873
 #: core/classes/class.arm_transaction.php:556
@@ -10748,17 +10748,17 @@ msgstr "정렬 기준"
 msgid "Sort Field Order"
 msgstr "필드 순서 정렬"
 
-#: core/classes/class.arm_member_forms.php:10777
+#: core/classes/class.arm_member_forms.php:10778
 #@ armember-membership
 msgid "South Africa"
 msgstr "남아프리카"
 
-#: core/classes/class.arm_member_forms.php:10702
+#: core/classes/class.arm_member_forms.php:10703
 #@ armember-membership
 msgid "South Korea"
 msgstr "대한민국"
 
-#: core/classes/class.arm_member_forms.php:10778
+#: core/classes/class.arm_member_forms.php:10779
 #@ armember-membership
 msgid "Spain"
 msgstr "스페인"
@@ -10808,7 +10808,7 @@ msgstr "특정 페이지"
 msgid "Specific URL"
 msgstr "특정 URL"
 
-#: core/classes/class.arm_member_forms.php:10779
+#: core/classes/class.arm_member_forms.php:10780
 #@ armember-membership
 msgid "Sri Lanka"
 msgstr "스리랑카"
@@ -11069,7 +11069,7 @@ msgstr "성공"
 msgid "success"
 msgstr "성공"
 
-#: core/classes/class.arm_member_forms.php:10780
+#: core/classes/class.arm_member_forms.php:10781
 #@ armember-membership
 msgid "Sudan"
 msgstr "수단"
@@ -11086,7 +11086,7 @@ msgstr "접미사"
 msgid "Summary Text"
 msgstr "요약 텍스트"
 
-#: core/classes/class.arm_member_forms.php:10781
+#: core/classes/class.arm_member_forms.php:10782
 #@ armember-membership
 msgid "Suriname"
 msgstr "수리남"
@@ -11107,12 +11107,12 @@ msgstr "수리남"
 msgid "Suspended"
 msgstr "정지된"
 
-#: core/classes/class.arm_member_forms.php:10782
+#: core/classes/class.arm_member_forms.php:10783
 #@ armember-membership
 msgid "Swaziland"
 msgstr "스와질란드"
 
-#: core/classes/class.arm_member_forms.php:10783
+#: core/classes/class.arm_member_forms.php:10784
 #@ armember-membership
 msgid "Sweden"
 msgstr "스웨덴"
@@ -11127,12 +11127,12 @@ msgstr "스웨덴어"
 msgid "Swedish/Sweden"
 msgstr "스웨덴/스웨덴"
 
-#: core/classes/class.arm_member_forms.php:10784
+#: core/classes/class.arm_member_forms.php:10785
 #@ armember-membership
 msgid "Switzerland"
 msgstr "스위스"
 
-#: core/classes/class.arm_member_forms.php:10785
+#: core/classes/class.arm_member_forms.php:10786
 #@ armember-membership
 msgid "Syria"
 msgstr "시리아"
@@ -11147,12 +11147,12 @@ msgstr "시스템에서 스팸 로봇을 감지함"
 msgid "Tablet View"
 msgstr "태블릿 보기"
 
-#: core/classes/class.arm_member_forms.php:10786
+#: core/classes/class.arm_member_forms.php:10787
 #@ armember-membership
 msgid "Taiwan"
 msgstr "대만"
 
-#: core/classes/class.arm_member_forms.php:10787
+#: core/classes/class.arm_member_forms.php:10788
 #@ armember-membership
 msgid "Tajikistan"
 msgstr "타지키스탄"
@@ -11162,7 +11162,7 @@ msgstr "타지키스탄"
 msgid "Tamil"
 msgstr "타밀 사람"
 
-#: core/classes/class.arm_member_forms.php:10788
+#: core/classes/class.arm_member_forms.php:10789
 #@ armember-membership
 msgid "Tanzania"
 msgstr "탄자니아"
@@ -11228,13 +11228,13 @@ msgid "Template found."
 msgstr "템플릿을 찾았습니다."
 
 #: autoload.php:1844
-#: autoload.php:4038
+#: autoload.php:4037
 #@ armember-membership
 msgid "Template has been added successfully."
 msgstr "템플릿이 성공적으로 추가되었습니다."
 
 #: autoload.php:1846
-#: autoload.php:4040
+#: autoload.php:4039
 #@ armember-membership
 msgid "Template has been deleted successfully."
 msgstr "템플릿이 성공적으로 삭제되었습니다."
@@ -11245,7 +11245,7 @@ msgid "Template Name"
 msgstr "템플릿 이름"
 
 #: autoload.php:1840
-#: autoload.php:4034
+#: autoload.php:4033
 #: core/classes/class.arm_email_settings.php:137
 #: core/classes/class.arm_members_directory.php:1277
 #@ armember-membership
@@ -11317,7 +11317,7 @@ msgstr "태국어"
 msgid "Thai/Thailand"
 msgstr "태국/태국"
 
-#: core/classes/class.arm_member_forms.php:10789
+#: core/classes/class.arm_member_forms.php:10790
 #@ armember-membership
 msgid "Thailand"
 msgstr "태국"
@@ -11639,7 +11639,7 @@ msgstr "해당 값과 함께 특정 양식 필드를 제거하려면 이 버튼�
 msgid "To reset your password, visit the following address:"
 msgstr "비밀번호를 재설정하려면 다음 주소를 방문하세요."
 
-#: core/classes/class.arm_member_forms.php:10790
+#: core/classes/class.arm_member_forms.php:10791
 #@ armember-membership
 msgid "Togo"
 msgstr "토고"
@@ -11650,7 +11650,7 @@ msgstr "토고"
 msgid "Token"
 msgstr "토큰"
 
-#: core/classes/class.arm_member_forms.php:10791
+#: core/classes/class.arm_member_forms.php:10792
 #@ armember-membership
 msgid "Tonga"
 msgstr "통가"
@@ -11727,7 +11727,7 @@ msgid "Transaction Details"
 msgstr "상세 거래 내역"
 
 #: autoload.php:1825
-#: autoload.php:4021
+#: autoload.php:4020
 #@ armember-membership
 msgid "Transaction has been deleted successfully."
 msgstr "거래가 성공적으로 삭제되었습니다."
@@ -11878,7 +11878,7 @@ msgstr "평가판 기간"
 msgid "Trial Start Date"
 msgstr "평가판 시작일"
 
-#: core/classes/class.arm_member_forms.php:10792
+#: core/classes/class.arm_member_forms.php:10793
 #@ armember-membership
 msgid "Trinidad and Tobago"
 msgstr "트리니다드 토바고"
@@ -11888,12 +11888,12 @@ msgstr "트리니다드 토바고"
 msgid "Tumblr"
 msgstr "텀블러"
 
-#: core/classes/class.arm_member_forms.php:10793
+#: core/classes/class.arm_member_forms.php:10794
 #@ armember-membership
 msgid "Tunisia"
 msgstr "튀니지"
 
-#: core/classes/class.arm_member_forms.php:10794
+#: core/classes/class.arm_member_forms.php:10795
 #@ armember-membership
 msgid "Turkey"
 msgstr "칠면조"
@@ -11903,12 +11903,12 @@ msgstr "칠면조"
 msgid "Turkish"
 msgstr "터키어"
 
-#: core/classes/class.arm_member_forms.php:10795
+#: core/classes/class.arm_member_forms.php:10796
 #@ armember-membership
 msgid "Turkmenistan"
 msgstr "투르크메니스탄"
 
-#: core/classes/class.arm_member_forms.php:10796
+#: core/classes/class.arm_member_forms.php:10797
 #@ armember-membership
 msgid "Tuvalu"
 msgstr "투발루"
@@ -11932,12 +11932,12 @@ msgstr "유형"
 msgid "Type username to select user"
 msgstr "사용자를 선택하려면 사용자 이름을 입력하세요."
 
-#: core/classes/class.arm_member_forms.php:10797
+#: core/classes/class.arm_member_forms.php:10798
 #@ armember-membership
 msgid "Uganda"
 msgstr "우간다"
 
-#: core/classes/class.arm_member_forms.php:10798
+#: core/classes/class.arm_member_forms.php:10799
 #@ armember-membership
 msgid "Ukraine"
 msgstr "우크라이나"
@@ -11954,17 +11954,17 @@ msgstr "우크라이나 인"
 msgid "Uncover"
 msgstr "발견"
 
-#: core/classes/class.arm_member_forms.php:10799
+#: core/classes/class.arm_member_forms.php:10800
 #@ armember-membership
 msgid "United Arab Emirates"
 msgstr "아랍 에미리트"
 
-#: core/classes/class.arm_member_forms.php:10800
+#: core/classes/class.arm_member_forms.php:10801
 #@ armember-membership
 msgid "United Kingdom"
 msgstr "영국"
 
-#: core/classes/class.arm_member_forms.php:10801
+#: core/classes/class.arm_member_forms.php:10802
 #@ armember-membership
 msgid "United States"
 msgstr "미국"
@@ -12087,7 +12087,7 @@ msgstr "프로필 사진 업로드"
 msgid "uppercase"
 msgstr "대문자"
 
-#: core/classes/class.arm_member_forms.php:10802
+#: core/classes/class.arm_member_forms.php:10803
 #@ armember-membership
 msgid "Uruguay"
 msgstr "우루과이"
@@ -12290,8 +12290,8 @@ msgid "User's Signup Details such as Username, Password, First Name, Last Name a
 msgstr "사용자 이름, 비밀번호, 이름, 성 및 사용자 정의 필드 값(주소, 성별 등)과 같은 사용자 가입 세부 정보"
 
 #: autoload.php:1790
-#: autoload.php:3983
-#: autoload.php:4061
+#: autoload.php:3982
+#: autoload.php:4060
 #@ armember-membership
 msgid "User's subscription has been canceled"
 msgstr "사용자의 구독이 취소되었습니다."
@@ -12365,7 +12365,7 @@ msgstr "사용자 이름"
 msgid "Username OR Email Address"
 msgstr "아이디 또는 이메일 주소"
 
-#: core/classes/class.arm_access_rules.php:1061
+#: core/classes/class.arm_access_rules.php:1064
 #: core/classes/class.arm_subscription_plans.php:785
 #: core/classes/class.arm_subscription_plans.php:848
 #: core/views/arm_access_rules.php:295
@@ -12373,7 +12373,7 @@ msgstr "아이디 또는 이메일 주소"
 msgid "Users Having No Plan"
 msgstr "계획이 없는 사용자"
 
-#: core/classes/class.arm_member_forms.php:10803
+#: core/classes/class.arm_member_forms.php:10804
 #@ armember-membership
 msgid "Uzbekistan"
 msgstr "우즈베키스탄"
@@ -12420,17 +12420,17 @@ msgstr "검증 URL"
 msgid "Value"
 msgstr "값"
 
-#: core/classes/class.arm_member_forms.php:10804
+#: core/classes/class.arm_member_forms.php:10805
 #@ armember-membership
 msgid "Vanuatu"
 msgstr "바누아투"
 
-#: core/classes/class.arm_member_forms.php:10805
+#: core/classes/class.arm_member_forms.php:10806
 #@ armember-membership
 msgid "Vatican City"
 msgstr "바티칸 시국"
 
-#: core/classes/class.arm_member_forms.php:10806
+#: core/classes/class.arm_member_forms.php:10807
 #@ armember-membership
 msgid "Venezuela"
 msgstr "베네수엘라"
@@ -12440,12 +12440,12 @@ msgstr "베네수엘라"
 msgid "Very Weak Text"
 msgstr "매우 약한 텍스트"
 
-#: autoload.php:3841
+#: autoload.php:3840
 #@ armember-membership
 msgid "Video Tutorials"
 msgstr "비디오 튜토리얼"
 
-#: core/classes/class.arm_member_forms.php:10807
+#: core/classes/class.arm_member_forms.php:10808
 #@ armember-membership
 msgid "Vietnam"
 msgstr "베트남"
@@ -12507,12 +12507,12 @@ msgstr "프로필 링크 라벨 보기"
 msgid "Vine"
 msgstr "덩굴"
 
-#: core/classes/class.arm_member_forms.php:10808
+#: core/classes/class.arm_member_forms.php:10809
 #@ armember-membership
 msgid "Virgin Islands, British"
 msgstr "영국령 버진 아일랜드"
 
-#: core/classes/class.arm_member_forms.php:10809
+#: core/classes/class.arm_member_forms.php:10810
 #@ armember-membership
 msgid "Virgin Islands, U.S."
 msgstr "미국령 버진아일랜드"
@@ -12815,7 +12815,7 @@ msgstr "연령"
 msgid "years"
 msgstr "연령"
 
-#: core/classes/class.arm_member_forms.php:10810
+#: core/classes/class.arm_member_forms.php:10811
 #@ armember-membership
 msgid "Yemen"
 msgstr "예멘"
@@ -13074,12 +13074,12 @@ msgstr "테스트 메일이 성공적으로 전송되었습니다."
 msgid "Youtube"
 msgstr "유튜브"
 
-#: core/classes/class.arm_member_forms.php:10811
+#: core/classes/class.arm_member_forms.php:10812
 #@ armember-membership
 msgid "Zambia"
 msgstr "잠비아"
 
-#: core/classes/class.arm_member_forms.php:10812
+#: core/classes/class.arm_member_forms.php:10813
 #@ armember-membership
 msgid "Zimbabwe"
 msgstr "짐바브웨"
@@ -14183,17 +14183,17 @@ msgstr "시범거래"
 msgid "User Email"
 msgstr "사용자 이메일"
 
-#: autoload.php:4608
+#: autoload.php:4607
 #@ armember-membership
 msgid "An Unexpected HTTP Error occurred during the API request."
 msgstr "API 요청 중에 예기치 않은 HTTP 오류가 발생했습니다."
 
-#: autoload.php:4608
+#: autoload.php:4607
 #@ armember-membership
 msgid "Try again"
 msgstr "다시 시도하세요"
 
-#: autoload.php:4613
+#: autoload.php:4612
 #@ armember-membership
 msgid "An unknown error occurred"
 msgstr "알 수 없는 오류가 발생했습니다."
@@ -15644,37 +15644,37 @@ msgid "Total"
 msgstr "총액"
 
 #: autoload.php:1778
-#: autoload.php:3971
+#: autoload.php:3970
 #@ armember-membership
 msgid "Failed to load activities. Please try again."
 msgstr "활동을 로드하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1779
-#: autoload.php:3972
+#: autoload.php:3971
 #@ armember-membership
 msgid "The user chose not to grant permission or closed the pop-up."
 msgstr "사용자가 권한을 부여하지 않거나 팝업을 닫았습니다."
 
 #: autoload.php:1780
-#: autoload.php:3973
+#: autoload.php:3972
 #@ armember-membership
 msgid "Oops! There was a problem retrieving your information."
 msgstr "정보를 가져오는 데 문제가 발생했습니다."
 
 #: autoload.php:1781
-#: autoload.php:3974
+#: autoload.php:3973
 #@ armember-membership
 msgid "Failed to copy. Please try again."
 msgstr "복사에 실패했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1782
-#: autoload.php:3975
+#: autoload.php:3974
 #@ armember-membership
 msgid "The user canceled the login or did not fully authorize it."
 msgstr "사용자가 로그인 또는 인증을 취소했습니다."
 
 #: autoload.php:1783
-#: autoload.php:3976
+#: autoload.php:3975
 #@ armember-membership
 msgid "Failed to close the account. Please try again."
 msgstr "계정을 닫지 못했습니다. 다시 시도해 주세요."
@@ -15685,20 +15685,20 @@ msgid "File size must not exceed {SIZE}."
 msgstr "파일 크기는 {SIZE}을(를) 초과할 수 없습니다."
 
 #: autoload.php:1786
-#: autoload.php:3979
+#: autoload.php:3978
 #@ armember-membership
 msgid "Failed to upload the file. Please try again."
 msgstr "파일을 업로드하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1787
-#: autoload.php:3980
+#: autoload.php:3979
 #: core/classes/class.arm_members_directory.php:352
 #@ armember-membership
 msgid "Are you sure you want to remove the cover photo?"
 msgstr "커버 사진을 삭제하시겠습니까?"
 
 #: autoload.php:1788
-#: autoload.php:3981
+#: autoload.php:3980
 #: core/classes/class.arm_members_directory.php:353
 #@ armember-membership
 msgid "Are you sure you want to remove the profile photo?"
@@ -15706,14 +15706,14 @@ msgstr "프로필 사진을 삭제하시겠습니까?"
 
 #: autoload.php:1789
 #: autoload.php:1863
-#: autoload.php:3982
-#: autoload.php:4060
+#: autoload.php:3981
+#: autoload.php:4059
 #@ armember-membership
 msgid "Failed to perform this action. Please try again."
 msgstr "이 작업을 수행하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1800
-#: autoload.php:3996
+#: autoload.php:3995
 #@ armember-membership
 msgid "Login history cleared successfully."
 msgstr "로그인 기록이 성공적으로 삭제되었습니다."
@@ -15755,134 +15755,134 @@ msgid "Password cannot be left blank."
 msgstr "비밀번호를 비워 둘 수 없습니다."
 
 #: autoload.php:1803
-#: autoload.php:3998
+#: autoload.php:3997
 #@ armember-membership
 msgid "Plan(s) have been deleted successfully."
 msgstr "계획(들)이 성공적으로 삭제되었습니다."
 
 #: autoload.php:1804
-#: autoload.php:3999
+#: autoload.php:3998
 #@ armember-membership
 msgid "Failed to delete plan(s). Please try again."
 msgstr "계획(들)을 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1805
-#: autoload.php:4001
+#: autoload.php:4000
 #@ armember-membership
 msgid "Failed to delete the plan. Please try again."
 msgstr "계획을 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1808
-#: autoload.php:4004
+#: autoload.php:4003
 #@ armember-membership
 msgid "Failed to delete setup(s). Please try again."
 msgstr "설정(들)을 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1809
-#: autoload.php:4005
+#: autoload.php:4004
 #: core/classes/class.arm_membership_setup.php:5136
 #@ armember-membership
 msgid "The setup has been deleted successfully."
 msgstr "설정이 성공적으로 삭제되었습니다."
 
 #: autoload.php:1810
-#: autoload.php:4006
+#: autoload.php:4005
 #@ armember-membership
 msgid "Failed to delete the setup. Please try again."
 msgstr "설정을 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1811
-#: autoload.php:4007
+#: autoload.php:4006
 #@ armember-membership
 msgid "Form set deleted successfully."
 msgstr "양식 세트가 성공적으로 삭제되었습니다."
 
 #: autoload.php:1812
-#: autoload.php:4008
+#: autoload.php:4007
 #@ armember-membership
 msgid "Failed to delete the form set. Please try again."
 msgstr "양식 세트를 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1814
-#: autoload.php:4010
+#: autoload.php:4009
 #@ armember-membership
 msgid "Failed to delete the form. Please try again."
 msgstr "양식을 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1815
-#: autoload.php:4011
+#: autoload.php:4010
 #@ armember-membership
 msgid "The rule has been deleted successfully."
 msgstr "규칙이 성공적으로 삭제되었습니다."
 
 #: autoload.php:1816
-#: autoload.php:4012
+#: autoload.php:4011
 #@ armember-membership
 msgid "Failed to delete the rule. Please try again."
 msgstr "규칙을 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1817
-#: autoload.php:4013
+#: autoload.php:4012
 #@ armember-membership
 msgid "Rule(s) have been deleted successfully."
 msgstr "규칙(들)이 성공적으로 삭제되었습니다."
 
 #: autoload.php:1818
-#: autoload.php:4014
+#: autoload.php:4013
 #@ armember-membership
 msgid "Failed to delete rule(s). Please try again."
 msgstr "규칙(들)을 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1819
-#: autoload.php:4015
+#: autoload.php:4014
 #@ armember-membership
 msgid "Failed to generate the transaction details preview. Please try again."
 msgstr "거래 세부 정보 미리 보기를 생성하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1820
-#: autoload.php:4016
+#: autoload.php:4015
 #@ armember-membership
 msgid "Failed to generate the transaction invoice. Please try again."
 msgstr "거래 영수증을 생성하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1821
-#: autoload.php:4017
+#: autoload.php:4016
 #@ armember-membership
 msgid "Failed to generate the member details preview. Please try again."
 msgstr "회원 세부 정보 미리 보기를 생성하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1822
-#: autoload.php:4018
+#: autoload.php:4017
 #@ armember-membership
 msgid "Failed to display member activity details. Please try again."
 msgstr "회원 활동 세부 정보를 표시하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1823
-#: autoload.php:4019
+#: autoload.php:4018
 #@ armember-membership
 msgid "Failed to display ARMember CSS class information. Please try again."
 msgstr "ARMember CSS 클래스 정보를 표시하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1828
-#: autoload.php:4024
+#: autoload.php:4023
 #@ armember-membership
 msgid "Failed to delete the message. Please try again."
 msgstr "메시지를 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1830
-#: autoload.php:4026
+#: autoload.php:4025
 #@ armember-membership
 msgid "Failed to delete the message(s). Please try again."
 msgstr "메시지(들)를 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1832
-#: autoload.php:4028
+#: autoload.php:4027
 #@ armember-membership
 msgid "Settings have been saved successfully."
 msgstr "설정이 성공적으로 저장되었습니다."
 
 #: autoload.php:1833
-#: autoload.php:4029
+#: autoload.php:4028
 #: core/classes/class.arm_global_settings.php:1784
 #: core/classes/class.arm_members_directory.php:309
 #: core/classes/class.arm_members_directory.php:312
@@ -15891,14 +15891,14 @@ msgid "Failed to update the settings. Please try again."
 msgstr "설정을 업데이트하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1834
-#: autoload.php:4030
+#: autoload.php:4029
 #: core/classes/class.arm_access_rules.php:111
 #@ armember-membership
 msgid "Default rules saved successfully."
 msgstr "기본 규칙을 성공적으로 저장했습니다."
 
 #: autoload.php:1835
-#: autoload.php:4031
+#: autoload.php:4030
 #@ armember-membership
 msgid "Failed to update the rules. Please try again."
 msgstr "규칙을 업데이트하지 못했습니다. 다시 시도해 주세요."
@@ -15919,13 +15919,13 @@ msgid "Are you sure you want to delete this configuration?"
 msgstr "이 구성 요소를 삭제하시겠습니까?"
 
 #: autoload.php:1839
-#: autoload.php:4033
+#: autoload.php:4032
 #@ armember-membership
 msgid "Failed to delete member activities. Please try again."
 msgstr "회원 활동을 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1841
-#: autoload.php:4035
+#: autoload.php:4034
 #: core/classes/class.arm_members_directory.php:326
 #: core/classes/class.arm_members_directory.php:329
 #@ armember-membership
@@ -15933,31 +15933,31 @@ msgid "Template options have been saved successfully."
 msgstr "템플릿 옵션이 성공적으로 저장되었습니다."
 
 #: autoload.php:1842
-#: autoload.php:4036
+#: autoload.php:4035
 #@ armember-membership
 msgid "Failed to update the template options. Please try again."
 msgstr "템플릿 옵션을 업데이트하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1843
-#: autoload.php:4037
+#: autoload.php:4036
 #@ armember-membership
 msgid "Failed to generate the template preview. Please try again."
 msgstr "템플릿 미리 보기를 생성하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1845
-#: autoload.php:4039
+#: autoload.php:4038
 #@ armember-membership
 msgid "Failed to add the template. Please try again."
 msgstr "템플릿을 추가하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1847
-#: autoload.php:4041
+#: autoload.php:4040
 #@ armember-membership
 msgid "Failed to delete the template. Please try again."
 msgstr "템플릿을 삭제하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1848
-#: autoload.php:4042
+#: autoload.php:4041
 #: core/classes/class.arm_email_settings.php:209
 #: core/classes/class.arm_email_settings.php:235
 #@ armember-membership
@@ -15965,63 +15965,63 @@ msgid "Email template updated successfully."
 msgstr "이메일 템플릿을 성공적으로 업데이트했습니다."
 
 #: autoload.php:1849
-#: autoload.php:4043
+#: autoload.php:4042
 #@ armember-membership
 msgid "Message updated successfully."
 msgstr "메시지를 성공적으로 업데이트했습니다."
 
 #: autoload.php:1851
-#: autoload.php:4048
+#: autoload.php:4047
 #@ armember-membership
 msgid "Cannot set past dates."
 msgstr "과거 날짜를 설정할 수 없습니다."
 
 #: autoload.php:1852
-#: autoload.php:4049
+#: autoload.php:4048
 #@ armember-membership
 msgid "The start date cannot be earlier than the current date."
 msgstr "시작 날짜는 현재 날짜보다 이전일 수 없습니다."
 
 #: autoload.php:1853
-#: autoload.php:4050
+#: autoload.php:4049
 #@ armember-membership
 msgid "The expiration date cannot be earlier than the current date."
 msgstr "만료 날짜는 현재 날짜보다 이전일 수 없습니다."
 
 #: autoload.php:1855
-#: autoload.php:4052
+#: autoload.php:4051
 #@ armember-membership
 msgid "This set name already exists."
 msgstr "이 세트 이름은 이미 존재합니다."
 
 #: autoload.php:1856
-#: autoload.php:4053
+#: autoload.php:4052
 #@ armember-membership
 msgid "This form name already exists."
 msgstr "이 양식 이름은 이미 존재합니다."
 
 #: autoload.php:1857
-#: autoload.php:4054
+#: autoload.php:4053
 #@ armember-membership
 msgid "Failed to install the add-on. Please try again."
 msgstr "애드온을 설치하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1859
-#: autoload.php:4056
+#: autoload.php:4055
 #@ armember-membership
 msgid "Failed to activate the add-on. Please try again."
 msgstr "애드온을 활성화하지 못했습니다. 다시 시도해 주세요."
 
 #: autoload.php:1862
-#: autoload.php:3984
-#: autoload.php:4059
-#: autoload.php:4062
+#: autoload.php:3983
+#: autoload.php:4058
+#: autoload.php:4061
 #@ armember-membership
 msgid "Are you sure you want to cancel the subscription?"
 msgstr "구독을 취소하시겠습니까?"
 
 #: autoload.php:1807
-#: autoload.php:4003
+#: autoload.php:4002
 #@ armember-membership
 msgid "Setup(s) have been deleted successfully."
 msgstr "설정(들)이 성공적으로 삭제되었습니다."
@@ -16031,12 +16031,12 @@ msgstr "설정(들)이 성공적으로 삭제되었습니다."
 msgid "Failed to update the access rules. Please try again."
 msgstr "액세스 규칙을 업데이트하지 못했습니다. 다시 시도해 주세요."
 
-#: core/classes/class.arm_crons.php:654
+#: core/classes/class.arm_crons.php:642
 #@ armember-membership
 msgid "Email sent successfully to"
 msgstr "이메일을 성공적으로 보냈습니다"
 
-#: core/classes/class.arm_crons.php:654
+#: core/classes/class.arm_crons.php:642
 #@ armember-membership
 msgid "for the trial period has finished"
 msgstr "무료 체험 기간이 끝났습니다"
@@ -16524,13 +16524,13 @@ msgstr "로그인한 사용자"
 msgid "ARMember Lite recommends using a minimum PHP version of 5.6 or greater."
 msgstr "ARMember Lite는 PHP 버전 5.6 이상을 사용하는 것을 권장합니다."
 
-#: autoload.php:3884
-#: autoload.php:4169
+#: autoload.php:3883
+#: autoload.php:4168
 #@ armember-membership
 msgid "Sorry, Your request cannot process due to security reason."
 msgstr "보안상의 이유로 요청을 처리할 수 없습니다."
 
-#: autoload.php:4162
+#: autoload.php:4161
 #@ armember-membership
 msgid "Sorry, Your request cannot process due to nonce not found."
 msgstr "nonce를 찾을 수 없기 때문에 요청을 처리할 수 없습니다."
@@ -17054,7 +17054,7 @@ msgid "Sorry, something went wrong while updating preset fields."
 msgstr "프리셋 필드를 업데이트하는 동안 문제가 발생했습니다."
 
 #: autoload.php:1826
-#: autoload.php:4022
+#: autoload.php:4021
 #: core/classes/class.arm_transaction.php:610
 #@ armember-membership
 msgid "Transaction(s) have been deleted successfully."
@@ -17141,14 +17141,14 @@ msgstr "죄송합니다. 이 멤버십 설정에서는 플랜을 사용할 수 �
 msgid "Search Members..."
 msgstr "멤버 검색..."
 
-#. translators: plugin header field 'Version'
-#: armember-membership.php:0
-#@ armember-membership
-msgid "6.0"
-msgstr "6.0"
-
 #: core/classes/class.arm_members.php:194
 #@ armember-membership
 msgid "Invalid user."
 msgstr "유효하지 않은 사용자입니다."
+
+#. translators: plugin header field 'Version'
+#: armember-membership.php:0
+#@ armember-membership
+msgid "6.0.1"
+msgstr "6.0.1"
 

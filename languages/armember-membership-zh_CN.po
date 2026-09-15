@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ARMember Lite - Membership Plugin v6.0\n"
+"Project-Id-Version: ARMember Lite - Membership Plugin v6.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-21 04:47+0000\n"
-"PO-Revision-Date: 2026-08-26 12:34:15+0000\n"
+"PO-Revision-Date: 2026-09-12 12:08:05+0000\n"
 "Last-Translator: \n"
 "Language-Team: Chinese (China)\n"
 "MIME-Version: 1.0\n"
@@ -135,7 +135,7 @@ msgstr "A PHP extension停止的文件上传。"
 msgid "Access Rules"
 msgstr "访问的规则"
 
-#: core/classes/class.arm_access_rules.php:731
+#: core/classes/class.arm_access_rules.php:734
 #@ armember-membership
 msgid "Access Rules Updated Successfully."
 msgstr "访问的规则更新的成功。"
@@ -193,12 +193,12 @@ msgstr "账户以待"
 msgid "Account Setup"
 msgstr "帐户设置"
 
-#: autoload.php:4045
+#: autoload.php:4044
 #@ armember-membership
 msgid "Achievements Added Successfully."
 msgstr "成就增加成功。"
 
-#: autoload.php:4046
+#: autoload.php:4045
 #@ armember-membership
 msgid "Achievements Updated Successfully."
 msgstr "成就成功更新。"
@@ -479,19 +479,19 @@ msgid "Additional Shortcodes"
 msgstr "额外的简"
 
 #: autoload.php:1860
-#: autoload.php:4057
+#: autoload.php:4056
 #@ armember-membership
 msgid "Addon activated successfully."
 msgstr "插件激活的成功。"
 
 #: autoload.php:1861
-#: autoload.php:4058
+#: autoload.php:4057
 #@ armember-membership
 msgid "Addon deactivated successfully."
 msgstr "加活的成功。"
 
 #: autoload.php:1858
-#: autoload.php:4055
+#: autoload.php:4054
 #@ armember-membership
 msgid "Addon installed successfully."
 msgstr "插件的安装成功。"
@@ -528,7 +528,7 @@ msgstr "先进的领域"
 msgid "Advanced Security"
 msgstr "高级安全"
 
-#: core/classes/class.arm_member_forms.php:10602
+#: core/classes/class.arm_member_forms.php:10603
 #@ armember-membership
 msgid "Afghanistan"
 msgstr "阿富汗"
@@ -583,7 +583,7 @@ msgstr "之后，会员/计划获得重新定向的规则"
 msgid "After Registration Form"
 msgstr "登记后形式"
 
-#: core/classes/class.arm_member_forms.php:10603
+#: core/classes/class.arm_member_forms.php:10604
 #@ armember-membership
 msgid "Albania"
 msgstr "阿尔巴尼亚"
@@ -593,7 +593,7 @@ msgstr "阿尔巴尼亚"
 msgid "Albanian"
 msgstr "阿尔巴尼亚"
 
-#: core/classes/class.arm_member_forms.php:10604
+#: core/classes/class.arm_member_forms.php:10605
 #@ armember-membership
 msgid "Algeria"
 msgstr "阿尔及利亚"
@@ -698,7 +698,7 @@ msgstr "按字母顺序"
 msgid "Already have an account?"
 msgstr "已经有一个帐户吗？"
 
-#: core/classes/class.arm_member_forms.php:10605
+#: core/classes/class.arm_member_forms.php:10606
 #@ armember-membership
 msgid "American Samoa"
 msgstr "美属萨摩亚"
@@ -757,27 +757,27 @@ msgstr "和"
 msgid "and the field type will be"
 msgstr "与的领域类型将"
 
-#: core/classes/class.arm_member_forms.php:10606
+#: core/classes/class.arm_member_forms.php:10607
 #@ armember-membership
 msgid "Andorra"
 msgstr "安道尔"
 
-#: core/classes/class.arm_member_forms.php:10607
+#: core/classes/class.arm_member_forms.php:10608
 #@ armember-membership
 msgid "Angola"
 msgstr "安哥拉"
 
-#: core/classes/class.arm_member_forms.php:10608
+#: core/classes/class.arm_member_forms.php:10609
 #@ armember-membership
 msgid "Anguilla"
 msgstr "安圭拉"
 
-#: core/classes/class.arm_member_forms.php:10609
+#: core/classes/class.arm_member_forms.php:10610
 #@ armember-membership
 msgid "Antarctica"
 msgstr "南极洲"
 
-#: core/classes/class.arm_member_forms.php:10610
+#: core/classes/class.arm_member_forms.php:10611
 #@ armember-membership
 msgid "Antigua and Barbuda"
 msgstr "安提瓜和巴布达"
@@ -1011,12 +1011,12 @@ msgstr "你确定你想要重新核查电子邮件？"
 msgid "ARForms Successfully installed."
 msgstr "ARForms成功地安装。"
 
-#: core/classes/class.arm_member_forms.php:10611
+#: core/classes/class.arm_member_forms.php:10612
 #@ armember-membership
 msgid "Argentina"
 msgstr "阿根廷"
 
-#: core/classes/class.arm_access_rules.php:1011
+#: core/classes/class.arm_access_rules.php:1014
 #@ armember-membership
 msgid "ARMember Access Rules"
 msgstr "ARMember访问的规则"
@@ -1276,7 +1276,7 @@ msgstr "ARMember的用户名"
 msgid "ARMember Warning"
 msgstr "ARMember警告"
 
-#: core/classes/class.arm_member_forms.php:10612
+#: core/classes/class.arm_member_forms.php:10613
 #@ armember-membership
 msgid "Armenia"
 msgstr "亚美尼亚"
@@ -1291,7 +1291,7 @@ msgstr "亚美尼亚"
 msgid "ARPrice Successfully installed."
 msgstr "ARPrice成功地安装。"
 
-#: core/classes/class.arm_member_forms.php:10613
+#: core/classes/class.arm_member_forms.php:10614
 #@ armember-membership
 msgid "Aruba"
 msgstr "阿鲁巴"
@@ -1337,12 +1337,12 @@ msgstr "分配计划的用户"
 msgid "Associated Plans:"
 msgstr "相关计划："
 
-#: core/classes/class.arm_member_forms.php:10614
+#: core/classes/class.arm_member_forms.php:10615
 #@ armember-membership
 msgid "Australia"
 msgstr "澳大利亚"
 
-#: core/classes/class.arm_member_forms.php:10615
+#: core/classes/class.arm_member_forms.php:10616
 #@ armember-membership
 msgid "Austria"
 msgstr "奥地利"
@@ -1424,7 +1424,7 @@ msgstr "自动订阅标签"
 #: core/classes/class.arm_member_forms.php:2926
 #: core/classes/class.arm_member_forms.php:2953
 #: core/classes/class.arm_member_forms.php:7697
-#: core/classes/class.arm_member_forms.php:11208
+#: core/classes/class.arm_member_forms.php:11209
 #: core/classes/class.arm_members.php:1673
 #: core/classes/class.arm_members.php:4207
 #: core/views/arm_form_editor.php:374
@@ -1443,7 +1443,7 @@ msgstr "头像"
 msgid "Avatar Field Label( Edit Profile )"
 msgstr "头像领域的标签(编辑个人资料)"
 
-#: core/classes/class.arm_member_forms.php:10616
+#: core/classes/class.arm_member_forms.php:10617
 #@ armember-membership
 msgid "Azerbaijan"
 msgstr "阿塞拜疆"
@@ -1502,17 +1502,17 @@ msgstr "背景颜色"
 msgid "Background Overlay"
 msgstr "背景复盖"
 
-#: core/classes/class.arm_member_forms.php:10617
+#: core/classes/class.arm_member_forms.php:10618
 #@ armember-membership
 msgid "Bahamas"
 msgstr "巴哈马"
 
-#: core/classes/class.arm_member_forms.php:10618
+#: core/classes/class.arm_member_forms.php:10619
 #@ armember-membership
 msgid "Bahrain"
 msgstr "巴林"
 
-#: core/classes/class.arm_member_forms.php:10619
+#: core/classes/class.arm_member_forms.php:10620
 #@ armember-membership
 msgid "Bangladesh"
 msgstr "孟加拉国"
@@ -1554,7 +1554,7 @@ msgstr "银行转账的请求已获批准。"
 msgid "Bank transfer request has been cancelled."
 msgstr "银行转账的要求已被取消。"
 
-#: core/classes/class.arm_member_forms.php:10620
+#: core/classes/class.arm_member_forms.php:10621
 #@ armember-membership
 msgid "Barbados"
 msgstr "巴巴多斯"
@@ -1601,32 +1601,32 @@ msgstr "之前的登记表"
 msgid "Before you deactivate the ARMember Lite plugin, would you quickly give us your reason for doing so?"
 msgstr "在停用 ARMember Lite 之前 插件，您能快速告诉我们您这样做的原因吗？"
 
-#: core/classes/class.arm_member_forms.php:10621
+#: core/classes/class.arm_member_forms.php:10622
 #@ armember-membership
 msgid "Belarus"
 msgstr "白俄罗斯"
 
-#: core/classes/class.arm_member_forms.php:10622
+#: core/classes/class.arm_member_forms.php:10623
 #@ armember-membership
 msgid "Belgium"
 msgstr "比利时"
 
-#: core/classes/class.arm_member_forms.php:10623
+#: core/classes/class.arm_member_forms.php:10624
 #@ armember-membership
 msgid "Belize"
 msgstr "伯利兹"
 
-#: core/classes/class.arm_member_forms.php:10624
+#: core/classes/class.arm_member_forms.php:10625
 #@ armember-membership
 msgid "Benin"
 msgstr "贝宁"
 
-#: core/classes/class.arm_member_forms.php:10625
+#: core/classes/class.arm_member_forms.php:10626
 #@ armember-membership
 msgid "Bermuda"
 msgstr "百慕大"
 
-#: core/classes/class.arm_member_forms.php:10626
+#: core/classes/class.arm_member_forms.php:10627
 #@ armember-membership
 msgid "Bhutan"
 msgstr "不丹"
@@ -1704,7 +1704,7 @@ msgstr "博客网址"
 msgid "Body Content Color"
 msgstr "体内容颜色"
 
-#: core/classes/class.arm_member_forms.php:10627
+#: core/classes/class.arm_member_forms.php:10628
 #@ armember-membership
 msgid "Bolivia"
 msgstr "玻利维亚"
@@ -1735,7 +1735,7 @@ msgstr "边界的颜色"
 msgid "Border Radius"
 msgstr "边界半径"
 
-#: core/classes/class.arm_member_forms.php:10628
+#: core/classes/class.arm_member_forms.php:10629
 #@ armember-membership
 msgid "Bosnia and Herzegovina"
 msgstr "波斯尼亚和黑塞哥维那的"
@@ -1750,7 +1750,7 @@ msgstr "波斯尼亚"
 msgid "Both (allow user to select payment method)"
 msgstr "这两个(允许用户选择支付方法)"
 
-#: core/classes/class.arm_member_forms.php:10629
+#: core/classes/class.arm_member_forms.php:10630
 #@ armember-membership
 msgid "Botswana"
 msgstr "博茨瓦纳"
@@ -1770,12 +1770,12 @@ msgstr "底部"
 msgid "Box Hover Effect"
 msgstr "框悬停的效果"
 
-#: core/classes/class.arm_member_forms.php:10630
+#: core/classes/class.arm_member_forms.php:10631
 #@ armember-membership
 msgid "Brazil"
 msgstr "巴西的"
 
-#: core/classes/class.arm_member_forms.php:10631
+#: core/classes/class.arm_member_forms.php:10632
 #@ armember-membership
 msgid "Brunei"
 msgstr "文莱"
@@ -1785,7 +1785,7 @@ msgstr "文莱"
 msgid "Buddypress/Buddyboss Integration"
 msgstr "Buddypress/Buddyboss一体化"
 
-#: core/classes/class.arm_member_forms.php:10632
+#: core/classes/class.arm_member_forms.php:10633
 #@ armember-membership
 msgid "Bulgaria"
 msgstr "保加利亚"
@@ -1801,12 +1801,12 @@ msgstr "保加利亚"
 msgid "Bulk Actions"
 msgstr "散行动"
 
-#: core/classes/class.arm_member_forms.php:10633
+#: core/classes/class.arm_member_forms.php:10634
 #@ armember-membership
 msgid "Burkina Faso"
 msgstr "布基纳法索"
 
-#: core/classes/class.arm_member_forms.php:10634
+#: core/classes/class.arm_member_forms.php:10635
 #@ armember-membership
 msgid "Burundi"
 msgstr "布隆迪"
@@ -1942,12 +1942,12 @@ msgstr "日历定位"
 msgid "Calendar Style"
 msgstr "日历的风格"
 
-#: core/classes/class.arm_member_forms.php:10635
+#: core/classes/class.arm_member_forms.php:10636
 #@ armember-membership
 msgid "Cambodia"
 msgstr "柬埔寨"
 
-#: core/classes/class.arm_member_forms.php:10636
+#: core/classes/class.arm_member_forms.php:10637
 #@ armember-membership
 msgid "Cameroon"
 msgstr "喀麦隆"
@@ -1957,7 +1957,7 @@ msgstr "喀麦隆"
 msgid "Can you mention it?"
 msgstr "你能说吗？"
 
-#: core/classes/class.arm_member_forms.php:10637
+#: core/classes/class.arm_member_forms.php:10638
 #@ armember-membership
 msgid "Canada"
 msgstr "加拿大"
@@ -2101,7 +2101,7 @@ msgstr "取消"
 msgid "Cannot extract data from uploaded file or no file was uploaded."
 msgstr "无法从中提取数据上传文件或没有文件上传。"
 
-#: core/classes/class.arm_member_forms.php:10638
+#: core/classes/class.arm_member_forms.php:10639
 #@ armember-membership
 msgid "Cape Verde"
 msgstr "Cape Verde"
@@ -2136,7 +2136,7 @@ msgstr "类别是受限制的管理"
 msgid "category(s)"
 msgstr "类别(s)"
 
-#: core/classes/class.arm_member_forms.php:10639
+#: core/classes/class.arm_member_forms.php:10640
 #@ armember-membership
 msgid "Cayman Islands"
 msgstr "开曼群岛"
@@ -2158,12 +2158,12 @@ msgstr "开曼群岛"
 msgid "Center"
 msgstr "中心"
 
-#: core/classes/class.arm_member_forms.php:10640
+#: core/classes/class.arm_member_forms.php:10641
 #@ armember-membership
 msgid "Central African Republic"
 msgstr "中非共和国"
 
-#: core/classes/class.arm_member_forms.php:10641
+#: core/classes/class.arm_member_forms.php:10642
 #@ armember-membership
 msgid "Chad"
 msgstr "乍得"
@@ -2303,12 +2303,12 @@ msgstr "选项框"
 msgid "Cheque"
 msgstr "支票"
 
-#: core/classes/class.arm_member_forms.php:10642
+#: core/classes/class.arm_member_forms.php:10643
 #@ armember-membership
 msgid "Chile"
 msgstr "智利"
 
-#: core/classes/class.arm_member_forms.php:10643
+#: core/classes/class.arm_member_forms.php:10644
 #@ armember-membership
 msgid "China"
 msgstr "中国"
@@ -2510,7 +2510,7 @@ msgid "Clone from existing forms"
 msgstr "克隆将从现有的形式"
 
 #: autoload.php:3639
-#: autoload.php:3843
+#: autoload.php:3842
 #: core/classes/class.arm_manage_subscription.php:1468
 #: core/classes/class.arm_members.php:599
 #: core/classes/class.arm_subscription_plans.php:279
@@ -2558,7 +2558,7 @@ msgstr "关闭账户"
 msgid "Code Copied"
 msgstr "代码复制"
 
-#: core/classes/class.arm_member_forms.php:10644
+#: core/classes/class.arm_member_forms.php:10645
 #@ armember-membership
 msgid "Colombia"
 msgstr "哥伦比亚"
@@ -2578,7 +2578,7 @@ msgstr "颜色方案"
 msgid "Common Messages"
 msgstr "共同消息"
 
-#: core/classes/class.arm_member_forms.php:10645
+#: core/classes/class.arm_member_forms.php:10646
 #@ armember-membership
 msgid "Comoros"
 msgstr "科摩罗"
@@ -2658,7 +2658,7 @@ msgstr "确认密码"
 msgid "Confirmation"
 msgstr "的确认"
 
-#: core/classes/class.arm_member_forms.php:10646
+#: core/classes/class.arm_member_forms.php:10647
 #@ armember-membership
 msgid "Congo"
 msgstr "刚果"
@@ -2719,7 +2719,7 @@ msgstr "内容的宽度"
 msgid "Continue"
 msgstr "继续"
 
-#: core/classes/class.arm_member_forms.php:10647
+#: core/classes/class.arm_member_forms.php:10648
 #@ armember-membership
 msgid "Costa Rica"
 msgstr "哥斯达黎加"
@@ -2773,7 +2773,7 @@ msgstr "信用卡签"
 msgid "Credit Card Number"
 msgstr "信用卡号码"
 
-#: core/classes/class.arm_member_forms.php:10648
+#: core/classes/class.arm_member_forms.php:10649
 #@ armember-membership
 msgid "Croatia"
 msgstr "克罗地亚"
@@ -2804,7 +2804,7 @@ msgstr "农作物"
 msgid "crop"
 msgstr "农作物"
 
-#: core/classes/class.arm_member_forms.php:10649
+#: core/classes/class.arm_member_forms.php:10650
 #@ armember-membership
 msgid "Cuba"
 msgstr "古巴"
@@ -2951,7 +2951,7 @@ msgstr "周期的日期"
 msgid "cycles due"
 msgstr "周期因"
 
-#: core/classes/class.arm_member_forms.php:10650
+#: core/classes/class.arm_member_forms.php:10651
 #@ armember-membership
 msgid "Cyprus"
 msgstr "塞浦路斯"
@@ -2961,7 +2961,7 @@ msgstr "塞浦路斯"
 msgid "Czech"
 msgstr "捷克"
 
-#: core/classes/class.arm_member_forms.php:10651
+#: core/classes/class.arm_member_forms.php:10652
 #@ armember-membership
 msgid "Czech Republic"
 msgstr "捷克共和国"
@@ -3151,7 +3151,7 @@ msgstr "默认的重新定向URL"
 msgid "Default Redirection url is required."
 msgstr "默认向url是必需的。"
 
-#: core/classes/class.arm_access_rules.php:1042
+#: core/classes/class.arm_access_rules.php:1045
 #: core/views/arm_access_rules.php:312
 #@ armember-membership
 msgid "Default Restriction"
@@ -3254,7 +3254,7 @@ msgstr "删除事务(s)"
 msgid "Delicious"
 msgstr "美味的"
 
-#: core/classes/class.arm_member_forms.php:10652
+#: core/classes/class.arm_member_forms.php:10653
 #@ armember-membership
 msgid "Denmark"
 msgstr "丹麦"
@@ -3552,7 +3552,7 @@ msgstr "Divi建设者的限制"
 msgid "Divider"
 msgstr "分"
 
-#: core/classes/class.arm_member_forms.php:10653
+#: core/classes/class.arm_member_forms.php:10654
 #@ armember-membership
 msgid "Djibouti"
 msgstr "吉布提"
@@ -3569,18 +3569,18 @@ msgstr "不再次显示。"
 
 #: autoload.php:1318
 #: autoload.php:1319
-#: autoload.php:3837
+#: autoload.php:3836
 #: core/views/arm_setup_wizard.php:1296
 #@ armember-membership
 msgid "Documentation"
 msgstr "文档"
 
-#: core/classes/class.arm_member_forms.php:10654
+#: core/classes/class.arm_member_forms.php:10655
 #@ armember-membership
 msgid "Dominica"
 msgstr "多米尼克"
 
-#: core/classes/class.arm_member_forms.php:10655
+#: core/classes/class.arm_member_forms.php:10656
 #@ armember-membership
 msgid "Dominican Republic"
 msgstr "多米尼加共和国"
@@ -3637,8 +3637,8 @@ msgstr "下降的文件在这里或者点击选择"
 #: core/classes/class.arm_member_forms.php:4624
 #: core/classes/class.arm_member_forms.php:7687
 #: core/classes/class.arm_member_forms.php:7698
-#: core/classes/class.arm_member_forms.php:11209
-#: core/classes/class.arm_member_forms.php:11227
+#: core/classes/class.arm_member_forms.php:11210
+#: core/classes/class.arm_member_forms.php:11228
 #@ armember-membership
 msgid "Drop file here or click to select."
 msgstr "下降的文件在这里或者点击选择。"
@@ -3664,12 +3664,12 @@ msgstr "荷兰"
 msgid "e.g."
 msgstr "例如"
 
-#: core/classes/class.arm_member_forms.php:10656
+#: core/classes/class.arm_member_forms.php:10657
 #@ armember-membership
 msgid "East Timor"
 msgstr "东帝汶"
 
-#: core/classes/class.arm_member_forms.php:10657
+#: core/classes/class.arm_member_forms.php:10658
 #@ armember-membership
 msgid "Ecuador"
 msgstr "厄瓜多尔"
@@ -3776,12 +3776,12 @@ msgstr "编辑模选项"
 msgid "Effective from"
 msgstr "有效的从"
 
-#: core/classes/class.arm_member_forms.php:10658
+#: core/classes/class.arm_member_forms.php:10659
 #@ armember-membership
 msgid "Egypt"
 msgstr "埃及"
 
-#: core/classes/class.arm_member_forms.php:10659
+#: core/classes/class.arm_member_forms.php:10660
 #@ armember-membership
 msgid "El Salvador"
 msgstr "萨尔瓦多"
@@ -4045,12 +4045,12 @@ msgstr "该Usermeta的名字"
 msgid "entries"
 msgstr "项"
 
-#: core/classes/class.arm_member_forms.php:10660
+#: core/classes/class.arm_member_forms.php:10661
 #@ armember-membership
 msgid "Equatorial Guinea"
 msgstr "赤道几内亚"
 
-#: core/classes/class.arm_member_forms.php:10661
+#: core/classes/class.arm_member_forms.php:10662
 #@ armember-membership
 msgid "Eritrea"
 msgstr "厄立特里亚"
@@ -4062,7 +4062,7 @@ msgstr "厄立特里亚"
 msgid "ERROR"
 msgstr "错误"
 
-#: autoload.php:3883
+#: autoload.php:3882
 #@ armember-membership
 msgid "Error"
 msgstr "错误"
@@ -4112,7 +4112,7 @@ msgstr "爱斯基摩人的阿留申/安圭拉"
 msgid "Esperanto"
 msgstr "世界"
 
-#: core/classes/class.arm_member_forms.php:10662
+#: core/classes/class.arm_member_forms.php:10663
 #@ armember-membership
 msgid "Estonia"
 msgstr "爱沙尼亚"
@@ -4122,7 +4122,7 @@ msgstr "爱沙尼亚"
 msgid "Estonian"
 msgstr "爱沙尼亚"
 
-#: core/classes/class.arm_member_forms.php:10663
+#: core/classes/class.arm_member_forms.php:10664
 #@ armember-membership
 msgid "Ethiopia"
 msgstr "埃塞俄比亚"
@@ -4347,7 +4347,7 @@ msgstr "法罗群岛"
 msgid "Farsi/Persian"
 msgstr "波斯语/波斯"
 
-#: autoload.php:3838
+#: autoload.php:3837
 #@ armember-membership
 msgid "Feature Request"
 msgstr "功能要求"
@@ -4437,12 +4437,12 @@ msgstr "场的宽度"
 msgid "Fields to be included in payment form"
 msgstr "领域可以包含在付款的形式"
 
-#: core/classes/class.arm_member_forms.php:10664
+#: core/classes/class.arm_member_forms.php:10665
 #@ armember-membership
 msgid "Fiji"
 msgstr "斐济"
 
-#: autoload.php:3978
+#: autoload.php:3977
 #@ armember-membership
 msgid "File is not allowed bigger than {SIZE}."
 msgstr "文件不允许大于 {SIZE}。"
@@ -4489,7 +4489,7 @@ msgstr "筛选选项"
 msgid "filtered from"
 msgstr "过滤"
 
-#: core/classes/class.arm_member_forms.php:10665
+#: core/classes/class.arm_member_forms.php:10666
 #@ armember-membership
 msgid "Finland"
 msgstr "芬兰"
@@ -4698,7 +4698,7 @@ msgid "Form Border"
 msgstr "形式的边界"
 
 #: autoload.php:1813
-#: autoload.php:4009
+#: autoload.php:4008
 #@ armember-membership
 msgid "Form deleted successfully."
 msgstr "形成删除成功。"
@@ -4805,7 +4805,7 @@ msgstr "发现了一个更好的插件"
 msgid "Francais/Canada"
 msgstr "Francais/加拿大"
 
-#: core/classes/class.arm_member_forms.php:10666
+#: core/classes/class.arm_member_forms.php:10667
 #@ armember-membership
 msgid "France"
 msgstr "法国"
@@ -4848,12 +4848,12 @@ msgstr "免费计划"
 msgid "French"
 msgstr "法语"
 
-#: core/classes/class.arm_member_forms.php:10667
+#: core/classes/class.arm_member_forms.php:10668
 #@ armember-membership
 msgid "French Guiana"
 msgstr "法属圭亚那"
 
-#: core/classes/class.arm_member_forms.php:10668
+#: core/classes/class.arm_member_forms.php:10669
 #@ armember-membership
 msgid "French Polynesia"
 msgstr "法属波利尼西亚"
@@ -4885,12 +4885,12 @@ msgstr "从事务的一天"
 msgid "Future Membership"
 msgstr "未来的成员资格"
 
-#: core/classes/class.arm_member_forms.php:10669
+#: core/classes/class.arm_member_forms.php:10670
 #@ armember-membership
 msgid "Gabon"
 msgstr "加蓬"
 
-#: core/classes/class.arm_member_forms.php:10670
+#: core/classes/class.arm_member_forms.php:10671
 #@ armember-membership
 msgid "Gambia"
 msgstr "冈比亚"
@@ -4949,7 +4949,7 @@ msgstr "一般设置"
 msgid "Generate dynamically"
 msgstr "产生的动态"
 
-#: core/classes/class.arm_member_forms.php:10671
+#: core/classes/class.arm_member_forms.php:10672
 #@ armember-membership
 msgid "Georgia"
 msgstr "格鲁吉亚"
@@ -4964,7 +4964,7 @@ msgstr "德"
 msgid "German/Germany"
 msgstr "德语/德国"
 
-#: core/classes/class.arm_member_forms.php:10672
+#: core/classes/class.arm_member_forms.php:10673
 #@ armember-membership
 msgid "Germany"
 msgstr "德国"
@@ -4984,12 +4984,12 @@ msgstr "开始"
 msgid "Getting Started With Setup"
 msgstr "开始安装"
 
-#: core/classes/class.arm_member_forms.php:10673
+#: core/classes/class.arm_member_forms.php:10674
 #@ armember-membership
 msgid "Ghana"
 msgstr "加纳"
 
-#: core/classes/class.arm_member_forms.php:10674
+#: core/classes/class.arm_member_forms.php:10675
 #@ armember-membership
 msgid "Gibraltar"
 msgstr "直布罗陀"
@@ -5021,7 +5021,7 @@ msgstr "去通设置的菜单从管理接口。 在这里，你会得到数目�
 msgid "Good Text"
 msgstr "良好的文本"
 
-#: core/classes/class.arm_member_forms.php:10531
+#: core/classes/class.arm_member_forms.php:10532
 #@ armember-membership
 msgid "Google Fonts"
 msgstr "谷歌的字体"
@@ -5060,7 +5060,7 @@ msgstr "宽限期到期"
 msgid "Grace Period Failed Payment"
 msgstr "宽限期未能付款"
 
-#: core/classes/class.arm_member_forms.php:10675
+#: core/classes/class.arm_member_forms.php:10676
 #@ armember-membership
 msgid "Greece"
 msgstr "希腊"
@@ -5070,12 +5070,12 @@ msgstr "希腊"
 msgid "Greek"
 msgstr "希腊"
 
-#: core/classes/class.arm_member_forms.php:10676
+#: core/classes/class.arm_member_forms.php:10677
 #@ armember-membership
 msgid "Greenland"
 msgstr "格陵兰"
 
-#: core/classes/class.arm_member_forms.php:10677
+#: core/classes/class.arm_member_forms.php:10678
 #@ armember-membership
 msgid "Grenada"
 msgstr "格林纳达"
@@ -5087,12 +5087,12 @@ msgstr "格林纳达"
 msgid "Growth Plugins"
 msgstr "增长的插件"
 
-#: core/classes/class.arm_member_forms.php:10678
+#: core/classes/class.arm_member_forms.php:10679
 #@ armember-membership
 msgid "Guam"
 msgstr "关岛"
 
-#: core/classes/class.arm_member_forms.php:10679
+#: core/classes/class.arm_member_forms.php:10680
 #@ armember-membership
 msgid "Guatemala"
 msgstr "危地马拉"
@@ -5102,12 +5102,12 @@ msgstr "危地马拉"
 msgid "Guest page"
 msgstr "宾页"
 
-#: core/classes/class.arm_member_forms.php:10680
+#: core/classes/class.arm_member_forms.php:10681
 #@ armember-membership
 msgid "Guinea"
 msgstr "几内亚"
 
-#: core/classes/class.arm_member_forms.php:10681
+#: core/classes/class.arm_member_forms.php:10682
 #@ armember-membership
 msgid "Guinea-Bissau"
 msgstr "几内亚比绍"
@@ -5117,12 +5117,12 @@ msgstr "几内亚比绍"
 msgid "Gutenberg Block Restriction"
 msgstr "古腾堡块的限制"
 
-#: core/classes/class.arm_member_forms.php:10682
+#: core/classes/class.arm_member_forms.php:10683
 #@ armember-membership
 msgid "Guyana"
 msgstr "圭亚那"
 
-#: core/classes/class.arm_member_forms.php:10683
+#: core/classes/class.arm_member_forms.php:10684
 #@ armember-membership
 msgid "Haiti"
 msgstr "海地"
@@ -5299,12 +5299,12 @@ msgstr "隐藏的用户名领域和分配给用户名与电子邮件"
 msgid "Home Page"
 msgstr "主页"
 
-#: core/classes/class.arm_member_forms.php:10684
+#: core/classes/class.arm_member_forms.php:10685
 #@ armember-membership
 msgid "Honduras"
 msgstr "洪都拉斯"
 
-#: core/classes/class.arm_member_forms.php:10685
+#: core/classes/class.arm_member_forms.php:10686
 #@ armember-membership
 msgid "Hong Kong"
 msgstr "香港"
@@ -5397,7 +5397,7 @@ msgstr "https://www.armemberplugin.com"
 msgid "Hungarian"
 msgstr "匈牙利"
 
-#: core/classes/class.arm_member_forms.php:10686
+#: core/classes/class.arm_member_forms.php:10687
 #@ armember-membership
 msgid "Hungary"
 msgstr "匈牙利"
@@ -5407,7 +5407,7 @@ msgstr "匈牙利"
 msgid "I already did"
 msgstr "我已经做到了"
 
-#: core/classes/class.arm_member_forms.php:10687
+#: core/classes/class.arm_member_forms.php:10688
 #@ armember-membership
 msgid "Iceland"
 msgstr "冰岛"
@@ -5430,7 +5430,7 @@ msgstr "图标的颜色"
 msgid "ID"
 msgstr "ID"
 
-#: core/classes/class.arm_access_rules.php:1049
+#: core/classes/class.arm_access_rules.php:1052
 #@ armember-membership
 msgid "If Default Restriction is ON then ONLY the selected plan members below can access this page."
 msgstr "如果缺省限制是在那么只有以下选择计划成员可以访问该网页。"
@@ -5608,12 +5608,12 @@ msgstr "不活跃的成员"
 msgid "Incompatible with theme or plugin"
 msgstr "不相容的主题或插件"
 
-#: core/classes/class.arm_member_forms.php:10688
+#: core/classes/class.arm_member_forms.php:10689
 #@ armember-membership
 msgid "India"
 msgstr "印度"
 
-#: core/classes/class.arm_member_forms.php:10689
+#: core/classes/class.arm_member_forms.php:10690
 #@ armember-membership
 msgid "Indonesia"
 msgstr "印度尼西亚"
@@ -5642,7 +5642,7 @@ msgstr "的信息"
 msgid "Inherit Access Rules Of Membership Plan"
 msgstr "继承入规则的成员资格计划"
 
-#: core/classes/class.arm_member_forms.php:10524
+#: core/classes/class.arm_member_forms.php:10525
 #@ armember-membership
 msgid "Inherit Fonts"
 msgstr "继承的字体"
@@ -5745,8 +5745,8 @@ msgstr "无效的文件上传。"
 #: core/classes/class.arm_member_forms.php:506
 #: core/classes/class.arm_member_forms.php:2944
 #: core/classes/class.arm_member_forms.php:2992
-#: core/classes/class.arm_member_forms.php:11217
-#: core/classes/class.arm_member_forms.php:11235
+#: core/classes/class.arm_member_forms.php:11218
+#: core/classes/class.arm_member_forms.php:11236
 #: core/views/arm_member_add.php:732
 #: core/views/arm_member_add.php:780
 #@ armember-membership
@@ -5789,17 +5789,17 @@ msgstr "无效的用户名或电子邮件。"
 msgid "Invoice and Tax"
 msgstr "发票和税"
 
-#: core/classes/class.arm_member_forms.php:10690
+#: core/classes/class.arm_member_forms.php:10691
 #@ armember-membership
 msgid "Iran"
 msgstr "伊朗"
 
-#: core/classes/class.arm_member_forms.php:10691
+#: core/classes/class.arm_member_forms.php:10692
 #@ armember-membership
 msgid "Iraq"
 msgstr "伊拉克"
 
-#: core/classes/class.arm_member_forms.php:10692
+#: core/classes/class.arm_member_forms.php:10693
 #@ armember-membership
 msgid "Ireland"
 msgstr "爱尔兰"
@@ -5815,7 +5815,7 @@ msgstr "是活的"
 msgid "is meta field name."
 msgstr "是的元场的名称。"
 
-#: core/classes/class.arm_member_forms.php:10693
+#: core/classes/class.arm_member_forms.php:10694
 #@ armember-membership
 msgid "Israel"
 msgstr "以色列"
@@ -5830,17 +5830,17 @@ msgstr "意大利语"
 msgid "Italian/Italy"
 msgstr "意大利/意大利"
 
-#: core/classes/class.arm_member_forms.php:10694
+#: core/classes/class.arm_member_forms.php:10695
 #@ armember-membership
 msgid "Italy"
 msgstr "意大利"
 
-#: core/classes/class.arm_member_forms.php:10695
+#: core/classes/class.arm_member_forms.php:10696
 #@ armember-membership
 msgid "Jamaica"
 msgstr "牙买加"
 
-#: core/classes/class.arm_member_forms.php:10696
+#: core/classes/class.arm_member_forms.php:10697
 #@ armember-membership
 msgid "Japan"
 msgstr "日本"
@@ -5855,7 +5855,7 @@ msgstr "日本"
 msgid "Japanese/Japan"
 msgstr "日本/日本"
 
-#: autoload.php:3839
+#: autoload.php:3838
 #@ armember-membership
 msgid "Join Community"
 msgstr "加入社区"
@@ -5887,22 +5887,22 @@ msgstr "加入日期"
 msgid "Joining Date"
 msgstr "加入日期"
 
-#: core/classes/class.arm_member_forms.php:10697
+#: core/classes/class.arm_member_forms.php:10698
 #@ armember-membership
 msgid "Jordan"
 msgstr "约旦"
 
-#: core/classes/class.arm_member_forms.php:10698
+#: core/classes/class.arm_member_forms.php:10699
 #@ armember-membership
 msgid "Kazakhstan"
 msgstr "哈萨克斯坦"
 
-#: core/classes/class.arm_member_forms.php:10699
+#: core/classes/class.arm_member_forms.php:10700
 #@ armember-membership
 msgid "Kenya"
 msgstr "肯尼亚"
 
-#: core/classes/class.arm_member_forms.php:10700
+#: core/classes/class.arm_member_forms.php:10701
 #@ armember-membership
 msgid "Kiribati"
 msgstr "基里巴斯"
@@ -5917,12 +5917,12 @@ msgstr "韩国"
 msgid "Korean/South Korea"
 msgstr "朝鲜/韩国"
 
-#: core/classes/class.arm_member_forms.php:10703
+#: core/classes/class.arm_member_forms.php:10704
 #@ armember-membership
 msgid "Kuwait"
 msgstr "科威特"
 
-#: core/classes/class.arm_member_forms.php:10704
+#: core/classes/class.arm_member_forms.php:10705
 #@ armember-membership
 msgid "Kyrgyzstan"
 msgstr "吉尔吉斯斯坦"
@@ -5980,7 +5980,7 @@ msgstr "缺乏文件"
 msgid "Language"
 msgstr "语言"
 
-#: core/classes/class.arm_member_forms.php:10705
+#: core/classes/class.arm_member_forms.php:10706
 #@ armember-membership
 msgid "Laos"
 msgstr "老挝"
@@ -6020,7 +6020,7 @@ msgstr "最后的修改"
 msgid "Last Name"
 msgstr "最后一名"
 
-#: core/classes/class.arm_member_forms.php:10706
+#: core/classes/class.arm_member_forms.php:10707
 #@ armember-membership
 msgid "Latvia"
 msgstr "拉脱维亚"
@@ -6046,7 +6046,7 @@ msgstr "离开空白，允许所有类型的文件。"
 msgid "Leave blank to display all plan's members."
 msgstr "留下的空白，以显示所有计划的成员。"
 
-#: core/classes/class.arm_member_forms.php:10707
+#: core/classes/class.arm_member_forms.php:10708
 #@ armember-membership
 msgid "Lebanon"
 msgstr "黎巴嫩"
@@ -6075,7 +6075,7 @@ msgstr "黎巴嫩"
 msgid "Left"
 msgstr "左"
 
-#: core/classes/class.arm_member_forms.php:10708
+#: core/classes/class.arm_member_forms.php:10709
 #@ armember-membership
 msgid "Lesotho"
 msgstr "莱索托"
@@ -6085,17 +6085,17 @@ msgstr "莱索托"
 msgid "Let users get benefit of discounts coupons while making payment with your site."
 msgstr "让用户获取利益的折扣优惠券的同时，使支付与你的网站。"
 
-#: core/classes/class.arm_member_forms.php:10709
+#: core/classes/class.arm_member_forms.php:10710
 #@ armember-membership
 msgid "Liberia"
 msgstr "利比里亚"
 
-#: core/classes/class.arm_member_forms.php:10710
+#: core/classes/class.arm_member_forms.php:10711
 #@ armember-membership
 msgid "Libya"
 msgstr "利比亚"
 
-#: core/classes/class.arm_member_forms.php:10711
+#: core/classes/class.arm_member_forms.php:10712
 #@ armember-membership
 msgid "Liechtenstein"
 msgstr "列支敦士登"
@@ -6206,7 +6206,7 @@ msgstr "LinkedIn"
 msgid "List"
 msgstr "列表"
 
-#: core/classes/class.arm_member_forms.php:10712
+#: core/classes/class.arm_member_forms.php:10713
 #@ armember-membership
 msgid "Lithuania"
 msgstr "立陶宛"
@@ -6254,8 +6254,8 @@ msgid "Loading"
 msgstr "加载"
 
 #: autoload.php:1792
-#: autoload.php:3985
-#: autoload.php:4063
+#: autoload.php:3984
+#: autoload.php:4062
 #@ armember-membership
 msgid "Loading.."
 msgstr "装载.."
@@ -6318,7 +6318,7 @@ msgid "Login"
 msgstr "登录"
 
 #: autoload.php:1799
-#: autoload.php:3995
+#: autoload.php:3994
 #@ armember-membership
 msgid "Login attempts cleared successfully."
 msgstr "登录尝试清除成功。"
@@ -6383,17 +6383,17 @@ msgstr "小写的"
 msgid "LTR"
 msgstr "LTR"
 
-#: core/classes/class.arm_member_forms.php:10713
+#: core/classes/class.arm_member_forms.php:10714
 #@ armember-membership
 msgid "Luxembourg"
 msgstr "卢森堡"
 
-#: core/classes/class.arm_member_forms.php:10714
+#: core/classes/class.arm_member_forms.php:10715
 #@ armember-membership
 msgid "Macedonia"
 msgstr "马其顿"
 
-#: core/classes/class.arm_member_forms.php:10715
+#: core/classes/class.arm_member_forms.php:10716
 #@ armember-membership
 msgid "Madagascar"
 msgstr "马达加斯加"
@@ -6418,27 +6418,27 @@ msgstr "付款"
 msgid "Make Payment Text"
 msgstr "付款文本"
 
-#: core/classes/class.arm_member_forms.php:10716
+#: core/classes/class.arm_member_forms.php:10717
 #@ armember-membership
 msgid "Malawi"
 msgstr "马拉维"
 
-#: core/classes/class.arm_member_forms.php:10717
+#: core/classes/class.arm_member_forms.php:10718
 #@ armember-membership
 msgid "Malaysia"
 msgstr "马来西亚"
 
-#: core/classes/class.arm_member_forms.php:10718
+#: core/classes/class.arm_member_forms.php:10719
 #@ armember-membership
 msgid "Maldives"
 msgstr "马尔代夫"
 
-#: core/classes/class.arm_member_forms.php:10719
+#: core/classes/class.arm_member_forms.php:10720
 #@ armember-membership
 msgid "Mali"
 msgstr "马里"
 
-#: core/classes/class.arm_member_forms.php:10720
+#: core/classes/class.arm_member_forms.php:10721
 #@ armember-membership
 msgid "Malta"
 msgstr "马耳他"
@@ -6590,7 +6590,7 @@ msgstr "手册的付款已增加成功。"
 msgid "Margin"
 msgstr "保证金"
 
-#: core/classes/class.arm_member_forms.php:10721
+#: core/classes/class.arm_member_forms.php:10722
 #@ armember-membership
 msgid "Marshall Islands"
 msgstr "马绍尔群岛"
@@ -6607,12 +6607,12 @@ msgstr "材料的概要"
 msgid "Material Style"
 msgstr "材料的风格"
 
-#: core/classes/class.arm_member_forms.php:10722
+#: core/classes/class.arm_member_forms.php:10723
 #@ armember-membership
 msgid "Mauritania"
 msgstr "毛里塔尼亚"
 
-#: core/classes/class.arm_member_forms.php:10723
+#: core/classes/class.arm_member_forms.php:10724
 #@ armember-membership
 msgid "Mauritius"
 msgstr "毛里求斯"
@@ -6778,7 +6778,7 @@ msgstr "成员的个人资料页"
 msgid "Membership"
 msgstr "成员资格"
 
-#: core/classes/class.arm_crons.php:542
+#: core/classes/class.arm_crons.php:533
 #@ armember-membership
 msgid "membership has been changed to"
 msgstr "会员国已经改变"
@@ -6830,7 +6830,7 @@ msgstr "会员计划"
 #: core/classes/arm_builder/class.arm_divi_builder_restriction.php:88
 #: core/classes/arm_builder/class.arm_fusion_builder_restriction.php:93
 #: core/classes/arm_builder/class.arm_wpbakery_builder_restriction.php:130
-#: core/classes/class.arm_access_rules.php:1053
+#: core/classes/class.arm_access_rules.php:1056
 #: core/views/arm_import_export.php:27
 #: core/views/arm_profile_editor.php:660
 #: core/widgets/arm_elm_widgets/class.arm_current_membership_element_add.php:128
@@ -6897,14 +6897,14 @@ msgid "Message"
 msgstr "消息"
 
 #: autoload.php:1827
-#: autoload.php:4023
+#: autoload.php:4022
 #: core/classes/class.arm_manage_communication.php:31
 #@ armember-membership
 msgid "Message has been deleted successfully."
 msgstr "信息已删除成功。"
 
 #: autoload.php:1829
-#: autoload.php:4025
+#: autoload.php:4024
 #@ armember-membership
 msgid "Message(s) has been deleted successfully."
 msgstr "信(s)已被删除成功。"
@@ -6930,12 +6930,12 @@ msgstr "元的关键"
 msgid "Meta Value"
 msgstr "元价值"
 
-#: core/classes/class.arm_member_forms.php:10724
+#: core/classes/class.arm_member_forms.php:10725
 #@ armember-membership
 msgid "Mexico"
 msgstr "墨西哥"
 
-#: core/classes/class.arm_member_forms.php:10725
+#: core/classes/class.arm_member_forms.php:10726
 #@ armember-membership
 msgid "Micronesia"
 msgstr "密克罗尼西亚联邦"
@@ -6973,22 +6973,22 @@ msgstr "分钟。"
 msgid "Mobile View"
 msgstr "移动图"
 
-#: core/classes/class.arm_member_forms.php:10726
+#: core/classes/class.arm_member_forms.php:10727
 #@ armember-membership
 msgid "Moldova"
 msgstr "摩尔多瓦"
 
-#: core/classes/class.arm_member_forms.php:10727
+#: core/classes/class.arm_member_forms.php:10728
 #@ armember-membership
 msgid "Monaco"
 msgstr "摩纳哥"
 
-#: core/classes/class.arm_member_forms.php:10728
+#: core/classes/class.arm_member_forms.php:10729
 #@ armember-membership
 msgid "Mongolia"
 msgstr "蒙古"
 
-#: core/classes/class.arm_member_forms.php:10729
+#: core/classes/class.arm_member_forms.php:10730
 #@ armember-membership
 msgid "Montenegro"
 msgstr "黑山"
@@ -7064,7 +7064,7 @@ msgstr "几个月"
 msgid "Months(s)"
 msgstr "几个月(s)"
 
-#: core/classes/class.arm_member_forms.php:10730
+#: core/classes/class.arm_member_forms.php:10731
 #@ armember-membership
 msgid "Montserrat"
 msgstr "蒙特塞拉特"
@@ -7096,7 +7096,7 @@ msgstr "蒙特塞拉特"
 msgid "More Info"
 msgstr "更多信息"
 
-#: core/classes/class.arm_member_forms.php:10731
+#: core/classes/class.arm_member_forms.php:10732
 #@ armember-membership
 msgid "Morocco"
 msgstr "摩洛哥"
@@ -7107,7 +7107,7 @@ msgstr "摩洛哥"
 msgid "Move"
 msgstr "移动"
 
-#: core/classes/class.arm_member_forms.php:10732
+#: core/classes/class.arm_member_forms.php:10733
 #@ armember-membership
 msgid "Mozambique"
 msgstr "莫桑比克"
@@ -7122,7 +7122,7 @@ msgstr "多个成员资格/计划"
 msgid "My Profile"
 msgstr "我的档案"
 
-#: core/classes/class.arm_member_forms.php:10733
+#: core/classes/class.arm_member_forms.php:10734
 #@ armember-membership
 msgid "Myanmar"
 msgstr "缅甸"
@@ -7143,27 +7143,27 @@ msgstr "myCRED一体化"
 msgid "Name"
 msgstr "名称"
 
-#: core/classes/class.arm_member_forms.php:10734
+#: core/classes/class.arm_member_forms.php:10735
 #@ armember-membership
 msgid "Namibia"
 msgstr "纳米比亚"
 
-#: core/classes/class.arm_member_forms.php:10735
+#: core/classes/class.arm_member_forms.php:10736
 #@ armember-membership
 msgid "Nauru"
 msgstr "瑙鲁"
 
-#: autoload.php:3845
+#: autoload.php:3844
 #@ armember-membership
 msgid "Need Help?"
 msgstr "需要帮忙吗？"
 
-#: core/classes/class.arm_member_forms.php:10736
+#: core/classes/class.arm_member_forms.php:10737
 #@ armember-membership
 msgid "Nepal"
 msgstr "尼泊尔"
 
-#: core/classes/class.arm_member_forms.php:10737
+#: core/classes/class.arm_member_forms.php:10738
 #@ armember-membership
 msgid "Netherlands"
 msgstr "荷兰"
@@ -7253,7 +7253,7 @@ msgstr "新用户的批准"
 msgid "New user approval"
 msgstr "新用户的批准"
 
-#: core/classes/class.arm_member_forms.php:10738
+#: core/classes/class.arm_member_forms.php:10739
 #@ armember-membership
 msgid "New Zealand"
 msgstr "新西兰"
@@ -7274,7 +7274,7 @@ msgstr "下"
 msgid "Next Due Date"
 msgstr "下一期日"
 
-#: core/classes/class.arm_member_forms.php:10739
+#: core/classes/class.arm_member_forms.php:10740
 #@ armember-membership
 msgid "Nicaragua"
 msgstr "尼加拉瓜"
@@ -7285,12 +7285,12 @@ msgstr "尼加拉瓜"
 msgid "Nick Name"
 msgstr "昵称"
 
-#: core/classes/class.arm_member_forms.php:10740
+#: core/classes/class.arm_member_forms.php:10741
 #@ armember-membership
 msgid "Niger"
 msgstr "尼日尔"
 
-#: core/classes/class.arm_member_forms.php:10741
+#: core/classes/class.arm_member_forms.php:10742
 #@ armember-membership
 msgid "Nigeria"
 msgstr "尼日利亚"
@@ -7343,8 +7343,8 @@ msgstr "没有"
 msgid "No cycles due"
 msgstr "没有周期因"
 
-#: autoload.php:3902
-#: autoload.php:3907
+#: autoload.php:3901
+#: autoload.php:3906
 #@ armember-membership
 msgid "No data found"
 msgstr "没有数据发现"
@@ -7530,12 +7530,12 @@ msgstr "没有。"
 msgid "No. Of Members Per Page"
 msgstr "没有。 成员每页"
 
-#: core/classes/class.arm_spam_filter.php:162
+#: core/classes/class.arm_spam_filter.php:165
 #@ armember-membership
 msgid "Nonce is between 12 and 24 hours old"
 msgstr "现时间为12小时和24小时老"
 
-#: core/classes/class.arm_spam_filter.php:158
+#: core/classes/class.arm_spam_filter.php:161
 #@ armember-membership
 msgid "Nonce is less than 12 hours old"
 msgstr "数小于12小时的时候"
@@ -7547,17 +7547,17 @@ msgstr "数小于12小时的时候"
 msgid "None"
 msgstr "没有"
 
-#: core/classes/class.arm_member_forms.php:10701
+#: core/classes/class.arm_member_forms.php:10702
 #@ armember-membership
 msgid "North Korea"
 msgstr "北朝鲜"
 
-#: core/classes/class.arm_member_forms.php:10743
+#: core/classes/class.arm_member_forms.php:10744
 #@ armember-membership
 msgid "Northern Mariana Islands"
 msgstr "北马里亚纳群岛"
 
-#: core/classes/class.arm_member_forms.php:10742
+#: core/classes/class.arm_member_forms.php:10743
 #@ armember-membership
 msgid "Norway"
 msgstr "挪威"
@@ -7690,7 +7690,7 @@ msgstr "\"确定\""
 msgid "OK, you deserve it"
 msgstr "好的，你应得的"
 
-#: core/classes/class.arm_member_forms.php:10744
+#: core/classes/class.arm_member_forms.php:10745
 #@ armember-membership
 msgid "Oman"
 msgstr "阿曼"
@@ -7753,7 +7753,7 @@ msgid "Oops, nothing found"
 msgstr "哎呀，什么都没发现"
 
 #: autoload.php:1864
-#: autoload.php:4064
+#: autoload.php:4063
 #@ armember-membership
 msgid "Oops, nothing found."
 msgstr "哎呀，什么都没发现。"
@@ -7897,32 +7897,32 @@ msgstr "支付计划(无)"
 msgid "Paid With"
 msgstr "支付"
 
-#: core/classes/class.arm_member_forms.php:10745
+#: core/classes/class.arm_member_forms.php:10746
 #@ armember-membership
 msgid "Pakistan"
 msgstr "巴基斯坦"
 
-#: core/classes/class.arm_member_forms.php:10746
+#: core/classes/class.arm_member_forms.php:10747
 #@ armember-membership
 msgid "Palau"
 msgstr "帕劳"
 
-#: core/classes/class.arm_member_forms.php:10747
+#: core/classes/class.arm_member_forms.php:10748
 #@ armember-membership
 msgid "Palestine"
 msgstr "巴勒斯坦"
 
-#: core/classes/class.arm_member_forms.php:10748
+#: core/classes/class.arm_member_forms.php:10749
 #@ armember-membership
 msgid "Panama"
 msgstr "巴拿马"
 
-#: core/classes/class.arm_member_forms.php:10749
+#: core/classes/class.arm_member_forms.php:10750
 #@ armember-membership
 msgid "Papua New Guinea"
 msgstr "巴布亚新几内亚"
 
-#: core/classes/class.arm_member_forms.php:10750
+#: core/classes/class.arm_member_forms.php:10751
 #@ armember-membership
 msgid "Paraguay"
 msgstr "巴拉圭"
@@ -8282,12 +8282,12 @@ msgstr "未决的成员"
 msgid "Permanent lockdown Duration"
 msgstr "永久性的封锁，持续时间"
 
-#: core/classes/class.arm_member_forms.php:10751
+#: core/classes/class.arm_member_forms.php:10752
 #@ armember-membership
 msgid "Peru"
 msgstr "秘鲁"
 
-#: core/classes/class.arm_member_forms.php:10752
+#: core/classes/class.arm_member_forms.php:10753
 #@ armember-membership
 msgid "Philippines"
 msgstr "菲律宾"
@@ -8390,7 +8390,7 @@ msgstr "计划于这个用户？"
 msgid "Plan has been added successfully."
 msgstr "计划已经增加成功。"
 
-#: autoload.php:4000
+#: autoload.php:3999
 #: core/classes/class.arm_subscription_plans.php:919
 #@ armember-membership
 msgid "Plan has been deleted successfully."
@@ -8828,7 +8828,7 @@ msgstr "请选择的一页。"
 
 #: core/classes/class.arm_member_forms.php:470
 #: core/classes/class.arm_member_forms.php:2943
-#: core/classes/class.arm_member_forms.php:11216
+#: core/classes/class.arm_member_forms.php:11217
 #: core/views/arm_member_add.php:731
 #@ armember-membership
 msgid "Please select avatar."
@@ -8863,7 +8863,7 @@ msgid "Please select one option."
 msgstr "请选一个选项。"
 
 #: autoload.php:1798
-#: autoload.php:3994
+#: autoload.php:3993
 #: core/classes/class.arm_members.php:1296
 #: core/classes/class.arm_members.php:2179
 #: core/classes/class.arm_transaction.php:592
@@ -8926,7 +8926,7 @@ msgstr "请选择计划。"
 
 #: core/classes/class.arm_member_forms.php:505
 #: core/classes/class.arm_member_forms.php:2991
-#: core/classes/class.arm_member_forms.php:11234
+#: core/classes/class.arm_member_forms.php:11235
 #: core/views/arm_member_add.php:779
 #@ armember-membership
 msgid "Please select profile cover."
@@ -8971,7 +8971,7 @@ msgid "Please select user."
 msgstr "请选择\"用户\"。"
 
 #: autoload.php:1797
-#: autoload.php:3993
+#: autoload.php:3992
 #: core/classes/class.arm_members.php:1299
 #: core/classes/class.arm_transaction.php:612
 #@ armember-membership
@@ -8999,7 +8999,7 @@ msgid "Please type your e-mail address."
 msgstr "请输入你的电子邮件地址。"
 
 #: autoload.php:1824
-#: autoload.php:4020
+#: autoload.php:4019
 #@ armember-membership
 msgid "Please upload appropriate file to import users."
 msgstr "请上适当的文件来进口用户。"
@@ -9009,7 +9009,7 @@ msgstr "请上适当的文件来进口用户。"
 msgid "Please upload file."
 msgstr "请上传文件。"
 
-#: core/classes/class.arm_member_forms.php:10753
+#: core/classes/class.arm_member_forms.php:10754
 #@ armember-membership
 msgid "Poland"
 msgstr "波兰"
@@ -9029,7 +9029,7 @@ msgstr "波兰/波兰"
 msgid "Port"
 msgstr "端口"
 
-#: core/classes/class.arm_member_forms.php:10754
+#: core/classes/class.arm_member_forms.php:10755
 #@ armember-membership
 msgid "Portugal"
 msgstr "葡萄牙"
@@ -9129,7 +9129,7 @@ msgstr "配置文件"
 #: core/classes/class.arm_member_forms.php:511
 #: core/classes/class.arm_member_forms.php:2927
 #: core/classes/class.arm_member_forms.php:2980
-#: core/classes/class.arm_member_forms.php:11226
+#: core/classes/class.arm_member_forms.php:11227
 #: core/views/arm_member_add.php:771
 #: core/views/arm_member_add.php:786
 #@ armember-membership
@@ -9193,12 +9193,12 @@ msgstr "配置文件和目录"
 msgid "Publish your site content based on different time intervals by enabling this feature."
 msgstr "发布网站内容根据不同的时间间隔，通过使这种功能。"
 
-#: core/classes/class.arm_member_forms.php:10755
+#: core/classes/class.arm_member_forms.php:10756
 #@ armember-membership
 msgid "Puerto Rico"
 msgstr "波多黎各"
 
-#: core/classes/class.arm_member_forms.php:10756
+#: core/classes/class.arm_member_forms.php:10757
 #@ armember-membership
 msgid "Qatar"
 msgstr "卡塔尔"
@@ -9588,7 +9588,7 @@ msgstr "限制内容"
 msgid "Restriction Type"
 msgstr "限制类型"
 
-#: core/classes/class.arm_member_forms.php:10757
+#: core/classes/class.arm_member_forms.php:10758
 #@ armember-membership
 msgid "Reunion Island"
 msgstr "留尼汪岛"
@@ -9633,7 +9633,7 @@ msgstr "作用"
 msgid "Roles"
 msgstr "角色"
 
-#: core/classes/class.arm_member_forms.php:10758
+#: core/classes/class.arm_member_forms.php:10759
 #@ armember-membership
 msgid "Romania"
 msgstr "罗马尼亚"
@@ -9675,7 +9675,7 @@ msgstr "RTL"
 msgid "Rusia/Rusia"
 msgstr "俄罗斯/哈萨克斯坦"
 
-#: core/classes/class.arm_member_forms.php:10759
+#: core/classes/class.arm_member_forms.php:10760
 #@ armember-membership
 msgid "Russia"
 msgstr "俄罗斯"
@@ -9685,32 +9685,32 @@ msgstr "俄罗斯"
 msgid "Russian"
 msgstr "俄罗斯"
 
-#: core/classes/class.arm_member_forms.php:10760
+#: core/classes/class.arm_member_forms.php:10761
 #@ armember-membership
 msgid "Rwanda"
 msgstr "卢旺达问题"
 
-#: core/classes/class.arm_member_forms.php:10761
+#: core/classes/class.arm_member_forms.php:10762
 #@ armember-membership
 msgid "Saint Kitts and Nevis"
 msgstr "圣基茨和尼维斯"
 
-#: core/classes/class.arm_member_forms.php:10762
+#: core/classes/class.arm_member_forms.php:10763
 #@ armember-membership
 msgid "Saint Lucia"
 msgstr "圣卢西亚"
 
-#: core/classes/class.arm_member_forms.php:10763
+#: core/classes/class.arm_member_forms.php:10764
 #@ armember-membership
 msgid "Saint Vincent and the Grenadines"
 msgstr "圣文森特和格林纳丁斯"
 
-#: core/classes/class.arm_member_forms.php:10764
+#: core/classes/class.arm_member_forms.php:10765
 #@ armember-membership
 msgid "Samoa"
 msgstr "萨摩亚"
 
-#: core/classes/class.arm_member_forms.php:10765
+#: core/classes/class.arm_member_forms.php:10766
 #@ armember-membership
 msgid "San Marino"
 msgstr "圣马力诺"
@@ -9720,12 +9720,12 @@ msgstr "圣马力诺"
 msgid "Sandbox"
 msgstr "沙箱"
 
-#: core/classes/class.arm_member_forms.php:10766
+#: core/classes/class.arm_member_forms.php:10767
 #@ armember-membership
 msgid "Sao Tome and Principe"
 msgstr "圣多美和普林西比"
 
-#: core/classes/class.arm_member_forms.php:10767
+#: core/classes/class.arm_member_forms.php:10768
 #@ armember-membership
 msgid "Saudi Arabia"
 msgstr "沙特阿拉伯"
@@ -10310,7 +10310,7 @@ msgstr "发送的注册用户的电子邮件通知"
 msgid "Send test mail"
 msgstr "送测试邮件"
 
-#: core/classes/class.arm_member_forms.php:10768
+#: core/classes/class.arm_member_forms.php:10769
 #@ armember-membership
 msgid "Senegal"
 msgstr "塞内加尔"
@@ -10321,7 +10321,7 @@ msgstr "塞内加尔"
 msgid "Separate values format should be label:value."
 msgstr "独立的价值观格式应该是标签：值。"
 
-#: core/classes/class.arm_member_forms.php:10769
+#: core/classes/class.arm_member_forms.php:10770
 #@ armember-membership
 msgid "Serbia and Montenegro"
 msgstr "塞尔维亚和黑山"
@@ -10378,7 +10378,7 @@ msgstr "安装的名字"
 msgid "Setup name"
 msgstr "安装的名字"
 
-#: core/classes/class.arm_member_forms.php:10770
+#: core/classes/class.arm_member_forms.php:10771
 #@ armember-membership
 msgid "Seychelles"
 msgstr "塞舌尔"
@@ -10521,7 +10521,7 @@ msgstr "表示"
 msgid "Showing 0 to 0 of 0 entries"
 msgstr "表示0 0 0项"
 
-#: core/classes/class.arm_member_forms.php:10771
+#: core/classes/class.arm_member_forms.php:10772
 #@ armember-membership
 msgid "Sierra Leone"
 msgstr "塞拉利昂"
@@ -10531,7 +10531,7 @@ msgstr "塞拉利昂"
 msgid "signup"
 msgstr "注册"
 
-#: core/classes/class.arm_member_forms.php:10772
+#: core/classes/class.arm_member_forms.php:10773
 #@ armember-membership
 msgid "Singapore"
 msgstr "新加坡"
@@ -10574,12 +10574,12 @@ msgstr "滑"
 msgid "Slovak"
 msgstr "斯洛伐克"
 
-#: core/classes/class.arm_member_forms.php:10773
+#: core/classes/class.arm_member_forms.php:10774
 #@ armember-membership
 msgid "Slovakia"
 msgstr "斯洛伐克"
 
-#: core/classes/class.arm_member_forms.php:10774
+#: core/classes/class.arm_member_forms.php:10775
 #@ armember-membership
 msgid "Slovenia"
 msgstr "斯洛文尼亚"
@@ -10625,12 +10625,12 @@ msgstr "社会领域"
 msgid "Social Profile Fields"
 msgstr "社会领域的轮廓"
 
-#: core/classes/class.arm_member_forms.php:10775
+#: core/classes/class.arm_member_forms.php:10776
 #@ armember-membership
 msgid "Solomon Islands"
 msgstr "所罗门群岛"
 
-#: core/classes/class.arm_member_forms.php:10776
+#: core/classes/class.arm_member_forms.php:10777
 #@ armember-membership
 msgid "Somalia"
 msgstr "索马里的"
@@ -10675,7 +10675,7 @@ msgid "Sorry, Something went wrong. Please contact to site administrator."
 msgstr "抱歉，事情出了错。 请联系向网站管理员。"
 
 #: autoload.php:1796
-#: autoload.php:3992
+#: autoload.php:3991
 #: core/classes/class.arm_access_rules.php:508
 #: core/classes/class.arm_email_settings.php:190
 #: core/classes/class.arm_email_settings.php:223
@@ -10711,7 +10711,7 @@ msgid "Sorry, Something went wrong. please try again."
 msgstr "抱歉，事情出了错。 请再试一次。"
 
 #: autoload.php:1784
-#: autoload.php:3977
+#: autoload.php:3976
 #@ armember-membership
 msgid "Sorry, this file type is not permitted for security reasons."
 msgstr "对不起，这一文件类型是不允许出于安全原因。"
@@ -10724,7 +10724,7 @@ msgstr "对不起，这一文件类型是不允许出于安全原因。"
 msgid "Sorry, You do not have permission to perform this action"
 msgstr "对不起，你没有权限来执行这个行动"
 
-#: autoload.php:4145
+#: autoload.php:4144
 #: core/classes/class.arm_manage_communication.php:27
 #: core/classes/class.arm_manage_subscription.php:873
 #: core/classes/class.arm_transaction.php:556
@@ -10748,17 +10748,17 @@ msgstr "排序"
 msgid "Sort Field Order"
 msgstr "排序场了"
 
-#: core/classes/class.arm_member_forms.php:10777
+#: core/classes/class.arm_member_forms.php:10778
 #@ armember-membership
 msgid "South Africa"
 msgstr "南非"
 
-#: core/classes/class.arm_member_forms.php:10702
+#: core/classes/class.arm_member_forms.php:10703
 #@ armember-membership
 msgid "South Korea"
 msgstr "韩国"
 
-#: core/classes/class.arm_member_forms.php:10778
+#: core/classes/class.arm_member_forms.php:10779
 #@ armember-membership
 msgid "Spain"
 msgstr "西班牙"
@@ -10808,7 +10808,7 @@ msgstr "特定的网页"
 msgid "Specific URL"
 msgstr "具体URL"
 
-#: core/classes/class.arm_member_forms.php:10779
+#: core/classes/class.arm_member_forms.php:10780
 #@ armember-membership
 msgid "Sri Lanka"
 msgstr "斯里兰卡"
@@ -11069,7 +11069,7 @@ msgstr "成功"
 msgid "success"
 msgstr "成功"
 
-#: core/classes/class.arm_member_forms.php:10780
+#: core/classes/class.arm_member_forms.php:10781
 #@ armember-membership
 msgid "Sudan"
 msgstr "苏丹"
@@ -11086,7 +11086,7 @@ msgstr "缀"
 msgid "Summary Text"
 msgstr "摘要文本"
 
-#: core/classes/class.arm_member_forms.php:10781
+#: core/classes/class.arm_member_forms.php:10782
 #@ armember-membership
 msgid "Suriname"
 msgstr "苏里南"
@@ -11107,12 +11107,12 @@ msgstr "苏里南"
 msgid "Suspended"
 msgstr "暂停"
 
-#: core/classes/class.arm_member_forms.php:10782
+#: core/classes/class.arm_member_forms.php:10783
 #@ armember-membership
 msgid "Swaziland"
 msgstr "斯威士兰"
 
-#: core/classes/class.arm_member_forms.php:10783
+#: core/classes/class.arm_member_forms.php:10784
 #@ armember-membership
 msgid "Sweden"
 msgstr "瑞典"
@@ -11127,12 +11127,12 @@ msgstr "瑞典"
 msgid "Swedish/Sweden"
 msgstr "瑞典/瑞典"
 
-#: core/classes/class.arm_member_forms.php:10784
+#: core/classes/class.arm_member_forms.php:10785
 #@ armember-membership
 msgid "Switzerland"
 msgstr "瑞士"
 
-#: core/classes/class.arm_member_forms.php:10785
+#: core/classes/class.arm_member_forms.php:10786
 #@ armember-membership
 msgid "Syria"
 msgstr "叙利亚"
@@ -11147,12 +11147,12 @@ msgstr "系统检测到垃圾邮件的机器人"
 msgid "Tablet View"
 msgstr "平板电视"
 
-#: core/classes/class.arm_member_forms.php:10786
+#: core/classes/class.arm_member_forms.php:10787
 #@ armember-membership
 msgid "Taiwan"
 msgstr "台湾"
 
-#: core/classes/class.arm_member_forms.php:10787
+#: core/classes/class.arm_member_forms.php:10788
 #@ armember-membership
 msgid "Tajikistan"
 msgstr "塔吉克斯坦"
@@ -11162,7 +11162,7 @@ msgstr "塔吉克斯坦"
 msgid "Tamil"
 msgstr "泰米尔"
 
-#: core/classes/class.arm_member_forms.php:10788
+#: core/classes/class.arm_member_forms.php:10789
 #@ armember-membership
 msgid "Tanzania"
 msgstr "坦桑尼亚"
@@ -11228,13 +11228,13 @@ msgid "Template found."
 msgstr "模板发现。"
 
 #: autoload.php:1844
-#: autoload.php:4038
+#: autoload.php:4037
 #@ armember-membership
 msgid "Template has been added successfully."
 msgstr "模板已加入成功。"
 
 #: autoload.php:1846
-#: autoload.php:4040
+#: autoload.php:4039
 #@ armember-membership
 msgid "Template has been deleted successfully."
 msgstr "模板已被删除成功。"
@@ -11245,7 +11245,7 @@ msgid "Template Name"
 msgstr "模板的名字"
 
 #: autoload.php:1840
-#: autoload.php:4034
+#: autoload.php:4033
 #: core/classes/class.arm_email_settings.php:137
 #: core/classes/class.arm_members_directory.php:1277
 #@ armember-membership
@@ -11317,7 +11317,7 @@ msgstr "泰国"
 msgid "Thai/Thailand"
 msgstr "泰国/泰国"
 
-#: core/classes/class.arm_member_forms.php:10789
+#: core/classes/class.arm_member_forms.php:10790
 #@ armember-membership
 msgid "Thailand"
 msgstr "泰国"
@@ -11639,7 +11639,7 @@ msgstr "除特定的形式领域与它的价值，点击这个按钮，弹出窗
 msgid "To reset your password, visit the following address:"
 msgstr "要重设你的密码，请访问以下地址："
 
-#: core/classes/class.arm_member_forms.php:10790
+#: core/classes/class.arm_member_forms.php:10791
 #@ armember-membership
 msgid "Togo"
 msgstr "多哥"
@@ -11650,7 +11650,7 @@ msgstr "多哥"
 msgid "Token"
 msgstr "令牌"
 
-#: core/classes/class.arm_member_forms.php:10791
+#: core/classes/class.arm_member_forms.php:10792
 #@ armember-membership
 msgid "Tonga"
 msgstr "汤加"
@@ -11727,7 +11727,7 @@ msgid "Transaction Details"
 msgstr "交易的详细信息"
 
 #: autoload.php:1825
-#: autoload.php:4021
+#: autoload.php:4020
 #@ armember-membership
 msgid "Transaction has been deleted successfully."
 msgstr "交易已经删除成功。"
@@ -11878,7 +11878,7 @@ msgstr "试用期"
 msgid "Trial Start Date"
 msgstr "审判开始日期"
 
-#: core/classes/class.arm_member_forms.php:10792
+#: core/classes/class.arm_member_forms.php:10793
 #@ armember-membership
 msgid "Trinidad and Tobago"
 msgstr "特立尼达和多巴哥"
@@ -11888,12 +11888,12 @@ msgstr "特立尼达和多巴哥"
 msgid "Tumblr"
 msgstr "棒的"
 
-#: core/classes/class.arm_member_forms.php:10793
+#: core/classes/class.arm_member_forms.php:10794
 #@ armember-membership
 msgid "Tunisia"
 msgstr "突尼斯"
 
-#: core/classes/class.arm_member_forms.php:10794
+#: core/classes/class.arm_member_forms.php:10795
 #@ armember-membership
 msgid "Turkey"
 msgstr "土耳其"
@@ -11903,12 +11903,12 @@ msgstr "土耳其"
 msgid "Turkish"
 msgstr "土耳其"
 
-#: core/classes/class.arm_member_forms.php:10795
+#: core/classes/class.arm_member_forms.php:10796
 #@ armember-membership
 msgid "Turkmenistan"
 msgstr "土库曼斯坦"
 
-#: core/classes/class.arm_member_forms.php:10796
+#: core/classes/class.arm_member_forms.php:10797
 #@ armember-membership
 msgid "Tuvalu"
 msgstr "图瓦卢"
@@ -11932,12 +11932,12 @@ msgstr "类型"
 msgid "Type username to select user"
 msgstr "类型的用户名，以用户选择"
 
-#: core/classes/class.arm_member_forms.php:10797
+#: core/classes/class.arm_member_forms.php:10798
 #@ armember-membership
 msgid "Uganda"
 msgstr "乌干达"
 
-#: core/classes/class.arm_member_forms.php:10798
+#: core/classes/class.arm_member_forms.php:10799
 #@ armember-membership
 msgid "Ukraine"
 msgstr "乌克兰"
@@ -11954,17 +11954,17 @@ msgstr "乌克兰"
 msgid "Uncover"
 msgstr "发现"
 
-#: core/classes/class.arm_member_forms.php:10799
+#: core/classes/class.arm_member_forms.php:10800
 #@ armember-membership
 msgid "United Arab Emirates"
 msgstr "阿拉伯联合酋长国"
 
-#: core/classes/class.arm_member_forms.php:10800
+#: core/classes/class.arm_member_forms.php:10801
 #@ armember-membership
 msgid "United Kingdom"
 msgstr "联合王国"
 
-#: core/classes/class.arm_member_forms.php:10801
+#: core/classes/class.arm_member_forms.php:10802
 #@ armember-membership
 msgid "United States"
 msgstr "美国"
@@ -12087,7 +12087,7 @@ msgstr "上传照片"
 msgid "uppercase"
 msgstr "大写的"
 
-#: core/classes/class.arm_member_forms.php:10802
+#: core/classes/class.arm_member_forms.php:10803
 #@ armember-membership
 msgid "Uruguay"
 msgstr "乌拉圭"
@@ -12290,8 +12290,8 @@ msgid "User's Signup Details such as Username, Password, First Name, Last Name a
 msgstr "用户注册的详细信息，如用户名、口令、姓名和定义领域值(地址、性别等)"
 
 #: autoload.php:1790
-#: autoload.php:3983
-#: autoload.php:4061
+#: autoload.php:3982
+#: autoload.php:4060
 #@ armember-membership
 msgid "User's subscription has been canceled"
 msgstr "用户的预订已被取消"
@@ -12365,7 +12365,7 @@ msgstr "用户名"
 msgid "Username OR Email Address"
 msgstr "用户名或电子邮件地址"
 
-#: core/classes/class.arm_access_rules.php:1061
+#: core/classes/class.arm_access_rules.php:1064
 #: core/classes/class.arm_subscription_plans.php:785
 #: core/classes/class.arm_subscription_plans.php:848
 #: core/views/arm_access_rules.php:295
@@ -12373,7 +12373,7 @@ msgstr "用户名或电子邮件地址"
 msgid "Users Having No Plan"
 msgstr "用户有没有计划"
 
-#: core/classes/class.arm_member_forms.php:10803
+#: core/classes/class.arm_member_forms.php:10804
 #@ armember-membership
 msgid "Uzbekistan"
 msgstr "乌兹别克斯坦"
@@ -12420,17 +12420,17 @@ msgstr "验证URL"
 msgid "Value"
 msgstr "值"
 
-#: core/classes/class.arm_member_forms.php:10804
+#: core/classes/class.arm_member_forms.php:10805
 #@ armember-membership
 msgid "Vanuatu"
 msgstr "瓦努阿图"
 
-#: core/classes/class.arm_member_forms.php:10805
+#: core/classes/class.arm_member_forms.php:10806
 #@ armember-membership
 msgid "Vatican City"
 msgstr "梵蒂冈城"
 
-#: core/classes/class.arm_member_forms.php:10806
+#: core/classes/class.arm_member_forms.php:10807
 #@ armember-membership
 msgid "Venezuela"
 msgstr "委内瑞拉"
@@ -12440,12 +12440,12 @@ msgstr "委内瑞拉"
 msgid "Very Weak Text"
 msgstr "非常薄弱的文字"
 
-#: autoload.php:3841
+#: autoload.php:3840
 #@ armember-membership
 msgid "Video Tutorials"
 msgstr "视频"
 
-#: core/classes/class.arm_member_forms.php:10807
+#: core/classes/class.arm_member_forms.php:10808
 #@ armember-membership
 msgid "Vietnam"
 msgstr "越南"
@@ -12507,12 +12507,12 @@ msgstr "查看资料的链接标签"
 msgid "Vine"
 msgstr "藤"
 
-#: core/classes/class.arm_member_forms.php:10808
+#: core/classes/class.arm_member_forms.php:10809
 #@ armember-membership
 msgid "Virgin Islands, British"
 msgstr "属维尔京群岛、英国"
 
-#: core/classes/class.arm_member_forms.php:10809
+#: core/classes/class.arm_member_forms.php:10810
 #@ armember-membership
 msgid "Virgin Islands, U.S."
 msgstr "属维尔京群岛、美国"
@@ -12815,7 +12815,7 @@ msgstr "年"
 msgid "years"
 msgstr "年"
 
-#: core/classes/class.arm_member_forms.php:10810
+#: core/classes/class.arm_member_forms.php:10811
 #@ armember-membership
 msgid "Yemen"
 msgstr "也门"
@@ -13074,12 +13074,12 @@ msgstr "你的测试邮件发送成功。"
 msgid "Youtube"
 msgstr "Youtube上的"
 
-#: core/classes/class.arm_member_forms.php:10811
+#: core/classes/class.arm_member_forms.php:10812
 #@ armember-membership
 msgid "Zambia"
 msgstr "赞比亚"
 
-#: core/classes/class.arm_member_forms.php:10812
+#: core/classes/class.arm_member_forms.php:10813
 #@ armember-membership
 msgid "Zimbabwe"
 msgstr "津巴布韦"
@@ -14183,17 +14183,17 @@ msgstr "试交易"
 msgid "User Email"
 msgstr "用户电子邮件"
 
-#: autoload.php:4608
+#: autoload.php:4607
 #@ armember-membership
 msgid "An Unexpected HTTP Error occurred during the API request."
 msgstr "API 请求期间发生意外 HTTP 错误。"
 
-#: autoload.php:4608
+#: autoload.php:4607
 #@ armember-membership
 msgid "Try again"
 msgstr "再试一次"
 
-#: autoload.php:4613
+#: autoload.php:4612
 #@ armember-membership
 msgid "An unknown error occurred"
 msgstr "发生未知错误"
@@ -15644,37 +15644,37 @@ msgid "Total"
 msgstr "总计"
 
 #: autoload.php:1778
-#: autoload.php:3971
+#: autoload.php:3970
 #@ armember-membership
 msgid "Failed to load activities. Please try again."
 msgstr "连接失败。 请再测试一次。"
 
 #: autoload.php:1779
-#: autoload.php:3972
+#: autoload.php:3971
 #@ armember-membership
 msgid "The user chose not to grant permission or closed the pop-up."
 msgstr "用户选择不允许权限或关闭打开窗口。"
 
 #: autoload.php:1780
-#: autoload.php:3973
+#: autoload.php:3972
 #@ armember-membership
 msgid "Oops! There was a problem retrieving your information."
 msgstr "坊让。 获取你的信息有问题。"
 
 #: autoload.php:1781
-#: autoload.php:3974
+#: autoload.php:3973
 #@ armember-membership
 msgid "Failed to copy. Please try again."
 msgstr "复制失败。 请再测试一次。"
 
 #: autoload.php:1782
-#: autoload.php:3975
+#: autoload.php:3974
 #@ armember-membership
 msgid "The user canceled the login or did not fully authorize it."
 msgstr "用户取消登录或没有全面权限。"
 
 #: autoload.php:1783
-#: autoload.php:3976
+#: autoload.php:3975
 #@ armember-membership
 msgid "Failed to close the account. Please try again."
 msgstr "关闭资源失败。 请再测试一次。"
@@ -15685,20 +15685,20 @@ msgid "File size must not exceed {SIZE}."
 msgstr "文件大小不能超过{SIZE}。"
 
 #: autoload.php:1786
-#: autoload.php:3979
+#: autoload.php:3978
 #@ armember-membership
 msgid "Failed to upload the file. Please try again."
 msgstr "上传文件失败。 请再测试一次。"
 
 #: autoload.php:1787
-#: autoload.php:3980
+#: autoload.php:3979
 #: core/classes/class.arm_members_directory.php:352
 #@ armember-membership
 msgid "Are you sure you want to remove the cover photo?"
 msgstr "是否确定要消除封面照。"
 
 #: autoload.php:1788
-#: autoload.php:3981
+#: autoload.php:3980
 #: core/classes/class.arm_members_directory.php:353
 #@ armember-membership
 msgid "Are you sure you want to remove the profile photo?"
@@ -15706,14 +15706,14 @@ msgstr "是否确定要消除个人照。"
 
 #: autoload.php:1789
 #: autoload.php:1863
-#: autoload.php:3982
-#: autoload.php:4060
+#: autoload.php:3981
+#: autoload.php:4059
 #@ armember-membership
 msgid "Failed to perform this action. Please try again."
 msgstr "执行消息失败。 请再测试一次。"
 
 #: autoload.php:1800
-#: autoload.php:3996
+#: autoload.php:3995
 #@ armember-membership
 msgid "Login history cleared successfully."
 msgstr "登录历史清突成定。"
@@ -15755,134 +15755,134 @@ msgid "Password cannot be left blank."
 msgstr "密码不能空格。"
 
 #: autoload.php:1803
-#: autoload.php:3998
+#: autoload.php:3997
 #@ armember-membership
 msgid "Plan(s) have been deleted successfully."
 msgstr "计划(个)已结果删除。"
 
 #: autoload.php:1804
-#: autoload.php:3999
+#: autoload.php:3998
 #@ armember-membership
 msgid "Failed to delete plan(s). Please try again."
 msgstr "计划(个)删除失败。 请再测试一次。"
 
 #: autoload.php:1805
-#: autoload.php:4001
+#: autoload.php:4000
 #@ armember-membership
 msgid "Failed to delete the plan. Please try again."
 msgstr "计划删除失败。 请再测试一次。"
 
 #: autoload.php:1808
-#: autoload.php:4004
+#: autoload.php:4003
 #@ armember-membership
 msgid "Failed to delete setup(s). Please try again."
 msgstr "设置(个)删除失败。 请再测试一次。"
 
 #: autoload.php:1809
-#: autoload.php:4005
+#: autoload.php:4004
 #: core/classes/class.arm_membership_setup.php:5136
 #@ armember-membership
 msgid "The setup has been deleted successfully."
 msgstr "设置已结果删除。"
 
 #: autoload.php:1810
-#: autoload.php:4006
+#: autoload.php:4005
 #@ armember-membership
 msgid "Failed to delete the setup. Please try again."
 msgstr "设置删除失败。 请再测试一次。"
 
 #: autoload.php:1811
-#: autoload.php:4007
+#: autoload.php:4006
 #@ armember-membership
 msgid "Form set deleted successfully."
 msgstr "表形集已结果删除。"
 
 #: autoload.php:1812
-#: autoload.php:4008
+#: autoload.php:4007
 #@ armember-membership
 msgid "Failed to delete the form set. Please try again."
 msgstr "表形集删除失败。 请再测试一次。"
 
 #: autoload.php:1814
-#: autoload.php:4010
+#: autoload.php:4009
 #@ armember-membership
 msgid "Failed to delete the form. Please try again."
 msgstr "表形删除失败。 请再测试一次。"
 
 #: autoload.php:1815
-#: autoload.php:4011
+#: autoload.php:4010
 #@ armember-membership
 msgid "The rule has been deleted successfully."
 msgstr "规则已结果删除。"
 
 #: autoload.php:1816
-#: autoload.php:4012
+#: autoload.php:4011
 #@ armember-membership
 msgid "Failed to delete the rule. Please try again."
 msgstr "删除规则失败，请再试一次。"
 
 #: autoload.php:1817
-#: autoload.php:4013
+#: autoload.php:4012
 #@ armember-membership
 msgid "Rule(s) have been deleted successfully."
 msgstr "规则已成功删除。"
 
 #: autoload.php:1818
-#: autoload.php:4014
+#: autoload.php:4013
 #@ armember-membership
 msgid "Failed to delete rule(s). Please try again."
 msgstr "删除规则失败，请再试一次。"
 
 #: autoload.php:1819
-#: autoload.php:4015
+#: autoload.php:4014
 #@ armember-membership
 msgid "Failed to generate the transaction details preview. Please try again."
 msgstr "生成交易详情预览失败，请再试一次。"
 
 #: autoload.php:1820
-#: autoload.php:4016
+#: autoload.php:4015
 #@ armember-membership
 msgid "Failed to generate the transaction invoice. Please try again."
 msgstr "生成交易发票失败，请再试一次。"
 
 #: autoload.php:1821
-#: autoload.php:4017
+#: autoload.php:4016
 #@ armember-membership
 msgid "Failed to generate the member details preview. Please try again."
 msgstr "生成会员详情预览失败，请再试一次。"
 
 #: autoload.php:1822
-#: autoload.php:4018
+#: autoload.php:4017
 #@ armember-membership
 msgid "Failed to display member activity details. Please try again."
 msgstr "显示会员活动详情失败，请再试一次。"
 
 #: autoload.php:1823
-#: autoload.php:4019
+#: autoload.php:4018
 #@ armember-membership
 msgid "Failed to display ARMember CSS class information. Please try again."
 msgstr "显示ARMember CSS类信息失败，请再试一次。"
 
 #: autoload.php:1828
-#: autoload.php:4024
+#: autoload.php:4023
 #@ armember-membership
 msgid "Failed to delete the message. Please try again."
 msgstr "删除消息失败，请再试一次。"
 
 #: autoload.php:1830
-#: autoload.php:4026
+#: autoload.php:4025
 #@ armember-membership
 msgid "Failed to delete the message(s). Please try again."
 msgstr "删除消息失败，请再试一次。"
 
 #: autoload.php:1832
-#: autoload.php:4028
+#: autoload.php:4027
 #@ armember-membership
 msgid "Settings have been saved successfully."
 msgstr "设置已成功保存。"
 
 #: autoload.php:1833
-#: autoload.php:4029
+#: autoload.php:4028
 #: core/classes/class.arm_global_settings.php:1784
 #: core/classes/class.arm_members_directory.php:309
 #: core/classes/class.arm_members_directory.php:312
@@ -15891,14 +15891,14 @@ msgid "Failed to update the settings. Please try again."
 msgstr "更新设置失败，请再试一次。"
 
 #: autoload.php:1834
-#: autoload.php:4030
+#: autoload.php:4029
 #: core/classes/class.arm_access_rules.php:111
 #@ armember-membership
 msgid "Default rules saved successfully."
 msgstr "默认规则已成功保存。"
 
 #: autoload.php:1835
-#: autoload.php:4031
+#: autoload.php:4030
 #@ armember-membership
 msgid "Failed to update the rules. Please try again."
 msgstr "更新规则失败，请再试一次。"
@@ -15919,13 +15919,13 @@ msgid "Are you sure you want to delete this configuration?"
 msgstr "您确定要删除此配置吗？"
 
 #: autoload.php:1839
-#: autoload.php:4033
+#: autoload.php:4032
 #@ armember-membership
 msgid "Failed to delete member activities. Please try again."
 msgstr "删除会员活动失败，请再试一次。"
 
 #: autoload.php:1841
-#: autoload.php:4035
+#: autoload.php:4034
 #: core/classes/class.arm_members_directory.php:326
 #: core/classes/class.arm_members_directory.php:329
 #@ armember-membership
@@ -15933,31 +15933,31 @@ msgid "Template options have been saved successfully."
 msgstr "模板选项已成功保存。"
 
 #: autoload.php:1842
-#: autoload.php:4036
+#: autoload.php:4035
 #@ armember-membership
 msgid "Failed to update the template options. Please try again."
 msgstr "更新模板选项失败，请再试一次。"
 
 #: autoload.php:1843
-#: autoload.php:4037
+#: autoload.php:4036
 #@ armember-membership
 msgid "Failed to generate the template preview. Please try again."
 msgstr "生成模板预览失败，请再试一次。"
 
 #: autoload.php:1845
-#: autoload.php:4039
+#: autoload.php:4038
 #@ armember-membership
 msgid "Failed to add the template. Please try again."
 msgstr "添加模板失败，请再试一次。"
 
 #: autoload.php:1847
-#: autoload.php:4041
+#: autoload.php:4040
 #@ armember-membership
 msgid "Failed to delete the template. Please try again."
 msgstr "删除模板失败，请再试一次。"
 
 #: autoload.php:1848
-#: autoload.php:4042
+#: autoload.php:4041
 #: core/classes/class.arm_email_settings.php:209
 #: core/classes/class.arm_email_settings.php:235
 #@ armember-membership
@@ -15965,63 +15965,63 @@ msgid "Email template updated successfully."
 msgstr "电子邮件模板已成功更新。"
 
 #: autoload.php:1849
-#: autoload.php:4043
+#: autoload.php:4042
 #@ armember-membership
 msgid "Message updated successfully."
 msgstr "消息已成功更新。"
 
 #: autoload.php:1851
-#: autoload.php:4048
+#: autoload.php:4047
 #@ armember-membership
 msgid "Cannot set past dates."
 msgstr "无法设置过去的日期。"
 
 #: autoload.php:1852
-#: autoload.php:4049
+#: autoload.php:4048
 #@ armember-membership
 msgid "The start date cannot be earlier than the current date."
 msgstr "开始日期不能早于当前日期。"
 
 #: autoload.php:1853
-#: autoload.php:4050
+#: autoload.php:4049
 #@ armember-membership
 msgid "The expiration date cannot be earlier than the current date."
 msgstr "过期日期不能早于当前日期。"
 
 #: autoload.php:1855
-#: autoload.php:4052
+#: autoload.php:4051
 #@ armember-membership
 msgid "This set name already exists."
 msgstr "该集合名称已经存在。"
 
 #: autoload.php:1856
-#: autoload.php:4053
+#: autoload.php:4052
 #@ armember-membership
 msgid "This form name already exists."
 msgstr "该表单名称已经存在。"
 
 #: autoload.php:1857
-#: autoload.php:4054
+#: autoload.php:4053
 #@ armember-membership
 msgid "Failed to install the add-on. Please try again."
 msgstr "添加组件安装失败，请重试。"
 
 #: autoload.php:1859
-#: autoload.php:4056
+#: autoload.php:4055
 #@ armember-membership
 msgid "Failed to activate the add-on. Please try again."
 msgstr "添加组件激活失败，请重试。"
 
 #: autoload.php:1862
-#: autoload.php:3984
-#: autoload.php:4059
-#: autoload.php:4062
+#: autoload.php:3983
+#: autoload.php:4058
+#: autoload.php:4061
 #@ armember-membership
 msgid "Are you sure you want to cancel the subscription?"
 msgstr "您确定要取消订阅吗？"
 
 #: autoload.php:1807
-#: autoload.php:4003
+#: autoload.php:4002
 #@ armember-membership
 msgid "Setup(s) have been deleted successfully."
 msgstr "设置已成功删除。"
@@ -16031,12 +16031,12 @@ msgstr "设置已成功删除。"
 msgid "Failed to update the access rules. Please try again."
 msgstr "更新访问规则失败，请重试。"
 
-#: core/classes/class.arm_crons.php:654
+#: core/classes/class.arm_crons.php:642
 #@ armember-membership
 msgid "Email sent successfully to"
 msgstr "电子邮件已成功发送到"
 
-#: core/classes/class.arm_crons.php:654
+#: core/classes/class.arm_crons.php:642
 #@ armember-membership
 msgid "for the trial period has finished"
 msgstr "试用期已经结束"
@@ -16524,13 +16524,13 @@ msgstr "已登录用户"
 msgid "ARMember Lite recommends using a minimum PHP version of 5.6 or greater."
 msgstr "ARMember Lite 推荐使用 PHP 5.6 或更高版本。"
 
-#: autoload.php:3884
-#: autoload.php:4169
+#: autoload.php:3883
+#: autoload.php:4168
 #@ armember-membership
 msgid "Sorry, Your request cannot process due to security reason."
 msgstr "对不起，您的请求由于安全原因无法处理。"
 
-#: autoload.php:4162
+#: autoload.php:4161
 #@ armember-membership
 msgid "Sorry, Your request cannot process due to nonce not found."
 msgstr "对不起，您的请求由于 nonce 未找到无法处理。"
@@ -17054,7 +17054,7 @@ msgid "Sorry, something went wrong while updating preset fields."
 msgstr "来自一个设置字段的词刷资金融。"
 
 #: autoload.php:1826
-#: autoload.php:4022
+#: autoload.php:4021
 #: core/classes/class.arm_transaction.php:610
 #@ armember-membership
 msgid "Transaction(s) have been deleted successfully."
@@ -17141,14 +17141,14 @@ msgstr "抱歉，当前会员设置不允许使用计划"
 msgid "Search Members..."
 msgstr "搜索会员..."
 
-#. translators: plugin header field 'Version'
-#: armember-membership.php:0
-#@ armember-membership
-msgid "6.0"
-msgstr "6.0"
-
 #: core/classes/class.arm_members.php:194
 #@ armember-membership
 msgid "Invalid user."
 msgstr "无效用户。"
+
+#. translators: plugin header field 'Version'
+#: armember-membership.php:0
+#@ armember-membership
+msgid "6.0.1"
+msgstr "6.0.1"
 

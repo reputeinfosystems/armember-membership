@@ -1227,11 +1227,14 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						$plan_cycle      = isset( $planData['arm_payment_cycle'] ) ? $planData['arm_payment_cycle'] : '';
 						$paly_cycle_data = $plan->prepare_recurring_data( $plan_cycle );
 						$expire_strtime  = '';
-						if ( $paly_cycle_data['rec_time'] == 'infinite' ) {
-							$expire_strtime = $planData['arm_next_due_payment'];
-						} else {
-							$expire_strtime = $planData['arm_expire_plan'];
-						}
+
+						if( $plan->is_recurring() && $plan_cycle_data['rec_time'] != 'infinite' )
+			                        {
+                        				$planData['arm_completed_recurring'] = $plan_cycle_data['rec_time'];
+                            			}
+                            			$expire_strtime = $planData['arm_next_due_payment'];
+						$planData['arm_expire_plan'] = $expire_strtime;
+						arm_update_user_meta($user_id, 'arm_user_plan_' . $plan_id, $planData);
 						$expire_time = date_i18n( $date_format, $expire_strtime );
 						$success_msg = esc_html__( 'Your Subscription will be canceled on', 'armember-membership' ) . ' ' . $expire_time;
 						$return      = array(

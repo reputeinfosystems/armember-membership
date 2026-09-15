@@ -248,7 +248,7 @@ class arm_membership_register_element_shortcode extends Widget_Base
 
 		$logged_in_message = isset($settings['arm_loggedin_message']) && !empty($settings['arm_loggedin_message']) ? esc_attr( $settings['arm_loggedin_message']) : esc_html__('You are already logged in.', 'armember-membership') ;
 		echo '<h5 class="title">';
-		echo $settings['title']; //phpcs:ignore
+		echo esc_html($settings['title']); //phpcs:ignore
 		echo '</h5>';
 		echo '<div class="arm_select">';
 			$arm_shortcode='';

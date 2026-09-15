@@ -4605,6 +4605,10 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 										$change_plan_to                   = $plan_data['arm_change_plan_to'];
 
 										$plan_names[ $userPlanID ]     = $arm_subscription_plans->arm_get_plan_name_by_id( $userPlanID );
+										if($plan_data['arm_cencelled_plan'] == "yes")
+										{
+											$plan_names[$userPlanID] .= " <br><span style='color: red;'>( ".esc_html__('Cancelled', 'armember-membership')." )</span>";
+										}
 										$subscription_effective_from[] = array(
 											'arm_subscr_effective' => $subscription_effective_from_date,
 											'arm_change_plan_to' => $change_plan_to,
@@ -4613,7 +4617,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 								}
 
 								$plan_name              = ( ! empty( $plan_names ) ) ? implode( ',', $plan_names ) : '';
-								$grid_data[ $ai ][ $n ] = '<span class="arm_user_plan_' . esc_attr($userID) . '">' . esc_html($plan_name) . '</span>';
+								$grid_data[ $ai ][ $n ] = '<span class="arm_user_plan_' . esc_attr($userID) . '">' . $plan_name . '</span>';
 								if ( ! empty( $arm_all_user_plans ) ) {
 									if ( in_array( $arm_all_user_plans[0], $userSuspendedPlanIDs ) ) {
 

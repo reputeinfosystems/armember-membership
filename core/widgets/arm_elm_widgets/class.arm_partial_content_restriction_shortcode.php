@@ -134,8 +134,8 @@ class arm_partial_content_restriction_shortcode extends Widget_Base
 					$str .= $sk.',';
 				}
 			}
-			echo  do_shortcode('[arm_restrict_content plan="'.$str.'" type="'.$settings['arm_shortcode_select'].'"]'.$settings['arm_display_textarea'].' [armelse]
-			'.$settings['arm_display_textarea_else'].'
+			echo  do_shortcode('[arm_restrict_content plan="'.$str.'" type="'.esc_attr($settings['arm_shortcode_select']).'"]'. esc_attr($settings['arm_display_textarea']).' [armelse]
+			'. esc_attr($settings['arm_display_textarea_else']) .'
 			[/arm_restrict_content]');
 		echo '</div>';
 	}

@@ -120,7 +120,7 @@ class arm_user_plan_info_element_shortcode extends Widget_Base
 		
 		$settings = $this->get_settings_for_display();
 			echo '<h5 class="title">';
-			echo $settings['title']; //phpcs:ignore
+			echo esc_html($settings['title']); //phpcs:ignore
 			echo '</h5>';
 			echo '<div class="arm_select">';
 			echo do_shortcode('[arm_user_planinfo plan_id="'.$settings['arm_show_plans'].'" plan_info="'.$settings['arm_select_plan_info'].'"]'); //phpcs:ignore
