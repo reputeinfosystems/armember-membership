@@ -16,7 +16,10 @@ if ( ! class_exists( 'ARM_Spam_Filter_Lite' ) ) {
 
 			$general_settings = isset( $arm_global_settings->global_settings ) ? $arm_global_settings->global_settings : array();
 			$spam_protection  = isset( $general_settings['spam_protection'] ) ? $general_settings['spam_protection'] : '';
-			if ( ! empty( $spam_protection ) ) {
+			
+			$allowed = false;
+			$allowed = apply_filters('arm_modify_file_validation_external', $allowed);
+			if ( ! empty( $spam_protection ) && !$allowed ) {
 				add_filter( 'armember_validate_spam_filter_fields', array( $this, 'armember_check_spam_filter_fields' ), 10, 2 );
 			}
 		}

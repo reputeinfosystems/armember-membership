@@ -112,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '5.9';
+$arm_lite_version = '6.0';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -387,7 +387,7 @@ class ARMemberlite {
 		register_activation_hook( MEMBERSHIPLITE_DIR . '/armember-membership.php', array( 'ARMemberlite', 'armember_check_network_activation' ) );
 		register_deactivation_hook(MEMBERSHIPLITE_DIR . '/armember-membership.php', array( 'ARMemberlite', 'deactivate__armember_lite_version' ));
 
-		add_filter( 'arm_admin_notice', array( $this, 'arm_display_news_notices' ), 1 );
+		//add_filter( 'arm_admin_notice', array( $this, 'arm_display_news_notices' ), 1 );
 		add_action( 'wp_ajax_arm_dismiss_news', array( $this, 'arm_dismiss_news_notice' ) );
 
 		/* Load Language TextDomain */
@@ -755,7 +755,7 @@ class ARMemberlite {
 		</div>
 		<?php
 	}
-
+	/*
 	function arm_display_news_notices($arm_license_notice = '') {
 		$arm_news = get_transient( 'arm_news' );
 		if ( false == $arm_news ) {
@@ -763,7 +763,7 @@ class ARMemberlite {
 			$raw_response = wp_remote_post(
 				$url,
 				array(
-					'timeout' => 5000,
+					'timeout' => 10,
 				)
 			);
 
@@ -813,6 +813,7 @@ class ARMemberlite {
 		}
 		return $arm_license_notice;
 	}
+	*/
 
 	function arm_dismiss_news_notice() {
 		global $ARMemberLite;
@@ -2034,7 +2035,11 @@ class ARMemberlite {
 				$posts         = $wp_query->posts;
 				if ( is_array( $posts ) ) {
 					foreach ( $posts as $post ) {
-						if ( preg_match_all( '/' . $pattern . '/s', $post->post_content, $matches ) > 0 ) {
+						$content = $post->post_content;
+						if ( strpos( $content, '[arm_template' ) === false ) {
+							continue;
+						}
+						if ( preg_match_all( '/' . $pattern . '/s', $content, $matches ) > 0 ) {
 							$found_matches[] = $matches;
 						}
 					}
@@ -2188,6 +2193,9 @@ class ARMemberlite {
 			$posts         = $wp_query->posts;
 			if ( is_array( $posts ) ) {
 				foreach ( $posts as $post ) {
+					if ( empty( $post->post_content ) || stripos( $post->post_content, '[arm' ) === false ) {
+						continue;
+					}
 					if ( preg_match_all('/' . $pattern_2 . '/s', $post->post_content, $matches) > 0 || preg_match_all('/' . $pattern . '/s', $post->post_content, $matches) > 0 ) {
 						$found_matches[] = $matches;
 					}
@@ -2235,6 +2243,9 @@ class ARMemberlite {
 			$posts         = $wp_query->posts;
 			if ( is_array( $posts ) && ! empty( $posts ) ) {
 				foreach ( $posts as $key => $post ) {
+					if ( empty( $post->post_content ) || stripos( $post->post_content, '[arm' ) === false ) {
+						continue;
+					}
 					if ( preg_match_all( '/' . $pattern . '/s', $post->post_content, $matches ) > 0 ) {
 						$found_matches[] = $matches;
 					}
@@ -2747,6 +2758,66 @@ class ARMemberlite {
 					if(empty($arm_debug_general_log_add_index_arm_event))
 					{
 						$wpdb->query("ALTER TABLE `{$arm_tbl_arm_debug_general_log}` ADD INDEX `arm-debug-general-log-event` (`arm_general_log_event`)");//phpcs:ignore --Reason $arm_tbl_arm_debug_general_log is a table name
+					}
+
+					$arm_tbl_activity = $ARMemberLite->tbl_arm_activity;
+					$arm_tbl_arm_entries = $ARMemberLite->tbl_arm_entries;
+					$arm_tbl_arm_fail_attempts = $ARMemberLite->tbl_arm_fail_attempts;
+					$arm_tbl_arm_lockdown = $ARMemberLite->tbl_arm_lockdown;
+					$arm_tbl_arm_login_history = $ARMemberLite->tbl_arm_login_history;
+
+					$arm_activity_add_index_arm_user_id = $wpdb->get_results( $wpdb->prepare("SHOW INDEX FROM ".$arm_tbl_activity." where Key_name=%s ",'arm-user-id') );//phpcs:ignore --Reason $arm_tbl_activity is a table name
+					if(empty($arm_activity_add_index_arm_user_id))
+					{
+						$wpdb->query("ALTER TABLE `{$arm_tbl_activity}` ADD INDEX `arm-user-id` (`arm_user_id`)");//phpcs:ignore --Reason $arm_tbl_activity is a table name
+					} 					
+
+					$arm_activity_add_index_arm_item_id = $wpdb->get_results( $wpdb->prepare("SHOW INDEX FROM ".$arm_tbl_activity." where Key_name=%s ",'arm-item-id') );//phpcs:ignore --Reason $arm_tbl_activity is a table name
+					if(empty($arm_activity_add_index_arm_item_id))
+					{
+						$wpdb->query("ALTER TABLE `{$arm_tbl_activity}` ADD INDEX `arm-item-id` (`arm_item_id`)");//phpcs:ignore --Reason $arm_tbl_activity is a table name
+					}
+
+					$arm_entries_add_index_arm_user_id = $wpdb->get_results( $wpdb->prepare("SHOW INDEX FROM ".$arm_tbl_arm_entries." where Key_name=%s ",'arm-user-id') );//phpcs:ignore --Reason $arm_tbl_arm_entries is a table name
+					if(empty($arm_entries_add_index_arm_user_id))
+					{
+						$wpdb->query("ALTER TABLE `{$arm_tbl_arm_entries}` ADD INDEX `arm-user-id` (`arm_user_id`)");//phpcs:ignore --Reason $arm_tbl_arm_entries is a table name
+					}
+
+					$arm_entries_add_index_arm_created_date = $wpdb->get_results( $wpdb->prepare("SHOW INDEX FROM ".$arm_tbl_arm_entries." where Key_name=%s ",'arm-created-date') );//phpcs:ignore --Reason $arm_tbl_arm_entries is a table name
+					if(empty($arm_entries_add_index_arm_created_date))
+					{
+						$wpdb->query("ALTER TABLE `{$arm_tbl_arm_entries}` ADD INDEX `arm-created-date` (`arm_created_date`)");//phpcs:ignore --Reason $arm_tbl_arm_entries is a table name
+					}
+
+					$arm_failed_attempt_add_index_arm_user_id = $wpdb->get_results( $wpdb->prepare("SHOW INDEX FROM ".$arm_tbl_arm_fail_attempts." where Key_name=%s ",'arm-user-id') );//phpcs:ignore --Reason $arm_tbl_arm_fail_attempts is a table name
+					if(empty($arm_failed_attempt_add_index_arm_user_id))
+					{
+						$wpdb->query("ALTER TABLE `{$arm_tbl_arm_fail_attempts}` ADD INDEX `arm-user-id` (`arm_user_id`)");//phpcs:ignore --Reason $arm_tbl_arm_fail_attempts is a table name
+					}
+					
+					$arm_lockdown_add_index_arm_user_id = $wpdb->get_results( $wpdb->prepare("SHOW INDEX FROM ".$arm_tbl_arm_lockdown." where Key_name=%s ",'arm-user-id') );//phpcs:ignore --Reason $arm_tbl_arm_lockdown is a table name
+					if(empty($arm_lockdown_add_index_arm_user_id))
+					{
+						$wpdb->query("ALTER TABLE `{$arm_tbl_arm_lockdown}` ADD INDEX `arm-user-id` (`arm_user_id`)");//phpcs:ignore --Reason $arm_tbl_arm_lockdown is a table name
+					}
+
+					$arm_members_add_index_arm_user_id = $wpdb->get_results( $wpdb->prepare("SHOW INDEX FROM ".$arm_members_table." where Key_name=%s ",'arm-user-id') );//phpcs:ignore --Reason $arm_members_table is a table name
+					if(empty($arm_members_add_index_arm_user_id))
+					{
+						$wpdb->query("ALTER TABLE `{$arm_members_table}` ADD INDEX `arm-user-id` (`arm_user_id`)");//phpcs:ignore --Reason $arm_members_table is a table name
+					}
+
+					$arm_payment_log_add_index_arm_user_id = $wpdb->get_results( $wpdb->prepare("SHOW INDEX FROM ".$arm_tbl_arm_payment_log." where Key_name=%s ",'arm-user-id') );//phpcs:ignore --Reason $arm_tbl_arm_payment_log is a table name
+					if(empty($arm_payment_log_add_index_arm_user_id))
+					{
+						$wpdb->query("ALTER TABLE `{$arm_tbl_arm_payment_log}` ADD INDEX `arm-user-id` (`arm_user_id`)");//phpcs:ignore --Reason $arm_tbl_arm_payment_log is a table name
+					}
+
+					$arm_payment_log_add_index_arm_plan_id = $wpdb->get_results( $wpdb->prepare("SHOW INDEX FROM ".$arm_tbl_arm_payment_log." where Key_name=%s ",'arm-plan-id') );//phpcs:ignore --Reason $arm_tbl_arm_payment_log is a table name
+					if(empty($arm_payment_log_add_index_arm_plan_id))
+					{
+						$wpdb->query("ALTER TABLE `{$arm_tbl_arm_payment_log}` ADD INDEX `arm-plan-id` (`arm_plan_id`)");//phpcs:ignore --Reason $arm_tbl_arm_payment_log is a table name
 					}
 				}
 
@@ -3741,11 +3812,11 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '5.9',
+			'update_version' => '6.0',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				"Enhanced existing Member Directory template with an improved design and user experience.",
-				"Minor bug fixes and improvements.",
+				"Performance & Speed Improvements.",
+				"Minor bug fixes.",
 			),
 			'show_major_title'    => 0,
 			'major_title'         => 'Major Changes',
@@ -3847,8 +3918,11 @@ class ARMemberlite {
 
                     //Replace the URL if it not strats with 'https' or 'http'.
                     if(extension_loaded('xml')){
-                        $arm_xml_obj = new DOMDocument();
-                        $arm_xml_obj->loadHTML($arm_json_paresed_data);
+						$arm_xml_obj = new DOMDocument();
+						libxml_use_internal_errors(true); 
+						$arm_xml_obj->loadHTML( '<?xml encoding="UTF-8">' . $arm_json_paresed_data, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD ); 
+						libxml_clear_errors(); 
+						libxml_use_internal_errors(false);
                         foreach($arm_xml_obj->getElementsByTagName('a') as $arm_anchor_tag_data){
                             $arm_anchor_href = $arm_anchor_tag_data->getAttribute('href');
 							$arm_anchor_target = $arm_anchor_tag_data->getAttribute('target');

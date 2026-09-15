@@ -1900,7 +1900,53 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 								} else {
 									$content .= '<td class="arm-form-table-content">' . $fieldMeta_value . '</td>';
 								}
-							} else {
+							}else if($fieldOpt['type'] == 'select' || $fieldOpt['type'] == 'radio') {
+                                if(!empty($fieldMeta_value))
+                                {
+                                    $arm_tmp_select_val = !empty($fieldOpt['options']) ? $fieldOpt['options'] : '';
+                                    foreach($arm_tmp_select_val as $arm_tmp_select_key => $arm_tmp_val)
+                                    {
+                                        $arm_tmp_select_val_arr = explode(':', $arm_tmp_val);
+                                        $arm_tmp_selected_option_val = end($arm_tmp_select_val_arr);
+                                        if($arm_tmp_selected_option_val == $fieldMeta_value)
+                                        {
+                                            $fieldMeta_value = str_replace(':'.$arm_tmp_selected_option_val, '', $arm_tmp_val);
+                                            break;
+                                        }
+                                    }
+                                }
+                                $content .= "<td class='arm-form-table-content'>".$fieldMeta_value."</td>";
+                            } else if ($fieldOpt['type'] == 'checkbox') {
+								$arm_tmp_checkbox_val = !empty($fieldOpt['options']) ? $fieldOpt['options'] : array();
+
+								if (!is_array($fieldMeta_value) && !empty($fieldMeta_value)) {
+									$fieldMeta_value = explode(',', $fieldMeta_value);
+								}
+
+								if (is_array($fieldMeta_value)) {
+									if (!empty(array_filter($fieldMeta_value, 'strlen'))) {
+										foreach ($fieldMeta_value as $arm_tmp_chk_return_key => $arm_tmp_chk_return_val) {
+											$arm_tmp_chk_return_val = trim($arm_tmp_chk_return_val);
+											if ($arm_tmp_chk_return_val === '') {
+												continue;
+											}
+
+											foreach ($arm_tmp_checkbox_val as $arm_tmp_select_key => $arm_tmp_val) {
+												$arm_tmp_checkbox_val_arr = explode(':', $arm_tmp_val);
+												$arm_tmp_selected_option_val = end($arm_tmp_checkbox_val_arr);
+
+												if ($arm_tmp_selected_option_val == $arm_tmp_chk_return_val) {
+													$fieldMeta_value[$arm_tmp_chk_return_key] = reset($arm_tmp_checkbox_val_arr);
+													break;
+												}
+											}
+										}
+										$fieldMeta_value = implode(', ', $fieldMeta_value);
+									}
+								}
+									$content .= '<td class="arm-form-table-content">' . $fieldMeta_value . '</td>';
+								
+							}else {
 								$content .= '<td class="arm-form-table-content">' . $fieldMeta_value . '</td>';
 							}
 							$content .= '</tr>';
@@ -3512,7 +3558,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			}
 			global $ARMemberLite, $arm_global_settings;
 			$return_content = '';
-
+			$user_id = 0;
 			if ( isset( $atts['id'] ) && $atts['id'] != '' && $atts['id'] > 0 ) {
 				$user_id = intval( $atts['id'] );
 			} elseif ( is_user_logged_in() ) {
@@ -3550,7 +3596,14 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 	                            				$presetFormFields = get_option('arm_preset_form_fields', '');
 	                           				$arm_check_dbFormFields = arm_maybe_unserialize($presetFormFields);
 							}
-                            				$arm_filed_options = !empty($arm_check_dbFormFields['other'][$meta_name]) ? $arm_check_dbFormFields['other'][$meta_name] : array();
+								if ( !empty( $arm_check_dbFormFields['other'][ $meta_name ] ) ) {
+									$arm_filed_options = $arm_check_dbFormFields['other'][ $meta_name ];
+								} elseif ( !empty( $arm_check_dbFormFields['default'][ $meta_name ] ) ) {
+									$arm_filed_options = $arm_check_dbFormFields['default'][ $meta_name ];
+								}
+								else {
+								    $arm_filed_options = array();
+								}
                         			}
 
 						$arm_field_type = ( isset( $arm_filed_options['type'] ) && ! empty( $arm_filed_options['type'] ) ) ? $arm_filed_options['type'] : '';
@@ -3574,7 +3627,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 								}
 								$return_content = '<div class="arm_old_uploaded_file"><a href="' . esc_url($return_content) . '" target="__blank"><img alt="" src="' . esc_url( $fileUrl ) . '" width="100px"/></a></div>'; //phpcs:ignore 
 							}
-						} elseif ( $arm_field_type == 'select' || $arm_field_type == 'radio' || ( $arm_field_type == 'checkbox' && ! is_array( $return_content ) ) ) {
+						} elseif ( $arm_field_type == 'select' || $arm_field_type == 'radio' || $arm_field_type == 'checkbox' ) {
 							if($arm_field_type == 'select')
                             {
                                 if(empty($return_content) || $return_content == '0')
@@ -3582,22 +3635,52 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
                                     $return_content = '';
                                 }
                             }
-							if ( ! empty( $return_content ) ) {
-								$arm_tmp_select_val = ! empty( $arm_filed_options['options'] ) ? $arm_filed_options['options'] : '';
-								foreach ( $arm_tmp_select_val as $arm_tmp_select_key => $arm_tmp_val ) {
-									$arm_tmp_select_val_arr      = explode( ':', $arm_tmp_val );
-									$arm_tmp_selected_option_val = end( $arm_tmp_select_val_arr );
-									if ( $arm_tmp_selected_option_val == $return_content ) {
-										$return_content = str_replace( ':' . $arm_tmp_selected_option_val, '', $arm_tmp_val );
-										break;
+			    if ( ! empty( $return_content ) ) {
+				    if(($arm_field_type == 'checkbox' && is_array($return_content) )){
+
+                                    $arm_tmp_checkbox_val = !empty($arm_filed_options['options']) ? $arm_filed_options['options'] : array();
+                                
+                                    if(!empty(array_filter($return_content, 'strlen')))
+                                    {
+                                        foreach($return_content as $arm_tmp_chk_return_key => $arm_tmp_chk_return_val)
+                                        {
+                                            if($arm_tmp_chk_return_val === '')
+                                            {
+                                                continue;
+                                            }
+                                
+                                            foreach($arm_tmp_checkbox_val as $arm_tmp_select_key => $arm_tmp_val)
+                                            {
+                                                $arm_tmp_checkbox_val_arr = explode(':', $arm_tmp_val);
+                                                $arm_tmp_selected_option_val = end($arm_tmp_checkbox_val_arr);
+                                
+                                                if($arm_tmp_selected_option_val == $arm_tmp_chk_return_val)
+                                                {
+                                                    $return_content[$arm_tmp_chk_return_key] = reset($arm_tmp_checkbox_val_arr);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                
+                                    $return_content = implode(', ', array_filter($return_content, 'strlen'));
+                                }else{
+									$arm_tmp_select_val = ! empty( $arm_filed_options['options'] ) ? $arm_filed_options['options'] : '';
+									foreach ( $arm_tmp_select_val as $arm_tmp_select_key => $arm_tmp_val ) {
+										$arm_tmp_select_val_arr      = explode( ':', $arm_tmp_val );
+										$arm_tmp_selected_option_val = end( $arm_tmp_select_val_arr );
+										if ( $arm_tmp_selected_option_val == $return_content ) {
+											$return_content = str_replace( ':' . $arm_tmp_selected_option_val, '', $arm_tmp_val );
+											break;
+										}
 									}
 								}
-							}
-						} else if( !empty( $arm_field_type ) ) {
-							$return_content = is_string( $return_content ) ? nl2br( $return_content ) : $return_content;
-						}else {
-                            return '';
-                        }
+				}
+				} else if( !empty( $arm_field_type ) ) {
+					$return_content = is_string( $return_content ) ? nl2br( $return_content ) : $return_content;
+				}else {
+					return '';
+				}
 						break;
 				}
 				if ( is_array( $return_content ) ) {

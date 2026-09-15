@@ -181,16 +181,24 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				'type' => 'error',
 				'msg'  => esc_html__( 'Sorry, Something went wrong. Please try again.', 'armember-membership' )
 			);
-			
-			$post_data = $_POST; //phpcs:ignore
-			
 
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_members'], '1'); //phpcs:ignore --Reason:Verifying nonce
-
+			
+			$post_data = wp_unslash( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification -- Nonce verification is done elsewhere
+			
 			$date_format     = $arm_global_settings->arm_get_wp_date_format();
 			$defaultPlanData = $arm_subscription_plans->arm_default_plan_array();
-			$user_ID = isset( $post_data['user_id'] ) ? intval( $post_data['user_id'] ) : 0;
-			if ( $post_data['arm_action'] == 'add' ) {
+			$user_ID = isset( $post_data['user_id'] ) ? absint( $post_data['user_id'] ) : 0;
+
+			if ( $user_ID <= 0 || ! get_userdata( $user_ID ) ) {
+				$response['msg'] = esc_html__('Invalid user.','armember-membership');
+
+				echo arm_pattern_json_encode( $response ); // phpcs:ignore
+				wp_die();
+			}
+			
+			$arm_action = isset( $post_data['arm_action'] ) ? sanitize_text_field( $post_data['arm_action'] ) : '';
+			if ( $arm_action == 'add' ) {
 				if ( ! empty( $user_ID ) ) {
 					
 					if ( ! isset( $post_data['arm_user_plan'] ) ) {
@@ -238,7 +246,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					);
 				}
 				
-			} else if ( $post_data['arm_action'] == 'delete' ) {
+			} else if ( $arm_action == 'delete' ) {
 				$user    = get_userdata( $user_ID );
 				$plan_id = intval( $post_data['plan_id'] );
 
@@ -278,7 +286,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					'msg'     => esc_html__( 'Plan deleted successfully.', 'armember-membership' ),
 					'content' => $popup_plan_content,
 				);
-			} else if ( $post_data['arm_action'] == 'status' ) {			
+			} else if ( $arm_action == 'status' ) {
 				$user    = get_userdata( $user_ID );
 				$plan_id = intval( $post_data['plan_id'] );
 
@@ -298,7 +306,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					'msg'     => esc_html__( 'Plan status changed successfully.', 'armember-membership' ),
 					'content' => $popup_plan_content,
 				);
-			} else if ( $post_data['arm_action'] == 'edit' ) {
+			} else if ( $arm_action == 'edit' ) {
 				$arm_changed_expiry_date_plan = arm_get_user_meta( $user_ID, 'arm_changed_expiry_date_plans', true );
 				$arm_changed_expiry_date_plan = ! empty( $arm_changed_expiry_date_plan ) ? $arm_changed_expiry_date_plan : array();
 				if ( isset( $post_data['expiry_date'] ) && ! empty( $post_data['expiry_date'] ) ) {
@@ -424,10 +432,26 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                         // $user_where .= ' AND u.ID NOT IN (' . implode( ',', $super_admin_ids ) . ')';
                         $user_where .= call_user_func_array(array( $wpdb, 'prepare' ), $super_admin_ids );
                     }
-                }    
+                }
+
+				$admin_user_ids = get_users(
+					array(
+						'role'   => 'administrator',
+						'fields' => 'ids',
+					)
+				);
+
+				if ( ! empty( $admin_user_ids ) ) {
+					$admin_user_where = sprintf(
+						' u.ID IN (%s) ',
+						implode( ',', array_map( 'absint', $admin_user_ids ) )
+					);
+				} else {
+					$admin_user_where = ' 1=1 ';
+				}
                 
-				$admin_user_where = $wpdb->prepare(" um.meta_key = %s AND um.meta_value LIKE %s ",$capability_column,"%administrator%");
-				$row         = $wpdb->get_results( "SELECT u.ID FROM `".$user_table."` u LEFT JOIN `".$usermeta_table."` um ON um.user_id = u.ID WHERE ".$admin_user_where." GROUP BY u.ID" );//phpcs:ignore --Reason $user_table and $usermeta_table are  table name
+				
+				$row         = $wpdb->get_results( "SELECT u.ID FROM `".$user_table."` u WHERE ".$admin_user_where );//phpcs:ignore --Reason $user_table and $usermeta_table are  table name
 				$admin_users = array();
 				if ( ! empty( $row ) ) {
 					foreach ( $row as $key => $admin ) {
@@ -1734,7 +1758,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					}
 				}
 			}
-			echo json_encode( array( 'grid_columns_html' => $arm_hide_show_html, 'type' => 'success','updated_order'=>$updated_column_order_array, 'arm_datatable_headers'=> $arm_datatable_headers) );
+			echo wp_json_encode( array( 'grid_columns_html' => $arm_hide_show_html, 'type' => 'success','updated_order'=>$updated_column_order_array, 'arm_datatable_headers'=> $arm_datatable_headers) );
 			die();
 		}
 
@@ -6410,7 +6434,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                 </div>
                 </div></div>';
             }
-            echo json_encode($return); //phpcs:ignore
+            echo wp_json_encode($return); //phpcs:ignore
             die;
         }
 	}

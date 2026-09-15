@@ -234,7 +234,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
                 'iTotalDisplayRecords' => $after_filter, // After Filter Records
                 'aaData' => $grid_data,
             );
-            echo json_encode($response);
+            echo wp_json_encode($response);
             die();
 
         }

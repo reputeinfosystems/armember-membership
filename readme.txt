@@ -5,7 +5,7 @@ Donate link: https://www.armemberplugin.com/product.php?rdt=t16
 Requires at least: 4.0
 Tested up to: 7.1
 Requires PHP: 5.6
-Stable tag: 5.9
+Stable tag: 6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,10 @@ Please follow the steps for installation:
 11. Signup Form
 
 == Changelog ==
+= 6.0 =
+* Performance & Speed Improvements.
+* Minor bug fixes.
+
 = 5.9 =
 * Enhanced existing Member Directory template with an improved design and user experience.
 * Minor bug fixes and improvements.

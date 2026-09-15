@@ -247,7 +247,7 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
 
         ob_clean();
         ob_start();
-        $now = gmdate("D, d M Y H:i:s");
+        $now = date("D, d M Y H:i:s");
         header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
         header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
         header("Last-Modified: {$now} GMT");

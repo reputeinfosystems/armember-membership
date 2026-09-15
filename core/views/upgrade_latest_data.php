@@ -882,7 +882,80 @@ if(version_compare($arm_lite_newdbversion,'5.9', '<'))
     }
 }
 
-$arm_lite_newdbversion = '5.9';
+if(version_compare($arm_lite_newdbversion,'6.0','<')){
+	global $wpdb, $wp, $ARMemberLite;
+	
+	$armember_check_db_permission = $ARMemberLite->armember_check_db_permission();
+	if($armember_check_db_permission)
+	{
+		$tbl_arm_login_history = $ARMemberLite->tbl_arm_login_history;
+		$tbl_arm_members_activity = $ARMemberLite->tbl_arm_activity;
+		$tbl_arm_entries = $ARMemberLite->tbl_arm_entries;
+		$tbl_arm_fail_attempts = $ARMemberLite->tbl_arm_fail_attempts;
+		$tbl_arm_lockdown = $ARMemberLite->tbl_arm_lockdown;
+		$tbl_arm_members = $ARMemberLite->tbl_arm_members;
+		$tbl_arm_payment_log = $ARMemberLite->tbl_arm_payment_log;
+
+		$arm_login_history_add_index_arm_user_id = $wpdb->get_results($wpdb->prepare("SHOW INDEX FROM ".$tbl_arm_login_history." where Key_name=%s", 'arm-user-id')); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $tbl_arm_login_history is a table name
+		if(empty($arm_login_history_add_index_arm_user_id))
+		{
+			$wpdb->query("ALTER TABLE `{$tbl_arm_login_history}` ADD INDEX `arm-user-id` (`arm_user_id`)"); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $arm_members_table is a table name
+		}
+		$arm_activity_add_index_arm_user_id = $wpdb->get_results($wpdb->prepare("SHOW INDEX FROM ".$tbl_arm_members_activity." where Key_name=%s", 'arm-user-id')); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $tbl_arm_members_activity is a table name
+		if(empty($arm_activity_add_index_arm_user_id))
+		{
+			$wpdb->query( "ALTER TABLE `".$tbl_arm_members_activity."` ADD KEY `arm-user-id` (`arm_user_id`)" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
+
+		$arm_activity_add_index_arm_item_id = $wpdb->get_results($wpdb->prepare("SHOW INDEX FROM ".$tbl_arm_members_activity." where Key_name=%s", 'arm-item-id')); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $tbl_arm_members_activity is a table name
+
+		if(empty($arm_activity_add_index_arm_item_id))
+		{
+			$wpdb->query( "ALTER TABLE `".$tbl_arm_members_activity."` ADD KEY `arm-item-id` (`arm_item_id`)" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
+
+		$arm_entries_add_index_arm_user_id = $wpdb->get_results($wpdb->prepare("SHOW INDEX FROM ".$tbl_arm_entries." where Key_name=%s", 'arm-user-id')); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $tbl_arm_entries is a table name
+		if(empty($arm_entries_add_index_arm_user_id))
+		{
+			$wpdb->query( "ALTER TABLE `".$tbl_arm_entries."` ADD KEY `arm-user-id` (`arm_user_id`)" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
+
+		$arm_entries_add_index_arm_created_date = $wpdb->get_results($wpdb->prepare("SHOW INDEX FROM ".$tbl_arm_entries." where Key_name=%s", 'arm-created-date')); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $tbl_arm_entries is a table name
+
+		if(empty($arm_entries_add_index_arm_created_date))
+		{
+			$wpdb->query( "ALTER TABLE `".$tbl_arm_entries."` ADD KEY `arm-created-date` (`arm_created_date`)" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
+
+		$arm_failed_attemp_add_index_arm_user_id = $wpdb->get_results($wpdb->prepare("SHOW INDEX FROM ".$tbl_arm_fail_attempts." where Key_name=%s", 'arm-user-id')); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $tbl_arm_fail_attempts is a table name
+
+		if(empty($arm_failed_attemp_add_index_arm_user_id))
+		{
+			$wpdb->query( "ALTER TABLE `".$tbl_arm_fail_attempts."` ADD KEY `arm-user-id` (`arm_user_id`)" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
+
+		$arm_lockdown_add_index_arm_user_id = $wpdb->get_results($wpdb->prepare("SHOW INDEX FROM ".$tbl_arm_lockdown." where Key_name=%s", 'arm-user-id')); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $tbl_arm_lockdown is a table name
+		if(empty($arm_lockdown_add_index_arm_user_id))
+		{
+			$wpdb->query( "ALTER TABLE `".$tbl_arm_lockdown."` ADD KEY `arm-user-id` (`arm_user_id`)" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
+
+		$arm_members_add_index_arm_user_id = $wpdb->get_results($wpdb->prepare("SHOW INDEX FROM ".$tbl_arm_members." where Key_name=%s", 'arm-user-id')); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $tbl_arm_members is a table name
+		if(empty($arm_members_add_index_arm_user_id))
+		{
+			$wpdb->query( "ALTER TABLE `".$tbl_arm_members."` ADD KEY `arm-user-id` (`arm_user_id`)" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}	
+
+		$arm_payment_log_add_index_arm_user_id = $wpdb->get_results($wpdb->prepare("SHOW INDEX FROM ".$tbl_arm_payment_log." where Key_name=%s", 'arm-user-id')); // phpcs:ignore --Reason WordPress.DB.DirectDatabaseQuery AND $tbl_arm_payment_log is a table name
+		if(empty($arm_payment_log_add_index_arm_user_id))
+		{
+			$wpdb->query( "ALTER TABLE `".$tbl_arm_payment_log."` ADD KEY `arm-user-id` (`arm_user_id`)" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
+
+	}
+}
+
+$arm_lite_newdbversion = '6.0';
 update_option( 'arm_lite_new_version_installed', 1 );
 update_option( 'armlite_version', $arm_lite_newdbversion );
 

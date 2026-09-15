@@ -204,7 +204,7 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 									?>
 									<!--<span class="arm_template_title"><?php echo esc_attr($t_title); ?></span>-->
 									<div class="arm_short_code_detail">
-										<span class="arm_shortcode_title"><?php esc_html_e( 'Short Code', 'armember-membership' ); ?>&nbsp;&nbsp;</span>
+										<span class="arm_shortcode_title"><?php esc_html_e( 'Shortcode', 'armember-membership' ); ?>&nbsp;&nbsp;</span>
 										<?php $shortCode = '[arm_template type="' . esc_attr($t_type) . '" id="' . esc_attr($t_id) . '"]'; ?>
 										<div class="arm_shortcode_text arm_form_shortcode_box">
 											<span class="armCopyText"><?php echo esc_attr( $shortCode ); ?></span>

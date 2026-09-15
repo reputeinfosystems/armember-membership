@@ -919,6 +919,14 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 														$arm_user_old_plan_details                              = ( isset( $userPlanData['arm_current_plan_detail'] ) && ! empty( $userPlanData['arm_current_plan_detail'] ) ) ? $userPlanData['arm_current_plan_detail'] : array();
 														$arm_user_old_plan_details['arm_user_old_payment_mode'] = $userPlanData['arm_payment_mode'];
 
+													$userPlanData['arm_sent_msgs'] = array();
+													$userPlanData['arm_trial_end'] = '';
+													$userPlanData['arm_trial_start'] = '';
+													$userPlanData['arm_is_trial_plan'] = 0;
+													$userPlanData['arm_is_user_in_grace'] = 0;
+													$userPlanData['arm_grace_period_end'] = '';
+													$userPlanData['arm_grace_period_action'] = '';
+
 													if ( ! empty( $old_subscription_id ) && $entry_values['arm_selected_payment_mode'] == 'auto_debit_subscription' && $arm_token == $old_subscription_id ) {
 
 														$arm_next_due_payment_date = $userPlanData['arm_next_due_payment'];

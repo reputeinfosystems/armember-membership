@@ -3,7 +3,7 @@ if(! defined('ABSPATH')) exit;
 
 global $arm_lite_members_activity,$check_sorting,$ARMemberLite;
 $args = array(
-	'timeout' => 500,
+	'timeout' => 30,
 	'method' => 'GET',
 );
 $arm_get_started_data = wp_remote_get('https://www.armemberplugin.com/?arm_get_started_wizard=1',$args);

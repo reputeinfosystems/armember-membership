@@ -792,24 +792,24 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						$arm_template_html = wp_unslash( $template_data['arm_template_html'] );
 
 										$arm_template_html = preg_replace( '/(\[arm_usermeta\s+(.*?)\])/', '[arm_usermeta $2 id="' . $user_id . '"]', $arm_template_html );
-				if ( $hide_empty_profile_fields ) {
-					$pattern = '/(\<tr\>\<td\>(.*?)\<\/td>\<td\>(.*?)\<\/td\>\<\/tr\>)/';
-					preg_match_all( $pattern, do_shortcode( $arm_template_html ), $matches );
-					if ( isset( $matches ) && isset( $matches[2] ) && isset( $matches[3] ) && count( $matches[2] ) > 0 && count( $matches[3] ) > 0 ) {
-						foreach ( $matches[2] as $k => $val ) {
-							if ( $matches[3][ $k ] == '' ) {
-								$pat_val   = str_replace( '/', '\\/', $val );
-								$pat_val   = str_replace( '(', '\\(', $pat_val );
-								$pat_val   = str_replace( ')', '\\)', $pat_val );
-								$pattern_d = "\<tr\>\<td\>{$pat_val}\<\/td>\<td\>(.*?)\<\/td\>\<\/tr\>";
-								preg_match( "/$pattern_d/", $arm_template_html, $match );
-								if ( isset( $match[0] ) && count( $match ) > 0 ) {
-									$arm_template_html = preg_replace( "/$pattern_d/m", '', $arm_template_html );
+						if ( $hide_empty_profile_fields ) {
+							$pattern = '/(\<div class=[\'"]arm_profile_detail_row[\'"]\>\<div class=[\'"]arm_profile_detail_data[\'"]\>(.*?)\<\/div\>\<div class=[\'"]arm_profile_detail_data arm_data_value[\'"]\>(.*?)\<\/div\>\<\/div\>)/';
+							preg_match_all( $pattern, do_shortcode( $arm_template_html ), $matches );
+							if ( isset( $matches ) && isset( $matches[2] ) && isset( $matches[3] ) && count( $matches[2] ) > 0 && count( $matches[3] ) > 0 ) {
+								foreach ( $matches[2] as $k => $val ) {
+									if ( $matches[3][ $k ] == '' ) {
+										$pat_val   = str_replace( '/', '\\/', $val );
+										$pat_val   = str_replace( '(', '\\(', $pat_val );
+										$pat_val   = str_replace( ')', '\\)', $pat_val );
+										$pattern_d = "\<div class=['\"]arm_profile_detail_row['\"]\>\<div class=['\"]arm_profile_detail_data['\"]>{$pat_val}\<\/div\>\<div class=['\"]arm_profile_detail_data arm_data_value['\"]\>(.*?)\<\/div\>\<\/div\>";
+										preg_match( "/$pattern_d/", $arm_template_html, $match );
+										if ( isset( $match[0] ) && count( $match ) > 0 ) {
+											$arm_template_html = preg_replace( "/$pattern_d/m", '', $arm_template_html );
+										}
+									}
 								}
 							}
 						}
-					}
-				}
 
 										$profile_link_name = '<a class="arm_profile_link" href="' . $user['user_link'] . '">' . $arm_shortcodes->arm_com_descaped_all_shortcodes($arm_shortcodes->arm_com_escape_all_shortcodes($user['full_name'])) . '</a>';
 										$arm_template_html = str_replace( '{ARM_Profile_Cover_Image}', $arm_cover_image, $arm_template_html );
@@ -1106,9 +1106,8 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			}
 			$user_where      .= $wpdb->prepare(' AND am.arm_primary_status = %d',1);
 
-			$total_users_res = $wpdb->get_results( "SELECT u.ID FROM `".$user_table."` u INNER JOIN `".$usermeta_table."` um  ON u.ID = um.user_id INNER JOIN `" . $ARMemberLite->tbl_arm_members . "` am  ON um.user_id = am.arm_user_id ".$user_where." ".$user_search." GROUP BY u.ID ".$order_by );//phpcs:ignore --Reason $user_table and $usermeta_table is a table name
-
 			if ( isset( $opts['template_options']['plans'] ) && ! empty( $opts['template_options']['plans'] ) ) {
+				$total_users_res = $wpdb->get_results( "SELECT u.ID FROM `".$user_table."` u INNER JOIN `".$usermeta_table."` um  ON u.ID = um.user_id INNER JOIN `" . $ARMemberLite->tbl_arm_members . "` am  ON um.user_id = am.arm_user_id ".$user_where." ".$user_search." GROUP BY u.ID ".$order_by );//phpcs:ignore --Reason $user_table and $usermeta_table is a table name
 
 				foreach ( $total_users_res as $tkey => $tuser ) {
 
@@ -1120,9 +1119,11 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						}
 					}
 				}
-			}
 
-			$total_users = ( ! empty( $total_users_res ) ) ? count( $total_users_res ) : 0;
+				$total_users = ( ! empty( $total_users_res ) ) ? count( $total_users_res ) : 0;
+			} else {
+				$total_users = (int) $wpdb->get_var( "SELECT COUNT(DISTINCT u.ID) FROM `".$user_table."` u INNER JOIN `".$usermeta_table."` um  ON u.ID = um.user_id INNER JOIN `" . $ARMemberLite->tbl_arm_members . "` am  ON um.user_id = am.arm_user_id ".$user_where." ".$user_search );//phpcs:ignore --Reason $user_table and $usermeta_table is a table name
+			}
 
 
 			$users = $wpdb->get_results( " SELECT u.ID FROM `".$user_table."` u INNER JOIN `".$usermeta_table."` um  ON u.ID = um.user_id INNER JOIN `" . $ARMemberLite->tbl_arm_members . "` am  ON um.user_id = am.arm_user_id ".$user_where." ".$user_search." GROUP BY u.ID ".$order_by." ".$user_limit );//phpcs:ignore --Reason $user_table and $usermeta_table is a table name

@@ -8,8 +8,8 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 			global $wpdb, $ARMemberLite, $arm_slugs;
 				add_action( 'arm_record_activity', array( $this, 'arm_add_activity' ), 1 );
 				/* Ajax Load More Activities */
-				add_action( 'wp_ajax_nopriv_arm_crop_iamge', array( $this, 'arm_crop_image' ) );
-				add_action( 'wp_ajax_arm_crop_iamge', array( $this, 'arm_crop_image' ) );
+				add_action( 'wp_ajax_nopriv_arm_crop_image', array( $this, 'arm_crop_image' ) );
+				add_action( 'wp_ajax_arm_crop_image', array( $this, 'arm_crop_image' ) );
 
 				add_action( 'wp_ajax_arm_upload_front', array( $this, 'arm_upload_front' ), 1 );
 				add_action( 'wp_ajax_nopriv_arm_upload_front', array( $this, 'arm_upload_front' ), 1 );
@@ -42,7 +42,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$arm_lite_newdbversion = get_option( 'armlite_version' );
 			}
 
-			if ( version_compare( $arm_lite_newdbversion, '5.9', '<' ) ) {
+			if ( version_compare( $arm_lite_newdbversion, '6.0', '<' ) ) {
 				$path = MEMBERSHIPLITE_VIEWS_DIR . '/upgrade_latest_data.php';
 				include $path;
 			}
@@ -308,7 +308,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 
 		function arm_upload_front() {
 			global $ARMemberLite;
-			$ARMemberLite->arm_check_user_cap( '', '1' ); //phpcs:ignore --Reason:Verifying nonce
+			// $ARMemberLite->arm_check_user_cap( '', '1' ); //phpcs:ignore --Reason:Verifying nonce
 			$arm_lite_upload_dir = MEMBERSHIPLITE_UPLOAD_DIR . '/';
 			$arm_lite_upload_url = MEMBERSHIPLITE_UPLOAD_URL . '/';
 			$ARMemberLite->arm_session_start(true);
@@ -790,7 +790,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$response = wp_remote_post(
 					$url,
 					array(
-						'timeout' => 5000,
+						'timeout' => 30,
 						'body'    => $args,
 					)
 				);

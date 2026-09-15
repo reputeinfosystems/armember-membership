@@ -42,7 +42,7 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 			//remove password and repeat passwrod from 30 days older entries data 
 
             $arm_delete_start_date = date('Y-m-d 00:00:00', strtotime('-30 days', current_time('timestamp'))); //phpcs:ignore
-            $arm_older_entries_data = $wpdb->get_results($wpdb->prepare("SELECT * FROM $ARMemberLite->tbl_arm_entries WHERE `arm_created_date` <= %s AND ( arm_entry_value LIKE %s OR arm_entry_value LIKE %s)",$arm_delete_start_date,'%user_pass%','%repeat_pass%'),ARRAY_A);
+            $arm_older_entries_data = $wpdb->get_results($wpdb->prepare("SELECT `arm_entry_id`, `arm_entry_value` FROM $ARMemberLite->tbl_arm_entries WHERE `arm_created_date` <= %s AND ( arm_entry_value LIKE %s OR arm_entry_value LIKE %s)",$arm_delete_start_date,'%user_pass%','%repeat_pass%'),ARRAY_A);
             if(!empty($arm_older_entries_data))
             {
                 foreach($arm_older_entries_data as $key => $entries_data){
@@ -105,7 +105,7 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 		}
 
 		function arm_handle_expire_subscription_func() {
-						global $wp, $wpdb, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_manage_communication, $arm_members_class;
+			global $wp, $wpdb, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_manage_communication, $arm_members_class;
 
 			set_time_limit( 0 ); //phpcs:ignore --Reason Preventing timeout issue
 			$now        = current_time( 'timestamp' );
@@ -808,7 +808,7 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
                 $response = wp_remote_post(
                     $url,
                     array(
-                    'timeout' => 5000,
+                    'timeout' => 30,
                     'body'    => array( 'arm_anonymous_data' =>  wp_json_encode($armember_anonymous_data)),
                     )
                 );

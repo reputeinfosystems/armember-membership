@@ -294,7 +294,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                 'iTotalDisplayRecords' => $after_filter, // After Filter Records
                 'aaData' => $grid_data,
             );
-            echo json_encode($response);
+            echo wp_json_encode($response);
             die();		
         }
 
@@ -1022,7 +1022,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								$u_gateway     = $planData['arm_user_gateway'];
 								$plan_end_date = ! empty( $planData['arm_expire_plan'] ) ? $planData['arm_expire_plan'] : $nowDate;
 
-								$action_opt     = $plan_options['eot'];
+								$action_opt     = !empty($plan_options['eot']) ? $plan_options['eot'] : 'block';
 								$change_plan_to = $planData['arm_change_plan_to'];
 								if ( ! empty( $change_plan_to ) && $change_plan_to != 0 ) {
 									$action_opt = $change_plan_to;
@@ -1032,7 +1032,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 								break;
 
 							case 'failed_payment':
-								$action_opt        = $plan_options['payment_failed_action'];
+								$action_opt        = !empty($plan_options['payment_failed_action']) ? $plan_options['payment_failed_action'] : 'block';
 								$plan_end_date     = ! empty( $planData['arm_next_due_payment'] ) ? $planData['arm_next_due_payment'] : $nowDate;
 								$secondary_status  = 5;
 								$temp_detail_admin = $arm_email_settings->arm_get_email_template( $arm_email_settings->templates->failed_payment_admin );
@@ -2943,14 +2943,23 @@ if ( ! class_exists( 'ARM_Plan_Lite' ) ) {
 		}
 
 		public function arm_get_plan_detail( $plan_id = 0 ) {
-			global $wp, $wpdb, $ARMemberLite, $arm_global_settings;
-			if ( is_numeric( $plan_id ) && $plan_id != 0 ) {
-				$plan = $wpdb->get_row( $wpdb->prepare('SELECT * FROM `' . $ARMemberLite->tbl_arm_subscription_plans . "` WHERE `arm_subscription_plan_id`=%d LIMIT 1",$plan_id) );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_subscription_plans is a table name
-				if ( ! empty( $plan ) ) {
-					return $plan;
-				}
+			global $wp, $wpdb, $ARMemberLite;
+			static $arm_plan_cache = array();
+
+			if ( ! is_numeric( $plan_id ) || (int) $plan_id == 0 ) {
+				return false;
 			}
-			return false;
+
+			$plan_id = (int) $plan_id;
+			
+			if ( isset( $arm_plan_cache[ $plan_id ] ) ) {
+				return $arm_plan_cache[ $plan_id ];
+			}
+			
+			$plan = $wpdb->get_row( $wpdb->prepare('SELECT * FROM `' . $ARMemberLite->tbl_arm_subscription_plans . "` WHERE `arm_subscription_plan_id`=%d LIMIT 1",$plan_id) );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_subscription_plans is a table name
+
+			$arm_plan_cache[ $plan_id ] = ! empty( $plan ) ? $plan : false;
+			return $arm_plan_cache[ $plan_id ];
 		}
 
 		public function init( $data ) {

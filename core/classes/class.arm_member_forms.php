@@ -108,9 +108,9 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
             $arm_member_include_fields_keys = array('user_email', 'user_pass');
 
-            if (isset($_REQUEST['arm_form_id']) && empty($arm_form_id)) { //phpcs:ignore
-                $arm_form_id = intval($_REQUEST['arm_form_id']); //phpcs:ignore
-                if (!is_numeric($arm_form_id)) {
+            if (isset($_REQUEST['arm_form_id']) && empty($arm_form_id)) { //phpcs:ignore  WordPress.Security.NonceVerification.Recommended -- Nonce/capability validation is performed by arm_check_user_cap() before processing request data.
+                $arm_form_id = absint( wp_unslash($_REQUEST['arm_form_id']) );
+                if (empty($arm_form_id)) {
                     $arm_form_id=101;
                 } 
             }
@@ -120,6 +120,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
             $user_id = !empty($post_data['id']) ? abs(intval($post_data['id'])) : '';
             $user = $arm_members_class->arm_get_member_detail($user_id);
             $arm_suffix_icon_pass = '<span class="arm_visible_password_admin arm-df__fc-icon --arm-suffix-icon" id="" style=""><i class="armfa armfa-eye"></i></span>';
+
+			$arm_action = isset($_REQUEST["arm_action"]) ? sanitize_text_field(wp_unslash($_REQUEST["arm_action"])) : ''; //phpcs:ignore  WordPress.Security.NonceVerification.Recommended -- Nonce/capability validation is performed by arm_check_user_cap() before processing request data.
 
             $user_roles = $arm_global_settings->arm_get_all_roles();
             $all_active_plans = $arm_subscription_plans->arm_get_all_active_subscription_plans();
@@ -288,7 +290,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                             if (!empty($user) && $meta_key!='user_pass') {
                                                                 $field_options['value'] = $user->$meta_key;
                                                             }
-                                                            $arm_form_content .= $this->arm_member_form_get_fields_by_type($field_options, $field_id, $arm_form_id, 'active', $armform); //phpcs:ignore
+                                                            $arm_form_content .= $this->arm_member_form_get_fields_by_type($field_options, $field_id, $arm_form_id, 'active', $armform); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Method returns intentionally generated form HTML with context-specific escaping performed by the field renderer.
                                                             $arm_form_content .= '<div class="armclear"></div>
                                                         </div>
                                                     </div>
@@ -319,7 +321,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                 $arm_user_pass_label .= '<span class="required_icon">*</span>';
                                             }
                                             
-                                            $arm_confirm_pass_lbl = esc_html__( 'Confirm Password', 'armember-membership' ); //phpcs:ignore
+                                            $arm_confirm_pass_lbl = esc_html__( 'Confirm Password', 'armember-membership' );
                                                 if ( $required_class != 1 ) {
                                                     $arm_confirm_pass_lbl .= '<span
                                                     class="required_icon">*</span>';
@@ -424,7 +426,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                         if (!empty($user)) {
                                                             $field_options['value'] = $user->$meta_key;
                                                         }
-                                                        $arm_form_content .= $this->arm_member_form_get_fields_by_type($field_options, $field_id, $arm_form_id, 'active', $armform); //phpcs:ignore
+                                                        $arm_form_content .= $this->arm_member_form_get_fields_by_type($field_options, $field_id, $arm_form_id, 'active', $armform); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Method returns intentionally generated form HTML with context-specific escaping performed by the field renderer.
                                                         $arm_form_content .= '<div class="armclear"></div>
                                                         </div>
                                                     </div>
@@ -444,7 +446,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                             $hiddenValue = !empty($hiddenValue) ? $hiddenValue : $hiddenF['value'];
                                             $hiddentitle = (!empty($hiddenF['title'])) ? $hiddenF['title'] : '';                                           
 
-											$arm_form_content .= '<tr class="form-field"><th><label>' . esc_html( $hiddentitle ) . '</label></th><td><input type="text" name="' . esc_attr( $hiddenMetaKey ) . '" value="' . esc_attr( $hiddenValue ) . '" /></td></tr>'; //phpcs:ignore      
+											$arm_form_content .= '<tr class="form-field"><th><label>' . esc_html( $hiddentitle ) . '</label></th><td><input type="text" name="' . esc_attr( $hiddenMetaKey ) . '" value="' . esc_attr( $hiddenValue ) . '" /></td></tr>';
 											
                                         }
                                     }
@@ -479,7 +481,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                         {
                                                             $avatarOptions['value'] = $user->avatar;
                                                         }
-                                                        $arm_form_content .= $this->arm_member_form_get_fields_by_type($avatarOptions, $avatar_field_id, $arm_form_id, 'active', $armform); //phpcs:ignore
+                                                        $arm_form_content .= $this->arm_member_form_get_fields_by_type($avatarOptions, $avatar_field_id, $arm_form_id, 'active', $armform); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Method returns intentionally generated form HTML with context-specific escaping performed by the field renderer.
                                                         $arm_form_content .= '<div class="armclear"></div>
                                                     </div>
                                                 </td>
@@ -498,7 +500,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                         'value' => '',
                                         'allow_ext' => '',
                                         'file_size_limit' => '10',
-                                        'meta_key' => 'profile_cover', //phpcs:ignore
+                                        'meta_key' => 'profile_cover',
                                         'required' => 0,
                                         'blank_message' => esc_html__('Please select profile cover.', 'armember-membership'),
                                         'invalid_message' => esc_html__('Invalid image selected.', 'armember-membership'),
@@ -516,7 +518,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                 {
                                                     $profileCoverOptions['value'] = $user->profile_cover;
                                                 }
-                                                $arm_form_content .= $this->arm_member_form_get_fields_by_type($profileCoverOptions, $profile_cover_field_id, $arm_form_id, 'active', $armform); //phpcs:ignore
+                                                $arm_form_content .= $this->arm_member_form_get_fields_by_type($profileCoverOptions, $profile_cover_field_id, $arm_form_id, 'active', $armform); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Method returns intentionally generated form HTML with context-specific escaping performed by the field renderer.
                                                 $arm_form_content .= '<div class="armclear"></div></div>
                                             </div>
                                         </td>
@@ -574,7 +576,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                         value="1" />';                                   
                                 $arm_form_content .= '</td>
                             </tr>';                           
-                            if (empty($_REQUEST["arm_action"]) || (!empty($_REQUEST["arm_action"]) && $_REQUEST["arm_action"] === 'add_member') ){ //phpcs:ignore
+                            if (empty($arm_action) || (!empty($arm_action) && $arm_action === 'add_member') ){
 
                                 $arm_all_email_settings       = $arm_email_settings->arm_get_all_email_template();
                                 $email_without_payment_status = isset( $arm_all_email_settings[2]->arm_template_status ) ? $arm_all_email_settings[2]->arm_template_status : '';
@@ -601,8 +603,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
             }
             if(!empty($arm_is_ajax))
             {
-                echo $arm_ajax_pattern_start.''.json_encode($response).''.$arm_ajax_pattern_end; //phpcs:ignore
-                die();
+                echo $arm_ajax_pattern_start.''.wp_json_encode($response).''.$arm_ajax_pattern_end; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Response payload is JSON-encoded and the surrounding AJAX markers are trusted ARMember protocol delimiters.
+                wp_die();
             }
             else{
                 return $arm_form_content;
@@ -6553,6 +6555,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			$arm_lite_errors = new WP_Error();
 
 			$posted_data = apply_filters( 'arm_before_member_register', $posted_data );
+			$posted_data = $this->arm_remove_null_char_from_posted_data($posted_data);
 			$user_login  = ( isset( $posted_data['user_login'] ) && ! empty( $posted_data['user_login'] ) ) ? $posted_data['user_login'] : $posted_data['user_email'];
 			$user_email  = ( isset( $posted_data['user_email'] ) ) ? $posted_data['user_email'] : '';
 
@@ -6617,8 +6620,13 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$update_data['user_url'] = sanitize_text_field( $posted_data['user_url'] );
 			}
 			$display_name              = isset( $posted_data['display_name'] ) ? sanitize_text_field( $posted_data['display_name'] ) : '';
+			$display_name = $this->arm_sanitize_text_value($display_name);
+
 			$posted_data['first_name'] = isset( $posted_data['first_name'] ) ? trim( sanitize_text_field( $posted_data['first_name'] ) ) : '';
+			$posted_data['first_name'] = $this->arm_sanitize_text_value($posted_data['first_name']);
+
 			$posted_data['last_name']  = isset( $posted_data['last_name'] ) ? trim( sanitize_text_field( $posted_data['last_name'] ) ) : '';
+			$posted_data['last_name'] = $this->arm_sanitize_text_value($posted_data['last_name']);
 			if ( empty( $display_name ) ) {
 				if ( $posted_data['first_name'] && $posted_data['last_name'] ) {
 					/* translators: 1: first name, 2: last name */
@@ -6711,6 +6719,21 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			return $user_id;
 		}
 
+		function arm_remove_null_char_from_posted_data($posted_data) {
+	            if (is_array($posted_data)) {
+	                foreach ($posted_data as $key => $value) {
+						if($key === 'user_pass'){
+							continue;
+						}
+	                    $posted_data[$key] = $this->arm_remove_null_char_from_posted_data($value);
+	                }
+	            } elseif (is_string($posted_data)) {
+	                $posted_data = str_replace(array("\0", '\\0'), '', $posted_data);
+	                $posted_data = trim($posted_data);
+	            }
+	            return $posted_data;
+		}
+
 		/**
 		 * Update Member Details.
 		 */
@@ -6721,6 +6744,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 			$user_ID = get_current_user_id();
 			if ( is_user_logged_in() ) {
+				
+				$posted_data = $this->arm_remove_null_char_from_posted_data($posted_data);
 				$current_user = get_userdata( $user_ID );
 				$user_login   = isset( $posted_data['user_login'] ) ? sanitize_text_field( $posted_data['user_login'] ) : '';
 				unset( $posted_data['user_login'] );
@@ -6757,10 +6782,18 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$update_data['user_url'] = sanitize_text_field( $posted_data['user_url'] );
 				}
 				$display_name = isset( $posted_data['display_name'] ) ? sanitize_text_field( $posted_data['display_name'] ) : '';
+				
+				$display_name = $this->arm_sanitize_text_value($display_name);
+
 				if ( isset( $posted_data['first_name'] ) ) {
+					
+					$posted_data['first_name'] = $this->arm_sanitize_text_value($posted_data['first_name']);
 					$posted_data['first_name'] = trim( sanitize_text_field( $posted_data['first_name'] ) );
 				}
 				if ( isset( $posted_data['last_name'] ) ) {
+					
+					
+					$posted_data['last_name'] = $this->arm_sanitize_text_value($posted_data['last_name']);
 					$posted_data['last_name'] = trim( sanitize_text_field( $posted_data['last_name'] ) );
 				}
 
@@ -6814,6 +6847,17 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			return $user_ID;
 		}
 
+		function arm_sanitize_text_value($val){
+			//Remove numbers and special characters (keeping international letters, spaces, and hyphens)
+			$val = preg_replace('/[^\p{L}\p{N}\p{M}\s\-]/u', '', $val);
+			
+			//Replace two or more consecutive spaces with a single space
+			$val = preg_replace('/\s+/', ' ', $val);
+			
+			//Remove trailing or leading spaces
+			$val = trim($val);
+			return $val;
+		}
 		function arm_member_update_meta_details( $user_ID, $posted_data = array(), $admin_save_flag = 0 ) {
 			global $wp, $wpdb, $current_user, $arm_lite_errors, $ARMemberLite, $arm_subscription_plans, $payment_done, $arm_members_class;
 			$arm_lite_errors = new WP_Error();
@@ -7064,6 +7108,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				foreach ( $posted_data as $key => $val ) {
 					if ( $key == 'first_name' || $key == 'last_name' ) {
 						$val = trim( sanitize_text_field( $val ) );
+						$val = $this->arm_sanitize_text_value($val);
 					} elseif ( $key == 'role' || $key == 'roles' ) {
 						$all_plan_roles = $arm_subscription_plans->arm_get_plan_role_by_id($old_plan_ids);
 						if (!empty($all_plan_roles) && is_array($all_plan_roles)) {

@@ -1685,14 +1685,21 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 
 		function arm_get_all_global_settings( $merge = false ) {
 			global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms;
-			$default_global_settings = $this->arm_default_global_settings();
-			$global_settings         = get_option( 'arm_global_settings', $default_global_settings );
-			$all_global_settings     = arm_maybe_unserialize( $global_settings  );
-			$all_global_settings     = apply_filters( 'arm_get_all_global_settings', $all_global_settings );
+			static $all_global_settings = null;
+			static $default_global_settings = null;
+			if ( $default_global_settings === null ) {
+				$default_global_settings = $this->arm_default_global_settings();
+			}
+			if ( $all_global_settings === null ) {
+				$global_settings = get_option( 'arm_global_settings', $default_global_settings );
+				$all_global_settings = arm_maybe_unserialize( $global_settings );
+				$all_global_settings = apply_filters( 'arm_get_all_global_settings', $all_global_settings );
+			}
 			if ( $merge ) {
-				$all_global_settings['general_settings'] = isset( $all_global_settings['general_settings'] ) ? $all_global_settings['general_settings'] : $default_global_settings['general_settings'];
-				$all_global_settings['page_settings']    = isset( $all_global_settings['page_settings'] ) ? $all_global_settings['page_settings'] : $default_global_settings['page_settings'];
-				$arm_merge_global_settings               = array_merge( $all_global_settings['general_settings'], $all_global_settings['page_settings'] );
+				$general_settings = isset( $all_global_settings['general_settings'] ) ? $all_global_settings['general_settings'] : $default_global_settings['general_settings'];
+				$page_settings = isset( $all_global_settings['page_settings'] ) ? $all_global_settings['page_settings'] : $default_global_settings['page_settings'];
+
+				$arm_merge_global_settings = array_merge( $general_settings, $page_settings );
 				return $arm_merge_global_settings;
 			}
 			return $all_global_settings;

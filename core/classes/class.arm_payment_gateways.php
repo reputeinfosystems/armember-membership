@@ -608,7 +608,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			update_option( 'arm_payment_gateway_settings', $pay_gate_settings_result );
 			$this->arm_update_payment_gate_status();
 			$response = array( 'message' => 'success' );
-			echo $arm_ajax_pattern_start.''.json_encode($response).''.$arm_ajax_pattern_end; //phpcs:ignore
+			echo $arm_ajax_pattern_start.''.wp_json_encode($response).''.$arm_ajax_pattern_end; //phpcs:ignore
 			die();
 		}
 

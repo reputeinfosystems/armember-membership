@@ -14,7 +14,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 
 			add_action('wp_ajax_arm_activate_bookingpress', array( $this, 'arm_activate_bookingpress_plugin_func'));
 
-			add_action('wp_ajax_arm_actiate_arforms', array( $this, 'arm_activate_arforms_plugin_func'));
+			add_action('wp_ajax_arm_activate_arforms', array( $this, 'arm_activate_arforms_plugin_func'));
 			
 			add_action('wp_ajax_arm_activate_arprice', array( $this, 'arm_activate_arprice_plugin_func'));
 
@@ -122,7 +122,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 					);
 				}
 			}
-			echo json_encode($response);
+			echo wp_json_encode($response);
 			die();
 		}
 
@@ -229,7 +229,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 					);
 				}
 			}
-			echo json_encode($response);
+			echo wp_json_encode($response);
 			die();
 		}
 
@@ -439,7 +439,7 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 					);
 				}
 			}
-			echo json_encode($response);
+			echo wp_json_encode($response);
 			die();
 		}
 

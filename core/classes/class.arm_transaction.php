@@ -1076,7 +1076,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 			}
 			if(empty($logid_exit_flag))
 			{
-				echo $arm_ajax_pattern_start.''.json_encode($response).''.$arm_ajax_pattern_end; //phpcs:ignore
+				echo $arm_ajax_pattern_start.''.wp_json_encode($response).''.$arm_ajax_pattern_end; //phpcs:ignore
 				exit;
 			}
 		}
@@ -1300,9 +1300,9 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 						$response_data[ $ai ]['fname'] = $armlite_default_user_details_text;
 						$response_data[ $ai ]['lname'] = $armlite_default_user_details_text;
 					}
-					$response_data[ $ai ][4] = $arm_subscription_plans->arm_get_plan_name_by_id( $rc->arm_plan_id );
+					$response_data[ $ai ][4] = ! empty( $rc->arm_subscription_plan_name ) ? $rc->arm_subscription_plan_name : '-';
 
-				$userPlanData = arm_get_user_meta( $rc->arm_user_id, 'arm_user_plan_' . $rc->arm_plan_id, true );
+					$userPlanData = arm_get_user_meta( $rc->arm_user_id, 'arm_user_plan_' . $rc->arm_plan_id, true );
 
 					$change_plan = $subscr_effective = '';
 					if ( ! empty( $userPlanData ) ) {
@@ -1670,7 +1670,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				</div>
 				</div></div>';
 			}
-			echo json_encode($return); //phpcs:ignore
+			echo wp_json_encode($return); //phpcs:ignore
             die;
 
 		}

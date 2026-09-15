@@ -601,16 +601,19 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 
 				if ( $rule_type == 'post_type' || $rule_type == 'nav_menu' ) {
 					global $wpdb;
-					foreach ( $remove_all_plan as $key => $value ) {
-						$del_query = $wpdb->query( $wpdb->prepare('Delete From ' . $wpdb->prefix . 'postmeta where post_id = %d AND meta_key = %s', $value,'arm_access_plan') ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-						$del_query = $wpdb->query($wpdb->prepare( 'Delete From ' . $wpdb->prefix . 'postmeta where post_id = %d AND meta_key = %s' , $remove_all_plan2[ $key ],'arm_access_plan') ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+					if(!empty($remove_all_plan))
+					{
+						foreach ( $remove_all_plan as $key => $value ) {
+							$del_query = $wpdb->query( $wpdb->prepare('Delete From ' . $wpdb->prefix . 'postmeta where post_id = %d AND meta_key = %s', $value,'arm_access_plan') ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+							$del_query = $wpdb->query($wpdb->prepare( 'Delete From ' . $wpdb->prefix . 'postmeta where post_id = %d AND meta_key = %s' , $remove_all_plan2[ $key ],'arm_access_plan') ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+						}
 					}
 					foreach ( $remove_plan as $key => $value ) {
-						$del_query = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}postmeta WHERE post_id = %d", $value ) );//phpcs:ignore
+						$del_query = $wpdb->query( "DELETE FROM {$wpdb->prefix}postmeta WHERE post_id = ". $value );//phpcs:ignore
 					}
 
 					foreach ( $insert_protection_meta as $key => $value ) { 
-						 $ins_query = $wpdb->query( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}postmeta (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", $row['post_id'], $row['meta_key'], $row['meta_value'] ) );//phpcs:ignore
+							$ins_query = $wpdb->query( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}postmeta (post_id, meta_key, meta_value) VALUES (%d, %s, %s)", $value[0], $value[1], $value[2] ) );//phpcs:ignore
 
 					}
 
@@ -639,7 +642,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 
 							}
 							$i ++;
-														$j ++;
+							$j ++;
 						}
 
 						if ( $all_values_string != '' ) {
@@ -656,7 +659,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 						$del_query = $wpdb->query( $wpdb->prepare('Delete From ' . $ARMemberLite->tbl_arm_termmeta . ' where arm_term_id = %d  AND meta_key = %s' , $value,'arm_access_plan') );//phpcs:ignore --Reason: $ARMemberLite->tbl_arm_termmeta is a table name
 					}
 					foreach ( $remove_plan as $key => $value ) {
-						$del_query = $wpdb->query( $wpdb->prepare( 'Delete From ' . $ARMemberLite->tbl_arm_termmeta . ' where arm_term_id = %d', $value ) );//phpcs:ignore --Reason: $ARMemberLite->tbl_arm_termmeta is a table name
+						$del_query = $wpdb->query( 'Delete From ' . $ARMemberLite->tbl_arm_termmeta . ' where arm_term_id = '.$value );//phpcs:ignore --Reason: $ARMemberLite->tbl_arm_termmeta is a table name
 					}
 
 					foreach ( $update_main_protection_meta as $key => $value ) {
@@ -744,9 +747,9 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 
 			global $arm_global_settings;
 
-			 $all_global_settings                                 = $arm_global_settings->arm_get_all_global_settings();
-			 $page_settings                                       = $all_global_settings['page_settings'];
-			 $member_panel_page_id                                = isset( $page_settings['member_panel_page_id'] ) ? $page_settings['member_panel_page_id'] : 0;
+			 $all_global_settings = !empty($arm_global_settings->global_settings) ? $arm_global_settings->global_settings : $arm_global_settings->arm_get_all_global_settings();
+			 $page_settings = !empty($all_global_settings['page_settings']) ? $all_global_settings['page_settings'] : array();
+			 $member_panel_page_id = isset( $page_settings['member_panel_page_id'] ) ? $page_settings['member_panel_page_id'] : 0;
 			 $arm_redirection_settings['signup']['redirect_type'] = 'common';
 			 $arm_redirection_settings['signup']['type']          = 'page';
 
@@ -772,7 +775,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 			);
 			$arm_redirection_settings['login']['conditional_redirect']['default'] = ARMLITE_HOME_URL;
 
-			$globalSettings                                   = $arm_global_settings->global_settings;
+			$globalSettings = $all_global_settings;
 			$ty_pageid                                        = isset( $globalSettings['thank_you_page_id'] ) ? $globalSettings['thank_you_page_id'] : 0;
 			$arm_redirection_settings['setup_signup']['type'] = $arm_redirection_settings['setup_change']['type'] = $arm_redirection_settings['setup_renew']['type'] = 'page';
 			$arm_redirection_settings['setup_signup']['page_id'] = $arm_redirection_settings['setup_change']['page_id'] = $arm_redirection_settings['setup_renew']['page_id'] = $ty_pageid;

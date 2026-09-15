@@ -2484,7 +2484,7 @@ if (!function_exists('arm_pattern_json_encode')) {
         $arm_return = '';
         global $arm_ajax_pattern_start,$arm_ajax_pattern_end;
         if (!empty($arm_ajax_response) ) {
-            $arm_return = $arm_ajax_pattern_start.''.json_encode($arm_ajax_response).''.$arm_ajax_pattern_end;
+            $arm_return = $arm_ajax_pattern_start.''.wp_json_encode($arm_ajax_response).''.$arm_ajax_pattern_end;
         }
         return $arm_return;
     }
