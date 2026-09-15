@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans;
 $arm_all_block_settings                          = $arm_global_settings->arm_get_all_block_settings();
 $all_plans                                       = $arm_subscription_plans->arm_get_all_subscription_plans( 'all', ARRAY_A, true );
@@ -92,7 +94,7 @@ $arm_all_block_settings['arm_block_ips']                = isset( $arm_all_block_
 									<?php
 											foreach ( $failed_login_users as $user ) {
 									?>
-												<option class="arm_message_selectbox_op" value="<?php echo esc_attr( $user['ID'] ); ?>"><?php echo !empty($user['user_login']) ? stripslashes( $user['user_login'] ) : ''; //phpcs:ignore ?></option>
+												<option class="arm_message_selectbox_op" value="<?php echo esc_attr( $user['ID'] ); ?>"><?php echo !empty($user['user_login']) ? wp_unslash( $user['user_login'] ) : ''; //phpcs:ignore ?></option>
 									<?php
 											}
 										else :
@@ -150,7 +152,7 @@ $arm_all_block_settings['arm_block_ips']                = isset( $arm_all_block_
 					<div class="arm-form-table-content">
 						<textarea name="arm_block_settings[arm_block_usernames]" id="arm_block_usernames" rows="8" cols="40"><?php
 						$arm_block_usernames = ( isset( $arm_all_block_settings['arm_block_usernames'] ) ) ? $arm_all_block_settings['arm_block_usernames'] : '';
-						echo ( ! empty( $arm_block_usernames ) ) ? esc_textarea( stripslashes_deep( $arm_block_usernames ) ) : '';
+						echo ( ! empty( $arm_block_usernames ) ) ? esc_textarea( wp_unslash( $arm_block_usernames ) ) : '';
 						?></textarea>
 						<div class="arm_info_text_style arm_padding_0 arm_margin_0 arm_margin_top_5"><?php esc_html_e( 'You should place each keyword on a new line.', 'armember-membership' ); ?></div>
 					</div>
@@ -159,7 +161,7 @@ $arm_all_block_settings['arm_block_ips']                = isset( $arm_all_block_
 					<label for="arm_block_usernames_msg arm-form-table-label "><?php esc_html_e( 'Blocked Username Message', 'armember-membership' ); ?></label>
 					<i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_html_e( 'This message will be display when member tries to register with blocked username.', 'armember-membership' ); ?>"></i>
 					<div class="arm-form-table-content arm_margin_top_12 arm_security_options_block_input  arm_width_100_pct">
-						<input type="text" name="arm_block_settings[arm_block_usernames_msg]" class="arm_max_width_100_pct arm_width_100_pct" id="arm_block_usernames_msg" value="<?php echo ( ! empty( $arm_all_block_settings['arm_block_usernames_msg'] ) ) ? esc_html( stripslashes( $arm_all_block_settings['arm_block_usernames_msg'] ) ) : ''; ?>"/>
+						<input type="text" name="arm_block_settings[arm_block_usernames_msg]" class="arm_max_width_100_pct arm_width_100_pct" id="arm_block_usernames_msg" value="<?php echo ( ! empty( $arm_all_block_settings['arm_block_usernames_msg'] ) ) ? esc_html( wp_unslash( $arm_all_block_settings['arm_block_usernames_msg'] ) ) : ''; ?>"/>
 					</div>
 				</div>
 				</div>
@@ -181,7 +183,7 @@ $arm_all_block_settings['arm_block_ips']                = isset( $arm_all_block_
 						<div class="arm-form-table-content">
 							<textarea name="arm_block_settings[arm_block_emails]" id="arm_block_emails" rows="8" cols="40" ><?php
 								$arm_block_emails = ( isset( $arm_all_block_settings['arm_block_emails'] ) ) ? $arm_all_block_settings['arm_block_emails'] : '';
-								echo ( ! empty( $arm_block_emails ) ) ? esc_textarea( stripslashes_deep( $arm_block_emails ) ) : '';
+								echo ( ! empty( $arm_block_emails ) ) ? esc_textarea( wp_unslash( $arm_block_emails ) ) : '';
 								?></textarea>
 							<div class="arm_info_text_style arm_padding_0 arm_margin_0 arm_margin_top_5"><?php esc_html_e( 'You should place each keyword on a new line.', 'armember-membership' ); ?></div>
 						</div>
@@ -190,7 +192,7 @@ $arm_all_block_settings['arm_block_ips']                = isset( $arm_all_block_
 						<label for="arm_block_emails_msg arm-form-table-label"><?php esc_html_e( 'Blocked Email Addresses Message', 'armember-membership' ); ?></label>
 						<i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_html_e( 'This message will be displayed when member tries to register with blocked email address.', 'armember-membership' ); ?>"></i>
 						<div class="">
-							<input type="text" name="arm_block_settings[arm_block_emails_msg]" class="arm_max_width_100_pct arm_width_100_pct arm_margin_top_12" id="arm_block_emails_msg" value="<?php echo ( ! empty( $arm_all_block_settings['arm_block_emails_msg'] ) ) ? esc_attr( stripslashes( $arm_all_block_settings['arm_block_emails_msg'] ) ) : ''; ?>"/>
+							<input type="text" name="arm_block_settings[arm_block_emails_msg]" class="arm_max_width_100_pct arm_width_100_pct arm_margin_top_12" id="arm_block_emails_msg" value="<?php echo ( ! empty( $arm_all_block_settings['arm_block_emails_msg'] ) ) ? esc_attr( wp_unslash( $arm_all_block_settings['arm_block_emails_msg'] ) ) : ''; ?>"/>
 						</div>
 					</div>
 				</div>

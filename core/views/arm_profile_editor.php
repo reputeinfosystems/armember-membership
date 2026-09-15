@@ -1,4 +1,5 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
 
 global $wpdb,$ARMemberLite;
 $get_action = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : 'add_profile'; //phpcs:ignore
@@ -175,7 +176,7 @@ if ( ( isset( $get_action ) && $get_action == 'edit_profile') || (isset($_GET['a
 		wp_redirect( admin_url( 'admin.php?page=arm_profiles_directories' ) );
 		exit;
 	}
-	$arm_template_title = !empty($data->arm_title) ? stripslashes_deep($data->arm_title) : '';
+	$arm_template_title = !empty($data->arm_title) ? wp_unslash($data->arm_title) : '';
 	$subscription_plans        = ( isset( $data->arm_subscription_plan ) && $data->arm_subscription_plan != '' ) ? explode( ',', $data->arm_subscription_plan ) : array();
 	$default_data              = $data;
 	unset($default_data->arm_template_html);
@@ -523,7 +524,7 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 										'editor_class' => 'arm_accordion_custom_block',
 										'tinymce' => false,
 									);
-									wp_editor(stripslashes_deep($arm_profile_before_content), $editor_id, $arguments);
+									wp_editor(wp_unslash($arm_profile_before_content), $editor_id, $arguments);
 									?>
 									
 
@@ -539,7 +540,7 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 										'editor_class' => 'arm_accordion_custom_block',
 										'tinymce' => false,
 									);
-									wp_editor(stripslashes_deep($arm_profile_after_content), $editor_id, $arguments);
+									wp_editor(wp_unslash($arm_profile_after_content), $editor_id, $arguments);
 									?>
 								
 								</div>
@@ -573,7 +574,7 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 															$arm_is_deactive = 'arm_deactive';
 														}
 														?>
-														<li data-code="<?php echo esc_attr($fieldMetaKey); ?>" data-label="<?php echo esc_attr( stripslashes_deep( $fieldOpt['label']) ); ?>" data-value="<?php echo esc_attr( stripslashes_deep( $fieldMetaKey ) ); //phpcs:ignore ?>" class="<?php echo esc_attr($arm_is_deactive); ?>"><?php echo esc_html( stripslashes_deep( $fieldOpt['label'] ) ); //phpcs:ignore ?></li>
+														<li data-code="<?php echo esc_attr($fieldMetaKey); ?>" data-label="<?php echo esc_attr( wp_unslash( $fieldOpt['label']) ); ?>" data-value="<?php echo esc_attr( wp_unslash( $fieldMetaKey ) ); //phpcs:ignore ?>" class="<?php echo esc_attr($arm_is_deactive); ?>"><?php echo esc_html( wp_unslash( $fieldOpt['label'] ) ); //phpcs:ignore ?></li>
 														<?php
 													}
 													$arm_additional_profile_fields_data = '';
@@ -612,7 +613,7 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 														$profile_fields_data['label'][ $pf ] = htmlspecialchars($profile_fields_data['label'][ $pf ], ENT_QUOTES);
 													}
 													?>
-													<input type="text" value="<?php echo esc_attr( stripslashes_deep( $profile_fields_data['label'][ $pf ]) ); //phpcs:ignore ?>" id="arm_profile_field_input_<?php echo esc_attr($pf); ?>" data-id="<?php echo esc_attr($pf); ?>" name="profile_fields[<?php echo esc_attr($pf); ?>]" class="arm_profile_field_input" />
+													<input type="text" value="<?php echo esc_attr( wp_unslash( $profile_fields_data['label'][ $pf ]) ); //phpcs:ignore ?>" id="arm_profile_field_input_<?php echo esc_attr($pf); ?>" data-id="<?php echo esc_attr($pf); ?>" name="profile_fields[<?php echo esc_attr($pf); ?>]" class="arm_profile_field_input" />
 												</div>
 												<div class="arm_add_profile_field_icons">
 													<!-- <span class="arm_profile_field_icon edit_field" id="arm_edit_field" data-code="<?php echo esc_attr($pf); ?>" title="<?php esc_attr_e( 'Edit Field Label', 'armember-membership' ); ?>"></span> -->
@@ -667,7 +668,7 @@ $options = apply_filters( 'arm_profile_default_options_outside', $options );
 										<select id="arm_temp_plans" class="arm_chosen_selectbox arm_template_plans_select" name="template_options[plans][]" data-placeholder="<?php esc_html_e( 'Select Plan(s)..', 'armember-membership' ); ?>" multiple="multiple">
 											<?php if ( ! empty( $subs_data ) ) : ?>
 												<?php foreach ( $subs_data as $sd ) : ?>
-													<option class="arm_message_selectbox_op" <?php echo ( in_array( $sd['arm_subscription_plan_id'], $subscription_plans ) ) ? 'selected="selected"' : ''; ?>  value="<?php echo esc_attr($sd['arm_subscription_plan_id']); ?>"><?php echo stripslashes( $sd['arm_subscription_plan_name'] ); //phpcs:ignore ?></option>
+													<option class="arm_message_selectbox_op" <?php echo ( in_array( $sd['arm_subscription_plan_id'], $subscription_plans ) ) ? 'selected="selected"' : ''; ?>  value="<?php echo esc_attr($sd['arm_subscription_plan_id']); ?>"><?php echo wp_unslash( $sd['arm_subscription_plan_name'] ); //phpcs:ignore ?></option>
 												<?php endforeach; ?>
 											<?php endif; ?>
 										</select>

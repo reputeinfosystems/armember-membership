@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_members_directory, $arm_subscription_plans;
 $member_templates  = $arm_members_directory->arm_get_all_member_templates();
 $defaultTemplates  = $arm_members_directory->arm_default_member_templates();
@@ -59,7 +61,7 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 
 
 								$t_id              = $ptemp['arm_id'];
-								$t_title           = !empty($ptemp['arm_title']) ? stripslashes_deep($ptemp['arm_title']) : '';
+								$t_title           = !empty($ptemp['arm_title']) ? wp_unslash($ptemp['arm_title']) : '';
 								$t_type            = $ptemp['arm_type'];
 								$t_options         = arm_maybe_unserialize( $ptemp['arm_options'] );
 								$t_link_attr       = ' data-id="' . esc_attr($t_id) . '" data-type="' . esc_attr($t_type) . '" ';
@@ -87,7 +89,7 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 										$plan_names      = '<strong>' . esc_html__( 'Associated Plans:', 'armember-membership' ) . ' </strong><br/>';
 										if ( $plan_names_db != '' ) {
 											foreach ( $plan_names_db as $db_plan_name ) {
-												$arm_subscription_plan_name = !empty($db_plan_name->arm_subscription_plan_name) ? stripslashes_deep($db_plan_name->arm_subscription_plan_name): '';
+												$arm_subscription_plan_name = !empty($db_plan_name->arm_subscription_plan_name) ? wp_unslash($db_plan_name->arm_subscription_plan_name): '';
 												if(!empty($arm_subscription_plan_name)){
 													$plan_names .= $arm_subscription_plan_name . ', ';
 												}	
@@ -179,7 +181,7 @@ $fonts_option = array('title_font'=>array('font_family'=>'Poppins','font_size'=>
 						if ( ! empty( $member_templates['directory'] ) ) {
 							foreach ( $member_templates['directory'] as $dtemp ) {
 								$t_id              = $dtemp['arm_id'];
-								$t_title           = !empty($dtemp['arm_title']) ? stripslashes_deep($dtemp['arm_title']) : '';
+								$t_title           = !empty($dtemp['arm_title']) ? wp_unslash($dtemp['arm_title']) : '';
 								$t_type            = $dtemp['arm_type'];
 								$t_options         = arm_maybe_unserialize( $dtemp['arm_options'] );
 								$t_link_attr       = 'data-id="' . esc_attr($t_id) . '" data-type="' . esc_attr($t_type) . '"';

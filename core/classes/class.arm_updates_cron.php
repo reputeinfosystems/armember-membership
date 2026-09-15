@@ -1,4 +1,5 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
 
 if (!class_exists('ARM_updates_cron_Lite')) {
 

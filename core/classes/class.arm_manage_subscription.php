@@ -1,4 +1,5 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
 
 if (!class_exists('ARM_subsctriptions_Lite')) {
 
@@ -12,7 +13,6 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             add_action('wp_ajax_get_upcoming_subscription_data',array($this, 'arm_fetch_upcoming_subscription_data'));
             add_action('wp_ajax_transaction_activity_ajax_action',array($this, 'arm_delete_transaction_data'));
             add_action('wp_ajax_arm_change_bank_transfer_status', array($this, 'arm_change_bank_transfer_status'));
-            add_action('wp_ajax_arm_invoice_detail', array($this, 'arm_invoice_detail'));
             add_action('wp_ajax_arm_cancel_subscription_ajax_action',array($this, 'arm_cancel_subscription_data'));
             add_action('wp_ajax_arm_add_new_subscriptions',array($this,'arm_add_new_subscriptions'));
             add_action('wp_ajax_get_user_all_transaction_details_for_grid',array($this,'get_user_all_transaction_details_for_grid'));      
@@ -594,7 +594,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 foreach($response_transaction_result as $transactions)
                 {
                     $membersDatas = array();
-                    $transactionID = !empty($transactions->arm_transaction_id) ? stripslashes($transactions->arm_transaction_id) : 'manual';
+                    $transactionID = !empty($transactions->arm_transaction_id) ? wp_unslash($transactions->arm_transaction_id) : 'manual';
                     $subscription_id = !empty($transactions->arm_token) ? $transactions->arm_token : '-';
                     $arm_transaction_status = $transactions->arm_transaction_status;
                     switch ($arm_transaction_status) {
@@ -775,7 +775,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                 $response['membership_type'] = $memberTypeText;
 
                 $plan_name = (!empty($plan_names)) ? implode(',', $plan_names) : '-';
-                $response['membership_plan'] = '<span class="arm_user_plan_' . esc_attr($user_ID) . '">' . esc_html(stripslashes_deep($plan_name)) . '</span>';
+                $response['membership_plan'] = '<span class="arm_user_plan_' . esc_attr($user_ID) . '">' . esc_html(wp_unslash($plan_name)) . '</span>';
 
                 if (!empty($subscription_effective_from)) {
                     foreach ($subscription_effective_from as $subscription_effective) {
@@ -791,45 +791,9 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             return $response;
             exit;
         }
-        function arm_invoice_detail()
-		{
-			global $wp, $wpdb, $current_user, $arm_errors, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways, $global_currency_sym;
-			
-			$log_id = intval($_POST['log_id']);//phpcs:ignore
-			$log_type = sanitize_text_field($_POST['log_type']);//phpcs:ignore
-
-            $ARMemberLite->arm_check_user_cap('',0); //phpcs:ignore --Reason:Verifying nonce
-			/* Get Edit Rule Form HTML */
-			if (!empty($log_id) && $log_id != 0) {
-			?>
-				<script type="text/javascript">
-					jQuery('#arm_invoice_iframe').on('load', function() {
-						var iframeDoc = document.getElementById('arm_invoice_iframe');
-					});
-					function arm_print_invoice() {
-						var iframeDoc = document.getElementById('arm_invoice_iframe');
-						iframeDoc.contentWindow.arm_print_invoice_content();
-					}
-				</script>
-				<div class="arm_invoice_detail_popup popup_wrapper arm_invoice_detail_popup_wrapper">
-					<div class="popup_wrapper_inner" style="overflow: hidden;">
-						<div class="popup_header arm_text_align_left" >
-							<span class="popup_close_btn arm_popup_close_btn arm_invoice_detail_close_btn"></span>
-							<span class="add_rule_content"><?php esc_html_e('Invoice Details','armember-membership' );?></span>
-						</div>
-						<div class="popup_content_text arm_invoice_detail_popup_text arm_padding_24" id="arm_invoice_detail_popup_text" >
-							
-							<iframe src="<?php echo esc_attr(ARM_HOME_URL)."/?log_id=".esc_attr($log_id)."&log_type=".esc_attr($log_type)."&is_display_invoice=1" ; ?>" id="arm_invoice_iframe" class="arm_width_100_pct" style="height:665px;"></iframe> <?php //phpcs:ignore ?>
-						</div>
-					</div>
-				</div>
-			<?php
-			}
-			exit;
-		}
         function arm_change_bank_transfer_status()
 		{
-			global $wp, $wpdb, $current_user, $arm_errors, $ARMemberLite, $arm_global_settings, $arm_subscription_plans,$arm_manage_coupons, $arm_lite_debug_payment_log_id, $arm_capabilities_global;
+			global $wp, $wpdb, $current_user, $arm_errors, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_lite_debug_payment_log_id, $arm_capabilities_global;
 				
             $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_subscriptions'], '1'); //phpcs:ignore --Reason:Verifying nonce
 			
@@ -947,7 +911,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans();
             if(!empty($posted_data['data']))
             {
-                $posted_data = json_decode(stripslashes_deep($posted_data['data']),true);
+                $posted_data = json_decode(wp_unslash($posted_data['data']),true);
             }
             $sql = '';
             $filter = '';
@@ -1185,7 +1149,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans();
             if(!empty($posted_data['data']))
             {
-                $posted_data = json_decode(stripslashes_deep($posted_data['data']),true);
+                $posted_data = json_decode(wp_unslash($posted_data['data']),true);
             }
             $sql = '';
             $filter = '';
@@ -1241,7 +1205,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             unset($n);
             $sql = $wpdb->prepare('SELECT act.*,am.arm_user_login FROM '.$ARMemberLite->tbl_arm_activity.' act LEFT JOIN '.$ARMemberLite->tbl_arm_members.' am ON act.arm_user_id = am.arm_user_id WHERE act.arm_user_id !=%d AND act.arm_action = %s',0,"new_subscription"); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_members is a table name
             
-            $orderby = $data_columns[(intval($sorting_col))]['data'];
+            $orderby = 'act.arm_activity_id';
 
             $order_by_qry = "ORDER BY " . $orderby . " " . $sorting_ord ;
             if(!empty($filter_gateway))
@@ -1561,7 +1525,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans();
             if(!empty($posted_data['data']))
             {
-                $posted_data = json_decode(stripslashes_deep($posted_data['data']),true);
+                $posted_data = json_decode(wp_unslash($posted_data['data']),true);
             }
             $sql = '';
             $filter = '';

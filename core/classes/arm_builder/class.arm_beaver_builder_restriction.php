@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 if (!class_exists('ARM_lite_beaver_builder_restiction')) {
 	class ARM_lite_beaver_builder_restiction
 	{

@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_global_settings, $arm_access_rules, $arm_drip_rules, $arm_subscription_plans, $arm_member_forms, $arm_social_feature;
 
 
@@ -249,7 +251,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 															foreach ( $all_plans as $p ) {
 																$p_id = $p['arm_subscription_plan_id'];
 																?>
-																<li data-label="<?php echo esc_attr( stripslashes( $p['arm_subscription_plan_name'] ) ); //phpcs:ignore ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( stripslashes( $p['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></li>
+																<li data-label="<?php echo esc_attr( wp_unslash( $p['arm_subscription_plan_name'] ) ); //phpcs:ignore ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( wp_unslash( $p['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></li>
 																							<?php
 															}
 														}
@@ -371,7 +373,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 														foreach ( $all_plans as $p ) {
 															$p_id = $p['arm_subscription_plan_id'];
 															?>
-														<li data-label="<?php echo esc_html(stripslashes( $p['arm_subscription_plan_name'] )); //phpcs:ignore ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( stripslashes( $p['arm_subscription_plan_name'] ) ); ?></li>
+														<li data-label="<?php echo esc_html(wp_unslash( $p['arm_subscription_plan_name'] )); //phpcs:ignore ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( wp_unslash( $p['arm_subscription_plan_name'] ) ); ?></li>
 																					<?php
 														}
 													}
@@ -630,7 +632,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 												<?php if ( ! empty( $arm_forms ) ) : ?>
 													<?php foreach ( $arm_forms as $_form ) : ?>
 														<?php
-														$formTitle = wp_strip_all_tags( stripslashes( $_form['arm_form_label'] ) ) . ' &nbsp;(ID: ' . $_form['arm_form_id'] . ')';
+														$formTitle = wp_strip_all_tags( wp_unslash( $_form['arm_form_label'] ) ) . ' &nbsp;(ID: ' . $_form['arm_form_id'] . ')';
 														?>
 														<li class="arm_shortcode_form_id_li <?php echo esc_attr($_form['arm_form_type']); ?>" data-label="<?php echo esc_attr($_form['arm_form_label']); ?>" data-value="<?php echo esc_attr($_form['arm_form_id']); ?>"><?php echo esc_html($formTitle); ?></li>
 													<?php endforeach; ?>
@@ -694,7 +696,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 											<?php if ( ! empty( $arm_forms ) ) : ?>
 												<?php foreach ( $arm_forms as $_form ) : ?>
 													<?php
-													$formTitle = wp_strip_all_tags( stripslashes( $_form['arm_form_label'] ) ) . ' &nbsp;(ID: ' . $_form['arm_form_id'] . ')';
+													$formTitle = wp_strip_all_tags( wp_unslash( $_form['arm_form_label'] ) ) . ' &nbsp;(ID: ' . $_form['arm_form_id'] . ')';
 													?>
 													<li class="arm_shortcode_form_id_li <?php echo esc_attr($_form['arm_form_type']); ?>" data-label="<?php echo esc_attr($formTitle); ?>" data-value="<?php echo esc_attr($_form['arm_form_id']); ?>"><?php echo esc_html($formTitle); ?></li>
 												<?php endforeach; ?>
@@ -872,7 +874,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 																foreach ( $all_plans as $p ) {
 																	$p_id = $p['arm_subscription_plan_id'];
 																	?>
-																	<li data-label="<?php echo esc_attr(stripslashes( $p['arm_subscription_plan_name'] )); ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( stripslashes( $p['arm_subscription_plan_name'] ) ); ?></li>
+																	<li data-label="<?php echo esc_attr(wp_unslash( $p['arm_subscription_plan_name'] )); ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( wp_unslash( $p['arm_subscription_plan_name'] ) ); ?></li>
 																								<?php
 																}
 															}
@@ -940,7 +942,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 															foreach ( $all_plans as $p ) {
 																$p_id = $p['arm_subscription_plan_id'];
 																?>
-																<li data-label="<?php echo esc_attr(stripslashes( $p['arm_subscription_plan_name'] )); ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( stripslashes( $p['arm_subscription_plan_name'] ) ); ?></li>
+																<li data-label="<?php echo esc_attr(wp_unslash( $p['arm_subscription_plan_name'] )); ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( wp_unslash( $p['arm_subscription_plan_name'] ) ); ?></li>
 																<?php
 															}
 														}
@@ -1102,7 +1104,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 															foreach ( $all_plans as $p ) {
 																$p_id = $p['arm_subscription_plan_id'];
 																?>
-																<li data-label="<?php echo esc_attr(stripslashes( $p['arm_subscription_plan_name'] )); ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( stripslashes( $p['arm_subscription_plan_name'] ) ); ?></li>
+																<li data-label="<?php echo esc_attr(wp_unslash( $p['arm_subscription_plan_name'] )); ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( wp_unslash( $p['arm_subscription_plan_name'] ) ); ?></li>
 																<?php
 															}
 														}
@@ -1179,7 +1181,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 															foreach ( $all_plans as $p ) {
 																$p_id = $p['arm_subscription_plan_id'];
 																?>
-																<li data-label="<?php echo esc_attr(stripslashes( $p['arm_subscription_plan_name'] )); ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( stripslashes( $p['arm_subscription_plan_name'] ) ); ?></li>
+																<li data-label="<?php echo esc_attr(wp_unslash( $p['arm_subscription_plan_name'] )); ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( wp_unslash( $p['arm_subscription_plan_name'] ) ); ?></li>
 																<?php
 															}
 														}
@@ -1355,9 +1357,9 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 																foreach ( $all_plans as $p ) {
 																	$p_id = $p['arm_subscription_plan_id'];
 																	?>
-																	<li data-label="<?php echo esc_attr(stripslashes( $p['arm_subscription_plan_name'] )); ?>" 
+																	<li data-label="<?php echo esc_attr(wp_unslash( $p['arm_subscription_plan_name'] )); ?>" 
 																		data-value="<?php echo intval($p_id); ?>">
-																		<?php echo esc_html( stripslashes( $p['arm_subscription_plan_name'] ) ); ?>
+																		<?php echo esc_html( wp_unslash( $p['arm_subscription_plan_name'] ) ); ?>
 																	</li>
 																	<?php
 																}
@@ -1433,7 +1435,7 @@ $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subsc
 																		foreach ( $all_plans as $p ) {
 																			$p_id = $p['arm_subscription_plan_id'];
 																			?>
-																		<li data-label="<?php echo esc_attr(stripslashes( $p['arm_subscription_plan_name'] )); ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( stripslashes( $p['arm_subscription_plan_name'] ) ); ?></li>
+																		<li data-label="<?php echo esc_attr(wp_unslash( $p['arm_subscription_plan_name'] )); ?>" data-value="<?php echo intval($p_id); ?>"><?php echo esc_html( wp_unslash( $p['arm_subscription_plan_name'] ) ); ?></li>
 																									<?php
 																		}
 																	}

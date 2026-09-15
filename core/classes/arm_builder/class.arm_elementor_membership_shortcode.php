@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if (!class_exists('arm_lite_membership_elementcontroller')) {
    class arm_lite_membership_elementcontroller{
    

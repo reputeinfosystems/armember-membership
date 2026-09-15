@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_access_rules, $arm_subscription_plans, $arm_buddypress_feature,$arm_common_lite;
 $arm_global_settings->arm_set_ini_for_access_rules();
 $data_cols      = array();
@@ -199,7 +201,7 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 													<ul data-id="arm_subs_filter" data-placeholder="<?php esc_attr_e( 'Select Plans', 'armember-membership' ); ?>">
 														<li data-label="<?php  esc_attr_e( 'Select Plans', 'armember-membership' ); //phpcs:ignore ?>" data-value="0"><?php  esc_attr_e( 'Select Plans', 'armember-membership' ); //phpcs:ignore ?></li>
 														<?php foreach ( $all_plans as $plan ) : ?>
-															<li data-label="<?php echo stripslashes( esc_attr( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><?php echo stripslashes( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
+															<li data-label="<?php echo wp_unslash( esc_attr( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><?php echo wp_unslash( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
 														<?php endforeach; ?>
 													</ul>
 												</dd>
@@ -295,7 +297,7 @@ wp_enqueue_script( 'jquery-ui-tooltip' );
 					$i                            = 3;
 					foreach ( $all_plans as $sp ) {
 						$plan_id    = $sp['arm_subscription_plan_id'];
-						$plan_title = stripslashes( $sp['arm_subscription_plan_name'] );
+						$plan_title = wp_unslash( $sp['arm_subscription_plan_name'] );
 
 									$title_cols      .= '<th class="arm-no-sort center arm_text_align_center">' . $plan_title . '</th>';
 										$filter_cols .= '<th class="arm-no-sort center arm_text_align_center"><input type="checkbox" class="arm_all_rules_checkbox_' . esc_attr($plan_id) . ' arm_all_rule_plan_chks" data-plan_id="' . esc_attr($plan_id) . '" /><br/><label class="arm_font_size_14">' . esc_html__( 'Allow Access', 'armember-membership' ) . '</label></th>';

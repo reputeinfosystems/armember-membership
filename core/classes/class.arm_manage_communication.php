@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_manage_communication_Lite' ) ) {
 
 	class ARM_manage_communication_Lite {

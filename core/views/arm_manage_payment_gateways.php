@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_email_settings,  $arm_payment_gateways,$arm_members_activity;
 $arm_all_global_settings    = $arm_global_settings->arm_get_all_global_settings();
 $arm_general_settings       = $arm_all_global_settings['general_settings'];
@@ -210,7 +212,7 @@ if($ARMemberLite->is_arm_pro_active)
 								<label class="arm-form-table-label arm_font_size_16 arm_font_weight_400 arm_padding_bottom_12"for="arm_bank_transfer_note"><?php esc_html_e( 'Note/Description', 'armember-membership' ); ?></label>
 								<?php
 									wp_editor(
-										stripslashes( ( isset( $gateway_options['note'] ) ) ? $gateway_options['note'] : '' ),
+										wp_unslash( ( isset( $gateway_options['note'] ) ) ? $gateway_options['note'] : '' ),
 										'arm_bank_transfer_note',
 										array(
 											'textarea_name' => 'payment_gateway_settings[bank_transfer][note]',
@@ -268,7 +270,7 @@ if($ARMemberLite->is_arm_pro_active)
 													$is_checked_option = 'checked="checked"';
 												}
 
-												$transfer_mode_val = isset( $gateway_options['fields']['transfer_mode_option_label'][ $key ] ) ? stripslashes($gateway_options['fields']['transfer_mode_option_label'][ $key ]) : $transfer_mode;
+												$transfer_mode_val = isset( $gateway_options['fields']['transfer_mode_option_label'][ $key ] ) ? wp_unslash($gateway_options['fields']['transfer_mode_option_label'][ $key ]) : $transfer_mode;
 												?>
 												
 													<div class="arm_transfer_mode_list_container">
@@ -286,27 +288,27 @@ if($ARMemberLite->is_arm_pro_active)
 							<div class="arm_email_setting_flex_group arm_margin_top_32 arm_payment_getway_page">
 								<div class="arm_form_field_block">
 									<label class="arm-form-table-label payment_label"><?php esc_html_e( 'Transaction ID Label', 'armember-membership' ); ?></label>
-									<input class="arm_active_payment_<?php echo strtolower( $gateway_name ); //phpcs:ignore ?>" id="arm_bank_transfer_transaction_id_label" type="text" name="payment_gateway_settings[bank_transfer][transaction_id_label]" value="<?php echo ( ! empty( $gateway_options['transaction_id_label'] ) ? esc_attr( stripslashes( $gateway_options['transaction_id_label'] ) ) : esc_html__( 'Transaction ID', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Transaction ID Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+									<input class="arm_active_payment_<?php echo strtolower( $gateway_name ); //phpcs:ignore ?>" id="arm_bank_transfer_transaction_id_label" type="text" name="payment_gateway_settings[bank_transfer][transaction_id_label]" value="<?php echo ( ! empty( $gateway_options['transaction_id_label'] ) ? esc_attr( wp_unslash( $gateway_options['transaction_id_label'] ) ) : esc_html__( 'Transaction ID', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Transaction ID Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 								</div>
 
 								<div class="arm_form_field_block">
 									<label class="arm-form-table-label payment_label"><?php esc_html_e( 'Bank Name Label', 'armember-membership' ); ?></label>
-									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_bank_name_label" type="text" name="payment_gateway_settings[bank_transfer][bank_name_label]" value="<?php echo ( ! empty( $gateway_options['bank_name_label'] ) ? esc_attr( stripslashes( $gateway_options['bank_name_label'] ) ) : esc_html__( 'Bank Name', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_html_e( 'Bank Name Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_bank_name_label" type="text" name="payment_gateway_settings[bank_transfer][bank_name_label]" value="<?php echo ( ! empty( $gateway_options['bank_name_label'] ) ? esc_attr( wp_unslash( $gateway_options['bank_name_label'] ) ) : esc_html__( 'Bank Name', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_html_e( 'Bank Name Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 								</div>
 
 								<div class="arm_form_field_block">
 									<label class="arm-form-table-label "><?php esc_html_e( 'Account Holder Name Label', 'armember-membership' ); ?></label>
-									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_account_name_label" type="text" name="payment_gateway_settings[bank_transfer][account_name_label]" value="<?php echo ( ! empty( $gateway_options['account_name_label'] ) ? esc_html( stripslashes( $gateway_options['account_name_label'] ) ) : esc_html__( 'Account Holder Name', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_html_e( 'Account Holder Name Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_account_name_label" type="text" name="payment_gateway_settings[bank_transfer][account_name_label]" value="<?php echo ( ! empty( $gateway_options['account_name_label'] ) ? esc_html( wp_unslash( $gateway_options['account_name_label'] ) ) : esc_html__( 'Account Holder Name', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_html_e( 'Account Holder Name Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 								</div>
 
 								<div class="arm_form_field_block">
 									<label class="arm-form-table-label payment_label"><?php esc_html_e( 'Additional Info/Note Label', 'armember-membership' ); ?></label>
-									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_additional_info_label" type="text" name="payment_gateway_settings[bank_transfer][additional_info_label]" value="<?php echo ( ! empty( $gateway_options['additional_info_label'] ) ? esc_attr( stripslashes( $gateway_options['additional_info_label'] ) ) : esc_html__( 'Additional Info/Note', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Additional Info/Note Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_additional_info_label" type="text" name="payment_gateway_settings[bank_transfer][additional_info_label]" value="<?php echo ( ! empty( $gateway_options['additional_info_label'] ) ? esc_attr( wp_unslash( $gateway_options['additional_info_label'] ) ) : esc_html__( 'Additional Info/Note', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Additional Info/Note Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 								</div>
 
 								<div class="arm_form_field_block">
 									<label class="arm-form-table-label payment_label"><?php esc_html_e( 'Payment Method Label', 'armember-membership' ); ?></label>
-									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_payment_mode_label" type="text" name="payment_gateway_settings[bank_transfer][transfer_mode_label]" value="<?php echo ( ! empty( $gateway_options['transfer_mode_label'] ) ? esc_attr( stripslashes( $gateway_options['transfer_mode_label'] ) ) : esc_html__( 'Payment Mode', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Payment Mode Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+									<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?>" id="arm_bank_transfer_payment_mode_label" type="text" name="payment_gateway_settings[bank_transfer][transfer_mode_label]" value="<?php echo ( ! empty( $gateway_options['transfer_mode_label'] ) ? esc_attr( wp_unslash( $gateway_options['transfer_mode_label'] ) ) : esc_html__( 'Payment Mode', 'armember-membership' ) ); ?>" data-msg-required="<?php esc_attr_e( 'Payment Mode Label cannot be left blank.', 'armember-membership' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 								</div>
 
 								<div class="arm_form_field_block">
@@ -359,7 +361,7 @@ if($ARMemberLite->is_arm_pro_active)
 								<label><?php esc_html_e('Card Holder Name Label', 'armember-membership');?></label>
 							</div>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label_name" data-id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name);?>][card_holder_name]" value="<?php echo (!empty($gateway_options['card_holder_name']) ? esc_html(stripslashes($gateway_options['card_holder_name'])) : esc_html__('Card Holder Name', 'armember-membership')); //phpcs:ignore ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label_name" data-id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name);?>][card_holder_name]" value="<?php echo (!empty($gateway_options['card_holder_name']) ? esc_html(wp_unslash($gateway_options['card_holder_name'])) : esc_html__('Card Holder Name', 'armember-membership')); //phpcs:ignore ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 						<div class="arm_form_field_block  <?php echo esc_attr($arm_gateway_class_name);?> arm_width_100_pct">
@@ -367,7 +369,7 @@ if($ARMemberLite->is_arm_pro_active)
 								<label><?php esc_html_e('Card Holder Name Description', 'armember-membership');?></label>
 							</div>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label_desc" data-id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name);?>][card_holder_name_description]" value="<?php echo (!empty($gateway_options['card_holder_name_description']) ? esc_html(stripslashes($gateway_options['card_holder_name_description'])) : ""); //phpcs:ignore ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label_desc" data-id="arm_payment_gateway_<?php echo esc_attr($gateway_name);?>_cc_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name);?>][card_holder_name_description]" value="<?php echo (!empty($gateway_options['card_holder_name_description']) ? esc_html(wp_unslash($gateway_options['card_holder_name_description'])) : ""); //phpcs:ignore ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 					<?php							
@@ -377,26 +379,26 @@ if($ARMemberLite->is_arm_pro_active)
 							<label class="arm-form-table-label"><?php esc_html_e( 'Credit Card Label', 'armember-membership' ); ?></label>
 							<i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_html_e( 'This label will be displayed at fronted membership setup wizard page while payment.', 'armember-membership' ); ?>"></i>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_cc_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][cc_label]" value="<?php echo ( ! empty( $gateway_options['cc_label'] ) ? esc_attr( stripslashes( $gateway_options['cc_label'] ) ) : esc_attr__( 'Credit Card Number', 'armember-membership' ) ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_cc_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][cc_label]" value="<?php echo ( ! empty( $gateway_options['cc_label'] ) ? esc_attr( wp_unslash( $gateway_options['cc_label'] ) ) : esc_attr__( 'Credit Card Number', 'armember-membership' ) ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 						<div class="arm_form_field_block <?php echo esc_attr($arm_gateway_class_name);?> arm_width_100_pct">
 							<label class="arm-form-table-label"><?php esc_html_e( 'Credit Card Description', 'armember-membership' ); ?></label>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_cc_desc" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][cc_desc]" value="<?php echo ( ! empty( $gateway_options['cc_desc'] ) ? esc_attr( stripslashes( $gateway_options['cc_desc'] ) ) : '' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_cc_desc" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][cc_desc]" value="<?php echo ( ! empty( $gateway_options['cc_desc'] ) ? esc_attr( wp_unslash( $gateway_options['cc_desc'] ) ) : '' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 						<div class="arm_form_field_block <?php echo esc_attr($arm_gateway_class_name);?> arm_width_100_pct">
 							<label class="arm-form-table-label"><?php esc_html_e( 'Expire Month Label', 'armember-membership' ); ?></label>
 							<i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_html_e( 'This label will be displayed at fronted membership setup wizard page while payment.', 'armember-membership' ); ?>"></i>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_em_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][em_label]" value="<?php echo ( ! empty( $gateway_options['em_label'] ) ? esc_attr( stripslashes( $gateway_options['em_label'] ) ) : esc_attr__( 'Expiration Month', 'armember-membership' ) ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_em_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][em_label]" value="<?php echo ( ! empty( $gateway_options['em_label'] ) ? esc_attr( wp_unslash( $gateway_options['em_label'] ) ) : esc_attr__( 'Expiration Month', 'armember-membership' ) ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 						<div class="arm_form_field_block <?php echo esc_attr($arm_gateway_class_name);?> arm_width_100_pct">
 							<label class="arm-form-table-label"><?php esc_html_e( 'Expire Month Description', 'armember-membership' ); ?></label>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_em_desc" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][em_desc]" value="<?php echo ( ! empty( $gateway_options['em_desc'] ) ? esc_attr( stripslashes( $gateway_options['em_desc'] ) ) : '' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_em_desc" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][em_desc]" value="<?php echo ( ! empty( $gateway_options['em_desc'] ) ? esc_attr( wp_unslash( $gateway_options['em_desc'] ) ) : '' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 				
@@ -404,27 +406,27 @@ if($ARMemberLite->is_arm_pro_active)
 							<label class="arm-form-table-label"><?php esc_html_e( 'Expire Year Label', 'armember-membership' ); ?></label>
 							<i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_attr_e( 'This label will be displayed at fronted membership setup wizard page while payment.', 'armember-membership' ); ?>"></i>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( $gateway_name ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_ey_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][ey_label]" value="<?php echo ( ! empty( $gateway_options['ey_label'] ) ? esc_attr( stripslashes( $gateway_options['ey_label'] ) ) : esc_attr__( 'Expiration Year', 'armember-membership' ) ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( $gateway_name ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_ey_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][ey_label]" value="<?php echo ( ! empty( $gateway_options['ey_label'] ) ? esc_attr( wp_unslash( $gateway_options['ey_label'] ) ) : esc_attr__( 'Expiration Year', 'armember-membership' ) ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 						<div class="arm_form_field_block <?php echo esc_attr($arm_gateway_class_name);?> arm_width_100_pct">
 							<label class="arm-form-table-label"><?php esc_html_e( 'Expire Year Description', 'armember-membership' ); ?></label>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( $gateway_name ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_ey_desc" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][ey_desc]" value="<?php echo ( ! empty( $gateway_options['ey_desc'] ) ? esc_attr( stripslashes( $gateway_options['ey_desc'] ) ) : '' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( $gateway_name ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_ey_desc" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][ey_desc]" value="<?php echo ( ! empty( $gateway_options['ey_desc'] ) ? esc_attr( wp_unslash( $gateway_options['ey_desc'] ) ) : '' ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 						<div class="arm_form_field_block <?php echo esc_attr($arm_gateway_class_name);?> arm_width_100_pct">
 							<label class="arm-form-table-label"><?php esc_html_e( 'CVV Label', 'armember-membership' ); ?></label>
 							<i class="arm_helptip_icon armfa armfa-question-circle" title="<?php esc_attr_e( 'This label will be displayed at fronted membership setup wizard page while payment.', 'armember-membership' ); ?>"></i>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( $gateway_name ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_cvv_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][cvv_label]" value="<?php echo ( ! empty( $gateway_options['cvv_label'] ) ? esc_attr( stripslashes( $gateway_options['cvv_label'] ) ) : esc_attr__( 'CVV Code', 'armember-membership' ) ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( $gateway_name ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_cvv_label" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][cvv_label]" value="<?php echo ( ! empty( $gateway_options['cvv_label'] ) ? esc_attr( wp_unslash( $gateway_options['cvv_label'] ) ) : esc_attr__( 'CVV Code', 'armember-membership' ) ); ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 
 						<div class="arm_form_field_block <?php echo esc_attr($arm_gateway_class_name);?> ">
 							<label class="arm-form-table-label"><?php esc_html_e( 'CVV Description', 'armember-membership' ); ?></label>
 							<div class="arm-form-table-content">
-								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_cvv_desc" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][cvv_desc]" value="<?php echo ( ! empty( $gateway_options['cvv_desc'] ) ? esc_attr( stripslashes( $gateway_options['cvv_desc'] ) ) : '' ); //phpcs:ignore ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
+								<input class="arm_active_payment_<?php echo strtolower( esc_attr($gateway_name) ); //phpcs:ignore ?> arm_margin_top_12" id="arm_payment_gateway_<?php echo esc_attr($gateway_name); ?>_cvv_desc" type="text" name="payment_gateway_settings[<?php echo esc_attr($gateway_name); ?>][cvv_desc]" value="<?php echo ( ! empty( $gateway_options['cvv_desc'] ) ? esc_attr( wp_unslash( $gateway_options['cvv_desc'] ) ) : '' ); //phpcs:ignore ?>" <?php echo $readonly_field_attr; //phpcs:ignore ?>>
 							</div>
 						</div>
 					

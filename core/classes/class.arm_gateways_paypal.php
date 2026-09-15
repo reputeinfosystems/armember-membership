@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 
 	class ARM_Paypal_Lite {
@@ -389,7 +391,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 		}
 
 		function arm_payment_gateway_form_submit_action( $payment_gateway, $payment_gateway_options, $posted_data, $entry_id = 0 ) {
-			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_member_forms,  $payment_done, $arm_payment_gateways,$arm_lite_debug_payment_log_id;
+			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_subscription_plans, $arm_member_forms,  $payment_done, $arm_payment_gateways,$arm_lite_debug_payment_log_id,$arm_membership_setup;
 
 			if ( $payment_gateway == 'paypal' ) {
 				$plan_id = ( ! empty( $posted_data['subscription_plan'] ) ) ? $posted_data['subscription_plan'] : 0;
@@ -483,7 +485,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 				if ( ! empty( $_POST['txn_id'] ) || ! empty( $_POST['subscr_id'] ) ) { //phpcs:ignore
 					$req = 'cmd=_notify-validate';
 					foreach ( $_POST as $key => $value ) { //phpcs:ignore
-						$value = urlencode( stripslashes( $value ) );
+						$value = urlencode( wp_unslash( $value ) );
 						$req  .= "&$key=$value";
 					}
 					$all_payment_gateways = $arm_payment_gateways->arm_get_active_payment_gateways();
@@ -531,9 +533,12 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 							$entry_id         = $customs[0];
 							$entry_email      = $customs[1];
 							$arm_payment_type = $customs[2];
-							$txn_id           = isset( $_POST['txn_id'] ) ? $_POST['txn_id'] : ''; //phpcs:ignore
 							$arm_token        = isset( $_POST['subscr_id'] ) ? $_POST['subscr_id'] : ''; //phpcs:ignore
+							$txn_id           = isset( $_POST['txn_id'] ) ? $_POST['txn_id'] : ''; //phpcs:ignore
 							$txn_type         = isset( $_POST['txn_type'] ) ? $_POST['txn_type'] : ''; //phpcs:ignore
+							if(empty($txn_id)){
+								$txn_id = $arm_token.'_trial'; //phpcs:ignore
+							}
 							/**                             * ***********************************************
 							 * Do Member Form Action After Successfull Payment
 							 * ************************************************ */
@@ -544,8 +549,8 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 							if ( ! empty( $entry_data ) ) {
 								$is_log            = false;
 								$extraParam        = array(
-									'plan_amount' => $_POST['mc_gross'],	 //phpcs:ignore
-									'paid_amount' => $_POST['mc_gross'],	 //phpcs:ignore
+									'plan_amount' => ! empty( $_POST['mc_gross'] ) ? $_POST['mc_gross'] : 0, //phpcs:ignore
+									'paid_amount' => ! empty( $_POST['mc_gross'] ) ? $_POST['mc_gross'] : 0, //phpcs:ignore
 								);
 								$entry_values      = arm_maybe_unserialize( $entry_data['arm_entry_value'] );
 								$payment_mode      = $entry_values['arm_selected_payment_mode'];
@@ -554,20 +559,89 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 								$setup_id          = $entry_values['setup_id'];
 								$entry_plan        = $entry_data['arm_plan_id'];
 
+								$arm_ipn_valid         = true;
+								$arm_ipn_reject_reason = '';
+
+								// 1) Recipient: the payment must have gone to the configured merchant account.
+								$arm_expected_receiver = isset( $options['paypal_merchant_email'] ) ? trim( $options['paypal_merchant_email'] ) : '';
+								$arm_ipn_receiver      = '';
+								if ( ! empty( $_POST['receiver_email'] ) ) { //phpcs:ignore
+									$arm_ipn_receiver = sanitize_email( wp_unslash( $_POST['receiver_email'] ) ); //phpcs:ignore
+								} elseif ( ! empty( $_POST['business'] ) ) { //phpcs:ignore
+									$arm_ipn_receiver = sanitize_email( wp_unslash( $_POST['business'] ) ); //phpcs:ignore
+								}
+								do_action( 'arm_payment_log_entry', $payment_gateway, 'ipn email verification ', 'payment_gateway', "IPN receiver : " . $arm_ipn_receiver .' == Expected receiver : '. $arm_expected_receiver, $arm_lite_debug_payment_log_id );
+								if ( ! empty( $arm_expected_receiver ) && ( empty( $arm_ipn_receiver ) || strcasecmp( $arm_ipn_receiver, $arm_expected_receiver ) !== 0 ) ) {
+									$arm_ipn_valid         = false;
+									$arm_ipn_reject_reason = 'receiver_email mismatch (expected ' . $arm_expected_receiver . ', got ' . $arm_ipn_receiver . ')';
+								}
+
+								// 2) Currency must match the stored currency.
+								if ( $arm_ipn_valid && ! empty( $_POST['mc_currency'] ) ) { //phpcs:ignore
+									$arm_expected_currency = !empty($entry_values['arm_currency']) ? $entry_values['arm_currency'] : $arm_payment_gateways->arm_get_global_currency();
+
+									$arm_ipn_currency      = sanitize_text_field( wp_unslash( $_POST['mc_currency'] ) ); //phpcs:ignore
+
+									do_action( 'arm_payment_log_entry', $payment_gateway, 'Currency verification ', 'payment_gateway', "IPN currency : " . $arm_ipn_currency .' == Expected currency : '. $arm_expected_currency, $arm_lite_debug_payment_log_id );
+
+									if ( ! empty( $arm_expected_currency ) && strcasecmp( $arm_ipn_currency, $arm_expected_currency ) !== 0 ) {
+										$arm_ipn_valid         = false;
+										$arm_ipn_reject_reason = 'currency mismatch (expected ' . $arm_expected_currency . ', got ' . $arm_ipn_currency . ')';
+									}
+								}
+
+								// 3) Status + amount for payment-completion notifications (skip trial/signup).
+								$arm_payment_txn_types = array( 'web_accept', 'cart', 'express_checkout', 'subscr_payment', 'recurring_payment' );
+								$arm_is_trial_ipn      = ( isset( $_POST['mc_amount1'] ) && floatval( $_POST['mc_amount1'] ) == 0 ) || ( $txn_type == 'subscr_signup' ); //phpcs:ignore
+								if ( $arm_ipn_valid && in_array( $txn_type, $arm_payment_txn_types, true ) && ! $arm_is_trial_ipn ) {
+									if ( isset( $_POST['payment_status'] ) && strcasecmp( sanitize_text_field( wp_unslash( $_POST['payment_status'] ) ), 'Completed' ) !== 0 ) { //phpcs:ignore
+										$arm_ipn_valid         = false;
+										$arm_ipn_reject_reason = 'payment_status not Completed (' . sanitize_text_field( wp_unslash( $_POST['payment_status'] ) ) . ')'; //phpcs:ignore
+									}
+									if ( $arm_ipn_valid && isset( $_POST['mc_gross'] ) ) { //phpcs:ignore
+
+										$arm_expected_plan = new ARM_Plan_Lite( $entry_plan );
+										if ( $arm_expected_plan->exists() ) {
+											if ( $arm_expected_plan->is_recurring() ) {
+												$arm_rec_data        = $arm_expected_plan->prepare_recurring_data( $payment_cycle );
+												$arm_expected_amount = isset( $arm_rec_data['amount'] ) ? $arm_rec_data['amount'] : 0;
+											} else {
+												$arm_expected_amount = $arm_expected_plan->amount;
+											}
+											$arm_expected_amount = (float) str_replace( ',', '', $arm_expected_amount );
+											$arm_paid_amount     = (float) $_POST['mc_gross']; //phpcs:ignore
+
+											do_action( 'arm_payment_log_entry', $payment_gateway, 'Amount verification ', 'payment_gateway', "IPN amount : " . $arm_paid_amount .' == Expected amount : '. $arm_expected_amount, $arm_lite_debug_payment_log_id );
+
+											if ( $arm_expected_amount > 0 && $arm_paid_amount < ( $arm_expected_amount - 0.01 ) ) {
+												$arm_ipn_valid         = false;
+												$arm_ipn_reject_reason = 'paid amount too low (expected ' . $arm_expected_amount . ', paid ' . $arm_paid_amount . ')';
+											}
+										}
+									}
+								}
+
+								if ( ! $arm_ipn_valid ) {
+									do_action( 'arm_payment_log_entry', $payment_gateway, 'ipn rejected - integrity check failed', 'payment_gateway', $arm_ipn_reject_reason, $arm_lite_debug_payment_log_id );
+									exit;
+								}
+
 								$paypalLog['arm_payment_type'] = $arm_payment_type;
 								$extraParam['arm_is_trial']    = '0';
 								$extraParam['subs_id']         = $arm_token;
-								$extraParam['trans_id']        = isset( $_POST['txn_id'] ) ? $_POST['txn_id'] : '';		 //phpcs:ignore
-								$extraParam['error']           = isset( $_POST['txn_type'] ) ? $_POST['txn_type'] : '';	 //phpcs:ignore
+								$extraParam['trans_id']        = $txn_id;	  //phpcs:ignore
+								$extraParam['error']           = $txn_type;	 //phpcs:ignore
 								$extraParam['date']            = current_time( 'mysql' );
-								$extraParam['message_type']    = isset( $_POST['txn_type'] ) ? $_POST['txn_type'] : '';	 //phpcs:ignore
+								$extraParam['message_type']    = $txn_type;	 //phpcs:ignore
 
 								$user_info          = get_user_by( 'email', $entry_email );
 								$do_not_update_user = true;
 								if ( $user_info ) {
 									$user_id = $user_info->ID;
 
-									$log_id = $wpdb->get_var( $wpdb->prepare('SELECT `arm_log_id` FROM `' . $ARMemberLite->tbl_arm_payment_log . "` WHERE `arm_user_id`=%d AND `arm_transaction_id`=%s AND `arm_transaction_status` = %s AND `arm_payment_gateway` = %s",$user_id,$txn_id,'pending','paypal') );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
+									$log_id = $wpdb->get_var( $wpdb->prepare('SELECT `arm_log_id` FROM `' . $ARMemberLite->tbl_arm_payment_log . "` WHERE `arm_user_id`=%d AND `arm_transaction_id`=%s AND `arm_transaction_status` IN ('success','pending') AND `arm_payment_gateway` = %s",$user_id,$txn_id,'paypal') );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
+
+									do_action('arm_payment_log_entry', $payment_gateway, 'check transaction data', 'payment_gateway', 'log_id: ' . $log_id . ', user_id: ' . $user_id . ', txn_id: ' . $txn_id, $arm_lite_debug_payment_log_id);
 
 									if ( $log_id != '' ) {
 										$payment_history_data                           = array();
@@ -680,7 +754,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 															$old_plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 															$old_plan_ids = ! empty( $old_plan_ids ) ? $old_plan_ids : array();
 														if ( ! empty( $old_plan_ids ) ) {
-															$old_plan_id   = isset( $old_plan_ids[0] ) ? $old_plan_id[0] : 0;
+															$old_plan_id   = isset( $old_plan_ids[0] ) ? $old_plan_ids[0] : 0;
 															$oldPlanDetail = array();
 															if ( ! empty( $old_plan_id ) ) {
 																$oldPlanData      = arm_get_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id, true );
@@ -740,7 +814,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 														$is_log = true;
 													}
 												}
-												$paypalLog['txn_id']         = '-';
+												$paypalLog['txn_id']         = $txn_id;	 //phpcs:ignore
 												$paypalLog['payment_status'] = 'success';
 												$paypalLog['payment_type']   = 'subscr_signup';
 												$paypalLog['mc_gross']       = $_POST['mc_amount1'];	 //phpcs:ignore

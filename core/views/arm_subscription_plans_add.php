@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $wp_roles, $ARMemberLite, $arm_subscription_plans, $arm_global_settings, $arm_payment_gateways, $arm_member_forms, $ARMemberLiteAllowedHTMLTagsArray;
 /**
  * Process Submited Form.
@@ -96,7 +98,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 									<label for="plan_description"><?php esc_html_e('Plan Description', 'armember-membership'); ?></label>
 								</th>
 								<td>
-									<textarea rows="40" cols="40" name="plan_description" id="plan_description"  placeholder="<?php esc_html_e('Enter plan description', 'armember-membership'); ?>" style="height: 80px;"><?php echo stripslashes( $plan_description); //phpcs:ignore ?></textarea>
+									<textarea rows="40" cols="40" name="plan_description" id="plan_description"  placeholder="<?php esc_html_e('Enter plan description', 'armember-membership'); ?>" style="height: 80px;"><?php echo wp_unslash( $plan_description); //phpcs:ignore ?></textarea>
 								</td>								
 							</tr>
 							<tr class="form-field arm_member_role_section arm_plan_detail_section_data">
@@ -155,7 +157,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 																foreach ( $all_plans as $p ) {
 																	$p_id = $p['arm_subscription_plan_id'];
 																	if ( $p_id != $plan_id && $p['arm_subscription_plan_status'] == '1' ) {
-																		?><li data-label="<?php echo esc_html(stripslashes($p['arm_subscription_plan_name'])); //phpcs:ignore ?>" data-value="<?php echo $p_id ?>"><?php echo esc_html(stripslashes($p['arm_subscription_plan_name'])); //phpcs:ignore ?></li><?php
+																		?><li data-label="<?php echo esc_html(wp_unslash($p['arm_subscription_plan_name'])); //phpcs:ignore ?>" data-value="<?php echo $p_id ?>"><?php echo esc_html(wp_unslash($p['arm_subscription_plan_name'])); //phpcs:ignore ?></li><?php
 																	}
 																}
 															}
@@ -444,8 +446,8 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 														<div>
 															<div class="arm_plan_payment_cycle_label">
 																<div class="arm_plan_payment_cycle_label_input arm_padding_top_12 arm_padding_bottom_10">
-																<input type="hidden" name="arm_subscription_plan_options[payment_cycles][<?php echo esc_attr($arm_pc); ?>][cycle_key]" value="<?php echo ( ! empty( $arm_value['cycle_key'] ) ) ? esc_attr(stripslashes($arm_value['cycle_key'])) : 'arm' . rand(); //phpcs:ignore ?>"/>
-																<input type="text" name="arm_subscription_plan_options[payment_cycles][<?php echo esc_attr($arm_pc); ?>][cycle_label]" value="<?php echo ( ! empty( $arm_value['cycle_label'] ) ) ? esc_attr(stripslashes($arm_value['cycle_label'])) : ''; ?>" class="paid_subscription_options_recurring_payment_cycle_label" data-msg-required="<?php esc_html_e( 'Label should not be blank.', 'armember-membership' ); ?>"/>
+																<input type="hidden" name="arm_subscription_plan_options[payment_cycles][<?php echo esc_attr($arm_pc); ?>][cycle_key]" value="<?php echo ( ! empty( $arm_value['cycle_key'] ) ) ? esc_attr(wp_unslash($arm_value['cycle_key'])) : 'arm' . rand(); //phpcs:ignore ?>"/>
+																<input type="text" name="arm_subscription_plan_options[payment_cycles][<?php echo esc_attr($arm_pc); ?>][cycle_label]" value="<?php echo ( ! empty( $arm_value['cycle_label'] ) ) ? esc_attr(wp_unslash($arm_value['cycle_label'])) : ''; ?>" class="paid_subscription_options_recurring_payment_cycle_label" data-msg-required="<?php esc_html_e( 'Label should not be blank.', 'armember-membership' ); ?>"/>
 																</div>
 															</div>
 	
@@ -816,7 +818,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 										$p_id = $p['arm_subscription_plan_id'];
 										if ( $p_id != $plan_id && $p['arm_subscription_plan_status'] == '1' ) {
 											$freePlans[]         = $p_id;
-											$data_label          = esc_html__( 'Give access to', 'armember-membership' ) . ' ' . esc_html( stripslashes( $p['arm_subscription_plan_name'] ) );
+											$data_label          = esc_html__( 'Give access to', 'armember-membership' ) . ' ' . esc_html( wp_unslash( $p['arm_subscription_plan_name'] ) );
 											$cancel_eot_options .= '<li data-label="' . esc_attr( $data_label ) . '" data-value="' . esc_attr($p_id) . '">' . $data_label . '</li>';
 										}
 									}
@@ -1102,7 +1104,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 																		}
 																		if ( $plan_id != $plan['arm_subscription_plan_id'] ) {
 																			?>
-																			<option value="<?php echo intval($plan['arm_subscription_plan_id']); ?>" <?php echo ( in_array( $plan['arm_subscription_plan_id'], $upgrade_plans ) ) ? 'selected="selected"' : ''; ?> data-recurring="<?php echo esc_attr($isRecurring); ?>"><?php echo esc_html( stripslashes( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></option>
+																			<option value="<?php echo intval($plan['arm_subscription_plan_id']); ?>" <?php echo ( in_array( $plan['arm_subscription_plan_id'], $upgrade_plans ) ) ? 'selected="selected"' : ''; ?> data-recurring="<?php echo esc_attr($isRecurring); ?>"><?php echo esc_html( wp_unslash( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></option>
 																									  <?php
 																		}
 																	}
@@ -1150,7 +1152,7 @@ $arm_currency_pos_class = ($global_currency_sym_pos == 'suffix') ? 'arm_curr_sym
 																		}
 																		if ( $plan_id != $plan['arm_subscription_plan_id'] ) {
 																			?>
-																			<option value="<?php echo intval($plan['arm_subscription_plan_id']); ?>" <?php echo ( in_array( $plan['arm_subscription_plan_id'], $downgrade_plans ) ) ? 'selected="selected"' : ''; ?> data-recurring="<?php echo esc_attr($isRecurring); ?>"><?php echo esc_html( stripslashes( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></option>
+																			<option value="<?php echo intval($plan['arm_subscription_plan_id']); ?>" <?php echo ( in_array( $plan['arm_subscription_plan_id'], $downgrade_plans ) ) ? 'selected="selected"' : ''; ?> data-recurring="<?php echo esc_attr($isRecurring); ?>"><?php echo esc_html( wp_unslash( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></option>
 																									  <?php
 																		}
 																	}

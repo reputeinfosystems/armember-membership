@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $armPrimaryStatus, $ARMemberLite, $arm_members_class, $arm_global_settings, $arm_subscription_plans,$arm_member_forms;
 $all_plans       = $arm_subscription_plans->arm_get_all_subscription_plans( 'arm_subscription_plan_id, arm_subscription_plan_name, arm_subscription_plan_status, arm_subscription_plan_type' );
 $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
@@ -27,7 +29,7 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 							<?php
 							if ( ! empty( $all_plans ) ) {
 								foreach ( $all_plans as $plan ) {
-									echo '<option value="' . intval($plan['arm_subscription_plan_id']) . '">' . stripslashes( $plan['arm_subscription_plan_name'] ) . '</option>'; //phpcs:ignore
+									echo '<option value="' . intval($plan['arm_subscription_plan_id']) . '">' . wp_unslash( $plan['arm_subscription_plan_name'] ) . '</option>'; //phpcs:ignore
 								}
 							}
 							?>
@@ -148,7 +150,7 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 												$p_id = $p['arm_subscription_plan_id'];
 												if ( $p['arm_subscription_plan_status'] == '1' ) {
 													?>
-													<li data-label="<?php echo esc_attr( stripslashes( $p['arm_subscription_plan_name']) ); ?>" data-value="<?php echo esc_attr($p_id); ?>"><?php echo esc_html( stripslashes( $p['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></li>
+													<li data-label="<?php echo esc_attr( wp_unslash( $p['arm_subscription_plan_name']) ); ?>" data-value="<?php echo esc_attr($p_id); ?>"><?php echo esc_html( wp_unslash( $p['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></li>
 																				<?php
 												}
 											}
@@ -363,7 +365,7 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 								$checkedDefault .= "disabled='disabled'";
 							}
 							if(!empty($fieldOpt['label'])){
-								$fieldOpt['label'] = stripslashes_deep($fieldOpt['label']);
+								$fieldOpt['label'] = wp_unslash($fieldOpt['label']);
 							}							
 							?>
 							<label class = "account_detail_radio arm_account_detail_options">
@@ -383,7 +385,7 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 								continue;
 							}
 							if(!empty($fieldOpt['label'])){
-								$fieldOpt['label'] = stripslashes_deep($fieldOpt['label']);
+								$fieldOpt['label'] = wp_unslash($fieldOpt['label']);
 							}
 							$checkedOtherDefault = " checked='checked'";
 							?>

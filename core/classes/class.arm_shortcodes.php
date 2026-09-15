@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 
 	class ARM_shortcodes_Lite {
@@ -614,6 +616,10 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					}
 					$_SESSION['ARM_FILTER_INPUT'][ $randomTempID ] = $captcha_code;
 					
+					if($temp_data->arm_slug == 'directorytemplate2'){
+						$content .= '<div class="arm_template_directorytemplate2_container arm_lite_directory_template_container">';
+					}
+
 					$content             .= '<div class="arm_template_wrapper arm_template_wrapper_' . $id . ' arm_template_wrapper_' . $temp_data->arm_slug . '" data-random-id="' . esc_attr($randomTempID) . '">';
 					$all_global_settings  = $arm_global_settings->arm_get_all_global_settings();
 					$general_settings     = $all_global_settings['general_settings'];
@@ -680,6 +686,18 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						}
 						$content .= '</div>';
 					} elseif ( $type == 'directory' ) {
+						
+						if ( ! is_admin() ) {
+							if ( ! wp_script_is( 'arm_directory_templates_js', 'enqueued' ) ) {
+								wp_enqueue_script( 'arm_directory_templates_js' );
+							}
+							$ARMemberLite->enqueue_angular_script();
+						} else {
+							if ( file_exists( MEMBERSHIPLITE_DIR . '/js/arm_directory_templates.js' ) ) {
+								$content .= '<script id="arm_directory_templates_js" src="' . MEMBERSHIPLITE_URL . '/js/arm_directory_templates.js?ver=' . MEMBERSHIPLITE_VERSION . '"></script>';
+							}
+						}
+						
 						$content .= '<form method="POST" class="arm_directory_form_container ' . esc_attr($arm_directory_form_rtl) . '" data-temp="' . esc_attr($id) . '" onsubmit="return false;" action="#">';
 						$content .= '<div class="arm_template_loading" style="display: none;"><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/loader_template.gif" alt="Loading.."></div>'; //phpcs:ignore 
 						/* For Filter User List */
@@ -689,21 +707,102 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 							$content .= '<div class="arm_directory_filters_wrapper">';
 							if ( $searchbox ) {
 								$content .= '<div class="arm_directory_search_wrapper">';
-								$content .= '<input type="text" name="search" value="' . esc_attr( $search ) . '" class="arm_directory_search_box">';
-								$content .= '<a class="arm_directory_search_btn"><i class="armfa armfa-search"></i></a><img id="arm_loader_img" width="24" height="24" style="position: relative; top: 3px; display: none; float: left; margin-left: 5px; " src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" alt="Loading..">'; //phpcs:ignore 
+								$content .= '
+								<div class="arm_search_input_wrapper">
+									<svg class="arm_search_group_icon" width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z" stroke="#99A1AF" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+										<path d="M17.5013 17.4998L13.918 13.9165" stroke="#99A1AF" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+									<input type="text" name="search" value="' . esc_attr($search) . '" class="arm_directory_search_box" id="arm_template_directory_search_box" placeholder="'.esc_attr__('Search Members...', 'armember-membership').'">
+								</div>';
+
+								$content .= '
+								<button type="submit" class="arm_directory_search_btn arm_search_btn_container" onclick="arm_handle_directory_temp_search_button(this)">
+									<i class="armfa armfa-search"></i>
+									<svg class="arm_dir_temp_search_loader_img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" style="display:none;">
+										<path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z">
+											<animateTransform attributeName="transform" type="rotate" dur="0.8s" values="0 12 12;360 12 12" repeatCount="indefinite"/>
+										</path>
+									</svg>
+								</button>';
+								$content .= '<button type="button" class="arm_directory_clear_btn arm_directory_search_btn arm_search_btn_container" tabindex="0" style="" onclick="arm_handle_directory_temp_clear_button(this)">
+								<i class="arm_refresh_icon"></i>
+								<svg class="arm_dir_temp_clear_loader_img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" style="display:none;">
+									<path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z">
+										<animateTransform attributeName="transform" type="rotate" dur="0.8s" values="0 12 12;360 12 12" repeatCount="indefinite"/>
+									</path>
+								</svg>
+							</button>';
 								$content .= '</div>';
+
 							} else {
 								$content .= '<input type="hidden" name="search" value="">';
 							}
 							$content .= '<input type="hidden" name="listof" value="all">';
 							if ( $sortbox ) {
 								$content .= '<div class="arm_directory_list_by_filters">';
-								$content .= '<select name="orderby" class="arm_directory_listby_select">';
-								$content .= '<option value="login" ' . selected( $orderby, 'login', false ) . '>' . esc_html__( 'Sort By', 'armember-membership' ) . '</option>';
-								$content .= '<option value="display_name" ' . selected( $orderby, 'display_name', false ) . '>' . esc_html($alphabaticalSortByTxt) . '</option>';
-								$content .= '<option value="user_registered" ' . selected( $orderby, 'user_registered', false ) . '>' . esc_html($recentlyJoinedTxt) . '</option>';
-								$content .= '</select>';
+
+								$arm_directory_option = array(
+									'login'            => esc_html__( 'Sort By', 'armember-membership' ),
+									'display_name'     => esc_html( $alphabaticalSortByTxt ),
+									'user_registered'  => esc_html( $recentlyJoinedTxt ),
+								);
+								
+								$current_value = ! empty( $orderby ) ? $orderby : '';
+								$current_label = '';
+								$arm_directory_filter_list = '';
+								
+								if ( ! empty( $arm_directory_option ) ) {
+									if ( isset( $arm_directory_option[ $current_value ] ) ) {
+										$current_label = $arm_directory_option[ $current_value ];
+									} else {
+										reset( $arm_directory_option );
+										$current_value = key( $arm_directory_option );
+										$current_label = current( $arm_directory_option );
+									}
+								}
+								
+								foreach ( $arm_directory_option as $arm_key => $arm_label ) {
+									$arm_directory_filter_list .= '<li class="arm_directory_filter_option" data-label="' . esc_attr( $arm_label ) . '" data-value="' . esc_attr( $arm_key ) . '">' . esc_html( $arm_label ) . '</li>';
+								}
+								
+								$content .= '<input class="arm-selectpicker-input-control arm_directory_listby_select" style="display:contents;opacity:0;" type="text" id="orderby_input_' . esc_attr($randomTempID) . '" name="orderby" value="' . esc_attr( $current_value ) . '" />';
+								
+								$content .= '<dl class="arm_selectbox column_level_dd arm_member_form_dropdown arm_directory_filter_select arm-df__dropdown-control">';
+								$content .= '<dt tabindex="0">';
+								$content .= '<span class="arm_no_auto_complete">' . esc_html( $current_label ) . '</span>';
+								$content .= '<i class="armfa armfa-caret-down armfa-lg"></i>';
+								$content .= '</dt>';
+								
+								$content .= '<dd>';
+								$content .= '<ul data-id="orderby_input_' . esc_attr($randomTempID) . '" style="display:none;">';
+								$content .= $arm_directory_filter_list;
+								$content .= '</ul>';
+								$content .= '</dd>';
+								
+								$content .= '</dl>';
+								
 								$content .= '</div>';
+
+								$content .= '<div class="arm_advance_sorting_filter_button_container" style="display: none;">';
+								$content .= '<button type="button" class="arm_advance_sorting_filter_button">';
+								$content .= '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M2.5 13.3334L5.83333 16.6667L9.16667 13.3334" stroke="#99A1AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+								<path d="M5.83398 16.6667V3.33337" stroke="#99A1AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+								<path d="M17.5007 6.66671L14.1673 3.33337L10.834 6.66671" stroke="#99A1AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+								<path d="M14.166 3.33337V16.6667" stroke="#99A1AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+								';
+								$content .= '</button>';
+								$content .= '</div>';
+								$content .= '<div class="arm_advance_sorting_filters_container" style="display: none;">';
+								$content .= '<dd>';
+								$content .= '<ul class="arm_directory_filter_select_list">';
+								$content .= $arm_directory_filter_list;
+								$content .= '</ul>';
+								$content .= '</dd>';
+								$content .= '</div>';
+
 							} else {
 								$content .= '<input type="hidden" name="orderby" value="login">';
 							}
@@ -722,6 +821,9 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$content .='<input type="hidden" name="arm_wp_nonce_check" value="1">';
 						$content .= '</div>';
 						$content .= '</form>';
+						if($temp_data->arm_slug == 'directorytemplate2'){
+							$content .= '</div>';
+						}
 					}
 					$content .= '<div class="armclear"></div>';
 					if ( $type != 'profile' ) {
@@ -1028,7 +1130,11 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$content .= "<th class='arm_transaction_th' id='arm_tm_payment_date'>{$l_pDate}</th>";
 					endif;
 					if ( $has_action ) :
-						$content .= "<th class='arm_transaction_th' id='arm_tm_payment_action'></th>";
+						if (!empty($atts['arm_member_panel'])) {
+                            $content .= "";
+                        } else {
+                            $content .= "<th class='arm_transaction_th' id='arm_tm_payment_action'></th>";
+                        }
 					endif;
 					
 					
@@ -1037,7 +1143,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					foreach ( $transactions as $r ) {
 
 						$r = (object) $r;
-						$r->arm_transaction_id = !empty($r->arm_transaction_id) ? stripslashes($r->arm_transaction_id) : '';
+						$r->arm_transaction_id = !empty($r->arm_transaction_id) ? wp_unslash($r->arm_transaction_id) : '';
 						$currency = ( ! empty( $r->arm_currency ) && isset( $all_currencies[ strtoupper( $r->arm_currency ) ] ) ) ? $all_currencies[ strtoupper( $r->arm_currency ) ] : $global_currency_sym;
 						$content .= "<tr class='arm_transaction_list_item arm_shortcode_grid_list_item ".$arm_no_expand_cls."' id='arm_transaction_list_item_" . $r->arm_invoice_id . "' data-invoice_id = '".$r->arm_log_id."'>";
 						if (!empty($args['arm_member_panel']) && count($expand_cols_lbl) > 0) {
@@ -1415,9 +1521,12 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$content .= "<th class='arm_transaction_th' id='arm_tm_payment_date'>{$l_pDate}</th>";
 					endif;
 					if ( $has_action ) :
-						$content .= "<th class='arm_transaction_th' id='arm_tm_payment_action'></th>";
+						if (!empty($atts['arm_member_panel'])) {
+                            $content .= "";
+                        } else {
+                            $content .= "<th class='arm_transaction_th' id='arm_tm_payment_action'></th>";
+                        }
 					endif;
-					
 					
 					$content .= '</tr>';
 					$content .= '</thead>';
@@ -1769,7 +1878,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 								$fieldMeta_value = implode( ', ', $fieldMeta_value );
 							}
 							$content    .= '<tr class="form-field">';
-							$field_label = ( isset( $display_fields_value[ $key ] ) && ! empty( $display_fields_value[ $key ] ) ) ? stripslashes($display_fields_value[ $key ]) : stripslashes($fieldOpt['label']);
+							$field_label = ( isset( $display_fields_value[ $key ] ) && ! empty( $display_fields_value[ $key ] ) ) ? wp_unslash($display_fields_value[ $key ]) : wp_unslash($fieldOpt['label']);
 							$content    .= '<th class="arm-form-table-label">' . $field_label . ' :</th>';
 
 							if ( $fieldOpt['type'] == 'file' || $fieldOpt['type'] == 'avatar' ) {
@@ -2380,11 +2489,11 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 
 					if ( $display_cancel_button == 'true' || $display_renew_button == 'true' || $display_update_card_button == 'true' ) {
 
-						if(empty($atts['arm_member_panel'])){
-							$content .= "<th class='arm_cm_plan_action_btn' id='arm_cm_plan_action_btn'>{$l_action_btn}</th>";
+						if(!empty($atts['arm_member_panel'])){
+							$content .= "";
 						}
 						else{
-							$content .= "<th class='arm_cm_plan_action_btn' id='arm_cm_plan_action_btn'></th>";
+							$content .= "<th class='arm_cm_plan_action_btn' id='arm_cm_plan_action_btn'>".$l_action_btn."</th>";
 						}
 						$total_columns++;
 					}
@@ -2510,7 +2619,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 
 							if ( $has_plan ){
 
-								$content .= "<td data-label='".esc_attr($l_has_plan)."' class='arm_current_membership_list_item_plan_name' id='arm_current_membership_list_item_plan_name_" . esc_attr($user_plan) . "' aria-label='".esc_html($plan_info->name)."' data-field_data='current_membership_is' data-field_data='current_membership_is'>" . stripslashes( $plan_info->name ) . '</td>';
+								$content .= "<td data-label='".esc_attr($l_has_plan)."' class='arm_current_membership_list_item_plan_name' id='arm_current_membership_list_item_plan_name_" . esc_attr($user_plan) . "' aria-label='".esc_html($plan_info->name)."' data-field_data='current_membership_is' data-field_data='current_membership_is'>" . wp_unslash( $plan_info->name ) . '</td>';
 							}
 							else{
 								$expand_cols_val['current_membership_is'] = $plan_info->name;
@@ -2684,7 +2793,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 											$arm_is_plan_cancelled_cls = 'is_plan_cancelled hidden_section';
 										}
 										$arm_crm_action_cls = (!empty($atts['arm_member_panel'])) ? 'arm_shortcode_action_container' : '';
-										$content .= "<td id='arm_cm_plan_action_btn_container' data-label='". esc_attr($l_action_btn) ."' class='arm_current_membership_list_item_action_btn_" . esc_attr($user_plan) . " ".$arm_crm_action_cls."'>";
+										$content .= "<td id='arm_cm_plan_action_btn_container' data-label='". esc_attr($l_action_btn) ."' class='arm_cm_plan_action_btn_container arm_current_membership_list_item_action_btn_" . esc_attr($user_plan) . " ".$arm_crm_action_cls."'>";
 										
 										$arm_action_content = '';
 
@@ -2883,7 +2992,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 								endif;
 
 									if ( $has_plan ) :
-										$content .= "<td data-label='".esc_attr($l_has_plan)."' class='arm_current_membership_list_item_plan_name' id='arm_current_membership_list_item_plan_name_" . esc_attr($change_user_plan) . "'>" . stripslashes( $change_plan_info->name ) . '</td>';
+										$content .= "<td data-label='".esc_attr($l_has_plan)."' class='arm_current_membership_list_item_plan_name' id='arm_current_membership_list_item_plan_name_" . esc_attr($change_user_plan) . "'>" . wp_unslash( $change_plan_info->name ) . '</td>';
 								endif;
 									if ( $has_recurring_profile ) :
 										$content          .= "<td data-label='".esc_attr($l_recurring_profile)."' class='arm_current_membership_list_item_plan_profile' id='arm_current_membership_list_item_plan_profile_" . esc_attr($change_user_plan) . "'>";
@@ -3496,7 +3605,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					$return_content = implode( ', ', $return_content );
 				}
 			}
-			$return_content = stripslashes_deep( $return_content );
+			$return_content = wp_unslash( $return_content );
 			return $return_content;
 		}
 

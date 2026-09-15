@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 	global $arm_social_feature,$ARMemberLite;
 	if(!$ARMemberLite->is_arm_pro_active){
 		$growth_plugins_content = $arm_social_feature->growth_plugins_content();

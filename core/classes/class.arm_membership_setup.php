@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 	class ARM_membership_setup_Lite {
@@ -174,13 +176,13 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					
 					$grid_data[$ai][0] = "<div class='arm_show_configure_plans arm_max_width_50 arm_expand_arrow_icon' id='arm_show_configure_plans_" . esc_attr($setupID) . "' data-id='" . esc_attr($setupID) . "'><svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 20 20' fill='none'><path d='M6 8L10 12L14 8' stroke='#BAC2D1' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg></div>";   
 					$return .= '<tr class="arm_child_transaction_row">';
-                    $grid_data[$ai][1] = '<a href="javascript:void(0)" class="arm_get_form_link arm_edit_setup_form_link" data-form_id="'. intval($setupID).'">' . stripslashes( $val->arm_setup_name ) . '</a>';
+                    $grid_data[$ai][1] = '<a href="javascript:void(0)" class="arm_get_form_link arm_edit_setup_form_link" data-form_id="'. intval($setupID).'">' . wp_unslash( $val->arm_setup_name ) . '</a>';
                     $setup_type = esc_html__('Membership Plan','armember-membership');
                     $arm_setup_modules = arm_maybe_unserialize( $val->arm_setup_modules );
                     $module_plans       = ( isset( $arm_setup_modules['modules']['plans'] ) ) ? $arm_setup_modules['modules']['plans'] : array();
                     $plan_title         = $arm_subscription_plans->arm_get_comma_plan_names_by_ids( $module_plans );
 
-                    $grid_data[$ai][2] = ( ! empty( $plan_title ) ) ? stripslashes_deep( $plan_title ) : '--';
+                    $grid_data[$ai][2] = ( ! empty( $plan_title ) ) ? wp_unslash( $plan_title ) : '--';
                     $shortCode = '[arm_setup id="' . $setupID . '"]';
                     $grid_data[$ai][3] = '<div class="arm_shortcode_text arm_form_shortcode_box">
                         <span class="armCopyText">'. esc_html($shortCode).'</span>
@@ -308,6 +310,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 			global $wp, $wpdb, $current_user, $arm_slugs, $arm_lite_errors, $ARMemberLite, $arm_member_forms, $arm_global_settings, $arm_payment_gateways,$arm_subscription_plans, $payment_done,$arm_manage_communication, $arm_transaction;
 			$ARMemberLite->arm_session_start();
+			$ARMemberLite->arm_check_user_cap( '', '1' );//phpcs:ignore --Reason:Verifying nonce
 			$post_data = ( ! empty( $_POST ) ) ? $_POST : $post_data; //phpcs:ignore
 			$setup_id      = ( ! empty( $post_data['setup_id'] ) && $post_data['setup_id'] != 0 ) ? intval( $post_data['setup_id'] ) : $setup_id;
 			$err_msg       = $arm_global_settings->common_message['arm_general_msg'];
@@ -351,6 +354,8 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 				$setup_data = apply_filters( 'arm_setup_data_before_submit', $setup_data, $post_data );
 
+				$allowed_plans = isset($setup_data['setup_modules']['modules']['plans']) ? $setup_data['setup_modules']['modules']['plans'] : array();
+
 				if ( !empty( $setup_data ) && !empty( $setup_data['setup_modules']['modules'] ) ) {
 
 					//$form_slug = isset( $post_data['arm_action'] ) ? sanitize_text_field( $post_data['arm_action'] ) : '';
@@ -362,6 +367,19 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$plan_id = isset( $post_data['subscription_plan'] ) ? intval( $post_data['subscription_plan'] ) : 0;
 					if ( $plan_id == 0 ) {
 						$plan_id = isset( $post_data['_subscription_plan'] ) ? intval( $post_data['_subscription_plan'] ) : 0;
+					}
+
+					if (!empty($allowed_plans) && !in_array($plan_id, $allowed_plans)) {
+						$err_msg = esc_html__( 'Sorry, Plan is not allowed in this membership setup', 'armember-membership' );
+						$response      = array(
+							'status'  => 'error',
+							'type'    => 'message',
+						);
+						$response['message'] = '<div class="arm_error_msg arm-df__fc--validation__wrap"><ul>';
+						$response['message'] .= '<li>' . esc_html($err_msg) . '</li>';
+						$response['message'] .= '</ul></div>';
+						wp_send_json( $response );
+						die;
 					}
 
 					$plan            = new ARM_Plan_Lite( $plan_id );
@@ -393,13 +411,14 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					if ( $payment_gateway == 'bank_transfer' && $plan->is_recurring() ) {
 						$payment_mode = 'manual_subscription';
 					}
+					//get setup data and validate with payment mode
 					$post_data['arm_selected_payment_mode'] = $payment_mode;
 					if ( $payment_gateway == 'bank_transfer' ) {
 						if(!empty($post_data['bank_transfer']) && is_array($post_data['bank_transfer']) )
 						{
 							if(!empty($post_data['bank_transfer']['transaction_id']))
 							{
-								$post_data['bank_transfer']['transaction_id'] = sanitize_text_field( stripslashes_deep( $post_data['bank_transfer']['transaction_id'] ) );
+								$post_data['bank_transfer']['transaction_id'] = sanitize_text_field( wp_unslash( $post_data['bank_transfer']['transaction_id'] ) );
 							}
 
 							if(!empty($post_data['bank_transfer']['bank_name']))
@@ -443,6 +462,10 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					} else {
 						$entry_email = isset($post_data['user_email']) ? sanitize_email($post_data['user_email']) : '';
 					}
+
+					$global_currency = $arm_payment_gateways->arm_get_global_currency();
+                    			$post_data['arm_currency'] = $global_currency;
+
 					$setup_redirect = ARMLITE_HOME_URL;
 
 					$redirection_settings  = get_option( 'arm_redirection_settings' );
@@ -809,7 +832,16 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 													$validate_msgs['payment_failed'] = esc_html__( 'The selected plan is not valid for bank transfer.', 'armember-membership' );
 												}
 											} else {
-
+												if($plan->is_recurring()){
+													$setup_modules = $setup_data['setup_modules'];
+													$modules       = $setup_modules['modules'];
+													$payment_mode_ = $modules['payment_mode'][ $payment_gateway ];
+													if($payment_mode_ != $payment_mode && $payment_mode_ != 'both'){
+														$payment_mode = $payment_mode_;
+														$post_data['arm_payment_mode'] = $modules['payment_mode'];
+														$post_data['arm_selected_payment_mode'] = $payment_mode;
+													}
+												}
 												$post_data = apply_filters( 'arm_change_posted_data_before_payment_outside', $post_data, $payment_gateway, $payment_gateway_options, $entry_id );
 
 												do_action( 'arm_payment_gateway_validation_from_setup', $payment_gateway, $payment_gateway_options, $post_data, $entry_id );
@@ -863,7 +895,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 											$payment_done                     = array( 'status' => false );
 										}
 									} else {
-
+										
 										if ( $is_update_plan ) {
 											$arm_subscription_plans->arm_update_user_subscription( $user_id, $plan_id );
 										} else {
@@ -896,6 +928,17 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 												$validate_msgs['payment_failed'] = esc_html__( 'The selected plan is not valid for bank transfer.', 'armember-membership' );
 											}
 										} else {
+											if($plan->is_recurring()){
+												$setup_modules = $setup_data['setup_modules'];
+												$modules       = $setup_modules['modules'];
+												$payment_mode_ = $modules['payment_mode'][ $payment_gateway ];
+												if($payment_mode_ != $payment_mode && $payment_mode_ != 'both'){
+													$payment_mode = $payment_mode_;
+													$post_data['arm_payment_mode'] = $modules['payment_mode'];
+													$post_data['arm_selected_payment_mode'] = $payment_mode;
+												}
+											}
+
 											$post_data = apply_filters( 'arm_change_posted_data_before_payment_outside', $post_data, $payment_gateway, $payment_gateway_options, $entry_id );
 
 											do_action( 'arm_payment_gateway_validation_from_setup', $payment_gateway, $payment_gateway_options, $post_data, $entry_id );
@@ -1060,10 +1103,15 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 			/* ====================/.End Set Shortcode Attributes./==================== */
 			if ( ( ! empty( $args['id'] ) && $args['id'] != 0 ) || ( $isPreview && ! empty( $args['setup_data'] ) ) ) {
 
-				$setupID = $args['id'];
+				$setupID = intval($args['id']);
 				if ( $isPreview && ! empty( $args['setup_data'] ) ) {
 					$setup_data                     = arm_maybe_unserialize( $args['setup_data'] );
-					$setup_data['arm_setup_labels'] = $setup_data['setup_labels'];
+					if(!empty($setup_data) && is_array($setup_data)) {
+                        $setup_data['arm_setup_labels'] = $setup_data['setup_labels'];
+                    }
+                    else {
+                        $setup_data = $this->arm_get_membership_setup($setupID);
+                    }
 				} else {
 					$setup_data = $this->arm_get_membership_setup( $setupID );
 				}
@@ -1083,7 +1131,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						$current_user_plan = current( $current_user_plan_ids );
 						$current_plan_data = arm_get_user_meta( $current_user_id, 'arm_user_plan_' . $current_user_plan, true );
 					}
-					$setup_name         = ( ! empty( $setup_data['setup_name'] ) ) ? stripslashes( $setup_data['setup_name'] ) : '';
+					$setup_name         = ( ! empty( $setup_data['setup_name'] ) ) ? wp_unslash( $setup_data['setup_name'] ) : '';
 					$button_labels      = $setup_data['setup_labels']['button_labels'];
 					$submit_btn         = ( ! empty( $button_labels['submit'] ) ) ? $button_labels['submit'] : esc_html__( 'Submit', 'armember-membership' );
 					$setup_modules      = $setup_data['setup_modules'];
@@ -1225,7 +1273,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 											$arm_user_selected_payment_mode = $planData['arm_payment_mode'];
 											$arm_user_current_plan_detail   = $planData['arm_current_plan_detail'];
 
-											$plan_name_array[] = isset( $arm_user_current_plan_detail['arm_subscription_plan_name'] ) ? stripslashes( $arm_user_current_plan_detail['arm_subscription_plan_name'] ) : '';
+											$plan_name_array[] = isset( $arm_user_current_plan_detail['arm_subscription_plan_name'] ) ? wp_unslash( $arm_user_current_plan_detail['arm_subscription_plan_name'] ) : '';
 											$plan_id_array[]   = $plan_id;
 
 											$curPlanDetail        = $planData['arm_current_plan_detail'];
@@ -1859,7 +1907,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 							case 'note':
 								if ( isset( $setup_modules['note'] ) && ! empty( $setup_modules['note'] ) ) {
 									$module_content .= '<div class="arm_module_note_container arm_module_box">';
-									$module_content .= apply_filters( 'the_content', stripslashes( $setup_modules['note'] ) );
+									$module_content .= apply_filters( 'the_content', wp_unslash( $setup_modules['note'] ) );
 									$module_content .= '</div>';
 								}
 								break;
@@ -1895,7 +1943,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 										if ( ! empty( $plan_payment_cycle_data ) ) {
 											$module_content .= '<div class="arm_module_payment_cycle_container arm_module_box arm_payment_cycle_box_' . esc_attr($payment_cycle_plan_id) . ' arm_form_' . esc_attr($setup_modules['modules']['forms']) . ' ' . esc_attr($form_layout) . ' arm_hide">';
 											if ( isset( $setup_data['setup_labels']['payment_cycle_section_title'] ) && ! empty( $setup_data['setup_labels']['payment_cycle_section_title'] ) ) {
-												$module_content .= '<div class="arm_setup_section_title_wrapper arm_setup_payment_cycle_title_wrapper arm_hide" style="text-align:' . $formPosition . ';">' . esc_html(stripslashes_deep( $setup_data['setup_labels']['payment_cycle_section_title']) ) . '</div>';
+												$module_content .= '<div class="arm_setup_section_title_wrapper arm_setup_payment_cycle_title_wrapper arm_hide" style="text-align:' . $formPosition . ';">' . esc_html(wp_unslash( $setup_data['setup_labels']['payment_cycle_section_title']) ) . '</div>';
 											} else {
 												$module_content .= '<div class="arm_setup_section_title_wrapper arm_setup_payment_cycle_title_wrapper arm_hide" style="text-align:' . $formPosition . ';">' . esc_html__( 'Select Payment Cycle', 'armember-membership' ) . '</div>';
 											}
@@ -2018,7 +2066,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 														$arm_paymentg_cycle_amount = ( isset( $arm_cycle_data['cycle_amount'] ) ) ? $arm_payment_gateways->arm_amount_set_separator( $global_currency, $arm_cycle_data['cycle_amount'] ) : 0;
 														$arm_paymentg_cycle_amount = apply_filters( 'arm_modify_secondary_amount_outside', $arm_paymentg_cycle_amount, $arm_cycle_data );
 
-														$arm_paymentg_cycle_label = ( isset( $arm_cycle_data['cycle_label'] ) ) ? stripslashes($arm_cycle_data['cycle_label']) : '';
+														$arm_paymentg_cycle_label = ( isset( $arm_cycle_data['cycle_label'] ) ) ? wp_unslash($arm_cycle_data['cycle_label']) : '';
 
 														$pc_content  = '<label class="arm_module_payment_cycle_option">';
 														$pc_content .= '<span class="arm_setup_check_circle"><i class="armfa armfa-check"></i></span>';
@@ -2076,7 +2124,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 										$is_display_pg   = ( ! empty( $selected_plan_data['arm_subscription_plan_type'] ) && $selected_plan_data['arm_subscription_plan_type'] == 'free' ) ? 'display:none;' : '';
 										$module_content .= '<div class="arm_setup_gatewaybox_main_wrapper"><div class="arm_setup_gatewaybox_wrapper" style="' . $is_display_pg . '">';
 										if ( isset( $setup_data['setup_labels']['payment_section_title'] ) && ! empty( $setup_data['setup_labels']['payment_section_title'] ) ) {
-											$module_content .= '<div class="arm_setup_section_title_wrapper" style="text-align:' . $formPosition . ';">' . stripslashes_deep( $setup_data['setup_labels']['payment_section_title'] ) . '</div>';
+											$module_content .= '<div class="arm_setup_section_title_wrapper" style="text-align:' . $formPosition . ';">' . wp_unslash( $setup_data['setup_labels']['payment_section_title'] ) . '</div>';
 										}
 										$module_content .= '<input type="hidden" name="arm_front_gateway_skin_type" data-id="arm_front_gateway_skin_type" value="' . esc_attr($payment_gateway_skin) . '">';
 										$module_content .= '<div class="arm_module_gateways_container arm_module_box arm_form_' . esc_attr($setup_modules['modules']['forms']) . ' ' . esc_attr($form_layout) . '">';
@@ -2124,14 +2172,14 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 															$pg_options['gateway_name'] = $pglabels[ $pg ];
 														}
 													}
-														$pg_content .= '<div class="arm_module_gateway_name"><span class="arm_module_gateway_span">' . stripslashes_deep( esc_html($pg_options['gateway_name']) ) . '</span></div>';
+														$pg_content .= '<div class="arm_module_gateway_name"><span class="arm_module_gateway_span">' . wp_unslash( esc_html($pg_options['gateway_name']) ) . '</span></div>';
 													$pg_content     .= '</label>';
 													switch ( $pg ) {
 														case 'paypal':
 															break;
 														case 'bank_transfer':
 															if ( isset( $pg_options['note'] ) && ! empty( $pg_options['note'] ) ) {
-																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_bank_transfer ' . esc_attr($display_block) . ' arm-form-container"><div class="arm_bank_transfer_note_container">' . stripslashes( nl2br( $pg_options['note'] ) ) . '</div></div>';
+																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_bank_transfer ' . esc_attr($display_block) . ' arm-form-container"><div class="arm_bank_transfer_note_container">' . wp_unslash( nl2br( $pg_options['note'] ) ) . '</div></div>';
 															}
 															$bt_fields = isset( $pg_options['fields'] ) ? $pg_options['fields'] : array();
 															if ( isset( $bt_fields['transaction_id'] ) || isset( $bt_fields['bank_name'] ) || isset( $bt_fields['account_name'] ) || isset( $bt_fields['additional_info'] ) || isset( $bt_fields['transfer_mode'] ) ) {
@@ -2233,7 +2281,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 														$pg_checked_class            = 'arm_active';
 														$display_block               = '';
 														$selectedKey                 = $pg;
-															$pg_options_gateway_name = stripslashes_deep( $pglabels[ $pg ] );
+															$pg_options_gateway_name = wp_unslash( $pglabels[ $pg ] );
 													}
 
 													switch ( $pg ) {
@@ -2241,7 +2289,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 															break;
 														case 'bank_transfer':
 															if ( isset( $pg_options['note'] ) && ! empty( $pg_options['note'] ) ) {
-																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_bank_transfer ' . esc_attr($display_block) . ' arm-form-container"><div class="arm_bank_transfer_note_container">' . stripslashes( nl2br( $pg_options['note'] ) ) . '</div></div>';
+																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_bank_transfer ' . esc_attr($display_block) . ' arm-form-container"><div class="arm_bank_transfer_note_container">' . wp_unslash( nl2br( $pg_options['note'] ) ) . '</div></div>';
 															}
 															$bt_fields = isset( $pg_options['fields'] ) ? $pg_options['fields'] : array();
 															if ( isset( $bt_fields['transaction_id'] ) || isset( $bt_fields['bank_name'] ) || isset( $bt_fields['account_name'] ) || isset( $bt_fields['additional_info'] ) || isset( $bt_fields['transfer_mode'] ) ) {
@@ -2268,7 +2316,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 													}
 
 													if ( ! empty( $pglabels ) && isset( $pglabels[ $pg ] ) ) {
-														$pg_options['gateway_name'] = stripslashes_deep( $pglabels[ $pg ] );
+														$pg_options['gateway_name'] = wp_unslash( $pglabels[ $pg ] );
 													}
 
 														// $module_content .='<option value="' . $payment_gateway_name . '" class="armMDOption armSelectOption' . $setup_modules['modules']['forms'] . ' arm_gateway_' . $payment_gateway_name . '" ' . $pg_checked . ' data-payment_mode="' . $payment_mode . '">' . $pg_options['gateway_name'] . '</option>';
@@ -2307,11 +2355,11 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 										$module_content .= '</div></div>';
 										/* Payment Mode Module */
 
-										$arm_automatic_sub_label                              = ( isset( $setup_data['setup_labels']['automatic_subscription'] ) && ! empty( $setup_data['setup_labels']['automatic_subscription'] ) ) ? stripslashes_deep( $setup_data['setup_labels']['automatic_subscription'] ) : esc_html__( 'Auto Debit Payment', 'armember-membership' );
-										$arm_semi_automatic_sub_label                         = ( isset( $setup_data['setup_labels']['semi_automatic_subscription'] ) && ! empty( $setup_data['setup_labels']['semi_automatic_subscription'] ) ) ? stripslashes_deep( $setup_data['setup_labels']['semi_automatic_subscription'] ) : esc_html__( 'Manual Payment', 'armember-membership' );
+										$arm_automatic_sub_label                              = ( isset( $setup_data['setup_labels']['automatic_subscription'] ) && ! empty( $setup_data['setup_labels']['automatic_subscription'] ) ) ? wp_unslash( $setup_data['setup_labels']['automatic_subscription'] ) : esc_html__( 'Auto Debit Payment', 'armember-membership' );
+										$arm_semi_automatic_sub_label                         = ( isset( $setup_data['setup_labels']['semi_automatic_subscription'] ) && ! empty( $setup_data['setup_labels']['semi_automatic_subscription'] ) ) ? wp_unslash( $setup_data['setup_labels']['semi_automatic_subscription'] ) : esc_html__( 'Manual Payment', 'armember-membership' );
 										$module_content                                      .= "<div class='arm_payment_mode_main_wrapper'><div class='arm_payment_mode_wrapper' id='arm_payment_mode_wrapper' style='text-align:{$formPosition};'>";
 										$setup_data['setup_labels']['payment_mode_selection'] = ( isset( $setup_data['setup_labels']['payment_mode_selection'] ) && ! empty( $setup_data['setup_labels']['payment_mode_selection'] ) ) ? $setup_data['setup_labels']['payment_mode_selection'] : esc_html__( 'How you want to pay?', 'armember-membership' );
-										$module_content                                      .= "<div class='arm_setup_section_title_wrapper arm_payment_mode_selection_wrapper' >" . stripslashes_deep( $setup_data['setup_labels']['payment_mode_selection'] ) . '</div>';
+										$module_content                                      .= "<div class='arm_setup_section_title_wrapper arm_payment_mode_selection_wrapper' >" . wp_unslash( $setup_data['setup_labels']['payment_mode_selection'] ) . '</div>';
 										$module_content                                      .= "<div class='arm-df__form-field'>";
 										$module_content                                      .= "<div class='arm-df__form-field-wrap_radio arm-df__form-field-wrap arm-d-flex arm-justify-content-" . esc_attr($form_position) . "'><div class='arm-df__radio arm-d-flex arm-align-items-" . esc_attr($form_position) . "'><input type='radio' checked='checked' name='arm_selected_payment_mode' value='auto_debit_subscription' class='arm_selected_payment_mode arm-df__form-control--is-radio' id='arm_selected_payment_mode_auto_".esc_attr($setupRandomID)."'/><label for='arm_selected_payment_mode_auto_".esc_attr($setupRandomID)."' class='arm_payment_mode_label arm-df__fc-radio--label'>" . esc_html($arm_automatic_sub_label) . '</label></div>';
 										$module_content                                      .= "<div class='arm-df__radio arm-d-flex arm-align-items-" . esc_attr($form_position) . "'><input type='radio'  name='arm_selected_payment_mode' value='manual_subscription' class='arm_selected_payment_mode arm-df__form-control--is-radio' id='arm_selected_payment_mode_semi_auto_".esc_attr($setupRandomID)."'/><label for='arm_selected_payment_mode_semi_auto_".esc_attr($setupRandomID)."' class='arm_payment_mode_label arm-df__fc-radio--label'>" . esc_attr($arm_semi_automatic_sub_label) . '</label></div></div>';
@@ -2325,7 +2373,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 									/* $module_content .= '<div class="arm_order_description arm_module_box"></div>'; */
 									$module_content = apply_filters( 'arm_after_setup_order_detail', $module_content, $setupID, $setup_data );
 									if ( isset( $setup_data['setup_labels']['summary_text'] ) && ! empty( $setup_data['setup_labels']['summary_text'] ) ) {
-										$setupSummaryText = stripslashes( $setup_data['setup_labels']['summary_text'] );
+										$setupSummaryText = wp_unslash( $setup_data['setup_labels']['summary_text'] );
 										$setupSummaryText = str_replace( '[PLAN_NAME]', '<span class="arm_plan_name_text"></span>', $setupSummaryText );
 										$setupSummaryText = str_replace( '[PLAN_AMOUNT]', '<span class="arm_plan_amount_text"></span> <span class="arm_order_currency"></span>', $setupSummaryText );
 										$setupSummaryText = str_replace( '[DISCOUNT_AMOUNT]', '<span class="arm_discount_amount_text"></span> <span class="arm_order_currency"></span>', $setupSummaryText );
@@ -2436,7 +2484,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$arm_loader_url = MEMBERSHIPLITE_IMAGES_URL . "/loader.svg";
 					$arm_loader_img = $wp_filesystem->get_contents($arm_loader_url);
 
-					$content .= '<button type="submit" name="ARMSETUPSUBMIT" class="arm_setup_submit_btn arm-df__form-control-submit-btn arm-df__form-group_button arm_material_input ' . esc_attr($btn_style_class) . '" ' . $ngClick . '><span class="arm_spinner">' . $arm_loader_img . '</span>' . html_entity_decode( stripslashes( $submit_btn ) ) . '</button>';
+					$content .= '<button type="submit" name="ARMSETUPSUBMIT" class="arm_setup_submit_btn arm-df__form-control-submit-btn arm-df__form-group_button arm_material_input ' . esc_attr($btn_style_class) . '" ' . $ngClick . '><span class="arm_spinner">' . $arm_loader_img . '</span>' . html_entity_decode( wp_unslash( $submit_btn ) ) . '</button>';
 					if ( is_user_logged_in() ) {
 						$content .= do_shortcode( '[armember_spam_filters]' );
 					}
@@ -2519,7 +2567,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 		}
 
 		function arm_setup_shortcode_func( $atts, $content = '' ) {
-			global $wp, $wpdb, $current_user, $ARMemberLite, $arm_member_forms, $arm_global_settings, $arm_payment_gateways, $arm_manage_coupons, $arm_subscription_plans, $arm_lite_bpopup_loaded, $ARMSPAMFILEURL;
+			global $wp, $wpdb, $current_user, $ARMemberLite, $arm_member_forms, $arm_global_settings, $arm_payment_gateways, $arm_subscription_plans, $arm_lite_bpopup_loaded, $ARMSPAMFILEURL;
 			$ARMemberLite->arm_session_start();
 			/* ====================/.Begin Set Shortcode Attributes./==================== */
 			$defaults = array(
@@ -2563,10 +2611,15 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 			/* ====================/.End Set Shortcode Attributes./==================== */
 			if ( ( ! empty( $args['id'] ) && $args['id'] != 0 ) || ( $isPreview && ! empty( $args['setup_data'] ) ) ) {
 
-				$setupID = $args['id'];
+				$setupID = intval($args['id']);
 				if ( $isPreview && ! empty( $args['setup_data'] ) ) {
 					$setup_data                     = arm_maybe_unserialize( $args['setup_data'] );
-					$setup_data['arm_setup_labels'] = $setup_data['setup_labels'];
+					if(!empty($setup_data) && is_array($setup_data)) {
+                        $setup_data['arm_setup_labels'] = $setup_data['setup_labels'];
+                    }
+                    else {
+                        $setup_data = $this->arm_get_membership_setup($setupID);
+                    }
 				} else {
 					$setup_data = $this->arm_get_membership_setup( $setupID );
 				}
@@ -2606,14 +2659,14 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 						$current_user_plan = current( $current_user_plan_ids );
 						$current_plan_data = arm_get_user_meta( $current_user_id, 'arm_user_plan_' . $current_user_plan, true );
 					}
-					$setup_name         = ( ! empty( $setup_data['setup_name'] ) ) ? stripslashes( $setup_data['setup_name'] ) : '';
+					$setup_name         = ( ! empty( $setup_data['setup_name'] ) ) ? wp_unslash( $setup_data['setup_name'] ) : '';
 					$button_labels      = $setup_data['setup_labels']['button_labels'];
 					$submit_btn         = ( ! empty( $button_labels['submit'] ) ) ? $button_labels['submit'] : esc_html__( 'Submit', 'armember-membership' );
 					$setup_modules      = $setup_data['setup_modules'];
 					$user_selected_plan = isset( $setup_modules['selected_plan'] ) ? $setup_modules['selected_plan'] : '';
 					$modules            = $setup_modules['modules'];
 					$setup_style        = isset( $setup_modules['style'] ) ? $setup_modules['style'] : array();
-					$setup_type         = ( ! empty( $setup_data['setup_type'] ) ) ? stripslashes( $setup_data['setup_type'] ) : 0;
+					$setup_type         = ( ! empty( $setup_data['setup_type'] ) ) ? wp_unslash( $setup_data['setup_type'] ) : 0;
 
 					$tax_percentage = 0;
 					$enable_tax     = isset( $general_settings['enable_tax'] ) ? $general_settings['enable_tax'] : 0;
@@ -2626,8 +2679,8 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$plan_selection_area = ( isset( $setup_style['plan_area_position'] ) && ! empty( $setup_style['plan_area_position'] ) ) ? $setup_style['plan_area_position'] : 'before';
 
 					$hide_current_plans    = isset( $setup_style['hide_current_plans'] ) ? $setup_style['hide_current_plans'] : 0;
-					$previuos_button_label = ( isset( $button_labels['previous'] ) && ! empty( $button_labels['previous'] ) ) ? stripslashes_deep( $button_labels['previous'] ) : esc_html__( 'Previous', 'armember-membership' );
-					$next_button_label     = ( isset( $button_labels['next'] ) && ! empty( $button_labels['next'] ) ) ? stripslashes_deep( $button_labels['next'] ) : esc_html__( 'Next', 'armember-membership' );
+					$previuos_button_label = ( isset( $button_labels['previous'] ) && ! empty( $button_labels['previous'] ) ) ? wp_unslash( $button_labels['previous'] ) : esc_html__( 'Previous', 'armember-membership' );
+					$next_button_label     = ( isset( $button_labels['next'] ) && ! empty( $button_labels['next'] ) ) ? wp_unslash( $button_labels['next'] ) : esc_html__( 'Next', 'armember-membership' );
 
 					$two_step = ( isset( $setup_style['two_step'] ) ) ? $setup_style['two_step'] : 0;
 
@@ -2771,7 +2824,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 												$arm_user_selected_payment_mode = !empty($planData['arm_payment_mode']) ? $planData['arm_payment_mode'] : '';
 												$arm_user_current_plan_detail   = !empty($planData['arm_current_plan_detail']) ? $planData['arm_current_plan_detail']: array();
 
-												$plan_name_array[] = isset( $arm_user_current_plan_detail['arm_subscription_plan_name'] ) ? stripslashes( $arm_user_current_plan_detail['arm_subscription_plan_name'] ) : '';
+												$plan_name_array[] = isset( $arm_user_current_plan_detail['arm_subscription_plan_name'] ) ? wp_unslash( $arm_user_current_plan_detail['arm_subscription_plan_name'] ) : '';
 												$plan_id_array[]   = $plan_id;
 
 												$curPlanDetail        = !empty( $planData['arm_current_plan_detail'] ) ? $planData['arm_current_plan_detail'] :array();
@@ -3444,7 +3497,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 										$module_content .= '<div class="arm-df__form-field">';
 										$module_content .= '<div class="arm-df__form-field-wrap_submit arm-df__form-field-wrap" id="arm_setup_form_input_container' . esc_attr($setupID) . '">';
 
-										$module_content .= '<button type="button" class="arm-df__form-control-submit-btn arm_material_input ' . esc_attr($btn_style_class) . '" data-id="arm_setup_two_step_next">' . html_entity_decode( stripslashes( $next_button_label ) ) . '</button>';
+										$module_content .= '<button type="button" class="arm-df__form-control-submit-btn arm_material_input ' . esc_attr($btn_style_class) . '" data-id="arm_setup_two_step_next">' . html_entity_decode( wp_unslash( $next_button_label ) ) . '</button>';
 										$module_content .= '</div>';
 										$module_content .= '</div>';
 										$module_content .= '</div>';
@@ -3456,7 +3509,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 										$module_content .= '<div class="arm-df__form-field">';
 										$module_content .= '<div class="arm-df__form-field-wrap_submit arm-df__form-field-wrap" id="arm_setup_form_input_container' . esc_attr($setupID) . '">';
 
-										$module_content .= '<button type="button" class="arm-df__form-control-submit-btn arm_material_input ' . $btn_style_class . '" data-id="arm_setup_two_step_previous">' . html_entity_decode( stripslashes( $previuos_button_label ) ) . '</button>';
+										$module_content .= '<button type="button" class="arm-df__form-control-submit-btn arm_material_input ' . $btn_style_class . '" data-id="arm_setup_two_step_previous">' . html_entity_decode( wp_unslash( $previuos_button_label ) ) . '</button>';
 										$module_content .= '</div>';
 										$module_content .= '</div>';
 										$module_content .= '</div>';
@@ -3496,7 +3549,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 							case 'note':
 								if ( isset( $setup_modules['note'] ) && ! empty( $setup_modules['note'] ) ) {
 									$module_content .= '<div class="arm_module_note_main_container' . esc_attr($arm_two_step_class) . '"><div class="arm_module_note_container arm_module_box">';
-									$module_content .= apply_filters( 'the_content', stripslashes( $setup_modules['note'] ) );
+									$module_content .= apply_filters( 'the_content', wp_unslash( $setup_modules['note'] ) );
 									$module_content .= '</div></div>';
 								}
 								break;
@@ -3543,7 +3596,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 										if ( ! empty( $plan_payment_cycle_data ) ) {
 											$module_content .= '<div class="arm_module_payment_cycle_container arm_module_box arm_payment_cycle_box_' . esc_attr($payment_cycle_plan_id) . ' arm_form_' . esc_attr($setup_modules['modules']['forms']) . ' ' . esc_attr($form_layout) . ' arm_hide">';
 											if ( isset( $setup_data['setup_labels']['payment_cycle_section_title'] ) && ! empty( $setup_data['setup_labels']['payment_cycle_section_title'] ) ) {
-												$module_content .= '<div class="arm_setup_section_title_wrapper arm_setup_payment_cycle_title_wrapper arm_hide" style="text-align:' . $formPosition . ';">' . stripslashes_deep( $setup_data['setup_labels']['payment_cycle_section_title'] ) . '</div>';
+												$module_content .= '<div class="arm_setup_section_title_wrapper arm_setup_payment_cycle_title_wrapper arm_hide" style="text-align:' . $formPosition . ';">' . wp_unslash( $setup_data['setup_labels']['payment_cycle_section_title'] ) . '</div>';
 											} else {
 												$module_content .= '<div class="arm_setup_section_title_wrapper arm_setup_payment_cycle_title_wrapper arm_hide" style="text-align:' . $formPosition . ';">' . esc_html__( 'Select Payment Cycle', 'armember-membership' ) . '</div>';
 											}
@@ -3668,7 +3721,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 														$arm_paymentg_cycle_amount = apply_filters( 'arm_modify_secondary_amount_outside', $arm_paymentg_cycle_amount, $arm_cycle_data );
 
-														$arm_paymentg_cycle_label = ( isset( $arm_cycle_data['cycle_label'] ) ) ? stripslashes($arm_cycle_data['cycle_label']) : '';
+														$arm_paymentg_cycle_label = ( isset( $arm_cycle_data['cycle_label'] ) ) ? wp_unslash($arm_cycle_data['cycle_label']) : '';
 
 														$planCycleInputAttr = " data-tax='" . esc_attr($tax_percentage) . "'";
 
@@ -3731,7 +3784,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 										$is_display_pg   = ( ! empty( $selected_plan_data['arm_subscription_plan_type'] ) && $selected_plan_data['arm_subscription_plan_type'] == 'free' ) ? 'display:none;' : '';
 										$module_content .= '<div class="arm_setup_gatewaybox_main_wrapper' . esc_attr($arm_two_step_class) . '"><div class="arm_setup_gatewaybox_wrapper" style="' . $is_display_pg . '">';
 										if ( isset( $setup_data['setup_labels']['payment_section_title'] ) && ! empty( $setup_data['setup_labels']['payment_section_title'] ) ) {
-											$module_content .= '<div class="arm_setup_section_title_wrapper" style="text-align:' . $formPosition . ';">' . stripslashes_deep( $setup_data['setup_labels']['payment_section_title'] ) . '</div>';
+											$module_content .= '<div class="arm_setup_section_title_wrapper" style="text-align:' . $formPosition . ';">' . wp_unslash( $setup_data['setup_labels']['payment_section_title'] ) . '</div>';
 										}
 										$module_content .= '<input type="hidden" name="arm_front_gateway_skin_type" data-id="arm_front_gateway_skin_type" value="' . esc_attr($payment_gateway_skin) . '">';
 										$module_content .= '<div class="arm_module_gateways_container arm_module_box arm_form_' . esc_attr($setup_modules['modules']['forms']) . ' ' . esc_attr($form_layout) . '">';
@@ -3781,14 +3834,14 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 														}
 													}
 
-													$pg_content .= '<div class="arm_module_gateway_name"><span class="arm_module_gateway_span">' . stripslashes_deep( $pg_options['gateway_name'] ) . '</span></div>';
+													$pg_content .= '<div class="arm_module_gateway_name"><span class="arm_module_gateway_span">' . wp_unslash( $pg_options['gateway_name'] ) . '</span></div>';
 													$pg_content .= '</label>';
 													switch ( $pg ) {
 														case 'paypal':
 															break;
 														case 'bank_transfer':
 															if ( isset( $pg_options['note'] ) && ! empty( $pg_options['note'] ) ) {
-																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_bank_transfer ' . esc_attr($display_block) . ' arm-form-container"><div class="arm_bank_transfer_note_container">' . stripslashes( nl2br( $pg_options['note'] ) ) . '</div></div>';
+																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_bank_transfer ' . esc_attr($display_block) . ' arm-form-container"><div class="arm_bank_transfer_note_container">' . wp_unslash( nl2br( $pg_options['note'] ) ) . '</div></div>';
 															}
 															$bt_fields = isset( $pg_options['fields'] ) ? $pg_options['fields'] : array();
 															if ( isset( $bt_fields['transaction_id'] ) || isset( $bt_fields['bank_name'] ) || isset( $bt_fields['account_name'] ) || isset( $bt_fields['additional_info'] ) || isset( $bt_fields['transfer_mode'] ) || isset($pg_options['note']) ) {
@@ -3892,7 +3945,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 														$pg_checked_class        = 'arm_active';
 														$display_block           = '';
 														$selectedKey             = $pg;
-														$pg_options_gateway_name = stripslashes_deep( $pglabels[ $pg ] );
+														$pg_options_gateway_name = wp_unslash( $pglabels[ $pg ] );
 													}
 
 													switch ( $pg ) {
@@ -3919,7 +3972,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 															break;
 														case 'bank_transfer':
 															if ( isset( $pg_options['note'] ) && ! empty( $pg_options['note'] ) ) {
-																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_bank_transfer ' . esc_attr($display_block) . ' arm-form-container"><div class="arm_bank_transfer_note_container">' . stripslashes( nl2br( $pg_options['note'] ) ) . '</div></div>';
+																$pg_fields .= '<div class="arm_module_gateway_fields arm_module_gateway_fields_bank_transfer ' . esc_attr($display_block) . ' arm-form-container"><div class="arm_bank_transfer_note_container">' . wp_unslash( nl2br( $pg_options['note'] ) ) . '</div></div>';
 															}
 															$bt_fields = isset( $pg_options['fields'] ) ? $pg_options['fields'] : array();
 															if ( isset( $bt_fields['transaction_id'] ) || isset( $bt_fields['bank_name'] ) || isset( $bt_fields['account_name'] ) || isset( $bt_fields['additional_info'] ) || isset( $bt_fields['transfer_mode'] ) || isset($pg_options['note']) ) {
@@ -3945,7 +3998,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 													}
 
 													if ( ! empty( $pglabels ) && isset( $pglabels[ $pg ] ) ) {
-														$pg_options['gateway_name'] = stripslashes_deep( $pglabels[ $pg ] );
+														$pg_options['gateway_name'] = wp_unslash( $pglabels[ $pg ] );
 													}
 
 													// $module_content .='<option value="' . $payment_gateway_name . '" class="armMDOption armSelectOption' . $setup_modules['modules']['forms'] . ' arm_gateway_' . $payment_gateway_name . '" ' . $pg_checked . ' data-payment_mode="' . $payment_mode . '">' . $pg_options['gateway_name'] . '</option>';
@@ -3984,11 +4037,11 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 										$module_content .= '</div></div>';
 										/* Payment Mode Module */
 
-										$arm_automatic_sub_label                              = ( isset( $setup_data['setup_labels']['automatic_subscription'] ) && ! empty( $setup_data['setup_labels']['automatic_subscription'] ) ) ? stripslashes_deep( $setup_data['setup_labels']['automatic_subscription'] ) : esc_html__( 'Auto Debit Payment', 'armember-membership' );
-										$arm_semi_automatic_sub_label                         = ( isset( $setup_data['setup_labels']['semi_automatic_subscription'] ) && ! empty( $setup_data['setup_labels']['semi_automatic_subscription'] ) ) ? stripslashes_deep( $setup_data['setup_labels']['semi_automatic_subscription'] ) : esc_html__( 'Manual Payment', 'armember-membership' );
+										$arm_automatic_sub_label                              = ( isset( $setup_data['setup_labels']['automatic_subscription'] ) && ! empty( $setup_data['setup_labels']['automatic_subscription'] ) ) ? wp_unslash( $setup_data['setup_labels']['automatic_subscription'] ) : esc_html__( 'Auto Debit Payment', 'armember-membership' );
+										$arm_semi_automatic_sub_label                         = ( isset( $setup_data['setup_labels']['semi_automatic_subscription'] ) && ! empty( $setup_data['setup_labels']['semi_automatic_subscription'] ) ) ? wp_unslash( $setup_data['setup_labels']['semi_automatic_subscription'] ) : esc_html__( 'Manual Payment', 'armember-membership' );
 										$module_content                                      .= "<div class='arm_payment_mode_main_wrapper" . esc_attr($arm_two_step_class) . "'><div class='arm_payment_mode_wrapper' id='arm_payment_mode_wrapper' style='text-align:{$formPosition};'>";
 										$setup_data['setup_labels']['payment_mode_selection'] = ( isset( $setup_data['setup_labels']['payment_mode_selection'] ) && ! empty( $setup_data['setup_labels']['payment_mode_selection'] ) ) ? $setup_data['setup_labels']['payment_mode_selection'] : esc_html__( 'How you want to pay?', 'armember-membership' );
-										$module_content                                      .= "<div class='arm_setup_section_title_wrapper arm_payment_mode_selection_wrapper' >" . stripslashes_deep( $setup_data['setup_labels']['payment_mode_selection'] ) . '</div>';
+										$module_content                                      .= "<div class='arm_setup_section_title_wrapper arm_payment_mode_selection_wrapper' >" . wp_unslash( $setup_data['setup_labels']['payment_mode_selection'] ) . '</div>';
 										$module_content                                      .= "<div class='arm-df__form-field'>";
 										$module_content                                      .= "<div class='arm-df__form-field-wrap_radio arm-df__form-field-wrap arm-d-flex arm-justify-content-" . esc_attr($form_position) . "'><div class='arm-df__radio arm-d-flex arm-align-items-" . esc_attr($form_position) . "'><input type='radio' checked='checked' name='arm_selected_payment_mode' value='auto_debit_subscription' class='arm_selected_payment_mode arm-df__form-control--is-radio' id='arm_selected_payment_mode_auto_".esc_attr($setupRandomID)."'/><label for='arm_selected_payment_mode_auto_".esc_attr($setupRandomID)."' class='arm_payment_mode_label arm-df__fc-radio--label'>" . esc_html($arm_automatic_sub_label) . '</label></div>';
 										$module_content                                      .= "<div class='arm-df__radio arm-d-flex arm-align-items-" . esc_attr($form_position) . "'><input type='radio'  name='arm_selected_payment_mode' value='manual_subscription' class='arm_selected_payment_mode arm-df__form-control--is-radio' id='arm_selected_payment_mode_semi_auto_".esc_attr($setupRandomID)."'/><label for='arm_selected_payment_mode_semi_auto_".esc_attr($setupRandomID)."' class='arm_payment_mode_label arm-df__fc-radio--label'>" . esc_attr($arm_semi_automatic_sub_label) . '</label></div></div>';
@@ -4001,7 +4054,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 								if ( ! empty( $modules['plans'] ) ) {
 									$module_content = apply_filters( 'arm_after_setup_order_detail', $module_content, $setupID, $setup_data );
 									if ( isset( $setup_data['setup_labels']['summary_text'] ) && ! empty( $setup_data['setup_labels']['summary_text'] ) ) {
-										$setupSummaryText = stripslashes( $setup_data['setup_labels']['summary_text'] );
+										$setupSummaryText = wp_unslash( $setup_data['setup_labels']['summary_text'] );
 										$setupSummaryText = str_replace( '[PLAN_NAME]', '<span class="arm_plan_name_text"></span>', $setupSummaryText );
 										$setupSummaryText = str_replace( '[PLAN_CYCLE_NAME]', '<span class="arm_plan_cycle_name_text"></span>', $setupSummaryText );
 										$setupSummaryText = str_replace( '[PLAN_AMOUNT]', '<span class="arm_plan_amount_text"></span> <span class="arm_order_currency"></span>', $setupSummaryText );
@@ -4138,7 +4191,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$arm_loader_url = MEMBERSHIPLITE_IMAGES_URL . "/loader.svg";
 					$arm_loader_img = $wp_filesystem->get_contents($arm_loader_url);
 
-					$content .= '<button type="submit" name="ARMSETUPSUBMIT" class="arm_setup_submit_btn arm-df__form-control-submit-btn arm-df__form-group_button arm_material_input ' . esc_attr($btn_style_class) . '" ' . $ngClick . '><span class="arm_spinner">' . $arm_loader_img . '</span>' . html_entity_decode( stripslashes( $submit_btn ) ) . '</button>';
+					$content .= '<button type="submit" name="ARMSETUPSUBMIT" class="arm_setup_submit_btn arm-df__form-control-submit-btn arm-df__form-group_button arm_material_input ' . esc_attr($btn_style_class) . '" ' . $ngClick . '><span class="arm_spinner">' . $arm_loader_img . '</span>' . html_entity_decode( wp_unslash( $submit_btn ) ) . '</button>';
 					if ( is_user_logged_in() ) {
 						$content .= do_shortcode( '[armember_spam_filters]' );
 					}
@@ -4157,7 +4210,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$content .= '</div>';
 
 					/*Add login link in signup form*/
-					$login_link_label = ( isset( $form_settings['login_link_label'] ) ) ? stripslashes( $form_settings['login_link_label'] ) : esc_html__( 'Login', 'armember-membership' );
+					$login_link_label = ( isset( $form_settings['login_link_label'] ) ) ? wp_unslash( $form_settings['login_link_label'] ) : esc_html__( 'Login', 'armember-membership' );
 
 					$show_login_link = ( isset( $form_settings['show_login_link'] ) ) ? $form_settings['show_login_link'] : 0;
 
@@ -4890,7 +4943,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 			$formList      = '<li data-label="' . esc_html__( 'Select Form', 'armember-membership' ) . '" data-value="">' . esc_html__( 'Select Form', 'armember-membership' ) . '</li>';
 			if ( ! empty( $registerForms ) ) {
 				foreach ( $registerForms as $form ) {
-					$formList .= '<li data-label="' . wp_strip_all_tags( stripslashes( $form['arm_form_label'] ) ) . '" data-value="' . esc_attr($form['arm_form_id']) . '">' . wp_strip_all_tags( stripslashes( $form['arm_form_label'] ) ) . '</li>';
+					$formList .= '<li data-label="' . wp_strip_all_tags( wp_unslash( $form['arm_form_label'] ) ) . '" data-value="' . esc_attr($form['arm_form_id']) . '">' . wp_strip_all_tags( wp_unslash( $form['arm_form_label'] ) ) . '</li>';
 				}
 			}
 			return $formList;
@@ -4984,11 +5037,11 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$GLOBALS['arm_setup_data'][ $setup_id ] = $setup_data;
 				}
 				if ( ! empty( $setup_data ) ) {
-					$setup_data['arm_setup_name']    = ( ! empty( $setup_data['arm_setup_name'] ) ) ? stripslashes( $setup_data['arm_setup_name'] ) : '';
+					$setup_data['arm_setup_name']    = ( ! empty( $setup_data['arm_setup_name'] ) ) ? wp_unslash( $setup_data['arm_setup_name'] ) : '';
 					$setup_data['arm_setup_modules'] = arm_maybe_unserialize( $setup_data['arm_setup_modules'] );
 					$setup_data['arm_setup_labels']  = arm_maybe_unserialize( $setup_data['arm_setup_labels'] );
 					if(!empty($setup_data['arm_setup_labels'])){
-						$setup_data['arm_setup_labels'] = stripslashes_deep($setup_data['arm_setup_labels']);
+						$setup_data['arm_setup_labels'] = wp_unslash($setup_data['arm_setup_labels']);
 					}
 					$setup_data['setup_name']        = $setup_data['arm_setup_name'];
 					$setup_data['setup_modules']     = $setup_data['arm_setup_modules'];
@@ -5183,7 +5236,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 		function arm_setup_edit_detail_func()
 		{
-			global $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_manage_coupons, $arm_subscription_plans, $arm_membership_setup, $arm_member_forms, $arm_payment_gateways,$arm_capabilities_global;
+			global $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_subscription_plans, $arm_membership_setup, $arm_member_forms, $arm_payment_gateways,$arm_capabilities_global;
 
             $ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_setups'], '1',1); //phpcs:ignore 
 
@@ -5205,9 +5258,9 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
                 $response['two_step'] = !empty($setup_data['setup_modules']['style']['two_step']) ? $setup_data['setup_modules']['style']['two_step'] : 0;
                 $response['hide_current_plans'] = (!empty($setup_data['setup_modules']['style']['hide_current_plans'])) ? $setup_data['setup_modules']['style']['hide_current_plans'] : 0;
                 $response['hide_plan'] = (!empty($setup_data['setup_modules']['style']['hide_plans'])) ? $setup_data['setup_modules']['style']['hide_plans'] : 0; 
-                $response['setup_labels'] = isset($setup_data['setup_labels']) ? stripslashes_deep($setup_data['setup_labels']): array();
+                $response['setup_labels'] = isset($setup_data['setup_labels']) ? wp_unslash($setup_data['setup_labels']): array();
 				
-                $response['button_labels'] = isset($setup_data['setup_labels']['button_labels']) ? stripslashes_deep($setup_data['setup_labels']['button_labels']) : $button_labels;
+                $response['button_labels'] = isset($setup_data['setup_labels']['button_labels']) ? wp_unslash($setup_data['setup_labels']['button_labels']) : $button_labels;
                 $shortCode = '[arm_setup id="'.$setup_id.'"]';
                 $response['shortcode_btn'] = '
                     <span class="armCopyText"> '.$shortCode.'</span>

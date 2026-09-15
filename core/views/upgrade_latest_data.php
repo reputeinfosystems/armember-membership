@@ -1,4 +1,7 @@
-<?php
+<?php 
+
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $arm_lite_newdbversion;
 
 if ( version_compare( $arm_lite_newdbversion, '1.5', '<' ) ) {
@@ -696,24 +699,20 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 		$user_meta_keys  = $arm_member_forms->arm_get_db_form_fields( true );
 			if ( ! empty( $user_meta_keys ) ) {
 				$exclude_keys = array( 'user_pass', 'repeat_pass', 'rememberme', 'remember_me', 'section', 'html','arm_captcha');
+				$exclude_keys = array_merge( $exclude_keys, array_keys( $grid_columns ) );
 				foreach ( $user_meta_keys as $umkey => $val ) {
-					if ( ! in_array( $umkey, $exclude_keys ) ) {
-						if(!empty($val['label'])){
-						$grid_columns[ $umkey ] = stripslashes_deep($val['label']);
-						}else if(empty($grid_columns[$umkey])){
-							$grid_columns[$umkey] = stripslashes_deep($val['label']);
-						}
+					if ( !in_array( $umkey, $exclude_keys ) ) {
+						$grid_columns[ $umkey ] = $val['label'];
 					}
 				}
 			}
 			$grid_columns['paid_with'] = esc_html__( 'Paid With', 'armember-membership' );
-
+		$arm_updated_hide_show_cols = array();
 		if(!empty($arm_member_hide_show_data)){
 			$arm_member_hide_show_data = arm_maybe_unserialize( $arm_member_hide_show_data );
 			if(is_serialized( $arm_member_hide_show_data )){
 				$arm_member_hide_show_data = arm_maybe_unserialize( $arm_member_hide_show_data );
 			}
-			$arm_updated_hide_show_cols = array();
 			
 			if ( !empty( $arm_member_hide_show_data )) {
 				$i = 0;
@@ -746,10 +745,10 @@ if(version_compare($arm_lite_newdbversion,'5.2','<'))
 		}
 		else{
 			$arm_array_show_fields = array('avatar','ID','user_login','user_email','arm_member_type','arm_user_plan','arm_primary_status','roles');
-			
+            $i= 0;
 			foreach ( $grid_columns as $column_key => $column_label ) {
 				$is_shown = "0";
-				if(in_array($column_key,$arm_array_show_fields)){
+				if(in_array($column_key,$arm_array_show_fields) && $i < 8){
 					$is_shown = "1";
 				}
 				$arm_updated_hide_show_cols[$column_key] = $is_shown;
@@ -829,7 +828,61 @@ if(version_compare($arm_lite_newdbversion,'5.5','<'))
 	update_option('arm_lite_display_bf_offers', 1);
 }
 
-$arm_lite_newdbversion = '5.8';
+if(version_compare($arm_lite_newdbversion,'5.9', '<'))
+{
+    global $ARMemberLite;
+
+    $temps = $wpdb->get_results( $wpdb->prepare( "SELECT arm_id, arm_options FROM {$ARMemberLite->tbl_arm_member_templates} WHERE arm_type = %s", 'directory' ),ARRAY_A ); //phpcs:ignore WordPress.DB.DirectDatabaseQuery
+    
+    if ( ! empty( $temps ) ) {
+        foreach ( $temps as $temp ) {
+            $options = maybe_unserialize( $temp['arm_options'] );
+    
+            if ( ! is_array( $options ) ) {
+                continue;
+            }
+    
+            $old_title_font = ! empty( $options['title_font'] ) ? $options['title_font'] : array(
+                'font_family'     => 'Poppins',
+                'font_size'       => '14',
+                'font_bold'       => '',
+                'font_italic'     => '',
+                'font_decoration' => '',
+            );
+            
+            $old_subtitle_font = ! empty( $options['subtitle_font'] ) ? $options['subtitle_font'] : array(
+                'font_family'     => 'Poppins',
+                'font_size'       => '14',
+                'font_bold'       => '',
+                'font_italic'     => '',
+                'font_decoration' => '',
+            );
+    
+            $options['title_font'] = $old_title_font;
+    
+            if ( ! empty( $old_title_font ) ) {
+                $options['subtitle_font'] = $old_title_font;
+            }
+    
+            if ( ! empty( $old_subtitle_font ) ) {
+                $options['content_font'] = $old_subtitle_font;
+            }
+    
+            $wpdb->update( $ARMemberLite->tbl_arm_member_templates,
+                array(
+                    'arm_options' => maybe_serialize( $options ),
+                ),
+                array(
+                    'arm_id' => absint( $temp['arm_id'] ),
+                ),
+                array( '%s' ),
+                array( '%d' )
+            );  //phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        }
+    }
+}
+
+$arm_lite_newdbversion = '5.9';
 update_option( 'arm_lite_new_version_installed', 1 );
 update_option( 'armlite_version', $arm_lite_newdbversion );
 

@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 	class ARM_access_rules_Lite {
 
@@ -275,9 +277,9 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 							$findInSet = array();
 							foreach ( $planArr as $pid ) {
 								if ( $protection == '0' ) {
-									$findInSet[] = " NOT FIND_IN_SET($pid, PM2.`meta_value`) ";
+									$findInSet[] = $wpdb->prepare(" NOT FIND_IN_SET(%d, PM2.`meta_value`) ", $pid);
 								} else {
-									$findInSet[] = " FIND_IN_SET($pid, PM2.`meta_value`) ";
+									$findInSet[] = $wpdb->prepare(" FIND_IN_SET(%d, PM2.`meta_value`) ", $pid);
 								}
 							}
 							$findInSet = implode( ' OR ', $findInSet );
@@ -507,9 +509,9 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 			);
 			$rule_type   = sanitize_text_field( $posted_data['type'] );
 			$type_slug   = sanitize_text_field( $posted_data['slug'] );
-			$arm_rules   = json_decode( stripslashes( $posted_data['form_data'] ) );
+			$arm_rules   = json_decode( wp_unslash( $posted_data['form_data'] ) );
 
-			$arm_original_rules = json_decode( stripslashes( $posted_data['form_data_original'] ) );
+			$arm_original_rules = json_decode( wp_unslash( $posted_data['form_data_original'] ) );
 
 			if ( ! empty( $arm_rules ) ) {
 				if ( $rule_type == 'other' ) {
@@ -546,7 +548,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 								} elseif ( $rule_type == 'taxonomy' || $rule_type == 'tags' ) {
 									$update_main_protection_meta[] = $item_id;
 									$remove_all_plan[]             = $item_id;
-									$insert_plan[]                 = "('" . $item_id . "','arm_access_plan','0')";
+									$insert_plan[]                 = "('" . intval( $item_id ) . "','arm_access_plan','0')";
 								}
 							} else {
 								if ( $rule_type == 'post_type' || $rule_type == 'nav_menu' ) {
@@ -561,7 +563,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 									}
 								} else {
 									if ( $rule_type == 'post_type' || $rule_type == 'nav_menu' ) {
-										$insert_protection_meta[] = "('" . $item_id . "','arm_access_plan','0')";
+										$insert_protection_meta[] = "('" . intval( $item_id ) . "','arm_access_plan','0')";
 									}
 								}
 
@@ -579,7 +581,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 									if ( $value > 0 || $value == '-2' ) {
 										if ( ! in_array( $value, $original_plan_arr ) ) {
 
-											$insert_plan[] = "('" . $item_id . "','arm_access_plan','" . intval( $value ) . "')";
+											$insert_plan[] = "('" . intval( $item_id ) . "','arm_access_plan','" . intval( $value ) . "')";
 
 										}
 									}
@@ -588,7 +590,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 								foreach ( $original_plan_arr as $key => $value ) {
 									if ( $value > 0 || $value == '-2' ) {
 										if ( ! in_array( $value, $myplans ) ) {
-											$remove_plan[] = " $item_id AND meta_key = 'arm_access_plan' AND meta_value = " . intval( $value );
+											$remove_plan[] = " ".intval($item_id)." AND meta_key = 'arm_access_plan' AND meta_value = " . intval( $value );
 										}
 									}
 								}
@@ -654,7 +656,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 						$del_query = $wpdb->query( $wpdb->prepare('Delete From ' . $ARMemberLite->tbl_arm_termmeta . ' where arm_term_id = %d  AND meta_key = %s' , $value,'arm_access_plan') );//phpcs:ignore --Reason: $ARMemberLite->tbl_arm_termmeta is a table name
 					}
 					foreach ( $remove_plan as $key => $value ) {
-						$del_query = $wpdb->query('Delete From ' . $ARMemberLite->tbl_arm_termmeta . ' where arm_term_id ='. $value );//phpcs:ignore --Reason: $ARMemberLite->tbl_arm_termmeta is a table name
+						$del_query = $wpdb->query( $wpdb->prepare( 'Delete From ' . $ARMemberLite->tbl_arm_termmeta . ' where arm_term_id = %d', $value ) );//phpcs:ignore --Reason: $ARMemberLite->tbl_arm_termmeta is a table name
 					}
 
 					foreach ( $update_main_protection_meta as $key => $value ) {
@@ -1066,7 +1068,7 @@ if ( ! class_exists( 'ARM_access_rules_Lite' ) ) {
 					$metabox_content .= '<input type="checkbox" value="' . esc_attr( $plan_id ) . '" name="arm_rule[plans][]" class="armswitch_input arm_rule_plan_checkbox" id="arm_rule_plan_checkbox_' . esc_attr( $plan_id ) . '" ' . $plan_checked . '/>';
 					$metabox_content .= '<label class="armswitch_label" for="arm_rule_plan_checkbox_' . esc_attr($plan_id) . '"></label>';
 					$metabox_content .= '</div>';
-					$metabox_content .= '<label for="arm_rule_plan_checkbox_' . esc_attr( $plan_id ) . '" class="arm_post_switch_label">' . stripslashes( $plan['arm_subscription_plan_name'] ) . '</label>';
+					$metabox_content .= '<label for="arm_rule_plan_checkbox_' . esc_attr( $plan_id ) . '" class="arm_post_switch_label">' . wp_unslash( $plan['arm_subscription_plan_name'] ) . '</label>';
 					$metabox_content .= '</div>';
 				}
 			}

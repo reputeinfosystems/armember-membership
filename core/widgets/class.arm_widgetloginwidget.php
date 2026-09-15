@@ -1,5 +1,7 @@
-<?php
-
+<?php 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 if ( ! class_exists( 'ARMLoginWidget' ) ) {
 	class ARMLoginWidget extends WP_Widget {
 

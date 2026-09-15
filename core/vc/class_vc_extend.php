@@ -69,7 +69,7 @@ class ARMLITE_VCExtend {
                 if($_form['arm_form_type'] == 'registration') {
                     $armFormId[] = $_form['arm_form_id'];
                 }
-                $armFormList[ wp_strip_all_tags(stripslashes($_form['arm_form_label'])) . ' (ID: ' . $_form['arm_form_id'] . ')' ] =  $_form['arm_form_id'];
+                $armFormList[ wp_strip_all_tags(wp_unslash($_form['arm_form_label'])) . ' (ID: ' . $_form['arm_form_id'] . ')' ] =  $_form['arm_form_id'];
             }
         }
 
@@ -315,7 +315,7 @@ class ARMLITE_VCExtend {
         if (!empty($arm_forms)) {
             foreach ($arm_forms as $_form) {
                 if ($_form['arm_form_type'] == 'registration') {
-                    $armFormList[ wp_strip_all_tags(stripslashes($_form['arm_form_label'])) . ' (ID: ' . $_form['arm_form_id'] . ')' ] =  $_form['arm_form_id'];
+                    $armFormList[ wp_strip_all_tags(wp_unslash($_form['arm_form_label'])) . ' (ID: ' . $_form['arm_form_id'] . ')' ] =  $_form['arm_form_id'];
                 }
             }
         }
@@ -521,7 +521,7 @@ class ARMLITE_VCExtend {
 
         if (!empty($arm_forms)) {
             foreach ($arm_forms as $_form) {
-                $armFormList[ wp_strip_all_tags(stripslashes($_form['arm_form_label'])) . ' (ID: ' . $_form['arm_form_id'] . ')' ] =  $_form['arm_form_id'];
+                $armFormList[ wp_strip_all_tags(wp_unslash($_form['arm_form_label'])) . ' (ID: ' . $_form['arm_form_id'] . ')' ] =  $_form['arm_form_id'];
             }
         }
 
@@ -1897,7 +1897,7 @@ class ARMLITE_VCExtend {
         $all_plans = $arm_subscription_plans->arm_get_all_subscription_plans('arm_subscription_plan_id, arm_subscription_plan_name');
         if(!empty($all_plans)){
             foreach($all_plans as $plan){
-                $arm_planlist[ stripslashes($plan['arm_subscription_plan_name']) ] = $plan['arm_subscription_plan_id'];
+                $arm_planlist[ wp_unslash($plan['arm_subscription_plan_name']) ] = $plan['arm_subscription_plan_id'];
             }
         }
 

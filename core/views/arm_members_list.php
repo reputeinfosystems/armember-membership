@@ -1,4 +1,7 @@
-<?php global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans,$arm_pay_per_post_feature; ?>
+<?php 
+if(! defined('ABSPATH')) exit;
+
+global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans,$arm_pay_per_post_feature; ?>
 <div class="wrap arm_page arm_manage_members_main_wrapper">
 	<div class="content_wrapper" id="content_wrapper">
 		<div class="page_title">

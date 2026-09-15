@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 if (!class_exists('ARM_lite_oxygen_builder_restriction')) {
 	class ARM_lite_oxygen_builder_restriction
 	{ 
@@ -6,6 +8,7 @@ if (!class_exists('ARM_lite_oxygen_builder_restriction')) {
 
         function __construct()
         {
+            global $ARMemberLite;
             $is_oxygen_builder_restriction_feature = get_option('arm_is_oxygen_builder_restriction_feature');
             $this->isOxygenBuilderRestrictionFeature = ($is_oxygen_builder_restriction_feature == '1') ? true : false;
             if ($this->isOxygenBuilderRestrictionFeature) {
@@ -16,7 +19,7 @@ if (!class_exists('ARM_lite_oxygen_builder_restriction')) {
                 }
             }
 
-            if (is_plugin_active('oxygen/plugin.php')) {
+            if (is_plugin_active('oxygen/plugin.php') && $ARMemberLite->is_arm_pro_active) {
                 add_filter('breakdance_singular_content', array( $this,'arm_oxygen_builder_restriction_content_after'));
             }
         }
@@ -77,7 +80,7 @@ if (!class_exists('ARM_lite_oxygen_builder_restriction')) {
                                     }
                                     else {
                                         global $arm_global_settings;
-                                        $arm_global_settings_general_settings = !empty($arm_global_settings->global_settings['arm_pay_per_post_default_content']) ? stripslashes($arm_global_settings->global_settings['arm_pay_per_post_default_content']) : esc_html__('Content is Restricted. Buy this post to get access to full content.', 'ARMember');
+                                        $arm_global_settings_general_settings = !empty($arm_global_settings->global_settings['arm_pay_per_post_default_content']) ? wp_unslash($arm_global_settings->global_settings['arm_pay_per_post_default_content']) : esc_html__('Content is Restricted. Buy this post to get access to full content.', 'ARMember');
                                         
                                         $arm_global_settings_general_settings = apply_filters('arm_modified_paid_post_settings_alternative_content_externally', $arm_global_settings_general_settings);
 

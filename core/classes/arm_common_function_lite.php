@@ -1,4 +1,5 @@
 <?php 
+if(! defined('ABSPATH')) exit;
 
 if ( ! function_exists( 'arm_maybe_unserialize' ) ) {
     function arm_maybe_unserialize( $value, $allowed_classes = array() ) {
@@ -7,11 +8,17 @@ if ( ! function_exists( 'arm_maybe_unserialize' ) ) {
             return $value;
         }
 
+        $arm_allowed_classes = false;
+
+        if (!empty( $allowed_classes ) ) {
+            $arm_allowed_classes = $allowed_classes;
+        }
+
         $trimmed = trim( $value );
         $result = @unserialize(
             $trimmed,
             array(
-                'allowed_classes' => false
+                'allowed_classes' => $arm_allowed_classes,
             )
         );
 
@@ -28,7 +35,7 @@ if ( ! function_exists( 'arm_maybe_unserialize' ) ) {
 }
 
 if(!function_exists('arm_get_user_meta')){
-    function arm_get_user_meta($user_id, $meta_key='', $single = false){
+    function arm_get_user_meta($user_id, $meta_key='', $single = true){
         return get_user_meta($user_id, $meta_key, $single);
     }
 }

@@ -1,4 +1,7 @@
-<?php
+<?php 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 if ( ! class_exists( 'ARMwidgetForm' ) ) {
 
 	class ARMwidgetForm extends WP_Widget {
@@ -83,7 +86,7 @@ if ( ! class_exists( 'ARMwidgetForm' ) ) {
 					<?php
 					foreach ( $arm_forms as $form ) {
 						?>
-							<option value="<?php echo intval($form['arm_form_id']); ?>" <?php selected( $form_id, $form['arm_form_id'] ); ?> data-type="<?php echo esc_attr($form['arm_form_type']); ?>"><?php echo strip_tags( stripslashes( $form['arm_form_label'] ) ) . ' &nbsp;(ID: ' . $form['arm_form_id'] . ')'; //phpcs:ignore ?></option>
+							<option value="<?php echo intval($form['arm_form_id']); ?>" <?php selected( $form_id, $form['arm_form_id'] ); ?> data-type="<?php echo esc_attr($form['arm_form_type']); ?>"><?php echo strip_tags( wp_unslash( $form['arm_form_label'] ) ) . ' &nbsp;(ID: ' . $form['arm_form_id'] . ')'; //phpcs:ignore ?></option>
 							<?php
 					}
 					?>

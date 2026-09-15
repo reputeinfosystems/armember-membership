@@ -1,4 +1,6 @@
 <?php
+if(! defined('ABSPATH')) exit;
+
 if (!class_exists('ARMLITE_Gugenberg_restriction')) {
 
     class ARMLITE_Gugenberg_restriction {

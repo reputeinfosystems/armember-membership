@@ -1,5 +1,7 @@
-<?php
-global $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_members_class,$arm_manage_coupons,  $arm_payment_gateways, $arm_subscription_plans;
+<?php 
+if(! defined('ABSPATH')) exit;
+
+global $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_members_class,  $arm_payment_gateways, $arm_subscription_plans;
 $currencies      = $arm_payment_gateways->arm_get_all_currencies();
 $global_currency = $arm_payment_gateways->arm_get_global_currency();
 $all_members     = $arm_members_class->arm_get_all_members_without_administrator( 0, 0 );
@@ -80,7 +82,7 @@ $posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), 
 																	$p_id = $p['arm_subscription_plan_id'];
 																	if ( $p['arm_subscription_plan_status'] == '1' && $p['arm_subscription_plan_type'] != 'free' ) {
 																		?>
-																		<li data-label="<?php echo esc_attr(stripslashes( $p['arm_subscription_plan_name']) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($p_id); ?>"><?php echo esc_html( stripslashes( $p['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></li>
+																		<li data-label="<?php echo esc_attr(wp_unslash( $p['arm_subscription_plan_name']) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($p_id); ?>"><?php echo esc_html( wp_unslash( $p['arm_subscription_plan_name'] ) ); //phpcs:ignore ?></li>
 																								<?php
 																	}
 																}

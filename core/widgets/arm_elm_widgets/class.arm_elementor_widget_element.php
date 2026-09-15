@@ -1,5 +1,8 @@
 <?php 
 namespace ElementorARMELEMENT;
+
+if(! defined('ABSPATH')) exit;
+
 class elementor_arm_membership_elements
 {
     private static $_instance = null;

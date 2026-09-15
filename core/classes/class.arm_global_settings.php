@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 
 	class ARM_global_settings_Lite {
@@ -230,9 +232,9 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$header[]  = 'Reply-To: ' . esc_attr( $reply_to );
 			$headers[] = 'Content-Type: ' . esc_attr( $content_type ) . '; charset="' . esc_attr( get_option( 'blog_charset' ) ) . '"';
 			/* Filter Email Subject & Message */
-			$subject = wp_specialchars_decode( wp_strip_all_tags( stripslashes( $subject ) ), ENT_QUOTES );
+			$subject = wp_specialchars_decode( wp_strip_all_tags( wp_unslash( $subject ) ), ENT_QUOTES );
 			$message = do_shortcode( $message );
-			$message = wordwrap( stripslashes( $message ), 70, "\r\n" );
+			$message = wordwrap( wp_unslash( $message ), 70, "\r\n" );
 			if ( @$arm_plain_text ) {
 				$message = wp_specialchars_decode( wp_strip_all_tags( $message ), ENT_QUOTES );
 			}
@@ -1727,8 +1729,8 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			if ( ! is_array( $all_block_settings ) ) {
 				$all_block_settings = array();
 			}
-			$all_block_settings['arm_block_usernames_msg'] = ! empty( $all_block_settings['arm_block_usernames_msg'] ) ? stripslashes( $all_block_settings['arm_block_usernames_msg'] ) : '';
-			$all_block_settings['arm_block_emails_msg']    = ! empty( $all_block_settings['arm_block_emails_msg'] ) ? stripslashes( $all_block_settings['arm_block_emails_msg'] ) : '';
+			$all_block_settings['arm_block_usernames_msg'] = ! empty( $all_block_settings['arm_block_usernames_msg'] ) ? wp_unslash( $all_block_settings['arm_block_usernames_msg'] ) : '';
+			$all_block_settings['arm_block_emails_msg']    = ! empty( $all_block_settings['arm_block_emails_msg'] ) ? wp_unslash( $all_block_settings['arm_block_emails_msg'] ) : '';
 
 			$all_block_settings = apply_filters( 'arm_get_all_block_settings', $all_block_settings );
 			return $all_block_settings;
@@ -1759,7 +1761,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$all_common_message_settings = ( ! empty( $all_common_message_settings ) ) ? $all_common_message_settings : array();
 			if ( ! empty( $all_common_message_settings ) ) {
 				foreach ( $all_common_message_settings as $key => $val ) {
-					$all_common_message_settings[ $key ] = stripslashes( $val );
+					$all_common_message_settings[ $key ] = wp_unslash( $val );
 				}
 			}
 
@@ -2247,7 +2249,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			if ( ! empty( $errors ) ) {
 				if ( isset( $errors ) && is_array( $errors ) && count( $errors ) > 0 ) {
 					foreach ( $errors as $error ) {
-						$return .= '<div>' . stripslashes( $error ) . '</div>';
+						$return .= '<div>' . wp_unslash( $error ) . '</div>';
 					}
 				}
 			} elseif ( isset( $message ) && $message != '' ) {
@@ -2268,18 +2270,18 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				$params = explode( '[', $param );
 				$param  = $params[0];
 			}
-			$str = isset($_POST['form']) ? stripslashes_deep( $_POST['form'] ) : ''; //phpcs:ignore
+			$str = isset($_POST['form']) ? wp_unslash( $_POST['form'] ) : ''; //phpcs:ignore
 			$str = json_decode( $str, true );
 			$str = !empty($str) ? $str : array();
 			$str = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $str ); //phpcs:ignore
 
 			if ( $src == 'get' ) {
 				if ( isset( $_POST[ $param ] ) ) { //phpcs:ignore
-					$value = stripslashes_deep($_POST[$param]); //phpcs:ignore
+					$value = wp_unslash($_POST[$param]); //phpcs:ignore
 				} elseif ( isset( $str[ $param ] ) ) {
-					$value = stripslashes_deep( $str[ $param ] );
+					$value = wp_unslash( $str[ $param ] );
 				} elseif ( isset( $_GET[ $param ] ) ) { //phpcs:ignore
-					$value = stripslashes_deep( $_GET[ $param ] ); //phpcs:ignore
+					$value = wp_unslash( $_GET[ $param ] ); //phpcs:ignore
 				} else {
 					$value = $default;
 				}
@@ -2289,9 +2291,9 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				}
 			} else {
 				if ( isset( $_POST[ $param ] ) ) { //phpcs:ignore
-					$value = stripslashes_deep( $_POST[ $param ] ); //phpcs:ignore
+					$value = wp_unslash( $_POST[ $param ] ); //phpcs:ignore
 				} elseif ( isset( $str[ $param ] ) ) {
-					$value = stripslashes_deep( arm_maybe_unserialize( $str[ $param ] ) );
+					$value = wp_unslash( arm_maybe_unserialize( $str[ $param ] ) );
 				} else {
 					$value = $default;
 				}
@@ -2476,7 +2478,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			$emailSettings           = $arm_email_settings->arm_get_all_email_settings();
 			$arm_mail_authentication = ( isset( $emailSettings['arm_mail_authentication'] ) ) ? $emailSettings['arm_mail_authentication'] : '1';
 			$email_server            = ( ! empty( $emailSettings['arm_email_server'] ) ) ? $emailSettings['arm_email_server'] : 'wordpress_server';
-			$from_name               = ( ! empty( $emailSettings['arm_email_from_name'] ) ) ? stripslashes_deep( $emailSettings['arm_email_from_name'] ) : wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+			$from_name               = ( ! empty( $emailSettings['arm_email_from_name'] ) ) ? wp_unslash( $emailSettings['arm_email_from_name'] ) : wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
 			$from_email              = ( ! empty( $emailSettings['arm_email_from_email'] ) ) ? $emailSettings['arm_email_from_email'] : get_option( 'admin_email' );
 			$content_type            = ( @$arm_plain_text ) ? 'text/plain' : 'text/html';
 			$from_name               = $from_name;
@@ -2495,10 +2497,10 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			 $headers[] = 'Reply-To: ' . $reply_to;
 			 $headers[] = 'Content-Type: ' . $content_type . '; charset="' . get_option('blog_charset') . '"';
 			 /* Filter Email Subject & Message */
-			 $subject = wp_specialchars_decode(strip_tags(stripslashes($subject)), ENT_QUOTES); //phpcs:ignore
+			 $subject = wp_specialchars_decode(strip_tags(wp_unslash($subject)), ENT_QUOTES); //phpcs:ignore
 			 //$message = do_shortcode($message);
-			 $message = stripslashes($message);
-			 $message = wordwrap(stripslashes($message), 70, "\r\n");
+			 $message = wp_unslash($message);
+			 $message = wordwrap(wp_unslash($message), 70, "\r\n");
 			 if (@$arm_plain_text) {
 				 $message = wp_specialchars_decode(strip_tags($message), ENT_QUOTES); //phpcs:ignore
 			 }
@@ -3770,7 +3772,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 
 			global $arm_global_settings,$ARMemberLiteAllowedHTMLTagsArray;
 
-			$tab_title       = isset($tab_data['title']) ? stripslashes_deep($tab_data['title']) : '';
+			$tab_title       = isset($tab_data['title']) ? wp_unslash($tab_data['title']) : '';
 			$tab_type        = isset($tab_data['tab_type']) ? $tab_data['tab_type'] : 'content';
 			$text_content     = isset($tab_data['text_content']) ? $tab_data['text_content'] : '';
 			$url_content     = isset($tab_data['url_content']) ? $tab_data['url_content'] : '';
@@ -3786,7 +3788,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][is_default_tab]" value="<?php echo $is_default_tab ?>"> 
 				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][icon]" value="<?php echo esc_attr($icon) ?>"> 
 				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][id]" value="<?php echo esc_attr($id) ?>">
-				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][menu_title]" value="<?php echo esc_attr(stripslashes_deep($menu_title)) ?>">  
+				<input type="hidden" name="member_panel_settings[tab_settings][<?php echo $tab_index; ?>][menu_title]" value="<?php echo esc_attr(wp_unslash($menu_title)) ?>">  
 				<input type="hidden" name="tab_index" value="<?php echo $tab_index; ?>">
 
 				<div class="arm_width_100_pct">

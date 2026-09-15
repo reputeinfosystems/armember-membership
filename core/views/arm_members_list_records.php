@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways,$arm_common_lite,$arm_version;
 $date_format    = $arm_global_settings->arm_get_wp_date_format();
 $user_roles     = get_editable_roles();
@@ -34,9 +36,9 @@ if ( ! empty( $user_meta_keys ) ) {
 	foreach ( $user_meta_keys as $umkey => $val ) {
 		if ( ! in_array( $umkey, $exclude_keys ) ) {
             if(!empty($val['label'])){
-	    	$grid_columns[ $umkey ] = stripslashes_deep($val['label']);
+	    	$grid_columns[ $umkey ] = wp_unslash($val['label']);
             }else if(empty($grid_columns[$umkey])){
-                $grid_columns[$umkey] = stripslashes_deep($val['label']);
+                $grid_columns[$umkey] = wp_unslash($val['label']);
 			}
 		}
     }
@@ -90,7 +92,7 @@ if ( ! empty( $all_plans ) ) {
 	foreach ( $all_plans as $p ) {
 		$p_id = $p['arm_subscription_plan_id'];
 		if ( $p['arm_subscription_plan_status'] == '1' ) {
-			$plansLists .= '<li data-label="' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . esc_attr($p_id) . '">' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>';
+			$plansLists .= '<li data-label="' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . esc_attr($p_id) . '">' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>';
 		}
 	}
 }
@@ -1061,7 +1063,7 @@ jQuery(document).on('change','#arm_manage_bulk_action1',function(){
 								if ( ! empty( $all_plans ) ) {
 									foreach ( $all_plans as $plan ) { ?>
 									<?php if ( $plan['arm_subscription_plan_status'] == 1 ) { ?>
-											<li data-label="<?php echo stripslashes( esc_attr( $plan['arm_subscription_plan_name'] ) ); ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><?php echo stripslashes( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
+											<li data-label="<?php echo wp_unslash( esc_attr( $plan['arm_subscription_plan_name'] ) ); ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><?php echo wp_unslash( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
 											<?php
 										}
 									}
@@ -1108,7 +1110,7 @@ jQuery(document).on('change','#arm_manage_bulk_action1',function(){
 										<dd>
 											<ul data-id="arm_subs_filter" data-placeholder="<?php esc_attr_e( 'Select Plans', 'armember-membership' ); ?>">
 												<?php foreach ( $all_plans as $plan ) : ?>
-													<li data-label="<?php echo stripslashes( esc_attr( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><input type="checkbox" class="arm_icheckbox" value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"/><?php echo stripslashes( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
+													<li data-label="<?php echo wp_unslash( esc_attr( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><input type="checkbox" class="arm_icheckbox" value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"/><?php echo wp_unslash( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
 												<?php endforeach; ?>
 											</ul>
 										</dd>
@@ -1191,7 +1193,7 @@ jQuery(document).on('change','#arm_manage_bulk_action1',function(){
 															?>
 															<li class="arm_grid_col_div">
 																<button tabindex="0" aria-controls="armember_datatable" type="button" class="ColVis_Button TableTools_Button ui-button ui-state-default <?php echo esc_attr($arm_clm_hide_cls);?> <?php echo esc_attr($arm_disbled_data);?>" data-cv-idx="<?php echo esc_attr($arm_i);?>" data-cv-meta="<?php echo esc_attr($key);?>">
-																	<span><span class="ColVis_radio"><span class="colvis_checkbox"></span></span><span class="ColVis_title"><?php echo esc_html(stripslashes_deep( $label));?></span></span>
+																	<span><span class="ColVis_radio"><span class="colvis_checkbox"></span></span><span class="ColVis_title"><?php echo esc_html(wp_unslash( $label));?></span></span>
 																</button>
 																<span class="arm_margin_left_10 arm_margin_right_10"><span class="ColVis_radio arm_grid_col_sortable_icon"><img src="<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/fe_drag.png" onmouseover="this.src = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/fe_drag_hover.png';" onmouseout="this.src = '<?php echo MEMBERSHIPLITE_IMAGES_URL; //phpcs:ignore ?>/fe_drag.png';" style="cursor:move"></span>
 															</li>

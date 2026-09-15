@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms ,$arm_subscription_class, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways,$armPrimaryStatus,$arm_common_lite,$arm_version;
 $date_format = $arm_global_settings->arm_get_wp_date_format();
 $user_roles = get_editable_roles();
@@ -939,7 +941,7 @@ global $wpdb, $ARMember, $arm_global_settings;
                                 <dd>
                                     <ul data-id="arm_subs_plan_filter" data-placeholder="<?php esc_html_e('Select Memberships', 'armember-membership'); ?>">
                                         <?php foreach ($all_plans as $plan): ?>
-                                            <li data-label="<?php echo stripslashes(esc_attr($plan['arm_subscription_plan_name'])); ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><input type="checkbox" class="arm_icheckbox" value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"/><?php echo stripslashes( esc_html($plan['arm_subscription_plan_name']) ); //phpcs:ignore ?></li>
+                                            <li data-label="<?php echo wp_unslash(esc_attr($plan['arm_subscription_plan_name'])); ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><input type="checkbox" class="arm_icheckbox" value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"/><?php echo wp_unslash( esc_html($plan['arm_subscription_plan_name']) ); //phpcs:ignore ?></li>
                                         <?php endforeach; ?>
                                     </ul>
                                 </dd>
@@ -1290,7 +1292,7 @@ global $wpdb, $ARMember, $arm_global_settings;
                                                 foreach ($all_plans as $p) {
                                                     $p_id = $p['arm_subscription_plan_id'];
                                                     if ($p['arm_subscription_plan_status'] == '1' && $p['arm_subscription_plan_type'] != 'free') {
-                                                        ?><li data-label="<?php echo stripslashes( esc_attr($p['arm_subscription_plan_name']) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($p_id) ?>"><?php echo esc_html(stripslashes($p['arm_subscription_plan_name']));?></li><?php
+                                                        ?><li data-label="<?php echo wp_unslash( esc_attr($p['arm_subscription_plan_name']) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($p_id) ?>"><?php echo esc_html(wp_unslash($p['arm_subscription_plan_name']));?></li><?php
                                                     }
                                                 }
                                             }

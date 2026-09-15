@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_global_settings, $arm_access_rules, $arm_subscription_plans, $arm_restriction;
 $all_global_settings = $arm_global_settings->arm_get_all_global_settings();
 
@@ -108,7 +110,7 @@ $all_roles         = $arm_global_settings->arm_get_all_roles();
 									foreach ($all_plans_data as $plan) {
 										if ($plan['arm_subscription_plan_id'] != '-2') {
 											$selected = in_array($plan['arm_subscription_plan_id'], $default_rules[$rtype]) ? 'selected="selected"' : '';
-											echo '<option value="' . esc_attr($plan['arm_subscription_plan_id']) . '" ' . $selected . '>' . esc_html(stripslashes($plan['arm_subscription_plan_name'])) . '</option>'; //phpcs:ignore
+											echo '<option value="' . esc_attr($plan['arm_subscription_plan_id']) . '" ' . $selected . '>' . esc_html(wp_unslash($plan['arm_subscription_plan_name'])) . '</option>'; //phpcs:ignore
 										}
 									}
 								}

@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 
 	class ARM_crons_Lite {
@@ -806,7 +808,7 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
                 $response = wp_remote_post(
                     $url,
                     array(
-                    'timeout' => 500,
+                    'timeout' => 5000,
                     'body'    => array( 'arm_anonymous_data' =>  wp_json_encode($armember_anonymous_data)),
                     )
                 );

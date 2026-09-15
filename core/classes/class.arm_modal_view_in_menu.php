@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_modal_view_in_menu_Lite' ) ) {
 	class ARM_modal_view_in_menu_Lite {
 
@@ -382,7 +384,7 @@ if ( ! class_exists( 'ARM_modal_view_in_menu_Lite' ) ) {
 			if ( isset( $_REQUEST['ids'] ) && ! empty( $_REQUEST['ids'] ) ) {  //phpcs:ignore
 				$response['error'] = false;
 				$response['res']   = array();
-				$ids               = json_decode( stripslashes_deep( $_REQUEST['ids'] ) );  //phpcs:ignore
+				$ids               = json_decode( wp_unslash( $_REQUEST['ids'] ) );  //phpcs:ignore
 				foreach ( $ids as $key => $menu_id ) {
 					$response['res'][ $menu_id ]         = get_post_meta( $menu_id, 'arm_is_hide_show_after_login', true );
 					$response['access_rule'][ $menu_id ] = get_post_meta( $menu_id, 'arm_access_plan', false );

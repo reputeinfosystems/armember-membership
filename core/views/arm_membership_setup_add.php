@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings,  $arm_subscription_plans, $arm_membership_setup, $arm_member_forms, $arm_payment_gateways,$arm_common_lite;
 $posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST ); //phpcs:ignore
 /*if ( isset( $posted_data['form_action'] ) && in_array( $posted_data['form_action'], array( 'add', 'update' ) ) ) {
@@ -107,7 +109,7 @@ $selectedPaymentModes = isset( $setup_modules['modules']['payment_mode'] ) ? $se
 $setup_modules = apply_filters('arm_additional_setup_modules_data',$setup_modules);
 
 $setup_modules['style'] = shortcode_atts( $default_setup_style, $setup_modules['style']);
-$setup_name             = ! empty( $setup_name ) ? esc_html( stripslashes( $setup_name ) ) : '';
+$setup_name             = ! empty( $setup_name ) ? esc_html( wp_unslash( $setup_name ) ) : '';
 $arm_setup_type = !empty($arm_setup_type) ? $arm_setup_type : 0;
 $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways();
 
@@ -313,7 +315,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 										<div class="arm_setup_option_label"><?php esc_html_e( 'Submit Button Label', 'armember-membership' ); ?></div>
 										<div class="arm_setup_option_input">
 											<div class="arm_setup_module_box">
-												<input type="text" name="setup_data[setup_labels][button_labels][submit]" value="<?php echo ( isset( $button_labels['submit'] ) ) ? esc_attr( stripslashes( $button_labels['submit'] ) ) : ''; ?>">
+												<input type="text" name="setup_data[setup_labels][button_labels][submit]" value="<?php echo ( isset( $button_labels['submit'] ) ) ? esc_attr( wp_unslash( $button_labels['submit'] ) ) : ''; ?>">
 												<span class="arm_setup_error_msg"></span>
 											</div>
 										</div>
@@ -331,7 +333,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 										<div class="arm_setup_option_label"><?php esc_html_e( 'Payment Section Title', 'armember-membership' ); ?></div>
 										<div class="arm_setup_option_input">
 											<div class="arm_setup_module_box">
-												<input type="text" name="setup_data[setup_labels][payment_section_title]" value="<?php echo isset( $setup_data['setup_labels']['payment_section_title'] ) ? esc_attr(stripslashes_deep( $setup_data['setup_labels']['payment_section_title'] )) : esc_html__( 'Select Your Payment Gateway', 'armember-membership' ); ?>">
+												<input type="text" name="setup_data[setup_labels][payment_section_title]" value="<?php echo isset( $setup_data['setup_labels']['payment_section_title'] ) ? esc_attr(wp_unslash( $setup_data['setup_labels']['payment_section_title'] )) : esc_html__( 'Select Your Payment Gateway', 'armember-membership' ); ?>">
 												<span class="arm_setup_error_msg"></span>
 											</div>
 										</div>
@@ -348,7 +350,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 										<div class="arm_setup_option_label"><?php echo esc_html($default_label) . ' ' . esc_html__( 'Label', 'armember-membership' ); ?></div>
 										<div class="arm_setup_option_input">
 											<div class="arm_setup_module_box">
-												<input type="text" name="setup_data[setup_labels][payment_gateway_labels][<?php echo esc_attr($pgkey); ?>]" value="<?php echo esc_attr(stripslashes_deep( $gateway_field_label ) ); //phpcs:ignore ?>" />
+												<input type="text" name="setup_data[setup_labels][payment_gateway_labels][<?php echo esc_attr($pgkey); ?>]" value="<?php echo esc_attr(wp_unslash( $gateway_field_label ) ); //phpcs:ignore ?>" />
 												<span class="arm_setup_error_msg"></span>
 											</div>
 										</div>
@@ -361,7 +363,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 										<div class="arm_setup_option_label"><?php esc_html_e( 'Payment Mode Selection Title', 'armember-membership' ); ?></div>
 										<div class="arm_setup_option_input">
 											<div class="arm_setup_module_box">
-												<input type="text" name="setup_data[setup_labels][payment_mode_selection]" value="<?php echo isset( $setup_data['setup_labels']['payment_mode_selection'] ) ? esc_attr(stripslashes_deep( $setup_data['setup_labels']['payment_mode_selection'] )) : esc_html__( 'How you want to pay?', 'armember-membership' ); //phpcs:ignore ?>">
+												<input type="text" name="setup_data[setup_labels][payment_mode_selection]" value="<?php echo isset( $setup_data['setup_labels']['payment_mode_selection'] ) ? esc_attr(wp_unslash( $setup_data['setup_labels']['payment_mode_selection'] )) : esc_html__( 'How you want to pay?', 'armember-membership' ); //phpcs:ignore ?>">
 												<span class="arm_setup_error_msg"></span>
 											</div>
 										</div>
@@ -370,7 +372,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 										<div class="arm_setup_option_label"><?php esc_html_e( 'Automatic Subscription Label', 'armember-membership' ); ?></div>
 										<div class="arm_setup_option_input">
 											<div class="arm_setup_module_box">
-												<input type="text" name="setup_data[setup_labels][automatic_subscription]" value="<?php echo isset( $setup_data['setup_labels']['automatic_subscription'] ) ? esc_attr(stripslashes_deep( $setup_data['setup_labels']['automatic_subscription'] )) : esc_html__( 'Auto Debit Payment', 'armember-membership' ); //phpcs:ignore ?>">
+												<input type="text" name="setup_data[setup_labels][automatic_subscription]" value="<?php echo isset( $setup_data['setup_labels']['automatic_subscription'] ) ? esc_attr(wp_unslash( $setup_data['setup_labels']['automatic_subscription'] )) : esc_html__( 'Auto Debit Payment', 'armember-membership' ); //phpcs:ignore ?>">
 												<span class="arm_setup_error_msg"></span>
 											</div>
 										</div>
@@ -379,7 +381,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 										<div class="arm_setup_option_label"><?php esc_html_e( 'Semi Automatic Subscription Label', 'armember-membership' ); ?></div>
 										<div class="arm_setup_option_input">
 											<div class="arm_setup_module_box">
-												<input type="text" name="setup_data[setup_labels][semi_automatic_subscription]" value="<?php echo isset( $setup_data['setup_labels']['semi_automatic_subscription'] ) ? esc_attr(stripslashes_deep( $setup_data['setup_labels']['semi_automatic_subscription'] )) : esc_html__( 'Manual Payment', 'armember-membership' ); //phpcs:ignore ?>">
+												<input type="text" name="setup_data[setup_labels][semi_automatic_subscription]" value="<?php echo isset( $setup_data['setup_labels']['semi_automatic_subscription'] ) ? esc_attr(wp_unslash( $setup_data['setup_labels']['semi_automatic_subscription'] )) : esc_html__( 'Manual Payment', 'armember-membership' ); //phpcs:ignore ?>">
 												<span class="arm_setup_error_msg"></span>
 											</div>
 										</div>
@@ -406,7 +408,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 
 											$payment_summery = apply_filters('arm_payment_setup_summary_filter',$payment_summery);
 											
-											$summary_text_content = isset($setup_data['setup_labels']['summary_text']) ? stripslashes($setup_data['setup_labels']['summary_text']) : $payment_summery;
+											$summary_text_content = isset($setup_data['setup_labels']['summary_text']) ? wp_unslash($setup_data['setup_labels']['summary_text']) : $payment_summery;
 												$arm_message_editor = array(
 													'textarea_name' => 'setup_data[setup_labels][summary_text]',
 													'editor_class' => 'arm_setup_summary_text',
@@ -510,8 +512,15 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 											<label class="armswitch_label" for="arm_setup_hide_plans"></label>
 										</div>
 										<label class="arm_global_setting_switch_label" for="arm_setup_hide_plans"><?php esc_html_e( 'Hide Plan Selection Area', 'armember-membership' ); ?></label>
-										
 									</div>
+									<?php
+										$arm_setup_additional_settings ='';
+										$arm_setup_additional_settings = apply_filters('arm_setup_form_additional_fields_settings',$arm_setup_additional_settings,$setup_data,$setup_modules); //phpcs:ignore
+										if(!empty($arm_setup_additional_settings))
+										{
+											echo $arm_setup_additional_settings; //phpcs:ignore
+										}
+									?>
 								</div>
 								<div class="arm_setup_section_title arm_margin_top_22 arm_margin_bottom_24 arm_font_size_16"><?php esc_html_e( 'Layouts', 'armember-membership' ); ?></div>
 								<div class="arm_form_input_section_field_grid arm_width_100_pct">

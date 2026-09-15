@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $armPrimaryStatus, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_social_feature,$arm_email_settings,$arm_lite_members_activity,$arm_is_enable_crop;
 /**
  * Process Submited Form.
@@ -233,7 +235,7 @@ if ( ! empty( $all_active_plans ) ) {
 		$p_id = $p['arm_subscription_plan_id'];
 
 
-			$plansLists .= '<li data-label="' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . esc_attr($p_id) . '">' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>';
+			$plansLists .= '<li data-label="' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . esc_attr($p_id) . '">' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>';
 
 	}
 }
@@ -1437,7 +1439,7 @@ $formHiddenFields = '';
 											<select id="arm_member_social_ac_selection" class="arm_chosen_selectbox arm_member_social_ac_selection"  name="arm_member_social_ac_selection[]" data-placeholder="<?php esc_html_e('Select Social Account','armember-membership');?>" multiple="multiple">
 												<?php
 												foreach ( $socialProfileFields as $spfKey => $spfLabel ) {
-													echo '<option class="arm_message_selectbox_op" value="' . esc_attr($spfKey) . '" data-label="'.strip_tags( stripslashes( $spfLabel ) ).'">' . strip_tags( stripslashes( $spfLabel ) ) . '</option>'; //phpcs:ignore
+													echo '<option class="arm_message_selectbox_op" value="' . esc_attr($spfKey) . '" data-label="'.strip_tags( wp_unslash( $spfLabel ) ).'">' . strip_tags( wp_unslash( $spfLabel ) ) . '</option>'; //phpcs:ignore
 												}
 												?>
 											</select>

@@ -1,4 +1,5 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
 
 if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 	class ARM_restriction_Lite {
@@ -258,7 +259,7 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 			$arm_default_redirection_settings = get_option( 'arm_redirection_settings' );
 			$arm_default_redirection_settings =arm_maybe_unserialize( $arm_default_redirection_settings );
 
-			$access_rules_options = $arm_default_redirection_settings['default_access_rules'];
+			$access_rules_options = (!empty($arm_default_redirection_settings['default_access_rules']) && is_array($arm_default_redirection_settings['default_access_rules'])) ? $arm_default_redirection_settings['default_access_rules'] : array();
 			if ( ! empty( $access_rules_options['non_logged_in'] ) ) {
 				if ( $access_rules_options['non_logged_in']['type'] == 'specific' && ! empty( $access_rules_options['non_logged_in']['redirect_to'] ) ) {
 					$allowIDs[] = $access_rules_options['non_logged_in']['redirect_to'];
@@ -459,7 +460,7 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 
 				$arm_default_redirection_settings = get_option( 'arm_redirection_settings' );
 				$arm_default_redirection_settings = arm_maybe_unserialize( $arm_default_redirection_settings );
-				$access_rules_options             = $arm_default_redirection_settings['default_access_rules'];
+				$access_rules_options             = !empty($arm_default_redirection_settings['default_access_rules']) ? $arm_default_redirection_settings['default_access_rules'] : array();
 
 				$page_settings = $arm_global_settings->arm_get_single_global_settings( 'page_settings' );
 				/* Remove Member Directory Page */
@@ -491,8 +492,8 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
 
 									$send_key_email = 0;
 						if ( isset( $_GET['arm-key'] ) && ! empty( $_GET['arm-key'] ) ) { //phpcs:ignore
-							$chk_key     = stripslashes_deep( sanitize_text_field($_GET['arm-key']) ); //phpcs:ignore
-							$user_email  = stripslashes_deep( sanitize_email($_GET['email']) ); //phpcs:ignore
+							$chk_key     = wp_unslash( sanitize_text_field($_GET['arm-key']) ); //phpcs:ignore
+							$user_email  = wp_unslash( sanitize_email($_GET['email']) ); //phpcs:ignore
 							$arm_message = $arm_member_forms->arm_verify_user_activation_for_front( $user_email, $chk_key );
 
 							if ( $arm_message['status'] == 'success' ) {
@@ -2089,7 +2090,7 @@ if ( ! function_exists( 'armEmailVerificationMail' ) ) {
 		$user_verify_send_mail = false;
 		if ( ! empty( $user ) ) {
 			$user_id            = $user->ID;
-			$user_login         = stripslashes( $user->user_login );
+			$user_login         = wp_unslash( $user->user_login );
 			$user_email         = $user->user_email;
 			$activation_key     = arm_get_user_meta( $user->ID, 'arm_user_activation_key', true );
 			$temp_detail_verify = $arm_email_settings->arm_get_email_template( $arm_email_settings->templates->email_verify_user );
@@ -2117,7 +2118,7 @@ if ( ! function_exists( 'armMemberSignUpCompleteMail' ) ) {
 		global $wp, $wpdb, $arm_lite_errors, $ARMemberLite, $arm_global_settings, $arm_email_settings, $wp_hasher;
 		$user_id = $user->ID;
 		do_action( 'arm_before_signup_complete_notification', $user );
-		$user_login         = stripslashes( $user->user_login );
+		$user_login         = wp_unslash( $user->user_login );
 		$user_email         = $user->user_email;
 		$activation_key     = arm_get_user_meta( $user->ID, 'arm_user_activation_key', true );
 		$arm_last_user_plan = arm_get_user_meta( $user_id, 'arm_user_last_plan', true );

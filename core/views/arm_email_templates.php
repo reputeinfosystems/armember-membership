@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_email_settings, $arm_social_feature, $arm_slugs, $arm_subscription_plans, $arm_manage_communication;
 
 $arm_all_email_settings = $arm_email_settings->arm_get_all_email_settings();
@@ -77,7 +79,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field( $_GET['page']) : ''; //p
 										<div class="divTableCell">
 											<?php echo esc_html($email_template->arm_template_name); ?>
 										</div>
-										<div class="divTableCell"><?php echo esc_html( stripslashes( $email_template->arm_template_subject ) ); ?></div>
+										<div class="divTableCell"><?php echo esc_html( wp_unslash( $email_template->arm_template_subject ) ); ?></div>
 										<div class="divTableCell arm_grid_action_wrapper hidden_section">
 											<div class="arm_grid_action_wrapper">
 												<div class="arm_grid_action_btn_container">
@@ -121,7 +123,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field( $_GET['page']) : ''; //p
 <!--./******************** Add New Member Form ********************/.-->
 
 <div class="add_edit_message_wrapper_container"></div>
-<div class="edit_email_template_wrapper arm_common_setting_multi_language_wrapper popup_wrapper" >
+<div class="wrap edit_email_template_wrapper arm_common_setting_multi_language_wrapper popup_wrapper" >
 	<div class="arm_member_popup_header_wrapper">
 		<div class="popup_header page_title">
 			<span class="arm_edit_standard_mail_template_span"><?php esc_html_e('Edit Email Template','armember-membership');?></span>
@@ -168,31 +170,29 @@ $get_page = isset($_GET['page']) ? sanitize_text_field( $_GET['page']) : ''; //p
 										<div class="arm_font_size_20 arm-black-600 arm_font_weight_500 arm_margin_top_0"><?php esc_html_e('Message', 'armember-membership'); ?></div>
 									</td>
 								</tr>
-								<tr class="form-field arm_display_grid arm_grid_col_70_30">
-									<th class="arm_email_content_area_left arm_margin_top_24 arm_margin_bottom_12">
-										<?php esc_html_e( 'Email Notification Description', 'armember-membership' ); ?>
-									</th>
-									<th class="arm_email_content_area_left arm_margin_top_24 arm_margin_bottom_12">
-										<?php esc_html_e( 'Email Template', 'armember-membership' ); ?>
-									</th>
-								</tr>
 								<tr class="form-field">
 									<td class="arm_email_template_grid arm_grid_col_70_30 arm_padding_bottom_0">
 										<div class="arm_email_content_area_left">
-										<?php 
-										$email_setting_editor = array(
-											'textarea_name' => 'arm_template_content',
-											'editor_class' => 'arm_message_content',
-											'media_buttons' => false,
-											'textarea_rows' => 5,
-											'default_editor' => 'html',
-											'editor_css' => '<style type="text/css"> body#tinymce{margin:0px !important;} </style>',
-										);
-										wp_editor('', 'arm_template_content', $email_setting_editor);
-										?>
+											<label class="arm_email_label">
+												<?php esc_html_e( 'Email Notification Description', 'armember-membership' ); ?>
+											</label>
+											<?php 
+											$email_setting_editor = array(
+												'textarea_name' => 'arm_template_content',
+												'editor_class' => 'arm_message_content',
+												'media_buttons' => false,
+												'textarea_rows' => 5,
+												'default_editor' => 'html',
+												'editor_css' => '<style type="text/css"> body#tinymce{margin:0px !important;} </style>',
+											);
+											wp_editor('', 'arm_template_content', $email_setting_editor);
+											?>
 											<span id="arm_responses_wp_validate_msg" class="error" style="display:none;"><?php esc_html_e('Content Cannot Be Empty.', 'armember-membership');?></span>
 										</div>
 										<div class="arm_email_content_area_right">
+											<label class="arm_email_label">
+												<?php esc_html_e( 'Email Template', 'armember-membership' ); ?>
+											</label>
 											<div class="arm_constant_variables_wrapper arm_shortcode_wrapper" id="arm_shortcode_wrapper">
 												<div class="arm_shortcode_row">
 													<span class="arm_variable_code arm_standard_email_code" data-code="{ARM_ADMIN_EMAIL}" title="<?php esc_attr_e("Click to add shortcode in textarea", 'armember-membership'); ?>"><?php esc_html_e('Admin Email', 'armember-membership'); ?></span><i class="arm_email_helptip_icon armfa armfa-question-circle" title="<?php esc_attr_e("Displays the admin email that users can contact you at. You can configure it under Mail settings.", 'armember-membership'); ?>"></i>
@@ -312,17 +312,12 @@ $get_page = isset($_GET['page']) ? sanitize_text_field( $_GET['page']) : ''; //p
 													<div class="arm_font_size_20 arm-black-600 arm_font_weight_500 arm_margin_top_0"><?php esc_html_e('Message', 'armember-membership'); ?></div>
 												</td>
 											</tr>
-											<tr class="form-field arm_display_grid arm_grid_col_70_30">
-												<th class="arm_email_content_area_left arm_margin_top_24 arm_margin_bottom_12">
-													<?php esc_html_e( 'Email Notification Description', 'armember-membership' ); ?>
-												</th>
-												<th class="arm_email_content_area_left arm_margin_top_24 arm_margin_bottom_12">
-													<?php esc_html_e( 'Email Template', 'armember-membership' ); ?>
-												</th>
-											</tr>
 											<tr class="form-field arm_auto_message_content">
-												<td class="arm_display_grid arm_grid_col_70_30">
+												<td class="arm_email_template_grid arm_grid_col_70_30">
 													<div class="arm_email_content_area_left">
+														<label class="arm_email_label">
+															<?php esc_html_e( 'Email Notification Description', 'armember-membership' ); ?>
+														</label>
 													<?php 
 													if($local==$lan){
 														
@@ -350,6 +345,9 @@ $get_page = isset($_GET['page']) ? sanitize_text_field( $_GET['page']) : ''; //p
 														<span id="arm_responses_wp_validate_msg" class="error" style="display:none;"><?php esc_html_e('Content Cannot Be Empty.', 'armember-membership');?></span>
 													</div>
 													<div class="arm_email_content_area_right">
+														<label class="arm_email_label">
+															<?php esc_html_e( 'Email Template', 'armember-membership' ); ?>
+														</label>
 														<div class="arm_constant_variables_wrapper arm_shortcode_wrapper" id="arm_shortcode_wrapper">
 															<div class="arm_shortcode_row">
 																<span class="arm_variable_code arm_standard_email_code" data-code="{ARM_ADMIN_EMAIL}" title="<?php esc_attr_e("Click to add shortcode in textarea", 'armember-membership'); ?>"><?php esc_html_e('Admin Email', 'armember-membership'); ?></span><i class="arm_email_helptip_icon armfa armfa-question-circle" title="<?php esc_attr_e("Displays the admin email that users can contact you at. You can configure it under Mail settings.", 'armember-membership'); ?>"></i>

@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 	global $wpdb, $ARMemberLite, $arm_global_settings ,$arm_common_lite;
 
     $arm_all_member_panel_settings = get_option('arm_member_panel_settings');

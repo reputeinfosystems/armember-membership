@@ -34,10 +34,6 @@ if ( ! defined( 'FS_METHOD' ) ) {
 	define( 'FS_METHOD', 'direct' );
 }
 
-/* Cornerstone */
-
-
-
 /* DEBUG LOG CONSTANTS */
 define( 'MEMBERSHIPLITE_DEBUG_LOG', false ); /* true - enable debug log (Default) & false - disable debug log */
 define( 'MEMBERSHIPLITE_DEBUG_LOG_TYPE', 'ARM_ALL' );
@@ -116,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '5.8';
+$arm_lite_version = '5.9';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -523,7 +519,7 @@ class ARMemberlite {
 					'arm_payment_log_event' => $arm_log_event,
 					'arm_payment_log_event_from' => $arm_log_event_from,
 					'arm_payment_log_status' => $arm_log_status,
-					'arm_payment_log_raw_data' => maybe_serialize(stripslashes_deep($arm_payment_log_raw_data)),
+					'arm_payment_log_raw_data' => maybe_serialize(wp_unslash($arm_payment_log_raw_data)),
 					'arm_payment_log_added_date' => current_time('mysql'),
 				);
 				
@@ -575,7 +571,7 @@ class ARMemberlite {
 			
 			$inserted_id = 0;
 			if($arm_log_event != 'email') {
-				$arm_payment_log_raw_data = maybe_serialize(stripslashes_deep($arm_payment_log_raw_data));
+				$arm_payment_log_raw_data = maybe_serialize(wp_unslash($arm_payment_log_raw_data));
 			}
 			if ( !empty($arm_is_log_enabled) ) 
 			{
@@ -719,6 +715,7 @@ class ARMemberlite {
 				'all_membership_plans' => $all_plan_values_and_labels,
 				'arm_gutenberg_block_restriction_feature' => $is_gutenberg_block_restriction_feature,
 				'arm_block_esc_html' => $arm_block_esc_html,
+				'apiVersion' => version_compare( get_bloginfo( 'version' ), '6.9', '>=' ) ? 3 : 2,
 			));
 
 			wp_register_style( 'armlite_gutenberg_style', MEMBERSHIPLITE_URL . '/css/arm_gutenberg_style.css', array(), $arm_lite_version );
@@ -790,7 +787,7 @@ class ARMemberlite {
 
 			if ( '' == $isAlreadyDismissed ) {
 				$class      = 'armember_notice_warning arm-news-notice';
-				$message    = $news_data['description'];
+				$message    = isset( $news_data['description'] ) ? sanitize_text_field( $news_data['description'] ) : '';
 				$start_date = strtotime( $news_data['start_date'] );
 				$end_date   = strtotime( $news_data['end_date'] );
 				$wpnonce = wp_create_nonce( 'arm_wp_nonce' );				
@@ -1665,6 +1662,8 @@ class ARMemberlite {
 
 		wp_register_script( 'arm_admin_model_js', MEMBERSHIPLITE_URL . '/js/arm_admin_model_js.js', array(), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
 
+		wp_register_script( 'arm_directory_templates_js', MEMBERSHIPLITE_URL . '/js/arm_directory_templates.js', array('jquery'), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
+
 		$arm_admin_page_name = ! empty( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : ''; //phpcs:ignore
 		if ( ! empty( $arm_admin_page_name ) && ( preg_match( '/arm_*/', $arm_admin_page_name ) || $arm_admin_page_name == 'badges_achievements' ) ) {
 			wp_deregister_script( 'datatables' );
@@ -2098,19 +2097,21 @@ class ARMemberlite {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'wp-hooks' );
 			/* Main Plugin Front-End JS */
-			wp_register_script( 'arm_common_js', MEMBERSHIPLITE_URL . '/js/arm_common.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
-			wp_register_script( 'arm_bpopup', MEMBERSHIPLITE_URL . '/js/jquery.bpopup.min.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
+			wp_register_script( 'arm_common_js', MEMBERSHIPLITE_URL . '/js/arm_common.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ,false); //phpcs:ignore
+			wp_register_script( 'arm_bpopup', MEMBERSHIPLITE_URL . '/js/jquery.bpopup.min.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ,false); //phpcs:ignore
 			/* Tooltip JS */
-			wp_register_script( 'arm_tipso_front', MEMBERSHIPLITE_URL . '/js/tipso.min.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
+			wp_register_script( 'arm_tipso_front', MEMBERSHIPLITE_URL . '/js/tipso.min.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ,false); //phpcs:ignore
 			/* File Upload JS */
-			wp_register_script( 'arm_file_upload_js', MEMBERSHIPLITE_URL . '/js/arm_file_upload_js.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
+			wp_register_script( 'arm_file_upload_js', MEMBERSHIPLITE_URL . '/js/arm_file_upload_js.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ,false); //phpcs:ignore
 
 			/* For bootstrap datetime picker js */
-			wp_register_script( 'arm_bootstrap_js', MEMBERSHIPLITE_URL . '/bootstrap/js/bootstrap.min.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
+			wp_register_script( 'arm_bootstrap_js', MEMBERSHIPLITE_URL . '/bootstrap/js/bootstrap.min.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ,false); //phpcs:ignore
 
-			wp_register_script( 'arm_bootstrap_datepicker_with_locale_js', MEMBERSHIPLITE_URL . '/bootstrap/js/bootstrap-datetimepicker-with-locale.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ); //phpcs:ignore
+			wp_register_script( 'arm_bootstrap_datepicker_with_locale_js', MEMBERSHIPLITE_URL . '/bootstrap/js/bootstrap-datetimepicker-with-locale.js', array( 'jquery' ), MEMBERSHIPLITE_VERSION ,false); //phpcs:ignore
 
 			wp_register_script('armlite_front_dashboard_js', MEMBERSHIPLITE_URL . '/js/arm_front_dashboard.js', array('jquery'), MEMBERSHIPLITE_VERSION,false);
+
+			wp_register_script( 'arm_directory_templates_js', MEMBERSHIPLITE_URL . '/js/arm_directory_templates.js', array('jquery'), MEMBERSHIPLITE_VERSION ,false); //phpcs:ignore
 
 			/* Enqueue Javascripts */
 			wp_enqueue_script( 'jquery-ui-core' );
@@ -2183,10 +2184,11 @@ class ARMemberlite {
 		if ( ! is_admin() ) {
 			$found_matches = array();
 			$pattern       = '\[(\[?)(arm.*)(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)';
+			$pattern_2     = '\[(\[?)(arm[\w-]*)(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)';
 			$posts         = $wp_query->posts;
 			if ( is_array( $posts ) ) {
 				foreach ( $posts as $post ) {
-					if ( preg_match_all( '/' . $pattern . '/s', $post->post_content, $matches ) > 0 ) {
+					if ( preg_match_all('/' . $pattern_2 . '/s', $post->post_content, $matches) > 0 || preg_match_all('/' . $pattern . '/s', $post->post_content, $matches) > 0 ) {
 						$found_matches[] = $matches;
 					}
 				}
@@ -2791,11 +2793,11 @@ class ARMemberlite {
             {
                 foreach($result as $res)
                 {
-                    $result_data = stripslashes_deep($res);
+                    $result_data = wp_unslash($res);
                 }
             }
             else {
-                $result_data = stripslashes_deep($result);
+                $result_data = wp_unslash($result);
             }
             if( (strpos($result_data, "ALL PRIVILEGES") !== false || strpos($result_data, "INDEX") !== false) && (strpos($result_data, "ON *.*") || strpos($result_data, "`".DB_NAME."`") ) )
             {
@@ -3622,40 +3624,6 @@ class ARMemberlite {
 				return;
 			}
 
-			$urltopost = 'https://www.armemberplugin.com/armember_addons/addon_whatsnew_list.php?arm_version=' . $arm_lite_version . '&arm_list_type=whatsnew_list';
-
-			$raw_response = wp_remote_post(
-				$urltopost,
-				array(
-					'method'      => 'POST',
-					'timeout'     => 45,
-					'redirection' => 5,
-					'httpversion' => '1.0',
-					'blocking'    => true,
-					'headers'     => array(),
-					// 'body' => array('plugins' => urlencode(serialize($installed_plugins)), 'wpversion' => $encodedval),
-					'cookies'     => array(),
-				)
-			);
-
-			$addon_list_html = '';
-			if ( is_wp_error( $raw_response ) || $raw_response['response']['code'] != 200 ) {
-				$addon_list_html .= "<div class='error_message' style='margin-top:100px; padding:20px;'>" . esc_html__( 'Add-On listing is currently unavailable. Please try again later.', 'armember-membership' ) . '</div>';
-			} else {
-				$addon_list                = json_decode( $raw_response['body'] );
-				$addon_count               = count( $addon_list );
-				$arm_whtsnew_wrapper_width = $addon_count * 141;
-				foreach ( $addon_list as $list ) {
-
-					$addon_list_html .= '<div class="arm_add_on">';
-					$addon_list_html .= '<a href="' . esc_url($list->addon_url) . '" target="_blank"><img src="' . esc_attr($list->addon_icon_url) . '" /></a>';//phpcs:ignore
-					$addon_list_html .= '<div class="arm_add_on_text">';
-					$addon_list_html .= '<a href="' . esc_url($list->addon_url) . '" target="_blank">' . $list->addon_name . '</a>';
-					$addon_list_html .= '</div>';
-					$addon_list_html .= '</div>';
-				}
-			}
-
 			$popupData  = '<div id="arm_update_note" class="popup_wrapper arm_update_note">';
 			$popupData .= '<span class="arm_top_bg_ellipse_1112">';
             $popupData .= '<span class="arm_top_bg_ellipse_1"></span>';
@@ -3773,13 +3741,11 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '5.8',
+			'update_version' => '5.9',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				"Updated: Oxygen builder integration support",
-				"Fixed: Added compatibility with Wordfence reCAPTCHA for login security",
-				"Fixed: Minor design issue of WP Editor and Password field hide/show icon.",
-				"Other minor bug fixes."
+				"Enhanced existing Member Directory template with an improved design and user experience.",
+				"Minor bug fixes and improvements.",
 			),
 			'show_major_title'    => 0,
 			'major_title'         => 'Major Changes',
@@ -4099,13 +4065,16 @@ class ARMemberlite {
 
 		$errors  = array();
 		$message = '';
-		if (!empty($arm_capabilities) &&  !current_user_can( $arm_capabilities ) ) {
-			$errors[]                = esc_html__( 'Sorry, You do not have permission to perform this action.', 'armember-membership' );
-			$return_array            = $arm_global_settings->handle_return_messages( $errors, $message );
-			$return_array['message'] = $return_array['msg'];
-
-			echo wp_json_encode( $return_array );
-			exit;
+		if($is_ajax_call==true || $is_ajax_call=='1' || $is_ajax_call==1)
+		{
+			if (!empty($arm_capabilities) &&  !current_user_can( $arm_capabilities ) ) {
+				$errors[]                = esc_html__( 'Sorry, You do not have permission to perform this action.', 'armember-membership' );
+				$return_array            = $arm_global_settings->handle_return_messages( $errors, $message );
+				$return_array['message'] = $return_array['msg'];
+	
+				echo wp_json_encode( $return_array );
+				exit;
+			}
 		}
 
 		$wpnonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field($_REQUEST['_wpnonce']) : ''; //phpcs:ignore
@@ -4564,7 +4533,7 @@ function arm_lite_plugin_api_call( $res, $action, $args ) {
 		if (is_wp_error($request)) {
 			$res = new WP_Error('plugins_api_failed', '<p>'.esc_html__('An Unexpected HTTP Error occurred during the API request.', 'armember-membership') . "</p> <p><a href='?' onclick='document.location.reload(); return false;>".esc_html__('Try again','armember-membership')."</a></p>", $request->get_error_message());
 		} else {
-			$res = unserialize($request['body']);
+			$res = unserialize($request['body']); //phpcs:ignore
 
 			if ($res === false)
 				$res = new WP_Error('plugins_api_failed', esc_html__('An unknown error occurred', 'armember-membership'), $request['body']);

@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 	class ARM_members_directory_Lite {
@@ -151,7 +153,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
                                           
                                             foreach($options['profile_fields'] as $k => $value ){
                                                 $arm_template_html .= "<div class='arm_profile_detail_row'>";
-                                                    $arm_template_html .= "<div class='arm_profile_detail_data'>".esc_html(stripslashes_deep($options['label'][$k]))."</div>";
+                                                    $arm_template_html .= "<div class='arm_profile_detail_data'>".esc_html(wp_unslash($options['label'][$k]))."</div>";
                                                     $arm_template_html .= "<div class='arm_profile_detail_data arm_data_value'>[arm_usermeta meta='".esc_attr($k)."']</div>";
                                                 $arm_template_html .= "</div>";
                                             }
@@ -214,6 +216,8 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 
 		function arm_update_user_meta_func() {
+			global $ARMemberLite;
+			$ARMemberLite->arm_check_user_cap( '', '1' ); //phpcs:ignore --Reason:Verifying nonce
 			$userID = get_current_user_id();
 			if($userID>0)
 			{
@@ -785,7 +789,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					}
 				}
 
-						$arm_template_html = stripslashes_deep( $template_data['arm_template_html'] );
+						$arm_template_html = wp_unslash( $template_data['arm_template_html'] );
 
 										$arm_template_html = preg_replace( '/(\[arm_usermeta\s+(.*?)\])/', '[arm_usermeta $2 id="' . $user_id . '"]', $arm_template_html );
 				if ( $hide_empty_profile_fields ) {
@@ -1147,8 +1151,19 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					if ( isset( $opts['template_options']['pagination'] ) && $opts['template_options']['pagination'] == 'infinite' ) {
 						if ( $total_users > ( $current_page * $per_page ) ) {
 							$next = $current_page + 1;
-							$paging   = '<a class="arm_directory_load_more_btn arm_directory_load_more_link" href="javascript:void(0)" data-page="' . esc_attr( $next ) . '" data-type="infinite">' . esc_html__( 'Load More', 'armember-membership' ) . '</a>';
-							$paging  .= '<img class="arm_load_more_loader" src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" alt="' . esc_html__( 'Load More', 'armember-membership' ) . '" style="display:none;">'; //phpcs:ignore 
+                            $paging = '<a class="arm_directory_load_more_btn arm_directory_load_more_link" href="javascript:void(0)" data-page="' . esc_attr( $next ) . '" data-type="infinite">
+                                        <span>' . esc_html__( 'Load More', 'ARMember' ) . '</span>
+                                        <svg class="arm_load_more_loader" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" aria-hidden="true" style="display:none;">
+                                            <path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z">
+                                                <animateTransform attributeName="transform"
+                                                                type="rotate"
+                                                                dur="0.8s"
+                                                                values="0 12 12;360 12 12"
+                                                                repeatCount="indefinite">
+                                                </animateTransform>
+                                            </path>
+                                        </svg>
+                                    </a>';
 							$content .= '<div class="arm_directory_paging_container arm_directory_paging_container_infinite">' . $paging . '</div>'; //phpcs:ignore
 						}
 					} else {
@@ -1157,20 +1172,31 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					}
 				} else {
 					$err_msg  = esc_html__( 'No Users Found.', 'armember-membership' );
-					$content .= '<div class="arm_directory_paging_container arm_directory_empty_list">' . esc_html($err_msg) . '</div>'; //phpcs:ignore
+					$content .= '<div class="arm_directory_paging_container arm_directory_empty_list">' . $this->arm_empty_directory_list_svg($err_msg) . '</div>'; //phpcs:ignore
 				}
 			} else {
 				if ( ! empty( $searchStr ) ) {
 					   $err_msg  = $arm_global_settings->common_message['arm_search_result_found'];
 					   $err_msg  = ( ! empty( $err_msg ) ) ? $err_msg : esc_html__( 'No Search Result Found.', 'armember-membership' );
-					   $content .= '<div class="arm_directory_paging_container arm_directory_empty_list">' . esc_html($err_msg) . '</div>'; //phpcs:ignore
+					   $content .= '<div class="arm_directory_paging_container arm_directory_empty_list">' . $this->arm_empty_directory_list_svg($err_msg) . '</div>'; //phpcs:ignore
 				} else {
 					$err_msg  = esc_html__( 'No Users Found.', 'armember-membership' );
-					$content .= '<div class="arm_directory_paging_container arm_directory_empty_list">' . esc_html($err_msg) . '</div>'; //phpcs:ignore
+					$content .= '<div class="arm_directory_paging_container arm_directory_empty_list">' . $this->arm_empty_directory_list_svg($err_msg) . '</div>'; //phpcs:ignore
 				}
 			}
+
 			return $content;
 		}
+
+		
+        function arm_empty_directory_list_svg($err_msg){
+
+            $arm_empty_directory_list_svg = "<div class='arm_no_result_div'>
+            <svg width='161' height='160' viewBox='0 0 221 220' fill='none' xmlns='http://www.w3.org/2000/svg'><rect class='arm-empty-data-svg-icon-background-color' width='160' height='160' transform='translate(0.5)' fill=''></rect><path class='arm-empty-data-svg-icon-color' d='M162.056 82C172.012 82 176.99 82.0004 180.793 83.9424C184.138 85.6506 186.858 88.3758 188.562 91.7285C190.5 95.54 190.5 100.53 190.5 110.509V151.491C190.5 161.47 190.5 166.46 188.562 170.271C186.859 173.624 184.138 176.35 180.793 178.058C176.99 180 172.012 180 162.056 180H58.9443C48.988 180 44.0099 180 40.207 178.058C36.8619 176.35 34.1419 173.624 32.4375 170.271C30.4998 166.46 30.5 161.47 30.5 151.491V110.509C30.5 100.53 30.4998 95.54 32.4375 91.7285C34.1419 88.3759 36.862 85.6506 40.207 83.9424C44.0099 82.0003 48.988 82 58.9443 82H92.5V97.5869C92.5001 108.227 101.348 117 112.172 117C118.478 117 124.407 113.92 128.172 108.88C130.619 105.52 131.843 101.32 131.843 97.2129C131.843 95.2532 130.243 93.6671 128.267 93.667C126.29 93.667 124.69 95.2531 124.689 97.2129C124.689 99.8262 123.843 102.627 122.337 104.773C119.984 108.04 116.125 110 112.172 110C105.301 110 99.6535 104.4 99.6533 97.5869V82H162.056Z' fill='currentColor' fill-opacity='0.2'></path><path class='arm-empty-data-svg-icon-color' d='M78.0537 56C85.3291 56 88.9673 56.0001 92.2383 57.3447C92.761 57.5596 93.2662 57.8048 93.7666 58.0869C92.9453 60.6203 92.5 63.3243 92.5 66.1338V82H58.9443C48.988 82 44.0099 82.0003 40.207 83.9424C36.862 85.6506 34.1419 88.3759 32.4375 91.7285C30.6 95.3428 30.5069 100.017 30.502 109H30.5V82.5C30.5 74.2688 30.4997 70.1529 31.8545 66.9062C33.6611 62.5775 37.1268 59.1378 41.4883 57.3447C44.7595 56 48.9065 56 57.2002 56H78.0537Z' fill='currentColor' fill-opacity='0.3'></path><path class='arm-empty-data-svg-icon-color' d='M162.055 82H144.266C137.678 82 132.69 75.9333 134.007 69.5867L136.831 48.2133C136.925 47.4667 137.584 47 138.149 47C138.525 47 138.807 47.0933 139.09 47.4667L146.243 55.4H159.985L166.95 47.3733C167.232 47.0933 167.608 46.9067 167.891 46.9067C168.456 46.9067 169.114 47.28 169.208 48.0267L172.314 69.7733C173.538 76.12 168.55 82 162.055 82ZM149.161 74.16C146.431 73.5067 142.102 73.5067 139.278 74.16C138.807 74.2533 138.525 74.72 138.619 75.1867C138.713 75.6533 139.09 75.9333 139.56 75.9333C139.655 75.9333 139.749 75.9333 139.749 75.9333C142.196 75.3733 146.243 75.3733 148.69 75.9333C149.161 76.0267 149.725 75.7467 149.82 75.28C149.914 74.8133 149.631 74.2533 149.161 74.16ZM165.632 74.16C162.902 73.5067 158.573 73.5067 155.749 74.16C155.279 74.2533 154.996 74.72 155.09 75.1867C155.184 75.6533 155.561 75.9333 156.032 75.9333C156.126 75.9333 156.22 75.9333 156.22 75.9333C158.667 75.3733 162.714 75.3733 165.161 75.9333C165.632 76.0267 166.197 75.7467 166.291 75.28C166.385 74.8133 166.103 74.2533 165.632 74.16ZM92.5 66.1333V78.5467V82V97.5867C92.5 108.227 101.347 117 112.171 117C118.477 117 124.407 113.92 128.172 108.88C130.619 105.52 131.843 101.32 131.843 97.2133C131.843 95.2533 130.242 93.6667 128.266 93.6667C126.289 93.6667 124.689 95.2533 124.689 97.2133C124.689 99.8267 123.842 102.627 122.336 104.773C119.983 108.04 116.124 110 112.171 110C105.3 110 99.6532 104.4 99.6532 97.5867V82H137.678C136.549 81.3467 135.513 80.4133 134.666 79.3867C132.313 76.4933 131.372 72.8533 132.125 69.2133L134.948 47.84C135.043 47.1867 135.419 46.6267 135.796 46.16C131.184 42.3333 125.254 40 118.76 40C104.265 40 92.5 51.6667 92.5 66.1333Z' fill='currentColor' fill-opacity='0.8'></path><path class='arm-empty-data-svg-icon-color' d='M187.999 31.0315V29.1704L195.057 18.9477V18.8598H188.636V16H199.389V17.9973L192.485 28.0835V28.1717H199.5V31.0315H187.999ZM178.956 36.0161V34.8119L183.523 28.1972V28.1403H179.368V26.2898H186.326V27.5822L181.858 34.1085V34.1657H186.398V36.0161H178.956ZM171.5 40V39.1242L174.822 34.3135V34.2721H171.8V32.9263H176.86V33.8663L173.611 38.6127V38.6542H176.912V40H171.5Z' fill='currentColor' fill-opacity='0.8'></path></svg>" . esc_html($err_msg) . "</div>";
+        
+            return $arm_empty_directory_list_svg;
+        }
+
 		function arm_directory_template_blocks( $template_data = array(), $user_data = array(), $args = array() ) {
 			 global $wpdb, $ARMemberLite,$arm_social_feature, $arm_member_forms, $arm_global_settings;
 			$template = '';
@@ -1262,7 +1288,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			}
 			$tempOptions   = $tempDetails['arm_options'];
 			$tempSlug      = $tempDetails['arm_slug'];
-			$template_name = !empty($tempDetails['arm_title']) ? stripslashes($tempDetails['arm_title']) : '';
+			$template_name = !empty($tempDetails['arm_title']) ? wp_unslash($tempDetails['arm_title']) : '';
 			$tempOptions   = shortcode_atts(
 				array(
 					'plans'                          => array(),
@@ -1372,7 +1398,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						$tempOptHtml                                    .= '<label>' . esc_html__( 'Directory Template Name', 'armember-membership' ) . '</label>';
 						$tempOptHtml                                    .= '</th>';
 						$tempOptHtml                                    .= '<td class="arm_basic_details_fields">';
-						$tempOptHtml                                    .= '<input type="text" name="arm_directory_template_name" class="arm_form_input_box arm_width_100_pct" value="' . esc_attr( stripslashes_deep($template_name) ) . '">';
+						$tempOptHtml                                    .= '<input type="text" name="arm_directory_template_name" class="arm_form_input_box arm_width_100_pct" value="' . esc_attr( wp_unslash($template_name) ) . '">';
 						$tempOptHtml                                    .= '</td>';
 						$tempOptHtml                                    .= '</tr>';
 										$tempOptions['show_admin_users'] = ( isset( $tempOptions['show_admin_users'] ) && $tempOptions['show_admin_users'] == 1 ) ? $tempOptions['show_admin_users'] : 0;
@@ -1473,7 +1499,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				$tempOptHtml .= '<select id="arm_template_plans" class="arm_chosen_selectbox arm_template_plans_select" name="template_options[plans][]" data-placeholder="' . esc_html__( 'Select Plan(s)..', 'armember-membership' ) . '" multiple="multiple">';
 				if ( ! empty( $subs_data ) ) {
 					foreach ( $subs_data as $sd ) {
-						$tempOptHtml .= '<option value="' . $sd['arm_subscription_plan_id'] . '" ' . ( in_array( $sd['arm_subscription_plan_id'], $tempPlans ) ? 'selected="selected"' : '' ) . '>' . stripslashes( $sd['arm_subscription_plan_name'] ) . '</option>';
+						$tempOptHtml .= '<option value="' . $sd['arm_subscription_plan_id'] . '" ' . ( in_array( $sd['arm_subscription_plan_id'], $tempPlans ) ? 'selected="selected"' : '' ) . '>' . wp_unslash( $sd['arm_subscription_plan_name'] ) . '</option>';
 					}
 				}
 				$tempOptHtml                          .= '</select>';
@@ -1487,7 +1513,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				$tempOptHtml                          .= '<th>' . esc_html__( 'No. Of Members Per Page', 'armember-membership' ) . '</th>';
 					$tempOptHtml                      .= '<td>';
 					$tempOptHtml                      .= '<div class="arm_temp_switch_style">';
-						$tempOptions['per_page_users'] = isset( $tempOptions['per_page_users'] ) ? $tempOptions['per_page_users'] : 10;
+						$tempOptions['per_page_users'] = isset( $tempOptions['per_page_users'] ) ? $tempOptions['per_page_users'] : 12;
 						$tempOptHtml                  .= '<input type="TEXT" name="template_options[per_page_users]" value="' . $tempOptions['per_page_users'] . '" id="arm_temp_per_page_users" onkeydown="javascript:return checkNumber(event)" style="width:70px;">';
 					$tempOptHtml                      .= '</div>';
 					$tempOptHtml                      .= '</td>';
@@ -2649,10 +2675,17 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				$borderRGB['r'] = ( ! empty( $borderRGB['r'] ) ) ? $borderRGB['r'] : 0;
 				$borderRGB['g'] = ( ! empty( $borderRGB['g'] ) ) ? $borderRGB['g'] : 0;
 				$borderRGB['b'] = ( ! empty( $borderRGB['b'] ) ) ? $borderRGB['b'] : 0;
+
 				$buttonColorRGB = $arm_member_forms->armHexToRGB($tempOptions['button_color']);
 				$buttonColorRGB['r'] = (!empty($buttonColorRGB['r'])) ? $buttonColorRGB['r'] : 0;
 				$buttonColorRGB['g'] = (!empty($buttonColorRGB['g'])) ? $buttonColorRGB['g'] : 0;
 				$buttonColorRGB['b'] = (!empty($buttonColorRGB['b'])) ? $buttonColorRGB['b'] : 0;
+
+				$subtitleColorRGB = $arm_member_forms->armHexToRGB($tempOptions['subtitle_color']);
+		                $subtitleColorRGB['r'] = (!empty($subtitleColorRGB['r'])) ? $subtitleColorRGB['r'] : 0;
+		                $subtitleColorRGB['g'] = (!empty($subtitleColorRGB['g'])) ? $subtitleColorRGB['g'] : 0;
+		                $subtitleColorRGB['b'] = (!empty($subtitleColorRGB['b'])) ? $subtitleColorRGB['b'] : 0;
+
 				$templateStyle = '';
 				if(empty($is_return))
 				{
@@ -2663,12 +2696,13 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					}
 				}
 
+				$arm_button_hover_color = $arm_member_forms->arm_darker_color($tempOptions['button_color'], 10);
+
 				$tempWrapperClass = ".arm_template_wrapper_{$tempID}";
 				$templateStyle   .= "
 					$tempWrapperClass .arm_profile_container .arm_profile_detail_text,
 					$tempWrapperClass .arm_profile_name_link,
-					$tempWrapperClass .arm_profile_name_link a,
-					$tempWrapperClass .arm_directory_container .arm_user_link{
+					$tempWrapperClass .arm_profile_name_link a{
 						color: {$tempOptions['title_color']} !important;
 						{$tempOptions['title_font']['font']}
 					}
@@ -2677,18 +2711,32 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
                         color: {$tempOptions['title_color']} !important;
                         {$tempOptions['title_font']['font']}
                     }
+
+					$tempWrapperClass.arm_template_wrapper .arm_directory_filter_select dt,
+					$tempWrapperClass.arm_template_wrapper .arm_directory_filter_select dd ul li:not(.hovered),
+					$tempWrapperClass.arm_template_wrapper .arm_directory_clear_btn.arm_directory_search_btn:hover,
+                    $tempWrapperClass.arm_template_wrapper .arm_directory_clear_btn.arm_directory_search_btn:active,
+                    $tempWrapperClass.arm_template_wrapper .arm_directory_clear_btn.arm_directory_search_btn:focus,
+					$tempWrapperClass.arm_template_wrapper_directorytemplate2 .arm_advance_sorting_filters_container dd ul li,
+					$tempWrapperClass.arm_template_wrapper .arm_directory_search_wrapper .arm_search_input_wrapper{
+                        background-color: rgba(".$subtitleColorRGB['r'].", ".$subtitleColorRGB['g'].", ".$subtitleColorRGB['b'].", 0.03) !important;
+                    }
+
+					$tempWrapperClass.arm_template_wrapper .arm_directory_paging_container.arm_directory_empty_list .arm_no_result_div svg path{
+                        fill: {$tempOptions['button_color']} !important;
+                    }
+
 					$tempWrapperClass .arm_profile_container .arm_profile_tabs{
 						background-color: {$tempOptions['tab_bg_color']} !important;
 					}
+					
 					$tempWrapperClass .arm_profile_container .arm_user_last_login_time,
 					$tempWrapperClass .arm_profile_container .arm_user_last_active_text,
 					$tempWrapperClass .arm_profile_container .arm_user_about_me{
 						color: {$tempOptions['subtitle_color']} !important;
 						{$tempOptions['subtitle_font']['font']}
 					}
-					$tempWrapperClass.arm_template_wrapper_directorytemplate3 .arm_user_link:before{
-						background-color: {$tempOptions['title_color']} !important;
-					}
+
 					$tempWrapperClass .arm_profile_picture_block .arm_user_avatar,
                     			$tempWrapperClass .arm_profile_picture_block_inner .arm_user_avatar{
 						
@@ -2699,13 +2747,43 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						
 						border-color: {$tempOptions['border_color']} !important;
 					}
+
+					$tempWrapperClass.arm_template_wrapper.arm_template_wrapper_directorytemplate2 .arm_directory_list_by_filters dl, 
+					$tempWrapperClass.arm_template_wrapper.arm_template_wrapper_directorytemplate2 .arm_advance_sorting_filter_button_container .arm_advance_sorting_filter_button,
+					$tempWrapperClass.arm_template_wrapper.arm_template_wrapper_directorytemplate2 .arm_advance_sorting_filter_button_container .arm_directory_filter_option,
+					$tempWrapperClass.arm_template_wrapper.arm_template_wrapper_directorytemplate2 .arm_directory_search_btn.arm_directory_clear_btn,
+					$tempWrapperClass arm_directory_container .arm_directory_filter_select dd {
+						background-color: {$tempOptions['button_font_color']} !important ;
+					}
+
+					$tempWrapperClass .arm_directory_container .arm_paging_wrapper .arm_page_numbers:not(.current){
+		                        background-color: {$tempOptions['button_color']};
+		                        border-color: {$tempOptions['button_color']};
+		                        color: {$tempOptions['button_font_color']};
+		                    }
+
+					$tempWrapperClass.arm_template_wrapper .arm_directory_paging_container_numeric .arm_paging_wrapper .arm_page_numbers:not(.current) svg path {
+						stroke: {$tempOptions['button_font_color']} !important;
+					}
+
+							$tempWrapperClass .arm_directory_container .arm_paging_wrapper .arm_page_numbers:not(.current):hover,
+		                    $tempWrapperClass .arm_directory_container .arm_paging_wrapper .arm_page_numbers:not(.current):focus,
+							$tempWrapperClass .arm_directory_search_btn:not(.arm_directory_clear_btn):focus,
+		                    $tempWrapperClass .arm_directory_search_btn:not(.arm_directory_clear_btn):hover {
+		                        background-color: {$arm_button_hover_color} !important;
+		                    }
                     
+					$tempWrapperClass .arm_directory_container .arm_user_link{
+						color: {$tempOptions['subtitle_color']} !important;
+						{$tempOptions['subtitle_font']['font']}
+					}
+
 					$tempWrapperClass .arm_directory_container .arm_user_desc_box,
 					$tempWrapperClass .arm_directory_container .arm_last_active_text,
 					$tempWrapperClass .arm_directory_container .arm_paging_wrapper .arm_paging_info,
 					$tempWrapperClass .arm_directory_container .arm_paging_wrapper .arm_page_numbers{
 						color: {$tempOptions['subtitle_color']} !important;
-						{$tempOptions['subtitle_font']['font']}
+						{$tempOptions['content_font']['font']}
 					}
 
 					$tempWrapperClass .arm_directory_container .arm_paging_wrapper .arm_page_numbers.current,
@@ -2717,14 +2795,112 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$tempWrapperClass .arm_directory_container .arm_paging_wrapper .arm_page_numbers.arm_next{
 						border-color: #FFF;
 					}
-					$tempWrapperClass .arm_directory_list_by_filters select,
-					$tempWrapperClass .arm_directory_list_of_filters label{
-                        {$tempOptions['subtitle_font']['font_family']}
-                        {$tempOptions['subtitle_font']['font_size']}
+
+					$tempWrapperClass.arm_template_wrapper .arm_search_input_wrapper svg.arm_search_group_icon path{
+						stroke:  {$tempOptions['subtitle_color']} !important;
 					}
-					$tempWrapperClass .arm_directory_list_of_filters label.arm_active{
-						color: {$tempOptions['button_color']} !important;
-						border-color: {$tempOptions['button_color']};
+
+					$tempWrapperClass .arm_directory_search_btn.arm_directory_clear_btn:hover i.arm_refresh_icon,
+					$tempWrapperClass .arm_directory_search_btn.arm_directory_clear_btn:focus i.arm_refresh_icon{
+						background-color: {$tempOptions['button_color']} !important;
+					}
+
+                    $tempWrapperClass.arm_template_wrapper .arm_advance_sorting_filter_button:focus svg path,
+                    $tempWrapperClass.arm_template_wrapper .arm_advance_sorting_filter_button:hover svg path{
+                        stroke: {$tempOptions['button_color']} !important;                    
+                    }
+
+                    $tempWrapperClass.arm_template_wrapper .arm_advance_sorting_filter_button svg path{
+                        stroke: {$tempOptions['subtitle_color']} !important;                    
+                    }
+
+					$tempWrapperClass.arm_template_wrapper .arm_search_input_wrapper:focus-within,
+					$tempWrapperClass.arm_template_wrapper .arm_search_input_wrapper:hover,
+					$tempWrapperClass.arm_template_wrapper .arm_search_input_wrapper:active,
+					$tempWrapperClass .arm_advance_sorting_filter_button_container .arm_advance_sorting_filter_button:hover,
+					$tempWrapperClass .arm_advance_sorting_filter_button_container .arm_advance_sorting_filter_button:focus,
+					$tempWrapperClass .arm_directory_search_btn.arm_directory_clear_btn:hover,
+					$tempWrapperClass .arm_directory_search_btn.arm_directory_clear_btn:focus,
+					$tempWrapperClass .arm_directory_container .arm_user_block:hover ,
+					$tempWrapperClass .arm_user_social_blocks .arm_social_prof_div:hover,
+					$tempWrapperClass .arm_directory_search_wrapper #arm_directory_search_input.arm_directory_search_box:hover,
+					$tempWrapperClass .arm_directory_search_wrapper #arm_directory_search_input.arm_directory_search_box:focus,
+					$tempWrapperClass .arm_directory_filter_select dt:hover,
+					$tempWrapperClass .arm_directory_filter_select dt:focus,
+					$tempWrapperClass .arm_directory_filter_select dt:active,
+					$tempWrapperClass .arm_directory_filter_select.arm-is-active,
+					$tempWrapperClass .arm_directory_filter_select.arm-is-active dd,
+					$tempWrapperClass .arm_directory_filter_select.arm-is-active dt{
+						outline: 0;
+						border-color: {$tempOptions['button_color']} !important;
+						box-shadow: none;
+					}
+
+
+					$tempWrapperClass.arm_template_wrapper input[type='text']:not(.arm_autocomplete, .arm_directory_search_box):focus,
+                    $tempWrapperClass.arm_template_wrapper .arm_search_input_wrapper:focus-within,
+                    $tempWrapperClass.arm_template_wrapper .arm_directory_filter_select dt:focus-within,
+                    $tempWrapperClass.arm_template_wrapper .arm_directory_filter_select dt:focus,
+                    $tempWrapperClass.arm_template_wrapper input[type='email']:focus{
+                        box-shadow: 0px 0px 0px 2px rgba(".$borderRGB['r'].", ".$borderRGB['g'].", ".$borderRGB['b'].", 0.2) !important;
+                        -webkit-box-shadow:  0px 0px 0px 2px rgba(".$borderRGB['r'].", ".$borderRGB['g'].", ".$borderRGB['b'].", 0.2) !important;
+                        -moz-box-shadow:  0px 0px 0px 2px rgba(".$borderRGB['r'].", ".$borderRGB['g'].", ".$borderRGB['b'].", 0.2) !important;
+                        -o-box-shadow:  0px 0px 0px 2px rgba(".$borderRGB['r'].", ".$borderRGB['g'].", ".$borderRGB['b'].", 0.2) !important;
+                    }
+
+					$tempWrapperClass .arm_directory_container .arm_user_block::after ,
+					$tempWrapperClass .arm_directory_container .arm_user_block::before {
+						background: {$tempOptions['button_color']} !important;
+					}
+					
+					$tempWrapperClass.arm_template_wrapper_directorytemplate2 .arm_directory_paging_container a.arm_directory_load_more_link:focus ,
+					$tempWrapperClass.arm_template_wrapper_directorytemplate2 .arm_directory_paging_container a.arm_directory_load_more_link:hover {
+						background: {$tempOptions['button_color']};
+						color: {$tempOptions['button_font_color']} !important;
+						border-color: transparent !important;
+					}
+					
+					$tempWrapperClass.arm_template_wrapper_directorytemplate2 .arm_advance_sorting_filters_container dd ul li:hover,
+					$tempWrapperClass.arm_template_wrapper_directorytemplate2 .arm_advance_sorting_filters_container dd ul li:focus,
+					$tempWrapperClass.arm_template_wrapper .arm_directory_filter_select dd ul li:focus,
+					$tempWrapperClass.arm_template_wrapper .arm_directory_filter_select dd ul li:hover,
+					$tempWrapperClass.arm_template_wrapper_directorytemplate2 .arm_directory_paging_container a.arm_directory_load_more_link:focus,
+					$tempWrapperClass .arm_directory_search_btn:not(.arm_directory_clear_btn),
+					$tempWrapperClass .arm_directory_filter_option:hover,
+					$tempWrapperClass .arm_directory_filter_option.hovered {
+						background-color: {$tempOptions['button_color']} !important;
+						border-color: {$tempOptions['button_color']} !important;
+						color: {$tempOptions['button_font_color']} !important;
+					}
+
+
+                    $tempWrapperClass .arm_social_prof_div.arm_social_field_tiktok:hover > a::before{
+                        background-color: {$tempOptions['button_color']} !important;
+                    }
+
+					$$tempWrapperClass .arm_advance_sorting_filter_button_container .arm_advance_sorting_filter_button svg path{
+						fill: {$tempOptions['subtitle_color']} !important;
+					}
+					$tempWrapperClass.arm_template_wrapper .arm_directory_search_btn.arm_directory_clear_btn{
+						color: {$tempOptions['subtitle_color']} !important;
+					}
+					
+
+					$tempWrapperClass .arm_no_result_div{
+						{$tempOptions['content_font']['font_family']} 
+					}
+
+					$tempWrapperClass .arm_directory_search_box,
+					$tempWrapperClass.arm_template_wrapper_directorytemplate2 .arm_advance_sorting_filters_container dd ul li,
+					$tempWrapperClass .arm_directory_search_wrapper #arm_directory_search_input.arm_directory_search_box,
+					$tempWrapperClass .arm_directory_filter_select,
+					$tempWrapperClass .arm_directory_filter_select dt,
+					$tempWrapperClass .arm_directory_filter_select dt span,
+					$tempWrapperClass .arm_directory_filter_select dt input.arm_autocomplete,
+					$tempWrapperClass .arm_directory_filter_select dd ul li{
+						color: {$tempOptions['subtitle_color']} !important;
+						{$tempOptions['content_font']['font_family']} 
+						{$tempOptions['content_font']['font_size']} 
 					}
 					$tempWrapperClass .arm_profile_tabs .arm_profile_tab_link{
 						background-color: {$tempOptions['tab_link_bg_color']} !important;
@@ -2743,7 +2919,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
                     {
 						color: {$tempOptions['content_font_color']} !important;
 					}
-		    $tempWrapperClass .arm_profile_tab_detail .arm_profile_detail_tbl tr td,
+		    		$tempWrapperClass .arm_profile_tab_detail .arm_profile_detail_tbl tr td,
                     $tempWrapperClass .arm_profile_tab_detail .arm_profile_detail_tbl .arm_profile_detail_row .arm_profile_detail_data{
                         {$tempOptions['content_font']['font']} 
                     }
@@ -2760,7 +2936,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						color: {$tempOptions['link_hover_color']} !important;
 					}
 					$tempWrapperClass .arm_directory_list_by_filters select:focus,
-					$tempWrapperClass .arm_directory_search_wrapper .arm_directory_search_box:focus{
+					$tempWrapperClass .arm_directory_search_wrapper #arm_directory_search_input.arm_directory_search_box:focus{
 						border-color: {$tempOptions['button_color']} !important;
 					}
 					$tempWrapperClass.arm_template_wrapper_directorytemplate3 .arm_directory_container .arm_view_profile_btn_wrapper a,
@@ -2771,18 +2947,20 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						color: {$tempOptions['button_font_color']} !important;
 						{$tempOptions['button_font']['font']}
 					}
-					$tempWrapperClass.arm_template_wrapper_directorytemplate4 .arm_directory_container .arm_user_link{
-						background-color: {$tempOptions['button_color']} !important;
-						
-					}
 					$tempWrapperClass .arm_directory_load_more_link{
 						color: {$tempOptions['link_color']} !important;
-						{$tempOptions['content_font']['font']}
+						{$tempOptions['button_font']['font']}
 					}
 					$tempWrapperClass .arm_directory_load_more_link:hover{
 						color: {$tempOptions['link_hover_color']} !important;
 					}
-					
+		                    $tempWrapperClass .arm_social_prof_div:hover{
+		                        background-color: rgba(".$borderRGB['r'].", ".$borderRGB['g'].", ".$borderRGB['b'].", 0.08) !important;
+		                    }
+							$tempWrapperClass .arm_user_social_blocks .arm_social_prof_div:hover a,
+		                    $tempWrapperClass .arm_directory_filter_select.arm-is-active i.armfa {
+		                        color: {$tempOptions['button_color']} !important;
+		                    }
 					$tempWrapperClass.arm_template_wrapper_directorytemplate2 .arm_user_block:hover{
 						box-shadow: 0px 0px 25px 0px rgba(" . $borderRGB['r'] . ', ' . $borderRGB['g'] . ', ' . $borderRGB['b'] . ', 0.15);
 						-webkit-box-shadow: 0px 0px 25px 0px rgba(' . $borderRGB['r'] . ', ' . $borderRGB['g'] . ', ' . $borderRGB['b'] . ', 0.15);
@@ -3013,7 +3191,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
                                           
                                             foreach($profileTemplateOptions['profile_fields'] as $k => $value ){
                                                 $arm_template_html .= "<div class='arm_profile_detail_row'>";
-                                                    $arm_template_html .= "<div class='arm_profile_detail_data'>".esc_html(stripslashes_deep($profileTemplateOptions['label'][$k]))."</div>";
+                                                    $arm_template_html .= "<div class='arm_profile_detail_data'>".esc_html(wp_unslash($profileTemplateOptions['label'][$k]))."</div>";
                                                     $arm_template_html .= "<div class='arm_profile_detail_data arm_data_value'>[arm_usermeta meta='".esc_attr($k)."']</div>";
                                                 $arm_template_html .= "</div>";
                                             }
@@ -3057,33 +3235,33 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 				'link_hover_color'     => '#005AEE',
 				'content_font_color'   => '#3E4857',
 				'title_font'           => array(
-					'font_family'     => 'Helvetica',
-					'font_size'       => '14',
-					'font_bold'       => '',
+					'font_family'     => 'inherit',
+					'font_size'       => '22',
+					'font_bold'       => '1',
 					'font_italic'     => '',
 					'font_decoration' => '',
 				),
 
 				'subtitle_font'        => array(
-					'font_family'     => 'Helvetica',
-					'font_size'       => '14',
-					'font_bold'       => '',
+					'font_family'     => 'inherit',
+					'font_size'       => '18',
+					'font_bold'       => '1',
 					'font_italic'     => '',
 					'font_decoration' => '',
 				),
 
 				'button_font'          => array(
-					'font_family'     => 'Helvetica',
+					'font_family'     => 'inherit',
 					'font_size'       => '14',
-					'font_bold'       => '',
+					'font_bold'       => '1',
 					'font_italic'     => '',
 					'font_decoration' => '',
 				),
 
 				'content_font'         => array(
-					'font_family'     => 'Helvetica',
-					'font_size'       => '16',
-					'font_bold'       => '',
+					'font_family'     => 'inherit',
+					'font_size'       => '14',
+					'font_bold'       => '1',
 					'font_italic'     => '',
 					'font_decoration' => '',
 				),
@@ -3091,7 +3269,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 				'show_joining'         => 1,
 				'searchbox'            => 1,
 				'sortbox'              => 1,
-				'per_page_users'       => 10,
+				'per_page_users'       => 12,
 				'pagination'           => 'infinite',
 				'arm_social_fields'    => array(
 					'facebook' => 'facebook',
@@ -3227,7 +3405,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 				$template_data .= $arm_profile_before_content_outside;
 
 				$template_data     .= "<div class='arm_profile_field_before_content_wrapper'>";
-					$template_data .= stripslashes_deep( $profile_before_content );
+					$template_data .= wp_unslash( $profile_before_content );
 				$template_data     .= '</div>';
 
 				$template_data     .= "<div class='arm_profile_tab_detail'>";
@@ -3237,10 +3415,10 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 							$template_data .= '<tbody>';
 				foreach ( $profile_fields_data['profile_fields'] as $meta_key => $meta_val ) {
 					if(!empty($profile_fields_data['label'][ $meta_key ])){
-						$profile_fields_data['label'][ $meta_key ] = stripslashes_deep($profile_fields_data['label'][ $meta_key ]);
+						$profile_fields_data['label'][ $meta_key ] = wp_unslash($profile_fields_data['label'][ $meta_key ]);
 					}
 					$template_data     .= "<tr id='" . esc_attr($meta_key) . "'>";
-						$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? stripslashes($profile_fields_data['default_values'][ $meta_key ]) : '';
+						$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? wp_unslash($profile_fields_data['default_values'][ $meta_key ]) : '';
 						$template_data .= '<td>' . esc_html($profile_fields_data['label'][ $meta_key ]) . '</td>';
 						$template_data .= '<td>' . esc_html($user_value) . '</td>';
 					$template_data     .= '</tr>';
@@ -3251,7 +3429,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 				$template_data             .= '</div>';
 
 				$template_data     .= "<div class='arm_profile_field_after_content_wrapper'>";
-					$template_data .= stripslashes_deep( $profile_after_content );
+					$template_data .= wp_unslash( $profile_after_content );
 				$template_data     .= '</div>';
 
 				$template_data .= $arm_profile_after_content_outside;
@@ -3334,7 +3512,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 				$template_data .= $arm_profile_before_content_outside;
 
 				$template_data     .= "<div class='arm_profile_field_before_content_wrapper'>";
-					$template_data .= stripslashes_deep( $profile_before_content );
+					$template_data .= wp_unslash( $profile_before_content );
 				$template_data     .= '</div>';
 
 				$template_data             .= "<div class='arm_profile_tab_detail'>";
@@ -3343,7 +3521,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 							$template_data .= '<tbody>';
 				foreach ( $profile_fields_data['profile_fields'] as $meta_key => $meta_val ) {
 					if(!empty($profile_fields_data['label'][ $meta_key ])){
-						$profile_fields_data['label'][ $meta_key ] = stripslashes_deep($profile_fields_data['label'][ $meta_key ]);
+						$profile_fields_data['label'][ $meta_key ] = wp_unslash($profile_fields_data['label'][ $meta_key ]);
 					}
 					$template_data     .= "<tr id='" . esc_attr($meta_key) . "'>";
 						$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? $profile_fields_data['default_values'][ $meta_key ] : '';
@@ -3357,7 +3535,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 				$template_data             .= '</div>';
 
 				$template_data     .= "<div class='arm_profile_field_after_content_wrapper'>";
-					$template_data .= stripslashes_deep( $profile_after_content );
+					$template_data .= wp_unslash( $profile_after_content );
 				$template_data     .= '</div>';
 
 				$template_data .= $arm_profile_after_content_outside;
@@ -3406,7 +3584,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 				$template_data .= $arm_profile_before_content_outside;
 
 				$template_data     .= "<div class='arm_profile_field_before_content_wrapper'>";
-					$template_data .= stripslashes_deep( $profile_before_content );
+					$template_data .= wp_unslash( $profile_before_content );
 				$template_data     .= '</div>';
 
 				$template_data     .= "<div class='arm_profile_tab_detail'>";
@@ -3416,7 +3594,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 							$template_data .= '<tbody>';
 							foreach ( $profile_fields_data['profile_fields'] as $meta_key => $meta_val ) {
 								if(!empty($profile_fields_data['label'][ $meta_key ])){
-									$profile_fields_data['label'][ $meta_key ] = stripslashes_deep($profile_fields_data['label'][ $meta_key ]);
+									$profile_fields_data['label'][ $meta_key ] = wp_unslash($profile_fields_data['label'][ $meta_key ]);
 								}
 								$template_data     .= "<tr id='" . esc_attr($meta_key) . "'>";
 									$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? $profile_fields_data['default_values'][ $meta_key ] : '';
@@ -3430,7 +3608,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 				$template_data             .= '</div>';
 
 				$template_data     .= "<div class='arm_profile_field_after_content_wrapper'>";
-					$template_data .= stripslashes_deep( $profile_after_content );
+					$template_data .= wp_unslash( $profile_after_content );
 				$template_data     .= '</div>';
 
 				$template_data .= $arm_profile_after_content_outside;
@@ -3465,7 +3643,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 						$template_data         .= $arm_profile_before_content_outside;
 
 					$template_data     .= "<div class='arm_profile_field_before_content_wrapper'>";
-						$template_data .= stripslashes_deep( $profile_before_content );
+						$template_data .= wp_unslash( $profile_before_content );
 					$template_data     .= '</div>';
 
 					$template_data             .= "<div class='arm_profile_tab_detail'>";
@@ -3474,7 +3652,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 								$template_data .= '<tbody>';
 				foreach ( $profile_fields_data['profile_fields'] as $meta_key => $meta_val ) {
 					if(!empty($profile_fields_data['label'][ $meta_key ])){
-						$profile_fields_data['label'][ $meta_key ] = stripslashes_deep($profile_fields_data['label'][ $meta_key ]);
+						$profile_fields_data['label'][ $meta_key ] = wp_unslash($profile_fields_data['label'][ $meta_key ]);
 					}
 					$template_data     .= "<tr id='" . esc_attr($meta_key) . "'>";
 						$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? $profile_fields_data['default_values'][ $meta_key ] : '';
@@ -3488,7 +3666,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 					$template_data             .= '</div>';
 
 					$template_data     .= "<div class='arm_profile_field_after_content_wrapper'>";
-						$template_data .= stripslashes_deep( $profile_after_content );
+						$template_data .= wp_unslash( $profile_after_content );
 					$template_data     .= '</div>';
 
 						$template_data .= $arm_profile_after_content_outside;
@@ -3542,7 +3720,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 				$template_data .= "<div class='arm_profile_tab_detail_wrapper'>";
 					$template_data .= "<div class='arm_profile_tab_detail'>";
 					$template_data .= "<div class='arm_profile_field_before_content_wrapper'>";
-					$template_data .= stripslashes_deep($profile_before_content);
+					$template_data .= wp_unslash($profile_before_content);
 				$template_data .= "</div>";
 						$template_data .= "<div class='arm_general_info_container'>";
 							$template_data .= "<span class='arm_profile_detail_text'>".esc_html__('Personal Details','armember-membership').' </span>';
@@ -3552,7 +3730,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 								$template_data .= '<tbody>';
 								foreach ( $profile_fields_data['profile_fields'] as $meta_key => $meta_val ) {
 									if(!empty($profile_fields_data['label'][ $meta_key ])){
-										$profile_fields_data['label'][ $meta_key ] = stripslashes_deep($profile_fields_data['label'][ $meta_key ]);
+										$profile_fields_data['label'][ $meta_key ] = wp_unslash($profile_fields_data['label'][ $meta_key ]);
 									}
 									$template_data     .= "<tr id='" . esc_attr($meta_key) . "'>";
 										$user_value     = isset( $profile_fields_data['default_values'][ $meta_key ] ) ? $profile_fields_data['default_values'][ $meta_key ] : '';
@@ -3565,7 +3743,7 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 								$template_data .= "</div>";
 							$template_data .= "</div>";
 							$template_data .= "<div class='arm_profile_field_after_content_wrapper'>";
-							$template_data .= stripslashes_deep($profile_after_content);
+							$template_data .= wp_unslash($profile_after_content);
 						$template_data .= "</div>";
 						$template_data .= "</div>";
 					$template_data .= "</div>"; 

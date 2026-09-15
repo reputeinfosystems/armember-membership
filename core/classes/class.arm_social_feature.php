@@ -1,4 +1,5 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
 
 if ( ! class_exists( 'ARM_social_feature_Lite' ) ) {
 
@@ -12,9 +13,6 @@ if ( ! class_exists( 'ARM_social_feature_Lite' ) ) {
 			global $wpdb, $ARMemberLite, $arm_slugs;
 			$is_social_feature     = get_option( 'arm_is_social_feature', 0 );
 			$this->isSocialFeature = ( $is_social_feature == '1' ) ? true : false;
-
-			//add_action( 'wp_ajax_arm_update_social_settings', array( $this, 'arm_update_social_settings_func' ) );
-			add_action( 'wp_ajax_arm_update_social_network_from_form', array( $this, 'arm_update_social_network_from_form_func' ) );
 
 			add_filter( 'plugins_api_args', array( $this, 'arm_plugin_api_args' ), 100000, 2 );
 			add_filter( 'plugins_api', array( $this, 'arm_plugin_api' ), 100000, 3 );
@@ -92,70 +90,7 @@ if ( ! class_exists( 'ARM_social_feature_Lite' ) ) {
 			}
 			$active_opts = apply_filters( 'arm_get_active_social_options', $active_opts );
 			return $active_opts;
-		}
-
-		/* function arm_update_social_settings_func() {
-			global $wp, $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings;
-			$post_data = $_POST; //phpcs:ignore
-			if ( isset( $post_data['s_action'] ) && $post_data['s_action'] == 'arm_update_social_settings' ) {
-				$social_settings            = $post_data['arm_social_settings'];
-				$social_settings            = arm_array_map( $social_settings );
-				$new_social_settings_result = $social_settings;
-				update_option( 'arm_social_settings', $new_social_settings_result );
-				$response = array(
-					'type' => 'success',
-					'msg'  => esc_html__( 'Social Setting(s) has been Saved Successfully.', 'armember-membership' ),
-				);
-			} else {
-				$response = array(
-					'type' => 'error',
-					'msg'  => esc_html__( 'There is a error while updating settings, please try again.', 'armember-membership' ),
-				);
-			}
-			echo arm_pattern_json_encode( $response );
-			die();
-		} */
-
-		function arm_update_social_network_from_form_func() {
-			$response = array(
-				'type'         => 'error',
-				'msg'          => esc_html__( 'Failed to update the settings. Please try again.', 'armember-membership' ),
-				'old_settings' => '',
-			);
-			global $wp, $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings;
-			if ( isset( $_POST['action'] ) && $_POST['action'] == 'arm_update_social_network_from_form' ) { //phpcs:ignore
-				$socialOptions = isset( $_POST['arm_social_settings']['options'] ) ? array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST['arm_social_settings']['options'] ) : array(); //phpcs:ignore
-				if ( ! empty( $socialOptions ) ) {
-					foreach ( $socialOptions as $snk => $snv ) {
-						if ( ! empty( $snv ) ) {
-							$icons = get_option( 'arm_social_icons_' . $snk, array() );
-							$icons = arm_maybe_unserialize( $icons );
-							if ( ! empty( $snv['custom_icon'] ) ) {
-								foreach ( $snv['custom_icon'] as $custom_icon ) {
-									$baseName = basename( $custom_icon );
-									if ( isset( $snv['icon'] ) && $snv['icon'] == 'custom' ) {
-										$snv['icon'] = $baseName;
-									}
-									$icons[ $baseName ] = $custom_icon;
-									update_option( 'arm_social_icons_' . $snk, $icons );
-								}
-							}
-						}
-					}
-				}
-				$response = array(
-					'type'         => 'success',
-					'msg'          => esc_html__( 'Social setting(s) have been saved successfully.', 'armember-membership' ),
-					'old_settings' => maybe_serialize( $socialOptions ),
-				);
-			}
-			echo arm_pattern_json_encode( $response ); //phpcs:ignore
-			die();
-		}
-
-
-
-
+		}	
 
 		function arm_get_user_id_by_meta( $meta_key = '', $meta_value = '' ) {
 			global $wp, $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_member_forms;
@@ -542,7 +477,7 @@ $arm_social_feature = new ARM_social_feature_Lite();
 if ( ! function_exists( 'wp_unslash' ) ) {
 
 	function wp_unslash( $value ) {
-		return stripslashes_deep( $value );
+		return wp_unslash( $value );
 	}
 }
 

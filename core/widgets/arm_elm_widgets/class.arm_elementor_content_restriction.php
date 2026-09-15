@@ -1,8 +1,9 @@
 <?php
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
 
 use Elementor\Controls_Manager;
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class ARM_Elementor_Content_Restriction extends ARM_Elementor {
 	protected function content_restriction() {

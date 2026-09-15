@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 
 	class ARM_growth_plugin_Lite {
@@ -482,13 +484,13 @@ if ( ! class_exists( 'ARM_growth_plugin_Lite' ) ) {
 			$raw_response = wp_remote_post( $arm_api_url, $request_string );
 		
 			if( !is_wp_error( $raw_response ) && ( $raw_response['response']['code'] == 200 ) ){
-				$response = @unserialize( $raw_response['body'] );
+				$response = @unserialize( $raw_response['body'], array( 'allowed_classes' => false ) ); //phpcs:ignore --Reason ARM-10: block PHP object injection on remote body
 			}
 			
 			
 			if( isset( $response['access_request'] ) && !empty( $response['access_request'] ) && 'success' == $response['access_request'] ){
 				if( isset( $response['access_package'] ) && !empty( $response['access_package'] ) ){
-					$update_package = @unserialize( $response['access_package'] );
+					$update_package = @unserialize( $response['access_package'], array( 'allowed_classes' => false ) ); //phpcs:ignore --Reason ARM-10: block PHP object injection on remote body
 					if( isset( $update_package ) && is_array( $update_package ) && !empty( $update_package ) ){
 						$version = $update_package['version'];
 						

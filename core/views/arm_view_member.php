@@ -1,4 +1,7 @@
-<?php
+<?php 
+
+if(! defined('ABSPATH')) exit;
+
 global $wp, $arm_access_rules, $arm_global_settings, $arm_crons, $wpdb, $wp_roles, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_global_settings, $arm_email_settings, $arm_member_forms, $arm_subscription_plans, $arm_payment_gateways, $arm_social_feature, $arm_transaction, $arm_members_badges, $arm_members_activity,$arm_pay_per_post_feature,$arm_common_lite;
 
 $allRoles = $arm_global_settings->arm_get_all_roles();
@@ -389,7 +392,7 @@ if(!empty($user_id))
 								<td class="arm-form-table-content">'; 
 								if (!empty($user_arm_form_id) && $user_arm_form_id != 0) {
 									if (!empty($userRegForm)) {
-										$popup_content .= strip_tags(stripslashes($userRegForm['arm_form_label'])) . "<em> (Form ID: <b>$user_arm_form_id</b>)</em>"; //phpcs:ignore
+										$popup_content .= strip_tags(wp_unslash($userRegForm['arm_form_label'])) . "<em> (Form ID: <b>$user_arm_form_id</b>)</em>"; //phpcs:ignore
 									} else {
 										$popup_content .= "--";
 									}

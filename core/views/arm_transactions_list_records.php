@@ -1,4 +1,7 @@
-<?php
+<?php 
+
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_global_settings,  $arm_payment_gateways, $arm_subscription_plans, $arm_transaction,$arm_common_lite,$arm_version;
 $posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST); //phpcs:ignore
 $payment_gateways             = $arm_payment_gateways->arm_get_all_payment_gateways();
@@ -171,7 +174,7 @@ if(isset($posted_data["arm_export_phistory"]) && $posted_data["arm_export_phisto
             $tmp["Last_Name"] = $row["arm_last_name"];
             $tmp["User"] = $row["arm_user_login"];
             $tmp["User Email"] = $row["arm_user_email"];
-            $tmp["Membership"] = !empty($row["arm_subscription_plan_name"]) ? stripslashes_deep($row["arm_subscription_plan_name"]) : '';
+            $tmp["Membership"] = !empty($row["arm_subscription_plan_name"]) ? wp_unslash($row["arm_subscription_plan_name"]) : '';
             $tmp["Gateway"] = $row["arm_payment_gateway"] == "" ? esc_html__('Manual', 'armember-membership') : $arm_payment_gateways->arm_gateway_name_by_key($row["arm_payment_gateway"]);
             $tmp["Payment_Type"] = "";
             $tmp["Payer_Email"] = $row["arm_payer_email"];

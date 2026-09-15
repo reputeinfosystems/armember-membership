@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
     global $arm_member_forms,$arm_common_lite,$ARMemberLite,$arm_global_settings,$wpdb,$wp,$ARMemberLiteAllowedHTMLTagsArray,$arm_pay_per_post_feature,$arm_lite_members_activity;
 
     $arm_lite_allowed_tab_id = ['arm_member_subscription','arm_transaction','arm_edit_profile','arm_close_account','arm_change_password'];
@@ -297,7 +299,7 @@
         color: <?php echo $title_text_color;?>;
     }
     .arm-panel-data-container table.arm_user_current_membership_list_table td,
-    .arm-panel-container_main:not(.arm-tablet) .arm-panel-data-container table.arm_user_transaction_list_table tr:not(.arm_expanded) td:not(.arm_no_plan){
+    .arm-panel-container_main:not(.arm-tablet) .arm-panel-data-container table.arm_user_transaction_list_table tr:not(.arm_expanded) td:not(.arm_no_plan, .arm_cm_plan_action_btn_container){
         border: 0 !important;
         border-bottom: 1px solid <?php echo $border_color;?> !important;
         box-shadow: none !important;
@@ -358,8 +360,8 @@
         font-family: <?php echo $frontFontVal?> !important;
     }
 
-    .arm-panel-container_main:not(.arm-tablet) .arm_shortcode_grid_list_item:hover td:not(.arm_no_plan,.arm_current_membership_cancelled_row),
-    .arm-panel-container_main:not(.arm-tablet) .arm_expanded_row td,
+    .arm-panel-container_main:not(.arm-tablet) .arm_shortcode_grid_list_item:hover td:not(.arm_no_plan,.arm_current_membership_cancelled_row, .arm_shortcode_action_container),
+    .arm-panel-container_main:not(.arm-tablet) .arm_expanded_row td:not(.arm_shortcode_action_container),
     .arm-panel-container_main.arm-tablet .arm_expanded_row{
         background: <?php echo $content_overlayed_color;?> !important;
     }

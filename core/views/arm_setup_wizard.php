@@ -1,6 +1,12 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 global $arm_lite_members_activity,$check_sorting,$ARMemberLite;
-$arm_get_started_data = wp_remote_get('https://www.armemberplugin.com/?arm_get_started_wizard=1');
+$args = array(
+	'timeout' => 500,
+	'method' => 'GET',
+);
+$arm_get_started_data = wp_remote_get('https://www.armemberplugin.com/?arm_get_started_wizard=1',$args);
 $arm_show_default_content = 1;
 if(!is_wp_error($arm_get_started_data))
 {
@@ -895,7 +901,7 @@ echo apply_filters('arm_setup_wizard_license_section',$arm_setup_wizard_license_
 							<?php
 								if (!empty($rule_records)){
 									foreach ($rule_records as $rules_page) {
-										?><option class="arm_message_selectbox_op" value="<?php echo esc_attr($rules_page['id']); ?>"><?php echo esc_html(stripslashes($rules_page['title']));?></option><?php
+										?><option class="arm_message_selectbox_op" value="<?php echo esc_attr($rules_page['id']); ?>"><?php echo esc_html(wp_unslash($rules_page['title']));?></option><?php
 									}
 								}
 								else{

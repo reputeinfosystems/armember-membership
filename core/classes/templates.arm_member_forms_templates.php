@@ -1,4 +1,5 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
 
 global $ARMemberLite, $arm_global_settings, $arm_social_feature, $wpdb, $arm_lite_errors;
 

@@ -1,4 +1,5 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
 
 global $ARMemberLite, $arm_lite_ajaxurl, $arm_membership_setup, $ARMemberLiteAllowedHTMLTagsArray;
 $setupData = isset( $_REQUEST['setup_data'] ) ? array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_REQUEST['setup_data'] )  : array(); //phpcs:ignore

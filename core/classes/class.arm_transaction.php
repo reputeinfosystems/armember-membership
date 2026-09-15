@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 	class ARM_transaction_Lite {
 
@@ -143,13 +145,13 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 									<tr>
 																			<?php
 																			if ( $log_detail['arm_payment_gateway'] == 'bank_transfer' ) :
-																					  $transaction_id_field_label = ! empty( $bank_transfer_gateways_opts['transaction_id_label'] ) ? stripslashes( $bank_transfer_gateways_opts['transaction_id_label'] ) : esc_html__( 'Transaction ID', 'armember-membership' );
+																					  $transaction_id_field_label = ! empty( $bank_transfer_gateways_opts['transaction_id_label'] ) ? wp_unslash( $bank_transfer_gateways_opts['transaction_id_label'] ) : esc_html__( 'Transaction ID', 'armember-membership' );
 																				?>
 										<th><?php echo esc_html($transaction_id_field_label); ?></th>
 																			<?php else : ?>
 																				<th><?php esc_html_e( 'Transaction ID', 'armember-membership' ); ?></th>
 																			<?php endif; ?>
-										<td><?php echo ( !empty( $log_detail['arm_transaction_id'] ) ) ? esc_html(stripslashes($log_detail['arm_transaction_id'])) : esc_html__( 'Manual', 'armember-membership' ); //phpcs:ignore ?></td>
+										<td><?php echo ( !empty( $log_detail['arm_transaction_id'] ) ) ? esc_html(wp_unslash($log_detail['arm_transaction_id'])) : esc_html__( 'Manual', 'armember-membership' ); //phpcs:ignore ?></td>
 									</tr>
 									<?php if ( ! empty( $log_detail['arm_token'] ) ) : ?>
 									<tr>
@@ -237,27 +239,27 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 									
 									<?php
 									if ( $log_detail['arm_payment_gateway'] == 'bank_transfer' ) :
-										$bank_name_field_label       = ! empty( $bank_transfer_gateways_opts['bank_name_label'] ) ? stripslashes( $bank_transfer_gateways_opts['bank_name_label'] ) : esc_html__( 'Bank Name', 'armember-membership' );
-										$account_name_field_label    = ! empty( $bank_transfer_gateways_opts['account_name_label'] ) ? stripslashes( $bank_transfer_gateways_opts['account_name_label'] ) : esc_html__( 'Account Holder Name', 'armember-membership' );
-										$additional_info_field_label = ! empty( $bank_transfer_gateways_opts['additional_info_label'] ) ? stripslashes( $bank_transfer_gateways_opts['additional_info_label'] ) : esc_html__( 'Additional Note', 'armember-membership' );
-										$transfer_mode_field_label   = ! empty( $bank_transfer_gateways_opts['transfer_mode_label'] ) ? stripslashes( $bank_transfer_gateways_opts['transfer_mode_label'] ) : esc_html__( 'Payment Mode', 'armember-membership' );
+										$bank_name_field_label       = ! empty( $bank_transfer_gateways_opts['bank_name_label'] ) ? wp_unslash( $bank_transfer_gateways_opts['bank_name_label'] ) : esc_html__( 'Bank Name', 'armember-membership' );
+										$account_name_field_label    = ! empty( $bank_transfer_gateways_opts['account_name_label'] ) ? wp_unslash( $bank_transfer_gateways_opts['account_name_label'] ) : esc_html__( 'Account Holder Name', 'armember-membership' );
+										$additional_info_field_label = ! empty( $bank_transfer_gateways_opts['additional_info_label'] ) ? wp_unslash( $bank_transfer_gateways_opts['additional_info_label'] ) : esc_html__( 'Additional Note', 'armember-membership' );
+										$transfer_mode_field_label   = ! empty( $bank_transfer_gateways_opts['transfer_mode_label'] ) ? wp_unslash( $bank_transfer_gateways_opts['transfer_mode_label'] ) : esc_html__( 'Payment Mode', 'armember-membership' );
 										?>
 										<?php if ( isset( $log_detail['arm_bank_name'] ) && ! empty( $log_detail['arm_bank_name'] ) ) : ?>
 											<tr>
 												<th><?php echo esc_html($bank_name_field_label); ?></th>
-												<td><?php echo esc_html(stripslashes($log_detail['arm_bank_name'])); ?></td>
+												<td><?php echo esc_html(wp_unslash($log_detail['arm_bank_name'])); ?></td>
 											</tr>
 										<?php endif; ?>
 										<?php if ( isset( $log_detail['arm_account_name'] ) && ! empty( $log_detail['arm_account_name'] ) ) : ?>
 											<tr>
 												<th><?php echo esc_html($account_name_field_label); ?></th>
-												<td><?php echo esc_html(stripslashes($log_detail['arm_account_name'])); ?></td>
+												<td><?php echo esc_html(wp_unslash($log_detail['arm_account_name'])); ?></td>
 											</tr>
 										<?php endif; ?>
 										<?php if ( isset( $log_detail['arm_additional_info'] ) && ! empty( $log_detail['arm_additional_info'] ) ) : ?>
 											<tr>
 												<th><?php echo esc_html($additional_info_field_label); ?></th>
-												<td><?php echo nl2br( esc_html(stripslashes($log_detail['arm_additional_info']) )); ?></td>
+												<td><?php echo nl2br( esc_html(wp_unslash($log_detail['arm_additional_info']) )); ?></td>
 											</tr>
 										<?php endif; ?>
 										<?php if ( isset( $log_detail['arm_payment_transfer_mode'] ) && ! empty( $log_detail['arm_payment_transfer_mode'] ) ) : ?>
@@ -270,7 +272,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 									<?php if ( $log_detail['arm_payment_gateway'] == 'manual' && ! empty( $extra_vars['note'] ) ) : ?>
 									<tr>
 										<th><?php esc_html_e( 'Note', 'armember-membership' ); ?></th>
-										<td><?php echo nl2br( stripslashes( esc_html($extra_vars['note'] )) ); //phpcs:ignore ?></td>
+										<td><?php echo nl2br( wp_unslash( esc_html($extra_vars['note'] )) ); //phpcs:ignore ?></td>
 									</tr>
 									<?php endif; ?>
 									<tr>
@@ -305,7 +307,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 
 				$log_detail = apply_filters('arm_filter_preview_log_details', $log_detail, $log_id, $_POST);//phpcs:ignore
 
-				$transaction_id = (!empty($log_detail['arm_transaction_id'])) ? stripslashes($log_detail['arm_transaction_id']) : esc_html__('Manual', 'armember-membership'); 
+				$transaction_id = (!empty($log_detail['arm_transaction_id'])) ? wp_unslash($log_detail['arm_transaction_id']) : esc_html__('Manual', 'armember-membership'); 
 
 				$plan_id = (!empty($log_detail['arm_plan_id'])) ? $arm_subscription_plans->arm_get_plan_name_by_id($log_detail['arm_plan_id']): '--';
 
@@ -363,7 +365,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 									<?php
 										if ($log_detail['arm_payment_gateway'] == "bank_transfer")
 										{
-											$transaction_id_field_label = !empty($bank_transfer_gateways_opts['transaction_id_label']) ? stripslashes($bank_transfer_gateways_opts['transaction_id_label']) : esc_html__('Transaction ID', 'armember-membership');
+											$transaction_id_field_label = !empty($bank_transfer_gateways_opts['transaction_id_label']) ? wp_unslash($bank_transfer_gateways_opts['transaction_id_label']) : esc_html__('Transaction ID', 'armember-membership');
 									?>
 											<th><?php echo esc_html($transaction_id_field_label); ?></th>
 									<?php
@@ -477,27 +479,27 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 								
 								<?php endif;?>
 								<?php if ($log_detail['arm_payment_gateway'] == "bank_transfer"):
-									$bank_name_field_label = !empty($bank_transfer_gateways_opts['bank_name_label']) ? stripslashes($bank_transfer_gateways_opts['bank_name_label']) : esc_html__('Bank Name', 'armember-membership');
-									$account_name_field_label = !empty($bank_transfer_gateways_opts['account_name_label']) ? stripslashes($bank_transfer_gateways_opts['account_name_label']) : esc_html__('Account Holder Name', 'armember-membership');
-									$additional_info_field_label = !empty($bank_transfer_gateways_opts['additional_info_label']) ? stripslashes($bank_transfer_gateways_opts['additional_info_label']) : esc_html__('Additional Note', 'armember-membership');
-									$transfer_mode_field_label = !empty($bank_transfer_gateways_opts['transfer_mode_label']) ? stripslashes($bank_transfer_gateways_opts['transfer_mode_label']) : esc_html__('Payment Mode', 'armember-membership');
+									$bank_name_field_label = !empty($bank_transfer_gateways_opts['bank_name_label']) ? wp_unslash($bank_transfer_gateways_opts['bank_name_label']) : esc_html__('Bank Name', 'armember-membership');
+									$account_name_field_label = !empty($bank_transfer_gateways_opts['account_name_label']) ? wp_unslash($bank_transfer_gateways_opts['account_name_label']) : esc_html__('Account Holder Name', 'armember-membership');
+									$additional_info_field_label = !empty($bank_transfer_gateways_opts['additional_info_label']) ? wp_unslash($bank_transfer_gateways_opts['additional_info_label']) : esc_html__('Additional Note', 'armember-membership');
+									$transfer_mode_field_label = !empty($bank_transfer_gateways_opts['transfer_mode_label']) ? wp_unslash($bank_transfer_gateways_opts['transfer_mode_label']) : esc_html__('Payment Mode', 'armember-membership');
 									?>
 									<?php if (isset($log_detail['arm_bank_name']) && !empty($log_detail['arm_bank_name'])): ?>
 										<tr>
 											<th><?php echo esc_html($bank_name_field_label);?></th>
-											<td><?php echo esc_html(stripslashes($log_detail['arm_bank_name']));?></td>
+											<td><?php echo esc_html(wp_unslash($log_detail['arm_bank_name']));?></td>
 										</tr>
 									<?php endif;?>
 									<?php if (isset($log_detail['arm_account_name']) && !empty($log_detail['arm_account_name'])): ?>
 										<tr>
 											<th><?php echo esc_html($account_name_field_label);?></th>
-											<td><?php echo esc_html(stripslashes($log_detail['arm_account_name']));?></td>
+											<td><?php echo esc_html(wp_unslash($log_detail['arm_account_name']));?></td>
 										</tr>
 									<?php endif;?>
 									<?php if (isset($log_detail['arm_additional_info']) && !empty($log_detail['arm_additional_info'])): ?>
 										<tr>
 											<th><?php echo esc_html($additional_info_field_label);?></th>
-											<td><?php $additional_info = nl2br(stripslashes($log_detail['arm_additional_info'])); echo esc_html($additional_info);?></td>
+											<td><?php $additional_info = nl2br(wp_unslash($log_detail['arm_additional_info'])); echo esc_html($additional_info);?></td>
 										</tr>
 									<?php endif;?>
 									<?php if (isset($log_detail['arm_payment_transfer_mode']) && !empty($log_detail['arm_payment_transfer_mode'])): ?>
@@ -510,7 +512,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 								<?php if ($log_detail['arm_payment_gateway'] == "manual" && !empty($extra_vars['note'])): ?>
 								<tr>
 									<th><?php esc_html_e('Note','armember-membership' );?></th>
-									<td><?php $transaction_note= nl2br(stripslashes($extra_vars['note'])); echo esc_html($transaction_note);?></td>
+									<td><?php $transaction_note= nl2br(wp_unslash($extra_vars['note'])); echo esc_html($transaction_note);?></td>
 								</tr>
 								<?php endif;?>
 								<tr>
@@ -737,19 +739,8 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					break;
 				default:
 					break;
-			}
-			$coupon_code = ! empty( $log_data['arm_coupon_code'] ) ? $log_data['arm_coupon_code'] : '';
-			if ( ! empty( $coupon_code ) && $arm_manage_coupons->isCouponFeature ) {
-
-							$log_data['arm_coupon_code']          = $coupon_code;
-							$log_data['arm_coupon_discount']      = ! empty( $log_data['arm_coupon_discount'] ) ? $log_data['arm_coupon_discount'] : 0;
-							$log_data['arm_coupon_discount_type'] = ! empty( $log_data['arm_coupon_discount_type'] ) ? $log_data['arm_coupon_discount_type'] : '';
-				if ( $coupon_code != '' ) {
-					$arm_manage_coupons->arm_update_coupon_used_count( $coupon_code );
-				}
-			} else {
-				$log_data['arm_coupon_code'] = '';
-			}
+			}		
+			$log_data['arm_coupon_code'] = '';
 			if(is_null($log_data['arm_amount']) || (empty($log_data['arm_amount']) && !empty($log_data['arm_is_trial'])))
 			{
 				$log_data['arm_amount'] = 0;
@@ -927,7 +918,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 
 					$trans_records .= '<tr class="arm_member_last_subscriptions_data">';
 					$trans_records .= '<td>' . $i . '</td>';
-					$trans_records .= '<td class="rec_center">' . $membership . '</td>';
+					$trans_records .= '<td class="rec_center">' . wp_unslash($membership) . '</td>';
 					$trans_records .= '<td class="rec_center">' . $payment_type . '</td>';
 					$trans_records .= '<td>' . $arm_transaction_status . '</td>';
 					$trans_records .= '<td>' . $arm_gateway . '</td>';
@@ -1295,7 +1286,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 					else :
 						$response_data[ $ai ][1] = '<input id="cb-item-action-' . esc_attr( $rc->arm_log_id ) . '" class="chkstanard arm_transaction_bulk_check" type="checkbox" value="' . esc_attr( $rc->arm_log_id ) . '" name="item-action[]">';
 					endif;
-					$response_data[ $ai ][2] = ( ! empty( $rc->arm_transaction_id ) ) ? stripslashes($rc->arm_transaction_id) : esc_html__( 'Manual', 'armember-membership' );
+					$response_data[ $ai ][2] = ( ! empty( $rc->arm_transaction_id ) ) ? wp_unslash($rc->arm_transaction_id) : esc_html__( 'Manual', 'armember-membership' );
 
 					$data = get_userdata( $rc->arm_user_id );
 					if ( ! empty( $data ) ) {

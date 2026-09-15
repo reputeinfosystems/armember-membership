@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_subscription_plans, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_payment_gateways,$arm_common_lite,$arm_version;
 $user_roles  = get_editable_roles();
 $user_roles1 = $arm_global_settings->arm_get_all_roles();

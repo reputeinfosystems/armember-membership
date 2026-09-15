@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 	class ARM_email_settings_Lite {
 
@@ -33,8 +35,8 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 			 global $wpdb,$ARMemberLite;
 			$res = $wpdb->get_row( $wpdb->prepare("SELECT * FROM `".$ARMemberLite->tbl_arm_email_templates."` WHERE `arm_template_slug`=%s",$temp_slug) ); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_email_templates is a table name
 			if ( ! empty( $res ) ) {
-				$res->arm_template_subject = isset( $res->arm_template_subject ) ? stripslashes_deep( $res->arm_template_subject ) : '';
-				$res->arm_template_content = isset( $res->arm_template_content ) ? stripslashes_deep( $res->arm_template_content ) : '';
+				$res->arm_template_subject = isset( $res->arm_template_subject ) ? wp_unslash( $res->arm_template_subject ) : '';
+				$res->arm_template_content = isset( $res->arm_template_content ) ? wp_unslash( $res->arm_template_content ) : '';
 				return $res;
 			}
 			return false;
@@ -88,10 +90,10 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 				$res = $wpdb->get_row( $wpdb->prepare("SELECT $select_fields FROM `".$ARMemberLite->tbl_arm_email_templates."` WHERE  `arm_template_id`=%d",$template_id) ); //phpcs:ignore --Reason $tbl_arm_email_templates is a table name
 			if ( ! empty( $res ) ) {
 				if ( ! empty( $res->arm_template_subject ) ) {
-					$res->arm_template_subject = stripslashes_deep( $res->arm_template_subject );
+					$res->arm_template_subject = wp_unslash( $res->arm_template_subject );
 				}
 				if ( ! empty( $res->arm_template_content ) ) {
-					$res->arm_template_content = stripslashes_deep( $res->arm_template_content );
+					$res->arm_template_content = wp_unslash( $res->arm_template_content );
 				}
 				return $res;
 			}
@@ -107,10 +109,10 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 			}
 			$results = $wpdb->get_results( $sql );//phpcs:ignore --Reason Query is a select without where so no need to prepare
 			if ( ! empty( $results->arm_template_subject ) ) {
-				$results->arm_template_subject = stripslashes_deep( $results->arm_template_subject );
+				$results->arm_template_subject = wp_unslash( $results->arm_template_subject );
 			}
 			if ( ! empty( $results->arm_template_content ) ) {
-				$results->arm_template_content = stripslashes_deep( $results->arm_template_content );
+				$results->arm_template_content = wp_unslash( $results->arm_template_content );
 			}
 			return $results;
 		}
@@ -167,10 +169,10 @@ if ( ! class_exists( 'ARM_email_settings_Lite' ) ) {
 					$return = array(
 						'status'               => 'success',
 						'id'                   => $template_id,
-						'popup_heading'        => esc_html( stripslashes( $temp_detail->arm_template_name ) ),
+						'popup_heading'        => esc_html( wp_unslash( $temp_detail->arm_template_name ) ),
 						'arm_template_slug'    => $temp_detail->arm_template_slug,
-						'arm_template_subject' => esc_html( stripslashes( $temp_detail->arm_template_subject ) ),
-						'arm_template_content' => stripslashes_deep( $temp_detail->arm_template_content ),
+						'arm_template_subject' => esc_html( wp_unslash( $temp_detail->arm_template_subject ) ),
+						'arm_template_content' => wp_unslash( $temp_detail->arm_template_content ),
 						'arm_template_status'  => $temp_detail->arm_template_status,
 					);
 				}
@@ -424,7 +426,7 @@ $temp_slugs->email_verify_user => array(
 			'arm_template_name' => esc_html__('Profile Updated Notification To Admin', 'armember-membership'),
 			'arm_template_subject' => sprintf('%s\'s Account Details Updated on %s','{ARM_USERNAME}', '{ARM_BLOGNAME}'),
 			'arm_template_content' => sprintf(
-					'%sDear Administrator,%s We would like to inform you that the account of %s has been successfully updated on %s. Below are a few basic details of the member. Kindly review their account and check out the updated details:%s Username%s Email%s First Name%s Last Name%s Thank you for your attention to this matter.',
+					'%sDear Administrator,%s We would like to inform you that the account of %s has been successfully updated on %s. Below are a few basic details of the member. Kindly review their account and check out the updated details:%s Username%s Email%s First Name%s Last Name%s Thank you for your attention to this matter.%s',
 		'<p>', '</p><p>', '<strong>{ARM_USERNAME}</strong>', '<strong>{ARM_BLOGNAME}</strong>', '</p>
 <table>
 	<tr>
@@ -444,7 +446,7 @@ $temp_slugs->email_verify_user => array(
 		<td>{ARM_LAST_NAME}</td>
 	</tr>
 </table>
-<p>'),
+<p>','</p>'),
 ),
 		
 						
@@ -452,7 +454,7 @@ $temp_slugs->email_verify_user => array(
 			'arm_template_name' => esc_html__('Grace Period For Failed Payment', 'armember-membership'),
 			'arm_template_subject' => sprintf('Action Required for your Failed Payment at %s','{ARM_BLOGNAME}'),
 			'arm_template_content' => sprintf(
-					"%sDear %s We wanted to inform you that there was an issue processing your recurring payment for your %s subscription at %s. Here are the details of the payment attempt:%s Payment Method%s Amount%s Transaction ID%s We recommend reaching out to your payment service provider to resolve the issue. Please be aware that if no action is taken within the next %s days, your current membership may lapse.%s If you have any questions or need assistance, don't hesitate to contact us at %s. We're happy to help!%s Thank you, and have a great day!%s Best regards,%s The %s Team",
+					"%sDear %s We wanted to inform you that there was an issue processing your recurring payment for your %s subscription at %s. Here are the details of the payment attempt:%s Payment Method%s Amount%s Transaction ID%s We recommend reaching out to your payment service provider to resolve the issue. Please be aware that if no action is taken within the next %s days, your current membership may lapse.%s If you have any questions or need assistance, don't hesitate to contact us at %s. We're happy to help!%s Thank you, and have a great day!%s Best regards,%s The %s Team%s",
 '<p>', '{ARM_NAME},</p><p>',
 '{ARM_PLAN}', '{ARM_BLOGNAME}', '</p>
 <table>
@@ -472,23 +474,23 @@ $temp_slugs->email_verify_user => array(
 <p>',
 		'{ARM_GRACE_PERIOD_DAYS}', '</p><p>',
 		'{ARM_BLOGNAME}', '</p><p>',
-		'</p><p>', '</p><p>', '{ARM_BLOGNAME}')
+		'</p><p>', '</p><p>', '{ARM_BLOGNAME}','</p>')
 ),
 		
 		$temp_slugs->grace_eot => array(
 			'arm_template_name' => esc_html__('User Enters Grace Period Notification', 'armember-membership'),
 			'arm_template_subject' => sprintf('Reminder for membership expiration at %s','{ARM_BLOGNAME}'),
 			'arm_template_content' => sprintf(
-				"%sHi %s We wanted to let you know that your %s membership has just expired at However, you can still access our website without any issues for %s days.%s If you'd like to renew or update your membership plan, please click the link below:%s Note: %s If you do not renew or change your membership within %s days, the system will automatically take the necessary action.%s Have a great day!%s Best regards,%s The %s Team",
+				"%sHi %s We wanted to let you know that your %s membership has just expired at %s However, you can still access our website without any issues for %s If you'd like to renew or update your membership plan, please click the link below:%s Note:%s If you do not renew or change your membership within %s days, the system will automatically take the necessary action.%s Have a great day!%s Best regards,%sThe %s Team%s",
 '<p>', '{ARM_NAME},</p>
-<p>','{ARM_PLAN}', '{ARM_BLOGNAME}.</p>
-<p>','{ARM_GRACE_PERIOD_DAYS}', '</p>
-<p>','</p> 
-<p>{ARM_BLOG_URL}</p> 
-<p><strong>','</strong> ','{ARM_GRACE_PERIOD_DAYS}', '</p>
+<p>','{ARM_PLAN}','{ARM_BLOGNAME}.</p>
+<p>','{ARM_GRACE_PERIOD_DAYS}.</p>
 <p>','</p>
-<p>', '</p>
-<p>', '{ARM_BLOGNAME}')
+<p>{ARM_BLOG_URL}</p>
+<p><strong>','</strong>','{ARM_GRACE_PERIOD_DAYS}','</p>
+<p>','</p>
+<p>','<br>
+','{ARM_BLOGNAME}','</p>')
 		),
 		$temp_slugs->failed_payment_admin => array(
 			'arm_template_name' => esc_html__('Failed Payment Notification To Admin', 'armember-membership'),
@@ -529,7 +531,7 @@ $temp_slugs->email_verify_user => array(
 <p>','{ARM_BLOGNAME}', '</p>
 <p>','</p>
 <p>','</p>
-<p>','<br> {ARM_BLOGNAME}','</p>')
+<p>','<br> {ARM_BLOGNAME}</p>')
 		),		
 	);
 			$email_templates = apply_filters( 'arm_default_email_templates', $email_templates );
@@ -551,8 +553,8 @@ $temp_slugs->email_verify_user => array(
 				wp_send_json_error(['msg' => 'Email template not found.']);
 			}
 		
-			$subject = str_replace('{ARM_BLOGNAME}', get_bloginfo('name'), stripslashes($temp_detail->arm_template_subject));
-			$content = str_replace('{ARM_BLOGNAME}', get_bloginfo('name'), stripslashes($temp_detail->arm_template_content));
+			$subject = str_replace('{ARM_BLOGNAME}', get_bloginfo('name'), wp_unslash($temp_detail->arm_template_subject));
+			$content = str_replace('{ARM_BLOGNAME}', get_bloginfo('name'), wp_unslash($temp_detail->arm_template_content));
 		
 			$all_email_settings = $arm_email_settings->arm_get_all_email_settings();
 			$admin_email        = ( ! empty( $all_email_settings['arm_email_admin_email'] ) ) ? $all_email_settings['arm_email_admin_email'] : get_option( 'admin_email' );
@@ -591,10 +593,10 @@ $temp_slugs->email_verify_user => array(
 				'status' => $all_sent ? 'success' : 'error',
 				'msg' => $all_sent ? 'Test email sent to' . esc_html(implode(', ', $email_addresses)) : 'Failed to send test email.',
 				'id' => $template_id,
-				'popup_heading' => esc_html(stripslashes($temp_detail->arm_template_name ?? $temp_detail->arm_message_type ?? '')),
+				'popup_heading' => esc_html(wp_unslash($temp_detail->arm_template_name ?? $temp_detail->arm_message_type ?? '')),
 				'arm_template_slug' => $temp_detail->arm_template_slug ?? $temp_detail->arm_message_type ?? '',
-				'arm_template_subject' => esc_html($subject),
-				'arm_template_content' => $content,
+				'arm_template_subject' => esc_html(wp_unslash($subject)),
+				'arm_template_content' => wp_unslash($content),
 				'arm_template_status' => $temp_detail->arm_template_status ?? $temp_detail->arm_message_status ?? '',
 			];
 		

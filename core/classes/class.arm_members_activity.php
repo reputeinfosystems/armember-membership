@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 	class ARM_members_activity_Lite {
 
@@ -40,7 +42,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$arm_lite_newdbversion = get_option( 'armlite_version' );
 			}
 
-			if ( version_compare( $arm_lite_newdbversion, '5.8', '<' ) ) {
+			if ( version_compare( $arm_lite_newdbversion, '5.9', '<' ) ) {
 				$path = MEMBERSHIPLITE_VIEWS_DIR . '/upgrade_latest_data.php';
 				include $path;
 			}
@@ -506,7 +508,8 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_general_settings'], '1' ); //phpcs:ignore --Reason:Verifying nonce
 			$arm_lite_upload_dir = MEMBERSHIPLITE_UPLOAD_DIR . '/';
 			$arm_lite_upload_url = MEMBERSHIPLITE_UPLOAD_URL . '/';
-			$file_name           = ( isset( $_SERVER['HTTP_X_FILENAME'] ) ? $_SERVER['HTTP_X_FILENAME'] : false ); //phpcs:ignore
+			$file_name = isset($_SERVER['HTTP_X_FILENAME']) ? 'arm_' . arm_generate_random_code() . '_' . sanitize_file_name(basename($_SERVER['HTTP_X_FILENAME'])) : false;
+
 			$response            = '';
 			$userID              = get_current_user_id();
 			if ( $file_name && ! empty( $userID ) && $userID != 0 ) {
@@ -550,7 +553,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 
 			$file_content = $wp_filesystem->get_contents( $source );
 
-			$result = $wp_filesystem->put_contents( $destination, $file_content, 0777 );
+			$result = $wp_filesystem->put_contents( $destination, $file_content, FS_CHMOD_FILE );
 
 			return $result;
 		}
@@ -563,7 +566,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 
 			$arm_valid_pattern_script = '/(\<(script))/';
 			$arm_valid_pattern_iframe = '/(\<(iframe))/';
-			$arm_valid_pattern_array = array( 'onblur', 'onchange', 'onclick', 'oncontextmenu', 'oncopy', 'oncut', 'ondblclick', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onfocus', 'oninput', 'oninvalid', 'onkeydown', 'onkeypress', 'onkeyup', 'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onpaste', 'onscroll', 'onselect', 'onwheel', 'javascript' );
+			$arm_valid_pattern_array = array( 'onblur', 'onchange', 'onclick', 'oncontextmenu', 'oncopy', 'oncut', 'ondblclick', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onfocus', 'onfocusin', 'onfocusout','oninput', 'oninvalid', 'onkeydown', 'onkeypress', 'onkeyup', 'onload', 'onunload', 'onerror', 'onabort', 'onbegin', 'onend', 'onstart', 'onactivate', 'onanimationstart', 'onanimationend', 'onanimationiteration', 'ontransitionend', 'ontoggle', 'onshow', 'onpointerdown', 'onpointerover', 'onpointerenter','onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onpaste', 'onscroll', 'onselect', 'onwheel', 'javascript', 'formaction', 'srcdoc', 'xlink:href' );
 			
 			$arm_valid_pattern_val_flag = true;
 			foreach($arm_valid_pattern_array as $arm_invalid_keyword)
@@ -593,7 +596,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 			$is_valid_file = 0;
 			if ( $file_name && $file_size <= 20 ) {
 				$arm_allowed_mimes = $this->arm_allowed_wp_mime_types();
-				$denyExts          = array( 'php', 'php2', 'php3', 'php4', 'php5', 'pl', 'py', 'jsp', 'asp', 'exe', 'cgi', 'css', 'js', 'html', 'htm', 'htaccess' );
+				$denyExts          = array( 'php', 'php2', 'php3', 'php4', 'php5', 'php7', 'pht', 'phtml', 'phps', 'phar','pl', 'py', 'jsp', 'asp', 'aspx', 'exe', 'cgi', 'css', 'js', 'mjs', 'html', 'htm', 'shtml', 'xhtml', 'dhtml', 'htaccess' );
 
 				$checkext = explode( '.', $file_name );
 				$ext      = strtolower( $checkext[ count( $checkext ) - 1 ] );
@@ -787,7 +790,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$response = wp_remote_post(
 					$url,
 					array(
-						'timeout' => 500,
+						'timeout' => 5000,
 						'body'    => $args,
 					)
 				);

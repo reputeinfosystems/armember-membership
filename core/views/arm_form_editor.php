@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_email_settings, $arm_social_feature, $arm_subscription_plans,$arm_common_lite;
 $form_color_schemes   = $arm_member_forms->arm_form_color_schemes();
 $form_gradient_scheme = $arm_member_forms->arm_default_button_gradient_color();
@@ -158,7 +160,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 		<form id="arm_manage_form_settings_form" class="arm_admin_member_form <?php echo esc_attr($form_class); ?>">
 			<input type="hidden" name="form_set_id" value="<?php echo intval($setID); ?>" id="form_set_id" class="form_set_id">
 			<?php $arm_form_action = !empty( $get_action ) ? esc_attr( $get_action ) : 'new_form'; ?>
-			<?php $arm_new_set_name = isset( $get_set_name ) ? stripslashes_deep( esc_attr( $get_set_name ) ) : ''; ?>
+			<?php $arm_new_set_name = isset( $get_set_name ) ? wp_unslash( esc_attr( $get_set_name ) ) : ''; ?>
 			<input type="hidden" name="arm_action" id="arm_action" value="<?php echo esc_attr($arm_form_action); ?>" />
 			<input type="hidden" name="arm_form_id" id="arm_form_id" value="<?php echo esc_attr( $get_form_id ); ?>" />
 			<input type="hidden" name="arm_ref_template" id="arm_ref_template" value="<?php echo esc_attr($reference_template); ?>" />
@@ -194,8 +196,8 @@ echo $arm_loader; //phpcs:ignore ?></div>
 						<div class="arm_header_registration_form_title">
 							<?php
 							$form_detail['arm_form_label'] = !empty($form_detail['arm_form_label']) ? sanitize_text_field($form_detail['arm_form_label']) : sanitize_text_field($_GET['arm_set_name']); //phpcs:ignore
-							 echo stripslashes_deep( $form_label = ( sanitize_text_field( $get_action) !== 'new_form' ) ? stripslashes_deep( wp_unslash($form_detail['arm_form_label'] )) : stripslashes_deep(wp_unslash( $arm_new_set_name ) ) ); ?> <?php //phpcs:ignore ?>
-							<input type="hidden" name="arm_forms[<?php echo esc_attr( $get_form_id ); ?>][arm_form_label]"  class="arm-df__field-label_value" value="<?php echo stripslashes_deep( esc_attr($form_label) ); //phpcs:ignore ?>"/>
+							 echo wp_unslash( $form_label = ( sanitize_text_field( $get_action) !== 'new_form' ) ? wp_unslash( wp_unslash($form_detail['arm_form_label'] )) : wp_unslash(wp_unslash( $arm_new_set_name ) ) ); ?> <?php //phpcs:ignore ?>
+							<input type="hidden" name="arm_forms[<?php echo esc_attr( $get_form_id ); ?>][arm_form_label]"  class="arm-df__field-label_value" value="<?php echo wp_unslash( esc_attr($form_label) ); //phpcs:ignore ?>"/>
 						</div>
 					<?php } else { ?>
 						<?php esc_html_e( 'Form Set (Login / Forgot Password / Change Password)', 'armember-membership' ); ?>
@@ -283,7 +285,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 							                                                                    $fieldMetaClass = 'arm_disabled';
 							                                                                }
 						                                                            	}
-														?><li class="frmfieldtypebutton arm_form_preset_fields <?php echo esc_html($fieldMetaClass); ?>" data-field_key="<?php echo esc_attr($meta_key); ?>"><div class="arm_new_field"><a href="javascript:void(0);" id="<?php echo esc_attr($meta_key); ?>"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/general_icon.png" alt="<?php echo esc_html(stripslashes($opts['label'])); ?>" /><img class="arm_disabled_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/general_icon_disabled.png" alt="<?php echo esc_html(stripslashes($opts['label'])); ?>" /><?php echo esc_html(stripslashes($opts['label'])); ?></a></div></li>
+														?><li class="frmfieldtypebutton arm_form_preset_fields <?php echo esc_html($fieldMetaClass); ?>" data-field_key="<?php echo esc_attr($meta_key); ?>"><div class="arm_new_field"><a href="javascript:void(0);" id="<?php echo esc_attr($meta_key); ?>"><img src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/general_icon.png" alt="<?php echo esc_html(wp_unslash($opts['label'])); ?>" /><img class="arm_disabled_img" src="<?php echo esc_attr(MEMBERSHIPLITE_IMAGES_URL); //phpcs:ignore ?>/general_icon_disabled.png" alt="<?php echo esc_html(wp_unslash($opts['label'])); ?>" /><?php echo esc_html(wp_unslash($opts['label'])); ?></a></div></li>
 																															<?php
 													}
 												}
@@ -417,7 +419,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 						if ( $enable_social_login == '1' ) {
 							$social_networks                           = ( isset( $form_settings['social_networks'] ) && $form_settings['social_networks'] != '' ) ? explode( ',', $form_settings['social_networks'] ) : array();
 							$social_networks_order                     = ( isset( $form_settings['social_networks_order'] ) && $form_settings['social_networks_order'] != '' ) ? explode( ',', $form_settings['social_networks_order'] ) : array();
-							$form_settings['social_networks_settings'] = ( isset( $form_settings['social_networks_settings'] ) ) ? stripslashes_deep( $form_settings['social_networks_settings'] ) : '';
+							$form_settings['social_networks_settings'] = ( isset( $form_settings['social_networks_settings'] ) ) ? wp_unslash( $form_settings['social_networks_settings'] ) : '';
 							$formSocialNetworksSettings                = arm_maybe_unserialize( $form_settings['social_networks_settings'] );
 						} else {
 							$enable_social_btn_separator = 0;
@@ -425,8 +427,8 @@ echo $arm_loader; //phpcs:ignore ?></div>
 
 						$show_reg_link              = ( isset( $form_settings['show_registration_link'] ) ) ? $form_settings['show_registration_link'] : 0;
 						$show_fp_link               = ( isset( $form_settings['show_forgot_password_link'] ) ) ? $form_settings['show_forgot_password_link'] : 0;
-						$registration_link_label    = ( isset( $form_settings['registration_link_label'] ) ) ? stripslashes( $form_settings['registration_link_label'] ) : esc_html__( 'Register', 'armember-membership' );
-						$forgot_password_link_label = ( isset( $form_settings['forgot_password_link_label'] ) ) ? stripslashes( $form_settings['forgot_password_link_label'] ) : esc_html__( 'Forgot Password', 'armember-membership' );
+						$registration_link_label    = ( isset( $form_settings['registration_link_label'] ) ) ? wp_unslash( $form_settings['registration_link_label'] ) : esc_html__( 'Register', 'armember-membership' );
+						$forgot_password_link_label = ( isset( $form_settings['forgot_password_link_label'] ) ) ? wp_unslash( $form_settings['forgot_password_link_label'] ) : esc_html__( 'Forgot Password', 'armember-membership' );
 						$registration_link_label    = $arm_member_forms->arm_parse_login_links( $registration_link_label, '#' );
 						$forgot_password_link_label = $arm_member_forms->arm_parse_login_links( $forgot_password_link_label, '#' );
 						reset( $otherForms );
@@ -453,13 +455,13 @@ echo $arm_loader; //phpcs:ignore ?></div>
 											
 											$oform['arm_form_label'] = esc_html(wp_unslash($_GET['arm_set_name'])); //phpcs:ignore
 										} elseif ( ! empty( $oform['arm_form_label'] ) ) {
-											$oform['arm_form_label'] = stripslashes( $oform['arm_form_label'] );
+											$oform['arm_form_label'] = wp_unslash( $oform['arm_form_label'] );
 										} else {
 											$oform['label'] = '';
 										}
 									} else {
-										$oform['arm_form_title'] = ! empty( $oform['arm_form_title'] ) ? stripslashes(wp_unslash($oform['arm_form_title'] )) : '';
-										$oform['arm_form_label'] = ! empty( $oform['arm_form_label'] ) ? stripslashes(wp_unslash($oform['arm_form_label'] )) : '';
+										$oform['arm_form_title'] = ! empty( $oform['arm_form_title'] ) ? wp_unslash(wp_unslash($oform['arm_form_title'] )) : '';
+										$oform['arm_form_label'] = ! empty( $oform['arm_form_label'] ) ? wp_unslash(wp_unslash($oform['arm_form_label'] )) : '';
 									}
 				    $arm_additional_social_fields = '';
 				    echo apply_filters('arm_additional_social_fields_sec',$arm_additional_social_fields,$firstForm,$social_networks,$activeSocialNetworks,$oformarmtype,$form_settings,$formSocialNetworksSettings,$oformid,'top'); //phpcs:ignore
@@ -473,7 +475,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 										}
 										?>
 										<div class="arm_form_member_main_field_label arm_member_form_label">
-											<span class="arm-df__field-label_text arm-df__heading-text <?php echo esc_attr($formTitleClass); ?>" data-type="heading"><?php echo stripslashes( $oform['arm_form_title'] ); //phpcs:ignore ?></span>
+											<span class="arm-df__field-label_text arm-df__heading-text <?php echo esc_attr($formTitleClass); ?>" data-type="heading"><?php echo wp_unslash( $oform['arm_form_title'] ); //phpcs:ignore ?></span>
 											<?php if ( ! $isRegister || $isEditProfile) { ?>
 												<input type="hidden" name="arm_forms[<?php echo intval($oformid); ?>][arm_form_label]" class="arm-df__field-label_value" value="<?php echo esc_attr($oform['arm_form_title']); ?>"/>
 											<?php } ?>
@@ -550,7 +552,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 												if ( $oformarmtype == 'forgot_password' ) {
 													?>
 												<li class="arm_margin_0">
-													<div class="arm_forgot_password_description" style="<?php echo ( empty( $oform['arm_form_settings']['description'] ) ) ? 'display:none;' : ''; ?>"><?php echo stripslashes( $oform['arm_form_settings']['description'] ); //phpcs:ignore ?></div>
+													<div class="arm_forgot_password_description" style="<?php echo ( empty( $oform['arm_form_settings']['description'] ) ) ? 'display:none;' : ''; ?>"><?php echo wp_unslash( $oform['arm_form_settings']['description'] ); //phpcs:ignore ?></div>
 												</li>
 													<?php
 												}
@@ -959,7 +961,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 													<td colspan="2">
 														<label class="arm_form_opt_label"><?php esc_html_e( 'Login Link Label', 'armember-membership' ); ?>:</label>
 														<div class="arm_form_opt_input">
-															<input type="text" name="arm_form_settings[login_link_label]" value="<?php echo ( ! empty( $form_settings['login_link_label'] ) ) ? esc_attr(stripslashes( $form_settings['login_link_label'] )) : $arm_default_login_link; //phpcs:ignore ?>" class="login_link_label_input">
+															<input type="text" name="arm_form_settings[login_link_label]" value="<?php echo ( ! empty( $form_settings['login_link_label'] ) ) ? esc_attr(wp_unslash( $form_settings['login_link_label'] )) : $arm_default_login_link; //phpcs:ignore ?>" class="login_link_label_input">
 															<span class="arm_info_text"><?php esc_html_e( 'To make partial part of sentence clickable, please use this pattern', 'armember-membership' ); ?> <strong>[ARMLINK]</strong>xx<strong>[/ARMLINK]</strong></span>
 														</div>
 														<div class="armclear"></div>
@@ -1064,7 +1066,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 												<td colspan="2">
 													<label class="arm_form_opt_label"><?php esc_html_e( 'Registration Link Label', 'armember-membership' ); ?>:</label>
 													<div class="arm_form_opt_input">
-														<input type="text" name="arm_form_settings[registration_link_label]" value="<?php echo ( isset( $form_settings['registration_link_label'] ) ) ? esc_attr(stripslashes( $form_settings['registration_link_label'] )) : esc_html__( 'Register', 'armember-membership' ); //phpcs:ignore ?>" class="registration_link_label_input">
+														<input type="text" name="arm_form_settings[registration_link_label]" value="<?php echo ( isset( $form_settings['registration_link_label'] ) ) ? esc_attr(wp_unslash( $form_settings['registration_link_label'] )) : esc_html__( 'Register', 'armember-membership' ); //phpcs:ignore ?>" class="registration_link_label_input">
 														<span class="arm_info_text"><?php esc_html_e( 'To make partial part of sentence clickable, please use this pattern', 'armember-membership' ); ?> <strong>[ARMLINK]</strong>xx<strong>[/ARMLINK]</strong></span>
 													</div>
 													<div class="armclear"></div>
@@ -1148,7 +1150,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 												<td colspan="2">
 													<label class="arm_form_opt_label"><?php esc_html_e( 'Forgot Password Link Label', 'armember-membership' ); ?>:</label>
 													<div class="arm_form_opt_input">
-														<input type="text" name="arm_form_settings[forgot_password_link_label]" value="<?php echo ( isset( $form_settings['forgot_password_link_label'] ) ) ? esc_attr( stripslashes( $form_settings['forgot_password_link_label'] )) : esc_html__( 'Forgot Password', 'armember-membership' ); //phpcs:ignore ?>" class="forgot_password_link_label_input">
+														<input type="text" name="arm_form_settings[forgot_password_link_label]" value="<?php echo ( isset( $form_settings['forgot_password_link_label'] ) ) ? esc_attr( wp_unslash( $form_settings['forgot_password_link_label'] )) : esc_html__( 'Forgot Password', 'armember-membership' ); //phpcs:ignore ?>" class="forgot_password_link_label_input">
 														<span class="arm_info_text"><?php esc_html_e( 'To make partial part of sentence clickable, please use this pattern', 'armember-membership' ); ?> <strong>[ARMLINK]</strong>xx<strong>[/ARMLINK]</strong></span>
 													</div>
 													<div class="armclear"></div>
@@ -1290,9 +1292,9 @@ echo $arm_loader; //phpcs:ignore ?></div>
 								if ( ! $isRegister && !$isEditProfile) { ?>
 								
 									<?php
-									$changePassMsg    = isset( $otherFormIDs['change_password']['arm_form_settings']['message'] ) ? stripslashes( $otherFormIDs['change_password']['arm_form_settings']['message'] ) : esc_html__( 'Your password has been changed successfully.', 'armember-membership' );
-									$forgotgePassMsg  = isset( $otherFormIDs['forgot_password']['arm_form_settings']['message'] ) ? stripslashes( $otherFormIDs['forgot_password']['arm_form_settings']['message'] ) : esc_html__( 'We have sent you password reset link, Please check your mail.', 'armember-membership' );
-									$forgotgePassDesc = isset( $otherFormIDs['forgot_password']['arm_form_settings']['description'] ) ? stripslashes( $otherFormIDs['forgot_password']['arm_form_settings']['description'] ) : '';
+									$changePassMsg    = isset( $otherFormIDs['change_password']['arm_form_settings']['message'] ) ? wp_unslash( $otherFormIDs['change_password']['arm_form_settings']['message'] ) : esc_html__( 'Your password has been changed successfully.', 'armember-membership' );
+									$forgotgePassMsg  = isset( $otherFormIDs['forgot_password']['arm_form_settings']['message'] ) ? wp_unslash( $otherFormIDs['forgot_password']['arm_form_settings']['message'] ) : esc_html__( 'We have sent you password reset link, Please check your mail.', 'armember-membership' );
+									$forgotgePassDesc = isset( $otherFormIDs['forgot_password']['arm_form_settings']['description'] ) ? wp_unslash( $otherFormIDs['forgot_password']['arm_form_settings']['description'] ) : '';
 									$arm_google_recaptcha_v3_section = '';
 									echo apply_filters('arm_google_recaptcha_v3_section',$arm_google_recaptcha_v3_section,$all_global_settings,$form_settings); //phpcs:ignore
 									?>

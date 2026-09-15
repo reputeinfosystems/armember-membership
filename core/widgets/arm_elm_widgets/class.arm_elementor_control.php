@@ -2,9 +2,10 @@
 /**
  * Settings for Elementor Widgets For ARMember.
  */
-if ( ! defined( 'ABSPATH' ) ) exit;
 
 use Elementor\Controls_Manager;
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class ARM_Elementor {
     private static $_instance = null;

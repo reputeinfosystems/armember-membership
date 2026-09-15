@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 	global $wpdb, $ARMemberLite, $arm_global_settings, $arm_payment_gateways,$arm_common_lite;
 	$payment_gateways = $arm_payment_gateways->arm_get_all_payment_gateways_for_setup();
 	$arm_common_date_format = 'm/d/Y';

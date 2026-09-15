@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_social_feature,$myplugarr;
 $ARMemberLite->arm_session_start();
 $social_feature              = get_option( 'arm_is_social_feature' );

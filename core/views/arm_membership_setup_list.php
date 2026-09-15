@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_global_settings, $arm_email_settings,  $arm_subscription_plans, $arm_payment_gateways,$arm_pay_per_post_feature,$arm_common_lite,$arm_version;
 $date_format             = $arm_global_settings->arm_get_wp_date_format();
 $actions['delete_setup'] = esc_html__( 'Delete', 'armember-membership' );

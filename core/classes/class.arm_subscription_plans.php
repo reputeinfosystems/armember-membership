@@ -1,4 +1,5 @@
 <?php 
+if(! defined('ABSPATH')) exit;
 
 if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
@@ -113,7 +114,9 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						}
 					}
 					else if($mkey == 'arm_plan_role'){
-						$meta_val = !empty($planObj->plan_role) ? $planObj->plan_role : '-';
+						$planRole = $planObj->plan_role;
+                        $plan_role_name = wp_roles()->get_names()[$planRole];
+						$meta_val = !empty($plan_role_name) ? $plan_role_name : '-';
 					}
 					else if($mkey == 'arm_plan_recurring'){
 						$meta_val = $planObj->is_recurring() ? esc_html__('Yes','armember-membership') : esc_html__('No','armember-membership');
@@ -243,7 +246,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                     $grid_data[$ai][0] = "<div class='arm_show_membership_plans arm_max_width_50 arm_expand_arrow_icon' id='arm_show_membership_plans_" . esc_attr($planID) . "' data-id='" . esc_attr($planID) . "'><svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 20 20' fill='none'><path d='M6 8L10 12L14 8' stroke='#BAC2D1' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg></div>";   
 					$return .= '<tr class="arm_child_transaction_row">';
                     $grid_data[$ai][1] = esc_attr($planID);
-                    $grid_data[$ai][2] = (stripslashes($planObj->name)); //phpcs:ignore
+                    $grid_data[$ai][2] = (wp_unslash($planObj->name)); //phpcs:ignore
 
                     if( $planObj->is_recurring() && isset($planObj->options['payment_cycles']) && count($planObj->options['payment_cycles']) > 1 ) {
                         $grid_data[$ai][3] = '<span class="arm_item_status_text active">' . esc_html__('Paid', 'armember-membership') . '</span>
@@ -261,7 +264,8 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                     }
                     $planRole = $planObj->plan_role;
                     if (!empty($planRole)) {
-                        $grid_data[$ai][5] = $planRole;
+						$plan_role_name = wp_roles()->get_names()[$planRole];
+                        $grid_data[$ai][5] = $plan_role_name;
                     } else {
                         $grid_data[$ai][5] = '-';
                     }		                       
@@ -349,8 +353,8 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                 $arm_plan_result_data = $wpdb->get_row($arm_plan_sql,ARRAY_A); //phpcs:ignore --Reason $arm_plan_sql is a prepared query
                 $response_data['arm_plan_id'] = $arm_plan_id;
                 $response_data['arm_plan_title'] = esc_html__('Edit Membership plan',"armember-membership");
-                $response_data['arm_plan_name'] = !empty($arm_plan_result_data['arm_subscription_plan_name']) ?  stripslashes($arm_plan_result_data['arm_subscription_plan_name']) : '';
-                $response_data['arm_plan_desc'] = !empty($arm_plan_result_data['arm_subscription_plan_description']) ? stripslashes($arm_plan_result_data['arm_subscription_plan_description']) : '';
+                $response_data['arm_plan_name'] = !empty($arm_plan_result_data['arm_subscription_plan_name']) ?  wp_unslash($arm_plan_result_data['arm_subscription_plan_name']) : '';
+                $response_data['arm_plan_desc'] = !empty($arm_plan_result_data['arm_subscription_plan_description']) ? wp_unslash($arm_plan_result_data['arm_subscription_plan_description']) : '';
                 $response_data['arm_plan_type'] = $arm_plan_result_data['arm_subscription_plan_type'];
                 $response_data['arm_plan_options'] = arm_maybe_unserialize($arm_plan_result_data['arm_subscription_plan_options']);
                 $plan_expire_date = !empty($response_data['arm_plan_options']['expiry_date']) ? $response_data['arm_plan_options']['expiry_date'] : '';
@@ -364,15 +368,18 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                 $response_data['arm_plan_status'] = $arm_plan_result_data['arm_subscription_plan_status'];
                 $roles = get_editable_roles();
                 $arm_plan_selected_role = '';
+				$arm_plan_selected_role_val = '';
                 if (!empty($roles)) {
                     unset($roles['administrator']);
                     foreach ($roles as $key => $role) {
                         if($key == $arm_plan_result_data['arm_subscription_plan_role'])
                         {
+							$arm_plan_selected_role_val = $key;
                             $arm_plan_selected_role = $role['name'];
                         }
                     }
                 }
+				$response_data['arm_plan_role_val'] = $arm_plan_selected_role_val;
                 $response_data['arm_plan_role'] = $arm_plan_selected_role;
                 $response_data['is_already_used'] = 0;
                 $response_data['limit'] = (isset($response_data['arm_plan_options']["limit"])) ? $response_data['arm_plan_options']["limit"] : 0; 
@@ -571,10 +578,10 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				$plan_data = $wpdb->get_row( $wpdb->prepare("SELECT {$selectColumns}, `arm_subscription_plan_id` FROM `" . $ARMemberLite->tbl_arm_subscription_plans . "` WHERE `arm_subscription_plan_id`=%d AND `arm_subscription_plan_is_delete`=%d AND `arm_subscription_plan_gift_status`=%d LIMIT 1",$plan_id,0,0), ARRAY_A );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_subscription_plans is a table name
 				if ( ! empty( $plan_data ) ) {
 					if ( isset( $plan_data['arm_subscription_plan_name'] ) ) {
-						$plan_data['arm_subscription_plan_name'] = stripslashes( $plan_data['arm_subscription_plan_name'] );
+						$plan_data['arm_subscription_plan_name'] = wp_unslash( $plan_data['arm_subscription_plan_name'] );
 					}
 					if ( isset( $plan_data['arm_subscription_plan_description'] ) ) {
-						$plan_data['arm_subscription_plan_description'] = stripslashes( $plan_data['arm_subscription_plan_description'] );
+						$plan_data['arm_subscription_plan_description'] = wp_unslash( $plan_data['arm_subscription_plan_description'] );
 					}
 					if ( isset( $plan_data['arm_subscription_plan_options'] ) ) {
 						$plan_data['arm_subscription_plan_options'] = arm_maybe_unserialize( $plan_data['arm_subscription_plan_options'] );
@@ -648,7 +655,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					$plan_name = '';
 				}
 			}
-			return stripslashes( $plan_name );
+			return wp_unslash( $plan_name );
 		}
 
 		function arm_get_comma_plan_names_by_ids( $ids = array() ) {
@@ -692,10 +699,10 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				foreach ( $results as $sp ) {
 					$plnID = $sp['arm_subscription_plan_id'];
 					if ( isset( $sp['arm_subscription_plan_name'] ) ) {
-						$sp['arm_subscription_plan_name'] = stripslashes( $sp['arm_subscription_plan_name'] );
+						$sp['arm_subscription_plan_name'] = wp_unslash( $sp['arm_subscription_plan_name'] );
 					}
 					if ( isset( $sp['arm_subscription_plan_description'] ) ) {
-						$sp['arm_subscription_plan_description'] = stripslashes( $sp['arm_subscription_plan_description'] );
+						$sp['arm_subscription_plan_description'] = wp_unslash( $sp['arm_subscription_plan_description'] );
 					}
 					if ( isset( $sp['arm_subscription_plan_options'] ) ) {
 						$sp['arm_subscription_plan_options'] = arm_maybe_unserialize( $sp['arm_subscription_plan_options'] );
@@ -726,10 +733,10 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						if ( $object_type == OBJECT || $object_type == OBJECT_K ) {
 							$plnID = $sp->arm_subscription_plan_id;
 							if ( isset( $sp->arm_subscription_plan_name ) ) {
-								$sp->arm_subscription_plan_name = stripslashes( $sp->arm_subscription_plan_name );
+								$sp->arm_subscription_plan_name = wp_unslash( $sp->arm_subscription_plan_name );
 							}
 							if ( isset( $sp->arm_subscription_plan_description ) ) {
-								$sp->arm_subscription_plan_description = stripslashes( $sp->arm_subscription_plan_description );
+								$sp->arm_subscription_plan_description = wp_unslash( $sp->arm_subscription_plan_description );
 							}
 							if ( isset( $sp->arm_subscription_plan_options ) ) {
 								$sp->arm_subscription_plan_options = arm_maybe_unserialize( $sp->arm_subscription_plan_options );
@@ -737,10 +744,10 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						} else {
 							$plnID = $sp['arm_subscription_plan_id'];
 							if ( isset( $sp['arm_subscription_plan_name'] ) ) {
-								$sp['arm_subscription_plan_name'] = stripslashes( $sp['arm_subscription_plan_name'] );
+								$sp['arm_subscription_plan_name'] = wp_unslash( $sp['arm_subscription_plan_name'] );
 							}
 							if ( isset( $sp['arm_subscription_plan_description'] ) ) {
-								$sp['arm_subscription_plan_description'] = stripslashes( $sp['arm_subscription_plan_description'] );
+								$sp['arm_subscription_plan_description'] = wp_unslash( $sp['arm_subscription_plan_description'] );
 							}
 							if ( isset( $sp['arm_subscription_plan_options'] ) ) {
 								$sp['arm_subscription_plan_options'] = arm_maybe_unserialize( $sp['arm_subscription_plan_options'] );
@@ -794,10 +801,10 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						if ( $object_type == OBJECT || $object_type == OBJECT_K ) {
 							$plnID = $sp->arm_subscription_plan_id;
 							if ( isset( $sp->arm_subscription_plan_name ) ) {
-								$sp->arm_subscription_plan_name = stripslashes( $sp->arm_subscription_plan_name );
+								$sp->arm_subscription_plan_name = wp_unslash( $sp->arm_subscription_plan_name );
 							}
 							if ( isset( $sp->arm_subscription_plan_description ) ) {
-								$sp->arm_subscription_plan_description = stripslashes( $sp->arm_subscription_plan_description );
+								$sp->arm_subscription_plan_description = wp_unslash( $sp->arm_subscription_plan_description );
 							}
 							if ( isset( $sp->arm_subscription_plan_options ) ) {
 								$sp->arm_subscription_plan_options = arm_maybe_unserialize( $sp->arm_subscription_plan_options );
@@ -805,10 +812,10 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						} else {
 							$plnID = $sp['arm_subscription_plan_id'];
 							if ( isset( $sp['arm_subscription_plan_name'] ) ) {
-								$sp['arm_subscription_plan_name'] = stripslashes( $sp['arm_subscription_plan_name'] );
+								$sp['arm_subscription_plan_name'] = wp_unslash( $sp['arm_subscription_plan_name'] );
 							}
 							if ( isset( $sp['arm_subscription_plan_description'] ) ) {
-								$sp['arm_subscription_plan_description'] = stripslashes( $sp['arm_subscription_plan_description'] );
+								$sp['arm_subscription_plan_description'] = wp_unslash( $sp['arm_subscription_plan_description'] );
 							}
 							if ( isset( $sp['arm_subscription_plan_options'] ) ) {
 								$sp['arm_subscription_plan_options'] = arm_maybe_unserialize( $sp['arm_subscription_plan_options'] );
@@ -845,8 +852,8 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				}
 				if ( ! empty( $results ) ) {
 					foreach ( $results as $sp ) {
-						$sp['arm_subscription_plan_name']              = stripslashes( $sp['arm_subscription_plan_name'] );
-						$sp['arm_subscription_plan_description']       = stripslashes( $sp['arm_subscription_plan_description'] );
+						$sp['arm_subscription_plan_name']              = wp_unslash( $sp['arm_subscription_plan_name'] );
+						$sp['arm_subscription_plan_description']       = wp_unslash( $sp['arm_subscription_plan_description'] );
 						$sp['arm_subscription_plan_options']           = arm_maybe_unserialize( $sp['arm_subscription_plan_options'] );
 						$plans_data[ $sp['arm_subscription_plan_id'] ] = $sp;
 					}
@@ -959,7 +966,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 			if ( $plan_id != 0 && $user_id != 0 && ! empty( $action ) ) {
 				$user_detail = get_userdata( $user_id );
 				$user_email  = $user_detail->user_email;
-				$user_login  = stripslashes( $user_detail->user_login );
+				$user_login  = wp_unslash( $user_detail->user_login );
 				$nowDate     = current_time( 'mysql' );
 
 				$action_opt       = '';
@@ -2835,7 +2842,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				$plans_data = array();
 				foreach ( $results as $sp ) {
 					$plnID                          = $sp['arm_subscription_plan_id'];
-					$plnName                        = stripslashes( $sp['arm_subscription_plan_name'] );
+					$plnName                        = wp_unslash( $sp['arm_subscription_plan_name'] );
 					$plan_options                   = arm_maybe_unserialize( $sp['arm_subscription_plan_options'] );
 					$plan_options['payment_cycles'] = ( isset( $plan_options['payment_cycles'] ) && ! empty( $plan_options['payment_cycles'] ) ) ? $plan_options['payment_cycles'] : array();
 					if ( ! empty( $plan_options['payment_cycles'] ) ) {
@@ -2949,7 +2956,7 @@ if ( ! class_exists( 'ARM_Plan_Lite' ) ) {
 		public function init( $data ) {
 
 			$this->ID                              = ( isset( $data->arm_subscription_plan_id ) ) ? $data->arm_subscription_plan_id : 0;
-			$this->name                            = ( isset( $data->arm_subscription_plan_name ) ) ? stripslashes( $data->arm_subscription_plan_name ) : '';
+			$this->name                            = ( isset( $data->arm_subscription_plan_name ) ) ? wp_unslash( $data->arm_subscription_plan_name ) : '';
 			$this->type                            = ( isset( $data->arm_subscription_plan_type ) ) ? $data->arm_subscription_plan_type : 'free';
 			$this->status                          = ( isset( $data->arm_subscription_plan_status ) ) ? $data->arm_subscription_plan_status : 1;
 			$this->amount                          = ( isset( $data->arm_subscription_plan_amount ) ) ? number_format( (float) $data->arm_subscription_plan_amount, 2 ) : 0;
@@ -2958,7 +2965,7 @@ if ( ! class_exists( 'ARM_Plan_Lite' ) ) {
 			$this->payment_type                    = ( isset( $this->options['payment_type'] ) ) ? $this->options['payment_type'] : '';
 			$this->plan_role                       = ( isset( $data->arm_subscription_plan_role ) ) ? $data->arm_subscription_plan_role : '';
 			$this->recurring_data                  = $this->prepare_recurring_data();
-			$this->description                     = ( isset( $data->arm_subscription_plan_description ) ) ? stripslashes( $data->arm_subscription_plan_description ) : '';
+			$this->description                     = ( isset( $data->arm_subscription_plan_description ) ) ? wp_unslash( $data->arm_subscription_plan_description ) : '';
 			$this->plan_text                       = $this->plan_text();
 			$this->plan_price                      = $this->plan_price();
 			$this->plan_price_text                 = $this->plan_price_text();
@@ -3658,15 +3665,16 @@ if ( ! class_exists( 'ARM_Plan_Lite' ) ) {
 			global $arm_subscription_plans, $arm_payment_gateways, $ARMemberLite, $arm_global_settings;
 			$date_format = $arm_global_settings->arm_get_wp_date_format();
 			$currency    = $arm_payment_gateways->arm_get_global_currency();
-
+			$payment_cycle = !empty($payment_cycle) ? $payment_cycle : 0;
 			$planText = '';
+			$payment_type = !empty($this->payment_type) ? $this->payment_type : 'one_time';
 			if ( $this->is_paid() ) {
 
 				if ( $this->is_lifetime() ) {
 
 					$planText .= $arm_payment_gateways->arm_prepare_amount( $currency, $this->amount ) . ' - ' . esc_html__( 'Onetime', 'armember-membership' );
 				} else {
-					if ( $this->payment_type == 'subscription' ) {
+					if ( $payment_type == 'subscription' ) {
 
 						if ( $show_title ) {
 							$planText .= esc_html__( 'Subscription', 'armember-membership' ) . '<br/>';
@@ -3713,7 +3721,7 @@ if ( ! class_exists( 'ARM_Plan_Lite' ) ) {
 						$cycles    = $recurring_data['rec_time'];
 						$recText   = ( $interval > 1 ) ? esc_html__( 'every', 'armember-membership' ) . ' ' . $interval . ' ' . $typeArrayMany[ $period ] : "{$typeArray[$period]}";
 						$planText .= $arm_payment_gateways->arm_prepare_amount( $currency, $recurring_data['amount'] ) . ' - ' . $recText;
-					} elseif ( $this->payment_type == 'one_time' ) {
+					} elseif ( $payment_type == 'one_time' ) {
 
 						$planText .= $arm_payment_gateways->arm_prepare_amount( $currency, $this->amount ) . ' - ' . esc_html__( 'Onetime', 'armember-membership' );
 

@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms, $arm_global_settings;
 $common_messages         = $arm_global_settings->arm_get_all_common_message_settings();
 $default_common_messages = $arm_global_settings->arm_default_common_messages();
@@ -9,7 +11,7 @@ if ( ! empty( $common_messages ) ) {
 	foreach ( $common_messages as $key => $value ) {
 		if( !empty( $value ) )
 		{
-		    $value = esc_html( stripslashes( $value ) );
+		    $value = esc_html( wp_unslash( $value ) );
 		}
 		$common_messages[ $key ] = $value;
 	}

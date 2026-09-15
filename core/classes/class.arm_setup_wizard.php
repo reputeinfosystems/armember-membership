@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 if (!class_exists('ARM_setup_Wizard_Lite')) {
     class ARM_setup_Wizard_Lite {
         function __construct() {

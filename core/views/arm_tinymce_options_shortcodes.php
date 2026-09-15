@@ -1,5 +1,5 @@
-<?php
-
+<?php 
+if(! defined('ABSPATH')) exit;
 
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_shortcodes, $arm_global_settings, $arm_member_forms, $arm_subscription_plans, $arm_membership_setup, $arm_social_feature, $arm_members_directory;
 $arm_forms          = $arm_member_forms->arm_get_all_member_forms( 'arm_form_id, arm_form_label, arm_form_type' );
@@ -84,7 +84,7 @@ if ( is_rtl() ) {
 														<?php if ( ! empty( $arm_forms ) ) : ?>
 															<?php foreach ( $arm_forms as $_form ) : ?>
 																<?php
-																$formTitle = wp_strip_all_tags( stripslashes( $_form['arm_form_label'] ) ) . ' &nbsp;(ID: ' . $_form['arm_form_id'] . ')';
+																$formTitle = wp_strip_all_tags( wp_unslash( $_form['arm_form_label'] ) ) . ' &nbsp;(ID: ' . $_form['arm_form_id'] . ')';
 																?>
 																<li class="arm_shortcode_form_id_li <?php echo esc_attr($_form['arm_form_type']); ?>" data-label="<?php echo esc_attr($formTitle); ?>" data-value="<?php echo esc_attr($_form['arm_form_id']); ?>"><?php echo esc_html($formTitle); ?></li>
 															<?php endforeach; ?>
@@ -125,7 +125,7 @@ if ( is_rtl() ) {
 														<li data-label="<?php esc_attr_e( 'Select Plan', 'armember-membership' ); ?>" data-value="0"><?php esc_html_e( 'Select Plan', 'armember-membership' ); ?></li>
 														<?php if ( ! empty( $arm_all_free_plans ) ) : ?>
 															<?php foreach ( $arm_all_free_plans as $plan ) : ?>
-																<li class="arm_assign_default_plan_li <?php echo esc_attr(stripslashes( $plan['arm_subscription_plan_name']) ); //phpcs:ignore ?>" data-label="<?php echo esc_attr(stripslashes( $plan['arm_subscription_plan_name']) ); //phpcs:ignore ?>" data-value="<?php echo intval($plan['arm_subscription_plan_id']); ?>"><?php echo stripslashes( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
+																<li class="arm_assign_default_plan_li <?php echo esc_attr(wp_unslash( $plan['arm_subscription_plan_name']) ); //phpcs:ignore ?>" data-label="<?php echo esc_attr(wp_unslash( $plan['arm_subscription_plan_name']) ); //phpcs:ignore ?>" data-value="<?php echo intval($plan['arm_subscription_plan_id']); ?>"><?php echo wp_unslash( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
 															<?php endforeach; ?>
 														<?php endif; ?>
 													</ul>
@@ -163,7 +163,7 @@ if ( is_rtl() ) {
 																?>
 																		  <?php
 																			if ( $_form['arm_form_type'] == 'edit_profile' ) {
-																				$formTitle = wp_strip_all_tags( stripslashes( $_form['arm_form_label'] ) ) . ' &nbsp;(ID: ' . $_form['arm_form_id'] . ')';
+																				$formTitle = wp_strip_all_tags( wp_unslash( $_form['arm_form_label'] ) ) . ' &nbsp;(ID: ' . $_form['arm_form_id'] . ')';
 																				?>
 																 <li class="arm_shortcode_form_id_li_edit_profile <?php echo esc_attr($_form['arm_form_type']); ?>" data-label="<?php echo esc_attr($formTitle); ?>" data-value="<?php echo esc_attr($_form['arm_form_id']); ?>"><?php echo esc_html($formTitle); ?></li>
 																				<?php
@@ -225,7 +225,7 @@ if ( is_rtl() ) {
 
 															foreach ( $setups as $ms ) {
 																?>
-														<li data-label="<?php echo esc_attr(stripslashes( $ms->arm_setup_name) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($ms->arm_setup_id); //phpcs:ignore ?>"><?php echo esc_html( stripslashes( $ms->arm_setup_name) ); //phpcs:ignore ?></li>
+														<li data-label="<?php echo esc_attr(wp_unslash( $ms->arm_setup_name) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($ms->arm_setup_id); //phpcs:ignore ?>"><?php echo esc_html( wp_unslash( $ms->arm_setup_name) ); //phpcs:ignore ?></li>
 																<?php
 															}
 														}
@@ -558,7 +558,7 @@ if ( is_rtl() ) {
 													<label class="arm_member_transaction_field_item">
 														<input type="checkbox" class="arm_icheckbox arm_member_account_detail_fields" name="arm_account_detail_fields[]" value="<?php echo esc_attr($fieldMetaKey); ?>" <?php echo $fchecked; //phpcs:ignore ?> />
 													</label>
-													<input type="text" class="arm_member_transaction_fields" name="arm_account_detail_field_label_<?php echo esc_attr($fieldMetaKey); ?>" value="<?php echo esc_attr(stripslashes_deep( $fieldOpt['label']) ); //phpcs:ignore ?>" />
+													<input type="text" class="arm_member_transaction_fields" name="arm_account_detail_field_label_<?php echo esc_attr($fieldMetaKey); ?>" value="<?php echo esc_attr(wp_unslash( $fieldOpt['label']) ); //phpcs:ignore ?>" />
 												</li>
 												  
 												
@@ -601,7 +601,7 @@ if ( is_rtl() ) {
 													   <li data-label="<?php esc_attr_e( 'Select Setup', 'armember-membership' ); ?>" data-value=""><?php esc_html_e( 'Select Setup', 'armember-membership' ); ?></li>
 													<?php if ( ! empty( $setups ) ) : ?>
 														<?php foreach ( $setups as $ms ) : ?>
-														<li data-label="<?php echo esc_attr(stripslashes( $ms->arm_setup_name) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($ms->arm_setup_id); //phpcs:ignore ?>"><?php echo esc_html(stripslashes( $ms->arm_setup_name )); //phpcs:ignore ?></li>
+														<li data-label="<?php echo esc_attr(wp_unslash( $ms->arm_setup_name) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($ms->arm_setup_id); //phpcs:ignore ?>"><?php echo esc_html(wp_unslash( $ms->arm_setup_name )); //phpcs:ignore ?></li>
 														<?php endforeach; ?>
 													<?php endif; ?>
 													</ul>
@@ -817,7 +817,7 @@ if ( is_rtl() ) {
 														<li data-label="<?php esc_attr_e( 'Select Set', 'armember-membership' ); ?>" data-value=""><?php esc_html_e( 'Select Set', 'armember-membership' ); ?></li>
 														<?php if ( ! empty( $setnames ) ) : ?>
 															<?php foreach ( $setnames as $sn ) : ?>
-																<li data-label="<?php echo stripslashes( esc_attr($sn->arm_set_name) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($sn->arm_form_id); //phpcs:ignore ?>"><?php echo stripslashes( $sn->arm_set_name ); //phpcs:ignore ?></li>
+																<li data-label="<?php echo wp_unslash( esc_attr($sn->arm_set_name) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($sn->arm_form_id); //phpcs:ignore ?>"><?php echo wp_unslash( $sn->arm_set_name ); //phpcs:ignore ?></li>
 															<?php endforeach; ?>
 														<?php endif; ?>
 													</ul>
@@ -921,7 +921,7 @@ if ( is_rtl() ) {
 														<?php
 														foreach ( $all_plans as $p ) {
 
-														echo '<li data-label="' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . esc_attr($p['arm_subscription_plan_id']) . '">' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>'; //phpcs:ignore
+														echo '<li data-label="' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . esc_attr($p['arm_subscription_plan_id']) . '">' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>'; //phpcs:ignore
 
 														}
 														?>
@@ -1150,7 +1150,7 @@ if ( is_rtl() ) {
 									if ( ! empty( $all_plans ) ) {
 										foreach ( $all_plans as $plan ) {
 											?>
-											<option value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><?php echo stripslashes( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></option>
+											<option value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><?php echo wp_unslash( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></option>
 																	  <?php
 										}
 									}

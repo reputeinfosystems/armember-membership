@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 	class ARM_member_forms_Lite {
@@ -73,6 +75,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
             add_filter('arm_edit_profile_section',array($this,'arm_edit_profile_section_func'),10,3);
 
 			add_filter('arm_register_form_fields_selection',array($this,'arm_register_form_fields_selection_func'),10,1);
+			
 			add_action('wp_ajax_arm_get_field_html',array($this,'arm_get_field_html_func'));
 		}
 
@@ -157,7 +160,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                 $dbFormFields[$arm_member_form_field_slug]['label'] = $fields_value['arm_form_field_option']['label'];
                                 if(isset($dbFormFields[$arm_member_form_field_slug]['options']) && isset($fields_value['arm_form_field_option']['options'])){
                                     $dbFormFields[$arm_member_form_field_slug]['options'] = $fields_value['arm_form_field_option']['options'];
-                                    
                                 }
         
                                 if( !empty( isset($fields_value['arm_form_field_option']['default_val']) ) && !empty($fields_value['arm_form_field_option']['type']) && ($fields_value['arm_form_field_option']['type']=='radio' || $fields_value['arm_form_field_option']['type']=='checkbox'))
@@ -442,10 +444,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                             $hiddenValue = !empty($hiddenValue) ? $hiddenValue : $hiddenF['value'];
                                             $hiddentitle = (!empty($hiddenF['title'])) ? $hiddenF['title'] : '';                                           
 
-                                            $hiddenValue = !empty($hiden_val) ? $hiden_val : $hiddenValue;
-                                                            
-                                            $arm_form_content .= '<tr class="form-field"><th><label>'.$hiddentitle.'</label></th><td><input type="text" name="' . $hiddenMetaKey . '" value="' . $hiddenValue . '"/></td></tr>'; //phpcs:ignore
-                                                            
+											$arm_form_content .= '<tr class="form-field"><th><label>' . esc_html( $hiddentitle ) . '</label></th><td><input type="text" name="' . esc_attr( $hiddenMetaKey ) . '" value="' . esc_attr( $hiddenValue ) . '" /></td></tr>'; //phpcs:ignore      
+											
                                         }
                                     }
                                 }
@@ -910,7 +910,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$new_options = array();
 								foreach ( $options as $data ) {
 									if ( $data != '' ) {
-										$new_options[] = stripslashes( $data );
+										$new_options[] = wp_unslash( $data );
 									}
 								}
 							}
@@ -991,7 +991,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$old_options   = '';
 						if ( ! empty( $options ) ) {
 							foreach ( $options as $key => $opt ) {
-								$opt          = stripslashes( $opt );
+								$opt          = wp_unslash( $opt );
 								$old_options .= "$opt\n";
 							}
 						}
@@ -1000,7 +1000,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 									$content                 .= '<tr>';
 											$content         .= '<td>';
-													$content .= $meta_key;
+													$content .= esc_html(trim($meta_key));
 											$content         .= '</td>';
 
 											$content         .= '<td>';
@@ -1037,8 +1037,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 			if ( isset( $_GET['arm-key'] ) && ! empty( $_GET['arm-key'] ) ) { //phpcs:ignore
 
-				$chk_key    = stripslashes_deep( sanitize_text_field( $_GET['arm-key'] ) ); //phpcs:ignore
-				$user_email = !empty( $_GET['email'] ) ? stripslashes_deep( sanitize_email( $_GET['email'] ) ) : ''; //phpcs:ignore
+				$chk_key    = wp_unslash( sanitize_text_field( $_GET['arm-key'] ) ); //phpcs:ignore
+				$user_email = !empty( $_GET['email'] ) ? wp_unslash( sanitize_email( $_GET['email'] ) ) : ''; //phpcs:ignore
 
 				$arm_message = $this->arm_verify_user_activation_for_front( $user_email, $chk_key );
 				$message     = '';
@@ -1136,7 +1136,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                                     '. intval($_fid).'
                                                 </div>
                                                 <div class="divTableCell arm_padding_0">';
-                                                    $arm_add_new_form_table .= '<a href="'. esc_url( admin_url('admin.php?page='.$arm_slugs->manage_forms.'&action=edit_form&form_id='.$_fid) ).'" class="arm_get_form_link" data-form_id="'. esc_attr($_fid).'">'. strip_tags(stripslashes_deep($edit_form['arm_form_label'])).'</a>'; //phpcs:ignore
+                                                    $arm_add_new_form_table .= '<a href="'. esc_url( admin_url('admin.php?page='.$arm_slugs->manage_forms.'&action=edit_form&form_id='.$_fid) ).'" class="arm_get_form_link" data-form_id="'. esc_attr($_fid).'">'. strip_tags(wp_unslash($edit_form['arm_form_label'])).'</a>'; //phpcs:ignore
                                                 $arm_add_new_form_table .= '</div>
                                                 <div class="divTableCell arm_padding_0">'. date_i18n($date_format, strtotime($edit_form['arm_form_updated_date'])) .'</div>
                                                 <div class="divTableCell arm_padding_0">
@@ -1181,7 +1181,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 		function arm_edit_profile_section_func($arm_edit_profile_link_option_section,$isEditProfile,$form_settings){
             if( $isEditProfile ) { 
 
-                $arm_edit_success_message = (isset($form_settings['edit_success_message'])) ? stripslashes( esc_attr($form_settings['edit_success_message']) ) : esc_html__('Your profile has been updated successfully', 'armember-membership' );
+                $arm_edit_success_message = (isset($form_settings['edit_success_message'])) ? wp_unslash( esc_attr($form_settings['edit_success_message']) ) : esc_html__('Your profile has been updated successfully', 'armember-membership' );
                 $arm_edit_profile_link_option_section = '<tr class="arm_edit_profile_link_options">
                     <td colspan="2">
                         <label class="arm_form_opt_label" for="arm_success_message">'. esc_html__('Message after successful submission', 'armember-membership' ).'</label>
@@ -1197,7 +1197,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
                     $arm_view_profile_display = ( 1 != $view_profile ) ? 'display:none;' : '';
 
-                    $arm_view_profile_link_label = ( isset( $form_settings['view_profile_link_label'] ) ? stripslashes( esc_attr($form_settings['view_profile_link_label']) ) : esc_attr__('View Profile', 'armember-membership' ) );
+                    $arm_view_profile_link_label = ( isset( $form_settings['view_profile_link_label'] ) ? wp_unslash( esc_attr($form_settings['view_profile_link_label']) ) : esc_attr__('View Profile', 'armember-membership' ) );
 
                     $arm_edit_profile_link_option_section .= '<td colspan="2">
                         <label class="arm_form_opt_label" for="arm_view_profile_link">'. esc_html__('Display view profile link', 'armember-membership' ).'</label>
@@ -2313,8 +2313,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$enable_social_login = ( isset( $form_settings['enable_social_login'] ) ) ? $form_settings['enable_social_login'] : 0;
 					$social_btn_position = ( isset( $form_style['social_btn_position'] ) ) ? $form_style['social_btn_position'] : 'bottom';
 					if ( $form->type == 'login' ) {
-						$reg_link_label = ( isset( $form_settings['registration_link_label'] ) ) ? stripslashes( $form_settings['registration_link_label'] ) : esc_html__( 'Register', 'armember-membership' );
-						$fp_link_label  = ( isset( $form_settings['forgot_password_link_label'] ) ) ? stripslashes( $form_settings['forgot_password_link_label'] ) : esc_html__( 'Forgot Password', 'armember-membership' );
+						$reg_link_label = ( isset( $form_settings['registration_link_label'] ) ) ? wp_unslash( $form_settings['registration_link_label'] ) : esc_html__( 'Register', 'armember-membership' );
+						$fp_link_label  = ( isset( $form_settings['forgot_password_link_label'] ) ) ? wp_unslash( $form_settings['forgot_password_link_label'] ) : esc_html__( 'Forgot Password', 'armember-membership' );
 						$show_fp_link   = ( isset( $form_settings['show_forgot_password_link'] ) ) ? $form_settings['show_forgot_password_link'] : 0;
 						if ( $show_fp_link == '1' ) {
 							if ( isset( $form_settings['forgot_password_link_type'] ) && $form_settings['forgot_password_link_type'] == 'page' ) {
@@ -2404,7 +2404,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					if ( $form->type == 'forgot_password' ) {
 						if ( isset( $form_settings['description'] ) ) {
 							$form_content .= '<div class="arm_forgot_password_description">';
-							$form_content .= stripslashes( $form_settings['description'] );
+							$form_content .= wp_unslash( $form_settings['description'] );
 							$form_content .= '</div>';
 						}
 					}
@@ -2501,7 +2501,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						}
 						if ( ! $atts['setup'] ) {
 							/*Add login link in signup form*/
-							$login_link_label = ( isset( $form_settings['login_link_label'] ) ) ? stripslashes( $form_settings['login_link_label'] ) : esc_html__( 'Login', 'armember-membership' );
+							$login_link_label = ( isset( $form_settings['login_link_label'] ) ) ? wp_unslash( $form_settings['login_link_label'] ) : esc_html__( 'Login', 'armember-membership' );
 
 							$form_content   .= '<div class="arm_reg_links_wrapper arm_reg_options arm_reg_login_links">';
 							$show_login_link = ( isset( $form_settings['show_login_link'] ) ) ? $form_settings['show_login_link'] : 0;
@@ -3081,8 +3081,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 										if ( $required == 1 ) {
 											$field_content .= '<span class="arm-df__label-asterisk arm-df__label-asterisk_' . esc_attr($form_field_id) . '">* </span>';
 										}
-										$field_content .= '<label class="arm_form_field_label_text" for="arm-df__form-control_' . esc_attr($form_field_id) . '_'. esc_attr($formRandomID) .'" aria-label="' . esc_attr( stripslashes( $label ) ) . '">';
-										$field_content .= html_entity_decode( stripslashes( $label ) );
+										$field_content .= '<label class="arm_form_field_label_text" for="arm-df__form-control_' . esc_attr($form_field_id) . '_'. esc_attr($formRandomID) .'" aria-label="' . esc_attr( wp_unslash( $label ) ) . '">';
+										$field_content .= html_entity_decode( wp_unslash( $label ) );
 										$field_content .= '</label>';
 									}
 									$field_content .= '</div>';
@@ -3165,7 +3165,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						}
 						?>
 								</div>
-								<label class="arm-df__field-label_text arm_form_field_label_text" aria-label="<?php echo esc_attr( stripslashes( $label ) );?>"><?php echo html_entity_decode( stripslashes( $label ) ); //phpcs:ignore ?></label>
+								<label class="arm-df__field-label_text arm_form_field_label_text" aria-label="<?php echo esc_attr( wp_unslash( $label ) );?>"><?php echo html_entity_decode( wp_unslash( $label ) ); //phpcs:ignore ?></label>
 					<?php } ?>
 					<?php if ( $form_type == 'inactive' ) : ?>
 							<input type="hidden" name="<?php echo esc_attr($prefix_name); ?>[<?php echo esc_attr($form_field_id); ?>][id]" value="<?php echo esc_attr($id); ?>"/>
@@ -3219,7 +3219,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 													<?php esc_html_e( 'Description', 'armember-membership' ); ?>
 												</div>
 												<div class="arm_form_field_settings_field_val">
-													<input type="text" class="arm_form_field_description_wrapper_value arm_form_field_settings_field_val_input field_description_text" data-ftype="<?php echo esc_attr($type); ?>" name="<?php echo esc_attr($prefix_name); ?>[<?php echo esc_attr($form_field_id); ?>][description]" value="<?php echo stripslashes_deep( esc_attr($description) ); //phpcs:ignore ?>" />
+													<input type="text" class="arm_form_field_description_wrapper_value arm_form_field_settings_field_val_input field_description_text" data-ftype="<?php echo esc_attr($type); ?>" name="<?php echo esc_attr($prefix_name); ?>[<?php echo esc_attr($form_field_id); ?>][description]" value="<?php echo wp_unslash( esc_attr($description) ); //phpcs:ignore ?>" />
 												</div>
 											</div>
 							<?php
@@ -3231,7 +3231,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 									$old_options = '';
 									if ( ! empty( $options ) ) {
 										foreach ( $options as $key => $opt ) {
-											$opt          = stripslashes( $opt );
+											$opt          = wp_unslash( $opt );
 											$old_options .= "$opt\n";
 										}
 									}
@@ -3443,10 +3443,10 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 									$options['numeric']         = ( isset( $options['numeric'] ) ) ? $options['numeric'] : 0;
 									$options['uppercase']       = ( isset( $options['uppercase'] ) ) ? $options['uppercase'] : 0;
 									$options['lowercase']       = ( isset( $options['lowercase'] ) ) ? $options['lowercase'] : 0;
-									$options['veryweaktext']    = ( ! empty( $options['veryweaktext'] ) ) ? stripslashes( $options['veryweaktext'] ) : esc_html__( 'Strength: Very Weak', 'armember-membership' );
-									$options['weaktext']        = ( ! empty( $options['weaktext'] ) ) ? stripslashes( $options['weaktext'] ) : esc_html__( 'Strength: Weak', 'armember-membership' );
-									$options['goodtext']        = ( ! empty( $options['goodtext'] ) ) ? stripslashes( $options['goodtext'] ) : esc_html__( 'Strength: Good', 'armember-membership' );
-									$options['strongtext']      = ( ! empty( $options['strongtext'] ) ) ? stripslashes( $options['strongtext'] ) : esc_html__( 'Strength: Strong', 'armember-membership' );
+									$options['veryweaktext']    = ( ! empty( $options['veryweaktext'] ) ) ? wp_unslash( $options['veryweaktext'] ) : esc_html__( 'Strength: Very Weak', 'armember-membership' );
+									$options['weaktext']        = ( ! empty( $options['weaktext'] ) ) ? wp_unslash( $options['weaktext'] ) : esc_html__( 'Strength: Weak', 'armember-membership' );
+									$options['goodtext']        = ( ! empty( $options['goodtext'] ) ) ? wp_unslash( $options['goodtext'] ) : esc_html__( 'Strength: Good', 'armember-membership' );
+									$options['strongtext']      = ( ! empty( $options['strongtext'] ) ) ? wp_unslash( $options['strongtext'] ) : esc_html__( 'Strength: Strong', 'armember-membership' );
 									?>
 												<div class="arm_form_field_settings_menu_inner arm_placeholder_text_container">
 													<div class="arm_form_field_settings_field_label">
@@ -4133,12 +4133,12 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 							if ( $formStyles['form_layout'] == 'writer_border' || $formStyles['form_layout'] == 'writer' ) {
 								$inputPlaceholder = '';
-								$ffield_label     = '<label class="arm-df__label-text ' . esc_attr($arm_social_label_active) . '" for="arm_'. esc_attr( $spfKey ) .'" aria-label="' . esc_attr( stripslashes( $spfKey ) ) . '">' . html_entity_decode( stripslashes( $spfKey ) ) . '</label>';
+								$ffield_label     = '<label class="arm-df__label-text ' . esc_attr($arm_social_label_active) . '" for="arm_'. esc_attr( $spfKey ) .'" aria-label="' . esc_attr( wp_unslash( $spfKey ) ) . '">' . html_entity_decode( wp_unslash( $spfKey ) ) . '</label>';
 							} else {
 								$inputPlaceholder .= ' placeholder="' . $spfLabel . '"';
 							}
 							if ( is_admin() ) {
-								$ffield_label = '<label class="arm-df__label-text arm_form_field_label_text ' . esc_attr( $arm_social_label_active ) . '" for="arm_'.esc_attr($spfKey).'" aria-label="' . esc_attr( stripslashes( $spfKey ) ) . '">' . html_entity_decode( stripslashes( $spfKey ) ) . '</label>';
+								$ffield_label = '<label class="arm-df__label-text arm_form_field_label_text ' . esc_attr( $arm_social_label_active ) . '" for="arm_'.esc_attr($spfKey).'" aria-label="' . esc_attr( wp_unslash( $spfKey ) ) . '">' . html_entity_decode( wp_unslash( $spfKey ) ) . '</label>';
 							}
 						} else {
 							$ffield_label = '';
@@ -4157,7 +4157,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$selectedSPFOpt   .= '<input type="hidden" class="arm_selected_social_profile_fields" name="' . esc_attr($prefix_name) . '[' . esc_attr($form_field_id) . '][options][]" value="' . esc_attr( $spfKey ) . '"/>';
 						$socialFieldsHtml .= '<div class="arm-df__form-group' . esc_attr($field_class) . ' arm-df__form-group_text" id="arm-df__form-group_' . esc_attr($form_field_id) . '_' . esc_attr( $spfKey ) . '" data-field_id="' . esc_attr($form_field_id) . '">';
 						$socialFieldsHtml .= '<div class="arm_form_label_wrapper arm-df__field-label arm_form_member_field_social_fields">';
-						$socialFieldsHtml .= '<label class="arm_form_field_label_text" >' . html_entity_decode( stripslashes( $spfKey ) ) . '</label>';
+						$socialFieldsHtml .= '<label class="arm_form_field_label_text" >' . html_entity_decode( wp_unslash( $spfKey ) ) . '</label>';
 						$socialFieldsHtml .= '</div>';
 						$socialFieldsHtml .= '<div class="arm_label_input_separator"></div>';
 						$socialFieldsHtml .= '<div class="arm-df__form-field">';
@@ -4234,8 +4234,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$arm_form_control_class = 'arm-df__form-control ';
 			}
 			$class               .= $arm_form_control_class . 'arm_cl_' . esc_attr( $meta_key ) . '_' . esc_attr( $formRandomID ) . ' ';
-			$value['label']       = ! empty( $value['label'] ) ? stripslashes( $value['label'] ) : '';
-			$value['placeholder'] = ! empty( $value['placeholder'] ) ? stripslashes( $value['placeholder'] ) : '';
+			$value['label']       = ! empty( $value['label'] ) ? wp_unslash( $value['label'] ) : '';
+			$value['placeholder'] = ! empty( $value['placeholder'] ) ? wp_unslash( $value['placeholder'] ) : '';
 			$ffield_label         = ( ! empty( $value['placeholder'] ) ) ? $value['placeholder'] : '';
 			$placeholder          = isset( $value['placeholder'] ) ? ' placeholder="' . esc_attr( $value['placeholder'] ) . '"' : '';
 			$formSettings         = ( ! empty( $form ) && ! empty( $form->settings ) ) ? $form->settings : array();
@@ -4353,10 +4353,10 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$field_val_active_class = 'active';
 				}
 				if ( $required_star != '' ) {
-					$ffield_label = '<label class="arm-df__label-text ' . esc_attr($field_val_active_class) . '" for="arm-df__form-control_' . esc_attr($field_id) . '_' . esc_attr($formRandomID) . '" aria-label="' . esc_attr( stripslashes( $ffield_label ) ) . '"> * ' . html_entity_decode( stripslashes( $ffield_label ) ) . '</label>';
+					$ffield_label = '<label class="arm-df__label-text ' . esc_attr($field_val_active_class) . '" for="arm-df__form-control_' . esc_attr($field_id) . '_' . esc_attr($formRandomID) . '" aria-label="' . esc_attr( wp_unslash( $ffield_label ) ) . '"> * ' . html_entity_decode( wp_unslash( $ffield_label ) ) . '</label>';
 				} else {
 					if ( $ffield_type != 'avatar' && $ffield_type != 'file' && $ffield_type != 'profile_cover' ) {
-						$ffield_label = '<label class="arm-df__label-text ' . esc_attr($field_val_active_class) . '" for="arm-df__form-control_' . esc_attr($field_id) . '_' . esc_attr($formRandomID) . '" aria-label="' . esc_attr( stripslashes( $ffield_label ) ) . '"> ' . html_entity_decode( stripslashes( $ffield_label ) ) . '</label>';
+						$ffield_label = '<label class="arm-df__label-text ' . esc_attr($field_val_active_class) . '" for="arm-df__form-control_' . esc_attr($field_id) . '_' . esc_attr($formRandomID) . '" aria-label="' . esc_attr( wp_unslash( $ffield_label ) ) . '"> ' . html_entity_decode( wp_unslash( $ffield_label ) ) . '</label>';
 					} else {
 						$ffield_label = '';
 					}
@@ -4367,10 +4367,10 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$field_val_active_class = 'active';
 				}
 				if ( $required_star != '' ) {
-					$ffield_label = '<label class="arm-df__label-text ' . esc_attr($field_val_active_class) . '" for="arm-df__form-control_' . esc_attr($field_id) . '_' . esc_attr($formRandomID) . '" aria-label="' . esc_attr( stripslashes( $ffield_label ) ) . '"> * ' . html_entity_decode( stripslashes( $ffield_label ) ) . '</label>';
+					$ffield_label = '<label class="arm-df__label-text ' . esc_attr($field_val_active_class) . '" for="arm-df__form-control_' . esc_attr($field_id) . '_' . esc_attr($formRandomID) . '" aria-label="' . esc_attr( wp_unslash( $ffield_label ) ) . '"> * ' . html_entity_decode( wp_unslash( $ffield_label ) ) . '</label>';
 				} else {
 					if ( $ffield_type != 'avatar' && $ffield_type != 'file' && $ffield_type != 'profile_cover' ) {
-						$ffield_label = '<label class="arm-df__label-text ' . esc_attr($field_val_active_class) . '" for="arm-df__form-control_' . esc_attr($field_id) . '_' . esc_attr($formRandomID) . '" aria-label="' . esc_attr( stripslashes( $ffield_label ) ) . '"> ' . html_entity_decode( stripslashes( $ffield_label ) ) . '</label>';
+						$ffield_label = '<label class="arm-df__label-text ' . esc_attr($field_val_active_class) . '" for="arm-df__form-control_' . esc_attr($field_id) . '_' . esc_attr($formRandomID) . '" aria-label="' . esc_attr( wp_unslash( $ffield_label ) ) . '"> ' . html_entity_decode( wp_unslash( $ffield_label ) ) . '</label>';
 					} else {
 						$ffield_label = '';
 					}
@@ -4497,10 +4497,10 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						if ( ! is_admin() ) {
 							if ( isset( $options['strength_meter'] ) && $options['strength_meter'] == '1' ) {
 
-								$veryweaktext = ( ! empty( $options['veryweaktext'] ) ) ? esc_html( stripslashes( $options['veryweaktext'] ) ) : esc_html__( 'Strength: Very Weak', 'armember-membership' );
-								$weaktext     = ( ! empty( $options['weaktext'] ) ) ? esc_html( stripslashes( $options['weaktext'] ) ) : esc_html__( 'Strength: Weak', 'armember-membership' );
-								$goodtext     = ( ! empty( $options['goodtext'] ) ) ? esc_html( stripslashes( $options['goodtext'] ) ) : esc_html__( 'Strength: Good', 'armember-membership' );
-								$strongtext   = ( ! empty( $options['strongtext'] ) ) ? esc_html( stripslashes( $options['strongtext'] ) ) : esc_html__( 'Strength: Strong', 'armember-membership' );
+								$veryweaktext = ( ! empty( $options['veryweaktext'] ) ) ? esc_html( wp_unslash( $options['veryweaktext'] ) ) : esc_html__( 'Strength: Very Weak', 'armember-membership' );
+								$weaktext     = ( ! empty( $options['weaktext'] ) ) ? esc_html( wp_unslash( $options['weaktext'] ) ) : esc_html__( 'Strength: Weak', 'armember-membership' );
+								$goodtext     = ( ! empty( $options['goodtext'] ) ) ? esc_html( wp_unslash( $options['goodtext'] ) ) : esc_html__( 'Strength: Good', 'armember-membership' );
+								$strongtext   = ( ! empty( $options['strongtext'] ) ) ? esc_html( wp_unslash( $options['strongtext'] ) ) : esc_html__( 'Strength: Strong', 'armember-membership' );
 
 								$class .= ' arm_strength_meter_input';
 								$psm   .= '<div class="arm_pass_strength_meter">';
@@ -4802,7 +4802,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							$rows = $custom_rows;
 						}
 					}
-					$output .= '<textarea id="arm-df__form-control_' . esc_attr( $field_id ) . '_' . esc_attr( $formRandomID ) . '" class="arm_textarea ' . esc_attr( $class ) . '" name="' . esc_attr( $name ) . '" rows="' . esc_attr( $rows ) . '" cols="' . esc_attr( $cols ) . '" ' . $field_attr . ' ' . $onchange . '>' . $arm_shortcodes->arm_com_descaped_all_shortcodes( $arm_shortcodes->arm_com_escape_all_shortcodes( sanitize_textarea_field( stripslashes( $field_val ) ) ) ) . '</textarea>';
+					$output .= '<textarea id="arm-df__form-control_' . esc_attr( $field_id ) . '_' . esc_attr( $formRandomID ) . '" class="arm_textarea ' . esc_attr( $class ) . '" name="' . esc_attr( $name ) . '" rows="' . esc_attr( $rows ) . '" cols="' . esc_attr( $cols ) . '" ' . $field_attr . ' ' . $onchange . '>' . $arm_shortcodes->arm_com_descaped_all_shortcodes( $arm_shortcodes->arm_com_escape_all_shortcodes( sanitize_textarea_field( wp_unslash( $field_val ) ) ) ) . '</textarea>';
 					$output .= $ffield_label;
 
 					break;
@@ -4818,7 +4818,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$field_options = '';
 						if ( ! empty( $value['options'] ) ) {
 							foreach ( $value['options'] as $data ) {
-								$data_default = $data     = stripslashes( $data );
+								$data_default = $data     = wp_unslash( $data );
 								$new_data = explode( ':', $data );
 								$option   = $key = isset( $new_data[0] ) ? $new_data[0] : $data;
 								$value_data='';
@@ -4885,7 +4885,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							$allOptions   = array();
 							$drpdown_cntr = 0;
 							foreach ( $value['options'] as $data ) {
-								$data_default = $data     = stripslashes( $data );
+								$data_default = $data     = wp_unslash( $data );
 								$new_data = explode( ':', $data );
 								$option   = $key = isset( $new_data[0] ) ? $new_data[0] : $data;
                                 $value_data='';
@@ -4964,7 +4964,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							 * For Admin Side Only
 							 */
 							foreach ( $value['options'] as $data ) {
-								$data_default = $data     = stripslashes( $data );
+								$data_default = $data     = wp_unslash( $data );
 								$new_data = explode( ':', $data );
 								$value_data = '';
 								$option   = $key = isset( $new_data[0] ) ? $new_data[0] : $data;
@@ -5010,7 +5010,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							$radio_controls           = '';
 
 							foreach ( $value['options'] as $data ) {
-								$data_default = $data     = stripslashes( $data );
+								$data_default = $data     = wp_unslash( $data );
 								$new_data = explode( ':', $data );
 								$option   = $key = isset( $new_data[0] ) ? $new_data[0] : $data;
 								$value_data='';
@@ -5067,7 +5067,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							 */
 							$arm_form_chkbox_counter = 1;
 							foreach ( $value['options'] as $data ) {
-								$data         = stripslashes( $data );
+								$data         = wp_unslash( $data );
 								$data_default = $data;
 								// $new_data = explode(':', $data);
 								$new_data = explode( ':', wp_strip_all_tags( $data ) );
@@ -5120,7 +5120,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 							$arm_form_chkbox_counter = 1;
 							foreach ( $value['options'] as $data ) {
-								$data         = stripslashes( $data );
+								$data         = wp_unslash( $data );
 								$data_default = $data;
 								$new_data     = explode( ':', wp_strip_all_tags( $data ) );
 								$value_data='';
@@ -5140,7 +5140,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 								$ngModelCheck = 'arm_form__' . esc_attr( $name ) . '_' . esc_attr($field_id) . '__' . esc_attr($arm_form_chkbox_counter) . '_' . esc_attr($formRandomID);
 
-								$field_val_arr = stripslashes_deep( $field_val );
+								$field_val_arr = wp_unslash( $field_val );
 
 								$field_attr = ' name="' . esc_attr( $name ) . '" ' . $disabled;
 								if ( ! empty( $required ) ) {
@@ -5239,7 +5239,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						if ( $fieldRoles ) {
 							$default_option_label = '';
 							foreach ( $fieldRoles as $key => $option ) {
-								$option = stripslashes( $option );
+								$option = wp_unslash( $option );
 								if ( $drpdown_cntr == 0 ) {
 									$default_option_label = $option;
 								}
@@ -5315,11 +5315,11 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						
 						$submit_class .= ' arm-df__form-control_' . esc_attr($field_id);
 						$submit_attr  .= ' type="submit"';
-						$output       .= '<button class="arm-df__form-control-submit-btn arm-df__form-group_button ' . $submit_class . '" ' . $submit_attr . ' name="armFormSubmitBtn"><span class="arm_spinner">' . $arm_loader_img . '</span>' . html_entity_decode( stripslashes( $value['label'] ) ) . '</button>';
+						$output       .= '<button class="arm-df__form-control-submit-btn arm-df__form-group_button ' . $submit_class . '" ' . $submit_attr . ' name="armFormSubmitBtn"><span class="arm_spinner">' . $arm_loader_img . '</span>' . html_entity_decode( wp_unslash( $value['label'] ) ) . '</button>';
 					} else {
 						$submit_class .= ' arm-df__form-control_' . esc_attr( $field_id );
 						$submit_attr  .= ' type="button" id="' . esc_attr( $value['id'] ) . '" name="arm_forms[' . $form_id . '][' . $field_id . '][submit]" ';
-						$output       .= '<div class="arm-df__form-control-submit-btn arm-df__form-group_button arm_editable_input_button ' . $submit_class . '" ' . $submit_attr . '><div class="arm-df__field-label_text arm_editable_input_button_inner">' . html_entity_decode( stripslashes( $value['label'] ) ) . '</div><a href="javascript:void(0)" class="arm_form_btn_editable_link">&nbsp;</a></div>';
+						$output       .= '<div class="arm-df__form-control-submit-btn arm-df__form-group_button arm_editable_input_button ' . $submit_class . '" ' . $submit_attr . '><div class="arm-df__field-label_text arm_editable_input_button_inner">' . html_entity_decode( wp_unslash( $value['label'] ) ) . '</div><a href="javascript:void(0)" class="arm_form_btn_editable_link">&nbsp;</a></div>';
 
 						$arm_show_login_link = ! empty( $form->settings['show_login_link'] ) ? 1 : 0;
 
@@ -5359,7 +5359,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				default:
 					break;
 			}
-			$helper_description_text = stripslashes_deep( nl2br( $field_desc ) );
+			$helper_description_text = wp_unslash( nl2br( $field_desc ) );
 			$helper_description      = '';
 			if ( ! empty( $helper_description_text ) || is_admin() ) {
 				$arm_has_helper_description_text_class = ( ! empty( $helper_description_text ) ) ? ' arm_df__helper-has-description' : '';
@@ -5964,6 +5964,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$form_settings= array();
 				if ( is_user_logged_in() ) {
 					if ( $form == 'edit_profile' ) {
+						$ARMemberLite->arm_check_user_cap( '', '1' );
 						$form_type       = 'edit_profile';
 						$form_id         = intval( $posted_data['arm_parent_form_id'] );
 						$success_message = ! empty( $posted_data['arm_success_message'] ) ? sanitize_text_field( $posted_data['arm_success_message'] ) : '';
@@ -6167,7 +6168,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$fp = $this->arm_retrieve_password();
 
 								if ( $fp && empty( $arm_lite_errors->errors ) ) {
-									$rp_success_msg    = ! empty( $form_settings['message'] ) ? stripslashes_deep($form_settings['message']) : esc_html__( 'We have sent you a password reset link, Please check your mail.', 'armember-membership' );
+									$rp_success_msg    = ! empty( $form_settings['message'] ) ? wp_unslash($form_settings['message']) : esc_html__( 'We have sent you a password reset link, Please check your mail.', 'armember-membership' );
 									$return['status']  = 'success';
 									$return['message'] = $rp_success_msg;
 								} else {
@@ -6207,7 +6208,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 												false
 											);
 											$arm_global_settings->arm_mailer( $arm_email_settings->templates->change_password_user, $user->ID );
-											$cp_success_msg      = ! empty( $form_settings['message'] ) ? stripslashes_deep($form_settings['message']) : esc_html__( 'Your password has been changed.', 'armember-membership' );
+											$cp_success_msg      = ! empty( $form_settings['message'] ) ? wp_unslash($form_settings['message']) : esc_html__( 'Your password has been changed.', 'armember-membership' );
 											$return['status']    = 'success';
 											$return['message']   = $cp_success_msg;
 											$return['is_action'] = '';
@@ -6247,7 +6248,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 													$rp_link            = $arm_login_page_url;
 												}
 
-												$err_msg = isset($arm_global_settings->common_message['arm_password_reset']) ? stripslashes_deep($arm_global_settings->common_message['arm_password_reset']) : '';
+												$err_msg = isset($arm_global_settings->common_message['arm_password_reset']) ? wp_unslash($arm_global_settings->common_message['arm_password_reset']) : '';
                                                 $loginlink = "<a href='" . $rp_link . "'>";
                                                 $login_link_taxt = isset($arm_global_settings->common_message['arm_password_reset_loginlink']) ? $arm_global_settings->common_message['arm_password_reset_loginlink'] : esc_html__('Login Now', 'armember-membership');
 
@@ -7479,15 +7480,15 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				'enable_repeat_field' => 0,
 			);
 			$field_options                    = shortcode_atts( $default_options, $field_options );
-			$field_options['label']           = isset( $field_options['label'] ) ? stripslashes( $field_options['label'] ) : '';
-			$field_options['placeholder']     = isset( $field_options['placeholder'] ) ? stripslashes( $field_options['placeholder'] ) : '';
-			$field_options['blank_message']   = isset( $field_options['blank_message'] ) ? stripslashes( $field_options['blank_message'] ) : '';
-			$field_options['invalid_message'] = isset( $field_options['invalid_message'] ) ? stripslashes( $field_options['invalid_message'] ) : '';
+			$field_options['label']           = isset( $field_options['label'] ) ? wp_unslash( $field_options['label'] ) : '';
+			$field_options['placeholder']     = isset( $field_options['placeholder'] ) ? wp_unslash( $field_options['placeholder'] ) : '';
+			$field_options['blank_message']   = isset( $field_options['blank_message'] ) ? wp_unslash( $field_options['blank_message'] ) : '';
+			$field_options['invalid_message'] = isset( $field_options['invalid_message'] ) ? wp_unslash( $field_options['invalid_message'] ) : '';
 			if ( in_array( $field_options['type'], array( 'radio' ) ) && empty( $field_options['default_val'] ) && ! empty( $field_options['options'] ) ) {
 				$fieldOptValues = array_values( $field_options['options'] );
 				$firstVal       = array_shift( $fieldOptValues );
 				reset( $field_options['options'] );
-				$firstVal = stripslashes( $firstVal );
+				$firstVal = wp_unslash( $firstVal );
 				$new_data = explode( ':', $firstVal );
 				$key      = isset( $new_data[0] ) ? $new_data[0] : $firstVal;
 				if ( isset( $new_data[1] ) && $new_data[1] != '' ) {
@@ -8004,7 +8005,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 				$new_options = array();
 				foreach ( $options as $data ) {
 					if ( $data != '' ) {
-						$new_options[] = stripslashes( $data );
+						$new_options[] = wp_unslash( $data );
 					}
 				}
 			}
@@ -8624,35 +8625,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			return $forms;
 		}
 
-		function arm_check_unique_set_name() {
-			global $wp, $wpdb, $ARMemberLite, $arm_slugs,$arm_capabilities_global;
-			$posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), $_POST ); //phpcs:ignore
-			/* Check For unique set name starts */
-			if ( isset( $posted_data['arm_set_name'] ) ) { //phpcs:ignore
-				$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_forms'], '1' );
-				$setform_name = $wpdb->get_row( 'SELECT * FROM `' . $ARMemberLite->tbl_arm_forms . "` WHERE `arm_set_name` LIKE '" . sanitize_text_field( $posted_data['arm_set_name'] ) . "' GROUP BY arm_set_id ORDER BY arm_form_id DESC Limit 0,1", ARRAY_A ); //phpcs:ignore
-				if ( ! empty( $setform_name ) && count( $setform_name ) > 0 ) {
-					echo 'false';
-				} else {
-					echo 'true';
-				}
-			}
-			/*
-			 Check For unique set name ends */
-			/* Check For unique Signup form name starts */
-			if ( isset( $posted_data['arm_form_name'] ) ) { //phpcs:ignore
-				$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_forms'], '1' );
-				$setform_name = $wpdb->get_row( 'SELECT * FROM `' . $ARMemberLite->tbl_arm_forms . "` WHERE `arm_form_label` LIKE '" . sanitize_text_field( $posted_data['arm_form_name'] ) . "' and `arm_form_type` = 'registration' GROUP BY arm_form_id ORDER BY arm_form_id DESC Limit 0,1", ARRAY_A ); //phpcs:ignore
-				if ( ! empty( $setform_name ) && count( $setform_name ) > 0 ) {
-					echo 'false';
-				} else {
-					echo 'true';
-				}
-			}
-			/* Check For unique Signup form name ends */
-			die;
-		}
-
 
 		/*
 		 * Get all form data with form fields.
@@ -8711,7 +8683,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			if ( ! empty( $form_id ) && $form_id != 0 ) {
 				$forms_data = $wpdb->get_row( $wpdb->prepare("SELECT {$selectFields}, `arm_form_id` FROM `" . $ARMemberLite->tbl_arm_forms . "` WHERE `arm_form_id`=%d ORDER BY `arm_form_id` ASC LIMIT 1",$form_id), ARRAY_A );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_formsis a table name. False Positive alarm
 				if ( ! empty( $forms_data ) ) {
-					$forms_data['arm_form_label']    = ( ! empty( $forms_data['arm_form_label'] ) ) ? stripslashes( $forms_data['arm_form_label'] ) : '';
+					$forms_data['arm_form_label']    = ( ! empty( $forms_data['arm_form_label'] ) ) ? wp_unslash( $forms_data['arm_form_label'] ) : '';
 					$forms_data['arm_form_settings'] = ( ! empty( $forms_data['arm_form_settings'] ) ) ? arm_maybe_unserialize( $forms_data['arm_form_settings'] ) : array();
 					if ( $isFormFields ) {
 						/* Get Form Fields */
@@ -8731,7 +8703,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					foreach ( $form_result as $form ) {
 						$id = $form['arm_form_id'];
 						/* Get Form Fields */
-						$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? stripslashes( $form['arm_form_label'] ) : '';
+						$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? wp_unslash( $form['arm_form_label'] ) : '';
 						$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? arm_maybe_unserialize( $form['arm_form_settings'] ) : array();
 						$login_regex               = '/template-login(.*?)/';
 						$register_regex            = '/template-registration(.*?)/';
@@ -8769,7 +8741,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$id     = $form['arm_form_id'];
 					$set_id = $form['arm_set_id'];
 					/* Get Form Fields */
-					$form['arm_form_label']     = ( ! empty( $form['arm_form_label'] ) ) ? stripslashes( $form['arm_form_label'] ) : '';
+					$form['arm_form_label']     = ( ! empty( $form['arm_form_label'] ) ) ? wp_unslash( $form['arm_form_label'] ) : '';
 					$form['arm_form_settings']  = ( ! empty( $form['arm_form_settings'] ) ) ? arm_maybe_unserialize( $form['arm_form_settings'] ) : array();
 					$set_data[ $set_id ][ $id ] = $form;
 				}
@@ -8786,7 +8758,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					foreach ( $form_result as $form ) {
 						$id = $form['arm_form_id'];
 						/* Get Form Fields */
-						$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? stripslashes( $form['arm_form_label'] ) : '';
+						$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? wp_unslash( $form['arm_form_label'] ) : '';
 						$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? arm_maybe_unserialize( $form['arm_form_settings'] ) : array();
 						if ( $isFormFields ) {
 							$form['fields'] = $this->arm_get_member_forms_fields( $id );
@@ -8813,7 +8785,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					foreach ( $form_result as $form ) {
 						$id = $form['arm_form_id'];
 						/* Get Form Fields */
-						$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? stripslashes( $form['arm_form_label'] ) : '';
+						$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? wp_unslash( $form['arm_form_label'] ) : '';
 						$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? arm_maybe_unserialize( $form['arm_form_settings'] ) : array();
 						if ( $isFormFields ) {
 							$form['fields'] = $this->arm_get_member_forms_fields( $id );
@@ -8838,7 +8810,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 			if ( ! empty( $form_result ) ) {
 				foreach ( $form_result as $form ) {
 					$id                        = $form['arm_form_id'];
-					$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? stripslashes( $form['arm_form_label'] ) : '';
+					$form['arm_form_label']    = ( ! empty( $form['arm_form_label'] ) ) ? wp_unslash( $form['arm_form_label'] ) : '';
 					$form['arm_form_settings'] = ( ! empty( $form['arm_form_settings'] ) ) ? arm_maybe_unserialize( $form['arm_form_settings'] ) : array();
 					if ( $isFormFields ) {
 						/* Get Form Fields */
@@ -9007,7 +8979,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							$field_data['label']              = isset( $field_data['label'] ) ? esc_attr( $field_data['label'] ) : '';
 							$field_data['meta_key']           = isset( $field_data['meta_key'] ) ? sanitize_title( strtolower( $field_data['meta_key'] ) ) : ''; // phpcs:ignore
 							$field_data['readonly']           = isset( $field_data['readonly'] ) ? sanitize_title( strtolower( $field_data['readonly'] ) ) : '';
-							$field_data['regular_expression'] = isset( $field_data['regular_expression'] ) ? stripslashes_deep( $field_data['regular_expression'] ) : '';
+							$field_data['regular_expression'] = isset( $field_data['regular_expression'] ) ? wp_unslash( $field_data['regular_expression'] ) : '';
 
 							if ( $field_data['type'] == 'radio' && empty( $field_data['default_val'] ) ) {
 								$field_data['default_val'] = 'false';
@@ -9563,7 +9535,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$form_style_container      = '.arm--material-outline-style.arm_materialize_form';
 					$new_style['field_height'] = '52';
 				}
-				$form_settings['custom_css'] = isset( $form_settings['custom_css'] ) ? stripslashes( $form_settings['custom_css'] ) : '';
+				$form_settings['custom_css'] = isset( $form_settings['custom_css'] ) ? wp_unslash( $form_settings['custom_css'] ) : '';
 				$fp_link_margin              = ( isset( $form_settings['forgot_password_link_margin'] ) ) ? $form_settings['forgot_password_link_margin'] : array();
 				$fp_link_margin['left']      = ( isset( $fp_link_margin['left'] ) && is_numeric( $fp_link_margin['left'] ) ) ? $fp_link_margin['left'] : 0;
 				$fp_link_margin['top']       = ( isset( $fp_link_margin['top'] ) && is_numeric( $fp_link_margin['top'] ) ) ? $fp_link_margin['top'] : 0;
@@ -10447,7 +10419,7 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 						.arm_date_field_$form_id .armglyphicon-calendar:before,
 						.arm_date_field_$form_id .armglyphicon-chevron-up:before,
 						.arm_date_field_$form_id .armglyphicon-chevron-down:before{color: " . $date_picker_color . ';}
-						' . stripslashes_deep( $form_settings['custom_css'] ) . '
+						' . wp_unslash( $form_settings['custom_css'] ) . '
 					';
 					$new_style_css .= $container . ' stop.arm_social_connect_svg { stop-color:' . $new_style['button_back_color'] . '; } ';
 				if ( $isViewProfileLink ) {
@@ -10873,7 +10845,7 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 			echo wp_json_encode(
 				array(
 					'error'   => false,
-					'content' => stripslashes_deep( $content ),
+					'content' => wp_unslash( $content ),
 				)
 			);
 			die();
@@ -11420,7 +11392,7 @@ if ( ! class_exists( 'ARM_Form_Lite' ) ) {
 
 		public function init( $data ) {
 			$this->ID          = $data->arm_form_id;
-			$this->name        = stripslashes( $data->arm_form_title );
+			$this->name        = wp_unslash( $data->arm_form_title );
 			$this->slug        = $data->arm_form_slug;
 			$this->type        = $data->arm_form_type;
 			$this->ref_form_id = $data->arm_ref_template;

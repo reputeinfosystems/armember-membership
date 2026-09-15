@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 function arm_font_awesome_icons() {
 	 $fontAwesomeIcons         = array();
 	$fontAwesomeIcons['armfa'] = array(

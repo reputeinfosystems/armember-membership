@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_global_settings, $arm_email_settings, $arm_payment_gateways, $arm_access_rules, $arm_subscription_plans, $arm_member_forms, $arm_social_feature;
 $all_global_settings = $arm_global_settings->arm_get_all_global_settings();
 
@@ -141,7 +143,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 									if ( ! empty( $all_roles ) ) :
 										foreach ( $all_roles as $role_key => $role_value ) {
 											?>
-												<option class="arm_message_selectbox_op" value="<?php echo esc_attr( $role_key ); ?>" <?php echo ( in_array( $role_key, $arm_exclude_role_for_hide_admin ) ) ? ' selected="selected"' : ''; ?>><?php echo stripslashes( $role_value ); //phpcs:ignore ?></option>
+												<option class="arm_message_selectbox_op" value="<?php echo esc_attr( $role_key ); ?>" <?php echo ( in_array( $role_key, $arm_exclude_role_for_hide_admin ) ) ? ' selected="selected"' : ''; ?>><?php echo wp_unslash( $role_value ); //phpcs:ignore ?></option>
 																										   <?php
 										}
 										else :
@@ -571,7 +573,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 							<div class="arm_email_setting_flex_group arm_payment_getway_page">
 								<div class="arm_form_field_block">
 									<label class="arm-form-table-label"><?php esc_html_e( 'From/Reply to Name', 'armember-membership' ); ?></label>
-									<input id="arm_email_from_name" type="text" name="arm_email_from_name" value="<?php echo esc_attr( ! empty( $all_email_settings['arm_email_from_name'] ) ? stripslashes( sanitize_text_field($all_email_settings['arm_email_from_name']) ) : get_option( 'blogname' ) ); ?>" >
+									<input id="arm_email_from_name" type="text" name="arm_email_from_name" value="<?php echo esc_attr( ! empty( $all_email_settings['arm_email_from_name'] ) ? wp_unslash( sanitize_text_field($all_email_settings['arm_email_from_name']) ) : get_option( 'blogname' ) ); ?>" >
 									<span id="email_from_name_error" class="arm_error_msg email_from_name_error" style="display:none;"><?php esc_html_e( 'Please enter From Name.', 'armember-membership' ); ?></span>
 									<span id="invalid_email_from_name_error" class="arm_error_msg invalid_email_from_name_error" style="display:none;"><?php esc_html_e( 'Please enter valid From Name.', 'armember-membership' ); ?></span>   
 								</div>
@@ -881,7 +883,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 								?>
 								<label class = "account_detail_radio arm_account_detail_options arm_margin_bottom_12">
 									<input type = "checkbox" value = "<?php echo esc_attr( sanitize_text_field($fieldMetaKey)); ?>" class = "arm_icheckbox arm_account_detail_fields" name = "clear_fields[<?php echo esc_attr($fieldMetaKey); ?>]" id = "arm_profile_field_input_<?php echo esc_attr($fieldMetaKey); ?>"  checked="checked" disabled="disabled" />
-									<label for="arm_profile_field_input_<?php echo esc_attr($fieldMetaKey); ?>"><?php echo stripslashes_deep( $fieldOpt['label'] ); //phpcs:ignore ?></label>
+									<label for="arm_profile_field_input_<?php echo esc_attr($fieldMetaKey); ?>"><?php echo wp_unslash( $fieldOpt['label'] ); //phpcs:ignore ?></label>
 									<div class="arm_list_sortable_icon"></div>
 								</label>
 								<?php
@@ -907,7 +909,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 																					echo $fchecked; //phpcs:ignore
 																					?> 
 								/>
-									<label for="arm_profile_field_input_<?php echo esc_attr($fieldMetaKey); ?>"><?php echo stripslashes_deep( $fieldOpt['label'] ); //phpcs:ignore ?></label>
+									<label for="arm_profile_field_input_<?php echo esc_attr($fieldMetaKey); ?>"><?php echo wp_unslash( $fieldOpt['label'] ); //phpcs:ignore ?></label>
 									<?php
 									$meta_count = $wpdb->get_var( $wpdb->prepare('SELECT count(`meta_key`) FROM `' . $wpdb->prefix . "usermeta` WHERE `meta_key`=%s",$fieldMetaKey) );//phpcs:ignore --Reason: $wpdb->prefix . "usermeta is a table name. False Positive Alarm 
 									if ( $fchecked == '' && $meta_count > 0 ) { 

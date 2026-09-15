@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_Spam_Filter_Lite' ) ) {
 	class ARM_Spam_Filter_Lite {
 

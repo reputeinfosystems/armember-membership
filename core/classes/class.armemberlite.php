@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_common_lite' ) ) {
     class ARM_common_lite {
         protected static $checksum;

@@ -1,4 +1,7 @@
-<?php
+<?php 
+
+if(! defined('ABSPATH')) exit;
+
 global $arm_common_lite;
 $arm_loader = $arm_common_lite->arm_loader_img_func();?>
 <div class="arm_member_view_detail_container popup_wrapper">

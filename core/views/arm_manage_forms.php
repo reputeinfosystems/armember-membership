@@ -1,4 +1,6 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
+
 global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_social_feature,$arm_common_lite;
 $date_format       = $arm_global_settings->arm_get_wp_date_format();
 $globalSettings    = $arm_global_settings->global_settings;
@@ -61,7 +63,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 								foreach ( $registration_forms as $_form ) { ?>
 									<?php
 									$_fid             = $_form['arm_form_id'];
-									$form_label = wp_strip_all_tags(stripslashes_deep($_form['arm_form_label']));
+									$form_label = wp_strip_all_tags(wp_unslash($_form['arm_form_label']));
 							if(!empty($form_label)){
 								// Convert quotes safely for attribute
 								$form_label = htmlspecialchars($form_label, ENT_QUOTES);
@@ -69,7 +71,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 									$add_form_select .='<li data-label="'. $form_label.'" data-value="'.esc_attr($_fid).'" class="existing_form_li_'.esc_attr($_fid).'">'. $form_label.'</li>';
 									if($ARMemberLite->is_arm_pro_active)
 									{
-										$arm_profile_form_select .='<li data-label="'. wp_strip_all_tags( stripslashes($form_label)).'" data-value="'.esc_attr($_fid).'" class="existing_form_li_'.esc_attr($_fid).'">'. stripslashes_deep($form_label).'</li>';
+										$arm_profile_form_select .='<li data-label="'. wp_strip_all_tags( wp_unslash($form_label)).'" data-value="'.esc_attr($_fid).'" class="existing_form_li_'.esc_attr($_fid).'">'. wp_unslash($form_label).'</li>';
 									}
 									?>
 									<div class="divTableRow member_row_<?php echo intval($_fid); ?> arm_register_form_section">
@@ -77,7 +79,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 											<span class="arm_display_block"><?php echo intval($_fid); ?></span>
 										</div>
 										<div class="divTableCell arm_padding_0">
-											<a href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $_fid )); //phpcs:ignore ?>" class="arm_get_form_link arm_display_block " data-form_id="<?php echo esc_attr($_fid); ?>"><?php echo strip_tags( stripslashes( $_form['arm_form_label'] ) ); //phpcs:ignore ?></a>
+											<a href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $_fid )); //phpcs:ignore ?>" class="arm_get_form_link arm_display_block " data-form_id="<?php echo esc_attr($_fid); ?>"><?php echo strip_tags( wp_unslash( $_form['arm_form_label'] ) ); //phpcs:ignore ?></a>
 										</div>
 										<div class="divTableCell arm_padding_0"> <span class="arm_display_block"><?php echo date_i18n( $date_format, strtotime( $_form['arm_form_updated_date'] ) ); //phpcs:ignore ?></span></div>
 										<div class="divTableCell arm_padding_0">
@@ -165,7 +167,7 @@ echo $arm_loader; //phpcs:ignore ?></div>
 												<span class="arm_display_block"><?php echo intval($firstForm['arm_form_id']); ?></span>
 											</div>
 											<div class="divTableCell arm_padding_0">
-												<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $firstForm['arm_form_id'] ) ); //phpcs:ignore ?>" class="arm_get_form_link arm_display_block" data-form_id="<?php echo esc_attr($firstForm['arm_form_id']); ?>"><?php echo stripslashes( $firstForm['arm_set_name'] ); //phpcs:ignore ?></a>
+												<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $arm_slugs->manage_forms . '&action=edit_form&form_id=' . $firstForm['arm_form_id'] ) ); //phpcs:ignore ?>" class="arm_get_form_link arm_display_block" data-form_id="<?php echo esc_attr($firstForm['arm_form_id']); ?>"><?php echo wp_unslash( $firstForm['arm_set_name'] ); //phpcs:ignore ?></a>
 											</div>
 											<div class="divTableCell arm_padding_0"><span class="arm_display_block"><?php echo date_i18n( $date_format, strtotime( $firstForm['arm_form_updated_date'] ) ); //phpcs:ignore ?></span></div>
 											<?php

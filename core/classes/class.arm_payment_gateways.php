@@ -1,4 +1,5 @@
-<?php
+<?php 
+if(! defined('ABSPATH')) exit;
 
 if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 
@@ -1380,11 +1381,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 						$payment_done   = array();
 						if ( $payment_log_id ) {
 							update_option( 'arm_last_invoice_id', $arm_last_invoice_id );
-							/*
-							if ($coupon_code != '') {
-
-								$arm_manage_coupons->arm_update_coupon_used_count($coupon_code);
-							}*/
+							
 							$payment_done = array(
 								'status'   => true,
 								'log_id'   => $payment_log_id,
@@ -1432,8 +1429,8 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 				$fieldLabel = $fieldClass = $fieldAttr = $validation = $fieldDesc = $fieldid = '';
 				switch ( $key ) {
 					case 'card_number':
-						$fieldLabel           = ! empty( $gateways_opts['cc_label'] ) ? stripslashes( $gateways_opts['cc_label'] ) : esc_html__( 'Credit Card Number', 'armember-membership' );
-						$fieldDesc            = ! empty( $gateways_opts['cc_desc'] ) ? stripslashes( $gateways_opts['cc_desc'] ) : '';
+						$fieldLabel           = ! empty( $gateways_opts['cc_label'] ) ? wp_unslash( $gateways_opts['cc_label'] ) : esc_html__( 'Credit Card Number', 'armember-membership' );
+						$fieldDesc            = ! empty( $gateways_opts['cc_desc'] ) ? wp_unslash( $gateways_opts['cc_desc'] ) : '';
 						$field_min_length_msg = esc_html__( 'Card number must be at least 13 digits.', 'armember-membership' );
 						$field_mx_length_msg  = esc_html__( 'Card number cannot exceed 19 digits.', 'armember-membership' );
 						$fieldAttr            = 'name="' . esc_attr($type) . '[' . esc_attr($key) . ']" minlength="13" data-validation-minlength-message="' . esc_attr($field_min_length_msg) . '" maxlength="19" data-validation-maxlength-message="' . esc_attr($field_mx_length_msg) . '" onkeydown="armvalidatenumber(event);"';
@@ -1450,8 +1447,8 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 						$fieldid  = 'arm_' . esc_attr($type) . '_card_number';
 						break;
 					case 'cvc':
-						$fieldLabel          = ! empty( $gateways_opts['cvv_label'] ) ? stripslashes( $gateways_opts['cvv_label'] ) : esc_html__( 'CVV Code', 'armember-membership' );
-						$fieldDesc           = ! empty( $gateways_opts['cvv_desc'] ) ? stripslashes( $gateways_opts['cvv_desc'] ) : '';
+						$fieldLabel          = ! empty( $gateways_opts['cvv_label'] ) ? wp_unslash( $gateways_opts['cvv_label'] ) : esc_html__( 'CVV Code', 'armember-membership' );
+						$fieldDesc           = ! empty( $gateways_opts['cvv_desc'] ) ? wp_unslash( $gateways_opts['cvv_desc'] ) : '';
 						$field_mx_length_msg = esc_html__( 'CVC cannot exceed 4 digits', 'armember-membership' );
 						$fieldAttr           = 'name="' . esc_attr($type) . '[' . esc_attr($key) . ']"  onkeydown="armvalidatenumber(event);" maxlength="4" data-validation-maxlength-message="' . esc_attr($field_mx_length_msg) . '"';
 						$err_msg             = $arm_global_settings->common_message['arm_blank_cvc_number'];
@@ -1462,8 +1459,8 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 						$fieldid    = 'arm_' . esc_attr($type) . '_cvc';
 						break;
 					case 'exp_month':
-						$fieldLabel          = ! empty( $gateways_opts['em_label'] ) ? stripslashes( $gateways_opts['em_label'] ) : esc_html__( 'Expiration Month', 'armember-membership' );
-						$fieldDesc           = ! empty( $gateways_opts['em_desc'] ) ? stripslashes( $gateways_opts['em_desc'] ) : '';
+						$fieldLabel          = ! empty( $gateways_opts['em_label'] ) ? wp_unslash( $gateways_opts['em_label'] ) : esc_html__( 'Expiration Month', 'armember-membership' );
+						$fieldDesc           = ! empty( $gateways_opts['em_desc'] ) ? wp_unslash( $gateways_opts['em_desc'] ) : '';
 						$field_mx_length_msg = esc_html__( 'Must not exceed 2 digits.', 'armember-membership' );
 						$fieldAttr           = 'name="' . esc_attr($type) . '[' . esc_attr($key) . ']" onkeydown="armvalidatenumber(event);" maxlength="2" data-validation-maxlength-message="' . esc_attr($field_mx_length_msg) . '" size="2"';
 						$err_msg             = $arm_global_settings->common_message['arm_blank_expire_month'];
@@ -1474,8 +1471,8 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 
 						break;
 					case 'exp_year':
-						$fieldLabel          = ! empty( $gateways_opts['ey_label'] ) ? stripslashes( $gateways_opts['ey_label'] ) : esc_html__( 'Expiration Year', 'armember-membership' );
-						$fieldDesc           = ! empty( $gateways_opts['ey_desc'] ) ? stripslashes( $gateways_opts['ey_desc'] ) : '';
+						$fieldLabel          = ! empty( $gateways_opts['ey_label'] ) ? wp_unslash( $gateways_opts['ey_label'] ) : esc_html__( 'Expiration Year', 'armember-membership' );
+						$fieldDesc           = ! empty( $gateways_opts['ey_desc'] ) ? wp_unslash( $gateways_opts['ey_desc'] ) : '';
 						$field_mx_length_msg = esc_html__( 'CVC cannot exceed 4 digits.', 'armember-membership' );
 						$fieldAttr           = 'name="' . esc_attr($type) . '[' . esc_attr($key) . ']" onkeydown="armvalidatenumber(event);" maxlength="4" data-validation-maxlength-message="' . esc_attr($field_mx_length_msg) . '" size="4"';
 						$err_msg             = $arm_global_settings->common_message['arm_blank_expire_year'];
@@ -1539,7 +1536,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			$bt_form       = '<div class="arm-df-wrapper arm_msg_pos_' . $errPos . '">';
 			$bt_form      .= '<div class="arm_bank_transfer_fields_container arm-df__fields-wrapper arm_field_position_' . $fieldPosition . '">';
 			/* Transaction ID Input */
-			$transaction_id_field_label = ! empty( $gateways_opts['transaction_id_label'] ) ? stripslashes( $gateways_opts['transaction_id_label'] ) : esc_html__( 'Transaction ID', 'armember-membership' );
+			$transaction_id_field_label = ! empty( $gateways_opts['transaction_id_label'] ) ? wp_unslash( $gateways_opts['transaction_id_label'] ) : esc_html__( 'Transaction ID', 'armember-membership' );
 
 			$field_random_id = arm_generate_random_code();
 
@@ -1596,7 +1593,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 
 				$field_random_id_html = 'arm_bank_transfer_bank_name_' . $form_id . '_' . $field_random_id;
 
-				$bank_name_field_label = ! empty( $gateways_opts['bank_name_label'] ) ? stripslashes( $gateways_opts['bank_name_label'] ) : esc_html__( 'Bank Name', 'armember-membership' );
+				$bank_name_field_label = ! empty( $gateways_opts['bank_name_label'] ) ? wp_unslash( $gateways_opts['bank_name_label'] ) : esc_html__( 'Bank Name', 'armember-membership' );
 
 				$arm_field_wrap_active_class = $ffield_label_html = $ffield_label = '';
 				if ( ! empty( $arm_allow_notched_outline ) ) {
@@ -1640,7 +1637,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			}
 			if ( isset( $bt_fields['account_name'] ) && $bt_fields['account_name'] == '1' ) {
 				/* Account Name Input */
-				$account_name_field_label    = ! empty( $gateways_opts['account_name_label'] ) ? stripslashes( $gateways_opts['account_name_label'] ) : esc_html__( 'Account Holder Name', 'armember-membership' );
+				$account_name_field_label    = ! empty( $gateways_opts['account_name_label'] ) ? wp_unslash( $gateways_opts['account_name_label'] ) : esc_html__( 'Account Holder Name', 'armember-membership' );
 				$arm_field_wrap_active_class = $ffield_label_html = $ffield_label = '';
 				if ( ! empty( $arm_allow_notched_outline ) ) {
 					$arm_field_wrap_active_class = ( ! empty( $field_val ) ) ? ' arm-df__form-material-field-wrap' : '';
@@ -1682,7 +1679,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 			}
 			if ( isset( $bt_fields['additional_info'] ) && $bt_fields['additional_info'] == '1' ) {
 
-				$additional_info_field_label = ! empty( $gateways_opts['additional_info_label'] ) ? stripslashes( $gateways_opts['additional_info_label'] ) : esc_html__( 'Additional Note', 'armember-membership' );
+				$additional_info_field_label = ! empty( $gateways_opts['additional_info_label'] ) ? wp_unslash( $gateways_opts['additional_info_label'] ) : esc_html__( 'Additional Note', 'armember-membership' );
 				$field_random_id_html        = 'arm_bank_transfer_additional_info_' . $form_id . '_' . $field_random_id;
 				$arm_field_wrap_active_class = $ffield_label_html = $ffield_label = '';
 				if ( ! empty( $arm_allow_notched_outline ) ) {
@@ -1731,7 +1728,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 				$transfer_mode = $this->arm_get_bank_transfer_mode_options();
 				// $transfer_mode_li = '<option class="armMDOption armSelectOption arm_payment_transfer_mode_option_'.$form_id.'" role="option" aria-selected="false" value="">' . esc_html__('Select Payment Mode', 'armember-membership') . '</option>';
 
-				$transfer_mode_option_val_label = $transfer_mode_option_val_selected = !empty($gateways_opts['transfer_mode_label']) ? stripslashes($gateways_opts['transfer_mode_label']) : esc_html__( 'Select Payment Mode', 'armember-membership' );
+				$transfer_mode_option_val_label = $transfer_mode_option_val_selected = !empty($gateways_opts['transfer_mode_label']) ? wp_unslash($gateways_opts['transfer_mode_label']) : esc_html__( 'Select Payment Mode', 'armember-membership' );
 
 				$transfer_mode_li = '<li class="arm__dc--item arm_payment_transfer_mode_option_' . esc_attr($form_id) . '" data-label="' . esc_attr($transfer_mode_option_val_label) . '" data-value="">' . esc_html($transfer_mode_option_val_label) . '</li>';
 
@@ -1740,7 +1737,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 				$default_pg               = '';
 				foreach ( $transfer_mode as $key => $value ) {
 					if ( in_array( $key, $transfer_mode_option_arr ) ) {
-						$transfer_mode_option_val = ! empty( $gateways_opts['fields']['transfer_mode_option_label'][ $key ] ) ? stripslashes_deep($gateways_opts['fields']['transfer_mode_option_label'][ $key ]) : $value;
+						$transfer_mode_option_val = ! empty( $gateways_opts['fields']['transfer_mode_option_label'][ $key ] ) ? wp_unslash($gateways_opts['fields']['transfer_mode_option_label'][ $key ]) : $value;
 						if ( $drpdown_cntr == 0 ) {
 							$default_pg = $transfer_mode_option_val;
 						}
@@ -1751,7 +1748,7 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 
 				$ng_change_func           = '';
 				$name                     = 'bank_transfer[transfer_mode]';
-				$payment_mode_field_label = ! empty( $gateways_opts['transfer_mode_label'] ) ? stripslashes( $gateways_opts['transfer_mode_label'] ) : esc_html__( 'Payment Mode', 'armember-membership' );
+				$payment_mode_field_label = ! empty( $gateways_opts['transfer_mode_label'] ) ? wp_unslash( $gateways_opts['transfer_mode_label'] ) : esc_html__( 'Payment Mode', 'armember-membership' );
 				$arm_bk_active_class      = '';
 				if ( $formStyles['form_layout'] == 'writer' || $formStyles['form_layout'] == 'writer_border' ) {
 					$arm_bk_active_class = 'active';

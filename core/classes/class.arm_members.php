@@ -1,4 +1,6 @@
 <?php 
+if(! defined('ABSPATH')) exit;
+
 if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
 	class ARM_members_Lite {
@@ -388,7 +390,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                 $arm_display_admin_user=!empty($_REQUEST['arm_display_admin_user']) ? intval($_REQUEST['arm_display_admin_user']) : 0; //phpcs:ignore
 
                 global $wp, $wpdb, $arm_errors, $ARMemberLite, $arm_members_class, $arm_member_forms, $arm_global_settings,$arm_capabilities_global;
-                $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_subscriptions'],0,1);
+                $ARMemberLite->arm_check_user_cap($arm_capabilities_global['arm_manage_subscriptions'],0);
                 $user_table = $wpdb->users;
                 $usermeta_table = $wpdb->usermeta;
                 $capability_column = $wpdb->get_blog_prefix($GLOBALS['blog_id']) . 'capabilities';
@@ -409,7 +411,8 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                     }
                 }    
                 $user_where = " WHERE ";
-                $user_where .= " (user_login LIKE '".$text."%' OR `user_email` LIKE '".$text."%')";
+                $arm_like_text = $wpdb->esc_like( $text ) . '%';
+                $user_where .= $wpdb->prepare( " (user_login LIKE %s OR `user_email` LIKE %s)", $arm_like_text, $arm_like_text ); //phpcs:ignore --Reason values are parameterized via prepare
                 if($arm_display_admin_user==1){
                     if (!empty($super_admin_ids)) {
                         $super_admin_placeholders = 'AND u.ID NOT IN (';
@@ -528,7 +531,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 						$p_id = $p['arm_subscription_plan_id'];
 
 						if ( in_array( $p_id, $plan_to_show ) ) {
-							$plansLists .= '<li data-label="' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . esc_attr($p_id) . '">' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>';
+							$plansLists .= '<li data-label="' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . esc_attr($p_id) . '">' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>';
 						}
 					}
 				}
@@ -1526,8 +1529,8 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			$activation_key = '';
 			// Check For Activation Key.
 			if ( isset( $_GET['arm-key'] ) && ! empty( $_GET['arm-key'] ) ) { //phpcs:ignore
-				$chk_key    = stripslashes_deep( sanitize_text_field( ( $_GET['arm-key']) ) ); //phpcs:ignore
-				$user_email = !empty( $_GET['email'] ) ? stripslashes_deep( sanitize_email( $_GET['email'] ) ) : ''; //phpcs:ignore
+				$chk_key    = wp_unslash( sanitize_text_field( ( $_GET['arm-key']) ) ); //phpcs:ignore
+				$user_email = !empty( $_GET['email'] ) ? wp_unslash( sanitize_email( $_GET['email'] ) ) : ''; //phpcs:ignore
 				return $this->arm_verify_user_activation( $user_email, $chk_key );
 			}
 			// Check if blank form submited.
@@ -1668,9 +1671,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				foreach ( $user_meta_keys as $umkey => $val ) {
 					if ( ! in_array( $umkey, $exclude_keys ) ) {
 						if(!empty($val['label'])){
-						$grid_columns[ $umkey ] = stripslashes_deep($val['label']);
+						$grid_columns[ $umkey ] = wp_unslash($val['label']);
 						}else if(empty($grid_columns[$umkey])){
-							$grid_columns[$umkey] = stripslashes_deep($val['label']);
+							$grid_columns[$umkey] = wp_unslash($val['label']);
 						}
 					}
 				}
@@ -2133,7 +2136,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			$user_password_type  = isset( $_REQUEST['generate_password_type'] ) ? sanitize_text_field( $_REQUEST['generate_password_type'] ) : false; //phpcs:ignore
 			$new_password        = isset( $_REQUEST['fixed_password'] ) ? $_REQUEST['fixed_password'] : ''; //phpcs:ignore
 
-			$postedFormData = !empty($_POST['filtered_form']) ? json_decode(stripslashes_deep($_POST['filtered_form']), true) : array(); //phpcs:ignore
+			$postedFormData = !empty($_POST['filtered_form']) ? json_decode(wp_unslash($_POST['filtered_form']), true) : array(); //phpcs:ignore
 			$posted_user_data = htmlspecialchars( $postedFormData['users_data'], ENT_NOQUOTES );
 
 			$file_data_array = json_decode( $posted_user_data, true );
@@ -3114,10 +3117,27 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			$df = fopen( 'php://output', 'w' );
 			fputcsv( $df, array_keys( reset( $array ) ) );
 			foreach ( $array as $row ) {
+				foreach ( $row as &$cell ) {
+					$cell = $this->arm_escape_csv_formula( $cell );
+				}
+				unset( $cell );
 				fputcsv( $df, $row );
 			}
 			fclose( $df ); //phpcs:ignore
 			exit;
+		}
+
+		function arm_escape_csv_formula( $value ) {
+
+			if ( ! is_string( $value ) ) {
+				return $value;
+			}
+
+			if ( preg_match( '/^[=\+\-@\t\r]/', $value ) ) {
+				return "'" . $value;
+			}
+
+			return $value;
 		}
 
 		function arm_export_to_xls( $array, $output_file_name = '' ) {
@@ -3496,7 +3516,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				foreach ( $all_plans as $p ) {
 					$p_id = $p['arm_subscription_plan_id'];
 					if ( $p['arm_subscription_plan_status'] == '1' ) {
-						$plansLists .= '<li data-label="' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . $p_id . '">' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>';
+						$plansLists .= '<li data-label="' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . $p_id . '">' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>';
 					}
 				}
 			}
@@ -4067,7 +4087,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 										}
 									}
 									if ( $arm_membership_cycle != '' ) {
-										$planExpireText .= "<span class='arm_user_plan_type arm_plan_cycle'> " . esc_html($arm_membership_cycle) . ' </span>';
+										$planExpireText .= "<span class='arm_user_plan_type arm_plan_cycle'> " . esc_html( wp_unslash( $arm_membership_cycle ) ) . ' </span>';
 									}
 
 									$planExpireText .= '<span class="arm_user_plan_expire_text" style="margin-bottom: 3px;">';
@@ -4084,7 +4104,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 									$planExpireText .= '</span>';
 
 									if ( $arm_installments_text != '' ) {
-										$planExpireText .= "<span class='arm_user_plan_type arm_user_installments' style='margin-bottom: 3px;'>" . esc_html($arm_installments_text) . '</span>';
+										$planExpireText .= "<span class='arm_user_plan_type arm_user_installments' style='margin-bottom: 3px;'>" . esc_html( wp_unslash( $arm_installments_text) ) . '</span>';
 									}
 									$planExpireText .= $payment_mode_text;
 								} else {
@@ -4097,7 +4117,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 							}/* End `ELSE - ($planObj->is_lifetime())` */
 						}/* End `(!$planObj->is_free())` */
 
-						$morePlans .= '<span class="arm_user_plan_type_text">' . esc_html($planType) . '</span>';
+						$morePlans .= '<span class="arm_user_plan_type_text">' . esc_html(wp_unslash($planType)) . '</span>';
 						$morePlans .= $planExpireText;
 						$morePlans .= '</li>';
 					}
@@ -4143,7 +4163,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			}
 			@session_write_close();
 			$ARMemberLite->arm_session_start( true );
-			echo arm_pattern_json_encode( stripslashes_deep( $response ) ); //phpcs:ignore
+			echo arm_pattern_json_encode( wp_unslash( $response ) ); //phpcs:ignore
 			die();
 		}
 
@@ -4157,7 +4177,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			$nowDate     = current_time( 'mysql' );
 			$all_plans   = $arm_subscription_plans->arm_get_all_subscription_plans();
 			if ( ! empty( $_POST['data'] ) ) { //phpcs:ignore
-				$_REQUEST = $_POST=json_decode( stripslashes_deep( sanitize_text_field($_REQUEST['data']) ),true ); //phpcs:ignore
+				$_REQUEST = $_POST=json_decode( wp_unslash( sanitize_text_field($_REQUEST['data']) ),true ); //phpcs:ignore
 			}
 			$grid_columns = array(
 				'avatar'             => esc_html__( 'Avatar', 'armember-membership' ),
@@ -4211,7 +4231,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				foreach ( $all_plans as $p ) {
 					$p_id = $p['arm_subscription_plan_id'];
 					if ( $p['arm_subscription_plan_status'] == '1' ) {
-						$plansLists .= '<li data-label="' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . esc_attr($p_id) . '">' . stripslashes( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>';
+						$plansLists .= '<li data-label="' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '" data-value="' . esc_attr($p_id) . '">' . wp_unslash( esc_attr( $p['arm_subscription_plan_name'] ) ) . '</li>';
 					}
 				}
 			}
@@ -4338,12 +4358,24 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
 			$filter_payment_mode_search = '';
 			if ( ! empty( $filter_plan_id ) ) {
-				$filter_ids = explode(',', $filter_plan_id);
-                $filter_new_ids = implode("','", $filter_ids);
-                $arm_plan_id_condition = " AND ( um.meta_value LIKE '%\"" . implode("\"%' OR um.meta_value LIKE '%\"", $filter_ids) . "\"%' ) ";
-                //and um.meta_value like 'fileter';
-                //$filter_plan_search = " AND (um.meta_key = 'arm_user_plan_ids' AND um.meta_value IN ('{$filter_new_ids}'))";
-                $filter_plan_search = " AND (um.meta_key = 'arm_user_plan_ids' {$arm_plan_id_condition})";
+				
+				$filter_ids = array_filter(
+					array_map( 'absint', explode( ',', wp_unslash( $filter_plan_id ) ) )
+				);
+				$likes = array();
+
+				if ( ! empty( $filter_ids ) ) {
+					foreach ( $filter_ids as $plan_id ) {
+						$likes[] = $wpdb->prepare(
+							'um.meta_value LIKE %s',
+							'%"' . $plan_id . '"%'
+						);
+					}
+
+					$arm_plan_id_condition = ' AND (' . implode( ' OR ', $likes ) . ')';               
+
+					$filter_plan_search = " AND (um.meta_key = 'arm_user_plan_ids' {$arm_plan_id_condition})";
+				}
 			}
 			$search_params = '';
 			if ( $sSearch != '' ) {
@@ -4490,7 +4522,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 								$grid_data[ $ai ][ $n ] = $auser->user_login;
 								break;
 							case 'user_email':
-								$grid_data[ $ai ][ $n ] = stripslashes( $auser->user_email );
+								$grid_data[ $ai ][ $n ] = wp_unslash( $auser->user_email );
 								break;
 							case 'display_name':
 								$grid_data[ $ai ][ $n ] = $auser->display_name;
@@ -5439,7 +5471,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                                     $trial_starts = !empty($planData['arm_trial_start']) ? $planData['arm_trial_start'] : '';
                                                     $trial_ends = !empty($planData['arm_trial_end']) ? $planData['arm_trial_end'] : '';
                                                     $arm_payment_mode = ( $planData['arm_payment_mode'] == 'auto_debit_subscription') ? '<br/>(' . esc_html__('Auto Debit','armember-membership') . ')' : '';
-                                                    $arm_payment_cycle = !empty($planData['arm_payment_cycle']) ? $planData['arm_payment_cycle'] : '';
+                                                    $arm_payment_cycle = !empty($planData['arm_payment_cycle']) ? $planData['arm_payment_cycle'] : 0;
 
                                                     if ($planObj->is_recurring()) {
                                                         $recurring_plan_options = $planObj->prepare_recurring_data($arm_payment_cycle);
@@ -5518,7 +5550,6 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                                             {
                                                                 $renewal_on = $renewal_on . $grace_message;
                                                             }
-                                                            
                                                         
                                                         $response_plans_data .= '<td class="arm_user_plan_name" data-label="'.esc_html__('Membership Plan', 'armember-membership').'">'. $planName . $arm_plan_is_suspended .'</td>
                                                         <td class="arm_user_plan_type" data-label="'.esc_html__('Plan Type', 'armember-membership').'">'. $planObj->new_user_plan_text(false, $arm_payment_cycle).'</td>
@@ -5754,9 +5785,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				foreach ( $user_meta_keys as $umkey => $val ) {
 					if ( !in_array( $umkey, $exclude_keys_arr ) ) {
 						if(!empty($val['label'])){
-							$grid_columns[ $umkey ] = stripslashes_deep($val['label']);
+							$grid_columns[ $umkey ] = wp_unslash($val['label']);
 						}else if(empty($grid_columns[$umkey])){
-							$grid_columns[$umkey] = stripslashes_deep($val['label']);
+							$grid_columns[$umkey] = wp_unslash($val['label']);
 						}
 					}
 				}
@@ -5789,15 +5820,15 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 						}
 						else if($mkey == 'display_name')
 						{
-							$meta_val = $user->data->display_name;
+							$meta_val = !empty($user->display_name) ? $user->display_name : $user->user_login;
 						}
 						else if($mkey == 'user_email')
 						{
-							$meta_val = $user->data->user_email;
+							$meta_val = !empty($user->user_email) ? $user->user_email : '--';
 						}
 						else if($mkey == 'user_url')
 						{
-							$meta_val = $user->data->user_url;
+							$meta_val = !empty($user->user_url) ? $user->user_url : '--';
 						}
 						else if($mkey == 'arm_primary_status'){
 							$meta_val = '<div class="arm_user_status_'.$arm_user_id.'">'.$arm_members_class->armGetMemberStatusText( $arm_user_id ).'</div>';
@@ -6033,7 +6064,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 							}
 						}
 						$return .= '<tr class="form-field arm_detail_expand_container_child_row">
-							<th class="arm-form-table-label">'.stripslashes_deep($mlabel).'</th>
+							<th class="arm-form-table-label">'.wp_unslash($mlabel).'</th>
 							<td class="arm-form-table-content">'.$meta_val.'</td>
 						</tr>';
 					}
@@ -6082,15 +6113,15 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                             }
                             else if($mkey == 'display_name')
                             {
-                                $meta_val = $user->data->display_name;
+                                $meta_val = !empty($user->display_name) ? $user->display_name : $user->user_login;
                             }
                             else if($mkey == 'user_email')
                             {
-                                $meta_val = $user->data->user_email;
+                                $meta_val = !empty($user->user_email) ? $user->user_email : '--';
                             }
                             else if($mkey == 'user_url')
                             {
-                                $meta_val = $user->data->user_url;
+                                $meta_val = !empty($user->user_url) ? $user->user_url : '--';
                             }
                             else if($mkey == 'arm_primary_status'){
                                 $meta_val = '<div class="arm_user_status_'.$arm_user_id.'">'
