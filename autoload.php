@@ -112,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '6.0.1';
+$arm_lite_version = '6.0.2';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -3812,10 +3812,11 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '6.0.1',
+			'update_version' => '6.0.2',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				"Minor bug fixes.",
+				"Fixed a security issue related to the Avatar field.",
+				"Fixed minor bugs.",
 			),
 			'show_major_title'    => 0,
 			'major_title'         => 'Major Changes',

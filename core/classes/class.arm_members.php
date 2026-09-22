@@ -5285,15 +5285,19 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                 $response['user_email'] = $user->data->user_email;
                 $response['user_role'] = $user->roles;
                 $response['display_name'] = $user->data->display_name;
-				$response['avatar'] = !empty($user->data->user_meta['avatar']) ? $user->data->user_meta['avatar'] : '';
-                $response['profile_cover'] = !empty($user->data->user_meta['profile_cover']) ? $user->data->user_meta['profile_cover'] : '';
+				$response['avatar'] = !empty($user->data->user_meta['avatar']) ? esc_url_raw($user->data->user_meta['avatar']) : '';
+                $response['profile_cover'] = !empty($user->data->user_meta['profile_cover']) ? esc_url_raw($user->data->user_meta['profile_cover']) : '';
 				
                 
                 foreach($dbFormFields as $meta => $field_data)
                 {
-                    if(!in_array($meta,array('user_login','user_name','user_email','user_pass','user_role','display_name')))
+                    if(!in_array($meta,array('user_login','user_name','user_email','user_pass','user_role','display_name','avatar','profile_cover')))
                     {
                         $response[$meta] = !empty($user->data->user_meta[$meta]) ? $user->data->user_meta[$meta] : '';
+						if($field_data['type'] == 'file')
+                        {
+                            $response[$meta] = !empty($user->data->user_meta[$meta]) ? esc_url_raw($user->data->user_meta[$meta]) : '';
+                        }
                     }
                 }
                 $arm_form_id = isset($user->arm_form_id) ? $user->arm_form_id : 0;
@@ -6090,6 +6094,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 								$user_meta_detail = @implode(', ', $meta_val);
 								$meta_val = esc_html($user_meta_detail);
 							}
+							else{
+								$meta_val = ( ! empty( $user_meta_detail ) ) ? esc_html($user_meta_detail) : '--';
+							}
 						}
 						$return .= '<tr class="form-field arm_detail_expand_container_child_row">
 							<th class="arm-form-table-label">'.wp_unslash($mlabel).'</th>
@@ -6426,7 +6433,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                 }
                                 else
                                 {
-                                    $meta_val = ( ! empty( $user_meta_detail ) ) ? $user_meta_detail : '--';
+                                    $meta_val = ( ! empty( $user_meta_detail ) ) ? esc_html($user_meta_detail) : '--';
                                 }
                             }
                             $return['arm_user_id_'.$arm_user_id] .= '<tr class="form-field arm_detail_expand_container_child_row">

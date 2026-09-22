@@ -1584,7 +1584,8 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			$membershipTabTxt   = esc_html__( 'Membership', 'armember-membership' );
 			$transactionTabTxt  = esc_html__( 'Transactions', 'armember-membership' );
 			$closeaccountTabTxt = esc_html__( 'Close Account', 'armember-membership' );
-			if ( is_user_logged_in() ) {
+            		$is_user_logged_in = is_user_logged_in();
+			if ( $is_user_logged_in ) {
 				$user_id            = get_current_user_id();
 				$defaultTabSettings = array(
 					'profile'       => $profileTabTxt,
@@ -1785,7 +1786,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					$tabContent = do_shortcode( $shortcode );
 
 					if ( $show_subscription ) {
-						$tabTitleLinks = '<a href="' . $change_subscription_url . '" class="arm_front_edit_subscriptions_link">' . esc_html__( 'Change Subscription', 'armember-membership' ) . '</a>';
+						$tabTitleLinks = '<a href="' . esc_url($change_subscription_url) . '" class="arm_front_edit_subscriptions_link">' . esc_html__( 'Change Subscription', 'armember-membership' ) . '</a>';
 					}
 
 					break;
@@ -1810,7 +1811,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			if ( ! empty( $tabTitleLinks ) ) {
 				$content .= '<div class="arm_account_detail_tab_link_belt arm_member_detail_action_links">' . $tabTitleLinks . '</div>';
 			}
-			$content .= '<div class="arm_account_detail_tab_body arm_account_detail_tab_' . $tab . '">' . $tabContent . '</div>';
+			$content .= '<div class="arm_account_detail_tab_body arm_account_detail_tab_' . esc_attr($tab) . '">' . $tabContent . '</div>';
 
 			return $content;
 		}
@@ -1896,10 +1897,12 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 									$fileUrl = '';
 								}
 								if ( $fileUrl != '' ) {
-									$content .= '<td class="arm-form-table-content"><a target="__blank" href="' . $fieldMeta_value . '"><img style="max-width: 100px;height: auto;" src="' . $fileUrl . '"></a></td>'; //phpcs:ignore 
+									$content .= '<td class="arm-form-table-content"><a target="__blank" href="' . esc_url($fieldMeta_value) . '"><img style="max-width: 100px;height: auto;" src="' . $fileUrl . '"></a></td>'; //phpcs:ignore 
 								} else {
-									$content .= '<td class="arm-form-table-content">' . $fieldMeta_value . '</td>';
+									$content .= '<td class="arm-form-table-content">' . esc_html($fieldMeta_value) . '</td>';
 								}
+			                            	} else if($fieldOpt['type'] == 'url') {
+			                                	$content .= '<td class="arm-form-table-content"><a href="'.esc_url($fieldMeta_value).'" target="_blank">' . $fieldMeta_value . '</a></td>';
 							}else if($fieldOpt['type'] == 'select' || $fieldOpt['type'] == 'radio') {
                                 if(!empty($fieldMeta_value))
                                 {
@@ -1947,7 +1950,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 									$content .= '<td class="arm-form-table-content">' . $fieldMeta_value . '</td>';
 								
 							}else {
-								$content .= '<td class="arm-form-table-content">' . $fieldMeta_value . '</td>';
+								$content .= '<td class="arm-form-table-content">' . esc_html($fieldMeta_value) . '</td>';
 							}
 							$content .= '</tr>';
 						}
@@ -3590,21 +3593,21 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$arm_filed_options = $arm_member_forms->arm_get_field_option_by_meta( $meta_name );
 
 						if(empty($arm_filed_options))
-                        			{
+						{
 							if(empty($arm_check_dbFormFields))
 							{
-	                            				$presetFormFields = get_option('arm_preset_form_fields', '');
-	                           				$arm_check_dbFormFields = arm_maybe_unserialize($presetFormFields);
+								$presetFormFields = get_option('arm_preset_form_fields', '');
+								$arm_check_dbFormFields = arm_maybe_unserialize($presetFormFields);
 							}
-								if ( !empty( $arm_check_dbFormFields['other'][ $meta_name ] ) ) {
-									$arm_filed_options = $arm_check_dbFormFields['other'][ $meta_name ];
-								} elseif ( !empty( $arm_check_dbFormFields['default'][ $meta_name ] ) ) {
-									$arm_filed_options = $arm_check_dbFormFields['default'][ $meta_name ];
-								}
-								else {
-								    $arm_filed_options = array();
-								}
-                        			}
+							if ( !empty( $arm_check_dbFormFields['other'][ $meta_name ] ) ) {
+								$arm_filed_options = $arm_check_dbFormFields['other'][ $meta_name ];
+							} elseif ( !empty( $arm_check_dbFormFields['default'][ $meta_name ] ) ) {
+								$arm_filed_options = $arm_check_dbFormFields['default'][ $meta_name ];
+							}
+							else {
+								$arm_filed_options = array();
+							}
+						}
 
 						$arm_field_type = ( isset( $arm_filed_options['type'] ) && ! empty( $arm_filed_options['type'] ) ) ? $arm_filed_options['type'] : '';
 						if ( $arm_field_type == 'file' ) {
@@ -3635,8 +3638,8 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
                                     $return_content = '';
                                 }
                             }
-			    if ( ! empty( $return_content ) ) {
-				    if(($arm_field_type == 'checkbox' && is_array($return_content) )){
+							if ( ! empty( $return_content ) ) {
+								if(($arm_field_type == 'checkbox' && is_array($return_content) )){
 
                                     $arm_tmp_checkbox_val = !empty($arm_filed_options['options']) ? $arm_filed_options['options'] : array();
                                 
@@ -3675,12 +3678,12 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 										}
 									}
 								}
-				}
-				} else if( !empty( $arm_field_type ) ) {
-					$return_content = is_string( $return_content ) ? nl2br( $return_content ) : $return_content;
-				}else {
-					return '';
-				}
+							}
+						} else if( !empty( $arm_field_type ) ) {
+							$return_content = is_string( $return_content ) ? nl2br( $return_content ) : $return_content;
+						}else {
+							return '';
+						}
 						break;
 				}
 				if ( is_array( $return_content ) ) {
@@ -3691,9 +3694,7 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			$return_content = wp_unslash( $return_content );
 			return $return_content;
 		}
-
-
-
+		
 		function arm_user_planinfo_func( $atts, $content, $tag ) {
 			if ( current_user_can( 'administrator' ) ) {
 				return;

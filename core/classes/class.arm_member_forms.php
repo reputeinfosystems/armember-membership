@@ -7005,6 +7005,14 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						{
 							$arm_form_field_option_array_field_option_options = !empty($arm_form_field_option_array_field_option['options']) ? $arm_form_field_option_array_field_option['options'] : array();
 							$arm_form_field_option_array_field_option_type = !empty($arm_form_field_option_array_field_option['type']) ? $arm_form_field_option_array_field_option['type'] : '';
+
+                            $arm_form_field_option_array_field_option_readonly = !empty($arm_form_field_option_array_field_option['readonly']) ? $arm_form_field_option_array_field_option['readonly'] : '';
+                            if(!empty($arm_form_field_option_array_field_option_readonly))
+                            {
+                                unset( $posted_data[ $posted_data_key ] );
+                                continue;
+                            }
+
 							if($posted_data_key=='roles')
 							{
 								if( !array_key_exists( $posted_data_val, $arm_form_field_option_array_field_option_options ) ) 
@@ -7013,7 +7021,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                     continue;
 								}
 							}
-							else if($arm_form_field_option_array_field_option_type=='text' || $arm_form_field_option_array_field_option_type=='social_fields')
+							else if($arm_form_field_option_array_field_option_type=='text' || $arm_form_field_option_array_field_option_type=='social_fields' || $arm_form_field_option_array_field_option_type=='date' )
 							{
 								$posted_data[ $posted_data_key ] = sanitize_text_field( $posted_data[ $posted_data_key ] ); //phpcs:ignore
 							}
@@ -7090,10 +7098,28 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                                     continue;
 								}
 							}
-						}
-						else if( false !== strpos( $posted_data_key, 'arm_social_field_' ) )
-						{
-							$posted_data[ $posted_data_key ] = sanitize_text_field( $posted_data[ $posted_data_key ] ); //phpcs:ignore
+							else if($arm_form_field_option_array_field_option_type=='file')
+							{
+								if(!empty($posted_data_val) && is_array($posted_data_val))
+								{
+									$posted_data_val = esc_url_raw($posted_data_val[0]); //phpcs:ignore
+								}
+								else if(!empty($posted_data_val) && !is_array($posted_data_val))
+								{								
+									$posted_data_val = esc_url_raw($posted_data_val); //phpcs:ignore
+								}
+								else {
+									$posted_data_val = '';
+								}
+								$posted_data[ $posted_data_key ] = $posted_data_val; //phpcs:ignore
+							}
+							else if($arm_form_field_option_array_field_option_type=='url' )
+							{
+								$posted_data[ $posted_data_key ] = sanitize_url( $posted_data[ $posted_data_key ] ); //phpcs:ignore
+							}
+                            else{
+                                $posted_data[ $posted_data_key ] = sanitize_text_field( $posted_data[ $posted_data_key ] ); //phpcs:ignore
+                            }
 						}
 					}
 				}
