@@ -131,6 +131,30 @@ $posted_data = array_map( array( $ARMemberLite, 'arm_recursive_sanitize_data'), 
 									</div>
 								</td>
 							</tr>
+							<tr class="form-field form-required arm_transaction_membership_plan_wrapper">
+								<th>
+									<label for=""><?php esc_html_e( 'Subscription ID', 'armember-membership' ); ?></label>
+								</th>
+								<td>
+									<div class="arm_setup_forms_container">
+										<div class="arm-df__form-field-wrap_text arm-df__form-field-wrap arm-controls " id="arm-df__form-field-wrap_member_plan_amount">
+											<input name="manual_payment[subscription_id]" type="text" id="arm-df__form-control_member_plan_amount arm_subscription_plan_amount" value="" class="arm-df__form-control arm-df__form-control_member_plan_amount arm_material_input" />
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr class="form-field form-required arm_transaction_membership_plan_wrapper">
+								<th>
+									<label for=""><?php esc_html_e( 'Transaction ID', 'armember-membership' ); ?></label>
+								</th>
+								<td>
+									<div class="arm_setup_forms_container">
+										<div class="arm-df__form-field-wrap_text arm-df__form-field-wrap arm-controls " id="arm-df__form-field-wrap_member_plan_amount">
+											<input name="manual_payment[transaction_id]" type="text" id="arm-df__form-control_member_plan_amount arm_transaction_id" value="" class="arm-df__form-control arm-df__form-control_member_plan_amount arm_material_input" />
+										</div>
+									</div>
+								</td>
+							</tr>
 							<tr class="form-field form-required arm_transaction_amount_section">
 								<th>
 									<label for=""><?php esc_html_e( 'Amount', 'armember-membership' ); ?></label>

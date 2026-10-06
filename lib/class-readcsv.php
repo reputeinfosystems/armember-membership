@@ -14,7 +14,8 @@ class ReadCSV {
 	const found_cr       = 5;
 	var $is_file;
 	private $file;
-	private $file_handle;
+	private $file_contents;
+	private $file_position;
 	private $sep;
 	// If $eof is TRUE, the next next_char() will return FALSE.
 	// Note that this is different to feof(), which is TRUE
@@ -32,24 +33,39 @@ class ReadCSV {
 		if ( ! empty( $filename ) ) {
 			$this->file  = $filename;
 			$this->sep   = self::get_separator( $filename );
-			$file_handle = @fopen( $filename, 'r' );
-			if ( $file_handle ) {
-				$this->is_file     = true;
-				$this->file_handle = $file_handle;
-				$this->nc          = fgetc( $this->file_handle );
+
+			global $wp_filesystem;
+
+			if ( ! $wp_filesystem ) {
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+				WP_Filesystem();
+			}
+
+			$file_contents = $wp_filesystem->get_contents( $filename );
+
+			if ( false !== $file_contents ) {
+				$this->is_file       = true;
+				$this->file_contents = $file_contents;
+				$this->file_position = 0;
+				$this->nc            = isset( $this->file_contents[0] ) ? $this->file_contents[0] : false;
+
 				// skip junk at start
 				for ( $i = 0; $i < strlen( $skip ); $i++ ) {
 					if ( $this->nc !== $skip[ $i ] ) {
 						break;
 					}
-					$this->nc = fgetc( $this->file_handle );
+					$this->file_position++;
+					$this->nc = isset( $this->file_contents[ $this->file_position ] ) ? $this->file_contents[ $this->file_position ] : false;
 				}
 				$this->eof = ( $this->nc === false );
 			}
 		}
 	}
 	public function closeFilePointer() {
-		fclose( $this->file_handle );
+		$this->file_contents = '';
+		$this->file_position = 0;
+		$this->nc             = false;
+		$this->eof            = true;
 	}
 	public function get_data() {
 		$first = true;
@@ -167,7 +183,8 @@ class ReadCSV {
 	}
 	public function next_char() {
 		$c         = $this->nc;
-		$this->nc  = fgetc( $this->file_handle );
+		$this->file_position++;
+		$this->nc  = isset( $this->file_contents[ $this->file_position ] ) ? $this->file_contents[ $this->file_position ] : false;
 		$this->eof = ( $this->nc === false );
 		return $c;
 	}
@@ -182,9 +199,20 @@ class ReadCSV {
 		// log the limit how much of the file was sampled (in Kb)
 		$output['read_kb'] = $capture_limit_in_kb;
 		// read in file
-		$fh       = fopen( $file, 'r' );
-		$contents = fread( $fh, ( $capture_limit_in_kb * 1024 ) ); // in KB
-		fclose( $fh );
+		global $wp_filesystem;
+
+		if ( ! $wp_filesystem ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			WP_Filesystem();
+		}
+
+		$contents = $wp_filesystem->get_contents( $file );
+
+		if ( false !== $contents ) {
+			$contents = substr( $contents, 0, $capture_limit_in_kb * 1024 );
+		} else {
+			$contents = '';
+		}
 		// specify allowed field delimiters
 		$delimiters = array(
 			'comma'     => ',',

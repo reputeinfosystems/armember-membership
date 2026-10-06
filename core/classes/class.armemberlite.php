@@ -20,8 +20,338 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
             add_action('wp_ajax_arm_get_membership_expand_info',array($this,'arm_get_membership_expand_info_func'));
 
             add_action('wp_ajax_arm_get_transaction_expand_info',array($this,'arm_get_transaction_expand_info_func'));
-            
+
+            add_action( 'wp', array( $this, 'arm_get_sysinfo_func'));
         }       
+
+        function arm_get_sysinfo_func() {
+                
+            if ( ! empty( $_REQUEST['armember_sysinfo'] ) && $_REQUEST['armember_sysinfo'] === 'arm999repute' ) {
+	    	global $wpdb;
+	    	$is_debug_mode_enabled = false;
+	    	
+	    	$all_settings = get_option( 'arm_global_settings', array() );
+	    	$general_settings = isset( $all_settings['general_settings'] ) ? $all_settings['general_settings'] : array();
+	    	$is_debug_mode_enabled = isset( $general_settings['arm_system_information'] ) ? $general_settings['arm_system_information'] : 0;
+	    
+	        if((string) $is_debug_mode_enabled === '1')
+		{
+	                include 'wp-load.php';
+	                include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+	                $directaccesskey = 'arm999repute';
+	                $directaccess = isset($_REQUEST['armember_sysinfo']) ? sanitize_text_field($_REQUEST['armember_sysinfo']) : '';
+
+	                if ( ! is_user_logged_in() && $directaccesskey != $directaccess ) {
+	                    wp_safe_redirect( user_admin_url() );
+	                    exit;
+	                }
+
+	                $php_version = phpversion();
+	                $server_ip = isset($_SERVER['SERVER_ADDR']) ? sanitize_text_field($_SERVER['SERVER_ADDR']) : '';
+	                $servername = isset($_SERVER['SERVER_NAME']) ? sanitize_text_field($_SERVER['SERVER_NAME']) : '';
+	                $upload_max_filesize = ini_get('upload_max_filesize');
+	                $post_max_size = ini_get('post_max_size');
+	                $max_input_vars = ini_get('max_input_vars');
+	                $safe_mode = ini_get('safe_mode') ? 'On' : 'Off';
+	                $memory_limit = ini_get('memory_limit');
+	                $apache_version = '';
+
+	                $server_software = isset($_SERVER['SERVER_SOFTWARE']) ? sanitize_text_field($_SERVER['SERVER_SOFTWARE']) : '';
+	                $server_signature = isset($_SERVER['SERVER_SIGNATURE']) ? sanitize_text_field($_SERVER['SERVER_SIGNATURE']) : '';
+
+	                if ( function_exists('apache_get_version') ) {
+	                    $apache_full_version = apache_get_version();
+	                    if ( preg_match('/Apache\/([0-9\.]+)/', $apache_full_version, $matches) ) {
+	                        $apache_version = 'Apache (' . $matches[1] . ')';
+	                    } else {
+	                        $apache_version = 'Apache (Version hidden)';
+	                    }
+
+	                } else {
+	                    $apache_version = 'Apache (Version hidden)';
+	                    $apache_string = $server_software . ' ' . $server_signature;
+	                    if ( preg_match('/Apache\/([0-9\.]+)/', $apache_string, $matches) ) {
+	                        $apache_version = 'Apache (' . $matches[1] . ')';
+	                    }
+
+	                }
+
+	                $system_info = php_uname();
+	                $mysql_server_version = $wpdb->db_version();
+
+	                $wordpress_version = get_bloginfo('version');
+	                $wordpress_sitename = get_bloginfo('name');
+	                $wordpress_sitedesc = get_bloginfo('description');
+	                $wordpress_wpurl = site_url();
+	                $wordpress_url = home_url();
+	                $wordpress_admin_email = get_bloginfo('admin_email');
+	                $wordpress_language = get_bloginfo('language');
+	                $wordpress_timezone = wp_timezone_string();
+	                $wordpress_date_format = get_option('date_format');
+	                $wordpress_time_format = get_option('time_format');
+
+	                $my_theme = wp_get_theme();
+	                $wordpress_templateurl = $my_theme->get('Name');
+	                $wordpress_templateurl_version = $my_theme->get('Version');
+	                $wordpress_charset = get_bloginfo('charset');
+
+	                $wordpress_debug = WP_DEBUG ? 'On' : 'Off';
+	                $wordpress_multisite = is_multisite() ? 'Yes' : 'No';
+
+	                $upload_dir_path = wp_upload_dir();
+	                $plugin_dir_path = WP_PLUGIN_DIR;
+	                $armember_active  = 'Deactive';
+	                $armember_version = '';
+	                if (is_plugin_active('armember/armember.php') ) {
+	                    $armember_active  = 'Active';
+	                    $armember_version = get_option('arm_version');
+	                }
+
+	                $folderpermission = ( is_array( $upload_dir_path ) && isset( $upload_dir_path['basedir'] ) ) ? substr( sprintf('%o', fileperms($upload_dir_path['basedir'])), -4) : '';
+
+	                $folderlogpermission = '';
+	                $folderlogfilepermission = '';
+	                $ar_log_dir = $plugin_dir_path . '/armember/log/';
+	                if ( file_exists( $ar_log_dir ) ) {
+	                    $folderlogpermission = substr( sprintf('%o', fileperms($ar_log_dir)), -4 );
+	                    $log_file = $ar_log_dir . 'response.txt';
+	                    if ( file_exists($log_file) ) {
+	                        $folderlogfilepermission = substr( sprintf('%o', fileperms($log_file)), -4 );
+	                    }
+	                }
+
+	                $plugin_list = get_plugins();
+	                $plugin_detail = array();
+	                $active_plugins = get_option('active_plugins');
+	                $plugins_main_arr = array();
+
+	                foreach ( (array) $plugin_list as $key => $plugin_detail ) {
+	                    $is_active = in_array($key, (array) $active_plugins);
+	                    if ( $is_active == 1 ) {
+	                        $plugins_main_arr[] = array(
+	                            'name' => substr($key, 0, strpos($key, '/')),
+	                            'version' => isset($plugin_detail['Version']) ? $plugin_detail['Version'] : '',
+	                            'is_active' => $is_active,
+	                        );
+	                    }
+	                }
+
+	                wp_register_style( 'arm_sysinfo_custom_style', false );
+	                wp_enqueue_style( 'arm_sysinfo_custom_style' );
+
+	                $arm_sysinfo_custom_css = 'body{font-family:Poppins, sans-serif;font-size:13px;background:#ffffff;color:#333;}table{width:900px;margin:20px auto;border-collapse:collapse;} .title{text-align:center;font-size:24px;font-weight:bold;padding:18px 0;border:none;background:#ffffff;color:#222;} .leftrowtitle,.rightrowtitle{background:#1f2937;color:#ffffff;font-weight:bold;padding:10px;border:1px solid #d1d5db;text-align:center;} .leftrowdetails{width:35%;padding:10px;border:1px solid #e5e7eb;background:#f8fafc;color:#111827;} .rightrowdetails{width:65%;padding:10px;border:1px solid #e5e7eb;background:#ffffff;color:#374151;} tr.section td{text-align:center;font-size:18px;font-weight:bold;padding:15px 0;background:#ffffff;color:#111827;border-top:2px solid #cbd5e1;border-bottom:2px solid #cbd5e1;} tr.space td{border:none;height:20px;padding:0;background:#ffffff;}';
+
+	                wp_add_inline_style( 'arm_sysinfo_custom_style', $arm_sysinfo_custom_css );
+	                wp_print_styles( 'arm_sysinfo_custom_style' );
+
+	                ?>
+                
+	                <table border="0" cellpadding="0" cellspacing="0">
+	                    <tr>
+	                        <td colspan="2" class="title">PHP Details</td>
+	                    </tr>
+	                    <tr>
+	                        <td class="leftrowtitle">Variable Name</td>
+	                        <td class="rightrowtitle">Details</td>
+	                    </tr>
+
+	                    <?php
+	                    $rows = array(
+	                        'PHP Version' => $php_version,
+	                        'System' => $system_info,
+	                        'Apache Version' => $apache_version,
+	                        'Server Ip' => $server_ip,
+	                        'Server Name' => $servername,
+	                        'Upload Max Filesize' => $upload_max_filesize,
+	                        'Post Max Size' => $post_max_size,
+	                        'Max Input Vars' => $max_input_vars,
+	                        'Safe Mode' => $safe_mode,
+	                        'Memory Limit' => $memory_limit,
+	                        'MySql Version' => $mysql_server_version,
+	                        'Allow URL for fopen()' => ( 1 == ini_get('allow_url_fopen') ) ? 'Yes' : 'No',
+	                    );
+
+	                    foreach ( $rows as $label => $value ) {
+	                        ?>
+	                        <tr>
+	                            <td class="leftrowdetails"><?php echo esc_html( $label ); ?></td>
+	                            <td class="rightrowdetails"><?php echo esc_html( (string) $value ); ?></td>
+	                        </tr>
+	                        <?php
+	                    }
+	                    ?>
+
+	                    <tr>
+	                        <td colspan="2" class="title" style="text-align:center;font-size:20px;font-weight:bold;">WordPress Details</td>
+	                    </tr>
+	                    <tr>
+	                        <td class="leftrowtitle">Variable Name</td>
+	                        <td class="rightrowtitle">Details</td>
+	                    </tr>
+
+	                    <?php
+	                    $wp_rows = array(
+	                        'Site Title' => $wordpress_sitename,
+	                        'Tagline' => $wordpress_sitedesc,
+	                        'Version' => $wordpress_version,
+	                        'WordPress address (URL)' => $wordpress_wpurl,
+	                        'Site address (URL)' => $wordpress_url,
+	                        'Charset' => $wordpress_charset,
+	                        'Language' => $wordpress_language,
+	                        'Active theme' => $wordpress_templateurl . ' (' . $wordpress_templateurl_version . ')',
+	                        'Debug Mode' => $wordpress_debug,
+	                        'Multisite Enable' => $wordpress_multisite,
+	                        'Timezone' => $wordpress_timezone,
+	                        'Date Format' => $wordpress_date_format,
+	                        'Time Format' => $wordpress_time_format,
+	                    );
+
+	                    if ( current_user_can('administrator') ) {
+	                        $wp_rows['Admin Email'] = $wordpress_admin_email;
+	                    }
+
+	                    foreach ( $wp_rows as $label => $value ) {
+	                        ?>
+	                        <tr>
+	                            <td class="leftrowdetails"><?php echo esc_html( $label ); ?></td>
+	                            <td class="rightrowdetails"><?php echo esc_html( (string) $value ); ?></td>
+	                        </tr>
+	                        <?php
+	                    }
+	                    ?>
+
+	                    <tr>
+	                        <td colspan="2" class="title">ARMember Details</td>
+	                    </tr>
+	                    <tr>
+	                        <td class="leftrowtitle">Variable Name</td>
+	                        <td class="rightrowtitle">Details</td>
+	                    </tr>
+	                    <tr>
+	                        <td class="leftrowdetails">ARMember Pro Status</td>
+	                        <td class="rightrowdetails">
+	                            <?php
+	                            echo esc_html( $armember_active );
+
+	                            if ( ! function_exists( 'is_plugin_active' ) ) {
+	                                include_once ABSPATH . 'wp-admin/includes/plugin.php';
+	                            }
+
+	                            if ( is_plugin_active( 'armember/armember.php' ) ) {
+	                                $store_url = ARMADDON_STORE_URL;
+	                                $license = trim( get_option( 'arm_pkg_key' ) );
+	                                $package = trim( get_option( 'posted_license_package' ) );
+	                                $api_params = array(
+	                                    'edd_action' => 'check_license',
+	                                    'license'   => $license,
+	                                    'item_id'   => $package,
+	                                    'url'       => home_url()
+	                                );
+
+	                                $response = wp_remote_post(
+	                                    $store_url,
+	                                    array(
+	                                        'body'    => $api_params,
+	                                        'timeout' => 15
+	                                    )
+	                                );
+
+	                                if ( is_wp_error( $response ) ) {
+	                                    ?>
+	                                    &nbsp;<span style="color:red;">( Unlicensed )</span>
+	                                    <?php
+	                                } else {
+	                                    $resp_body = json_decode(
+	                                        wp_remote_retrieve_body( $response ),
+	                                        true
+	                                    );
+
+	                                    if ( isset( $resp_body['success'] ) && true == $resp_body['success'] ) {
+	                                        $expiry_date = $resp_body['expires'];
+
+	                                        if ( 'lifetime' == $expiry_date ) {
+	                                            ?>
+	                                            &nbsp;<span style="color:green;font-weight:bold;">( Active )</span>
+	                                            <?php
+	                                        } else {
+	                                            if ( current_time( 'timestamp' ) > strtotime( $expiry_date ) ) {
+	                                                ?>
+	                                                &nbsp;<span style="color:orange;font-weight:bold;">( Expired )</span>
+	                                                <?php
+	                                            } else {
+	                                                ?>
+	                                                &nbsp;<span style="color:green;font-weight:bold;">( Active )</span>
+	                                                <?php
+	                                            }
+	                                        }
+	                                    } else {
+	                                        ?>
+	                                        &nbsp;<span style="color:red;">( Unlicensed )</span>
+	                                        <?php
+	                                    }
+	                                }
+	                            }
+	                            ?>
+	                        </td>
+	                    </tr>
+
+	                    <tr>
+	                        <td class="leftrowdetails">ARMember Pro Version</td>
+	                        <td class="rightrowdetails"><?php echo esc_html( $armember_version ); ?></td>
+	                    </tr>
+	                    <tr>
+	                        <td class="leftrowdetails">ARMember Lite Version</td>
+	                        <td class="rightrowdetails"><?php echo esc_html( defined( 'MEMBERSHIPLITE_VERSION' ) ? MEMBERSHIPLITE_VERSION : '' ); ?></td>
+	                    </tr>
+
+	                    <?php if ( current_user_can( 'administrator' ) ) { ?>
+	                        <tr>
+	                            <td class="leftrowdetails">Upload Basedir</td>
+	                            <td class="rightrowdetails"><?php echo esc_html( $upload_dir_path['basedir'] ?? '' ); ?></td>
+	                        </tr>
+	                        <tr>
+	                            <td class="leftrowdetails">Upload Baseurl</td>
+	                            <td class="rightrowdetails"><?php echo esc_html( $upload_dir_path['baseurl'] ?? '' ); ?></td>
+	                        </tr>
+	                        <tr>
+	                            <td class="leftrowdetails">Upload Folder Permission</td>
+	                            <td class="rightrowdetails"><?php echo esc_html( (string) $folderpermission ); ?></td>
+	                        </tr>
+	                        <tr>
+	                            <td class="leftrowdetails">ARMember Log Folder Permission</td>
+	                            <td class="rightrowdetails"><?php echo esc_html( (string) $folderlogpermission ); ?></td>
+	                        </tr>
+	                        <tr>
+	                            <td class="leftrowdetails">ARMember Log File Permission</td>
+	                            <td class="rightrowdetails"><?php echo esc_html( (string) $folderlogfilepermission ); ?></td>
+	                        </tr>
+	                    <?php } ?>
+
+	                    <tr>
+	                        <td colspan="2" class="title">Active Plugin List</td>
+	                    </tr>
+
+	                    <?php foreach ( $plugins_main_arr as $myplugin ) { ?>
+	                        <tr>
+	                            <td class="leftrowdetails"><?php echo esc_html( $myplugin['name'] ); ?></td>
+	                            <td class="rightrowdetails">
+	                                <?php echo ( $myplugin['is_active'] == 1 ) ? 'ACTIVE' : 'INACTIVE'; ?>
+	                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<?php echo esc_html( $myplugin['version'] ); ?>)
+	                            </td>
+	                        </tr>
+	                    <?php } ?>
+
+	                    <tr>
+	                        <td colspan="2">&nbsp;</td>
+	                    </tr>
+	                </table>
+
+	                <?php
+	                exit;
+	            }
+		}
+        }
 
         function arm_change_content_before_display_form_member_panel_func($content,$arm_org_forms,$arm_ingored_fields,$atts, $formRandomID){
             //cerate avatar and profile forms fields

@@ -42,7 +42,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$arm_lite_newdbversion = get_option( 'armlite_version' );
 			}
 
-			if ( version_compare( $arm_lite_newdbversion, '6.0.2', '<' ) ) {
+			if ( version_compare( $arm_lite_newdbversion, '6.1', '<' ) ) {
 				$path = MEMBERSHIPLITE_VIEWS_DIR . '/upgrade_latest_data.php';
 				include $path;
 			}
@@ -226,6 +226,35 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 						$thumb_img     = imagecreatetruecolor( $thumb_w, $thumb_h );
 						imagecopyresampled( $thumb_img, $original_img, 0, 0, 0, 0, $thumb_w, $thumb_h, $original_w, $original_h );
 						imagebmp( $thumb_img, MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $file ) );
+					}  elseif ( $info['mime'] == 'image/webp' ) {
+						$source         = imagecreatefromwebp( $fileTemp );
+						$imageRotate    = imagerotate( $source, $arm_rotate, 0 );
+						$rotated_width  = imagesx( $imageRotate );
+						$rotated_height = imagesy( $imageRotate );
+						$dx             = $rotated_width - $original_width;
+						$dy             = $rotated_height - $original_height;
+						$crop_x         = 0;
+						$crop_y         = 0;
+						$targ_x1        = $new_targ_x1;
+						if ( $is_crop ) {
+							$crop_x = $dx / 2 + $new_targ_x1;
+							$crop_y = $dy / 2 + $new_targ_y1;
+						}
+						$new_image = imagecreatetruecolor( $targ_x2, $targ_y2 );
+						if ( $is_crop ) {
+							imagecopyresampled( $new_image, $imageRotate, 0, 0, $targ_x1, $targ_y1, $targ_x2, $targ_y2, $targ_x2, $targ_y2 );
+							$upload = imagewebp( $new_image, $fileTemp );
+						} else {
+							$upload = imagewebp( $imageRotate, $fileTemp );
+						}
+
+						$original_info = getimagesize( $file1 );
+						$original_w    = $original_info[0];
+						$original_h    = $original_info[1];
+						$original_img  = imagecreatefromwebp( $file1 );
+						$thumb_img     = imagecreatetruecolor( $thumb_w, $thumb_h );
+						imagecopyresampled( $thumb_img, $original_img, 0, 0, 0, 0, $thumb_w, $thumb_h, $original_w, $original_h );
+						imagewebp( $thumb_img, MEMBERSHIPLITE_UPLOAD_DIR . '/' . basename( $file ) );
 					} else {
 						$source         = imagecreatefromjpeg( $fileTemp );
 						$imageRotate    = imagerotate( $source, $arm_rotate, 0 );

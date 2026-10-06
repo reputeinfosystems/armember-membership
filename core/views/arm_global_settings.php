@@ -273,7 +273,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 							<div class="arm_form_header_label arm-setting-hadding-label">
 								<?php echo esc_html( 'Enable Spam Protection', 'armember-membership' ); ?>
 							</div>
-							<span for="enable_crop" class="arm_global_setting_label arm_display_block">
+							<span class="arm_global_setting_label arm_display_block">
 								<?php esc_html_e( 'Enable hidden spam protection mechanism in signup/login forms', 'armember-membership' ); ?>
 							</span>
 						</div>
@@ -553,6 +553,28 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 						</div>
 					</div>
 				</div>
+				<div class="arm_setting_main_content arm_margin_top_32 arm_margin_bottom_32">
+					<?php 
+						$is_disabled = "";
+						$arm_system_information = isset($general_settings['arm_system_information']) ? $general_settings['arm_system_information'] : 0;
+						$arm_system_information_enabled = ($arm_system_information == '1') ? 'checked' : '';
+						$is_disabled = (!$is_permalink || $is_disabled != '') ? 'disabled' : '';
+					?>
+					<div class="arm_row_wrapper">
+						<div class="left_content">
+							<div class="arm_form_header_label arm-setting-hadding-label"><?php echo esc_html__( 'Enable Debug Mode', 'armember-membership' ); ?></div>
+							<span class="arm_global_setting_label arm_display_block"><?php echo esc_html__( 'Enable this option to help developers troubleshoot issues more precisely.', 'armember-membership' ); ?></span>
+						</div>
+
+						<div class="right_content">
+							<div class="armswitch arm_global_setting_switch arm_margin_0">
+								<input type="checkbox" id="arm_system_information" <?php echo ($arm_system_information == '1') ? 'checked' : ''; ?> value="1" class="armswitch_input" name="arm_general_settings[arm_system_information]" />
+								<label for="arm_system_information" class="armswitch_label"></label>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<?php echo ($ARMemberLite->is_arm_pro_active) ? apply_filters('arm_load_global_settings_section','badge_icons') : ''; //phpcs:ignore ?>
 				</div>			
 		</div>

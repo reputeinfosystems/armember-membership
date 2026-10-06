@@ -57,7 +57,8 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			/* Apply Global Setting Action */
 			add_action( 'init', array( $this, 'arm_apply_global_settings' ), 200 );
 
-			add_action( 'login_head', array( $this, 'arm_login_enqueue_assets' ), 50 );
+			add_action( 'login_enqueue_scripts', array( $this, 'arm_login_enqueue_assets' ) );
+	
 			add_filter( 'option_users_can_register', array( $this, 'arm_remove_registration_link' ) );
 			/* Enable Shortcodes in Widgets */
 			add_filter( 'widget_text', 'do_shortcode' );
@@ -95,6 +96,8 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 
 			add_action( 'admin_init', array( $this, 'arm_plugin_add_suggested_privacy_content' ), 20 );
 			add_action( 'login_init', array( $this, 'arm_add_jquery_for_login' ), 1 );
+
+			add_action( 'login_footer', array($this, 'arm_wp_login_logo_link') );
 		}
 
 		function arm_plugin_add_suggested_privacy_content() {
@@ -662,13 +665,14 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 				'arm_exclude_role_for_restrict_admin' => 0,
 				'hide_wp_login'                       => 0,
 				'rename_wp_admin'                     => 0,
+				'arm_system_information'               => 0,
 				'temp_wp_admin_path'                  => '',
 				'new_wp_admin_path'                   => 'wp-admin',
 				'hide_register_link'                  => 0,
 				'user_register_verification'          => 'auto',
 				'arm_new_signup_status'               => 1,
 				'hide_feed'                           => 0,
-				'disable_wp_login_style'              => 0,
+				'disable_wp_login_style'              => 1,
 				'restrict_site_access'                => 0,
 				'arm_access_page_for_restrict_site'   => 0,
 				'autolock_shared_account'             => 0,
@@ -2146,43 +2150,48 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			}
 			return $value;
 		}
+		
+		function arm_wp_login_logo_link() {
+			?>
+			<a class="arm-wp-login-page-arm-logo" href="https://www.armemberplugin.com/" target="_blank" rel="noopener noreferrer nofollow"></a>
+			<?php
+		}
 
 		function arm_login_enqueue_assets() {
 			global $arm_global_settings, $ARMemberLite;
 			$all_global_settings = $arm_global_settings->arm_get_all_global_settings();
 			$general_settings    = $all_global_settings['general_settings'];
-			  wp_enqueue_style( 'arm_wp_login', MEMBERSHIPLITE_URL . '/css/arm_wp_login.css', array(), MEMBERSHIPLITE_VERSION );
-			if ( version_compare( $GLOBALS['wp_version'], '3.8', '<' ) ) {
-				wp_enqueue_style( 'arm_login_css_lt_3.8', MEMBERSHIPLITE_URL . '/css/arm_login_lt_3.8.css', array(), MEMBERSHIPLITE_VERSION );
-			}
-			?>
-				<script data-cfasync="false" type="text/javascript">
-					jQuery.fn.outerHTML = function (s) {
-						return s ? this.before(s).remove() : jQuery("<p>").append(this.eq(0).clone()).html();
-					};
-					jQuery(function ($) {
-						jQuery('input[type=text]').each(function (e) {
-							var label = jQuery(this).parents('label').text().replace('*', '');
-							jQuery(this).attr('placeholder', label);
-						});
-						jQuery('input#user_login').attr('placeholder', 'Username').attr('autocomplete', 'off');
-						jQuery('input#user_email').attr('placeholder', 'E-mail').attr('autocomplete', 'off');
-						jQuery('input#user_pass').attr('placeholder', 'Password').attr('autocomplete', 'off');
-						jQuery('input[type=checkbox]').each(function () {
-							var input_box = jQuery(this).outerHTML();
-							jQuery(this).replaceWith('<span class="arm_input_checkbox">' + input_box + '</span>');
-						});
-						jQuery('input[type=checkbox]').on('change', function () {
-							if (jQuery(this).is(':checked')) {
-								jQuery(this).closest('.arm_input_checkbox').addClass('arm_input_checked');
-							} else {
-								jQuery(this).closest('.arm_input_checkbox').removeClass('arm_input_checked');
-							}
-						});
+			wp_enqueue_style( 'arm_wp_login', MEMBERSHIPLITE_URL . '/css/arm_wp_login.css', array(), MEMBERSHIPLITE_VERSION );
+		
+			wp_enqueue_script( 'jquery' );
+		
+			$arm_login_js = "
+				jQuery.fn.outerHTML = function (s) {
+					return s ? this.before(s).remove() : jQuery('<p>').append(this.eq(0).clone()).html();
+				};
+				jQuery(function ($) {
+					jQuery('input[type=text]').each(function (e) {
+						var label = jQuery(this).parents('label').text().replace('*', '');
+						jQuery(this).attr('placeholder', label);
 					});
-				</script>
-				<?php
-
+					jQuery('input#user_login').attr('placeholder', 'Username').attr('autocomplete', 'off');
+					jQuery('input#user_email').attr('placeholder', 'E-mail').attr('autocomplete', 'off');
+					jQuery('input#user_pass').attr('placeholder', 'Password').attr('autocomplete', 'off');
+					jQuery('input[type=checkbox]').each(function () {
+						var input_box = jQuery(this).outerHTML();
+						jQuery(this).replaceWith('<span class=\"arm_input_checkbox\">' + input_box + '</span>');
+					});
+					jQuery('input[type=checkbox]').on('change', function () {
+						if (jQuery(this).is(':checked')) {
+							jQuery(this).closest('.arm_input_checkbox').addClass('arm_input_checked');
+						} else {
+							jQuery(this).closest('.arm_input_checkbox').removeClass('arm_input_checked');
+						}
+					});
+				});
+			";
+		
+			wp_add_inline_script( 'jquery', $arm_login_js );
 		}
 
 		public function add_query_arg() {

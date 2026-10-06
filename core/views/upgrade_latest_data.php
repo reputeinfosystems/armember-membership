@@ -955,7 +955,26 @@ if(version_compare($arm_lite_newdbversion,'6.0','<')){
 	}
 }
 
-$arm_lite_newdbversion = '6.0.2';
+if(version_compare($arm_lite_newdbversion,'6.1','<')){
+	global $arm_global_settings;
+
+	$arm_check_styling_setting_updated = get_option('arm_wp_login_styling_setting_updated');
+    if(empty($arm_check_styling_setting_updated)) {
+		$all_global_settings = $arm_global_settings->arm_get_all_global_settings();
+		if(!empty($all_global_settings['general_settings']['disable_wp_login_style'])) {
+			$all_global_settings['general_settings']['disable_wp_login_style'] = 0;
+		}
+		else {
+			$all_global_settings['general_settings']['disable_wp_login_style'] = 1;
+		}
+		$new_global_settings_result  = $all_global_settings;
+		update_option( 'arm_global_settings', $new_global_settings_result );
+		update_option('arm_wp_login_styling_setting_updated', 1);
+	}
+
+}
+
+$arm_lite_newdbversion = '6.1';
 update_option( 'arm_lite_new_version_installed', 1 );
 update_option( 'armlite_version', $arm_lite_newdbversion );
 

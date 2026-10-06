@@ -112,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '6.0.2';
+$arm_lite_version = '6.1';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -485,17 +485,19 @@ class ARMemberlite {
 
 	function arm_reinit_nonce_var_func(){
         global $ARMemberLite,$arm_capabilities_global;
-		$ARMemberLite->arm_session_start();
-		
-		$form_key    = sanitize_text_field( $_POST['form_key'] ); //phpcs:ignore
-		if ( ! empty( $form_key ) ) {
-			if( !empty($_SESSION['ARM_FILTER_INPUT']) && !empty($_SESSION['ARM_FILTER_INPUT'][ $form_key ]) )
-			{
-				if(isset($_POST['action']) && $_POST['action'] == 'arm_reinit_nonce_var'){//phpcs:ignore
-					echo wp_json_encode(array( 'nonce' => wp_create_nonce('arm_wp_nonce')));
-				}
-			}
-		}
+
+		nocache_headers();
+        header( 'Cache-Control: no-store, no-cache, must-revalidate, private, max-age=0' );
+				
+		$form_key = isset($_POST['form_key']) ? sanitize_text_field( wp_unslash( $_POST['form_key'] ) ) : ''; //phpcs:ignore
+
+		$action   = isset($_POST['action']) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : ''; //phpcs:ignore
+
+		if ( $form_key === '' || $action !== 'arm_reinit_nonce_var' ) {
+            echo json_encode( array( 'error' => 'missing_form_key' ) );
+            die();
+        }
+		echo json_encode( array( 'nonce' => wp_create_nonce('arm_wp_nonce') ) );
         die();
     }
     function arm_write_payment_log($arm_log_payment_gateway, $arm_log_event, $arm_log_event_from = 'armember-membership', $arm_payment_log_raw_data = '', $arm_ref_id = 0, $arm_log_status = 1)
@@ -1061,11 +1063,6 @@ class ARMemberlite {
         if(isset($_SESSION['arm_message'])) { unset($_SESSION['arm_message']); }
         if(isset($_SESSION['arm_admin_menus'])) { unset($_SESSION['arm_admin_menus']); }
 		
-		if($arm_action!="change-password")
-		{
-			if(isset($_SESSION['ARM_FILTER_INPUT'])) { unset($_SESSION['ARM_FILTER_INPUT']); };
-			if(isset($_SESSION['ARM_VALIDATE_SCRIPT'])) { unset($_SESSION['ARM_VALIDATE_SCRIPT']); }
-		}
 	}
 
 	/**
@@ -1228,9 +1225,6 @@ class ARMemberlite {
 		$armlite_is_wizard_complete = get_option('arm_lite_is_wizard_complete');
 
 		$place = $this->get_free_menu_position( 26.1, 0.3 );
-		if ( version_compare( $GLOBALS['wp_version'], '3.8', '<' ) ) {
-			echo "<style type='text/css'>.toplevel_page_arm_manage_members .wp-menu-image img{margin-top:-4px !important;}.toplevel_page_arm_manage_members .wp-menu-image .wp-menu-name{padding-left:30px !important;;}</style>";
-		}
 		if(empty($armlite_is_wizard_complete) || $armlite_is_wizard_complete == 0)
         {
             $arm_menu_hook = add_menu_page('ARMember', esc_html__('ARMember Lite', 'armember-membership'), 'arm_manage_members', $arm_slugs->arm_setup_wizard, array($this, 'route'), MEMBERSHIPLITE_IMAGES_URL . '/armember_menu_icon.png', $place);
@@ -3812,11 +3806,12 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '6.0.2',
+			'update_version' => '6.1',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				"Fixed a security issue related to the Avatar field.",
-				"Fixed minor bugs.",
+				"Added: Ability to enter Transaction ID and Subscription ID when adding a manual payment from the Admin Panel.",
+				"Improved: Spam protection mechanism for better security and reliability.",
+				'Bug Fixes & Improvements.',
 			),
 			'show_major_title'    => 0,
 			'major_title'         => 'Major Changes',

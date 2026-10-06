@@ -607,14 +607,6 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					$randomTempID         = $id . '_' . arm_generate_random_code();
 
 					$ARMemberLite->arm_session_start(true);
-					$captcha_code = arm_generate_captcha_code();
-					if ( ! isset( $_SESSION['ARM_FILTER_INPUT'] ) ) {
-						$_SESSION['ARM_FILTER_INPUT'] = array();
-					}
-					if ( isset( $_SESSION['ARM_FILTER_INPUT'][ $randomTempID ] ) ) {
-						unset( $_SESSION['ARM_FILTER_INPUT'][ $randomTempID ] );
-					}
-					$_SESSION['ARM_FILTER_INPUT'][ $randomTempID ] = $captcha_code;
 					
 					if($temp_data->arm_slug == 'directorytemplate2'){
 						$content .= '<div class="arm_template_directorytemplate2_container arm_lite_directory_template_container">';
@@ -970,14 +962,6 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 
 				$formRandomID                  = '1_' . arm_generate_random_code();
 
-				$captcha_code = arm_generate_captcha_code();
-				if ( ! isset( $_SESSION['ARM_FILTER_INPUT'] ) ) {
-					$_SESSION['ARM_FILTER_INPUT'] = array();
-				}
-				if ( isset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] ) ) {
-					unset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] );
-				}
-				$_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] = $captcha_code;
 
 				$content .= '<form method="POST" action="#" class="arm_transaction_form_container" data-random-id="' . esc_attr($formRandomID) . '">';
 				$content .= '<div class="arm_template_loading" style="display: none;"><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/loader.gif" alt="Loading.."></div>'; //phpcs:ignore 
@@ -2063,13 +2047,6 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 				$spam_protection  = isset( $general_settings['spam_protection'] ) ? $general_settings['spam_protection'] : '';
 				$ARMemberLite->arm_session_start();
 				$captcha_code = arm_generate_captcha_code();
-				if ( ! isset( $_SESSION['ARM_FILTER_INPUT'] ) ) {
-					$_SESSION['ARM_FILTER_INPUT'] = array();
-				}
-				if ( isset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] ) ) {
-					unset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] );
-				}
-				$_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] = $captcha_code;
 				if ( ! empty( $spam_protection ) ) {
 					$_SESSION['ARM_VALIDATE_SCRIPT']               = true;
 					$form_attr                                    .= ' data-submission-key="' . esc_attr($captcha_code) . '" ';
@@ -2353,14 +2330,6 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 
 				$formRandomID                  = $setup_id . '_' . arm_generate_random_code();
 
-				$captcha_code = arm_generate_captcha_code();
-				if ( ! isset( $_SESSION['ARM_FILTER_INPUT'] ) ) {
-					$_SESSION['ARM_FILTER_INPUT'] = array();
-				}
-				if ( isset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] ) ) {
-					unset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] );
-				}
-				$_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] = $captcha_code;
 				
 				$content             .= '<form method="POST" class="arm_current_membership_form_container" data-random-id="' . esc_attr($formRandomID) . '">';
 				$content             .= '<div class="arm_template_loading" style="display: none;"><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/loader.gif" alt="Loading.."></div>'; //phpcs:ignore 

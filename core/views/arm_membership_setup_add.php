@@ -657,7 +657,7 @@ $all_payment_gateways   = $arm_payment_gateways->arm_get_active_payment_gateways
 													?>
 													<li class="arm_membership_setup_sub_li arm_membership_setup_gateways_li <?php echo esc_attr($gateweyClass); ?>">
 														<div class="arm_membership_setup_sortable_icon"></div>
-														<span><?php echo esc_html($pg['gateway_name']); ?></span>
+														<span title="<?php echo esc_html($pg['gateway_name']); ?>"><?php echo esc_html($pg['gateway_name']); ?></span>
 														<input type="hidden" name="setup_data[setup_modules][modules][gateways_order][<?php echo esc_attr($key); ?>]" value="<?php echo intval($gi); ?>" class="arm_module_options_order">
 													</li>
 													<?php

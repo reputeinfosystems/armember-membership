@@ -648,17 +648,30 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 				$plan_id     = intval( $manual_data['plan_id'] );
 				$user_info   = get_user_by( 'id', $user_id );
 				$plan        = new ARM_Plan_Lite( $plan_id );
+				$transaction_id = $manual_data['transaction_id'];
+				$subscription_id = '';
+				$payment_gateway = 'manual';
+				$payment_mode = 'manual_subscription';
+				//check that user has plan assigned or not
+				$arm_fetch_plan_data = arm_get_user_meta($user_id,'arm_user_plan_'.$plan_id,true);
+				if(!empty($arm_fetch_plan_data))
+				{
+					$payment_mode = !empty($arm_fetch_plan_data['arm_payment_mode']) ? $arm_fetch_plan_data['arm_payment_mode'] : 'manual_subscription';
+				}
 				/* Add transaction payment log */
 				$manual_log = array(
 					'arm_user_id'                  => $user_id,
 					'arm_first_name'               => $user_info->first_name,
 					'arm_last_name'                => $user_info->last_name,
 					'arm_plan_id'                  => $plan_id,
-					'arm_payment_gateway'          => 'manual',
+					'arm_payment_gateway'          => $payment_gateway,
 					'arm_payer_email'              => $user_info->user_email,
 					'arm_payment_type'             => $plan->payment_type,
-					'arm_transaction_payment_type' => 'manual',
+					'arm_token' 				   => sanitize_text_field($manual_data['subscription_id']),
+					'arm_transaction_id' 		   => sanitize_text_field($manual_data['transaction_id']),
+					'arm_transaction_payment_type' => $plan->payment_type,
 					'arm_transaction_status'       => sanitize_text_field( $manual_data['transaction_status'] ),
+					'arm_payment_mode' 			   => $payment_mode,
 					'arm_amount'                   => sanitize_text_field( $manual_data['amount'] ),
 					'arm_currency'                 => sanitize_text_field( $manual_data['currency'] ),
 				);
@@ -680,6 +693,7 @@ if ( ! class_exists( 'ARM_transaction_Lite' ) ) {
 			}
 			return;
 		}
+
 		function arm_add_transaction( $log_data = array() ) {
 
 			global $wp, $wpdb, $ARMemberLite, $arm_subscription_plans,  $arm_payment_gateways;

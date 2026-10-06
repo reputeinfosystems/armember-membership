@@ -608,7 +608,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                             $arm_transaction_status = 'canceled';
                             break;
                         default:
-                            $arm_transaction_status = !empty($rc->arm_transaction_status) ? $rc->arm_transaction_status : 'success';
+                            $arm_transaction_status = !empty($arm_transaction_status) ? $arm_transaction_status : 'success';
                             break;
                     }
                     $return .= '<tr class="arm_child_transaction_row">';

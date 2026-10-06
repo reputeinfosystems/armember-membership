@@ -1492,16 +1492,8 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					}
 					$form_style_class .= ' ' . $atts['class'];
 					$form_attr         = ' name="arm_form" id="arm_form' . esc_attr($formRandomID) . '"';
-					$ARMemberLite->arm_session_start();
+					
 					$captcha_code = arm_generate_captcha_code();
-					if ( ! isset( $_SESSION['ARM_FILTER_INPUT'] ) ) {
-						$_SESSION['ARM_FILTER_INPUT'] = array();
-					}
-					if ( isset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] ) ) {
-						unset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] );
-					}
-					$_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] = $captcha_code;
-					$_SESSION['ARM_VALIDATE_SCRIPT']               = true;
 
 					$form_attr .= ' data-random-id="' . esc_attr($formRandomID) . '" ';
 
@@ -1784,14 +1776,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$form_attr = ' name="arm_form" id="arm_form' . esc_attr($formRandomID) . '"';
 
 					$captcha_code = arm_generate_captcha_code();
-					if ( ! isset( $_SESSION['ARM_FILTER_INPUT'] ) ) {
-						$_SESSION['ARM_FILTER_INPUT'] = array();
-					}
-					if ( isset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] ) ) {
-						unset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] );
-					}
-					$_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] = $captcha_code;
-					$_SESSION['ARM_VALIDATE_SCRIPT']               = true;
 
 					$form_attr .= ' data-random-id="' . esc_attr($formRandomID) . '" ';
 
@@ -1931,7 +1915,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					$setact = $arm_lite_members_activity->$check_version();
 
 					if ( $setact != 1 ) {
-						$content .= "<div><span style='color:#FF0000; margin-top:10px; font-size:12px !important; text-align:center; display:block !important;'>Powered by <a href='https://www.armemberplugin.com/redirect.php?rdt=t2&arm_version=$arm_lite_version&arm_request_version=$arm_request_version' target='_blank'>ARMember</a></span></div>";
+						$content .= "<div><span style='color:#FF0000; margin-top:10px; font-size:12px !important; text-align:center; display:block !important;'>Powered by <a href='https://www.armemberplugin.com/redirect.php?rdt=t2&arm_version=$arm_lite_version&arm_request_version=$arm_request_version' target='_blank' rel='nofollow'>ARMember</a></span></div>";
 						$content .= "<div><span style='color:#FF0000; font-size:12px !important; text-align:center; display:block !important;'>&nbsp;&nbsp;(Unlicensed)</span></div>";
 					}
 
@@ -2600,14 +2584,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$content .= '<div class="armclear"></div>';
 
 						$captcha_code = arm_generate_captcha_code();
-						if ( ! isset( $_SESSION['ARM_FILTER_INPUT'] ) ) {
-							$_SESSION['ARM_FILTER_INPUT'] = array();
-						}
-						if ( isset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] ) ) {
-							unset( $_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] );
-						}
-						$_SESSION['ARM_FILTER_INPUT'][ $formRandomID ] = $captcha_code;
-						$_SESSION['ARM_VALIDATE_SCRIPT']               = true;
 
 						$form_attr .= ' data-random-id="' . esc_attr( $formRandomID ) . '" ';
 
@@ -7105,7 +7081,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 									$posted_data_val = esc_url_raw($posted_data_val[0]); //phpcs:ignore
 								}
 								else if(!empty($posted_data_val) && !is_array($posted_data_val))
-								{								
+								{
 									$posted_data_val = esc_url_raw($posted_data_val); //phpcs:ignore
 								}
 								else {
@@ -10518,6 +10494,8 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 			if ( empty( $new_style_css1 ) ) {
 				$new_style_css1 = '';
 			}
+			$new_style_css = apply_filters( 'arm_modify_form_style_external',  $new_style_css, $form_id, $ref_form_id, $form_settings, $container );
+
 			$arm_response = array(
 				'arm_link'    => $new_style_css1,
 				'arm_css'     => $new_style_css,
@@ -11182,6 +11160,24 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 			}
 		}
 
+		function arm_reinit_rate_exceeded() {
+			global $ARMemberLite;
+
+			$ip = ( is_object($ARMemberLite) && method_exists($ARMemberLite, 'arm_get_ip_address') )
+				? (string) $ARMemberLite->arm_get_ip_address()
+				: ( isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : '' ); //phpcs:ignore
+
+			$window = max( 1, (int) apply_filters( 'arm_reinit_session_window', 600 ) );
+			$cap    = (int) apply_filters( 'arm_reinit_session_cap', 600 );
+
+			$slot  = (int) floor( time() / $window );
+			$key   = 'arm_reinit_' . $slot . '_' . substr( hash_hmac( 'sha256', $ip, wp_salt( 'arm_spam_filter' ) ), 0, 20 );
+			$count = (int) get_transient( $key ) + 1;
+			set_transient( $key, $count, $window * 2 );
+
+			return ( $count > $cap );
+		}
+
 		function arm_reinit_session_initialization( $form_key ) {
 			global $ARMemberLite;
 			$ARMemberLite->arm_session_start();
@@ -11199,58 +11195,78 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 		}
 
 		function arm_reinit_session_filter_var() {
-			global $ARMemberLite;
+			 global $ARMemberLite,$arm_Spam_Filter;
 
-			$ARMemberLite->arm_session_start();
+            $nonce = wp_create_nonce( 'arm_wp_nonce' );
+            $form_key = sanitize_text_field($_POST['form_key']);//phpcs:ignore
 
-			$nonce = wp_create_nonce( 'arm_wp_nonce' );
-			// $ARMemberLite->arm_check_user_cap('',1);//phpcs:ignore --Reason:Verifying nonce
-			$form_key    = sanitize_text_field( $_POST['form_key'] ); //phpcs:ignore
+            nocache_headers();
+            header( 'Cache-Control: no-store, no-cache, must-revalidate, private, max-age=0' );
+
 			if ( ! empty( $form_key ) ) {
-				$allowed = false;
-				$allowed = apply_filters('arm_modify_file_validation_external', $allowed);
 
-				if( ( !empty( $_SESSION['ARM_FILTER_INPUT'] ) && !empty( $_SESSION['ARM_FILTER_INPUT'][ $form_key ] ) ) || $allowed )
-				{
-					$session_var = $this->arm_reinit_session_initialization( $form_key );
-					$_SESSION['ARM_FILTER_INPUT'][ $form_key ] = $session_var;
-					echo wp_json_encode( array( 'new_var' => $session_var, 'nonce'=>$nonce ) );
-				}
-			}
-			die();
+                if ( $this->arm_reinit_rate_exceeded() ) {
+                    echo json_encode( array( 'error' => 'rate_limited' ) );
+                    die();
+                }
+
+                $session_var = $this->arm_reinit_session_initialization($form_key);
+
+                $session_arr = array('new_var' => $session_var,'nonce'=>$nonce);
+                if($arm_Spam_Filter->is_enabled)
+                {
+                    $session_arr['data'] = $arm_Spam_Filter->arm_issue_spam_token($form_key);
+                }
+                
+                echo json_encode( $session_arr);
+                die();
+            }
+
+            echo json_encode( array( 'error' => 'missing_form_key' ) );
+            die();
 		}
 
 		function arm_reinit_session_filter_var_multiple_form() {
-			global $ARMemberLite;
-			
-			$ARMemberLite->arm_session_start();
-			
-			$session_arr  = array();
-			$nonce = wp_create_nonce( 'arm_wp_nonce' );
-			// $ARMemberLite->arm_check_user_cap('',1);//phpcs:ignore --Reason:Verifying nonce
-			$form_key_arr = sanitize_text_field($_POST['form_key_arr']); //phpcs:ignore
-			$session_arm_filter_input_form_key_flag = 0;
-			if ( ! empty( $form_key_arr ) ) {
-				$form_key_arr_exp = explode( ',', $form_key_arr );
+			global $ARMemberLite,$arm_Spam_Filter;
 
-				$allowed = false;
-				$allowed = apply_filters('arm_modify_file_validation_external', $allowed);
-				foreach ( $form_key_arr_exp as $form_key ) {
-					$form_key                 = sanitize_text_field( $form_key );
-					if( ( !empty( $_SESSION['ARM_FILTER_INPUT'] ) && !empty( $_SESSION['ARM_FILTER_INPUT'][ $form_key ] ) ) || $allowed )
-					{
-						$session_arr[ $form_key ] = $this->arm_reinit_session_initialization( $form_key );
-						$_SESSION['ARM_FILTER_INPUT'][ $form_key ] = $session_arr[ $form_key ];
-						$session_arm_filter_input_form_key_flag = 1;
-					}
-				}
-			}
-			if( !empty($session_arm_filter_input_form_key_flag) )
-			{
-				$session_arr['nonce'] = $nonce;
-				echo wp_json_encode( $session_arr );
-			}
-			die();
+            $session_arr = array();
+            $nonce = wp_create_nonce( 'arm_wp_nonce' );           
+            
+            $form_key_arr = sanitize_text_field( $_POST['form_key_arr'] );//phpcs:ignore
+            nocache_headers();
+            header( 'Cache-Control: no-store, no-cache, must-revalidate, private, max-age=0' );
+
+            $session_arm_filter_input_form_key_flag = 0;
+            if(!empty($form_key_arr))
+            {
+                if ( $this->arm_reinit_rate_exceeded() ) {
+                    echo json_encode( array( 'error' => 'rate_limited' ) );
+                    die();
+                }
+
+                $form_key_arr_exp = array_slice( explode(',',$form_key_arr), 0, 20 );
+                foreach($form_key_arr_exp as $form_key)
+                {
+                    $form_key = sanitize_text_field($form_key);
+                    if ( $form_key === '' ) { continue; }
+
+                    $session_arr[$form_key] = $this->arm_reinit_session_initialization($form_key);
+                    $session_arm_filter_input_form_key_flag = 1;
+                }
+            }
+            if( !empty($session_arm_filter_input_form_key_flag) )
+			{			
+                if($arm_Spam_Filter->is_enabled)
+                {
+                    $session_arr['data'] = $arm_Spam_Filter->arm_issue_spam_token($form_key_arr);
+                }
+                $session_arr['nonce'] = $nonce;
+                echo json_encode($session_arr);
+                die();
+            }
+
+            echo json_encode( array( 'error' => 'missing_form_key' ) );
+            die();
 		}
 
 		function arm_get_avatar_opt() {

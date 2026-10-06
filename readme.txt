@@ -5,7 +5,7 @@ Donate link: https://www.armemberplugin.com/product.php?rdt=t16
 Requires at least: 4.0
 Tested up to: 7.1
 Requires PHP: 5.6
-Stable tag: 6.0.2
+Stable tag: 6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,11 @@ Please follow the steps for installation:
 11. Signup Form
 
 == Changelog ==
+
+= 6.1 =
+* Added: Ability to enter Transaction ID and Subscription ID when adding a manual payment from the Admin Panel.
+* Improved: Spam protection mechanism for better security and reliability.
+* Bug Fixes & Improvements.
 
 = 6.0.2 =
 * Fixed a security issue related to the Avatar field.

@@ -310,7 +310,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 
 			global $wp, $wpdb, $current_user, $arm_slugs, $arm_lite_errors, $ARMemberLite, $arm_member_forms, $arm_global_settings, $arm_payment_gateways,$arm_subscription_plans, $payment_done,$arm_manage_communication, $arm_transaction;
 			$ARMemberLite->arm_session_start();
-			$ARMemberLite->arm_check_user_cap( '', '1' );//phpcs:ignore --Reason:Verifying nonce
+			// $ARMemberLite->arm_check_user_cap( '', '1' );//phpcs:ignore --Reason:Verifying nonce
 			$post_data = ( ! empty( $_POST ) ) ? $_POST : $post_data; //phpcs:ignore
 			$setup_id      = ( ! empty( $post_data['setup_id'] ) && $post_data['setup_id'] != 0 ) ? intval( $post_data['setup_id'] ) : $setup_id;
 			$err_msg       = $arm_global_settings->common_message['arm_general_msg'];
@@ -1062,7 +1062,6 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 		function arm_setup_shortcode_func_internal( $atts, $content = '' ) {
 
 			global $wp, $wpdb, $current_user, $ARMemberLite, $arm_member_forms, $arm_global_settings, $arm_payment_gateways, $arm_subscription_plans, $arm_lite_bpopup_loaded, $ARMSPAMFILEURL;
-			$ARMemberLite->arm_session_start();
 			/* ====================/.Begin Set Shortcode Attributes./==================== */
 			$defaults = array(
 				'id'                           => 0, /* Membership Setup Wizard ID */
@@ -2424,15 +2423,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$spam_protection  = isset( $general_settings['spam_protection'] ) ? $general_settings['spam_protection'] : '';
 					if ( ! empty( $spam_protection ) ) {
 						$captcha_code = arm_generate_captcha_code();
-						if ( ! isset( $_SESSION['ARM_FILTER_INPUT'] ) ) {
-							$_SESSION['ARM_FILTER_INPUT'] = array();
-						}
-						if ( isset( $_SESSION['ARM_FILTER_INPUT'][ $setupRandomID ] ) ) {
-							unset( $_SESSION['ARM_FILTER_INPUT'][ $setupRandomID ] );
-						}
-						$_SESSION['ARM_FILTER_INPUT'][ $setupRandomID ] = $captcha_code;
-						$_SESSION['ARM_VALIDATE_SCRIPT']                = true;
-						$form_attr                                     .= ' data-submission-key="' . esc_attr($captcha_code) . '" ';
+						$form_attr .= ' data-submission-key="' . esc_attr($captcha_code) . '" ';
 					}
 
 					$form_layout = ' arm_form_layout_' . esc_attr($form_settings['style']['form_layout']) . ' arm-default-form';
@@ -4117,14 +4108,6 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$spam_protection  = isset( $general_settings['spam_protection'] ) ? $general_settings['spam_protection'] : '';
 					if ( ! empty( $spam_protection ) ) {
 						$captcha_code = arm_generate_captcha_code();
-						if ( ! isset( $_SESSION['ARM_FILTER_INPUT'] ) ) {
-							$_SESSION['ARM_FILTER_INPUT'] = array();
-						}
-						if ( isset( $_SESSION['ARM_FILTER_INPUT'][ $setupRandomID ] ) ) {
-							unset( $_SESSION['ARM_FILTER_INPUT'][ $setupRandomID ] );
-						}
-						$_SESSION['ARM_FILTER_INPUT'][ $setupRandomID ] = $captcha_code;
-						$_SESSION['ARM_VALIDATE_SCRIPT']                = true;
 						$form_attr                                      = ' data-submission-key="' . $captcha_code . '" ';
 					}
 					if ( ! empty( $form_settings ) ) {
@@ -4489,6 +4472,12 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 			$setup_content_width     = ( $setup_style['content_width'] == 0 && $setup_style['content_width'] != '' ) ? '800' : $setup_style['content_width'];
 			$setup_content_width     = ( $setup_content_width == '' ) ? 'auto' : $setup_content_width . 'px';
 			$setup_font_family       = ( $setup_style['font_family'] != 'inherit' ) ? 'font-family: ' . $setup_style['font_family'] . ', sans-serif, \'Trebuchet MS\' !important;' : '';
+
+			$setup_title_font_size = ( ! empty( $setup_style['title_font_size'] ) && intval( $setup_style['title_font_size'] ) > 0 ) ? intval( $setup_style['title_font_size'] ) : 20;
+			$setup_desc_font_size = ( ! empty( $setup_style['description_font_size'] ) && intval( $setup_style['description_font_size'] ) > 0 ) ? intval( $setup_style['description_font_size'] ) : 15;
+			$setup_price_font_size = ( ! empty( $setup_style['price_font_size'] ) && intval( $setup_style['price_font_size'] ) > 0 ) ? intval( $setup_style['price_font_size'] ) : 28;
+			$setup_summary_font_size = ( ! empty( $setup_style['summary_font_size'] ) && intval( $setup_style['summary_font_size'] ) > 0 ) ? intval( $setup_style['summary_font_size'] ) : 16;
+
 			$setup_css               = '
                     .arm_setup_form_' . $setupid . '.arm-default-form:not(.arm_admin_member_form){
                         width: ' . $setup_content_width . ';
@@ -4497,15 +4486,14 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
                     .arm_setup_form_' . $setupid . ' .arm_setup_form_title,
                     .arm_setup_form_' . $setupid . ' .arm_setup_section_title_wrapper{
                         ' . $setup_font_family . '
-                        font-size: 20px !important;
-                        font-size: ' . ( $setup_style['title_font_size'] + 2 ) . 'px !important;
+                        font-size: ' . ( $setup_title_font_size + 2 ) . 'px !important;
                         color: ' . $setup_style['plan_title_font_color'] . ';
                         font-weight: normal;
                     }
                     
                     .arm_setup_form_' . $setupid . ' .arm_payment_mode_label{
                         ' . $setup_font_family . '
-                        font-size: ' . $setup_style['description_font_size'] . 'px !important;
+                        font-size: ' . $setup_desc_font_size . 'px !important;
                         color: ' . $setup_style['plan_desc_font_color'] . ';
                         font-weight : normal;
                     }
@@ -4513,7 +4501,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
                     .arm_setup_form_' . $setupid . ' .arm_setup_column_item .arm_module_gateway_name,
                     .arm_setup_form_' . $setupid . ' .arm_setup_column_item .arm_module_payment_cycle_name{
                         ' . $setup_font_family . '
-                        font-size: ' . $setup_style['title_font_size'] . 'px !important;
+                        font-size: ' . $setup_title_font_size . 'px !important;
                         color: ' . $setup_style['plan_title_font_color'] . ' !important;
                         ' . $title_font_style . '
                     }
@@ -4523,7 +4511,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
                     }
                     .arm_setup_form_' . $setupid . ' .arm_setup_column_item .arm_module_plan_price{
                         ' . $setup_font_family . '
-                        font-size: ' . $setup_style['price_font_size'] . 'px !important;
+                        font-size: ' . $setup_price_font_size . 'px !important;
                         color: ' . $setup_style['price_font_color'] . ' !important;
                         ' . $price_font_style . '
                     }
@@ -4533,7 +4521,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
                     }
                     .arm_setup_form_' . $setupid . ' .arm_setup_column_item .arm_module_plan_description{
                         ' . $setup_font_family . '
-                        font-size: ' . $setup_style['description_font_size'] . 'px !important;
+                        font-size: ' . $setup_desc_font_size . 'px !important;
                         color: ' . $setup_style['plan_desc_font_color'] . ';
                         ' . $description_font_style . '
                     }
@@ -4543,7 +4531,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
                     }
                     .arm_setup_form_' . $setupid . ' .arm_setup_summary_text_container .arm_setup_summary_text{
                         ' . $setup_font_family . '
-                        font-size: ' . $setup_style['summary_font_size'] . 'px !important;
+                        font-size: ' . $setup_summary_font_size . 'px !important;
                         color: ' . $setup_style['summary_font_color'] . ';
                         ' . $summary_font_style . '
                     }
@@ -4558,7 +4546,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
                     .arm_setup_form_' . $setupid . ' .arm_setup_column_item .arm_module_plan_name,
                     .arm_setup_form_' . $setupid . ' .arm_setup_column_item .arm_module_gateway_name,
                     .arm_setup_form_' . $setupid . ' .arm_setup_column_item .arm_module_payment_cycle_name{
-                        font-size: ' . $setup_style['title_font_size'] . 'px !important;
+                        font-size: ' . $setup_title_font_size . 'px !important;
                         color: ' . $setup_style['plan_title_font_color'] . ';
                         ' . $title_font_style . '
                     }
@@ -4685,154 +4673,6 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 			return $new_items;
 		}
 
-		/*function arm_refresh_setup_items() {
-			global $wp, $wpdb, $ARMemberLite, $arm_global_settings, $arm_payment_gateways,$arm_subscription_plans, $arm_capabilities_global;
-			$module_items = '';
-
-			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_setups'], '1' );
-
-			if ( ! empty( $_POST['module'] ) ) { //phpcs:ignore
-				$module_items = $this->arm_get_module_items_box( sanitize_text_field($_POST['module']) ); //phpcs:ignore
-			}
-			echo $module_items; //phpcs:ignore
-			exit;
-		}*/
-		/*
-		function arm_get_module_items_box( $module_type = 'plans', $options = array() ) {
-			global $wp, $wpdb, $ARMemberLite, $arm_slugs, $arm_global_settings, $arm_payment_gateways, $arm_subscription_plans;
-			$module_box          = '';
-			$alertMessages       = $ARMemberLite->arm_alert_messages();
-			$add_plan_link       = admin_url( 'admin.php?page=' . $arm_slugs->manage_plans . '&action=new' );
-			$manage_gateway_link = admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&&action=payment_options' );
-			$selected_items      = ( ! empty( $options['selected'] ) ) ? $options['selected'] : array();
-			$items_order         = ( ! empty( $options['items_order'] ) ) ? $options['items_order'] : array();
-			$column_type         = ( ! empty( $options['column'] ) ) ? $options['column'] : 1;
-
-			$input_prefix = 'setup_data[setup_modules]';
-			if ( $module_type == 'plans' ) {
-				$active_plans   = $arm_subscription_plans->arm_get_all_active_subscription_plans();
-				$filtered_items = $this->arm_sort_module_by_order( $active_plans, $items_order );
-				$module_box    .= '<div class="arm_setup_items_box_plans">';
-				if ( ! empty( $filtered_items ) ) {
-					$module_box   .= '<div class="arm_setup_module_column_layout_types arm_setup_plans_column_layout_types">';
-					$module_box   .= '<div class="arm_column_layout_types_container">';
-					$column1_class = ( $column_type == 1 ) ? 'arm_active_label' : '';
-					$module_box   .= '<label class="' . $column1_class . '"><span class="single_column_img"></span><input type="radio" name="setup_data[setup_modules][plans_columns]" value="1" class="arm_column_layout_type_radio" ' . checked( $column_type, '1', false ) . ' data-module="plans"><span>' . esc_html__( 'Single Column', 'armember-membership' ) . '</span></label>';
-					$column2_class = ( $column_type == 2 ) ? 'arm_active_label' : '';
-					$module_box   .= '<label class="' . $column2_class . '"><span class="two_column_img"></span><input type="radio" name="setup_data[setup_modules][plans_columns]" value="2" class="arm_column_layout_type_radio" ' . checked( $column_type, '2', false ) . ' data-module="plans"><span>' . esc_html__( 'Two Column', 'armember-membership' ) . '</span></label>';
-					$column3_class = ( $column_type == 3 ) ? 'arm_active_label' : '';
-					$module_box   .= '<label class="' . $column3_class . '"><span class="three_column_img"></span><input type="radio" name="setup_data[setup_modules][plans_columns]" value="3" class="arm_column_layout_type_radio" ' . checked( $column_type, '3', false ) . ' data-module="plans"><span>' . esc_html__( 'Three Column', 'armember-membership' ) . '</span></label>';
-					$module_box   .= '<div class="armclear"></div></div>';
-					$module_box   .= '</div>';
-					$module_box   .= '<ul class="arm_setup_plans_ul arm_membership_setup_sub_ul arm_column_' . $column_type . '">';
-					$pi            = 1;
-					foreach ( $filtered_items as $plan ) {
-						$planObj = new ARM_Plan_Lite( 0 );
-						$planObj->init( (object) $plan );
-						$plan_id      = $planObj->ID;
-						$plan_options = $planObj->options;
-						/* Check Recurring Details *//*
-						$bank_allow = ( $planObj->is_recurring() ) ? '0' : '1';
-
-						$planInputAttr = ' data-plan_name="' . $planObj->name . '" data-plan_type="' . $planObj->type . '" data-payment_type="' . $planObj->payment_type . '"  data-bank_allow="' . $bank_allow . '" ';
-						$plan_checked  = ( ! empty( $selected_items ) && in_array( $plan_id, $selected_items ) ) ? 'checked="checked"' : '';
-						$module_box   .= '<li class="arm_membership_setup_plans_li arm_membership_setup_sub_li">';
-						$module_box   .= '<div class="arm_membership_setup_sortable_icon"></div>';
-						$module_box   .= '<label id="label_plan_chk_' . $plan_id . '">';
-						$module_box   .= '<input type="checkbox" name="' . $input_prefix . '[modules][plans][]" value="' . $plan_id . '" id="plan_chk_' . $plan_id . '" class="arm_icheckbox plans_chk_inputs plans_chk_inputs_' . $planObj->type . '" ' . $planInputAttr . ' ' . $plan_checked . ' data-msg-required="' . esc_html__( 'Please select at least one plan.', 'armember-membership' ) . '"/>';
-						$module_box   .= '<span>' . $planObj->name . '</span>';
-						$module_box   .= '</label>';
-						$module_box   .= '<input type="hidden" name="' . $input_prefix . '[modules][plans_order][' . $plan_id . ']" value="' . $pi . '" class="arm_module_options_order">';
-						$module_box   .= '</li>';
-						$pi++;
-					}
-					$module_box .= '</ul>';
-				} else {
-					$module_box .= '<span class="arm_setup_plan_error_msg error" style="display: none;">' . esc_html__( 'Please select at least one plan.', 'armember-membership' ) . '</span>';
-					$module_box .= '<a href="javascript:void(0)" class="arm_setup_module_refresh" data-module="plans" title="' . esc_html__( 'Reload Plan List', 'armember-membership' ) . '"><i class="armfa armfa-refresh"></i></a>';
-					$module_box .= '<div class="arm_setup_items_empty_msg">' . esc_html__( 'No plans have been configured yet.', 'armember-membership' );
-					$module_box .= ' <a href="' . $add_plan_link . '" target="_blank">' . esc_html__( 'Please click here to add plan.', 'armember-membership' ) . '</a>';
-					$module_box .= ' ' . esc_html__( 'After adding plan, click on refresh button', 'armember-membership' );
-					$module_box .= ' (<a style="float: none;padding: 3px;" href="javascript:void(0)" class="arm_setup_module_refresh" data-module="plans"><i class="armfa armfa-refresh"></i></a>) ' . esc_html__( 'to get added plans.', 'armember-membership' );
-					$module_box .= '</div>';
-				}
-				$module_box .= '</div>';
-			} elseif ( $module_type == 'gateways' ) {
-				$active_gateways  = $arm_payment_gateways->arm_get_active_payment_gateways();
-				$filtered_gatways = $this->arm_sort_module_by_order( $active_gateways, $items_order );
-				$module_box      .= '<div class="arm_setup_items_box_gateways">';
-				if ( ! empty( $filtered_gatways ) ) {
-					$module_box   .= '<div class="arm_setup_module_column_layout_types arm_setup_gatways_column_layout_types">';
-					$module_box   .= '<div class="arm_column_layout_types_container">';
-					$column1_class = ( $column_type == 1 ) ? 'arm_active_label' : '';
-					$module_box   .= '<label class="' . $column1_class . '"><span class="single_column_img"></span><input type="radio" name="setup_data[setup_modules][gateways_columns]" value="1" class="arm_column_layout_type_radio" ' . checked( $column_type, '1', false ) . ' data-module="gateways"><span>' . esc_html__( 'Single Column', 'armember-membership' ) . '</span></label>';
-					$column2_class = ( $column_type == 2 ) ? 'arm_active_label' : '';
-					$module_box   .= '<label class="' . $column2_class . '"><span class="two_column_img"></span><input type="radio" name="setup_data[setup_modules][gateways_columns]" value="2" class="arm_column_layout_type_radio" ' . checked( $column_type, '2', false ) . ' data-module="gateways"><span>' . esc_html__( 'Two Column', 'armember-membership' ) . '</span></label>';
-					$column3_class = ( $column_type == 3 ) ? 'arm_active_label' : '';
-					$module_box   .= '<label class="' . $column3_class . '"><span class="three_column_img"></span><input type="radio" name="setup_data[setup_modules][gateways_columns]" value="3" class="arm_column_layout_type_radio" ' . checked( $column_type, '3', false ) . ' data-module="gateways"><span>' . esc_html__( 'Three Column', 'armember-membership' ) . '</span></label>';
-					$module_box   .= '<div class="armclear"></div></div>';
-					$module_box   .= '</div>';
-					$module_box   .= '<ul class="arm_setup_gateways_ul arm_membership_setup_sub_ul arm_column_' . $column_type . '">';
-					$gi            = 1;
-					/* --------------------Strip Plan Box------------------------------------ */
-					/*
-					$selected_plan = isset( $options['selected_plan'] ) ? $options['selected_plan'] : array();
-
-					$isBTWarning = false;
-					if ( ! empty( $selected_plan ) ) {
-						foreach ( $selected_plan as $pID ) {
-							$pddata       = $arm_subscription_plans->arm_get_subscription_plan( $pID, 'arm_subscription_plan_name, arm_subscription_plan_type, arm_subscription_plan_options' );
-							$s_plan_name  = $pddata['arm_subscription_plan_name'];
-							$plan_type    = $pddata['arm_subscription_plan_type'];
-							$plan_options = arm_maybe_unserialize( $pddata['arm_subscription_plan_options'] );
-							$payment_type = isset( $plan_options['payment_type'] ) ? $plan_options['payment_type'] : '';
-							if ( $plan_type == 'paid' && $payment_type == 'subscription' ) {
-								if ( in_array( 'bank_transfer', $selected_items ) ) {
-									$isBTWarning          = true;
-									$bankNotPlans[ $pID ] = $s_plan_name;
-								}
-
-								$trialOptions = isset( $plan_options['trial'] ) ? $plan_options['trial'] : array();
-
-							}
-						}
-					}
-					/* -------------------------------------------------------- *//*
-					foreach ( $filtered_gatways as $key => $pg ) {
-						$pgname          = $pg['gateway_name'];
-						$gateway_checked = ( ! empty( $selected_items ) && in_array( $key, $selected_items ) ) ? 'checked="checked"' : '';
-						$module_box     .= '<li class="arm_membership_setup_gateways_li arm_membership_setup_sub_li">';
-						$module_box     .= '<div class="arm_membership_setup_sortable_icon"></div>';
-						$module_box     .= '<label>';
-						$module_box     .= '<input type="checkbox" name="' . $input_prefix . '[modules][gateways][]" value="' . $key . '" id="gateway_chk_' . $key . '" class="arm_icheckbox gateways_chk_inputs" ' . $gateway_checked . ' data-pg_name="' . $pgname . '" data-msg-required="' . esc_html__( 'Please select at least one payment gateway.', 'armember-membership' ) . '"/>';
-						$module_box     .= '<span>' . $pgname . '</span>';
-						$module_box     .= '</label>';
-						$module_box     .= '<input type="hidden" name="' . $input_prefix . '[modules][gateways_order][' . $key . ']" value="' . $gi . '" class="arm_module_options_order">';
-
-						$module_box .= '</li>';
-						$gi++;
-					}
-					$module_box .= '</ul>';
-					$module_box .= '<div class="armclear"></div>';
-					$module_box .= '<div class="arm_payment_gateway_warnings">';
-
-					$module_box .= '<span class="arm_invalid" id="arm_bank_transfer_warning" style="' . ( $isBTWarning ? '' : 'display:none;' ) . '"><span class="arm_bank_transfer_not_support_plans">' . ( implode( ',', $bankNotPlans ) ) . '</span> ' . esc_html__( "plan's configuration is not supported by Bank Transfer. So it will be hide as a payment option when user will select this plan(s).", 'armember-membership' ) . '</span>';
-					$module_box .= '</div>';
-					$module_box .= '<div class="armclear"></div>';
-				} else {
-					$module_box .= '<span class="arm_setup_gateway_error_msg error" style="display: none;">' . esc_html__( 'Payment gateway is required for paid plans.', 'armember-membership' ) . '</span>';
-					$module_box .= '<a href="javascript:void(0)" class="arm_setup_module_refresh" data-module="gateways" title="' . esc_html__( 'Reload Payment Gateway List', 'armember-membership' ) . '"><i class="armfa armfa-refresh"></i></a>';
-					$module_box .= '<div class="arm_setup_items_empty_msg">' . esc_html__( 'There is no any payment gateway configured yet.', 'armember-membership' );
-					$module_box .= ' <a href="' . $manage_gateway_link . '" target="_blank">' . esc_html__( 'Please click here to add payment method.', 'armember-membership' ) . '</a>';
-					$module_box .= ' ' . esc_html__( 'After setup payment gateway, click on refresh button', 'armember-membership' );
-					$module_box .= ' (<a style="float: none;padding: 3px;" href="javascript:void(0)" class="arm_setup_module_refresh" data-module="gateways"><i class="armfa armfa-refresh"></i></a>) ' . esc_html__( 'to get added payment gateways.', 'armember-membership' );
-					$module_box .= '</div>';
-				}
-				$module_box .= '</div>';
-			}
-			return $module_box;
-		}*/
-
 		function arm_update_plan_form_gateway_selection() {
 			global $wp, $wpdb, $ARMemberLite, $arm_payment_gateways, $arm_subscription_plans, $arm_capabilities_global;
 			$returnArr = array(
@@ -4928,7 +4768,7 @@ if ( ! class_exists( 'ARM_membership_setup_Lite' ) ) {
 					$planOrderList .= '<li class="arm_membership_setup_sub_li arm_membership_setup_plans_li ' . $planClass . ' ' . $add_class . '">';
 					$planOrderList .= '<div class="arm_membership_setup_sortable_icon"></div>';
 					$planOrderList .= '<input type="radio" class="arm_iradio arm_default_user_selected_plan" name="setup_data[setup_modules][selected_plan]" value="' . esc_attr($plan_id) . '" ' . checked( $user_selected_plan, $plan_id, false ) . ' id="arm_setup_plan_' . esc_attr($plan_id) . '">';
-					$planOrderList .= '<label for="arm_setup_plan_' . esc_attr($plan_id) . '" class="arm_setup_plan_label">' . $plan['arm_subscription_plan_name'] . '</label>';
+					$planOrderList .= '<label for="arm_setup_plan_' . esc_attr($plan_id) . '" class="arm_setup_plan_label" title="' . $plan['arm_subscription_plan_name'] . '">' . $plan['arm_subscription_plan_name'] . '</label>';
 					$planOrderList .= '<input type="hidden" name="setup_data[setup_modules][modules][plans_order][' . esc_attr($plan_id) . ']" value="' . esc_attr($pi) . '" class="arm_module_options_order arm_plan_order_inputs" data-plan_id="' . esc_attr($plan_id) . '">';
 					$planOrderList .= '</li>';
 					$pi++;
