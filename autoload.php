@@ -112,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '6.1';
+$arm_lite_version = '6.2';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -143,6 +143,10 @@ if ( file_exists( MEMBERSHIPLITE_CLASSES_DIR . '/arm_common_function_lite.php' )
 }
 
 if(!$ARMemberLite->is_arm_pro_active){
+	if ( file_exists( MEMBERSHIPLITE_CLASSES_DIR . '/class.arm_member_subscriptions.php' ) ) {
+		require_once MEMBERSHIPLITE_CLASSES_DIR . '/class.arm_member_subscriptions.php';
+	}
+
 	if ( file_exists( MEMBERSHIPLITE_CLASSES_DIR . '/class.arm_members.php' ) ) {
 		require_once MEMBERSHIPLITE_CLASSES_DIR . '/class.arm_members.php';
 	}
@@ -324,6 +328,9 @@ class ARMemberlite {
 	var $is_arm_pro_active;
 	var $tbl_arm_debug_payment_log;
 	var $tbl_arm_debug_general_log;
+	var $tbl_arm_members_plan_detail;
+	var $tbl_arm_subscriptions;
+	var $tbl_arm_subscriptions_meta;
 
 
 	var $tbl_arm_login_history;
@@ -351,7 +358,10 @@ class ARMemberlite {
 
 			'tbl_arm_login_history'      => $wpdb->prefix . 'arm_login_history',
 			'tbl_arm_debug_payment_log' => $wpdb->prefix . 'arm_debug_payment_log',
-			'tbl_arm_debug_general_log' => $wpdb->prefix . 'arm_debug_general_log'
+			'tbl_arm_debug_general_log' => $wpdb->prefix . 'arm_debug_general_log',
+			'tbl_arm_members_plan_detail' => $wpdb->prefix . 'arm_members_plan_detail',
+			'tbl_arm_subscriptions'       => $wpdb->prefix . 'arm_subscriptions',
+			'tbl_arm_subscriptions_meta'  => $wpdb->prefix . 'arm_subscriptions_meta',
 		);
 		/* Set Database Table Variables. */
 		foreach ( $arm_db_tables as $key => $table ) {
@@ -563,7 +573,7 @@ class ARMemberlite {
 				$arm_is_log_enabled = $arm_is_email_log_enabled;
 			} 
 			else {
-				if ($arm_email_settings->isOptInsFeature && empty($arm_is_opt_ins_log_enabled) && empty($arm_is_opt_ins_log_check_flag)) 
+				if (!empty($arm_email_settings->isOptInsFeature) && empty($arm_is_opt_ins_log_enabled) && empty($arm_is_opt_ins_log_check_flag)) 
 				{
 					$arm_is_opt_ins_log_enabled = get_option('arm_optins_debug_log');
 					$arm_is_opt_ins_log_check_flag = 1;
@@ -2380,6 +2390,7 @@ class ARMemberlite {
                     `arm_action` VARCHAR(50) NOT NULL,
                     `arm_content` LONGTEXT NOT NULL,
                     `arm_item_id` bigint(20) NOT NULL DEFAULT '0',
+                    `arm_subscription_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
                     `arm_paid_post_id` bigint(20) NOT NULL DEFAULT '0',
                     `arm_gift_plan_id` bigint(20) NOT NULL DEFAULT '0',
                     `arm_link` VARCHAR(255) DEFAULT NULL,
@@ -2387,6 +2398,7 @@ class ARMemberlite {
                     `arm_activity_plan_type` VARCHAR(255) NOT NULL,
                     `arm_activity_payment_gateway` VARCHAR(255) NOT NULL,
                     `arm_activity_plan_amount` DOUBLE NOT NULL DEFAULT '0',
+                    `arm_activity_plan_currency` VARCHAR(50) NOT NULL DEFAULT '',
                     `arm_activity_plan_start_date` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
                     `arm_activity_plan_end_date` datetime NULL DEFAULT '1970-01-01 00:00:00',
                     `arm_activity_plan_next_cycle_date` datetime NULL DEFAULT '1970-01-01 00:00:00',
@@ -2424,6 +2436,7 @@ class ARMemberlite {
                     `arm_form_id` int(11) DEFAULT NULL,
                     `arm_user_id` bigint(20) DEFAULT NULL,
                     `arm_plan_id` int(11) DEFAULT NULL,
+                    `arm_subscription_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
                     `arm_is_post_entry` TINYINT(1) NOT NULL DEFAULT '0',
                     `arm_paid_post_id` BIGINT(20) NOT NULL DEFAULT '0',
                     `arm_is_gift_entry` TINYINT(1) NOT NULL DEFAULT '0',
@@ -2547,6 +2560,7 @@ class ARMemberlite {
                     `arm_first_name` VARCHAR(255) DEFAULT NULL,
                     `arm_last_name` VARCHAR(255) DEFAULT NULL,
                     `arm_plan_id` bigint(20) NOT NULL DEFAULT '0',
+                    `arm_subscription_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
                     `arm_old_plan_id` bigint(20) NOT NULL DEFAULT '0',
                     `arm_payment_gateway` VARCHAR(50) NOT NULL,
                     `arm_payment_type` VARCHAR(50) NOT NULL,
@@ -2680,6 +2694,20 @@ class ARMemberlite {
                     PRIMARY KEY (`arm_general_log_id`)
                 ) {$charset_collate};";
                 $arm_dbtbl_create[$tbl_arm_debug_general_log] = dbDelta($sql_table);
+
+				/* Member plans & subscriptions tables (CREATE IF NOT EXISTS, no DROP). */
+				global $arm_member_subscriptions;
+				if ( is_object( $arm_member_subscriptions ) ) {
+					$arm_member_subscriptions->arm_create_subscription_tables();
+					$arm_member_subscriptions->arm_skip_subscription_migration(); /* Fresh install: no members to migrate. */
+
+					$armember_check_db_permission = $ARMemberLite->armember_check_db_permission();
+					if(!empty($armember_check_db_permission))
+					{
+						//Add the INDEX for the Members Plan Detail, Subscriptions, Subscriptions Meta tables and the arm_subscription_id columns
+						$arm_member_subscriptions->arm_add_subscription_tables_index();
+					}
+				}
 
 				/* Install Default Template Forms & Fields */
 				$ARMemberLite->install_default_templates();
@@ -3298,12 +3326,16 @@ class ARMemberlite {
 		delete_option( 'armSortId' );
 		delete_option( 'armSortInfo' );
 		delete_option( 'arm_lite_new_version_installed' );
+		delete_option( 'armember_pro_install_date' );
+		delete_option( 'armember_lite_install_date' );
 
 		delete_site_option( 'armIsSorted' );
 		delete_site_option( 'armSortOrder' );
 		delete_site_option( 'armSortId' );
 		delete_site_option( 'armSortInfo' );
 		delete_site_option( 'arm_version_1_7_installed' );
+		delete_site_option( 'armember_pro_install_date' );
+		delete_site_option( 'armember_lite_install_date' );
 
 		/**
 		 * Delete Plugin DB Tables
@@ -3331,7 +3363,10 @@ class ARMemberlite {
 			$wpdb->prefix . 'arm_login_history',
 			$wpdb->prefix . 'arm_debug_general_log',
 			$wpdb->prefix . 'arm_debug_payment_log',
-			$wpdb->prefix . 'arm_dripped_contents'
+			$wpdb->prefix . 'arm_dripped_contents',
+			$wpdb->prefix . 'arm_members_plan_detail',
+			$wpdb->prefix . 'arm_subscriptions',
+			$wpdb->prefix . 'arm_subscriptions_meta',
 		);
 		foreach ( $blog_tables as $table ) {
 			$wpdb->query( "DROP TABLE IF EXISTS ".$table );//phpcs:ignore --Reason: $table is a table name. False Positive Alarm
@@ -3806,12 +3841,11 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '6.1',
+			'update_version' => '6.2',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				"Added: Ability to enter Transaction ID and Subscription ID when adding a manual payment from the Admin Panel.",
-				"Improved: Spam protection mechanism for better security and reliability.",
-				'Bug Fixes & Improvements.',
+				'Improved Database structure for better performance.',
+				'Minor Bug Fixes.',
 			),
 			'show_major_title'    => 0,
 			'major_title'         => 'Major Changes',

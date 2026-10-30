@@ -33,6 +33,240 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 		}
 
+	function arm_member_memberships($user_id,$arm_page, $arm_perpage)
+        {
+            global $arm_global_settings;
+            $date_format = $arm_global_settings->arm_get_wp_date_format();
+
+            $user_plans = arm_get_user_meta($user_id, 'arm_user_plan_ids', true);
+            $user_plans = (!empty($user_plans) && is_array($user_plans)) ? $user_plans : array();                   
+
+            $user_future_plans = arm_get_user_meta($user_id, 'arm_user_future_plan_ids', true);
+            $user_future_plans = (!empty($user_future_plans) && is_array($user_future_plans)) ? $user_future_plans : array();
+
+            $membership_count = count($user_plans);
+            /* Per page 0 = all plans (the membership table has no pagination). */
+            $arm_perpage = (int) $arm_perpage;
+            if($arm_perpage > 0)
+            {
+                $offset = (!empty($arm_page) && $arm_page > 1) ? (($arm_page - 1) * $arm_perpage) : 0;
+                $user_plans = array_slice($user_plans, $offset, $arm_perpage);
+            }
+
+            $user_all_plans = array();
+            if(!empty($user_future_plans))
+            {
+				$user_all_plans = array_merge($user_plans, $user_future_plans);
+            }
+            else 
+            {
+                $user_all_plans = $user_plans;
+            }
+
+            $memberships_array = array();
+            if (!empty($user_all_plans)) {
+                $sr_no = 0;
+                $change_plan_to_array = array();
+                foreach ($user_all_plans as $user_plan) {
+                    $planData = arm_get_user_meta($user_id, 'arm_user_plan_' . $user_plan, true);
+                    $curPlanDetail = !empty($planData['arm_current_plan_detail']) ? $planData['arm_current_plan_detail'] : '';
+                    $start_plan = !empty($planData['arm_start_plan']) ? $planData['arm_start_plan'] : '';
+                    if(!empty($planData['arm_started_plan_date']) && $planData['arm_started_plan_date']<=$start_plan)
+                    {
+                        $start_plan = $planData['arm_started_plan_date'];
+                    }
+                    $expire_plan = !empty($planData['arm_expire_plan']) ? $planData['arm_expire_plan'] : '';
+                    $change_plan = !empty($planData['arm_change_plan_to']) ? $planData['arm_change_plan_to'] : '';
+                    $effective_from  = !empty($planData['arm_subscr_effective']) ? $planData['arm_subscr_effective'] : '';
+
+                    if($change_plan != '' && $effective_from != '' && !empty($effective_from) && !empty($change_plan)){
+                        $change_plan_to_array[$change_plan] = $effective_from;
+                    }
+                    $payment_mode = '';
+                    $payment_cycle = '';
+                    $is_plan_cancelled = '';
+                    $completed = '';
+                    $recurring_time = '';
+                    $recurring_profile = '';
+                    $next_due_date = '-';
+                    $user_payment_mode = '';
+                    if (!empty($curPlanDetail)) {
+                        $plan_info = new ARM_Plan_Lite(0);
+                        $plan_info->init((object) $curPlanDetail);
+                    } else {
+                        $plan_info = new ARM_Plan_Lite($user_plan);
+                    }
+
+                    $arm_plan_is_suspended = '';
+                    $suspended_plan_ids = arm_get_user_meta($user_id, 'arm_user_suspended_plan_ids', true);
+                    $suspended_plan_ids = (isset($suspended_plan_ids) && !empty($suspended_plan_ids) && is_array($suspended_plan_ids)) ? $suspended_plan_ids : array();
+                    if (!empty($suspended_plan_ids)) {
+                        if ( is_array($suspended_plan_ids) && in_array($user_plan, $suspended_plan_ids)) {
+                            $arm_plan_is_suspended = esc_html__('Suspended', 'armember-membership');
+                        }
+                    }
+
+                    if ($plan_info->exists()) {
+                        $sr_no++;
+                        $plan_options = $plan_info->options;
+
+                        if ($plan_info->is_recurring()) {
+                            $completed = !empty($planData['arm_completed_recurring'] ) ? $planData['arm_completed_recurring'] : 0;
+                            $is_plan_cancelled = !empty($planData['arm_cencelled_plan']) ? $planData['arm_cencelled_plan'] : '';
+                            $payment_mode = !empty($planData['arm_payment_mode']) ? $planData['arm_payment_mode'] : 'manual';
+                            $payment_cycle = !empty($planData['arm_payment_cycle']) ? $planData['arm_payment_cycle'] : 0;
+                            $recurring_plan_options = $plan_info->prepare_recurring_data($payment_cycle);
+                            $recurring_time = $recurring_plan_options['rec_time'];
+                            $next_due_date = !empty($planData['arm_next_due_payment']) ? $planData['arm_next_due_payment'] : '';
+
+                            if ($payment_mode == 'auto_debit_subscription') {
+                                $user_payment_mode = esc_html__('Auto Debit', 'armember-membership');
+                            }
+                            $arm_trial_start_date = !empty($planData['arm_trial_start']) ? $planData['arm_trial_start'] : '';
+                            $arm_is_user_in_trial = !empty($planData['arm_is_trial_plan']) ? $planData['arm_is_trial_plan'] : '';
+
+                            if ($recurring_time == 'infinite' || empty($expire_plan)) {
+                                $remaining_occurence = esc_html__('Never Expires', 'armember-membership');
+                            } else {
+                                $remaining_occurence = $recurring_time - $completed;
+                            }
+
+                            if ($remaining_occurence > 0 || $recurring_time == 'infinite') {
+                                if (!empty($next_due_date)) {
+                                    $next_due_date = date_i18n($date_format, $next_due_date);
+                                }
+                            } else {
+                                $next_due_date = '';
+                            }
+
+                            $arm_is_user_in_grace = !empty($planData['arm_is_user_in_grace']) ? $planData['arm_is_user_in_grace'] : '';
+
+                            $arm_grace_period_end = !empty($planData['arm_grace_period_end']) ? $planData['arm_grace_period_end'] : '';
+                        } else {
+                            $recurring_profile = '-';
+                            $arm_trial_start_date = '';
+                            $remaining_occurence = '-';
+                            $arm_is_user_in_grace = 0;
+                            $arm_grace_period_end = '';
+                            $arm_is_user_in_trial = 0;
+                        }
+
+                        $recurring_profile = $plan_info->new_user_plan_text(false, $payment_cycle);
+
+                        $trial_active_text = '';
+                        if (!empty($arm_trial_start_date)) {
+                            if($arm_is_user_in_trial == 1 || $arm_is_user_in_trial == '1'){
+                                if($arm_trial_start_date <  $start_plan){
+                                    $trial_active_text = esc_html__('trial active', 'armember-membership');
+                                }
+                            }
+                        }
+
+                        $end_date = '-';
+                        if ($plan_info->is_free() || $plan_info->is_lifetime() || ($plan_info->is_recurring() && $recurring_time == 'infinite')) {
+                            if($plan_info->is_recurring() && $recurring_time == 'infinite' && (isset($planData['arm_cencelled_plan']) && $planData['arm_cencelled_plan']=='yes')) 
+                            {
+                                $end_date = date_i18n($date_format, $planData['arm_next_due_payment']);
+                            } else {
+                                $end_date = esc_html__('Never Expires', 'armember-membership');    
+                            }
+                        } else {
+                            if (isset($plan_options['access_type']) && !in_array($plan_options['access_type'], array('infinite', 'lifetime'))) {
+                                if (!empty($expire_plan)) {
+                                    $membership_expire_content = date_i18n($date_format, $expire_plan);
+                                    $end_date = $membership_expire_content;
+                                }
+                            }
+                        }
+
+                        $trial_period = '-';
+                        if (!empty($arm_trial_start_date)) {
+                            $trial_period = date_i18n($date_format, $arm_trial_start_date);
+                            $trial_period .= " " . esc_html__('To', 'armember-membership');
+                            $trial_period .= " " . date_i18n($date_format, strtotime('-1 day', $start_plan));
+                        }
+
+                        $renew_date = $next_due_date;
+                        $next_cycle_due = '';
+                        if($plan_info->is_recurring()){
+                            if(!empty($expire_plan)){
+                                if($remaining_occurence == 0){
+                                    $next_cycle_due = esc_html__('No cycles due', 'armember-membership');
+                                }
+                                else{
+                                    $next_cycle_due = "<br/>(". $remaining_occurence." ".esc_html__('cycles due', 'armember-membership').")";
+                                }
+                            }
+                            if($arm_is_user_in_grace == "1" || $arm_is_user_in_grace == 1){
+                                $arm_grace_period_end = date_i18n($date_format, $arm_grace_period_end );
+                            }
+                        }
+
+                        $membership['sr_no'] = $sr_no;
+                        $membership['plan_id'] = $user_plan;
+                        $membership['name'] = wp_unslash($plan_info->name);
+                        $membership['is_suspended'] = !empty($arm_plan_is_suspended) ? 1 : 0;
+                        $membership['is_suspended_text'] = $arm_plan_is_suspended;
+                        $membership['change_plan'] = $change_plan;
+                        $membership['is_plan_cancelled'] = $is_plan_cancelled;
+                        $membership['payment_mode'] = $payment_mode;
+                        $membership['user_payment_mode'] = $user_payment_mode;
+                        $membership['recurring_time'] = $recurring_time;
+                        $membership['recurring_profile'] = strip_tags($recurring_profile); //phpcs:ignore
+                        $membership['recurring_profile_html'] = $recurring_profile;
+                        $membership['start_date'] = !empty($start_plan) ? date_i18n($date_format, $start_plan): '';
+                        $membership['is_trial'] = !empty($trial_active_text) ? 1 : 0;
+                        $membership['is_trial_text'] = $trial_active_text;
+                        $membership['arm_trial_start_date'] = $arm_trial_start_date;
+                        $membership['end_date'] = $end_date;
+                        $membership['trial_period'] = $trial_period;
+                        $membership['remaining_occurence'] = $remaining_occurence;
+                        $membership['renew_date'] = $renew_date;
+                        $membership['next_cycle_due'] = $next_cycle_due;
+                        $membership['grace_period_end'] = $arm_grace_period_end;                       
+                        $memberships_array[] = $membership;
+                    }
+                }
+				
+                if(!empty($change_plan_to_array)){
+                    foreach ($change_plan_to_array as $change_user_plan => $effective_from_date) {
+                        if(!empty($change_user_plan) && !empty($effective_from_date) && !in_array($change_user_plan, $user_all_plans)){
+                            $change_plan_info = new ARM_Plan_Lite($change_user_plan);
+                            if ($change_plan_info->exists()) {
+                                $sr_no++;
+                                $membership['sr_no'] = $sr_no;
+                                $membership['plan_id'] = $change_user_plan;
+                                $membership['name'] = wp_unslash($change_plan_info->name);
+                                $membership['is_suspended'] = 0;
+                                $membership['is_suspended_text'] = '';
+                                $membership['change_plan'] = '';
+                                $membership['is_plan_cancelled'] = '';
+                                $membership['payment_mode'] = '';
+                                $membership['user_payment_mode'] = '';
+                                $membership['recurring_time'] = '';
+                                $membership['recurring_profile'] = strip_tags($change_plan_info->new_user_plan_text(false, '')); //phpcs:ignore
+                                $membership['recurring_profile_html'] = $change_plan_info->new_user_plan_text(false, '');
+                                $membership['start_date'] = !empty($effective_from_date) ? date_i18n($date_format, $effective_from_date) : '';
+                                $membership['is_trial'] = 0;
+                                $membership['is_trial_text'] = '';
+                                $membership['arm_trial_start_date'] = '';
+                                $membership['end_date'] = '';
+                                $membership['trial_period'] = '';
+                                $membership['remaining_occurence'] = '';
+                                $membership['renew_date'] = '';
+                                $membership['next_cycle_due'] = '';
+                                $membership['grace_period_end'] = '';                               
+                                $memberships_array[] = $membership;
+                            }
+                        }
+                    }
+                }
+            }
+            $reponse['memberships'] = $memberships_array;
+            $reponse['total'] = $membership_count;
+            return $reponse;
+        }
+
 		function arm_get_membership_plan_expand_grid_func(){
 			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_capabilities_global, $arm_slugs;
 
@@ -89,7 +323,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					$total_users = 0;
 					if(!empty($arm_user_array)){
 						foreach($arm_user_array as $arm_user_id => $arm_user_plans){
-							if(!empty($arm_user_plans) && in_array($planID, $arm_user_plans)){
+							if(!empty($arm_user_plans) && is_array($arm_user_plans) && in_array($planID, $arm_user_plans)){
 								$total_users++;
 							}
 						}
@@ -115,7 +349,8 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					}
 					else if($mkey == 'arm_plan_role'){
 						$planRole = $planObj->plan_role;
-                        $plan_role_name = wp_roles()->get_names()[$planRole];
+                        $arm_role_names = wp_roles()->get_names();
+                        $plan_role_name = isset( $arm_role_names[ $planRole ] ) ? $arm_role_names[ $planRole ] : $planRole;
 						$meta_val = !empty($plan_role_name) ? $plan_role_name : '-';
 					}
 					else if($mkey == 'arm_plan_recurring'){
@@ -237,7 +472,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                     $total_users = 0;
                     if(!empty($arm_user_array)){
                         foreach($arm_user_array as $arm_user_id => $arm_user_plans){
-                            if(!empty($arm_user_plans) && in_array($planID, $arm_user_plans)){
+                            if(!empty($arm_user_plans) && is_array($arm_user_plans) && in_array($planID, $arm_user_plans)){
                                 $total_users++;
                             }
                         }
@@ -264,7 +499,8 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
                     }
                     $planRole = $planObj->plan_role;
                     if (!empty($planRole)) {
-						$plan_role_name = wp_roles()->get_names()[$planRole];
+						$arm_role_names = wp_roles()->get_names();
+						$plan_role_name = isset( $arm_role_names[ $planRole ] ) ? $arm_role_names[ $planRole ] : $planRole;
                         $grid_data[$ai][5] = $plan_role_name;
                     } else {
                         $grid_data[$ai][5] = '-';
@@ -344,7 +580,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				$total_users = 0;
 				if(!empty($arm_user_array)){
 					foreach($arm_user_array as $arm_user_id => $arm_user_plans){
-						if(!empty($arm_user_plans) && in_array($arm_plan_id, $arm_user_plans)){
+						if(!empty($arm_user_plans) && is_array($arm_user_plans) && in_array($arm_plan_id, $arm_user_plans)){
 							$total_users++;
 						}
 					}
@@ -972,7 +1208,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				$action_opt       = '';
 				$secondary_status = 5;
 				$user_plans       = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
-				$user_plans       = ! empty( $user_plans ) ? $user_plans : array();
+				$user_plans       = ( ! empty( $user_plans ) && is_array( $user_plans ) ) ? $user_plans : array();
 
 				if ( in_array( $plan_id, $user_plans ) ) {
 
@@ -1056,7 +1292,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							$planData['arm_grace_period_action'] = $action;
 
 							arm_update_user_meta( $user_id, 'arm_user_plan_' . $plan_id, $planData );
-							if ( isset( $temp_detail_user ) && $temp_detail_user->arm_template_status == '1' ) {
+							if ( ! empty( $temp_detail_user ) && is_object( $temp_detail_user ) && $temp_detail_user->arm_template_status == '1' ) {
 								$subject        = $arm_global_settings->arm_filter_email_with_user_detail( $temp_detail_user->arm_template_subject, $user_id, $plan_id );
 								$message        = $arm_global_settings->arm_filter_email_with_user_detail( $temp_detail_user->arm_template_content, $user_id, $plan_id );
 								$user_send_mail = $arm_global_settings->arm_wp_mail( '', $user_email, $subject, $message );
@@ -1123,7 +1359,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 											$total_user_plans = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 											if ( ! empty( $total_user_plans ) ) {
 												$suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
-												$suspended_plan_id  = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
+												$suspended_plan_id  = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) && is_array( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 
 												if ( ! in_array( $plan_id, $suspended_plan_id ) ) {
 													$suspended_plan_id[] = $plan_id;
@@ -1289,14 +1525,14 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				} else {
 
 					$arm_changed_expiry_date_plan = arm_get_user_meta( $user_id, 'arm_changed_expiry_date_plans', true );
-					$arm_changed_expiry_date_plan = ! empty( $arm_changed_expiry_date_plan ) ? $arm_changed_expiry_date_plan : array();
+					$arm_changed_expiry_date_plan = ( ! empty( $arm_changed_expiry_date_plan ) && is_array( $arm_changed_expiry_date_plan ) ) ? $arm_changed_expiry_date_plan : array();
 					if ( ! empty( $arm_changed_expiry_date_plan ) ) {
 						if ( in_array( $plan_id, $arm_changed_expiry_date_plan ) ) {
 							unset( $arm_changed_expiry_date_plan[ array_search( $plan_id, $arm_changed_expiry_date_plan ) ] );
 						}
 					}
 
-					delete_user_meta( $user_id, 'arm_user_plan_' . $plan_id );
+					arm_delete_user_meta( $user_id, 'arm_user_plan_' . $plan_id );
 
 					if ( $user->has_cap( "armember_access_plan_{$plan_id}" ) ) {
 						$user->remove_cap( "armember_access_plan_{$plan_id}" );
@@ -1313,13 +1549,13 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					}
 
 					$user_plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
-					$user_plan_ids = ! empty( $user_plan_ids ) ? $user_plan_ids : array();
+					$user_plan_ids = ( ! empty( $user_plan_ids ) && is_array( $user_plan_ids ) ) ? $user_plan_ids : array();
 
 					$user_future_plan_ids = arm_get_user_meta( $user_id, 'arm_user_future_plan_ids', true );
-					$user_future_plan_ids = ! empty( $user_future_plan_ids ) ? $user_future_plan_ids : array();
+					$user_future_plan_ids = ( ! empty( $user_future_plan_ids ) && is_array( $user_future_plan_ids ) ) ? $user_future_plan_ids : array();
 
 					$user_suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
-					$user_suspended_plan_ids = ! empty( $user_suspended_plan_ids ) ? $user_suspended_plan_ids : array();
+					$user_suspended_plan_ids = ( ! empty( $user_suspended_plan_ids ) && is_array( $user_suspended_plan_ids ) ) ? $user_suspended_plan_ids : array();
 
 					if ( in_array( $plan_id, $user_plan_ids ) ) {
 						unset( $user_plan_ids[ array_search( $plan_id, $user_plan_ids ) ] );
@@ -1335,7 +1571,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					}
 
 					if ( empty( $user_future_plan_ids ) ) {
-						delete_user_meta( $user_id, 'arm_user_future_plan_ids' );
+						arm_delete_user_meta( $user_id, 'arm_user_future_plan_ids' );
 					} else {
 						arm_update_user_meta( $user_id, 'arm_user_future_plan_ids', array_values( $user_future_plan_ids ) );
 					}
@@ -1343,9 +1579,9 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 					if ( empty( $user_plan_ids ) ) {
 						$arm_default_wordpress_role = get_option( 'default_role', 'subscriber' );
 						$user->add_role( $arm_default_wordpress_role );
-						delete_user_meta( $user_id, 'arm_user_plan_ids' );
+						arm_delete_user_meta( $user_id, 'arm_user_plan_ids' );
 						delete_user_meta( $user_id, 'arm_user_last_plan' );
-						delete_user_meta( $user_id, 'arm_user_suspended_plan_ids' );
+						arm_delete_user_meta( $user_id, 'arm_user_suspended_plan_ids' );
 						delete_user_meta( $user_id, 'arm_changed_expiry_date_plans', true );
 					} else {
 						arm_update_user_meta( $user_id, 'arm_user_plan_ids', array_values( $user_plan_ids ) );
@@ -1362,7 +1598,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 			global $wp, $wpdb, $ARMemberLite, $arm_global_settings, $arm_payment_gateways;
 			if ( ! empty( $user_id ) && $user_id != 0 ) {
 				$old_plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
-				$old_plan_ids = ! empty( $old_plan_ids ) ? $old_plan_ids : array();
+				$old_plan_ids = ( ! empty( $old_plan_ids ) && is_array( $old_plan_ids ) ) ? $old_plan_ids : array();
 				if ( ! empty( $old_plan_ids ) && ! in_array( $new_plan_id, $old_plan_ids ) ) {
 					// Cancel User's Last Subscription
 					foreach ( $old_plan_ids as $old_plan_id ) {
@@ -1383,8 +1619,8 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				$user               = new WP_User( $user_id );
 				$old_plan_ids       = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 				$suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
-				$suspended_plan_ids = ! empty( $suspended_plan_ids ) ? $suspended_plan_ids : array();
-				$old_plan           = ( isset( $old_plan_ids ) && ! empty( $old_plan_ids ) ) ? $old_plan_ids : array();
+				$suspended_plan_ids = ( ! empty( $suspended_plan_ids ) && is_array( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
+				$old_plan           = ( isset( $old_plan_ids ) && ! empty( $old_plan_ids ) && is_array( $old_plan_ids ) ) ? $old_plan_ids : array();
 				$old_plans          = $old_plan;
 				if ( in_array( $new_plan_id, $suspended_plan_ids ) ) {
 					unset( $suspended_plan_ids[ array_search( $new_plan_id, $suspended_plan_ids ) ] );
@@ -1411,7 +1647,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						if ( ! empty( $old_plan ) ) {
 							foreach ( $old_plan as $old_plan_id ) {
 								$user->remove_cap( 'armember_access_plan_' . $old_plan_id );
-								delete_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id );
+								arm_delete_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id );
 							}
 
 							$plan_id_role_array = $arm_subscription_plans->arm_get_plan_role_by_id( $old_plan );
@@ -1703,7 +1939,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							} elseif ( $planObj->is_recurring() ) {
 								$arm_user_gateway                     = ! empty( $oldPlanData['arm_user_gateway'] ) ? $oldPlanData['arm_user_gateway'] : '';
 								$need_to_cancel_payment_gateway_array = $arm_payment_gateways->arm_need_to_cancel_old_subscription_gateways();
-								$need_to_cancel_payment_gateway_array = ! empty( $need_to_cancel_payment_gateway_array ) ? $need_to_cancel_payment_gateway_array : array();
+								$need_to_cancel_payment_gateway_array = ( ! empty( $need_to_cancel_payment_gateway_array ) && is_array( $need_to_cancel_payment_gateway_array ) ) ? $need_to_cancel_payment_gateway_array : array();
 								if ( ! in_array( $arm_user_gateway, $need_to_cancel_payment_gateway_array ) ) {
 									$start_time = ! empty( $oldPlanData['arm_expire_plan'] ) ? $oldPlanData['arm_expire_plan'] : $start_time;
 								}
@@ -1769,8 +2005,8 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 				$old_plan_ids       = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 				$suspended_plan_ids = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
-				$suspended_plan_ids = ! empty( $suspended_plan_ids ) ? $suspended_plan_ids : array();
-				$old_plan           = ( isset( $old_plan_ids ) && ! empty( $old_plan_ids ) ) ? $old_plan_ids : array();
+				$suspended_plan_ids = ( ! empty( $suspended_plan_ids ) && is_array( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
+				$old_plan           = ( isset( $old_plan_ids ) && ! empty( $old_plan_ids ) && is_array( $old_plan_ids ) ) ? $old_plan_ids : array();
 				$old_plans          = $old_plan;
 				$payment_mode       = 'manual_subscription';
 
@@ -1834,7 +2070,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 							if ( ! empty( $old_plan ) ) {
 								foreach ( $old_plan as $old_plan_id ) {
 									$user->remove_cap( 'armember_access_plan_' . $old_plan_id );
-									delete_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id );
+									arm_delete_user_meta( $user_id, 'arm_user_plan_' . $old_plan_id );
 								}
 
 								$plan_id_role_array = $this->arm_get_plan_role_by_id( $old_plan );
@@ -2285,11 +2521,11 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 
 					$user_plans = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
 
-					$user_plans = ! empty( $user_plans ) ? $user_plans : array();
+					$user_plans = ( ! empty( $user_plans ) && is_array( $user_plans ) ) ? $user_plans : array();
 					$user_plan  = isset( $user_plans[0] ) ? $user_plans[0] : 0;
 
 					$user_suspended_plans = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
-					$user_suspended_plans = ( isset( $user_suspended_plans ) && ! empty( $user_suspended_plans ) ) ? $user_suspended_plans : array();
+					$user_suspended_plans = ( isset( $user_suspended_plans ) && ! empty( $user_suspended_plans ) && is_array( $user_suspended_plans ) ) ? $user_suspended_plans : array();
 
 					$curPlanName = isset( $plan_id_name_array[ $user_plan ] ) ? $plan_id_name_array[ $user_plan ] : '';
 
@@ -2760,7 +2996,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 				return false;
 			}
 			$old_plan_ids = arm_get_user_meta( $user_id, 'arm_user_plan_ids', true );
-			$old_plan_ids = ! empty( $old_plan_ids ) ? $old_plan_ids : array();
+			$old_plan_ids = ( ! empty( $old_plan_ids ) && is_array( $old_plan_ids ) ) ? $old_plan_ids : array();
 			$old_plan_id  = isset( $old_plan_ids[0] ) ? $old_plan_ids[0] : 0;
 			$arm_members_class->arm_new_plan_assigned_by_system( $plan_id, $old_plan_id, $user_id );
 			return true;
@@ -2983,9 +3219,9 @@ if ( ! class_exists( 'ARM_Plan_Lite' ) ) {
 			$this->plan_price_text                 = $this->plan_price_text();
 			$this->enable_upgrade_downgrade_action = ( isset( $this->options['enable_upgrade_downgrade_action'] ) && $this->options['enable_upgrade_downgrade_action'] == 1 ) ? 1 : 0;
 			$this->upgrade_action                  = ( isset( $this->options['upgrade_action'] ) ) ? $this->options['upgrade_action'] : 'immediate';
-			$this->upgrade_plans                   = ( isset( $this->options['upgrade_plans'] ) ) ? $this->options['upgrade_plans'] : array();
+			$this->upgrade_plans                   = ( isset( $this->options['upgrade_plans'] ) && is_array( $this->options['upgrade_plans'] ) ) ? $this->options['upgrade_plans'] : array();
 			$this->downgrade_action                = ( isset( $this->options['downgrade_action'] ) ) ? $this->options['downgrade_action'] : 'immediate';
-			$this->downgrade_plans                 = ( isset( $this->options['downgrade_plans'] ) ) ? $this->options['downgrade_plans'] : array();
+			$this->downgrade_plans                 = ( isset( $this->options['downgrade_plans'] ) && is_array( $this->options['downgrade_plans'] ) ) ? $this->options['downgrade_plans'] : array();
 			$this->is_delete                       = ( isset( $this->arm_subscription_plan_is_delete ) ) ? $this->arm_subscription_plan_is_delete : 0;
 			$this->plan_detail                     = $data;
 		}

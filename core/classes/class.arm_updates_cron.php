@@ -18,6 +18,8 @@ if (!class_exists('ARM_updates_cron_Lite')) {
 
                 add_action('arm_handle_updates_db_migrate_activity_data',array($this,'arm_handle_updates_db_migrate_activity_data_func'));
 
+                add_action('arm_handle_updates_db_migrate_subscription_data',array($this,'arm_handle_updates_db_migrate_subscription_data_func'));
+
                 add_action('wp_ajax_arm_updates_cron_db_processing_notice',array($this,'arm_updates_cron_db_processing_notice'),10);
                 add_action('wp_ajax_arm_updates_cron_db_completed_notice',array($this,'arm_updates_cron_db_completed_notice'),10);
 
@@ -32,12 +34,12 @@ if (!class_exists('ARM_updates_cron_Lite')) {
             global $arm_slugs;
             if (isset($_REQUEST['page']) && in_array($_REQUEST['page'], (array) $arm_slugs)) { //phpcs:ignore
                 if (!in_array($_REQUEST['page'], array($arm_slugs->manage_forms))) { //phpcs:ignore
-                    add_action('admin_notices', array($this, 'arm_updates_cron_admin_notices'), 100);
+                    add_filter('arm_admin_notice', array($this, 'arm_updates_cron_admin_notices'), 5, 1);
                 }
             }
         }
 
-        function arm_updates_cron_admin_notices() {
+        function arm_updates_cron_admin_notices($arm_admin_notice = '') {
             global $arm_slugs;
 
             $notice_html = '';
@@ -47,24 +49,32 @@ if (!class_exists('ARM_updates_cron_Lite')) {
             {
                 $arm_updates_cron_db_notice = get_option('arm_updates_cron_db_notice');
                 $arm_updates_cron_db_activity_notice = get_option('arm_updates_cron_db_activity_notice');
+                $arm_updates_cron_db_subscription_notice = get_option('arm_updates_cron_db_subscription_notice', 2);
 
-                if( empty($arm_updates_cron_db_notice) || empty($arm_updates_cron_db_activity_notice) )
+                $arm_in_progress_text = esc_html__('ARMember is updating your database in the background. This may take a little while, you can keep working meanwhile.', 'armember-membership');
+                $arm_subscription_totals = get_option('arm_updates_cron_db_subscription_totals', array());
+                if( $arm_updates_cron_db_subscription_notice == 1 && !empty($arm_subscription_totals['users']) )
                 {
-                    printf("<div class='notice notice-info arm_dismiss_update_db_notice' style='display:block;margin: 40px 40px 0px;border-left-color: var(--arm-pt-orange) !important;min-height:150px'><p style='font-size:calc(24px);'>". esc_html__('ARMember Database Update Required', 'armember-membership')."</p><p>ARMember has been updated! To keep things running smoothly, we have to update your database to the newest version. The database update process runs in the background and may take a little while, so please be patience.</p><button class='armemailaddbtn' style='margin-top:15px;margin-bottom:20px;'>". esc_html__('Update ARMember Database', 'armember-membership')."</button></div>");
-
-                    printf("<div class='notice notice-info arm_dismiss_updated_db_notice' style='display:none;margin: 40px 40px 0px;border-left-color: var(--arm-pt-orange) !important;height:110px'><p style='font-size:calc(24px);'>". esc_html__('ARMember database update in progress', 'armember-membership')."</p><p>ARMember has started a data updation in background. The database update process may take a little while, so please be patience.</p></div>");
+                    /* translators: %s: number of members */
+                    $arm_in_progress_text .= ' ' . sprintf( esc_html__('%s members updated so far.', 'armember-membership'), number_format_i18n( (int) $arm_subscription_totals['users'] ) );
                 }
-                else if($arm_updates_cron_db_notice=="1" || $arm_updates_cron_db_activity_notice=="1")
+
+                if( empty($arm_updates_cron_db_notice) || empty($arm_updates_cron_db_activity_notice) || empty($arm_updates_cron_db_subscription_notice) )
                 {
-                    printf("<div class='notice notice-info arm_dismiss_updated_db_notice' style='display:block;margin: 40px 40px 0px;border-left-color: var(--arm-pt-orange) !important;height:110px'><p style='font-size:calc(24px);'>". esc_html__('ARMember database update in progress', 'armember-membership')."</p><p>ARMember has started a data updation in background. The database update process may take a little while, so please be patience.</p></div>");
+                    $notice_html .= '<div class="armember_notice_warning yellow arm_padding_20 arm_dismiss_update_db_notice"><div class="arm_update_db_required_content"><div class="arm_font_size_20 arm_font_weight_600 arm_margin_bottom_8">' . esc_html__('ARMember Database Update Required', 'armember-membership') . '</div><div>' . esc_html__('ARMember has been updated! To keep things running smoothly, your database needs to be updated to the newest version. The update runs in the background and may take a little while.', 'armember-membership') . '</div><button type="button" class="armemailaddbtn arm_updates_cron_db_start_link arm_margin_top_16">' . esc_html__('Update ARMember Database', 'armember-membership') . '</button></div><div class="arm_update_db_progress_content hidden_section"><div class="arm_font_size_20 arm_font_weight_600 arm_margin_bottom_8">' . esc_html__('ARMember Database Update in Progress', 'armember-membership') . '</div><div>' . $arm_in_progress_text . '</div></div></div>';
+                }
+                else if($arm_updates_cron_db_notice=="1" || $arm_updates_cron_db_activity_notice=="1" || $arm_updates_cron_db_subscription_notice=="1")
+                {
+                    $notice_html .= '<div class="armember_notice_warning blue arm_padding_20 arm_dismiss_updated_db_notice"><div class="arm_font_size_20 arm_font_weight_600 arm_margin_bottom_8">' . esc_html__('ARMember Database Update in Progress', 'armember-membership') . '</div><div>' . $arm_in_progress_text . '</div></div>';
                 }
                 else if($arm_updates_cron_db_notice=="2" || $arm_updates_cron_db_activity_notice=="2")
                 {
-                    printf("<div class='notice notice-info arm_dismiss_updated_data_notice' style='display:block;margin: 40px 40px 0px;border-left-color: var(--arm-pt-orange) !important;min-height:170px'><p style='font-size:calc(24px);'>". esc_html__('ARMember database updation process done', 'armember-membership')."</p><p>ARMember database update complete. Thank you for updating to the latest version!</p><button class='armemailaddbtn' style='margin-top:15px;margin-bottom:20px;'>". esc_html__('Thanks!', 'armember-membership')."</button></div>");
+                    $notice_html .= '<div class="armember_notice_warning blue arm_padding_20 arm_dismiss_updated_data_notice"><div class="arm_font_size_20 arm_font_weight_600 arm_margin_bottom_8">' . esc_html__('ARMember Database Update Completed', 'armember-membership') . '</div><div>' . esc_html__('Your ARMember database is up to date. Thank you for updating to the latest version!', 'armember-membership') . '</div><button type="button" class="armemailaddbtn arm_margin_top_16">' . esc_html__('Thanks!', 'armember-membership') . '</button></div>';
                 }
 
-                echo $notice_html; //phpcs:ignore
+                $arm_admin_notice = $notice_html . $arm_admin_notice;
             }
+            return $arm_admin_notice;
         }
 
         function arm_updates_cron_schedules($schedules)
@@ -94,6 +104,16 @@ if (!class_exists('ARM_updates_cron_Lite')) {
             {
                 //cron for update activity table database
                 $hook = "arm_handle_updates_db_migrate_activity_data";
+                if (!wp_next_scheduled($hook)) {
+                    wp_schedule_event(time(), 'arm_every_minute', $hook);
+                }
+            }
+
+            $arm_updates_cron_db_subscription_notice = get_option('arm_updates_cron_db_subscription_notice', 2);
+            if($arm_updates_cron_db_subscription_notice < 2)
+            {
+                //cron for member plans & subscriptions tables
+                $hook = "arm_handle_updates_db_migrate_subscription_data";
                 if (!wp_next_scheduled($hook)) {
                     wp_schedule_event(time(), 'arm_every_minute', $hook);
                 }
@@ -249,12 +269,90 @@ if (!class_exists('ARM_updates_cron_Lite')) {
             }
         }
 
+        function arm_handle_updates_db_migrate_subscription_data_func()
+        {
+            global $wpdb, $arm_member_subscriptions;
+
+            $arm_updates_cron_db_subscription_notice = get_option('arm_updates_cron_db_subscription_notice', 2);
+            if( $arm_updates_cron_db_subscription_notice != 1 || !is_object($arm_member_subscriptions) || !method_exists($arm_member_subscriptions, 'arm_migrate_user') )
+            {
+                return;
+            }
+            if( !$arm_member_subscriptions->arm_is_tables_ready() )
+            {
+                return;
+            }
+
+            $arm_lock_key = 'arm_subscription_migration_lock';
+            if( get_transient($arm_lock_key) )
+            {
+                return;
+            }
+            set_transient($arm_lock_key, time(), 5 * MINUTE_IN_SECONDS);
+            set_time_limit(0); //phpcs:ignore --Reason: Set time limit to 0 for long processing in background
+
+            $arm_batch_limit = (int) apply_filters('arm_subscription_migration_batch_limit', 200);
+            $arm_time_limit  = (int) apply_filters('arm_subscription_migration_time_limit', 40);
+            $arm_started     = time();
+
+            $arm_last_user_id = (int) get_option('arm_updates_cron_db_subscription_last_user_id', 0);
+            $arm_totals = get_option('arm_updates_cron_db_subscription_totals', array());
+            $arm_totals = is_array($arm_totals) ? $arm_totals : array();
+            $arm_totals = array_merge(array('users' => 0, 'created' => 0, 'skipped' => 0, 'history' => 0, 'logs' => 0, 'activities' => 0, 'mismatch' => 0, 'failed' => 0), $arm_totals);
+
+            $arm_user_ids = $wpdb->get_col( $wpdb->prepare("SELECT ID FROM `{$wpdb->users}` WHERE ID > %d ORDER BY ID ASC LIMIT %d", $arm_last_user_id, $arm_batch_limit) ); //phpcs:ignore WordPress.DB.DirectDatabaseQuery
+
+            if( empty($arm_user_ids) )
+            {
+                update_option('arm_updates_cron_db_subscription_notice', 2);
+                update_option('arm_updates_cron_db_subscription_completed_date', current_time('mysql'));
+                wp_clear_scheduled_hook("arm_handle_updates_db_migrate_subscription_data");
+                delete_transient($arm_lock_key);
+                do_action('arm_after_subscription_migration_completed', $arm_totals);
+                return;
+            }
+
+            foreach( $arm_user_ids as $arm_user_id )
+            {
+                $arm_stats = $arm_member_subscriptions->arm_migrate_user( (int) $arm_user_id );
+                if( false === $arm_stats )
+                {
+                    $arm_totals['failed']++;
+                }
+                else
+                {
+                    foreach( $arm_stats as $arm_key => $arm_count )
+                    {
+                        $arm_totals[$arm_key] = ( isset($arm_totals[$arm_key]) ? (int) $arm_totals[$arm_key] : 0 ) + (int) $arm_count;
+                    }
+                }
+                $arm_totals['users']++;
+                $arm_last_user_id = (int) $arm_user_id;
+
+                if( ( time() - $arm_started ) >= $arm_time_limit )
+                {
+                    break;
+                }
+            }
+
+            /* Progress saved once per batch. */
+            update_option('arm_updates_cron_db_subscription_last_user_id', $arm_last_user_id);
+            update_option('arm_updates_cron_db_subscription_totals', $arm_totals, false);
+            delete_transient($arm_lock_key);
+        }
+
         function arm_updates_cron_db_processing_notice()
         {
             global $ARMemberLite,$arm_capabilities_global;
             $ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_general_settings'], '1' ); //phpcs:ignore --Reason:Verifying nonce
-            update_option('arm_updates_cron_db_notice',1);
-            update_option('arm_updates_cron_db_activity_notice',1);
+            foreach( array('arm_updates_cron_db_notice','arm_updates_cron_db_activity_notice','arm_updates_cron_db_subscription_notice') as $arm_job_option )
+            {
+                $arm_job_status = get_option($arm_job_option, ('arm_updates_cron_db_subscription_notice' == $arm_job_option) ? 2 : 0);
+                if( $arm_job_status != 2 )
+                {
+                    update_option($arm_job_option,1);
+                }
+            }
             die();
         }
 
@@ -264,7 +362,11 @@ if (!class_exists('ARM_updates_cron_Lite')) {
             $ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_general_settings'], '1' ); //phpcs:ignore --Reason:Verifying nonce
             update_option('arm_updates_cron_db_notice',2);
             update_option('arm_updates_cron_db_activity_notice',2);
-            update_option('arm_updates_cron_db_initialize',0);
+            $arm_updates_cron_db_subscription_notice = get_option('arm_updates_cron_db_subscription_notice', 2);
+            if( $arm_updates_cron_db_subscription_notice == 2 )
+            {
+                update_option('arm_updates_cron_db_initialize',0);
+            }
             wp_clear_scheduled_hook("arm_handle_updates_db_migrate_data");
             wp_clear_scheduled_hook("arm_handle_updates_db_migrate_activity_data");
             die();

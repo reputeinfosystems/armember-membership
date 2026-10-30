@@ -2210,6 +2210,8 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					'trial_active'               => esc_html__( 'trial active', 'armember-membership' ),
 					'cancel_message'             => esc_html__( 'Your Subscription has been cancelled.', 'armember-membership' ),
 					'message_no_record'          => esc_html__( 'No memberships found.', 'armember-membership' ),
+					'current_page'               => 0,
+					'per_page'                   => 0,
 					'arm_member_panel'=> 0
 				),
 				$atts,
@@ -2521,20 +2523,19 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 					$content .= '</tr>';
 					$content .= '</thead>';
 
-				if ( ! empty( $user_future_plans ) ) {
-
-					$user_all_plans = array_merge( $user_plans, $user_future_plans );
-				} else {
-					$user_all_plans = $user_plans;
-				}
+				$all_user_plans = $arm_subscription_plans->arm_member_memberships($user_id, $current_page, $per_page);
+                $membership_count = $all_user_plans['total'];
+                $user_all_plans = $all_user_plans['memberships'];
 
 				if ( ! empty( $user_all_plans ) ) {
 
 					$sr_no                = 0;
 					$change_plan_to_array = array();
 					foreach ( $user_all_plans as $user_plan ) {
-						$planData      = arm_get_user_meta( $user_id, 'arm_user_plan_' . $user_plan, true );
-						$curPlanDetail = $planData['arm_current_plan_detail'];
+						$sr_no++;
+						$planData      = arm_get_user_meta( $user_id, 'arm_user_plan_' . $user_plan['plan_id'], true );
+						$planData      = array_merge( $arm_subscription_plans->arm_default_plan_array(), ( ! empty( $planData ) && is_array( $planData ) ) ? $planData : array() );
+						$curPlanDetail = !empty($planData['arm_current_plan_detail']) ? $planData['arm_current_plan_detail'] : '';
 						$start_plan    = $planData['arm_start_plan'];
 						if ( ! empty( $planData['arm_started_plan_date'] ) && $planData['arm_started_plan_date'] <= $start_plan ) {
 							$start_plan = $planData['arm_started_plan_date'];
@@ -2542,11 +2543,6 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$expire_plan    = $planData['arm_expire_plan'];
 						$change_plan    = $planData['arm_change_plan_to'];
 						$effective_from = $planData['arm_subscr_effective'];
-
-						if ( $change_plan != '' && $effective_from != '' && ! empty( $effective_from ) && ! empty( $change_plan ) ) {
-							$change_plan_to_array[ $change_plan ] = $effective_from;
-
-						}
 
 						$payment_mode      = '';
 						$payment_cycle     = '';
@@ -2556,512 +2552,447 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$recurring_profile = '';
 						$next_due_date     = '-';
 						$user_payment_mode = '';
-						if ( ! empty( $curPlanDetail ) ) {
-							$plan_info = new ARM_Plan_Lite( 0 );
-							$plan_info->init( (object) $curPlanDetail );
-						} else {
-							$plan_info = new ARM_Plan_Lite( $user_plan );
-						}
+						
+						$curPlanDetail = !empty($planData['arm_current_plan_detail']) ? $planData['arm_current_plan_detail'] : '';
+                        if(empty($curPlanDetail['arm_user_old_payment_mode']) && is_array($curPlanDetail))
+                        {
+                            unset($curPlanDetail['arm_user_old_payment_mode']);
+                        }
+                        if (!empty($curPlanDetail)) {
+                            $plan_info = new ARM_Plan_Lite(0);
+                            $plan_info->init((object) $curPlanDetail);
+                        } else {
+                            $plan_info = new ARM_Plan_Lite($user_plan['plan_id']);
+                        }
 						$arm_plan_status = '<span class="arm_activated_plan">' . esc_html__( 'Active', 'armember-membership' ) . '</span>';
 						$arm_plan_is_suspended = '';
 						$suspended_plan_ids    = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
 						$suspended_plan_ids    = ( isset( $suspended_plan_ids ) && ! empty( $suspended_plan_ids ) ) ? $suspended_plan_ids : array();
 						if ( ! empty( $suspended_plan_ids ) ) {
-							if ( in_array( $user_plan, $suspended_plan_ids ) ) {
+							if ( in_array( $user_plan['plan_id'], $suspended_plan_ids ) ) {
 								// $arm_plan_is_suspended = '<br/><span style="color: red;">(' . esc_html__( 'Suspended', 'armember-membership' ) . ')</span>';
 								$arm_plan_status = '<span class="arm_suspended_plan">' . esc_html__( 'Suspended', 'armember-membership' ) . '</span>';
 							}
 						}
+						
+						$sr_no++;
+						$plan_options = $plan_info->options;
 
-						if ( $plan_info->exists() ) {
-							$sr_no++;
-							$plan_options = $plan_info->options;
+						if ( $plan_info->is_recurring() ) {
+							$completed              = $planData['arm_completed_recurring'];
+							$is_plan_cancelled      = $planData['arm_cencelled_plan'];
+							$payment_mode           = $planData['arm_payment_mode'];
+							$payment_cycle          = $planData['arm_payment_cycle'];
+							$recurring_plan_options = $plan_info->prepare_recurring_data( $payment_cycle );
+							$recurring_time         = $recurring_plan_options['rec_time'];
+							$next_due_date          = $planData['arm_next_due_payment'];
 
-							if ( $plan_info->is_recurring() ) {
-								$completed              = $planData['arm_completed_recurring'];
-								$is_plan_cancelled      = $planData['arm_cencelled_plan'];
-								$payment_mode           = $planData['arm_payment_mode'];
-								$payment_cycle          = $planData['arm_payment_cycle'];
-								$recurring_plan_options = $plan_info->prepare_recurring_data( $payment_cycle );
-								$recurring_time         = $recurring_plan_options['rec_time'];
-								$next_due_date          = $planData['arm_next_due_payment'];
-
-								if ( $payment_mode == 'auto_debit_subscription' ) {
-									$user_payment_mode = '<br/>( ' . esc_html__( 'Auto Debit', 'armember-membership' ) . ' )';
-								} else {
-									$user_payment_mode = '';
-								}
-								$arm_trial_start_date = $planData['arm_trial_start'];
-								$arm_is_user_in_trial = $planData['arm_is_trial_plan'];
-
-								if ( $recurring_time == 'infinite' || empty( $expire_plan ) ) {
-									$remaining_occurence = esc_html__( 'Never Expires', 'armember-membership' );
-								} else {
-									$remaining_occurence = $recurring_time - $completed;
-								}
-
-								if ( $remaining_occurence > 0 || $recurring_time == 'infinite' ) {
-									if ( ! empty( $next_due_date ) ) {
-										$next_due_date = date_i18n( $date_format, $next_due_date );
-									}
-								} else {
-									$next_due_date = '';
-								}
-
-								$arm_is_user_in_grace = $planData['arm_is_user_in_grace'];
-
-								$arm_grace_period_end = $planData['arm_grace_period_end'];
+							if ( $payment_mode == 'auto_debit_subscription' ) {
+								$user_payment_mode = '<br/>( ' . esc_html__( 'Auto Debit', 'armember-membership' ) . ' )';
 							} else {
-								$recurring_profile    = '-';
-								$arm_trial_start_date = '';
-								$remaining_occurence  = '-';
-								$arm_is_user_in_grace = 0;
-								$arm_grace_period_end = '';
-								$arm_is_user_in_trial = 0;
+								$user_payment_mode = '';
+							}
+							$arm_trial_start_date = $planData['arm_trial_start'];
+							$arm_is_user_in_trial = $planData['arm_is_trial_plan'];
 
+							if ( $recurring_time == 'infinite' || empty( $expire_plan ) ) {
+								$remaining_occurence = esc_html__( 'Never Expires', 'armember-membership' );
+							} else {
+								$remaining_occurence = $recurring_time - $completed;
 							}
 
-							$recurring_profile = $plan_info->new_user_plan_text( false, $payment_cycle );
-
-							$content .= "<tr class='arm_current_membership_list_item arm_current_membership_tr_" . esc_attr($user_plan) . " arm_shortcode_grid_list_item ".$arm_no_expand_cls."' id='arm_current_membership_tr_" . esc_attr($user_plan) . "' data-plan_id='". esc_attr($user_plan) ."' data-user_id='". esc_attr($user_id) ."'>";
-							if ($has_plan_expand):
-								$content .= "<td data-label='' class='arm_current_membership_list_item_expand arm_panel_grid_list_item_expand' id='arm_current_membership_list_item_expand_" . esc_attr($user_plan) . "' data-plan_id='".esc_attr($user_plan)."'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' class='__web-inspector-hide-shortcut__'><path d='M6 4L10 8L6 12' stroke='#576582' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/></svg></td>";
-							endif;
-							if ( $has_no ){
-
-								$content .= "<td data-label='".esc_attr($l_has_no)."' class='arm_current_membership_list_item_plan_sr' id='arm_current_membership_list_item_plan_sr_" . esc_attr($user_plan) . "' data-field_data='current_membership_no'>" . $sr_no . '</td>';
-							}
-							else{
-								$expand_cols_val['current_membership_is'] = $sr_no;
+							if ( $remaining_occurence > 0 || $recurring_time == 'infinite' ) {
+								if ( ! empty( $next_due_date ) ) {
+									$next_due_date = date_i18n( $date_format, $next_due_date );
+								}
+							} else {
+								$next_due_date = '';
 							}
 
-							if ( $has_plan ){
+							$arm_is_user_in_grace = $planData['arm_is_user_in_grace'];
 
-								$content .= "<td data-label='".esc_attr($l_has_plan)."' class='arm_current_membership_list_item_plan_name' id='arm_current_membership_list_item_plan_name_" . esc_attr($user_plan) . "' aria-label='".esc_html($plan_info->name)."' data-field_data='current_membership_is' data-field_data='current_membership_is'>" . wp_unslash( $plan_info->name ) . '</td>';
+							$arm_grace_period_end = $planData['arm_grace_period_end'];
+						} else {
+							$recurring_profile    = '-';
+							$arm_trial_start_date = '';
+							$remaining_occurence  = '-';
+							$arm_is_user_in_grace = 0;
+							$arm_grace_period_end = '';
+							$arm_is_user_in_trial = 0;
+
+						}
+
+						$recurring_profile = $plan_info->new_user_plan_text( false, $payment_cycle );
+
+						$content .= "<tr class='arm_current_membership_list_item arm_current_membership_tr_" . esc_attr($user_plan['plan_id']) . " arm_shortcode_grid_list_item ".$arm_no_expand_cls."' id='arm_current_membership_tr_" . esc_attr($user_plan['plan_id']) . "' data-plan_id='". esc_attr($user_plan['plan_id']) ."' data-user_id='". esc_attr($user_id) ."'>";
+						if ($has_plan_expand):
+							$content .= "<td data-label='' class='arm_current_membership_list_item_expand arm_panel_grid_list_item_expand' id='arm_current_membership_list_item_expand_" . esc_attr($user_plan['plan_id']) . "' data-plan_id='".esc_attr($user_plan['plan_id'])."'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' class='__web-inspector-hide-shortcut__'><path d='M6 4L10 8L6 12' stroke='#576582' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/></svg></td>";
+						endif;
+						if ( $has_no ){
+
+							$content .= "<td data-label='".esc_attr($l_has_no)."' class='arm_current_membership_list_item_plan_sr' id='arm_current_membership_list_item_plan_sr_" . esc_attr($user_plan['plan_id']) . "' data-field_data='current_membership_no'>" . $sr_no . '</td>';
+						}
+						else{
+							$expand_cols_val['current_membership_is'] = $sr_no;
+						}
+
+						if ( $has_plan ){
+
+							$content .= "<td data-label='".esc_attr($l_has_plan)."' class='arm_current_membership_list_item_plan_name' id='arm_current_membership_list_item_plan_name_" . esc_attr($user_plan['plan_id']) . "' aria-label='".esc_html($plan_info->name)."' data-field_data='current_membership_is' data-field_data='current_membership_is'>" . wp_unslash( $plan_info->name ) . '</td>';
+						}
+						else{
+							$expand_cols_val['current_membership_is'] = $plan_info->name;
+						}
+						if ( $has_recurring_profile ){
+							
+							$content .= "<td data-label='".esc_attr($l_recurring_profile)."' class='arm_current_membership_list_item_plan_profile' id='arm_current_membership_list_item_plan_profile_" . esc_attr($user_plan['plan_id']) . "' data-field_data='current_membership_recurring_profile' data-field_data='current_membership_recurring_profile'>";
+
+							$content .= $recurring_profile;
+
+							$content .= '</td>';
+						}
+						else{
+							$expand_cols_val['current_membership_recurring_profile'] = $recurring_profile;
+						}						
+						if ( $has_start_date ){
+							$arm_plan_start_date = date_i18n( $date_format, $planData['arm_start_plan'] );
+							$content .= "<td data-label='".esc_attr($l_start_date)."' class='arm_current_membership_list_item_plan_start' id='arm_current_membership_list_item_plan_start_" . esc_attr($user_plan['plan_id']) . "' aria-label='".esc_html($arm_plan_start_date)."' data-field_data='current_membership_started_on'>";
+							if ( ! empty( $user_plan['start_date'] ) ) {
+								$content .= $user_plan['start_date'];
 							}
-							else{
-								$expand_cols_val['current_membership_is'] = $plan_info->name;
+
+							if ( ! empty( $arm_trial_start_date ) ) {
+								if ( $arm_is_user_in_trial == 1 || $arm_is_user_in_trial == '1' ) {
+
+									if ( $arm_trial_start_date < $start_plan && !empty($atts['trial_active']) ) {
+										$content .= "<br/><span class='arm_current_membership_trial_active'>(" . $atts['trial_active'] . ')</span>';
+									}
+								}
 							}
-							if ( $has_recurring_profile ){
-								
-								$content .= "<td data-label='".esc_attr($l_recurring_profile)."' class='arm_current_membership_list_item_plan_profile' id='arm_current_membership_list_item_plan_profile_" . esc_attr($user_plan) . "' data-field_data='current_membership_recurring_profile' data-field_data='current_membership_recurring_profile'>";
-
-								$content .= $recurring_profile;
-
 								$content .= '</td>';
-							}
-							else{
-								$expand_cols_val['current_membership_recurring_profile'] = $recurring_profile;
-							}						
-							if ( $has_start_date ){
-								$arm_plan_start_date = date_i18n( $date_format, $planData['arm_start_plan'] );
-								$content .= "<td data-label='".esc_attr($l_start_date)."' class='arm_current_membership_list_item_plan_start' id='arm_current_membership_list_item_plan_start_" . esc_attr($user_plan) . "' aria-label='".esc_html($arm_plan_start_date)."' data-field_data='current_membership_started_on'>";
-								if ( ! empty( $start_plan ) ) {
-									$content .= $arm_plan_start_date;
-								}
+						}
+						else{
+							$arm_plan_start_date = $user_plan['start_date'];
+							$str_date = $arm_plan_start_date;
 
-								if ( ! empty( $arm_trial_start_date ) ) {
-									if ( $arm_is_user_in_trial == 1 || $arm_is_user_in_trial == '1' ) {
+							if ( ! empty( $arm_trial_start_date ) ) {
+								if ( $arm_is_user_in_trial == 1 || $arm_is_user_in_trial == '1' ) {
 
-										if ( $arm_trial_start_date < $start_plan && !empty($atts['trial_active']) ) {
-											$content .= "<br/><span class='arm_current_membership_trial_active'>(" . $atts['trial_active'] . ')</span>';
-										}
+									if ( $arm_trial_start_date < $start_plan && !empty($atts['trial_active']) ) {
+										$str_date .= "<br/><span class='arm_current_membership_trial_active'>(" . $atts['trial_active'] . ')</span>';
 									}
 								}
-								 $content .= '</td>';
-							}
-							else{
-								$arm_plan_start_date = date_i18n( $date_format, $planData['arm_start_plan'] );
-								$str_date = $arm_plan_start_date;
-
-								if ( ! empty( $arm_trial_start_date ) ) {
-									if ( $arm_is_user_in_trial == 1 || $arm_is_user_in_trial == '1' ) {
-
-										if ( $arm_trial_start_date < $start_plan && !empty($atts['trial_active']) ) {
-											$str_date .= "<br/><span class='arm_current_membership_trial_active'>(" . $atts['trial_active'] . ')</span>';
-										}
-									}
-								}
-
-								$expand_cols_val['current_membership_started_on'] = $str_date;
 							}
 
-							if ( $has_end_date ){
+							$expand_cols_val['current_membership_started_on'] = $str_date;
+						}
 
-								$arm_plan_end_date = date_i18n( $date_format, $planData['arm_expire_plan'] );		
-								$content .= "<td data-label='".esc_attr($l_end_date)."' class='arm_current_membership_list_item_plan_end' id='arm_current_membership_list_item_plan_end_" . esc_attr($user_plan) . "' aria-label='".esc_html($arm_plan_end_date)."' data-field_data='current_membership_expired_on'>";
+						if ( $has_end_date ){
 
-								if ( $plan_info->is_free() || $plan_info->is_lifetime() || ( $plan_info->is_recurring() && $recurring_time == 'infinite' ) ) {
-									$content .= esc_html__( 'Never Expires', 'armember-membership' );
-								} else {
+							$arm_plan_end_date = $user_plan['end_date'] ;
+							$content .= "<td data-label='".esc_attr($l_end_date)."' class='arm_current_membership_list_item_plan_end' id='arm_current_membership_list_item_plan_end_" . esc_attr($user_plan['plan_id']) . "' aria-label='".esc_html($arm_plan_end_date)."' data-field_data='current_membership_expired_on'>";
 
-									if ( isset( $plan_options['access_type'] ) && ! in_array( $plan_options['access_type'], array( 'infinite', 'lifetime' ) ) ) {
+							if ( $plan_info->is_free() || $plan_info->is_lifetime() || ( $plan_info->is_recurring() && $recurring_time == 'infinite' ) ) {
+								$content .= esc_html__( 'Never Expires', 'armember-membership' );
+							} else {
 
-										if ( ! empty( $arm_plan_end_date ) ) {
+								if ( isset( $plan_options['access_type'] ) && ! in_array( $plan_options['access_type'], array( 'infinite', 'lifetime' ) ) ) {
 
-											$membership_expire_content = $arm_plan_end_date;
+									if ( ! empty( $arm_plan_end_date ) ) {
 
-											$content .= $membership_expire_content;
-										} else {
-											$content .= '-';
-										}
+										$membership_expire_content = $arm_plan_end_date;
+
+										$content .= $membership_expire_content;
 									} else {
-
 										$content .= '-';
 									}
-								}
-								$content .= '</td>';
-							}
-							else{
-								$arm_plan_end_date = !empty($planData['arm_expire_plan']) ? date_i18n( $date_format, $planData['arm_expire_plan'] ) : esc_html__( 'Never Expires', 'armember-membership' );
-								$expand_cols_val['current_membership_expired_on'] = $arm_plan_end_date;
-							}
-							if ( $has_trial_period ){
-								$content .= "<td data-label='".esc_attr($l_trial_period)."' class='arm_current_membership_list_item_plan_trial_period' id='arm_current_membership_list_item_plan_trial_period_" . esc_attr($user_plan) . "' data-field_data='trial_period'>";
-								if ( ! empty( $arm_trial_start_date ) ) {
-									$content .= date_i18n( $date_format, $arm_trial_start_date );
-									$content .= ' ' . esc_html__( 'To', 'armember-membership' );
-									$content .= ' ' . date_i18n( $date_format, strtotime( '-1 day', $start_plan ) );
 								} else {
+
 									$content .= '-';
 								}
-
-								$content .= '</td>';
-							}else{
-								if ( ! empty( $arm_trial_start_date ) ) {
-									$arm_trial_start_date = date_i18n( $date_format, $arm_trial_start_date );
-								} else {
-									$arm_trial_start_date .= '-';
-								}
-								$expand_cols_val['trial_period'] = $arm_trial_start_date;
+							}
+							$content .= '</td>';
+						}
+						else{
+							$arm_plan_end_date = !empty($user_plan['end_date']) ? $user_plan['end_date'] : esc_html__( 'Never Expires', 'armember-membership' );
+							$expand_cols_val['current_membership_expired_on'] = $arm_plan_end_date;
+						}
+						if ( $has_trial_period ){
+							$content .= "<td data-label='".esc_attr($l_trial_period)."' class='arm_current_membership_list_item_plan_trial_period' id='arm_current_membership_list_item_plan_trial_period_" . esc_attr($user_plan['plan_id']) . "' data-field_data='trial_period'>";
+							if ( ! empty( $arm_trial_start_date ) ) {
+								$content .= date_i18n( $date_format, $arm_trial_start_date );
+								$content .= ' ' . esc_html__( 'To', 'armember-membership' );
+								$content .= ' ' . date_i18n( $date_format, strtotime( '-1 day', $start_plan ) );
+							} else {
+								$content .= '-';
 							}
 
-							if ( $has_remaining_occurence ){
-								$content .= "<td data-label='".esc_attr($l_renew_date)."' class='arm_current_membership_list_item_remaining_occurence' id='arm_current_membership_list_item_remaining_occurence_" . esc_attr($user_plan) . "' aria-label='".esc_html($user_plan['remaining_occurence'])."' data-field_data='current_membership_remaining_occurence'>";
-
-								$content .= $remaining_occurence;
-								$content .= '</td>';
+							$content .= '</td>';
+						}else{
+							if ( ! empty( $arm_trial_start_date ) ) {
+								$arm_trial_start_date = date_i18n( $date_format, $arm_trial_start_date );
+							} else {
+								$arm_trial_start_date .= '-';
 							}
-							else{
-								$expand_cols_val['current_membership_remaining_occurence'] = $remaining_occurence;
-							}
-							if ( $has_renew_date ){
-								$content .= "<td data-label='".esc_attr($l_renew_date)."' class='arm_current_membership_list_item_renew_date' id='arm_current_membership_list_item_renew_date_" . esc_attr($user_plan) . "' aria-label='".esc_html($next_due_date)."' data-field_data='current_membership_next_billing_date'>";
+							$expand_cols_val['trial_period'] = $arm_trial_start_date;
+						}
 
-								$content      .= $next_due_date;
-								$grace_message = '';
+						if ( $has_remaining_occurence ){
+							$content .= "<td data-label='".esc_attr($l_renew_date)."' class='arm_current_membership_list_item_remaining_occurence' id='arm_current_membership_list_item_remaining_occurence_" . esc_attr($user_plan['plan_id']) . "' aria-label='".esc_html($user_plan['remaining_occurence'])."' data-field_data='current_membership_remaining_occurence'>";
 
-								$next_cycle_due = '';
-								if ( $plan_info->is_recurring() ) {
+							$content .= $remaining_occurence;
+							$content .= '</td>';
+						}
+						else{
+							$expand_cols_val['current_membership_remaining_occurence'] = $remaining_occurence;
+						}
+						if ( $has_renew_date ){
+							$content .= "<td data-label='".esc_attr($l_renew_date)."' class='arm_current_membership_list_item_renew_date' id='arm_current_membership_list_item_renew_date_" . esc_attr($user_plan['plan_id']) . "' aria-label='".esc_html($next_due_date)."' data-field_data='current_membership_next_billing_date'>";
 
-									if ( ! empty( $expire_plan ) ) {
-										if ( $remaining_occurence == 0 ) {
-											$next_cycle_due = esc_html__( 'No cycles due', 'armember-membership' );
-										} else {
-											$next_cycle_due = '<br/>(' . $remaining_occurence . ' ' . esc_html__( 'cycles due', 'armember-membership' ) . ')';
-										}
-									}
+							$content      .= $next_due_date;
+							$grace_message = '';
 
-									if ( $arm_is_user_in_grace == '1' || $arm_is_user_in_grace == 1 ) {
-										$arm_grace_period_end = date_i18n( $date_format, $arm_grace_period_end );
-										$grace_message       .= '<br/>( ' . esc_html__( 'grace period expires on', 'armember-membership' ) . $arm_grace_period_end . ' )';
+							$next_cycle_due = '';
+							if ( $plan_info->is_recurring() ) {
 
-									}
-								}
-
-								$content .= $next_cycle_due . $grace_message . $user_payment_mode . '</td>';
-							}
-							else{
-								$grace_message = '';
-
-								$next_cycle_due = '';
-								if ( $plan_info->is_recurring() ) {
-
-									if ( ! empty( $expire_plan ) ) {
-										if ( $remaining_occurence == 0 ) {
-											$next_cycle_due = esc_html__( 'No cycles due', 'armember-membership' );
-										} else {
-											$next_cycle_due = '<br/>(' . $remaining_occurence . ' ' . esc_html__( 'cycles due', 'armember-membership' ) . ')';
-										}
-									}
-
-									if ( $arm_is_user_in_grace == '1' || $arm_is_user_in_grace == 1 ) {
-										$arm_grace_period_end = date_i18n( $date_format, $arm_grace_period_end );
-										$grace_message       .= '<br/>( ' . esc_html__( 'grace period expires on', 'armember-membership' ) . $arm_grace_period_end . ' )';
+								if ( ! empty( $expire_plan ) ) {
+									if ( $remaining_occurence == 0 ) {
+										$next_cycle_due = esc_html__( 'No cycles due', 'armember-membership' );
+									} else {
+										$next_cycle_due = '<br/>(' . $remaining_occurence . ' ' . esc_html__( 'cycles due', 'armember-membership' ) . ')';
 									}
 								}
-								$next_due_content = $next_due_date . $next_cycle_due . $grace_message . $user_payment_mode;
-                $expand_cols_val['current_membership_next_billing_date'] = $next_due_content;
-							}						
-							if ( $has_action_btn ) :
-								$arm_disable_button = '';
-								if ( $setup_id == '' || $setup_id == '0' ) {
+
+								if ( $arm_is_user_in_grace == '1' || $arm_is_user_in_grace == 1 ) {
+									$arm_grace_period_end = date_i18n( $date_format, $arm_grace_period_end );
+									$grace_message       .= '<br/>( ' . esc_html__( 'grace period expires on', 'armember-membership' ) . $arm_grace_period_end . ' )';
+
+								}
+							}
+
+							$content .= $next_cycle_due . $grace_message . $user_payment_mode . '</td>';
+						}
+						else{
+							$grace_message = '';
+
+							$next_cycle_due = '';
+							if ( $plan_info->is_recurring() ) {
+
+								if ( ! empty( $expire_plan ) ) {
+									if ( $remaining_occurence == 0 ) {
+										$next_cycle_due = esc_html__( 'No cycles due', 'armember-membership' );
+									} else {
+										$next_cycle_due = '<br/>(' . $remaining_occurence . ' ' . esc_html__( 'cycles due', 'armember-membership' ) . ')';
+									}
+								}
+
+								if ( $arm_is_user_in_grace == '1' || $arm_is_user_in_grace == 1 ) {
+									$arm_grace_period_end = date_i18n( $date_format, $arm_grace_period_end );
+									$grace_message       .= '<br/>( ' . esc_html__( 'grace period expires on', 'armember-membership' ) . $arm_grace_period_end . ' )';
+								}
+							}
+							$next_due_content = $next_due_date . $next_cycle_due . $grace_message . $user_payment_mode;
+							$expand_cols_val['current_membership_next_billing_date'] = $next_due_content;
+						}						
+						if ( $has_action_btn ) :
+							$arm_disable_button = '';
+							if ( $setup_id == '' || $setup_id == '0' ) {
+								$arm_disable_button = 'disabled';
+							} else {
+								$setup_data = $arm_membership_setup->arm_get_membership_setup( $setup_id );
+								if ( empty( $setup_data ) ) {
 									$arm_disable_button = 'disabled';
-								} else {
-									$setup_data = $arm_membership_setup->arm_get_membership_setup( $setup_id );
-									if ( empty( $setup_data ) ) {
-										$arm_disable_button = 'disabled';
-									}
 								}
+							}
 
-								if ( $display_cancel_button == 'true' || $display_renew_button == 'true' || $display_update_card_button == 'true' ) {
+							if ( $display_cancel_button == 'true' || $display_renew_button == 'true' || $display_update_card_button == 'true' ) {
 
-										$arm_is_plan_cancelled_cls = '';
-										if($is_plan_cancelled == 'yes'){
-											$arm_is_plan_cancelled_cls = 'is_plan_cancelled hidden_section';
+									$arm_is_plan_cancelled_cls = '';
+									if($is_plan_cancelled == 'yes'){
+										$arm_is_plan_cancelled_cls = 'is_plan_cancelled hidden_section';
+									}
+									$arm_crm_action_cls = (!empty($atts['arm_member_panel'])) ? 'arm_shortcode_action_container' : '';
+									$content .= "<td id='arm_cm_plan_action_btn_container' data-label='". esc_attr($l_action_btn) ."' class='arm_cm_plan_action_btn_container arm_current_membership_list_item_action_btn_" . esc_attr($user_plan['plan_id']) . " ".$arm_crm_action_cls."'>";
+									
+									$arm_action_content = '';
+
+								if ( ! in_array( $user_plan['plan_id'], $user_future_plans ) ) {
+									if ( $display_renew_button == 'true' && ! $plan_info->is_lifetime() && ! $plan_info->is_free() && $is_plan_cancelled != 'yes' ) {
+										if($has_plan_expand)
+										{
+											$make_payment_content = '<div class="arm_cm_renew_btn_div arm_tooltip" data-tooltip="'.$make_payment_text.'"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan['plan_id']) . '" ' . $arm_disable_button .'><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.0001 10C18.0001 14.4161 14.4161 18.0001 10 18.0001C5.58402 18.0001 2.888 13.5521 2.888 13.5521M2.888 13.5521H6.50402M2.888 13.5521V17.5521M2 10C2 5.58402 5.55202 2 10 2C15.3361 2 18.0001 6.44802 18.0001 6.44802M18.0001 6.44802V2.448M18.0001 6.44802H14.4481" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
 										}
-										$arm_crm_action_cls = (!empty($atts['arm_member_panel'])) ? 'arm_shortcode_action_container' : '';
-										$content .= "<td id='arm_cm_plan_action_btn_container' data-label='". esc_attr($l_action_btn) ."' class='arm_cm_plan_action_btn_container arm_current_membership_list_item_action_btn_" . esc_attr($user_plan) . " ".$arm_crm_action_cls."'>";
-										
-										$arm_action_content = '';
-
-									if ( ! in_array( $user_plan, $user_future_plans ) ) {
-										if ( $display_renew_button == 'true' && ! $plan_info->is_lifetime() && ! $plan_info->is_free() && $is_plan_cancelled != 'yes' ) {
+										else{
+											$make_payment_content = '<div class="arm_cm_renew_btn_div"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan['plan_id']) . '" ' . $arm_disable_button .'>'.$make_payment_text.'</button></div>';
+										}
+										if($user_plan['change_plan'] == '' || $effective_from == '' || empty($effective_from) || empty($user_plan['change_plan'])){
 											if($has_plan_expand)
 											{
-												$make_payment_content = '<div class="arm_cm_renew_btn_div arm_tooltip" data-tooltip="'.$make_payment_text.'"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan) . '" ' . $arm_disable_button .'><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.0001 10C18.0001 14.4161 14.4161 18.0001 10 18.0001C5.58402 18.0001 2.888 13.5521 2.888 13.5521M2.888 13.5521H6.50402M2.888 13.5521V17.5521M2 10C2 5.58402 5.55202 2 10 2C15.3361 2 18.0001 6.44802 18.0001 6.44802M18.0001 6.44802V2.448M18.0001 6.44802H14.4481" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
+												$renew_content = '<div class="arm_cm_renew_btn_div arm_tooltip" data-tooltip="'.$renew_text.'"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan['plan_id']) . '" ' . $arm_disable_button . '><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.0001 10C18.0001 14.4161 14.4161 18.0001 10 18.0001C5.58402 18.0001 2.888 13.5521 2.888 13.5521M2.888 13.5521H6.50402M2.888 13.5521V17.5521M2 10C2 5.58402 5.55202 2 10 2C15.3361 2 18.0001 6.44802 18.0001 6.44802M18.0001 6.44802V2.448M18.0001 6.44802H14.4481" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
 											}
 											else{
-												$make_payment_content = '<div class="arm_cm_renew_btn_div"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan) . '" ' . $arm_disable_button .'>'.$make_payment_text.'</button></div>';
+												$renew_content = '<div class="arm_cm_renew_btn_div"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan['plan_id']) . '" ' . $arm_disable_button . '>'.$renew_text.'</button></div>';
 											}
-											if ( $change_plan == '' || $effective_from == '' || empty( $effective_from ) || empty( $change_plan ) ) {
-												if($has_plan_expand)
-												{
-													$renew_content = '<div class="arm_cm_renew_btn_div arm_tooltip" data-tooltip="'.$renew_text.'"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan) . '" ' . $arm_disable_button . '><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.0001 10C18.0001 14.4161 14.4161 18.0001 10 18.0001C5.58402 18.0001 2.888 13.5521 2.888 13.5521M2.888 13.5521H6.50402M2.888 13.5521V17.5521M2 10C2 5.58402 5.55202 2 10 2C15.3361 2 18.0001 6.44802 18.0001 6.44802M18.0001 6.44802V2.448M18.0001 6.44802H14.4481" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
-												}
-												else{
-													$renew_content = '<div class="arm_cm_renew_btn_div"><button type="button" class= "arm_renew_subscription_button" data-plan_id="' . esc_attr($user_plan) . '" ' . $arm_disable_button . '>'.$renew_text.'</button></div>';
-												}
-											} else {
-												$renew_content = '';
-											}
-											if ( $is_plan_cancelled == 'yes' ) {
-												$renew_content = '';
-											}
-											if ( $plan_info->is_recurring() ) {
+										} else {
+											$renew_content = '';
+										}
+										if ( $is_plan_cancelled == 'yes' ) {
+											$renew_content = '';
+										}
+										if ( $plan_info->is_recurring() ) {
 
-												if ( $payment_mode == 'manual_subscription' ) {
-													if ( $recurring_time == 'infinite' ) {
+											if ( $payment_mode == 'manual_subscription' ) {
+												if ( $recurring_time == 'infinite' ) {
+													$arm_action_content .= $make_payment_content;
+												} else {
+													if ( $remaining_occurence > 0 ) {
 														$arm_action_content .= $make_payment_content;
 													} else {
-														if ( $remaining_occurence > 0 ) {
-															$arm_action_content .= $make_payment_content;
-														} else {
 
-															$now = current_time( 'mysql' );
+														$now = current_time( 'mysql' );
 
-															$arm_last_payment_status = $wpdb->get_var( $wpdb->prepare( 'SELECT `arm_transaction_status` FROM `'.$ARMemberLite->tbl_arm_payment_log.'` WHERE `arm_user_id`=%d AND `arm_plan_id`=%d AND `arm_created_date`<=%s ORDER BY `arm_log_id` DESC LIMIT 0,1', $user_id, $user_plan, $now ) );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
+														$arm_last_payment_status = $wpdb->get_var( $wpdb->prepare( 'SELECT `arm_transaction_status` FROM `'.$ARMemberLite->tbl_arm_payment_log.'` WHERE `arm_user_id`=%d AND `arm_plan_id`=%d AND `arm_created_date`<=%s ORDER BY `arm_log_id` DESC LIMIT 0,1', $user_id, $user_plan['plan_id'], $now ) );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
 
-															if ( $arm_last_payment_status == 'failed' ) {
+														if ( $arm_last_payment_status == 'failed' ) {
 
-																if ( ! empty( $expire_plan ) ) {
+															if ( ! empty( $expire_plan ) ) {
 
-																	if ( strtotime( $now ) < $expire_plan ) {
-																			$arm_action_content .= $make_payment_content;
-																	} else {
-																		$arm_action_content .= $renew_content;
-																	}
-																} else {
-																					$arm_action_content .= $make_payment_content;
-																}
-															} else {
-																 $arm_action_content .= $renew_content;
-															}
-														}
-													}
-												} else {
-													if ( $recurring_time != 'infinite' ) {
-														if ( $remaining_occurence == 0 ) {
-
-															$now = current_time( 'mysql' );
-
-															$arm_last_payment_status = $wpdb->get_var( $wpdb->prepare( 'SELECT `arm_transaction_status` FROM `'.$ARMemberLite->tbl_arm_payment_log.'` WHERE `arm_user_id`=%d AND `arm_plan_id`=%d AND `arm_created_date`<=%s ORDER BY `arm_log_id` DESC LIMIT 0,1', $user_id, $user_plan, $now ) );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
-
-															if ( $arm_last_payment_status == 'failed' ) {
-																if ( ! empty( $expire_plan ) ) {
-																	if ( strtotime( $now ) < $expire_plan ) {
-
+																if ( strtotime( $now ) < $expire_plan ) {
 																		$arm_action_content .= $make_payment_content;
-																	} else {
-																		$arm_action_content .= $renew_content;
-																	}
 																} else {
-																	$arm_action_content .= $make_payment_content;
+																	$arm_action_content .= $renew_content;
 																}
 															} else {
-																	  $arm_action_content .= $renew_content;
+																				$arm_action_content .= $make_payment_content;
 															}
+														} else {
+																$arm_action_content .= $renew_content;
 														}
 													}
 												}
 											} else {
-												$arm_action_content .= $renew_content;
-											}
-											if ( ( isset( $display_cancel_button ) && $display_cancel_button == 'true' ) && ( isset( $is_plan_cancelled ) && $is_plan_cancelled != 'yes' ) && ! $plan_info->is_recurring() ) {
-												if(!empty($atts['arm_member_panel'])){
-													$arm_action_content .= '<div class="arm_cm_cancel_btn_div arm_tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
-												}
-												else{
-													$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
-												}
-											}
-										}
-										
-										if($plan_info->is_lifetime() || $plan_info->is_free()) {
-											
-											if ( ( isset( $display_cancel_button ) && $display_cancel_button == 'true' ) && ( isset( $is_plan_cancelled ) && $is_plan_cancelled != 'yes' ) ) {
-												if(!empty($atts['arm_member_panel'])){
-													$arm_action_content .= '<div class="arm_cm_cancel_btn_div arm_tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
-												}
-												else{
-													$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
-												}
-											}
-										}
+												if ( $recurring_time != 'infinite' ) {
+													if ( $remaining_occurence == 0 ) {
 
-										if ( $plan_info->is_recurring() ) {
-											if ( $display_update_card_button == 'true' && $payment_mode == 'auto_debit_subscription' && $is_plan_cancelled != 'yes' ) {
-												if ( $planData['arm_user_gateway'] == 'paypal' ) {
-													$active_gateways = $arm_payment_gateways->arm_get_active_payment_gateways();
+														$now = current_time( 'mysql' );
 
-													$pg_options = $active_gateways[ $planData['arm_user_gateway'] ];
-													$sandbox    = ( isset( $pg_options['paypal_payment_mode'] ) && $pg_options['paypal_payment_mode'] == 'sandbox' ) ? true : false;
-													if ( $sandbox ) {
-														$paypal_url = 'https://www.sandbox.paypal.com/myaccount/wallet';
-													} else {
-														$paypal_url = 'https://www.paypal.com/myaccount/wallet';
+														$arm_last_payment_status = $wpdb->get_var( $wpdb->prepare( 'SELECT `arm_transaction_status` FROM `'.$ARMemberLite->tbl_arm_payment_log.'` WHERE `arm_user_id`=%d AND `arm_plan_id`=%d AND `arm_created_date`<=%s ORDER BY `arm_log_id` DESC LIMIT 0,1', $user_id, $user_plan['plan_id'], $now ) );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
+
+														if ( $arm_last_payment_status == 'failed' ) {
+															if ( ! empty( $expire_plan ) ) {
+																if ( strtotime( $now ) < $expire_plan ) {
+
+																	$arm_action_content .= $make_payment_content;
+																} else {
+																	$arm_action_content .= $renew_content;
+																}
+															} else {
+																$arm_action_content .= $make_payment_content;
+															}
+														} else {
+																	$arm_action_content .= $renew_content;
+														}
 													}
-													if(empty($atts['arm_member_panel'])){
-														$arm_action_content .= '<div class="arm_cm_update_btn_div"><a href="' . $paypal_url . '" target="_blank"><button type="button" class= "arm_update_card_button_style">' . $update_card_text . '</button></a></div>';
+												}
+											}
+										} else {
+											$arm_action_content .= $renew_content;
+										}
+										if ( ( isset( $display_cancel_button ) && $display_cancel_button == 'true' ) && ( isset( $is_plan_cancelled ) && $is_plan_cancelled != 'yes' ) && ! $plan_info->is_recurring() ) {
+											if(!empty($atts['arm_member_panel'])){
+												$arm_action_content .= '<div class="arm_cm_cancel_btn_div arm_tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan['plan_id']) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan['plan_id']) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan['plan_id']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan['plan_id']) . '" style="display: none;"/></div>'; //phpcs:ignore 
+											}
+											else{
+												$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan['plan_id']) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan['plan_id']) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan['plan_id']) . '">'.$cancel_text.'</button><img src="' . MEMBERSHIPLITE_IMAGES_URL . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan['plan_id']) . '" style="display: none;"/></div>'; //phpcs:ignore 
+											}
+										}
+									}
+									
+									if($plan_info->is_lifetime() || $plan_info->is_free()) {
+										
+										if ( ( isset( $display_cancel_button ) && $display_cancel_button == 'true' ) && ( isset( $is_plan_cancelled ) && $is_plan_cancelled != 'yes' ) ) {
+											if(!empty($atts['arm_member_panel'])){
+												$arm_action_content .= '<div class="arm_cm_cancel_btn_div arm_tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan['plan_id']) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan['plan_id']) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan['plan_id']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan['plan_id']) . '" style="display: none;"/></div>'; //phpcs:ignore 
+											}
+											else{
+												$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan['plan_id']) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan['plan_id']) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan['plan_id']) . '">'.$cancel_text.'</button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan['plan_id']) . '" style="display: none;"/></div>'; //phpcs:ignore 
+											}
+										}
+									}
+
+									if ( $plan_info->is_recurring() ) {
+										if ( $display_update_card_button == 'true' && $payment_mode == 'auto_debit_subscription' && $is_plan_cancelled != 'yes' ) {
+											if ( $planData['arm_user_gateway'] == 'paypal' ) {
+												$active_gateways = $arm_payment_gateways->arm_get_active_payment_gateways();
+
+												$pg_options = $active_gateways[ $planData['arm_user_gateway'] ];
+												$sandbox    = ( isset( $pg_options['paypal_payment_mode'] ) && $pg_options['paypal_payment_mode'] == 'sandbox' ) ? true : false;
+												if ( $sandbox ) {
+													$paypal_url = 'https://www.sandbox.paypal.com/myaccount/wallet';
+												} else {
+													$paypal_url = 'https://www.paypal.com/myaccount/wallet';
+												}
+												if(empty($atts['arm_member_panel'])){
+													$arm_action_content .= '<div class="arm_cm_update_btn_div"><a href="' . $paypal_url . '" target="_blank"><button type="button" class= "arm_update_card_button_style">' . $update_card_text . '</button></a></div>';
+												}
+												else{
+													$arm_action_content .= '<div class="arm_cm_update_btn_div arm_tooltip arm_margin_0" data-tooltip="' . $update_card_text . '"><a href="' . $paypal_url . '" target="_blank"><button type="button" class= "arm_update_card_button_style"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.3333 7.91663C18.3025 6.03996 18.1583 4.95579 17.4633 4.17746C17.322 4.01936 17.1673 3.87381 17.0008 3.74246C15.955 2.91663 14.3883 2.91663 11.255 2.91663H8.75332C5.61999 2.91663 4.05332 2.91663 3.00666 3.74163C2.84017 3.87324 2.68542 4.01907 2.54416 4.17746C1.66666 5.16079 1.66666 6.63579 1.66666 9.58329C1.66666 12.5308 1.66666 14.005 2.54416 14.9891C2.68527 15.1469 2.83943 15.2919 3.00666 15.4241C4.05332 16.25 5.61999 16.25 8.75332 16.25H9.16666" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.66666 7.08325H18.3333" stroke="#576582" stroke-width="1.5" stroke-linejoin="round"/><path d="M16.1108 10.4166L16.7975 11.0483C16.9467 11.195 17.0208 11.2683 16.995 11.3308C16.9692 11.3933 16.8625 11.3933 16.6517 11.3933H14.065C12.74 11.3933 11.6667 12.4483 11.6667 13.75C11.6667 14.0433 11.7217 14.325 11.8208 14.5833M13.8892 17.0833L13.2025 16.4516C13.0533 16.305 12.9792 16.2316 13.005 16.1691C13.0308 16.1066 13.1375 16.1066 13.3483 16.1066H15.935C17.26 16.1066 18.3333 15.0516 18.3333 13.75C18.3333 13.4566 18.2783 13.175 18.1792 12.9166" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></a></div>';
+												}
+											}
+											$arm_card_btn_default = '';
+											$arm_action_content             .= apply_filters( 'arm_get_gateways_update_card_detail_btn', $arm_card_btn_default, $planData, $user_plan['plan_id'], $update_card_text );
+										}
+										if ( $display_cancel_button == 'true' ) {
+
+											if ( $change_plan == '' || $effective_from == '' || empty( $effective_from ) || empty( $change_plan ) ) {
+
+												if ( isset( $is_plan_cancelled ) && $is_plan_cancelled == 'yes' ) {
+
+													$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan['plan_id']) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan['plan_id']) . '" class= "arm_cancel_subscription_button" data-plan_id = "' . esc_attr($user_plan['plan_id']) . '" style="cursor: default;" disabled="disabled">' . esc_html__( 'Cancelled', 'armember-membership' ) . '</button></div>';
+												} else {
+													if(!empty($atts['arm_member_panel'])){
+														$arm_action_content .= '<div class="arm_cm_cancel_btn_div arm_tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan['plan_id']) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan['plan_id']) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan['plan_id']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan['plan_id']) . '" style="display: none;"/></div>'; //phpcs:ignore 
 													}
 													else{
-														$arm_action_content .= '<div class="arm_cm_update_btn_div arm_tooltip arm_margin_0" data-tooltip="' . $update_card_text . '"><a href="' . $paypal_url . '" target="_blank"><button type="button" class= "arm_update_card_button_style"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M18.3333 7.91663C18.3025 6.03996 18.1583 4.95579 17.4633 4.17746C17.322 4.01936 17.1673 3.87381 17.0008 3.74246C15.955 2.91663 14.3883 2.91663 11.255 2.91663H8.75332C5.61999 2.91663 4.05332 2.91663 3.00666 3.74163C2.84017 3.87324 2.68542 4.01907 2.54416 4.17746C1.66666 5.16079 1.66666 6.63579 1.66666 9.58329C1.66666 12.5308 1.66666 14.005 2.54416 14.9891C2.68527 15.1469 2.83943 15.2919 3.00666 15.4241C4.05332 16.25 5.61999 16.25 8.75332 16.25H9.16666" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.66666 7.08325H18.3333" stroke="#576582" stroke-width="1.5" stroke-linejoin="round"/><path d="M16.1108 10.4166L16.7975 11.0483C16.9467 11.195 17.0208 11.2683 16.995 11.3308C16.9692 11.3933 16.8625 11.3933 16.6517 11.3933H14.065C12.74 11.3933 11.6667 12.4483 11.6667 13.75C11.6667 14.0433 11.7217 14.325 11.8208 14.5833M13.8892 17.0833L13.2025 16.4516C13.0533 16.305 12.9792 16.2316 13.005 16.1691C13.0308 16.1066 13.1375 16.1066 13.3483 16.1066H15.935C17.26 16.1066 18.3333 15.0516 18.3333 13.75C18.3333 13.4566 18.2783 13.175 18.1792 12.9166" stroke="#576582" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></a></div>';
-													}
-												}
-												$arm_card_btn_default = '';
-												$arm_action_content             .= apply_filters( 'arm_get_gateways_update_card_detail_btn', $arm_card_btn_default, $planData, $user_plan, $update_card_text );
-											}
-											if ( $display_cancel_button == 'true' ) {
-
-												if ( $change_plan == '' || $effective_from == '' || empty( $effective_from ) || empty( $change_plan ) ) {
-
-													if ( isset( $is_plan_cancelled ) && $is_plan_cancelled == 'yes' ) {
-
-														$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button" data-plan_id = "' . esc_attr($user_plan) . '" style="cursor: default;" disabled="disabled">' . esc_html__( 'Cancelled', 'armember-membership' ) . '</button></div>';
-													} else {
-														if(!empty($atts['arm_member_panel'])){
-															$arm_action_content .= '<div class="arm_cm_cancel_btn_div arm_tooltip" data-tooltip="'.$cancel_text.'" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16 4.00005L4.00005 16M4 4L16 16" stroke="#576582" stroke-width="1.5" stroke-linecap="round"/></svg></button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
-														}
-														else{
-															$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan) . '">'.$cancel_text.'</button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan) . '" style="display: none;"/></div>'; //phpcs:ignore 
-														}
+														$arm_action_content .= '<div class="arm_cm_cancel_btn_div" id="arm_cm_cancel_btn_div_' . esc_attr($user_plan['plan_id']) . '"><button type="button" id="arm_cancel_subscription_link_' . esc_attr($user_plan['plan_id']) . '" class= "arm_cancel_subscription_button arm_cancel_membership_link" data-plan_id = "' . esc_attr($user_plan['plan_id']) . '">'.$cancel_text.'</button><img src="' . esc_attr(MEMBERSHIPLITE_IMAGES_URL) . '/arm_loader.gif" id="arm_field_loader_img_' . esc_attr($user_plan['plan_id']) . '" style="display: none;"/></div>'; //phpcs:ignore 
 													}
 												}
 											}
 										}
 									}
-									if(!empty($atts['arm_member_panel']) && !empty($arm_action_content)){
-                                    $content .= "<div id='arm_cm_plan_action_btn' class='arm_shortcode_grid_action_container'><div class='arm_current_membership_action_div arm_shortcode_grid_action_div ".$arm_is_plan_cancelled_cls."'>";
-                                    $content .= $arm_action_content;
-                                    $content .= '</div>';
-                                }
-                                else{
-                                    $content .= $arm_action_content;
-                                }
-                                $content .= '</div></td>';
 								}
+								if(!empty($atts['arm_member_panel']) && !empty($arm_action_content)){
+								$content .= "<div id='arm_cm_plan_action_btn' class='arm_shortcode_grid_action_container'><div class='arm_current_membership_action_div arm_shortcode_grid_action_div ".$arm_is_plan_cancelled_cls."'>";
+								$content .= $arm_action_content;
+								$content .= '</div>';
+							}
+							else{
+								$content .= $arm_action_content;
+							}
+							$content .= '</div></td>';
+							}
 
-							endif;
-							
+						endif;
+						
+						$content .= '</tr>';
+					
+						if(!empty($atts['arm_member_panel']) && !empty($expand_cols_lbl) && count($expand_cols_lbl) > 0){
+							$content .= '<tr class="arm_membership_expand_data" style="display: none;">';
+								$content .= '<td></td>';
+								$content .= '<td colspan="4">';
+									$content .= '<div class="arm_expand_grid_section">';
+										foreach($expand_cols_lbl as $key => $lbl){									
+											$content .= '<div class="arm_expand_grid_col">
+												<div class="arm_expand_grid_col_label">'.$lbl.'</div>
+												<div class="arm_expand_grid_col_val">'.$expand_cols_val[$key].'</div>
+											</div>';
+										}
+									$content .= '</div>';
+								$content .= '</td>';
 							$content .= '</tr>';
 						}
 					}
 
-					if(!empty($atts['arm_member_panel']) && !empty($expand_cols_lbl) && count($expand_cols_lbl) > 0){
-						$content .= '<tr class="arm_membership_expand_data" style="display: none;">';
-							$content .= '<td></td>';
-							$content .= '<td colspan="4">';
-								$content .= '<div class="arm_expand_grid_section">';
-									foreach($expand_cols_lbl as $key => $lbl){									
-										$content .= '<div class="arm_expand_grid_col">
-											<div class="arm_expand_grid_col_label">'.$lbl.'</div>
-											<div class="arm_expand_grid_col_val">'.$expand_cols_val[$key].'</div>
-										</div>';
-									}
-								$content .= '</div>';
-							$content .= '</td>';
-						$content .= '</tr>';
-					}
-
-					if ( ! empty( $change_plan_to_array ) ) {
-						foreach ( $change_plan_to_array as $change_user_plan => $effective_from_date ) {
-
-							if ( ! empty( $change_user_plan ) && ! empty( $effective_from_date ) ) {
-
-								$change_plan_info = new ARM_Plan_Lite( $change_user_plan );
-
-								if ( $change_plan_info->exists() ) {
-									$sr_no++;
-
-									$content .= "<tr class='arm_current_membership_list_item' id='arm_current_membership_tr_" . esc_attr($change_user_plan) . "'>";
-
-									if ( $has_no ) :
-										$content .= "<td data-label='".esc_attr($l_has_no)."' class='arm_current_membership_list_item_plan_sr' id='arm_current_membership_list_item_plan_sr_" . esc_attr($change_user_plan) . "'>" . $sr_no . '</td>';
-								endif;
-
-									if ( $has_plan ) :
-										$content .= "<td data-label='".esc_attr($l_has_plan)."' class='arm_current_membership_list_item_plan_name' id='arm_current_membership_list_item_plan_name_" . esc_attr($change_user_plan) . "'>" . wp_unslash( $change_plan_info->name ) . '</td>';
-								endif;
-									if ( $has_recurring_profile ) :
-										$content          .= "<td data-label='".esc_attr($l_recurring_profile)."' class='arm_current_membership_list_item_plan_profile' id='arm_current_membership_list_item_plan_profile_" . esc_attr($change_user_plan) . "'>";
-										$recurring_profile = $change_plan_info->new_user_plan_text( false, '' );
-
-										$content .= $recurring_profile . '</td>';
-								endif;
-									if ( $has_start_date ) :
-
-										$content .= "<td data-label='".esc_attr($l_start_date)."' class='arm_current_membership_list_item_plan_start' id='arm_current_membership_list_item_plan_start_" . esc_attr($change_user_plan) . "'>";
-										if ( ! empty( $effective_from_date ) ) {
-											$content .= date_i18n( $date_format, $effective_from_date );
-										}
-
-										 $content .= '</td>';
-
-								endif;
-									if ( $has_end_date ) :
-										$content .= "<td data-label='".esc_attr($l_end_date)."' class='arm_current_membership_list_item_plan_end' id='arm_current_membership_list_item_plan_end_" . esc_attr($change_user_plan) . "'>";
-
-										$content .= '</td>';
-								endif;
-									if ( $has_trial_period ) :
-										$content .= "<td data-label='".esc_attr($l_trial_period)."' class='arm_current_membership_list_item_plan_trial_period' id='arm_current_membership_list_item_plan_trial_period_" . esc_attr($change_user_plan) . "'>";
-
-										$content .= '</td>';
-								endif;
-
-									if ( $has_remaining_occurence ) :
-										$content .= "<td data-label='".esc_attr($l_renew_date)."' class='arm_current_membership_list_item_remaining_occurence' id='arm_current_membership_list_item_remaining_occurence_" . esc_attr($change_user_plan) . "'>";
-
-										$content .= '</td>';
-								endif;
-									if ( $has_renew_date ) :
-										$content .= "<td data-label='".esc_attr($l_renew_date)."' class='arm_current_membership_list_item_renew_date' id='arm_current_membership_list_item_renew_date_" . esc_attr($change_user_plan) . "'>";
-
-										$content .= '</td>';
-								endif;
-									if ( $has_action_btn ) :
-
-										if ( $display_cancel_button == 'true' || $display_renew_button == 'true' || $display_update_card_button == 'true' ) {
-											$content .= "<td id='arm_cm_plan_action_btn' data-label='".esc_attr($l_action_btn)."' class='arm_current_membership_list_item_action_btn_" . esc_attr($change_user_plan) . " arm_shortcode_action_container'>";
-											$content .= '</td>';
-										}
-
-								endif;
-									$content .= '</tr>';
-								}
-							}
-						}
-					}
 				} else {
 
 					if(!empty($atts['arm_member_panel']))
@@ -3179,9 +3110,9 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						if ( ! empty( $stop_future_plan_ids ) && is_array( $stop_future_plan_ids ) ) {
 							foreach ( $stop_future_plan_ids as $stop_future_plan_id ) {
 								$arm_subscription_plans->arm_add_membership_history( $user->ID, $stop_future_plan_id, 'cancel_subscription', array(), 'terminate' );
-								delete_user_meta( $user->ID, 'arm_user_plan_' . $stop_future_plan_id );
+								arm_delete_user_meta( $user->ID, 'arm_user_plan_' . $stop_future_plan_id );
 							}
-							delete_user_meta( $user->ID, 'arm_user_future_plan_ids' );
+							arm_delete_user_meta( $user->ID, 'arm_user_future_plan_ids' );
 						}
 
 						if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {

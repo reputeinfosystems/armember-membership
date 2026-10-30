@@ -879,8 +879,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 						$arm_installments_text = '';
 						// if($planData['arm_payment_mode'] == 'manual_subscription'){
 						$done_payments = $planData['arm_completed_recurring'];
-						if ( $total_payments > 0 && $done_payments >= 0 ) {
-							$arm_installments = $total_payments - $done_payments;
+						/* rec_time is 'infinite' for plans without a cycle limit: no cycles due count. */
+						if ( is_numeric( $total_payments ) && $total_payments > 0 && $done_payments >= 0 ) {
+							$arm_installments = (int) $total_payments - (int) $done_payments;
 							if ( ! empty( $planData['arm_expire_plan'] ) ) {
 
 								if ( $arm_installments == 0 ) {
@@ -999,7 +1000,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 						}
 					}
 				}
-				delete_user_meta( $id, 'arm_user_suspended_plan_ids', true );
+				arm_delete_user_meta( $id, 'arm_user_suspended_plan_ids', true );
 				delete_user_meta( $id, 'arm_changed_expiry_date_plans', true );
 			}
 		}
@@ -2511,11 +2512,10 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 												global $wpdb;
 												if ( $update ) {
 													$user_id = wp_update_user( $user_main_data );
-													$wpdb->query( $wpdb->prepare('UPDATE ' . $wpdb->users . " set `user_pass`='".$user_main_data['user_pass']."' where `ID`=%d" , $user_id) );//phpcs:ignore --Reason: $wpdb->users is a table name
+													$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->users} SET `user_pass` = %s WHERE `ID` = %d", $user_main_data['user_pass'], $user_id ) );//phpcs:ignore --Reason: $wpdb->users is a table name
 												} else {
 													$user_id = wp_insert_user( $user_main_data );
-
-													$wpdb->query(  $wpdb->prepare('UPDATE ' . $wpdb->users . " set `user_pass`='".$user_main_data['user_pass']."' where `ID`=%d" , $user_id) );//phpcs:ignore --Reason: $wpdb->users is a table name
+													$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->users} SET `user_pass` = %s WHERE `ID` = %d", $user_main_data['user_pass'], $user_id ) ); //phpcs:ignore --Reason: $wpdb->users is a table name
 												}
 											}
 										}
@@ -3571,9 +3571,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					if ( ! empty( $stop_future_plan_ids ) && is_array( $stop_future_plan_ids ) ) {
 						foreach ( $stop_future_plan_ids as $stop_future_plan_id ) {
 							$arm_subscription_plans->arm_add_membership_history( $user_id, $stop_future_plan_id, 'cancel_subscription', array(), 'terminate' );
-							delete_user_meta( $user_id, 'arm_user_plan_' . $stop_future_plan_id );
+							arm_delete_user_meta( $user_id, 'arm_user_plan_' . $stop_future_plan_id );
 						}
-						delete_user_meta( $user_id, 'arm_user_future_plan_ids' );
+						arm_delete_user_meta( $user_id, 'arm_user_future_plan_ids' );
 					}
 
 					if ( ! empty( $stop_plan_ids ) && is_array( $stop_plan_ids ) ) {
@@ -4099,11 +4099,12 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 										$total_payments = isset( $planRecurringData['rec_time'] ) ? $planRecurringData['rec_time'] : '';
 										$done_payments  = isset( $planData['arm_completed_recurring'] ) ? $planData['arm_completed_recurring'] : '';
 
-										if ( isset( $planRecurringData['rec_time'] ) && isset( $planData['arm_completed_recurring'] ) ) {
+										/* rec_time is 'infinite' for plans without a cycle limit: no cycles due count. */
+										if ( isset( $planRecurringData['rec_time'] ) && isset( $planData['arm_completed_recurring'] ) && is_numeric( $total_payments ) ) {
 											if ( ! empty( $planData['arm_expire_plan'] ) ) {
-												if ( $total_payments - $done_payments > 0 ) {
+												if ( (int) $total_payments - (int) $done_payments > 0 ) {
 
-													$arm_installments_text = ( $total_payments - $done_payments ) . ' / ' . $total_payments . ' ' . esc_html__( 'cycles due', 'armember-membership' );
+													$arm_installments_text = ( (int) $total_payments - (int) $done_payments ) . ' / ' . $total_payments . ' ' . esc_html__( 'cycles due', 'armember-membership' );
 												} else {
 													$arm_installments_text = esc_html__( 'No cycles due', 'armember-membership' );
 												}
@@ -5766,6 +5767,13 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
                                             }
                                         }
                                     }
+            if (! empty($suspended_plan_ids) && is_array($suspended_plan_ids)) {
+                foreach ($suspended_plan_ids as $sp_id) {
+                    if (empty($planIDs) || ! in_array($sp_id, $planIDs)) {
+                        $response_plans_data .= '<input type="hidden" name="arm_user_suspended_plan[]" value="'. esc_attr($sp_id).'" id="arm_user_suspended_plan_'. esc_attr($sp_id).'"/>';
+                    }
+                }
+            }
             $response_plans_data .= '</table>
 
                         </div>

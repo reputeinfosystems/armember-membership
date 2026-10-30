@@ -641,7 +641,7 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 									} else {
 										$cron_msgs[ $usr->ID ] = esc_html__( 'Email sent successfully to', 'armember-membership' ) . ' ' . $usr->ID . ' ' . esc_html__( 'for the trial period has finished', 'armember-membership' ) . "({$plan_name})";
 									}
-									do_action('arm_general_log_entry', 'cron', 'trial finished email check email', 'armember', 'user_id='.$usr->ID.', plan='.$plan_id.', expireTime='.$expireTime.', msg='.$cron_msgs[$usr->ID]);
+									do_action('arm_general_log_entry', 'cron', 'trial finished email check email', 'armember', 'user_id='.$usr->ID.', plan='.$plan_id.', expireTime='.$expireTime.', msg='.( isset( $cron_msgs[ $usr->ID ] ) ? $cron_msgs[ $usr->ID ] : '' ));
 								}
 							}
 						}
@@ -834,7 +834,7 @@ if ( ! class_exists( 'ARM_crons_Lite' ) ) {
 				'arm_handle_trial_finished',
 				'arm_handle_failed_login_log_data_delete',
 			);
-			$cron_array[] = 'armember_lite_send_anonymous_data_cron_func';
+			$cron_array[] = 'armember_lite_send_anonymous_data_cron';
 
 			$cron_array = apply_filters( 'arm_filter_cron_hook_name_outside', $cron_array );
 

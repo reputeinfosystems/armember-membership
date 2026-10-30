@@ -605,6 +605,18 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 											if ( $arm_expected_plan->is_recurring() ) {
 												$arm_rec_data        = $arm_expected_plan->prepare_recurring_data( $payment_cycle );
 												$arm_expected_amount = isset( $arm_rec_data['amount'] ) ? $arm_rec_data['amount'] : 0;
+												if ( ! empty( $arm_rec_data['trial'] ) && isset( $arm_rec_data['trial']['amount'] ) ) {
+													$arm_is_trial_payment = false;
+													if ( $txn_type == 'web_accept' ) {
+														$arm_is_trial_payment = empty( $arm_user_old_plan );
+													} elseif ( ! empty( $arm_token ) && ! in_array( $entry_plan, $arm_user_old_plan ) ) {
+														$arm_subscr_paid_logs = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(`arm_log_id`) FROM `' . $ARMemberLite->tbl_arm_payment_log . "` WHERE `arm_token`=%s AND `arm_payment_gateway`=%s AND `arm_transaction_id` NOT IN (%s,%s)", $arm_token, 'paypal', $arm_token . '_trial', $txn_id ) ); //phpcs:ignore --Reason $ARMemberLite->tbl_arm_payment_log is a table name
+														$arm_is_trial_payment = empty( $arm_subscr_paid_logs );
+													}
+													if ( $arm_is_trial_payment ) {
+														$arm_expected_amount = $arm_rec_data['trial']['amount'];
+													}
+												}
 											} else {
 												$arm_expected_amount = $arm_expected_plan->amount;
 											}

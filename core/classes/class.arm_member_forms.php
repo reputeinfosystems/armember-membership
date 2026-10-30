@@ -7149,7 +7149,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 
 									do_action( 'arm_before_update_user_subscription', $user_ID, $new_plan );
 									$user->remove_cap( 'armember_access_plan_' . $old_plan );
-									delete_user_meta( $user_ID, 'arm_user_plan_' . $old_plan );
+									arm_delete_user_meta( $user_ID, 'arm_user_plan_' . $old_plan );
 								if ( $payment_gateway != 'bank_transfer' ) {
 									arm_update_user_meta( $user_ID, 'arm_user_plan_ids', array( $new_plan ) );
 									arm_update_user_meta( $user_ID, 'arm_user_last_plan', $new_plan );
@@ -7179,7 +7179,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 									if ( $user->has_cap( "armember_access_plan_{$opid}" ) ) {
 										$user->remove_cap( "armember_access_plan_{$opid}" );
 									}
-									delete_user_meta( $user_ID, 'arm_user_plan_' . $opid );
+									arm_delete_user_meta( $user_ID, 'arm_user_plan_' . $opid );
 								}
 								$plan_id_role_array = $arm_subscription_plans->arm_get_plan_role_by_id( $old_plan_ids );
 								if ( ! empty( $plan_id_role_array ) && is_array( $plan_id_role_array ) ) {
@@ -7193,7 +7193,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 									}
 								}
 							}
-							delete_user_meta( $user_ID, 'arm_user_plan_ids' );
+							arm_delete_user_meta( $user_ID, 'arm_user_plan_ids' );
 							delete_user_meta( $user_ID, 'arm_user_last_plan' );
 						}
 
@@ -7242,7 +7242,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							$diff_future_plans = array_diff( $future_user_plan_ids, $val );
 							if ( ! empty( $diff_future_plans ) ) {
 								foreach ( $diff_future_plans as $diff_fp ) {
-									delete_user_meta( $user_ID, 'arm_user_plan_' . $diff_fp );
+									arm_delete_user_meta( $user_ID, 'arm_user_plan_' . $diff_fp );
 								}
 							}
 						}

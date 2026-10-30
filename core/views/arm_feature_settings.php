@@ -20,6 +20,7 @@ $arm_pay_per_post            = 0;
 $arm_admin_mycred_feature    = 0;
 $plan_limit_feature 	     = 0;
 $arm_api_service_feature     = 0;
+$arm_cancellation_feedback_feature = 0;
 $gutenberg_block_restriction_feature = get_option('arm_is_gutenberg_block_restriction_feature');
 $beaver_builder_restriction_feature = get_option('arm_is_beaver_builder_restriction_feature');
 $divi_builder_restriction_feature = get_option('arm_is_divi_builder_restriction_feature');
@@ -42,6 +43,7 @@ if($ARMemberLite->is_arm_pro_active){
 	$woocommerce_feature = get_option('arm_is_woocommerce_feature');
 	$arm_pay_per_post = get_option('arm_is_pay_per_post_feature');
 	$arm_api_service_feature = get_option('arm_is_api_service_feature');
+	$arm_cancellation_feedback_feature = get_option('arm_is_cancellation_feedback_feature');
 	$plan_limit_feature = get_option('arm_is_plan_limit_feature');
 }
 
@@ -427,6 +429,32 @@ if ( is_rtl() ) {
 						<?php }?>
 					</div>
 						<a class="arm_ref_info_links arm_feature_link arm_advanced_link" target="_blank" href="https://www.armemberplugin.com/documents/paid-membership-plan-payment-process/"><?php esc_html_e( 'More Info', 'armember-membership' ); ?></a>
+				</div>
+				<div class="arm_feature_list cancellation_feedback_enable <?php echo ( $arm_cancellation_feedback_feature == 1 ) ? 'active' : ''; ?>">
+					<div class="arm_feature_icon"></div>
+					<div class="arm_feature_active_icon"><div class="arm_check_mark"></div></div>
+					<div class="arm_feature_content">
+						<div class="arm_feature_title"><?php esc_html_e( 'Cancellation Feedback', 'armember-membership' ); ?></div>
+						<div class="arm_feature_text"><?php esc_html_e( 'Ask members why they are cancelling their membership and collect their feedback before the cancellation is completed.', 'armember-membership' ); ?></div>
+						<?php if($ARMemberLite->is_arm_pro_active) {
+							$arm_addon_btn = '';
+							$arm_addon_config_url = admin_url('admin.php?page=arm_general_settings#arm_cancellation_feedback_sec');
+							echo apply_filters('arm_addon_activate_button_section',$arm_addon_btn,'cancellation_feedback',array(),$arm_addon_config_url); //phpcs:ignore
+						}
+						else
+						{ ?>
+						<div class="arm_feature_button_activate_wrapper <?php echo ( $arm_cancellation_feedback_feature == 1 ) ? 'hidden_section' : ''; ?>">
+							<a href="javascript:void(0)" class="arm_feature_activate_btn arm_feature_settings_switch <?php echo esc_attr($arm_is_pro_switch_class);?>" data-feature_val="1" data-feature="cancellation_feedback"><?php esc_html_e( 'Upgrade Pro', 'armember-membership' ); ?></a>
+				
+							<span class="arm_addon_loader">
+                            <svg class="arm_circular" viewBox="0 0 60 60">
+                                <circle class="path" cx="25px" cy="23px" r="18" fill="none" stroke-width="4" stroke-miterlimit="7"></circle>
+                            </svg>
+                        </span>
+						</div>
+						<?php }?>
+					</div>
+						<a class="arm_ref_info_links arm_feature_link arm_advanced_link" target="_blank" href="https://www.armemberplugin.com/documents/cancellation-feedback/"><?php esc_html_e( 'More Info', 'armember-membership' ); ?></a>
 				</div>
 				<div class="arm_feature_list api_service_enable <?php echo ( $arm_api_service_feature == 1 ) ? 'active' : ''; ?>">
 					<div class="arm_feature_icon"></div>

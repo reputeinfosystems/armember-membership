@@ -1409,6 +1409,9 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 					$entry_data['arm_entry_value'] = arm_maybe_unserialize( $entry_data['arm_entry_value'] );
 				}
 			}
+
+			do_action( 'arm_after_get_entry_data_by_id', $entry_data, $entry_id );
+			
 			return $entry_data;
 		}
 

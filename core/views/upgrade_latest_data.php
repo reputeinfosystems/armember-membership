@@ -974,7 +974,20 @@ if(version_compare($arm_lite_newdbversion,'6.1','<')){
 
 }
 
-$arm_lite_newdbversion = '6.1';
+if ( version_compare( $arm_lite_newdbversion, '6.2', '<' ) ) {
+	global $wpdb, $ARMemberLite, $arm_member_subscriptions;
+	if ( is_object( $arm_member_subscriptions ) && $arm_member_subscriptions->arm_create_subscription_tables() ) {
+		$arm_member_subscriptions->arm_init_subscription_migration();
+
+		$armember_check_db_permission = $ARMemberLite->armember_check_db_permission();
+		if(!empty($armember_check_db_permission))
+		{
+			$arm_member_subscriptions->arm_add_subscription_tables_index();
+		}
+	}
+}
+
+$arm_lite_newdbversion = '6.2';
 update_option( 'arm_lite_new_version_installed', 1 );
 update_option( 'armlite_version', $arm_lite_newdbversion );
 

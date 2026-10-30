@@ -40,7 +40,7 @@ if (!class_exists('ARM_setup_Wizard_Lite')) {
                 $all_member_panel_settings = array();
             }
             $payment_gateways = get_option('arm_payment_gateway_settings');
-            $general_settings['restrict_site_access'] = !empty($posted_data['arm_restrict_entire_website']) ? inval($posted_data['arm_restrict_entire_website']) : '';
+            $general_settings['restrict_site_access'] = !empty($posted_data['arm_restrict_entire_website']) ? intval($posted_data['arm_restrict_entire_website']) : '';
             $default_rules['arm_allow_content_listing'] = !empty($posted_data['arm_post_page_listing']) ? $posted_data['arm_post_page_listing'] : '';
             $general_settings['user_register_verification'] = $posted_data['user_register_verification'];
             $general_settings['arm_new_signup_status'] = ($posted_data['user_register_verification'] != 'auto') ? 3 : 1;

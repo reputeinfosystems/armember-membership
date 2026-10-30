@@ -1891,6 +1891,30 @@ if ( ! class_exists( 'ARM_restriction_Lite' ) ) {
                 $response_custom_array['type'] = !empty( $response->type ) ? $response->type : '';
                 $response_custom_array['guid'] = !empty( $response->guid ) ? $response->guid : '';
             }
+
+            if ( empty( $response_custom_array['id'] ) ) {
+				$response_custom_array['id'] = intval( $request->get_param( 'id' ) );
+			}
+
+			if( empty( $response_custom_array['type'] ) && !empty( $response_custom_array['id'] ) ){
+				$response_custom_array['type'] = get_post_type( $response_custom_array['id'] );
+			}
+
+			if( empty( $response_custom_array['guid'] ) && !empty( $response_custom_array['id'] )  && !empty( $response_custom_array['type'] ) ){
+                $rendered_url_arg = "p";
+				if( $response_custom_array['type'] == "page"){
+                    $rendered_url_arg = "page_id";                   
+                }
+
+                $rendered_url = add_query_arg( $rendered_url_arg, $response_custom_array['id'], home_url( '/' ) );
+
+                $response_custom_array['guid'] = array(
+                    'rendered' => $rendered_url
+                );
+
+	    }
+
+
             if( !empty( $response_custom_array['id'] ) && !empty( $response_custom_array['type'] ) && !empty( $response_custom_array['guid'] ) )
 			{
 				global $post, $arm_restriction;
