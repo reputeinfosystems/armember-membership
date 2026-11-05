@@ -170,7 +170,7 @@ if(!$ARMemberLite->is_arm_pro_active)
 				armBpopup('arm_black_friday_bpopup');
 			});
 			jQuery(document).on('click','.popup_wrapper.arm_black_friday_bpopup .popup_content_text',function(){
-				window.location.replace("https://www.armemberplugin.com/pricing/?utm_source=springsale_liteversionpopup&utm_medium=liteversion&utm_campaign=springsale");
+				window.open('https://www.armemberplugin.com/pricing/?utm_source=liteversion&utm_medium=plugin&utm_campaign=bf-popup', '_blank');
 			});
 		</script>
 	<?php

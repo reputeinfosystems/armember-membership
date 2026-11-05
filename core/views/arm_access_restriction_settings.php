@@ -105,12 +105,22 @@ $all_roles         = $arm_global_settings->arm_get_all_roles();
 						</div>
 							<select name="arm_default_rules[<?php echo esc_attr($rtype); ?>][]" class="arm_default_rule_select arm_chosen_selectbox " multiple data-placeholder="<?php esc_html_e('Select Plan', 'armember-membership'); ?>" tabindex="-1">
 								<?php
-								if (!empty($all_plans_data) && !empty($default_rules)) {
-									$default_rules[$rtype] = !empty($default_rules[$rtype]) ? $default_rules[$rtype] : array();
-									foreach ($all_plans_data as $plan) {
-										if ($plan['arm_subscription_plan_id'] != '-2') {
-											$selected = in_array($plan['arm_subscription_plan_id'], $default_rules[$rtype]) ? 'selected="selected"' : '';
-											echo '<option value="' . esc_attr($plan['arm_subscription_plan_id']) . '" ' . $selected . '>' . esc_html(wp_unslash($plan['arm_subscription_plan_name'])) . '</option>'; //phpcs:ignore
+								if (!empty($all_plans_data)) {
+									if(!empty($default_rules))
+									{
+										$default_rules[$rtype] = !empty($default_rules[$rtype]) ? $default_rules[$rtype] : array();
+										foreach ($all_plans_data as $plan) {
+											if ($plan['arm_subscription_plan_id'] != '-2') {
+												$selected = in_array($plan['arm_subscription_plan_id'], $default_rules[$rtype]) ? 'selected="selected"' : '';
+												echo '<option value="' . esc_attr($plan['arm_subscription_plan_id']) . '" ' . $selected . '>' . esc_html(wp_unslash($plan['arm_subscription_plan_name'])) . '</option>'; //phpcs:ignore
+											}
+										}
+									}
+									else{
+										foreach ($all_plans_data as $plan) {
+											if ($plan['arm_subscription_plan_id'] != '-2') {
+												echo '<option value="' . esc_attr($plan['arm_subscription_plan_id']) . '">' . esc_html(wp_unslash($plan['arm_subscription_plan_name'])) . '</option>'; //phpcs:ignore
+											}
 										}
 									}
 								}

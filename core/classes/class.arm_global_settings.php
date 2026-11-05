@@ -364,7 +364,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 			}
 
 			global $current_screen, $pagenow, $arm_access_rules;
-			$default_rule_link = admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=access_rules_options' );
+			$default_rule_link = admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=access_restriction' );
 
 			if ( $current_screen->base == 'nav-menus' || $pagenow == 'nav-menus.php' ) {
 				$default_access_rules = $arm_access_rules->arm_get_default_access_rules();
@@ -2488,7 +2488,12 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 		}
 
 		public function arm_wp_mail( $from, $recipient, $subject, $message, $attachments = array() ) {
-			global $wp, $wpdb, $ARMemberLite, $arm_slugs, $arm_email_settings, $arm_plain_text, $wp_version;
+			global $wp, $wpdb, $ARMemberLite, $arm_slugs, $arm_email_settings, $arm_plain_text, $wp_version, $arm_reset_data;
+			
+			if ( ! empty( $arm_reset_data ) && ! empty( $arm_reset_data->arm_rd_suppress_mail ) ) {
+				return false;
+			}
+			
 			remove_all_actions( 'phpmailer_init' );
 			$return                  = false;
 			$emailSettings           = $arm_email_settings->arm_get_all_email_settings();

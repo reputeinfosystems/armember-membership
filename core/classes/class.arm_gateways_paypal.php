@@ -320,7 +320,7 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 							}
 							$plan_form_data .= "<input type='hidden' name='amount' value='" . esc_attr( $trial_amount ) . "' />";
 						} else {
-
+							$extraParam = array();
 							$cmd = '_xclick';
 
 							if ( $amount == 0 || $amount == '0.00' ) {
@@ -378,7 +378,9 @@ if ( ! class_exists( 'ARM_Paypal_Lite' ) ) {
 						$paypal_form .= '<input type="hidden" name="page_style" value="primary" />';
 						$paypal_form .= '<input type="hidden" name="charset" value="UTF-8" />';
 						$paypal_form .= '<input type="hidden" name="item_name" value="' . esc_attr( $plan->name ) . '" />';
-						$paypal_form .= '<input type="hidden" name="item_number" value="1" />';
+						$arm_paypal_item_number = 1;
+						$arm_paypal_item_number = apply_filters( 'arm_paypal_item_number', $arm_paypal_item_number, $plan, $entry_id );
+						$paypal_form .= '<input type="hidden" name="item_number" value="' . esc_attr( $arm_paypal_item_number ) . '" />';
 						$paypal_form .= '<input type="submit" style="display:none;" name="cbt" value="' . esc_html__( 'Click here to continue', 'armember-membership' ) . '" />';
 						$paypal_form .= $plan_form_data;
 						$paypal_form .= '<input type="submit" value="Pay with PayPal!" style="display:none;" />';

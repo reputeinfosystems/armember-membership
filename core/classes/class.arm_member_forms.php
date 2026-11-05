@@ -11044,10 +11044,6 @@ $container.arm_form_layout_rounded .arm-df__fc-icon.--arm-suffix-icon.arm_visibl
 
 			global $wpdb, $ARMemberLite, $arm_global_settings, $arm_is_change_password_form_for_login, $arm_login_from_registration, $arm_is_update_password_form_edit_profile_login, $browser_session_id;
 
-			if ( ! ( extension_loaded( 'geoip' ) ) ) {
-				@include MEMBERSHIPLITE_INC_DIR . '/geoip.inc';
-			}
-
 			$arm_all_block_settings = isset( $arm_global_settings->block_settings ) ? $arm_global_settings->block_settings : array();
 			$tbl_login_history      = $ARMemberLite->tbl_arm_login_history;
 			$general_settings       = isset( $arm_global_settings->general_settings ) ? $arm_global_settings->general_settings : '';

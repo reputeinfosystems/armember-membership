@@ -40,6 +40,11 @@ $g_sub_action = isset($_GET['sub_action']) ? sanitize_text_field($_GET['sub_acti
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'redirection_options' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=redirection_options' )); ?>"><?php esc_html_e( 'Redirection Rules', 'armember-membership' ); ?></a>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'common_messages' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=common_messages' )); ?>"><?php esc_html_e( 'Common Messages', 'armember-membership' ); ?></a>
                 <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'debug_logs' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=debug_logs' )); ?>"><?php esc_html_e( 'Debug Log Settings', 'armember-membership' ); ?></a>
+                <?php
+                $arm_rd_tab_access = ( ! empty( $GLOBALS['arm_reset_data'] ) && is_object( $GLOBALS['arm_reset_data'] ) && $GLOBALS['arm_reset_data']->arm_reset_data_can_access() );
+                if ( $arm_rd_tab_access ) { ?>
+                <a class="arm_general_settings_tab arm_setting_tabs <?php echo ( $g_action == 'reset_data' ? esc_html($active) : '' ); ?>" href="<?php echo esc_url(admin_url( 'admin.php?page=' . $arm_slugs->general_settings . '&action=reset_data' )); ?>"><?php esc_html_e( 'Reset Data', 'armember-membership' ); ?></a>
+                <?php } ?>
                 <div class="armclear"></div>
             </div>
 
@@ -125,6 +130,12 @@ $g_sub_action = isset($_GET['sub_action']) ? sanitize_text_field($_GET['sub_acti
                         case 'member_panel':
                             $file_path         = MEMBERSHIPLITE_VIEWS_DIR . '/arm_member_panel_setting.php';
                             $arm_setting_title = esc_html__( 'Member Panel', 'armember-membership' );
+                            break;
+                        case 'reset_data':
+                            if ( ! empty( $arm_rd_tab_access ) ) {
+                                $file_path         = MEMBERSHIPLITE_VIEWS_DIR . '/arm_reset_data.php';
+                                $arm_setting_title = esc_html__( 'Reset Data', 'armember-membership' );
+                            }
                             break;
                     }
                 }

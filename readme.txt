@@ -3,9 +3,9 @@ Contributors: reputeinfosystems, membershippro
 Tags: content restriction,user registration ,membership, member, user profile
 Donate link: https://www.armemberplugin.com/product.php?rdt=t16
 Requires at least: 4.0
-Tested up to: 7.1
+Tested up to: 7.1.4
 Requires PHP: 5.6
-Stable tag: 6.2
+Stable tag: 6.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,10 @@ Please follow the steps for installation:
 11. Signup Form
 
 == Changelog ==
+
+= 6.3 =
+* Added: One-click option to reset test data, including members, transactions, and logs, without affecting existing settings.
+* Minor bug fixes and improvements.
 
 = 6.2 =
 * Improved Database structure for better performance.

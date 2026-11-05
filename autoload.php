@@ -112,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '6.2';
+$arm_lite_version = '6.3';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -135,8 +135,8 @@ $ARMemberLite = new ARMemberlite();
 $arm_lite_debug_payment_log_id =0;
 $arm_lite_debug_general_log_id = 0;
 
-$arm_lite_bf_sale_start_time = "1776427200"; //black friday sale start time
-$arm_lite_bf_sale_end_time = "1777568400"; //black friday sale end time
+$arm_lite_bf_sale_start_time = "1794852010"; //black friday sale start time
+$arm_lite_bf_sale_end_time = "1796493610"; //black friday sale end time
 
 if ( file_exists( MEMBERSHIPLITE_CLASSES_DIR . '/arm_common_function_lite.php' ) ) {
 	require_once MEMBERSHIPLITE_CLASSES_DIR . '/arm_common_function_lite.php';
@@ -299,6 +299,9 @@ if( file_exists(MEMBERSHIPLITE_CLASSES_DIR.'/class.armemberlite.php')){
 }
 if( file_exists(MEMBERSHIPLITE_CLASSES_DIR.'/class.arm_growth_plugin.php')){
 	require_once MEMBERSHIPLITE_CLASSES_DIR.'/class.arm_growth_plugin.php';
+}
+if( file_exists(MEMBERSHIPLITE_CLASSES_DIR.'/class.arm_reset_data.php')){
+	require_once MEMBERSHIPLITE_CLASSES_DIR.'/class.arm_reset_data.php';
 }
 
 global $arm_lite_api_url, $arm_lite_plugin_slug, $wp_version;
@@ -1139,8 +1142,8 @@ class ARMemberlite {
 		global $ARMemberLite, $arm_slugs;
 		$arm_slugs = new stdClass();
 		$arm_current_date_for_bf_popup = current_time('timestamp',true); //GMT-0 Timezone
-		$arm_bf_start_time = "1700483400";
-		$arm_bf_end_time = "1701541800";
+		$arm_bf_start_time = "1794852010";
+		$arm_bf_end_time = "1796493610";
 		$arm_black_friday_slug = 'arm_upgrade_to_premium';
 		/* Admin-Pages-Slug */
 		$arm_slugs->main             = 'arm_manage_members';
@@ -3841,11 +3844,11 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '6.2',
+			'update_version' => '6.3',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				'Improved Database structure for better performance.',
-				'Minor Bug Fixes.',
+				'Added: One-click option to reset test data, including members, transactions, and logs, without affecting existing settings.',
+				'Minor bug fixes and improvements.',
 			),
 			'show_major_title'    => 0,
 			'major_title'         => 'Major Changes',
