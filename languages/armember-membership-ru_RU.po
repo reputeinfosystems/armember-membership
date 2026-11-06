@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ARMember Lite - Membership Plugin v6.3\n"
+"Project-Id-Version: ARMember Lite - Membership Plugin v6.3.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-21 04:58+0000\n"
-"PO-Revision-Date: 2026-10-31 07:50:50+0000\n"
+"PO-Revision-Date: 2026-11-05 13:47:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -325,14 +325,14 @@ msgstr "Профили и Каталоги"
 #: autoload.php:1297
 #: autoload.php:1298
 #: core/views/arm_general_settings.php:16
-#: core/views/arm_general_settings.php:54
+#: core/views/arm_general_settings.php:58
 #@ armember-membership
 msgid "General Settings"
 msgstr "Общие настройки"
 
 #: autoload.php:1325
 #: autoload.php:1326
-#: autoload.php:3869
+#: autoload.php:3868
 #: core/views/arm_setup_wizard.php:1296
 #@ armember-membership
 msgid "Documentation"
@@ -344,26 +344,26 @@ msgid "ARMember Debug"
 msgstr "ARMember Отладка"
 
 #: autoload.php:1791
-#: autoload.php:4009
+#: autoload.php:4008
 #@ armember-membership
 msgid "Sorry, this file type is not permitted for security reasons."
 msgstr "Извините, этот тип файла запрещен по соображениям безопасности."
 
-#: autoload.php:4010
+#: autoload.php:4009
 #@ armember-membership
 msgid "File is not allowed bigger than {SIZE}."
 msgstr "Размер файла не может превышать {SIZE}."
 
 #: autoload.php:1797
-#: autoload.php:4015
-#: autoload.php:4093
+#: autoload.php:4014
+#: autoload.php:4092
 #@ armember-membership
 msgid "User's subscription has been canceled"
 msgstr "Подписка пользователя была отменена"
 
 #: autoload.php:1799
-#: autoload.php:4017
-#: autoload.php:4095
+#: autoload.php:4016
+#: autoload.php:4094
 #@ armember-membership
 msgid "Loading.."
 msgstr "Загрузка.."
@@ -379,11 +379,11 @@ msgid "After certain time of post is modified"
 msgstr "По истечении определенного времени публикация будет изменена"
 
 #: autoload.php:1803
-#: autoload.php:4024
+#: autoload.php:4023
 #: core/classes/class.arm_access_rules.php:508
 #: core/classes/class.arm_email_settings.php:190
 #: core/classes/class.arm_email_settings.php:223
-#: core/classes/class.arm_global_settings.php:3498
+#: core/classes/class.arm_global_settings.php:3497
 #: core/classes/class.arm_growth_plugin.php:30
 #: core/classes/class.arm_growth_plugin.php:109
 #: core/classes/class.arm_growth_plugin.php:133
@@ -410,7 +410,7 @@ msgid "Sorry, Something went wrong. Please try again."
 msgstr "Извините, что-то пошло не так. Попробуйте еще раз."
 
 #: autoload.php:1804
-#: autoload.php:4025
+#: autoload.php:4024
 #: core/classes/class.arm_members.php:1300
 #: core/classes/class.arm_transaction.php:612
 #@ armember-membership
@@ -418,7 +418,7 @@ msgid "Please select valid action."
 msgstr "Пожалуйста, выберите действительное действие."
 
 #: autoload.php:1805
-#: autoload.php:4026
+#: autoload.php:4025
 #: core/classes/class.arm_members.php:1297
 #: core/classes/class.arm_members.php:2180
 #: core/classes/class.arm_transaction.php:592
@@ -427,44 +427,44 @@ msgid "Please select one or more records."
 msgstr "Пожалуйста, выберите одну или несколько записей."
 
 #: autoload.php:1806
-#: autoload.php:4027
+#: autoload.php:4026
 #@ armember-membership
 msgid "Login attempts cleared successfully."
 msgstr "Попытки входа в систему завершились успешно."
 
 #: autoload.php:1820
-#: autoload.php:4041
+#: autoload.php:4040
 #@ armember-membership
 msgid "Form deleted successfully."
 msgstr "Форма успешно удалена."
 
 #: autoload.php:1831
-#: autoload.php:4052
+#: autoload.php:4051
 #@ armember-membership
 msgid "Please upload appropriate file to import users."
 msgstr "Пожалуйста, загрузите соответствующий файл для импорта пользователей."
 
 #: autoload.php:1832
-#: autoload.php:4053
+#: autoload.php:4052
 #@ armember-membership
 msgid "Transaction has been deleted successfully."
 msgstr "Транзакция была успешно удалена."
 
 #: autoload.php:1834
-#: autoload.php:4055
+#: autoload.php:4054
 #: core/classes/class.arm_manage_communication.php:31
 #@ armember-membership
 msgid "Message has been deleted successfully."
 msgstr "Сообщение было успешно удалено."
 
 #: autoload.php:1836
-#: autoload.php:4057
+#: autoload.php:4056
 #@ armember-membership
 msgid "Message(s) has been deleted successfully."
 msgstr "Сообщения были успешно удалены."
 
 #: autoload.php:1847
-#: autoload.php:4066
+#: autoload.php:4065
 #: core/classes/class.arm_email_settings.php:137
 #: core/classes/class.arm_members_directory.php:1277
 #@ armember-membership
@@ -472,37 +472,37 @@ msgid "Template not found."
 msgstr "Шаблон не найден."
 
 #: autoload.php:1851
-#: autoload.php:4070
+#: autoload.php:4069
 #@ armember-membership
 msgid "Template has been added successfully."
 msgstr "Шаблон был успешно добавлен."
 
 #: autoload.php:1853
-#: autoload.php:4072
+#: autoload.php:4071
 #@ armember-membership
 msgid "Template has been deleted successfully."
 msgstr "Шаблон был успешно удален."
 
 #: autoload.php:1865
-#: autoload.php:4087
+#: autoload.php:4086
 #@ armember-membership
 msgid "Addon installed successfully."
 msgstr "Аддон успешно установлен."
 
 #: autoload.php:1867
-#: autoload.php:4089
+#: autoload.php:4088
 #@ armember-membership
 msgid "Addon activated successfully."
 msgstr "Аддон успешно активирован."
 
 #: autoload.php:1868
-#: autoload.php:4090
+#: autoload.php:4089
 #@ armember-membership
 msgid "Addon deactivated successfully."
 msgstr "Аддон успешно деактивирован."
 
 #: autoload.php:1871
-#: autoload.php:4096
+#: autoload.php:4095
 #@ armember-membership
 msgid "Oops, nothing found."
 msgstr "Упс, ничего не найдено."
@@ -532,15 +532,15 @@ msgid "Do not show again."
 msgstr "Больше не показывайся."
 
 #: autoload.php:3671
-#: autoload.php:3875
+#: autoload.php:3874
 #: core/classes/class.arm_manage_subscription.php:1468
 #: core/classes/class.arm_members.php:599
 #: core/classes/class.arm_subscription_plans.php:515
 #: core/views/arm_form_editor.php:206
 #: core/views/arm_member_add.php:1467
 #: core/views/arm_membership_setup_add.php:700
-#: core/views/arm_reset_data.php:152
-#: core/views/arm_reset_data.php:173
+#: core/views/arm_reset_data.php:158
+#: core/views/arm_reset_data.php:181
 #: core/views/arm_setup_wizard.php:1359
 #: core/views/arm_subscription_plans_add.php:1193
 #: core/views/arm_transactions_add.php:207
@@ -553,58 +553,57 @@ msgstr "Закрыть"
 msgid "Add-On listing is currently unavailable. Please try again later."
 msgstr "Список дополнений в настоящее время недоступен. Пожалуйста, повторите попытку позже."
 
-#: autoload.php:3870
+#: autoload.php:3869
 #@ armember-membership
 msgid "Feature Request"
 msgstr "Запрос функции"
 
-#: autoload.php:3871
+#: autoload.php:3870
 #@ armember-membership
 msgid "Join Community"
 msgstr "Присоединяйтесь к Сообществу"
 
-#: autoload.php:3873
+#: autoload.php:3872
 #@ armember-membership
 msgid "Video Tutorials"
 msgstr "Видеоуроки"
 
-#: autoload.php:3877
+#: autoload.php:3876
 #@ armember-membership
 msgid "Need Help?"
 msgstr "Нужна помощь?"
 
-#: autoload.php:3915
+#: autoload.php:3914
 #@ armember-membership
 msgid "Error"
 msgstr "Ошибка"
 
-#: autoload.php:3934
-#: autoload.php:3939
+#: autoload.php:3933
+#: autoload.php:3938
 #@ armember-membership
 msgid "No data found"
 msgstr "Данные не найдены"
 
-#: autoload.php:4032
+#: autoload.php:4031
 #: core/classes/class.arm_subscription_plans.php:1155
 #@ armember-membership
 msgid "Plan has been deleted successfully."
 msgstr "План был успешно удален."
 
-#: autoload.php:4077
+#: autoload.php:4076
 #@ armember-membership
 msgid "Achievements Added Successfully."
 msgstr "Достижения успешно добавлены."
 
-#: autoload.php:4078
+#: autoload.php:4077
 #@ armember-membership
 msgid "Achievements Updated Successfully."
 msgstr "Достижения Успешно обновлены."
 
-#: autoload.php:4177
+#: autoload.php:4176
 #: core/classes/class.arm_manage_communication.php:27
 #: core/classes/class.arm_manage_subscription.php:873
-#: core/classes/class.arm_reset_data.php:724
-#: core/classes/class.arm_reset_data.php:745
+#: core/classes/class.arm_reset_data.php:746
 #: core/classes/class.arm_transaction.php:556
 #: core/classes/class.arm_transaction.php:595
 #@ armember-membership
@@ -643,10 +642,10 @@ msgid "Other"
 msgstr "Другое"
 
 #: core/classes/class.arm_global_settings.php:1062
-#: core/classes/class.arm_global_settings.php:3196
-#: core/classes/class.arm_global_settings.php:3222
-#: core/classes/class.arm_global_settings.php:3274
-#: core/classes/class.arm_global_settings.php:3833
+#: core/classes/class.arm_global_settings.php:3195
+#: core/classes/class.arm_global_settings.php:3221
+#: core/classes/class.arm_global_settings.php:3273
+#: core/classes/class.arm_global_settings.php:3832
 #: core/classes/class.arm_manage_subscription.php:1116
 #: core/classes/class.arm_manage_subscription.php:1466
 #: core/classes/class.arm_manage_subscription.php:1481
@@ -708,7 +707,7 @@ msgstr "Другое"
 #: core/views/arm_profile_editor.php:811
 #: core/views/arm_profiles_directories.php:261
 #: core/views/arm_profiles_directories.php:265
-#: core/views/arm_reset_data.php:124
+#: core/views/arm_reset_data.php:130
 #: core/views/arm_tinymce_options_shortcodes.php:725
 #: core/views/arm_tinymce_options_shortcodes.php:977
 #: core/views/arm_tinymce_options_shortcodes.php:986
@@ -1252,7 +1251,7 @@ msgstr "Это электронное письмо уже зарегистрир
 #: core/classes/class.arm_member_forms.php:2904
 #: core/classes/class.arm_member_forms.php:2931
 #: core/classes/class.arm_member_forms.php:7701
-#: core/classes/class.arm_member_forms.php:11275
+#: core/classes/class.arm_member_forms.php:11271
 #: core/classes/class.arm_members.php:1674
 #: core/classes/class.arm_members.php:4208
 #: core/views/arm_form_editor.php:374
@@ -1552,7 +1551,7 @@ msgstr "Настройки страницы успешно сохранены."
 msgid "Settings Saved Successfully."
 msgstr "Настройки успешно сохранены."
 
-#: core/classes/class.arm_global_settings.php:2737
+#: core/classes/class.arm_global_settings.php:2736
 #: core/classes/class.arm_members.php:682
 #: core/classes/class.arm_members.php:734
 #: core/classes/class.arm_members.php:859
@@ -1573,15 +1572,15 @@ msgstr "Настройки успешно сохранены."
 msgid "Never Expires"
 msgstr "Никогда Не истекает"
 
-#: core/classes/class.arm_global_settings.php:2753
-#: core/classes/class.arm_global_settings.php:2854
+#: core/classes/class.arm_global_settings.php:2752
+#: core/classes/class.arm_global_settings.php:2853
 #: core/classes/class.arm_members.php:4085
 #@ armember-membership
 msgid "Life Time"
 msgstr "Время жизни"
 
-#: core/classes/class.arm_global_settings.php:2756
-#: core/classes/class.arm_global_settings.php:2857
+#: core/classes/class.arm_global_settings.php:2755
+#: core/classes/class.arm_global_settings.php:2856
 #: core/classes/class.arm_members.php:3880
 #: core/classes/class.arm_members.php:4088
 #: core/classes/class.arm_shortcodes.php:1175
@@ -1597,8 +1596,8 @@ msgstr "Время жизни"
 msgid "Subscription"
 msgstr "Подписка"
 
-#: core/classes/class.arm_global_settings.php:2758
-#: core/classes/class.arm_global_settings.php:2859
+#: core/classes/class.arm_global_settings.php:2757
+#: core/classes/class.arm_global_settings.php:2858
 #: core/classes/class.arm_members.php:4136
 #: core/classes/class.arm_shortcodes.php:1175
 #: core/classes/class.arm_shortcodes.php:1180
@@ -1613,7 +1612,7 @@ msgstr "Подписка"
 msgid "One Time"
 msgstr "Один Раз"
 
-#: core/classes/class.arm_global_settings.php:2762
+#: core/classes/class.arm_global_settings.php:2761
 #: core/classes/class.arm_members.php:3847
 #: core/classes/class.arm_members.php:4079
 #: core/classes/class.arm_subscription_plans.php:3727
@@ -1629,14 +1628,14 @@ msgstr "Один Раз"
 msgid "Free"
 msgstr "Бесплатно"
 
-#: core/classes/class.arm_global_settings.php:3128
-#: core/classes/class.arm_global_settings.php:3151
+#: core/classes/class.arm_global_settings.php:3127
+#: core/classes/class.arm_global_settings.php:3150
 #@ armember-membership
 msgid "now!"
 msgstr "сейчас же!"
 
-#: core/classes/class.arm_global_settings.php:3131
-#: core/classes/class.arm_global_settings.php:3154
+#: core/classes/class.arm_global_settings.php:3130
+#: core/classes/class.arm_global_settings.php:3153
 #: core/classes/class.arm_subscription_plans.php:3732
 #: core/classes/class.arm_subscription_plans.php:3753
 #: core/classes/class.arm_subscription_plans.php:3832
@@ -1650,8 +1649,8 @@ msgstr "сейчас же!"
 msgid "year"
 msgstr "год"
 
-#: core/classes/class.arm_global_settings.php:3132
-#: core/classes/class.arm_global_settings.php:3155
+#: core/classes/class.arm_global_settings.php:3131
+#: core/classes/class.arm_global_settings.php:3154
 #: core/classes/class.arm_subscription_plans.php:3734
 #: core/classes/class.arm_subscription_plans.php:3752
 #: core/classes/class.arm_subscription_plans.php:3834
@@ -1665,8 +1664,8 @@ msgstr "год"
 msgid "month"
 msgstr "месяц"
 
-#: core/classes/class.arm_global_settings.php:3133
-#: core/classes/class.arm_global_settings.php:3156
+#: core/classes/class.arm_global_settings.php:3132
+#: core/classes/class.arm_global_settings.php:3155
 #: core/classes/class.arm_subscription_plans.php:3738
 #: core/classes/class.arm_subscription_plans.php:3750
 #: core/classes/class.arm_subscription_plans.php:3838
@@ -1680,31 +1679,31 @@ msgstr "месяц"
 msgid "day"
 msgstr "день"
 
-#: core/classes/class.arm_global_settings.php:3134
-#: core/classes/class.arm_global_settings.php:3157
+#: core/classes/class.arm_global_settings.php:3133
+#: core/classes/class.arm_global_settings.php:3156
 #@ armember-membership
 msgid "hour"
 msgstr "час"
 
-#: core/classes/class.arm_global_settings.php:3135
-#: core/classes/class.arm_global_settings.php:3158
+#: core/classes/class.arm_global_settings.php:3134
+#: core/classes/class.arm_global_settings.php:3157
 #@ armember-membership
 msgid "minute"
 msgstr "минута"
 
-#: core/classes/class.arm_global_settings.php:3136
-#: core/classes/class.arm_global_settings.php:3159
+#: core/classes/class.arm_global_settings.php:3135
+#: core/classes/class.arm_global_settings.php:3158
 #@ armember-membership
 msgid "second"
 msgstr "второй"
 
-#: core/classes/class.arm_global_settings.php:3142
+#: core/classes/class.arm_global_settings.php:3141
 #@ armember-membership
 msgid " ago"
 msgstr "назад"
 
-#: core/classes/class.arm_global_settings.php:3195
-#: core/classes/class.arm_global_settings.php:3833
+#: core/classes/class.arm_global_settings.php:3194
+#: core/classes/class.arm_global_settings.php:3832
 #: core/classes/class.arm_manage_subscription.php:1116
 #: core/classes/class.arm_member_forms.php:1173
 #: core/classes/class.arm_member_forms.php:3173
@@ -1732,8 +1731,8 @@ msgstr "назад"
 msgid "Delete"
 msgstr "Удалить"
 
-#: core/classes/class.arm_global_settings.php:3221
-#: core/classes/class.arm_global_settings.php:3273
+#: core/classes/class.arm_global_settings.php:3220
+#: core/classes/class.arm_global_settings.php:3272
 #: core/classes/class.arm_member_forms.php:4022
 #: core/classes/class.arm_members.php:3663
 #: core/classes/class.arm_members.php:3719
@@ -1753,56 +1752,56 @@ msgstr "Удалить"
 msgid "Ok"
 msgstr "ОК"
 
-#: core/classes/class.arm_global_settings.php:3435
+#: core/classes/class.arm_global_settings.php:3434
 #@ armember-membership
 msgid "Registration page"
 msgstr "Страница регистрации"
 
-#: core/classes/class.arm_global_settings.php:3438
+#: core/classes/class.arm_global_settings.php:3437
 #@ armember-membership
 msgid "Login page"
 msgstr "Страница входа в систему"
 
-#: core/classes/class.arm_global_settings.php:3441
+#: core/classes/class.arm_global_settings.php:3440
 #@ armember-membership
 msgid "Forgot Password page"
 msgstr "Страница с забытым Паролем"
 
-#: core/classes/class.arm_global_settings.php:3444
+#: core/classes/class.arm_global_settings.php:3443
 #@ armember-membership
 msgid "Edit Profile page"
 msgstr "Редактировать страницу профиля"
 
-#: core/classes/class.arm_global_settings.php:3447
+#: core/classes/class.arm_global_settings.php:3446
 #@ armember-membership
 msgid "Change Password page"
 msgstr "Страница смены пароля"
 
-#: core/classes/class.arm_global_settings.php:3450
+#: core/classes/class.arm_global_settings.php:3449
 #@ armember-membership
 msgid "Member Profile page"
 msgstr "Страница профиля участника"
 
-#: core/classes/class.arm_global_settings.php:3453
+#: core/classes/class.arm_global_settings.php:3452
 #@ armember-membership
 msgid "Guest page"
 msgstr "Гостевая страница"
 
-#: core/classes/class.arm_global_settings.php:3478
+#: core/classes/class.arm_global_settings.php:3477
 #@ armember-membership
 msgid "ARMember Protected"
 msgstr "ARMember Защищено"
 
-#: core/classes/class.arm_global_settings.php:3554
-#: core/classes/class.arm_global_settings.php:3563
-#: core/classes/class.arm_global_settings.php:3583
-#: core/classes/class.arm_global_settings.php:3603
-#: core/classes/class.arm_global_settings.php:3623
-#: core/classes/class.arm_global_settings.php:3653
-#: core/classes/class.arm_global_settings.php:3676
-#: core/classes/class.arm_global_settings.php:3696
-#: core/classes/class.arm_global_settings.php:3714
-#: core/classes/class.arm_global_settings.php:3725
+#: core/classes/class.arm_global_settings.php:3553
+#: core/classes/class.arm_global_settings.php:3562
+#: core/classes/class.arm_global_settings.php:3582
+#: core/classes/class.arm_global_settings.php:3602
+#: core/classes/class.arm_global_settings.php:3622
+#: core/classes/class.arm_global_settings.php:3652
+#: core/classes/class.arm_global_settings.php:3675
+#: core/classes/class.arm_global_settings.php:3695
+#: core/classes/class.arm_global_settings.php:3713
+#: core/classes/class.arm_global_settings.php:3724
 #@ armember-membership
 msgid "Features Settings Updated Successfully."
 msgstr "Настройки функций Успешно обновлены."
@@ -3881,7 +3880,7 @@ msgstr "Сброс"
 #: core/classes/class.arm_shortcodes.php:635
 #: core/classes/class.arm_shortcodes.php:650
 #: core/views/arm_profile_editor.php:778
-#: core/views/arm_reset_data.php:18
+#: core/views/arm_reset_data.php:19
 #@ armember-membership
 msgid "Done"
 msgstr "Выполнено"
@@ -3946,7 +3945,7 @@ msgstr "Забыли пароль"
 #: core/classes/class.arm_member_forms.php:513
 #: core/classes/class.arm_member_forms.php:2905
 #: core/classes/class.arm_member_forms.php:2958
-#: core/classes/class.arm_member_forms.php:11293
+#: core/classes/class.arm_member_forms.php:11289
 #: core/views/arm_member_add.php:771
 #: core/views/arm_member_add.php:786
 #@ armember-membership
@@ -3959,15 +3958,15 @@ msgstr "Крышка профиля"
 #: core/classes/class.arm_member_forms.php:4602
 #: core/classes/class.arm_member_forms.php:7691
 #: core/classes/class.arm_member_forms.php:7702
-#: core/classes/class.arm_member_forms.php:11276
-#: core/classes/class.arm_member_forms.php:11294
+#: core/classes/class.arm_member_forms.php:11272
+#: core/classes/class.arm_member_forms.php:11290
 #@ armember-membership
 msgid "Drop file here or click to select."
 msgstr "Перенесите файл сюда или нажмите, чтобы выбрать."
 
 #: core/classes/class.arm_member_forms.php:472
 #: core/classes/class.arm_member_forms.php:2921
-#: core/classes/class.arm_member_forms.php:11283
+#: core/classes/class.arm_member_forms.php:11279
 #: core/views/arm_member_add.php:731
 #@ armember-membership
 msgid "Please select avatar."
@@ -3977,8 +3976,8 @@ msgstr "Пожалуйста, выберите аватар."
 #: core/classes/class.arm_member_forms.php:508
 #: core/classes/class.arm_member_forms.php:2922
 #: core/classes/class.arm_member_forms.php:2970
-#: core/classes/class.arm_member_forms.php:11284
-#: core/classes/class.arm_member_forms.php:11302
+#: core/classes/class.arm_member_forms.php:11280
+#: core/classes/class.arm_member_forms.php:11298
 #: core/views/arm_member_add.php:732
 #: core/views/arm_member_add.php:780
 #@ armember-membership
@@ -3987,7 +3986,7 @@ msgstr "Выбрано неверное изображение."
 
 #: core/classes/class.arm_member_forms.php:507
 #: core/classes/class.arm_member_forms.php:2969
-#: core/classes/class.arm_member_forms.php:11301
+#: core/classes/class.arm_member_forms.php:11297
 #: core/views/arm_member_add.php:779
 #@ armember-membership
 msgid "Please select profile cover."
@@ -7111,7 +7110,7 @@ msgstr "Ваша подписка была отменена."
 msgid "Your Subscription will be canceled on"
 msgstr "Ваша подписка будет аннулирована в"
 
-#: core/classes/class.arm_global_settings.php:3869
+#: core/classes/class.arm_global_settings.php:3868
 #: core/classes/class.arm_members.php:617
 #: core/classes/class.arm_subscription_plans.php:2536
 #: core/views/arm_member_panel_setting.php:202
@@ -7717,7 +7716,7 @@ msgstr "Правильно"
 msgid "ARMember Edit Profile"
 msgstr "ARMember Редактировать профиль"
 
-#: core/classes/class.arm_global_settings.php:3855
+#: core/classes/class.arm_global_settings.php:3854
 #: core/vc/class_vc_extend.php:351
 #: core/vc/class_vc_extend.php:991
 #: core/vc/class_vc_extend.php:1323
@@ -7832,7 +7831,7 @@ msgstr "Отображать информацию о пользователе?"
 #: core/classes/arm_builder/class.arm_divi_builder_restriction.php:62
 #: core/classes/arm_builder/class.arm_fusion_builder_restriction.php:66
 #: core/classes/arm_builder/class.arm_wpbakery_builder_restriction.php:75
-#: core/classes/class.arm_reset_data.php:195
+#: core/classes/class.arm_reset_data.php:204
 #: core/classes/class.arm_subscription_plans.php:357
 #: core/vc/class_vc_extend.php:425
 #: core/vc/class_vc_extend.php:530
@@ -7865,7 +7864,7 @@ msgstr "ДА"
 #: core/classes/class.arm_members.php:5460
 #: core/classes/class.arm_members.php:5576
 #: core/classes/class.arm_members.php:5755
-#: core/classes/class.arm_reset_data.php:195
+#: core/classes/class.arm_reset_data.php:204
 #: core/classes/class.arm_subscription_plans.php:357
 #: core/vc/class_vc_extend.php:426
 #: core/vc/class_vc_extend.php:529
@@ -10053,35 +10052,35 @@ msgid "General Options"
 msgstr "Общие параметры"
 
 #: core/views/arm_general_settings.php:26
-#: core/views/arm_general_settings.php:93
+#: core/views/arm_general_settings.php:97
 #: core/views/arm_membership_setup_add.php:199
 #@ armember-membership
 msgid "Payment Gateways"
 msgstr "Платежные Шлюзы"
 
 #: core/views/arm_general_settings.php:27
-#: core/views/arm_general_settings.php:100
+#: core/views/arm_general_settings.php:104
 #: core/views/arm_page_setup.php:11
 #@ armember-membership
 msgid "Page Setup"
 msgstr "Настройка страницы"
 
 #: core/views/arm_general_settings.php:28
-#: core/views/arm_general_settings.php:120
+#: core/views/arm_general_settings.php:124
 #@ armember-membership
 msgid "Default Restriction Rules"
 msgstr "Правила Ограничения по умолчанию"
 
 #: core/views/arm_block_settings.php:21
 #: core/views/arm_general_settings.php:38
-#: core/views/arm_general_settings.php:104
+#: core/views/arm_general_settings.php:108
 #: core/views/arm_import_export.php:216
 #@ armember-membership
 msgid "Security Options"
 msgstr "Параметры безопасности"
 
 #: core/views/arm_general_settings.php:39
-#: core/views/arm_general_settings.php:108
+#: core/views/arm_general_settings.php:112
 #@ armember-membership
 msgid "Import / Export"
 msgstr "Импорт / Экспорт"
@@ -10093,13 +10092,13 @@ msgstr "Правила перенаправления"
 
 #: core/views/arm_common_messages_settings.php:22
 #: core/views/arm_general_settings.php:41
-#: core/views/arm_general_settings.php:116
+#: core/views/arm_general_settings.php:120
 #: core/views/arm_import_export.php:227
 #@ armember-membership
 msgid "Common Messages"
 msgstr "Общие сообщения"
 
-#: core/views/arm_general_settings.php:112
+#: core/views/arm_general_settings.php:116
 #: core/views/arm_redirection_settings.php:91
 #@ armember-membership
 msgid "Page/Post Redirection Rules"
@@ -10298,7 +10297,7 @@ msgstr "Если у вас есть какие-либо проблемы с за
 msgid "Help us improve ARMember by sending anonymous usage stats"
 msgstr "Помогите нам улучшить ARMember, отправляя анонимную статистику использования"
 
-#: core/views/arm_general_settings.php:62
+#: core/views/arm_general_settings.php:66
 #: core/views/arm_global_settings.php:583
 #: core/views/arm_global_settings.php:588
 #@ armember-membership
@@ -10904,7 +10903,7 @@ msgid "Approved"
 msgstr "Одобренный"
 
 #: core/views/arm_manage_subscription_list.php:969
-#: core/views/arm_reset_data.php:21
+#: core/views/arm_reset_data.php:22
 #: core/views/arm_transactions_add.php:123
 #: core/views/arm_transactions_list_records.php:868
 #@ armember-membership
@@ -11343,7 +11342,7 @@ msgstr "Вы не можете удалить все планы."
 msgid "Registration Page"
 msgstr "Страница регистрации"
 
-#: core/classes/class.arm_global_settings.php:3046
+#: core/classes/class.arm_global_settings.php:3045
 #: core/views/arm_page_setup.php:40
 #: core/views/arm_page_setup.php:71
 #: core/views/arm_page_setup.php:102
@@ -13479,7 +13478,7 @@ msgstr "Включить журналы отладки электронной п
 #: core/views/arm_debug_logs.php:472
 #: core/views/arm_debug_logs.php:497
 #: core/views/arm_general_settings.php:42
-#: core/views/arm_general_settings.php:124
+#: core/views/arm_general_settings.php:128
 #@ armember-membership
 msgid "Debug Log Settings"
 msgstr "Настройки журнала отладки"
@@ -13586,7 +13585,7 @@ msgstr "Тип ссылки"
 msgid "Display User Info"
 msgstr "Отображение информации о пользователе"
 
-#: core/classes/class.arm_global_settings.php:3077
+#: core/classes/class.arm_global_settings.php:3076
 #: core/views/arm_redirection_settings.php:1686
 #: core/widgets/arm_elm_widgets/class.arm_close_account_add.php:78
 #: core/widgets/arm_elm_widgets/class.arm_current_membership_element_add.php:80
@@ -14181,17 +14180,17 @@ msgstr "Пробная транзакция"
 msgid "User Email"
 msgstr "Электронная почта пользователя"
 
-#: autoload.php:4640
+#: autoload.php:4639
 #@ armember-membership
 msgid "An Unexpected HTTP Error occurred during the API request."
 msgstr "Во время запроса API произошла непредвиденная ошибка HTTP."
 
-#: autoload.php:4640
+#: autoload.php:4639
 #@ armember-membership
 msgid "Try again"
 msgstr "Попробуйте еще раз"
 
-#: autoload.php:4645
+#: autoload.php:4644
 #@ armember-membership
 msgid "An unknown error occurred"
 msgstr "Произошла неизвестная ошибка"
@@ -14672,7 +14671,7 @@ msgstr "Изменить план членства"
 msgid "Sorry, User not found."
 msgstr "Извините, пользователь не найден."
 
-#: core/views/arm_access_restriction_settings.php:134
+#: core/views/arm_access_restriction_settings.php:144
 #: core/views/arm_block_settings.php:204
 #: core/views/arm_common_messages_settings.php:97
 #: core/views/arm_debug_logs.php:458
@@ -14778,27 +14777,27 @@ msgid "Form Set (Login / Forgot Password / Change Password)"
 msgstr "Набор форм (Вход / Забыли пароль / Изменить пароль)"
 
 #: core/views/arm_general_settings.php:22
-#: core/views/arm_general_settings.php:70
+#: core/views/arm_general_settings.php:74
 #@ armember-membership
 msgid "Email Notification Scheduler"
 msgstr "Планировщик уведомлений по электронной почте"
 
-#: core/views/arm_general_settings.php:66
+#: core/views/arm_general_settings.php:70
 #@ armember-membership
 msgid "Preset Form Fields"
 msgstr "Предустановленные поля формы"
 
-#: core/views/arm_general_settings.php:81
+#: core/views/arm_general_settings.php:85
 #@ armember-membership
 msgid "PayPal Settings"
 msgstr "Настройки PayPal"
 
-#: core/views/arm_general_settings.php:85
+#: core/views/arm_general_settings.php:89
 #@ armember-membership
 msgid "Stripe Settings"
 msgstr "Настройки полосы"
 
-#: core/views/arm_general_settings.php:89
+#: core/views/arm_general_settings.php:93
 #@ armember-membership
 msgid "Offline Payment Settings"
 msgstr "Настройки офлайн-платежей"
@@ -15326,9 +15325,9 @@ msgstr "Метка цикла"
 msgid "Member Panel Settings Saved Successfully."
 msgstr "Настройки панели участника успешно сохранены."
 
-#: core/classes/class.arm_global_settings.php:3456
+#: core/classes/class.arm_global_settings.php:3455
 #: core/views/arm_general_settings.php:29
-#: core/views/arm_general_settings.php:128
+#: core/views/arm_general_settings.php:132
 #: core/views/arm_member_panel_setting.php:21
 #: core/views/arm_setup_wizard.php:1282
 #: core/views/arm_tinymce_options_shortcodes.php:422
@@ -15336,44 +15335,44 @@ msgstr "Настройки панели участника успешно сох
 msgid "Member Panel"
 msgstr "Панель участника"
 
-#: core/classes/class.arm_global_settings.php:3784
+#: core/classes/class.arm_global_settings.php:3783
 #@ armember-membership
 msgid "Appearance reset successfully"
 msgstr "Оформление успешно сброшено"
 
-#: core/classes/class.arm_global_settings.php:3833
+#: core/classes/class.arm_global_settings.php:3832
 #: core/views/arm_member_panel_setting.php:177
 #@ armember-membership
 msgid "Are you sure you want to delete member panel tab?"
 msgstr "Вы уверены, что хотите удалить вкладку панели участника?"
 
-#: core/classes/class.arm_global_settings.php:3833
+#: core/classes/class.arm_global_settings.php:3832
 #: core/views/arm_member_panel_setting.php:177
 #@ armember-membership
 msgid "Delete Member Panel Tab"
 msgstr "Удалить вкладку панели участника"
 
-#: core/classes/class.arm_global_settings.php:3863
-#: core/classes/class.arm_global_settings.php:3892
-#: core/classes/class.arm_global_settings.php:3905
+#: core/classes/class.arm_global_settings.php:3862
+#: core/classes/class.arm_global_settings.php:3891
+#: core/classes/class.arm_global_settings.php:3904
 #: core/views/arm_member_panel_setting.php:208
 #@ armember-membership
 msgid "This field is required."
 msgstr "Это поле обязательно для заполнения."
 
-#: core/classes/class.arm_global_settings.php:3871
+#: core/classes/class.arm_global_settings.php:3870
 #: core/views/arm_member_panel_setting.php:203
 #@ armember-membership
 msgid "Content"
 msgstr "Содержимое"
 
-#: core/classes/class.arm_global_settings.php:3872
+#: core/classes/class.arm_global_settings.php:3871
 #: core/views/arm_member_panel_setting.php:204
 #@ armember-membership
 msgid "URL"
 msgstr "URL"
 
-#: core/classes/class.arm_global_settings.php:3899
+#: core/classes/class.arm_global_settings.php:3898
 #: core/views/arm_member_panel_setting.php:205
 #@ armember-membership
 msgid "Enter URL"
@@ -15596,37 +15595,37 @@ msgid "Total"
 msgstr "Итого"
 
 #: autoload.php:1785
-#: autoload.php:4003
+#: autoload.php:4002
 #@ armember-membership
 msgid "Failed to load activities. Please try again."
 msgstr "Не удалось загрузить активности. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1786
-#: autoload.php:4004
+#: autoload.php:4003
 #@ armember-membership
 msgid "The user chose not to grant permission or closed the pop-up."
 msgstr "Пользователь отказался предоставить разрешение или закрыл всплывающее окно."
 
 #: autoload.php:1787
-#: autoload.php:4005
+#: autoload.php:4004
 #@ armember-membership
 msgid "Oops! There was a problem retrieving your information."
 msgstr "Ой! Произошла проблема при получении вашей информации."
 
 #: autoload.php:1788
-#: autoload.php:4006
+#: autoload.php:4005
 #@ armember-membership
 msgid "Failed to copy. Please try again."
 msgstr "Не удалось скопировать. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1789
-#: autoload.php:4007
+#: autoload.php:4006
 #@ armember-membership
 msgid "The user canceled the login or did not fully authorize it."
 msgstr "Пользователь отменил вход или не полностью авторизовался."
 
 #: autoload.php:1790
-#: autoload.php:4008
+#: autoload.php:4007
 #@ armember-membership
 msgid "Failed to close the account. Please try again."
 msgstr "Не удалось закрыть аккаунт. Пожалуйста, попробуйте еще раз."
@@ -15637,20 +15636,20 @@ msgid "File size must not exceed {SIZE}."
 msgstr "Размер файла не должен превышать {SIZE}."
 
 #: autoload.php:1793
-#: autoload.php:4011
+#: autoload.php:4010
 #@ armember-membership
 msgid "Failed to upload the file. Please try again."
 msgstr "Не удалось загрузить файл. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1794
-#: autoload.php:4012
+#: autoload.php:4011
 #: core/classes/class.arm_members_directory.php:352
 #@ armember-membership
 msgid "Are you sure you want to remove the cover photo?"
 msgstr "Вы уверены, что хотите удалить обложку?"
 
 #: autoload.php:1795
-#: autoload.php:4013
+#: autoload.php:4012
 #: core/classes/class.arm_members_directory.php:353
 #@ armember-membership
 msgid "Are you sure you want to remove the profile photo?"
@@ -15658,14 +15657,14 @@ msgstr "Вы уверены, что хотите удалить фотограф
 
 #: autoload.php:1796
 #: autoload.php:1870
-#: autoload.php:4014
-#: autoload.php:4092
+#: autoload.php:4013
+#: autoload.php:4091
 #@ armember-membership
 msgid "Failed to perform this action. Please try again."
 msgstr "Не удалось выполнить это действие. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1807
-#: autoload.php:4028
+#: autoload.php:4027
 #@ armember-membership
 msgid "Login history cleared successfully."
 msgstr "История входов успешно очищена."
@@ -15707,134 +15706,134 @@ msgid "Password cannot be left blank."
 msgstr "Пароль не может быть оставлен пустым."
 
 #: autoload.php:1810
-#: autoload.php:4030
+#: autoload.php:4029
 #@ armember-membership
 msgid "Plan(s) have been deleted successfully."
 msgstr "План(ы) успешно удалены."
 
 #: autoload.php:1811
-#: autoload.php:4031
+#: autoload.php:4030
 #@ armember-membership
 msgid "Failed to delete plan(s). Please try again."
 msgstr "Не удалось удалить план(ы). Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1812
-#: autoload.php:4033
+#: autoload.php:4032
 #@ armember-membership
 msgid "Failed to delete the plan. Please try again."
 msgstr "Не удалось удалить план. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1815
-#: autoload.php:4036
+#: autoload.php:4035
 #@ armember-membership
 msgid "Failed to delete setup(s). Please try again."
 msgstr "Не удалось удалить настройку(и). Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1816
-#: autoload.php:4037
+#: autoload.php:4036
 #: core/classes/class.arm_membership_setup.php:4976
 #@ armember-membership
 msgid "The setup has been deleted successfully."
 msgstr "Настройка успешно удалена."
 
 #: autoload.php:1817
-#: autoload.php:4038
+#: autoload.php:4037
 #@ armember-membership
 msgid "Failed to delete the setup. Please try again."
 msgstr "Не удалось удалить настройку. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1818
-#: autoload.php:4039
+#: autoload.php:4038
 #@ armember-membership
 msgid "Form set deleted successfully."
 msgstr "Набор форм успешно удален."
 
 #: autoload.php:1819
-#: autoload.php:4040
+#: autoload.php:4039
 #@ armember-membership
 msgid "Failed to delete the form set. Please try again."
 msgstr "Не удалось удалить набор форм. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1821
-#: autoload.php:4042
+#: autoload.php:4041
 #@ armember-membership
 msgid "Failed to delete the form. Please try again."
 msgstr "Не удалось удалить форму. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1822
-#: autoload.php:4043
+#: autoload.php:4042
 #@ armember-membership
 msgid "The rule has been deleted successfully."
 msgstr "Правило успешно удалено."
 
 #: autoload.php:1823
-#: autoload.php:4044
+#: autoload.php:4043
 #@ armember-membership
 msgid "Failed to delete the rule. Please try again."
 msgstr "Не удалось удалить правило. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1824
-#: autoload.php:4045
+#: autoload.php:4044
 #@ armember-membership
 msgid "Rule(s) have been deleted successfully."
 msgstr "Правило(а) успешно удалены."
 
 #: autoload.php:1825
-#: autoload.php:4046
+#: autoload.php:4045
 #@ armember-membership
 msgid "Failed to delete rule(s). Please try again."
 msgstr "Не удалось удалить правило(а). Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1826
-#: autoload.php:4047
+#: autoload.php:4046
 #@ armember-membership
 msgid "Failed to generate the transaction details preview. Please try again."
 msgstr "Не удалось сгенерировать предварительный просмотр деталей транзакции. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1827
-#: autoload.php:4048
+#: autoload.php:4047
 #@ armember-membership
 msgid "Failed to generate the transaction invoice. Please try again."
 msgstr "Не удалось сгенерировать счет-фактуру транзакции. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1828
-#: autoload.php:4049
+#: autoload.php:4048
 #@ armember-membership
 msgid "Failed to generate the member details preview. Please try again."
 msgstr "Не удалось сгенерировать предварительный просмотр деталей участника. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1829
-#: autoload.php:4050
+#: autoload.php:4049
 #@ armember-membership
 msgid "Failed to display member activity details. Please try again."
 msgstr "Не удалось отобразить детали активности участника. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1830
-#: autoload.php:4051
+#: autoload.php:4050
 #@ armember-membership
 msgid "Failed to display ARMember CSS class information. Please try again."
 msgstr "Не удалось отобразить информацию о классе CSS ARMember. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1835
-#: autoload.php:4056
+#: autoload.php:4055
 #@ armember-membership
 msgid "Failed to delete the message. Please try again."
 msgstr "Не удалось удалить сообщение. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1837
-#: autoload.php:4058
+#: autoload.php:4057
 #@ armember-membership
 msgid "Failed to delete the message(s). Please try again."
 msgstr "Не удалось удалить сообщение(я). Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1839
-#: autoload.php:4060
+#: autoload.php:4059
 #@ armember-membership
 msgid "Settings have been saved successfully."
 msgstr "Настройки успешно сохранены."
 
 #: autoload.php:1840
-#: autoload.php:4061
+#: autoload.php:4060
 #: core/classes/class.arm_global_settings.php:1788
 #: core/classes/class.arm_members_directory.php:309
 #: core/classes/class.arm_members_directory.php:312
@@ -15843,14 +15842,14 @@ msgid "Failed to update the settings. Please try again."
 msgstr "Не удалось обновить настройки. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1841
-#: autoload.php:4062
+#: autoload.php:4061
 #: core/classes/class.arm_access_rules.php:111
 #@ armember-membership
 msgid "Default rules saved successfully."
 msgstr "Стандартные правила успешно сохранены."
 
 #: autoload.php:1842
-#: autoload.php:4063
+#: autoload.php:4062
 #@ armember-membership
 msgid "Failed to update the rules. Please try again."
 msgstr "Не удалось обновить правила. Пожалуйста, попробуйте еще раз."
@@ -15871,13 +15870,13 @@ msgid "Are you sure you want to delete this configuration?"
 msgstr "Вы уверены, что хотите удалить эту конфигурацию?"
 
 #: autoload.php:1846
-#: autoload.php:4065
+#: autoload.php:4064
 #@ armember-membership
 msgid "Failed to delete member activities. Please try again."
 msgstr "Не удалось удалить активности участника. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1848
-#: autoload.php:4067
+#: autoload.php:4066
 #: core/classes/class.arm_members_directory.php:326
 #: core/classes/class.arm_members_directory.php:329
 #@ armember-membership
@@ -15885,31 +15884,31 @@ msgid "Template options have been saved successfully."
 msgstr "Варианты шаблона успешно сохранены."
 
 #: autoload.php:1849
-#: autoload.php:4068
+#: autoload.php:4067
 #@ armember-membership
 msgid "Failed to update the template options. Please try again."
 msgstr "Не удалось обновить варианты шаблона. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1850
-#: autoload.php:4069
+#: autoload.php:4068
 #@ armember-membership
 msgid "Failed to generate the template preview. Please try again."
 msgstr "Не удалось сгенерировать предварительный просмотр шаблона. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1852
-#: autoload.php:4071
+#: autoload.php:4070
 #@ armember-membership
 msgid "Failed to add the template. Please try again."
 msgstr "Не удалось добавить шаблон. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1854
-#: autoload.php:4073
+#: autoload.php:4072
 #@ armember-membership
 msgid "Failed to delete the template. Please try again."
 msgstr "Не удалось удалить шаблон. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1855
-#: autoload.php:4074
+#: autoload.php:4073
 #: core/classes/class.arm_email_settings.php:209
 #: core/classes/class.arm_email_settings.php:235
 #@ armember-membership
@@ -15917,63 +15916,63 @@ msgid "Email template updated successfully."
 msgstr "Шаблон электронной почты успешно обновлен."
 
 #: autoload.php:1856
-#: autoload.php:4075
+#: autoload.php:4074
 #@ armember-membership
 msgid "Message updated successfully."
 msgstr "Сообщение успешно обновлено."
 
 #: autoload.php:1858
-#: autoload.php:4080
+#: autoload.php:4079
 #@ armember-membership
 msgid "Cannot set past dates."
 msgstr "Нельзя устанавливать прошедшие даты."
 
 #: autoload.php:1859
-#: autoload.php:4081
+#: autoload.php:4080
 #@ armember-membership
 msgid "The start date cannot be earlier than the current date."
 msgstr "Дата начала не может быть раньше текущей даты."
 
 #: autoload.php:1860
-#: autoload.php:4082
+#: autoload.php:4081
 #@ armember-membership
 msgid "The expiration date cannot be earlier than the current date."
 msgstr "Дата истечения срока действия не может быть раньше текущей даты."
 
 #: autoload.php:1862
-#: autoload.php:4084
+#: autoload.php:4083
 #@ armember-membership
 msgid "This set name already exists."
 msgstr "Это имя набора уже существует."
 
 #: autoload.php:1863
-#: autoload.php:4085
+#: autoload.php:4084
 #@ armember-membership
 msgid "This form name already exists."
 msgstr "Это имя формы уже существует."
 
 #: autoload.php:1864
-#: autoload.php:4086
+#: autoload.php:4085
 #@ armember-membership
 msgid "Failed to install the add-on. Please try again."
 msgstr "Не удалось установить дополнение. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1866
-#: autoload.php:4088
+#: autoload.php:4087
 #@ armember-membership
 msgid "Failed to activate the add-on. Please try again."
 msgstr "Не удалось активировать дополнение. Пожалуйста, попробуйте еще раз."
 
 #: autoload.php:1869
-#: autoload.php:4016
-#: autoload.php:4091
-#: autoload.php:4094
+#: autoload.php:4015
+#: autoload.php:4090
+#: autoload.php:4093
 #@ armember-membership
 msgid "Are you sure you want to cancel the subscription?"
 msgstr "Вы уверены, что хотите отменить подписку?"
 
 #: autoload.php:1814
-#: autoload.php:4035
+#: autoload.php:4034
 #@ armember-membership
 msgid "Setup(s) have been deleted successfully."
 msgstr "Настройка(и) успешно удалены."
@@ -16191,7 +16190,7 @@ msgstr "Транзакции не найдены"
 msgid "The username cannot contain restricted words."
 msgstr "Имя пользователя не может содержать запрещенные слова."
 
-#: core/classes/class.arm_global_settings.php:3914
+#: core/classes/class.arm_global_settings.php:3913
 #: core/views/arm_member_panel_setting.php:207
 #@ armember-membership
 msgid "Open URL in a new tab"
@@ -16476,14 +16475,14 @@ msgstr "Пользователи, вошедшие в систему"
 msgid "ARMember Lite recommends using a minimum PHP version of 5.6 or greater."
 msgstr "ARMember Lite рекомендует использовать минимальную версию PHP 5.6 или выше."
 
-#: autoload.php:3916
-#: autoload.php:4201
-#: core/classes/class.arm_reset_data.php:729
+#: autoload.php:3915
+#: autoload.php:4200
+#: core/classes/class.arm_reset_data.php:750
 #@ armember-membership
 msgid "Sorry, Your request cannot process due to security reason."
 msgstr "Извините, ваш запрос не может быть обработан по соображениям безопасности."
 
-#: autoload.php:4194
+#: autoload.php:4193
 #@ armember-membership
 msgid "Sorry, Your request cannot process due to nonce not found."
 msgstr "Извините, ваш запрос не может быть обработан, поскольку не найден nonce."
@@ -16524,72 +16523,72 @@ msgstr "Электронная почта уже существует"
 msgid "Some users have administrator privileges. Therefore, they cannot be blocked."
 msgstr "Некоторые пользователи имеют права администратора. Поэтому их нельзя заблокировать."
 
-#: core/classes/class.arm_global_settings.php:3568
+#: core/classes/class.arm_global_settings.php:3567
 #@ armember-membership
 msgid "Please activate Beaver Builder and try to activate this add-on."
 msgstr "Пожалуйста, активируйте Beaver Builder и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3574
+#: core/classes/class.arm_global_settings.php:3573
 #@ armember-membership
 msgid "Please install Beaver Builder and try to activate this add-on."
 msgstr "Пожалуйста, установите Beaver Builder и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3588
+#: core/classes/class.arm_global_settings.php:3587
 #@ armember-membership
 msgid "Please activate Divi Builder or Divi Theme and try to activate this add-on."
 msgstr "Пожалуйста, активируйте Divi Builder или Divi Theme и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3594
+#: core/classes/class.arm_global_settings.php:3593
 #@ armember-membership
 msgid "Please install Divi Builder or Divi Theme and try to activate this add-on."
 msgstr "Пожалуйста, установите Divi Builder или Divi Theme и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3608
+#: core/classes/class.arm_global_settings.php:3607
 #@ armember-membership
 msgid "Please activate WPBakery Page Builder and try to activate this add-on."
 msgstr "Пожалуйста, активируйте WPBakery Page Builder и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3614
+#: core/classes/class.arm_global_settings.php:3613
 #@ armember-membership
 msgid "Please install WPBakery Page Builder and try to activate this add-on."
 msgstr "Пожалуйста, установите WPBakery Page Builder и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3628
+#: core/classes/class.arm_global_settings.php:3627
 #@ armember-membership
 msgid "Please activate Fusion Builder or Avada Theme and try to activate this add-on."
 msgstr "Пожалуйста, активируйте Fusion Builder или Avada Theme и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3634
+#: core/classes/class.arm_global_settings.php:3633
 #@ armember-membership
 msgid "Please install Fusion Builder or Avada Theme and try to activate this add-on."
 msgstr "Пожалуйста, установите Fusion Builder или Avada Theme и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3662
+#: core/classes/class.arm_global_settings.php:3661
 #@ armember-membership
 msgid "Please activate Oxygen Builder and try to activate this add-on."
 msgstr "Пожалуйста, активируйте Oxygen Builder и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3665
+#: core/classes/class.arm_global_settings.php:3664
 #@ armember-membership
 msgid "Please install Oxygen Builder and try to activate this add-on."
 msgstr "Пожалуйста, установите Oxygen Builder и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3681
+#: core/classes/class.arm_global_settings.php:3680
 #@ armember-membership
 msgid "Please activate SiteOrigin Builder and try to activate this add-on."
 msgstr "Пожалуйста, активируйте SiteOrigin Builder и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3687
+#: core/classes/class.arm_global_settings.php:3686
 #@ armember-membership
 msgid "Please install SiteOrigin Builder and try to activate this add-on."
 msgstr "Пожалуйста, установите SiteOrigin Builder и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3701
+#: core/classes/class.arm_global_settings.php:3700
 #@ armember-membership
 msgid "Please activate Bricks Builder and try to activate this add-on."
 msgstr "Пожалуйста, активируйте Bricks Builder и попробуйте активировать этот плагин."
 
-#: core/classes/class.arm_global_settings.php:3707
+#: core/classes/class.arm_global_settings.php:3706
 #@ armember-membership
 msgid "Please install Bricks Builder and try to activate this add-on."
 msgstr "Пожалуйста, установите Bricks Builder и попробуйте активировать этот плагин."
@@ -17001,7 +17000,7 @@ msgid "Sorry, something went wrong while updating preset fields."
 msgstr "Извините, произошла ошибка при обновлении полей пресета."
 
 #: autoload.php:1833
-#: autoload.php:4054
+#: autoload.php:4053
 #: core/classes/class.arm_transaction.php:610
 #@ armember-membership
 msgid "Transaction(s) have been deleted successfully."
@@ -17146,198 +17145,237 @@ msgstr "Обратная связь при отмене"
 msgid "Ask members why they are cancelling their membership and collect their feedback before the cancellation is completed."
 msgstr "Спросите у участников, почему они отменяют членство, и соберите их отзывы до завершения отмены."
 
-#. translators: plugin header field 'Version'
-#: armember-membership.php:0
-#@ armember-membership
-msgid "6.3"
-msgstr "6.3"
-
-#: core/classes/class.arm_reset_data.php:44
+#: core/classes/class.arm_reset_data.php:38
 #@ armember-membership
 msgid "Members & membership plans"
 msgstr "Члены и планы членства"
 
-#: core/classes/class.arm_reset_data.php:45
+#: core/classes/class.arm_reset_data.php:39
 #@ armember-membership
 msgid "Members, their plans, subscriptions and profile data."
 msgstr "Члены, их планы, подписки и данные профиля."
 
-#: core/classes/class.arm_reset_data.php:50
+#: core/classes/class.arm_reset_data.php:45
 #@ armember-membership
 msgid "Transactions & payment history"
 msgstr "Транзакции и история платежей"
 
-#: core/classes/class.arm_reset_data.php:51
+#: core/classes/class.arm_reset_data.php:46
 #@ armember-membership
 msgid "Payment log, bank transfer requests and invoices."
 msgstr "Журнал платежей, запросы банковских переводов и счета-фактуры."
 
-#: core/classes/class.arm_reset_data.php:56
+#: core/classes/class.arm_reset_data.php:55
 #@ armember-membership
 msgid "Login history"
 msgstr "История входов"
 
-#: core/classes/class.arm_reset_data.php:57
+#: core/classes/class.arm_reset_data.php:56
 #@ armember-membership
 msgid "Member login and logout history."
 msgstr "История входов и выходов участников."
 
-#: core/classes/class.arm_reset_data.php:62
+#: core/classes/class.arm_reset_data.php:63
 #@ armember-membership
 msgid "Security & debug logs"
 msgstr "Логи безопасности и отладки"
 
-#: core/classes/class.arm_reset_data.php:63
+#: core/classes/class.arm_reset_data.php:64
 #@ armember-membership
 msgid "Failed logins, lockouts, payment and general debug logs."
 msgstr "Неудачные входы, блокировки, платежи и общие логи отладки."
 
-#: core/classes/class.arm_reset_data.php:147
-#: core/views/arm_reset_data.php:60
+#: core/views/arm_reset_data.php:65
 #@ armember-membership
 msgid "Delete WordPress user accounts"
 msgstr "Удалить учетные записи пользователей WordPress"
 
-#: core/classes/class.arm_reset_data.php:147
-#@ armember-membership
-msgid "Keep user accounts, remove only assigned plan"
-msgstr "Сохранить учетные записи пользователей, удалить только назначенный план"
-
-#. translators: %s: number of members
-#: core/classes/class.arm_reset_data.php:149
+#: core/classes/class.arm_reset_data.php:159
 #, php-format
 #@ armember-membership
 msgid "%s member"
 msgid_plural "%s members"
 msgstr[0] "%s участник"
 
-#. translators: %s: number of records
-#: core/classes/class.arm_reset_data.php:153
+#: core/classes/class.arm_reset_data.php:162
 #, php-format
 #@ armember-membership
 msgid "%s record"
 msgid_plural "%s records"
 msgstr[0] "%s запись"
 
-#: core/classes/class.arm_reset_data.php:180
+#: core/classes/class.arm_reset_data.php:189
 #@ armember-membership
 msgid "Active recurring subscriptions"
 msgstr "Активные периодические подписки"
 
-#: core/classes/class.arm_reset_data.php:181
+#: core/classes/class.arm_reset_data.php:190
 #@ armember-membership
 msgid "Cancelled at the payment gateway without sending ARMember emails."
 msgstr "Отменено в платежном шлюзе без отправки писем ARMember."
 
 #. translators: %s: number of subscriptions
-#: core/classes/class.arm_reset_data.php:184
+#: core/classes/class.arm_reset_data.php:193
 #, php-format
 #@ armember-membership
 msgid "%s subscription"
 msgid_plural "%s subscriptions"
 msgstr[0] "%s подписка"
 
-#: core/classes/class.arm_reset_data.php:192
-#: core/views/arm_reset_data.php:81
+#: core/classes/class.arm_reset_data.php:201
+#: core/views/arm_reset_data.php:86
 #@ armember-membership
 msgid "Reset Invoice ID and start from 1"
 msgstr "Сбросить ID счета и начать с 1"
 
-#: core/classes/class.arm_reset_data.php:217
+#: core/classes/class.arm_reset_data.php:226
 #@ armember-membership
 msgid "Invalid data type."
 msgstr "Недопустимый тип данных."
 
-#: core/classes/class.arm_reset_data.php:737
+#: core/classes/class.arm_reset_data.php:758
 #@ armember-membership
 msgid "Please select at least one data type to remove."
 msgstr "Пожалуйста, выберите хотя бы один тип данных для удаления."
 
-#: core/views/arm_general_settings.php:43
-#: core/views/arm_general_settings.php:132
-#: core/views/arm_reset_data.php:25
-#: core/views/arm_reset_data.php:121
+#: core/views/arm_general_settings.php:46
+#: core/views/arm_general_settings.php:137
+#: core/views/arm_reset_data.php:26
+#: core/views/arm_reset_data.php:127
 #@ armember-membership
 msgid "Reset Data"
 msgstr "Сбросить данные"
 
-#: core/views/arm_reset_data.php:19
+#: core/views/arm_reset_data.php:20
 #@ armember-membership
 msgid "Running..."
 msgstr "Выполняется..."
 
-#: core/views/arm_reset_data.php:20
+#: core/views/arm_reset_data.php:21
 #@ armember-membership
 msgid "Waiting"
 msgstr "Ожидание"
 
-#: core/views/arm_reset_data.php:22
+#: core/views/arm_reset_data.php:23
 #@ armember-membership
 msgid "Something went wrong while resetting data. Please try again."
 msgstr "Что‑то пошло не так при сбросе данных. Пожалуйста, попробуйте снова."
 
-#: core/views/arm_reset_data.php:34
+#: core/views/arm_reset_data.php:35
 #@ armember-membership
 msgid "Choose Data to Reset"
 msgstr "Выберите данные для сброса"
 
-#: core/views/arm_reset_data.php:57
+#: core/views/arm_reset_data.php:62
 #@ armember-membership
 msgid "Keep user accounts, remove only ARMember assigned plan"
 msgstr "Сохранить учетные записи пользователей, удалить только план, назначенный ARMember"
 
-#: core/views/arm_reset_data.php:61
-#@ armember-membership
-msgid "Administrator accounts are never deleted. Only users with an ARMember plan, plan history or subscription are deleted, and their posts are assigned to you."
-msgstr "Учетные записи администраторов никогда не удаляются. Удаляются только пользователи с планом ARMember, историей планов или подпиской, а их записи переназначаются вам."
-
-#: core/views/arm_reset_data.php:82
+#: core/views/arm_reset_data.php:87
 #@ armember-membership
 msgid "Only applies when transactions are removed."
 msgstr "Применяется только при удалении транзакций."
 
-#: core/views/arm_reset_data.php:95
+#: core/views/arm_reset_data.php:100
 #@ armember-membership
 msgid "Reset Selected Data"
 msgstr "Сбросить выбранные данные"
 
-#: core/views/arm_reset_data.php:108
+#: core/views/arm_reset_data.php:113
 #@ armember-membership
 msgid "Confirm reset"
 msgstr "Подтвердить сброс"
 
-#: core/views/arm_reset_data.php:113
+#: core/views/arm_reset_data.php:118
 #@ armember-membership
 msgid "The following data will be permanently deleted."
 msgstr "Следующие данные будут удалены без возможности восстановления."
 
-#: core/views/arm_reset_data.php:115
+#: core/views/arm_reset_data.php:121
 #@ armember-membership
 msgid "This can't be undone. Take a database backup first. Recurring subscriptions are cancelled at the payment gateway; the gateway itself may still send its own email (for example PayPal). Data of inactive add-ons is not removed."
 msgstr "Это действие нельзя отменить. Сначала сделайте резервную копию базы данных. Периодические подписки отменяются в платежном шлюзе; сам шлюз может всё ещё отправлять свои письма (например, PayPal). Данные неактивных дополнений не удаляются."
 
-#: core/views/arm_reset_data.php:135
+#: core/views/arm_reset_data.php:141
 #@ armember-membership
 msgid "Resetting data..."
 msgstr "Сброс данных..."
 
-#: core/views/arm_reset_data.php:138
+#: core/views/arm_reset_data.php:144
 #@ armember-membership
 msgid "Please keep this page open. Data is removed in small batches."
 msgstr "Пожалуйста, оставьте эту страницу открытой. Данные удаляются небольшими партиями."
 
-#: core/views/arm_reset_data.php:149
+#: core/views/arm_reset_data.php:155
 #@ armember-membership
 msgid "Retry"
 msgstr "Повторить"
 
-#: core/views/arm_reset_data.php:164
+#: core/views/arm_reset_data.php:172
 #@ armember-membership
 msgid "Reset completed"
 msgstr "Сброс завершён"
 
-#: core/views/arm_reset_data.php:167
+#: core/views/arm_reset_data.php:175
 #@ armember-membership
 msgid "Your site is ready for production."
 msgstr "Ваш сайт готов к запуску."
+
+#. translators: plugin header field 'Version'
+#: armember-membership.php:0
+#@ armember-membership
+msgid "6.3.1"
+msgstr "6.3.1"
+
+#: core/classes/class.arm_reset_data.php:148
+#@ armember-membership
+msgid "Only ARMember members are deleted."
+msgstr "Удаляются только участники ARMember."
+
+#: core/classes/class.arm_reset_data.php:148
+#@ armember-membership
+msgid "Only ARMember plans are removed."
+msgstr "Удаляются только планы ARMember."
+
+#: core/classes/class.arm_reset_data.php:152
+#, php-format
+#@ armember-membership
+msgid "%s other member"
+msgid_plural "%s other members"
+msgstr[0] "%s другой участник"
+msgstr[1] "%s других участников"
+msgstr[2] "%s других участников"
+
+#: core/classes/class.arm_reset_data.php:154
+#, php-format
+#@ armember-membership
+msgid "%s and administrators are kept."
+msgstr "%s и администраторы сохраняются."
+
+#: core/classes/class.arm_reset_data.php:156
+#, php-format
+#@ armember-membership
+msgid "%s are not changed."
+msgstr "%s не изменены."
+
+#: core/classes/class.arm_reset_data.php:794
+#@ armember-membership
+msgid "Your role can't manage members."
+msgstr "Ваша роль не позволяет управлять участниками."
+
+#: core/classes/class.arm_reset_data.php:797
+#@ armember-membership
+msgid "Your role can't manage transactions."
+msgstr "Ваша роль не позволяет управлять транзакциями."
+
+#: core/classes/class.arm_reset_data.php:801
+#, php-format
+#@ armember-membership
+msgid "Your role can't reset %s."
+msgstr "Ваша роль не может сбросить %s."
+
+#: core/views/arm_reset_data.php:66
+#@ armember-membership
+msgid "Deletes only users registered through ARMember or with an ARMember plan, plan history or subscription. Administrators and other WordPress users (for example customers or editors) are not deleted. Their posts are assigned to you."
+msgstr "Удаляются только те пользователи, которые были зарегистрированы через ARMember, либо имеют план, историю планов или подписку в ARMember. Администраторы и другие пользователи WordPress (например, клиенты или редакторы) не удаляются. Их записи передаются вам."
 

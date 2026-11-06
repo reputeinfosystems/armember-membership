@@ -1279,8 +1279,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					unset($_SESSION['arm_file_upload_arr'][$meta_field_name][array_search($file_name,$_SESSION['arm_file_upload_arr'][$meta_field_name])]);
 					$arm_unset_from_file_name = 1;
 					$_SESSION['arm_file_upload_arr'][$meta_field_name] = array_values($_SESSION['arm_file_upload_arr'][$meta_field_name]); //phpcs:ignore
-				}else if (!empty($meta_field_name)){
-					$_SESSION['arm_file_upload_arr'][$meta_field_name]="-";
 				}
 			}
 			
@@ -1303,8 +1301,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
                     if(!empty($meta_field_name) && is_array($_SESSION['arm_file_upload_arr'][$meta_field_name]) && isset($_SESSION['arm_file_upload_arr'][$meta_field_name][array_search($file_name,$_SESSION['arm_file_upload_arr'][$meta_field_name])])){ //phpcs:ignore
                         unset($_SESSION['arm_file_upload_arr'][$meta_field_name][array_search($file_name,$_SESSION['arm_file_upload_arr'][$meta_field_name])]);
                         $_SESSION['arm_file_upload_arr'][$meta_field_name] = array_values($_SESSION['arm_file_upload_arr'][$meta_field_name]); //phpcs:ignore
-                    }else if (!empty($meta_field_name)){
-                        $_SESSION['arm_file_upload_arr'][$meta_field_name]="-";
                     }
                 }
 					echo '1';

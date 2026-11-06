@@ -42,7 +42,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 				$arm_lite_newdbversion = get_option( 'armlite_version' );
 			}
 
-			if ( version_compare( $arm_lite_newdbversion, '6.3', '<' ) ) {
+			if ( version_compare( $arm_lite_newdbversion, '6.3.1', '<' ) ) {
 				$path = MEMBERSHIPLITE_VIEWS_DIR . '/upgrade_latest_data.php';
 				include $path;
 			}
@@ -337,7 +337,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 
 		function arm_upload_front() {
 			global $ARMemberLite;
-			// $ARMemberLite->arm_check_user_cap( '', '1' ); //phpcs:ignore --Reason:Verifying nonce
+			$ARMemberLite->arm_check_user_cap( '', '1' ); //phpcs:ignore --Reason:Verifying nonce
 			$arm_lite_upload_dir = MEMBERSHIPLITE_UPLOAD_DIR . '/';
 			$arm_lite_upload_url = MEMBERSHIPLITE_UPLOAD_URL . '/';
 			$ARMemberLite->arm_session_start(true);
@@ -379,7 +379,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 			} else {
 				$files             = $_FILES['armfileselect']; //phpcs:ignore
 				$file_size         = ( isset( $_REQUEST['allow_size'] ) ) ? intval($_REQUEST['allow_size']) : ''; //phpcs:ignore
-				$file_name         = !empty( $_REQUEST['fname'] ) ? "arm_".arm_generate_random_code()."_".(sanitize_text_field($_REQUEST['fname'])) : ''; //phpcs:ignore
+				$file_name         = ! empty( $_REQUEST['fname'] ) ? 'arm_' . arm_generate_random_code() . '_' . sanitize_file_name( basename( str_replace( chr( 92 ), '/', sanitize_text_field( wp_unslash( $_REQUEST['fname'] ) ) ) ) ) : ''; //phpcs:ignore
 				$file_size_new     = intval($files['size']);
 				$file_size_new     = number_format( $file_size_new / 1048576, 2, '.', '' );
 				$arm_is_valid_file = $this->arm_check_valid_file_ext_data( $file_name, $file_size_new, $files );
@@ -441,7 +441,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 			} else {
 				$files         = !empty($_FILES['armfileselect']) ? $_FILES['armfileselect'] : ''; //phpcs:ignore
 				$file_size     = ( isset( $_REQUEST['allow_size'] ) ) ? intval($_REQUEST['allow_size']) : ''; //phpcs:ignore
-				$file_name     = !empty($_REQUEST['fname']) ? sanitize_text_field($_REQUEST['fname']) : ''; //phpcs:ignore
+				$file_name     = ! empty( $_REQUEST['fname'] ) ? sanitize_file_name( basename( str_replace( chr( 92 ), '/', sanitize_text_field( wp_unslash( $_REQUEST['fname'] ) ) ) ) ) : ''; //phpcs:ignore
 				$file_size_new = !empty( $_FILES['armfileselect']['size'] ) ? intval($_FILES['armfileselect']['size']) : ''; //phpcs:ignore
 				$file_size_new = number_format( $file_size_new / 1048576, 2, '.', '' );
 
@@ -507,7 +507,7 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 			} else {
 				$files         = $_FILES['armfileselect']; //phpcs:ignore
 				$file_size     = ( isset( $_REQUEST['allow_size'] ) ) ? intval($_REQUEST['allow_size']) : ''; //phpcs:ignore
-				$file_name     = !empty( $_REQUEST['fname'] ) ? "arm_".arm_generate_random_code()."_".(sanitize_text_field($_REQUEST['fname'])) : ''; //phpcs:ignore
+				$file_name     = ! empty( $_REQUEST['fname'] ) ? 'arm_' . arm_generate_random_code() . '_' . sanitize_file_name( basename( str_replace( chr( 92 ), '/', sanitize_text_field( wp_unslash( $_REQUEST['fname'] ) ) ) ) ) : ''; //phpcs:ignore
 				$file_size_new = intval($files['size']);
 				$file_size_new = number_format( $file_size_new / 1048576, 2, '.', '' );
 
@@ -588,8 +588,8 @@ if ( ! class_exists( 'ARM_members_activity_Lite' ) ) {
 		}
 
 		function arm_check_for_invalid_data( $file_content = '', $arm_file_array = array() ) {
-	    		$arm_valid_pattern_with_short_tag = '/(\<\?(php)|\<\?\=)|(\<(script|iframe))/';
-			$arm_valid_pattern_without_short_tag = '/(\<\?(php))|(\<(script|iframe))/';
+	    		$arm_valid_pattern_with_short_tag = '/(\<\?(php)|\<\?\=)|(\<(script|iframe))/i';
+			$arm_valid_pattern_without_short_tag = '/(\<\?(php))|(\<(script|iframe))/i';
 
 			$is_short_tag_enabled = ini_get( 'short_open_tag' ); //phpcs:ignore
 

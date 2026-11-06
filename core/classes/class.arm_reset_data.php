@@ -47,21 +47,24 @@ if ( ! class_exists( 'ARM_Reset_Data_Lite' ) ) {
 					'tables'      => array( $ARMemberLite->tbl_arm_payment_log ),
 					'notes'       => array(),
 					'capability'  => 'arm_manage_transactions',
-				),
-				'activity'     => array(
+				)
+			);
+
+			if ( $ARMemberLite->is_arm_pro_active ) {
+				$arm_rd_modules['activity'] = array(
 					'label'       => __( 'Login history', 'armember-membership' ),
 					'description' => __( 'Member login and logout history.', 'armember-membership' ),
 					'tables'      => array( $ARMemberLite->tbl_arm_login_history ),
 					'notes'       => array(),
 					'capability'  => 'arm_manage_general_settings',
-				),
-				'logs'         => array(
-					'label'       => __( 'Security & debug logs', 'armember-membership' ),
-					'description' => __( 'Failed logins, lockouts, payment and general debug logs.', 'armember-membership' ),
-					'tables'      => array( $ARMemberLite->tbl_arm_fail_attempts, $ARMemberLite->tbl_arm_lockdown, $ARMemberLite->tbl_arm_debug_payment_log, $ARMemberLite->tbl_arm_debug_general_log ),
-					'notes'       => array(),
-					'capability'  => 'arm_manage_general_settings',
-				),
+				);
+			}	
+			$arm_rd_modules['logs'] = array(
+				'label'       => __( 'Security & debug logs', 'armember-membership' ),
+				'description' => __( 'Failed logins, lockouts, payment and general debug logs.', 'armember-membership' ),
+				'tables'      => array( $ARMemberLite->tbl_arm_fail_attempts, $ARMemberLite->tbl_arm_lockdown, $ARMemberLite->tbl_arm_debug_payment_log, $ARMemberLite->tbl_arm_debug_general_log ),
+				'notes'       => array(),
+				'capability'  => 'arm_manage_general_settings',
 			);
 
 			if ( $ARMemberLite->is_arm_pro_active ) {
