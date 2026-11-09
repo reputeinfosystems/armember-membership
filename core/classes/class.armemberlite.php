@@ -447,7 +447,10 @@ if ( ! class_exists( 'ARM_common_lite' ) ) {
             $posts         = $wp_query->posts;
             if ( is_array( $posts ) ) {
                 foreach ( $posts as $post ) {
-                    if ( preg_match_all( '/' . $pattern . '/s', $post->post_content, $matches ) > 0 ) {
+					if (is_numeric($arm_post)) {
+						$arm_post = get_post($arm_post);
+					}
+                    if ($arm_post instanceof WP_Post && preg_match_all( '/' . $pattern . '/s', $post->post_content, $matches ) > 0 ) {
                         $found_matches[] = $matches;
                     }
                 }
