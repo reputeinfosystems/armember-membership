@@ -1003,7 +1003,7 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 		 *
 		 * @return array of plans, False if there is no plan(s).
 		 */
-		function arm_get_all_subscription_plans( $fields = 'all', $object_type = ARRAY_A, $allow_user_no_plan = false ) {
+		function arm_get_all_subscription_plans( $fields = 'all', $object_type = ARRAY_A, $allow_user_no_plan = false , $offset = '', $per_page = '') {
 			global $wp, $wpdb, $ARMemberLite, $arm_members_class, $arm_member_forms, $arm_global_settings;
 			$selectFields = '*';
 			if ( ! empty( $fields ) ) {
@@ -1013,25 +1013,15 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 			}
 			$object_type = ! empty( $object_type ) ? $object_type : ARRAY_A;
 
-			$results = $wpdb->get_results( $wpdb->prepare("SELECT ".$selectFields.", `arm_subscription_plan_id` FROM `" . $ARMemberLite->tbl_arm_subscription_plans . "` WHERE `arm_subscription_plan_is_delete`=%d AND `arm_subscription_plan_post_id`=%d AND `arm_subscription_plan_gift_status`=%d ORDER BY `arm_subscription_plan_id` DESC",0,0,0), $object_type );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_subscription_plans is a table name
+			if(empty($offset) && empty($per_page))
+			{
+				$results = $wpdb->get_results( $wpdb->prepare("SELECT ".$selectFields.", `arm_subscription_plan_id` FROM `" . $ARMemberLite->tbl_arm_subscription_plans . "` WHERE `arm_subscription_plan_is_delete`=%d AND `arm_subscription_plan_post_id`=%d AND `arm_subscription_plan_gift_status`=%d ORDER BY `arm_subscription_plan_id` DESC",0,0,0), $object_type );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_subscription_plans is a table name
+			}
+			else{
+				$results = $wpdb->get_results( $wpdb->prepare("SELECT ".$selectFields.", `arm_subscription_plan_id` FROM `" . $ARMemberLite->tbl_arm_subscription_plans . "` WHERE `arm_subscription_plan_is_delete`=%d AND `arm_subscription_plan_post_id`=%d AND `arm_subscription_plan_gift_status`=%d ORDER BY `arm_subscription_plan_id` DESC LIMIT %d,%d",0,0,0,$offset,$per_page), $object_type );//phpcs:ignore --Reason $ARMemberLite->tbl_arm_subscription_plans is a table name
+			}
 			if ( ! empty( $results ) || $allow_user_no_plan ) {
 				$plans_data = array();
-				if ( $allow_user_no_plan ) {
-					$plnID   = -2;
-					$plnName = esc_html__( 'Users Having No Plan', 'armember-membership' );
-					if ( $object_type == OBJECT || $object_type == OBJECT_K ) {
-						$sp->arm_subscription_plan_id          = $plnID;
-						$sp->arm_subscription_plan_name        = $plnName;
-						$sp->arm_subscription_plan_description = '';
-						$sp->arm_subscription_plan_options     = array();
-					} else {
-						$sp['arm_subscription_plan_id']          = $plnID;
-						$sp['arm_subscription_plan_name']        = $plnName;
-						$sp['arm_subscription_plan_description'] = '';
-						$sp['arm_subscription_plan_options']     = array();
-					}
-					$plans_data[ $plnID ] = $sp;
-				}
 				if ( ! empty( $results ) ) {
 					foreach ( $results as $sp ) {
 						if ( $object_type == OBJECT || $object_type == OBJECT_K ) {
@@ -1059,6 +1049,22 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						}
 						$plans_data[ $plnID ] = $sp;
 					}
+				}
+				if ( $allow_user_no_plan ) {
+					$plnID   = -2;
+					$plnName = esc_html__( 'Users Having No Plan', 'armember-membership' );
+					if ( $object_type == OBJECT || $object_type == OBJECT_K ) {
+						$sp->arm_subscription_plan_id          = $plnID;
+						$sp->arm_subscription_plan_name        = $plnName;
+						$sp->arm_subscription_plan_description = '';
+						$sp->arm_subscription_plan_options     = array();
+					} else {
+						$sp['arm_subscription_plan_id']          = $plnID;
+						$sp['arm_subscription_plan_name']        = $plnName;
+						$sp['arm_subscription_plan_description'] = '';
+						$sp['arm_subscription_plan_options']     = array();
+					}
+					$plans_data[ $plnID ] = $sp;
 				}
 				return $plans_data;
 			} else {
@@ -1464,11 +1470,11 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						$paly_cycle_data = $plan->prepare_recurring_data( $plan_cycle );
 						$expire_strtime  = '';
 
-						if( $plan->is_recurring() && $plan_cycle_data['rec_time'] != 'infinite' )
-			                        {
-                        				$planData['arm_completed_recurring'] = $plan_cycle_data['rec_time'];
-                            			}
-                            			$expire_strtime = $planData['arm_next_due_payment'];
+						if( $plan->is_recurring() && !empty($plan_cycle_data) && $plan_cycle_data['rec_time'] != 'infinite' )
+						{
+							$planData['arm_completed_recurring'] = $plan_cycle_data['rec_time'];
+						}
+						$expire_strtime = $planData['arm_next_due_payment'];
 						$planData['arm_expire_plan'] = $expire_strtime;
 						arm_update_user_meta($user_id, 'arm_user_plan_' . $plan_id, $planData);
 						$expire_time = date_i18n( $date_format, $expire_strtime );
@@ -1701,8 +1707,9 @@ if ( ! class_exists( 'ARM_subscription_plans_Lite' ) ) {
 						}
 						$newPlanData['arm_start_plan'] = $start_time;
 
-						 $newPlanData['arm_payment_mode']   = $payment_mode;
-						  $newPlanData['arm_payment_cycle'] = $payment_cycle;
+						$newPlanData['arm_payment_mode']   = $payment_mode;
+						$newPlanData['arm_payment_cycle'] = $payment_cycle;
+						$newPlanData['arm_cencelled_plan'] = '';
 
 						// Expire Plan
 						$expire_time = $new_plan->arm_plan_expire_time( $start_time, $payment_mode, $payment_cycle );

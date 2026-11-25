@@ -2336,6 +2336,10 @@ if ((!$isRegister && !$isEditProfile)) {
 	__ARM_TITLE = '<?php esc_html_e( 'Title', 'armember-membership' ); ?>';
 	__ARM_METAKEY = '<?php esc_html_e( 'Meta Key', 'armember-membership' ); ?>';
 	__ARM_VALUE = '<?php esc_html_e( 'Meta Value', 'armember-membership' ); ?>';
+	__ARM_ERR_MSG_FONT_COLOR = <?php echo wp_json_encode( ! empty( $form_settings['style']['error_font_color'] ) ? sanitize_text_field( wp_unslash( $form_settings['style']['error_font_color'] ) ) : '#FF3B3B' ); ?>;
+	__ARM_ERR_MSG_BG_COLOR = <?php echo wp_json_encode( ! empty( $form_settings['style']['error_field_bg_color'] ) ? sanitize_text_field( wp_unslash( $form_settings['style']['error_field_bg_color'] ) ) : '#ffffff' ); ?>;
+	__ARM_FORM_LAYOUT = <?php echo wp_json_encode( ! empty( $form_settings['style']['form_layout'] ) ? sanitize_text_field( wp_unslash( $form_settings['style']['form_layout'] ) ) : 'writer_border' ); ?>;
+	__ARM_FORM_VALIDATION_TYPE = <?php echo wp_json_encode( ! empty( $form_settings['style']['validation_type'] ) ? sanitize_text_field( wp_unslash( $form_settings['style']['validation_type'] ) ) : 'standard' ); ?>;
 	function armColorSchemes() {
 		var ColorSchemes = <?php echo wp_json_encode( $form_color_schemes ); ?>;
 		return ColorSchemes;

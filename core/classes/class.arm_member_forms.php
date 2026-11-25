@@ -4880,6 +4880,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								if ( $drpdown_cntr == 0 ) {
 									$default_option_val   = $key;
 									$default_option_label = $option;
+									$field_attr .= ' value="' . esc_attr( $key ) . '"';
 								}
 								if ( $value['meta_key'] == 'country' && isset( $value_data ) && ! empty( $field_val ) && ! is_numeric( $field_val ) ) {
 									if ( $field_val == $new_data[0] ) {
@@ -4889,9 +4890,6 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 								$selected_val = ( strtolower( $field_val ) == strtolower( $key ) ) ? 'selected' : '';
 								if ( array_key_exists( $key, $allOptions ) ) {
 									continue;
-								}
-								if ( ( strtolower( $field_val ) == strtolower( $key ) ) ) {
-									$field_attr .= ' value="' . esc_attr( $key ) . '"';
 								}
 
 								$allOptions[ $key ] = $option;
@@ -5308,7 +5306,7 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 							$arm_default_link_label .= '</a>';
 							$arm_default_link_label .= '';
 
-							$arm_login_link_label = ! empty( $form->settings['login_link_label'] ) ? $form->settings['login_link_label'] : $arm_default_link_label;
+							$arm_login_link_label = ! empty( $form->settings['login_link_label'] ) ? wp_unslash( $form->settings['login_link_label'] ) : $arm_default_link_label;
 							$arm_login_link_label = str_replace( '[ARMLINK]', '<a href="#">', $arm_login_link_label );
 							$arm_login_link_label = str_replace( '[/ARMLINK]', '</a>', $arm_login_link_label );
 
@@ -5624,6 +5622,9 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 						$member_data['roles'] = '';
 					}
 
+					$arm_old_user_suspended_plan_ids = arm_get_user_meta($user_ID, 'arm_user_suspended_plan_ids', true);
+					$arm_old_user_suspended_plan_ids = (isset($arm_old_user_suspended_plan_ids) && !empty($arm_old_user_suspended_plan_ids) && is_array($arm_old_user_suspended_plan_ids)) ? $arm_old_user_suspended_plan_ids : array();
+
 					$arm_user_suspended_plan_ids = isset( $member_data['arm_user_suspended_plan'] ) ? $member_data['arm_user_suspended_plan'] : array();
 					arm_update_user_meta( $user_ID, 'arm_user_suspended_plan_ids', $arm_user_suspended_plan_ids );
 
@@ -5651,6 +5652,36 @@ if ( ! class_exists( 'ARM_member_forms_Lite' ) ) {
 					
 					$admin_save_flag = 1;
 					do_action( 'arm_member_update_meta', $user_ID, $member_data, $admin_save_flag );
+
+					$arm_activated_suspended_plan_ids = array_diff($arm_old_user_suspended_plan_ids, $arm_user_suspended_plan_ids);
+					if (!empty($arm_activated_suspended_plan_ids)) {
+						$current_user_plan_ids = arm_get_user_meta($user_ID, 'arm_user_plan_ids', true);
+						$current_user_plan_ids = (isset($current_user_plan_ids) && !empty($current_user_plan_ids) && is_array($current_user_plan_ids)) ? $current_user_plan_ids : array();
+						
+						foreach ($arm_activated_suspended_plan_ids as $arm_activated_plan_id) {
+							$arm_activated_plan_id = intval($arm_activated_plan_id);
+							if (empty($arm_activated_plan_id) || !in_array($arm_activated_plan_id, $current_user_plan_ids)) {
+								continue;
+							}
+							arm_update_user_meta($user_ID, 'arm_admin_user_remove_suspended_plan_' . $arm_activated_plan_id, current_time('mysql'));
+							
+							$planDataCheck = arm_get_user_meta($user_ID, 'arm_user_plan_' . $arm_activated_plan_id, true);
+							$planDataCheck = !empty($planDataCheck) ? $planDataCheck : array();
+							if (!empty($planDataCheck) && !empty($planDataCheck['arm_payment_mode']) && $planDataCheck['arm_payment_mode'] != 'manual_subscription') {
+								$payment_cycle = isset($planDataCheck['arm_payment_cycle']) ? $planDataCheck['arm_payment_cycle'] : 0;
+								$completed_recurrence = isset($planDataCheck['arm_completed_recurring']) ? intval($planDataCheck['arm_completed_recurring']) : 0;
+								$completed_recurrence++;
+								$planDataCheck['arm_completed_recurring'] = $completed_recurrence;
+								
+								arm_update_user_meta($user_ID, 'arm_user_plan_' . $arm_activated_plan_id, $planDataCheck);
+
+								$arm_next_payment_date = $arm_members_class->arm_get_next_due_date($user_ID, $arm_activated_plan_id, false, $payment_cycle);
+								$planDataCheck['arm_next_due_payment'] = $arm_next_payment_date;
+								arm_update_user_meta($user_ID, 'arm_user_plan_' . $arm_activated_plan_id, $planDataCheck);
+							}
+							do_action('arm_after_user_plan_change_by_admin', $user_ID, $arm_activated_plan_id);
+						}
+					}
 
 					if ( ! empty( $member_data['arm_user_plan'] ) ) {
 						$arm_changed_expiry_date_plan = arm_get_user_meta( $user_ID, 'arm_changed_expiry_date_plans', true );

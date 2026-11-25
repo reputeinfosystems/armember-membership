@@ -112,7 +112,7 @@ define( 'MEMBERSHIPLITE_UPLOAD_URL', $arm_lite_upload_url );
 
 /* Defining Membership Plugin Version */
 global $arm_lite_version,$armember_website_url;
-$arm_lite_version = '6.3.1';
+$arm_lite_version = '6.4';
 define( 'MEMBERSHIPLITE_VERSION', $arm_lite_version );
 
 $armember_website_url = "https://armemberplugin.com/";
@@ -291,7 +291,15 @@ if(!$ARMemberLite->is_arm_pro_active){
 		global $ARMelementor;
 		$ARMelementor = new arm_lite_membership_elementcontroller();
 	}
+
 	
+}
+if ( file_exists( MEMBERSHIPLITE_CLASSES_DIR . '/class.arm_ai_abilities_base.php' ) ) {
+	require_once MEMBERSHIPLITE_CLASSES_DIR . '/class.arm_ai_abilities_base.php';
+}
+if ( file_exists( MEMBERSHIPLITE_CLASSES_DIR . '/class.arm_ai_abilities.php' ) ) {
+	require_once MEMBERSHIPLITE_CLASSES_DIR . '/class.arm_ai_abilities.php';
+	ARM_ai_abilities_Lite::arm_register_abilities();
 }
 
 if( file_exists(MEMBERSHIPLITE_CLASSES_DIR.'/class.armemberlite.php')){
@@ -3844,10 +3852,13 @@ class ARMemberlite {
 
 		$arm_change_log = array(
 			'show_critical_title' => 1,
-			'update_version' => '6.3.1',
+			'update_version' => '6.4',
 			'critical_title'      => 'Version',
 			'critical'            => array(
-				'Minor bug fixes.',
+				'Added: AI integration support through the WordPress Abilities API.',
+				'Added: Sorting of Member Directory by Custom Fields (First Name, Last Name, Email, etc.).',
+				'Added: Manage Members filter to list members without a membership plan.',
+				'Minor bug fixes and improvements.'
 			),
 			'show_major_title'    => 0,
 			'major_title'         => 'Major Changes',

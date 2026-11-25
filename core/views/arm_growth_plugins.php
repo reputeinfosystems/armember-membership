@@ -146,7 +146,7 @@ if(! defined('ABSPATH')) exit;
 									<li class="arm-feature-list-li-plugin"> AI-Powered Fraud Detection </li>
 								</ul>
 								<div style="margin-top: 40px;" class="arm-gt-product-btn-seprator">
-									<a href="https://www.affiliatepressplugin.com/" target="_blank" class="arm-learnmore-btn afp-plugin"> Learn More </a>
+									<a href="https://www.affiliatepressplugin.com/?utm_source=liteversion&utm_medium=crosssell&utm_campaign=arm-growth-page" target="_blank" class="arm-learnmore-btn afp-plugin"> Learn More </a>
 									<?php if (file_exists( WP_PLUGIN_DIR . '/affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php')  ) { 
 										if((is_plugin_active('affiliatepress-affiliate-marketing/affiliatepress-affiliate-marketing.php'))){?>
 											<button disabled="disabled" type="button" class="el-button arm-btn arm-install-btn afp-plugin el-button--default is-disabled">
@@ -210,7 +210,7 @@ if(! defined('ABSPATH')) exit;
 									<li class="arm-feature-list-li-plugin"> Custom Email Notifications </li>
 								</ul>
 								<div style="margin-top: 40px;" class="arm-gt-product-btn-seprator">
-								<a href="https://www.bookingpressplugin.com/" target="_blank" class="arm-learnmore-btn"> Learn More </a>
+								<a href="https://www.bookingpressplugin.com/?utm_source=liteversion&utm_medium=crosssell&utm_campaign=arm-growth-page" target="_blank" class="arm-learnmore-btn"> Learn More </a>
 								<?php if ( file_exists( WP_PLUGIN_DIR . '/bookingpress-appointment-booking/bookingpress-appointment-booking.php')  ) {
 									
 									if(is_plugin_active('bookingpress-appointment-booking/bookingpress-appointment-booking.php')){ ?>
@@ -275,7 +275,7 @@ if(! defined('ABSPATH')) exit;
 									<li class="arm-feature-list-li-plugin"> Popular Page Builders Support </li>
 								</ul>
 								<div style="margin-top: 40px;" class="arm-gt-product-btn-seprator">
-									<a href="https://www.arformsplugin.com/" target="_blank" class="arm-learnmore-btn arf-plugin"> Learn More </a>
+									<a href="https://www.arformsplugin.com/?utm_source=liteversion&utm_medium=crosssell&utm_campaign=arm-growth-page" target="_blank" class="arm-learnmore-btn arf-plugin"> Learn More </a>
 									<?php if ( file_exists( WP_PLUGIN_DIR . '/arforms-form-builder/arforms-form-builder.php') ) {
 										if((is_plugin_active('arforms-form-builder/arforms-form-builder.php'))){?>
 										<button disabled="disabled" type="button" class="el-button el-button arm-btn arm-install-btn arf-plugin el-button--default is-disabled"><!----><!---->
@@ -339,7 +339,7 @@ if(! defined('ABSPATH')) exit;
 									<li class="arm-feature-list-li-plugin"> Multi-Site Compatible </li>
 								</ul>
 								<div style="margin-top: 40px;" class="arm-gt-product-btn-seprator">
-									<a href="https://www.arpriceplugin.com/" target="_blank" class="arm-learnmore-btn arp-plugin"> Learn More </a>
+									<a href="https://www.arpriceplugin.com/?utm_source=liteversion&utm_medium=crosssell&utm_campaign=arm-growth-page" target="_blank" class="arm-learnmore-btn arp-plugin"> Learn More </a>
 									<?php if (file_exists( WP_PLUGIN_DIR . '/arprice-responsive-pricing-table/arprice-responsive-pricing-table.php')  ) { 
 										if((is_plugin_active('arprice-responsive-pricing-table/arprice-responsive-pricing-table.php'))){?>
 											<button disabled="disabled" type="button" class="el-button arm-btn arm-install-btn arp-plugin el-button--default is-disabled">

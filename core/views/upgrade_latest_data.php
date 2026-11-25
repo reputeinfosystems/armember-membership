@@ -987,7 +987,40 @@ if ( version_compare( $arm_lite_newdbversion, '6.2', '<' ) ) {
 	}
 }
 
-$arm_lite_newdbversion = '6.3.1';
+if ( version_compare( $arm_lite_newdbversion, '6.4', '<' ) ) {
+	global $wpdb, $ARMemberLite;
+
+	$directory_templates = $wpdb->get_results( $wpdb->prepare( "SELECT arm_id, arm_options FROM {$ARMemberLite->tbl_arm_member_templates} WHERE arm_type = %s", 'directory' ),ARRAY_A ); //phpcs:ignore WordPress.DB.DirectDatabaseQuery
+    
+    if ( ! empty( $directory_templates ) ) {
+        foreach ( $directory_templates as $directory_template ) {
+			$options = maybe_unserialize( $directory_template['arm_options'] );
+    
+            if ( ! is_array( $options ) ) {
+                continue;
+            }
+
+			$options['sorting_fields'] = array(
+				'login'           => 'login',
+				'display_name'    => 'display_name',
+				'user_registered' => 'user_registered',
+			);
+
+			$wpdb->update( $ARMemberLite->tbl_arm_member_templates,
+                array(
+                    'arm_options' => maybe_serialize( $options ),
+                ),
+                array(
+                    'arm_id' => absint( $directory_template['arm_id'] ),
+                ),
+                array( '%s' ),
+                array( '%d' )
+            );  //phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		}
+	}
+}
+
+$arm_lite_newdbversion = '6.4';
 update_option( 'arm_lite_new_version_installed', 1 );
 update_option( 'armlite_version', $arm_lite_newdbversion );
 

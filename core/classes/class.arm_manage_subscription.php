@@ -511,20 +511,8 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
             $plan_id = $get_result_sql['arm_item_id'];
 
             $post_data=array('arm_action'=>'status','user_id'=>$user_id,'plan_id'=>$plan_id);
-            
-            $user    = get_userdata( $user_id );
-            $plan_id = intval( $plan_id );
 
-            $user_suspended_plans = arm_get_user_meta( $user_id, 'arm_user_suspended_plan_ids', true );
-            $user_suspended_plans = ! empty( $user_suspended_plans ) ? $user_suspended_plans : array();
-
-            if ( ! empty( $user_suspended_plans ) ) {
-                if ( in_array( $plan_id, $user_suspended_plans ) ) {
-                    unset( $user_suspended_plans[ array_search( $plan_id, $user_suspended_plans ) ] );
-                    arm_update_user_meta( $user_id, 'arm_user_suspended_plan_ids', array_values( $user_suspended_plans ) );
-                    $is_activated['type'] = 'success';
-                }
-            }
+            $is_activated = $arm_members_class->arm_user_plan_action_func($post_data,true);
 
             if($is_activated['type'] == 'success')
             {
@@ -1396,7 +1384,7 @@ if (!class_exists('ARM_subsctriptions_Lite')) {
                     }
 
                     $response_data[$ai][3] = '<a class="arm_openpreview_popup" data-arm_hide_edit="1" href="javascript:void(0)" data-id="'.$user_id.'">'.$rc->arm_user_login.'</a>';
-                    $response_data[$ai][4] = $user_first_name . ' ' .$user_last_name;
+                    $response_data[$ai][4] = wp_unslash( $user_first_name ) . ' ' . wp_unslash( $user_last_name );
                     $start_plan_date = !empty($rc->arm_activity_plan_start_date) ? strtotime($rc->arm_activity_plan_start_date) : '';
                     $response_data[$ai][5] = !empty($start_plan_date) ? date_i18n($date_format, $start_plan_date) : '-';
                     $transaction_started_date = date('Y-m-d H:i:s', ($start_plan_date - 120)); //phpcs:ignore

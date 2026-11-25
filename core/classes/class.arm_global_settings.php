@@ -3825,7 +3825,7 @@ if ( ! class_exists( 'ARM_global_settings_Lite' ) ) {
 									<rect x="11" y="15" width="3" height="3" rx="1.5" fill="#617191"/>
 								</svg>
 							</div>
-							<span class="arm_manage_member_panel_tab_enable_title"><strong><?php esc_html_e('Enable '.esc_attr($menu_title).' Tab', 'armember-membership'); ?></strong></span>
+							<span class="arm_manage_member_panel_tab_enable_title"><strong><?php esc_html_e('Enable '.esc_attr( wp_unslash( $menu_title ) ).' Tab', 'armember-membership'); ?></strong></span>
 						</div>
 						<div class="right_content">
 							<?php if($is_default_tab == false): 

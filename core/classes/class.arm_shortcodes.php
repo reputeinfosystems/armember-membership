@@ -695,6 +695,9 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						/* For Filter User List */
 						$sortbox   = ( isset( $opts['template_options']['sortbox'] ) && $opts['template_options']['sortbox'] == '1' ) ? true : false;
 						$searchbox = ( isset( $opts['template_options']['searchbox'] ) && $opts['template_options']['searchbox'] == '1' ) ? true : false;
+
+						$default_order_class = ! empty( $opts['order'] ) && strtolower( $opts['order'] ) === 'desc' ? 'arm_sorting_order_desc' : 'arm_sorting_order_asc';
+
 						if ( $sortbox || $searchbox || ( is_user_logged_in() ) ) {
 							$content .= '<div class="arm_directory_filters_wrapper">';
 							if ( $searchbox ) {
@@ -733,14 +736,38 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 							$content .= '<input type="hidden" name="listof" value="all">';
 							if ( $sortbox ) {
 								$content .= '<div class="arm_directory_list_by_filters">';
-
-								$arm_directory_option = array(
-									'login'            => esc_html__( 'Sort By', 'armember-membership' ),
-									'display_name'     => esc_html( $alphabaticalSortByTxt ),
-									'user_registered'  => esc_html( $recentlyJoinedTxt ),
-								);
 								
-								$current_value = ! empty( $orderby ) ? $orderby : '';
+								$arm_directory_option = array();
+
+								if (!empty($opts['template_options']['sorting_fields']) && is_array($opts['template_options']['sorting_fields'])) {
+									$armFormFields = $arm_members_directory->arm_template_profile_fields();
+							
+									foreach ($opts['template_options']['sorting_fields'] as $arm_profile_fields_key) {
+										if (isset($armFormFields[$arm_profile_fields_key])) {
+
+											$arm_profile_fields_key = strip_tags($arm_profile_fields_key);
+											$clean_label = strip_tags($armFormFields[$arm_profile_fields_key]['label']);
+
+											if ( $arm_profile_fields_key == 'display_name' ){
+												$clean_label = strip_tags($alphabaticalSortByTxt);
+											}
+							
+											$arm_directory_option[$arm_profile_fields_key] = $clean_label;
+										}
+										else if ( $arm_profile_fields_key == 'login' ){
+											$clean_label = strip_tags(esc_html__( 'Sort By', 'armember-membership' ));
+					
+											$arm_directory_option[$arm_profile_fields_key] = $clean_label;
+										}
+										else if ( $arm_profile_fields_key == 'user_registered' ){
+											$clean_label = strip_tags($recentlyJoinedTxt);
+					
+											$arm_directory_option[$arm_profile_fields_key] = $clean_label;
+										}
+									}
+								}
+								
+								$current_value = ! empty( $arm_directory_option ) ? reset( $arm_directory_option ) : '';
 								$current_label = '';
 								$arm_directory_filter_list = '';
 								
@@ -753,6 +780,8 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 										$current_label = current( $arm_directory_option );
 									}
 								}
+
+								$opts['orderby'] = ! empty( $current_value ) ? sanitize_text_field( $current_value ) : 'display_name';
 								
 								foreach ( $arm_directory_option as $arm_key => $arm_label ) {
 									$arm_directory_filter_list .= '<li class="arm_directory_filter_option" data-label="' . esc_attr( $arm_label ) . '" data-value="' . esc_attr( $arm_key ) . '">' . esc_html( $arm_label ) . '</li>';
@@ -795,6 +824,23 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 								$content .= '</dd>';
 								$content .= '</div>';
 
+								$content .= '<button type="button" class="arm_temp_sorting_order_button arm_search_btn_container ' . esc_attr( $default_order_class ) . '" tabindex="0" aria-label="' . esc_attr__( 'Sort order', 'armember-membership' ) . '" onclick="arm_handle_directory_temp_sorting_order_button(this)">
+
+									<svg class="arm_sorting_order_img arm_sorting_order_asc" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+									<path d="M2.77505 3.4C2.95083 3.22444 3.18911 3.12582 3.43755 3.12582C3.68599 3.12582 3.92427 3.22444 4.10005 3.4L6.60005 5.9C6.76565 6.07772 6.85581 6.31278 6.85152 6.55565C6.84724 6.79853 6.74885 7.03026 6.57708 7.20203C6.40531 7.37379 6.17358 7.47218 5.93071 7.47647C5.68783 7.48075 5.45277 7.3906 5.27505 7.225L4.37505 6.325V15.9375C4.37505 16.1861 4.27628 16.4246 4.10046 16.6004C3.92465 16.7762 3.68619 16.875 3.43755 16.875C3.18891 16.875 2.95045 16.7762 2.77464 16.6004C2.59882 16.4246 2.50005 16.1861 2.50005 15.9375V6.325L1.60005 7.225C1.42233 7.3906 1.18728 7.48075 0.944399 7.47647C0.701523 7.47218 0.469791 7.37379 0.298025 7.20203C0.126259 7.03026 0.0278688 6.79853 0.0235836 6.55565C0.0192983 6.31278 0.109452 6.07772 0.275052 5.9L2.77505 3.4ZM9.68755 15C9.43891 15 9.20045 15.0988 9.02464 15.2746C8.84882 15.4504 8.75005 15.6889 8.75005 15.9375C8.75005 16.1861 8.84882 16.4246 9.02464 16.6004C9.20045 16.7762 9.43891 16.875 9.68755 16.875H19.0626C19.3112 16.875 19.5496 16.7762 19.7255 16.6004C19.9013 16.4246 20.0001 16.1861 20.0001 15.9375C20.0001 15.6889 19.9013 15.4504 19.7255 15.2746C19.5496 15.0988 19.3112 15 19.0626 15H9.68755ZM9.68755 10.9375C9.43891 10.9375 9.20045 10.8387 9.02464 10.6629C8.84882 10.4871 8.75005 10.2486 8.75005 10C8.75005 9.75136 8.84882 9.5129 9.02464 9.33709C9.20045 9.16127 9.43891 9.0625 9.68755 9.0625H16.5626C16.8112 9.0625 17.0496 9.16127 17.2255 9.33709C17.4013 9.5129 17.5001 9.75136 17.5001 10C17.5001 10.2486 17.4013 10.4871 17.2255 10.6629C17.0496 10.8387 16.8112 10.9375 16.5626 10.9375H9.68755ZM9.68755 5C9.43891 5 9.20045 4.90123 9.02464 4.72541C8.84882 4.5496 8.75005 4.31114 8.75005 4.0625C8.75005 3.81386 8.84882 3.5754 9.02464 3.39959C9.20045 3.22377 9.43891 3.125 9.68755 3.125H12.8126C13.0612 3.125 13.2996 3.22377 13.4755 3.39959C13.6513 3.5754 13.7501 3.81386 13.7501 4.0625C13.7501 4.31114 13.6513 4.5496 13.4755 4.72541C13.2996 4.90123 13.0612 5 12.8126 5H9.68755Z" fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"/>
+									</svg>
+
+									<svg class="arm_sorting_order_img arm_sorting_order_desc" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+									<path d="M2.77495 16.6C2.95073 16.7756 3.18901 16.8742 3.43745 16.8742C3.68589 16.8742 3.92417 16.7756 4.09995 16.6L6.59995 14.1C6.69206 14.0142 6.76593 13.9107 6.81717 13.7957C6.86841 13.6807 6.89597 13.5565 6.89819 13.4307C6.90041 13.3048 6.87725 13.1797 6.8301 13.063C6.78295 12.9463 6.71277 12.8402 6.62375 12.7512C6.53472 12.6622 6.42868 12.592 6.31194 12.5448C6.19521 12.4977 6.07017 12.4745 5.94429 12.4768C5.81842 12.479 5.69427 12.5065 5.57928 12.5578C5.46428 12.609 5.36077 12.6829 5.27495 12.775L4.37495 13.675V4.0625C4.37495 3.81386 4.27618 3.5754 4.10036 3.39959C3.92455 3.22377 3.68609 3.125 3.43745 3.125C3.18881 3.125 2.95035 3.22377 2.77454 3.39959C2.59872 3.5754 2.49995 3.81386 2.49995 4.0625V13.675L1.59995 12.775C1.51412 12.6829 1.41062 12.609 1.29562 12.5578C1.18062 12.5065 1.05648 12.479 0.930601 12.4768C0.804722 12.4745 0.679686 12.4977 0.562951 12.5448C0.446216 12.592 0.340173 12.6622 0.25115 12.7512C0.162126 12.8402 0.0919458 12.9463 0.0447945 13.063C-0.00235675 13.1797 -0.0255126 13.3048 -0.0232916 13.4307C-0.0210706 13.5565 0.00648167 13.6807 0.0577216 13.7957C0.108962 13.9107 0.182839 14.0142 0.274948 14.1L2.77495 16.6ZM8.74995 4.0625C8.74995 3.81386 8.84872 3.5754 9.02454 3.39959C9.20035 3.22377 9.43881 3.125 9.68745 3.125H19.0624C19.3111 3.125 19.5495 3.22377 19.7254 3.39959C19.9012 3.5754 19.9999 3.81386 19.9999 4.0625C19.9999 4.31114 19.9012 4.5496 19.7254 4.72541C19.5495 4.90123 19.3111 5 19.0624 5H9.68745C9.43881 5 9.20035 4.90123 9.02454 4.72541C8.84872 4.5496 8.74995 4.31114 8.74995 4.0625ZM9.68745 9.0625C9.43881 9.0625 9.20035 9.16127 9.02454 9.33709C8.84872 9.5129 8.74995 9.75136 8.74995 10C8.74995 10.2486 8.84872 10.4871 9.02454 10.6629C9.20035 10.8387 9.43881 10.9375 9.68745 10.9375H16.5624C16.8111 10.9375 17.0495 10.8387 17.2254 10.6629C17.4012 10.4871 17.4999 10.2486 17.4999 10C17.4999 9.75136 17.4012 9.5129 17.2254 9.33709C17.0495 9.16127 16.8111 9.0625 16.5624 9.0625H9.68745ZM9.68745 15C9.43881 15 9.20035 15.0988 9.02454 15.2746C8.84872 15.4504 8.74995 15.6889 8.74995 15.9375C8.74995 16.1861 8.84872 16.4246 9.02454 16.6004C9.20035 16.7762 9.43881 16.875 9.68745 16.875H12.8124C13.0611 16.875 13.2995 16.7762 13.4754 16.6004C13.6512 16.4246 13.7499 16.1861 13.7499 15.9375C13.7499 15.6889 13.6512 15.4504 13.4754 15.2746C13.2995 15.0988 13.0611 15 12.8124 15H9.68745Z" fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"/>
+									</svg>
+
+									<svg class="arm_dir_temp_sorting_order_loader_img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" style="display:none;">
+										<path d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z">
+											<animateTransform attributeName="transform" type="rotate" dur="0.8s" values="0 12 12;360 12 12" repeatCount="indefinite"/>
+										</path>
+									</svg>
+								</button>';
+
 							} else {
 								$content .= '<input type="hidden" name="orderby" value="login">';
 							}
@@ -806,7 +852,8 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 						$content .= $arm_members_directory->arm_get_directory_members( $temp_data, $opts );
 						/* Template Arguments Inputs */
 						foreach ( array( 'id', 'type', 'user_id', 'role', 'order', 'per_page', 'pagination', 'sample', 'is_preview' ) as $k ) {
-							$content .= '<input type="hidden" class="arm_temp_field_' . esc_attr($k) . '" name="' . esc_attr($k) . '" value="' . esc_attr( $opts[ $k ] ) . '">';
+							$arm_default_val_attr = ( 'order' === $k ) ? ' data-default_val="' . esc_attr( $opts[ $k ] ) . '"' : '';
+							$content .= '<input type="hidden" class="arm_temp_field_' . esc_attr($k) . '" name="' . esc_attr($k) . '" value="' . esc_attr( $opts[ $k ] ) . '"' . $arm_default_val_attr . '>';
 						}
 						$nonce = wp_create_nonce('arm_wp_nonce');
 						$content .='<input type="hidden" name="arm_wp_nonce" value='.esc_attr( $nonce ).'>';
@@ -3422,7 +3469,9 @@ if ( ! class_exists( 'ARM_shortcodes_Lite' ) ) {
 			$return_content = '';
 			if ( is_user_logged_in() ) {
 				$user_id        = get_current_user_id();
-				$return_content = arm_get_user_meta( $user_id, 'first_name', true ) . ' ' . arm_get_user_meta( $user_id, 'last_name', true );
+				$user_fname = arm_get_user_meta( $user_id, 'first_name', true );
+				$user_lname = arm_get_user_meta( $user_id, 'last_name', true );
+				$return_content = wp_unslash( $user_fname ) . ' ' . wp_unslash( $user_lname );
 			}
 			return $return_content;
 		}

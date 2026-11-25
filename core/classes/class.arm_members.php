@@ -175,7 +175,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			}
 		}
 
-		function arm_user_plan_action_func() {
+		function arm_user_plan_action_func($post_data=array(),$arm_return_data=false) {
 			global $wpdb, $ARMemberLite, $arm_member_forms, $arm_manage_communication, $arm_subscription_plans, $arm_members_class, $arm_global_settings, $arm_capabilities_global;
 			$response  = array(
 				'type' => 'error',
@@ -184,7 +184,9 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
 			$ARMemberLite->arm_check_user_cap( $arm_capabilities_global['arm_manage_members'], '1'); //phpcs:ignore --Reason:Verifying nonce
 			
-			$post_data = wp_unslash( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification -- Nonce verification is done elsewhere
+			if(empty($post_data)){
+				$post_data = wp_unslash( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification -- Nonce verification is done elsewhere
+            		}
 			
 			$date_format     = $arm_global_settings->arm_get_wp_date_format();
 			$defaultPlanData = $arm_subscription_plans->arm_default_plan_array();
@@ -297,6 +299,28 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 					if ( in_array( $plan_id, $user_suspended_plans ) ) {
 						unset( $user_suspended_plans[ array_search( $plan_id, $user_suspended_plans ) ] );
 						arm_update_user_meta( $user_ID, 'arm_user_suspended_plan_ids', array_values( $user_suspended_plans ) );
+
+						//update user meta for the keep record for admin has removed suspended plan.
+			                        arm_update_user_meta($user_ID, 'arm_admin_user_remove_suspended_plan_'.$plan_id, current_time('mysql'));
+						
+						$userPlanDatameta = arm_get_user_meta($user_ID, 'arm_user_plan_' . $plan_id, true);
+			                        $planDataCheck = !empty($userPlanDatameta) ? $userPlanDatameta : array();
+			                        if(!empty($planDataCheck) &&  !empty($planDataCheck['arm_payment_mode']) && $planDataCheck['arm_payment_mode'] != 'manual_subscription' )
+			                        {
+			                            $payment_cycle = isset($planDataCheck['arm_payment_cycle']) ? $planDataCheck['arm_payment_cycle'] : 0;
+			                            $completed_recurrence = $planDataCheck['arm_completed_recurring'];
+			                            $completed_recurrence++;
+			                            $planDataCheck['arm_completed_recurring'] = $completed_recurrence;
+			                            arm_update_user_meta($user_ID, 'arm_user_plan_' . $plan_id, $planDataCheck); //necessary to update this meta.
+
+			                            $arm_next_payment_date = $arm_members_class->arm_get_next_due_date($user_ID, $plan_id, false, $payment_cycle);
+			                            $planDataCheck['arm_next_due_payment'] = $arm_next_payment_date;
+                            
+			                            arm_update_user_meta($user_ID, 'arm_user_plan_' . $plan_id, $planDataCheck);
+			                        }
+                        
+			                        //Hook for plan activation by admin
+			                        do_action('arm_after_user_plan_change_by_admin', $user_ID, $plan_id);
 					}
 				}
 
@@ -388,8 +412,13 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 				$response['child_row_content'] = $this->arm_get_user_all_details_for_grid_func($user_ID,1,$excluded_header,$header_label);
 			}
 			
-			echo arm_pattern_json_encode($response); //phpcs:ignore
-			die();
+			if(!empty($arm_return_data)){
+                		return $response;
+            		}
+            		else{
+				echo arm_pattern_json_encode($response); //phpcs:ignore
+				die();
+            		}
 		}
 		function get_arm_member_list_func(){
 			if(isset($_REQUEST['action']) && $_REQUEST['action']=='get_arm_member_list') { //phpcs:ignore
@@ -4383,25 +4412,34 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
 			$filter_payment_mode_search = '';
 			if ( ! empty( $filter_plan_id ) ) {
-				
-				$filter_ids = array_filter(
-					array_map( 'absint', explode( ',', wp_unslash( $filter_plan_id ) ) )
+
+				$filter_plan_parts = array_map( 'intval', explode( ',', wp_unslash( $filter_plan_id ) ) );
+			
+				$filter_ids = array_values(
+					array_filter( $filter_plan_parts, function( $id ) { return $id > 0; })
 				);
-				$likes = array();
-
+			
+				$plan_conditions = array();
+			
 				if ( ! empty( $filter_ids ) ) {
+					$likes = array();
+			
 					foreach ( $filter_ids as $plan_id ) {
-						$likes[] = $wpdb->prepare(
-							'um.meta_value LIKE %s',
-							'%"' . $plan_id . '"%'
-						);
+						$likes[] = $wpdb->prepare( '(armu.arm_user_plan_ids LIKE %s OR armu.arm_user_plan_ids LIKE %s)', '%:' . $plan_id . ';%', '%"' . $plan_id . '"%' );
 					}
-
-					$arm_plan_id_condition = ' AND (' . implode( ' OR ', $likes ) . ')';               
-
-					$filter_plan_search = " AND (um.meta_key = 'arm_user_plan_ids' {$arm_plan_id_condition})";
+			
+					$plan_conditions[] = '(' . implode( ' OR ', $likes ) . ')';
+				}
+			
+				if ( in_array( -2, $filter_plan_parts, true ) ) {
+					$plan_conditions[] = "(armu.arm_user_plan_ids IS NULL OR armu.arm_user_plan_ids = '' OR armu.arm_user_plan_ids = 'a:0:{}')";
+				}
+			
+				if ( ! empty( $plan_conditions ) ) {
+					$filter_plan_search = ' AND (' . implode( ' OR ', $plan_conditions ) . ')';
 				}
 			}
+
 			$search_params = '';
 			if ( $sSearch != '' ) {
 				$search_params = $wpdb->prepare(" AND ( u.user_login LIKE %s OR u.user_email LIKE %s OR u.display_name LIKE %s OR (um.meta_key = %s AND um.meta_value LIKE %s) OR (um.meta_key = %s AND um.meta_value LIKE %s) OR (um.meta_key = %s AND um.meta_value LIKE %s) )",'%'.$sSearch.'%','%'.$sSearch.'%','%'.$sSearch.'%','first_name','%'.$sSearch.'%','last_name','%'.$sSearch.'%',$capability_column,'%'.$sSearch.'%');
@@ -4430,7 +4468,7 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			}
 
 			$join_arm_user_table = '';
-			if ( $orderby == 'arm_primary_status' ) {
+			if ( $orderby == 'arm_primary_status' || ! empty( $filter_plan_id ) ) {
 				$join_arm_user_table = " LEFT JOIN `".$arm_user_table."` armu ON armu.arm_user_id = u.ID ";
 			}
 
@@ -4440,30 +4478,40 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 			} else {
 				$join_on = 'um.user_id = u.ID';
 			}
-			$tmp_user_query = $wpdb->get_results( "SELECT u.ID FROM `".$user_table."` u LEFT JOIN `".$usermeta_table."` um ON ".$join_on." ".$join_arm_user_table." ".$search_where." GROUP BY u.ID" );//phpcs:ignore --Reason $usermeta_table is meta table name
 
 			$filter_ids = array();
 			if ( ! empty( $filter_plan_id ) ) {
 				$filter_ids = explode( ',', $filter_plan_id );
 			}
 
-			if ( ! empty( $tmp_user_query ) ) {
-				if ( ! empty( $filter_ids ) ) {
-					foreach ( $tmp_user_query as $key => $gusers ) {
-						$plan_ids = arm_get_user_meta( $gusers->ID, 'arm_user_plan_ids', true );
-						if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
-							$user_array = array_intersect( $plan_ids, $filter_ids );
-							if ( empty( $user_array ) ) {
-								unset( $tmp_user_query[ $key ] );
+			if ( ! empty( $filter_plan_id ) ) {
+				$total_after_filter = $wpdb->get_var( "SELECT COUNT(DISTINCT u.ID) FROM `" . $user_table . "` u LEFT JOIN `" . $usermeta_table . "` um ON ". $join_on . $join_arm_user_table . " " . $search_where);
+				$total_after_filter = intval( $total_after_filter );
+			} else {
+				$tmp_user_query = $wpdb->get_results( "SELECT u.ID FROM `".$user_table."` u LEFT JOIN `".$usermeta_table."` um ON ".$join_on." ".$join_arm_user_table." ".$search_where." GROUP BY u.ID" );//phpcs:ignore --Reason $usermeta_table is meta table name
+
+				if ( ! empty( $tmp_user_query ) ) {
+					if ( ! empty( $filter_ids ) || in_array( -2, array_map( 'intval', explode( ',', wp_unslash( $filter_plan_id ) ) ), true ) ) {
+						foreach ( $tmp_user_query as $key => $gusers ) {
+							$plan_ids = arm_get_user_meta( $gusers->ID, 'arm_user_plan_ids', true );
+				
+							if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
+								$user_array = array_intersect( $plan_ids, $filter_ids );
+				
+								if ( empty( $user_array ) ) {
+									unset( $tmp_user_query[ $key ] );
+								}
+							} else {
+								if ( ! in_array( -2, array_map( 'intval', explode( ',', wp_unslash( $filter_plan_id ) ) ), true ) ) {
+									unset( $tmp_user_query[ $key ] );
+								}
 							}
-						} else {
-							unset( $tmp_user_query[ $key ] );
 						}
 					}
 				}
-			}
 
-			$total_after_filter = ( ! empty( $tmp_user_query ) ) ? count( $tmp_user_query ) : 0;
+				$total_after_filter = ( ! empty( $tmp_user_query ) ) ? count( $tmp_user_query ) : 0;
+			}
 
 			$after_filter_args   = $user_args;
 			$user_args['offset'] = intval( $user_offset );
@@ -4477,14 +4525,18 @@ if ( ! class_exists( 'ARM_members_Lite' ) ) {
 
 			if ( ! empty( $form_result ) ) {
 				if ( ! empty( $filter_ids ) ) {
+					$check_no_plan = in_array( -2, array_map( 'intval', explode( ',', wp_unslash( $filter_plan_id ) ) ), true );
 					foreach ( $form_result as $key => $gusers ) {
 						$plan_ids = arm_get_user_meta( $gusers->ID, 'arm_user_plan_ids', true );
+						if ( $check_no_plan && ( empty( $plan_ids ) || ! is_array( $plan_ids ) ) ) {
+							continue;
+						}
 						if ( ! empty( $plan_ids ) && is_array( $plan_ids ) ) {
 							$user_array = array_intersect( $plan_ids, $filter_ids );
-							if ( empty( $user_array ) ) {
+							if ( empty( $user_array ) && ! ( $check_no_plan && empty( $plan_ids ) ) ) {
 								unset( $form_result[ $key ] );
 							}
-						} else {
+						} elseif ( ! $check_no_plan ) {
 							unset( $form_result[ $key ] );
 						}
 					}

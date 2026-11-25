@@ -64,7 +64,7 @@ if ( is_rtl() ) {
 	.purchased_info{ color:#7cba6c; font-weight:bold; font-size: 15px; }
 	#license_success{ color:#8ccf7a !important; }
 	.arperrmessage{color:red;}
-    #arfactlicenseform { border-radius:0px; text-align:center; width:570px; min-height:350px; height:auto; left:35%; border:none; background:#ffffff !important; padding:30px 20px; }
+    #arfactlicenseform { border-radius:0px; text-align:center; width:530px; min-height:350px; height:auto; left:35%; border:none; background:#ffffff !important; padding:30px 40px; }
 	#arfactlicenseform .form-table th{ text-align:right; }
 	#arfactlicenseform .form-table td{ text-align:left; }
 	#license_error{ color:red;}

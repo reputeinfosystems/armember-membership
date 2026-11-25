@@ -166,10 +166,10 @@ if(! defined('ABSPATH')) exit;
                 $target = !empty($tab['url_in_new_tab']) ? ' target="_blank"' : '';
                     $arm_member_tabs_html .= '<a href="' . esc_url($tab['url_content']) . '" class="' . $active_class . 'arm-menu-item" id="' . esc_attr($mpt_tab_id) . '"' . $target . '>'
                     . '<div class="arm-panel-menu-item-icon">' . (isset($arm_mpt_icons[$tab['icon']]) ? $arm_mpt_icons[$tab['icon']] : '') . '</div>'
-                    . '<div class="arm-menu-item-txt" aria-label="' . esc_attr($tab['title']) . '">' . esc_html(wp_unslash($tab['title'])) . '</div>'
+                    . '<div class="arm-menu-item-txt" aria-label="' . esc_attr( wp_unslash( $tab['title'] ) ) . '">' . esc_html(wp_unslash($tab['title'])) . '</div>'
                     . '</a>';
             } else {
-                    $arm_member_tabs_html .= '<a href="javascript:void(0);" class="' . $active_class . 'arm-menu-item" id="' . esc_attr($mpt_tab_id) . '" onClick="arm_panel_change_tab(\'' . esc_attr($mpt_tab_id) . '\');" data-arm_menu_title="' . esc_attr($tab['title']) . '">'
+                    $arm_member_tabs_html .= '<a href="javascript:void(0);" class="' . $active_class . 'arm-menu-item" id="' . esc_attr($mpt_tab_id) . '" onClick="arm_panel_change_tab(\'' . esc_attr($mpt_tab_id) . '\');" data-arm_menu_title="' . esc_attr( wp_unslash( $tab['title'] ) ) . '">'
                     . '<div class="arm-panel-menu-item-icon">' . (isset($arm_mpt_icons[$tab['icon']]) ? $arm_mpt_icons[$tab['icon']] : '') . '</div>'
                     . '<div class="arm-menu-item-txt" aria-label="' . esc_attr(wp_unslash($tab['title'])) . '">' . esc_html(wp_unslash($tab['title'])) . '</div>'
                     . '</a>';

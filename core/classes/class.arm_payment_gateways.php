@@ -481,7 +481,6 @@ if ( ! class_exists( 'ARM_payment_gateways_Lite' ) ) {
 		function arm_gateway_name_by_key( $gateway_key = '' ) {
 			$gatewayNames = array(
 				'paypal'        => esc_html__( 'Paypal', 'armember-membership' ),
-
 				'bank_transfer' => esc_html__( 'Bank Transfer', 'armember-membership' ),
 				'manual'        => esc_html__( 'Manual', 'armember-membership' ),
 			);

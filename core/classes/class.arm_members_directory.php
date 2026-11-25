@@ -691,6 +691,36 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			return $dbFormFields;
 		}
 
+		function arm_template_sorting_fields(){
+			global $arm_global_settings;
+		
+			$common_messages = $arm_global_settings->common_message;
+		
+			$alphabatical_sort_txt = (!empty($common_messages['directory_sort_by_alphabatically'])) ? sanitize_text_field( wp_unslash( $common_messages['directory_sort_by_alphabatically'] ) ) : esc_html__('Alphabetically', 'armember-membership');
+			$recently_joined_txt = (!empty($common_messages['directory_sort_by_recently_joined'])) ? sanitize_text_field( wp_unslash( $common_messages['directory_sort_by_recently_joined'] ) ) : esc_html__('Recently Joined', 'armember-membership');
+		
+			$sorting_default = array(
+				'login' => array(
+					'type' => 'text',
+					'label' => esc_html__( 'Sort By(Username)', 'armember-membership' ),
+				),
+				'alphabetical' => array(
+					'type' => 'text',
+					'label' => $alphabatical_sort_txt,
+				),
+				'recently_joined' => array(
+					'type' => 'text',
+					'label' => $recently_joined_txt,
+				),
+			);
+		
+			$dbFormFields = $this->arm_template_profile_fields();
+		
+			$dbFormFields = array_merge($sorting_default, $dbFormFields);
+		
+			return $dbFormFields;
+		}
+
 		function arm_profile_template_blocks( $template_data = array(), $user_detail = array(), $args = array() ) {
 			global $wpdb, $ARMemberLite, $arm_member_forms,  $arm_social_feature, $arm_global_settings, $arm_lite_ajaxurl, $arm_shortcodes;
 			$template = '';
@@ -811,7 +841,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 							}
 						}
 
-										$profile_link_name = '<a class="arm_profile_link" href="' . $user['user_link'] . '">' . $arm_shortcodes->arm_com_descaped_all_shortcodes($arm_shortcodes->arm_com_escape_all_shortcodes($user['full_name'])) . '</a>';
+										$profile_link_name = '<a class="arm_profile_link" href="' . $user['user_link'] . '">' . $arm_shortcodes->arm_com_descaped_all_shortcodes($arm_shortcodes->arm_com_escape_all_shortcodes( wp_unslash( $user['full_name'] ))) . '</a>';
 										$arm_template_html = str_replace( '{ARM_Profile_Cover_Image}', $arm_cover_image, $arm_template_html );
 										$arm_template_html = str_replace( '{ARM_Profile_User_Name}', $profile_link_name, $arm_template_html );
 										$arm_template_html = str_replace( '{ARM_Profile_Avatar_Image}', $user['avatar'], $arm_template_html );
@@ -853,9 +883,6 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				$order='ASC';
 			}
 			$show_admin_users = ( isset( $opts['template_options']['show_admin_users'] ) && $opts['template_options']['show_admin_users'] == 1 ) ? $opts['template_options']['show_admin_users'] : 0;
-			if ( $orderby == 'user_registered' ) {
-				$order = 'DESC';
-			}
 			$per_page          = isset( $opts['per_page'] ) ? intval($opts['per_page']) : 10;
 			$per_page          = ($per_page>0) ? $per_page : 10;
 			$offset            = ( ! empty( $current_page ) && $current_page > 1 ) ? ( ( $current_page - 1 ) * $per_page ) : 0;
@@ -872,6 +899,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			$filter = 0;
             $arm_where = '';
             $sort_meta_key = '';
+			$user_join = '';
             if( str_contains($orderby,'|'))
             {
                 $arm_order_by_arr = explode('|',$orderby);
@@ -885,15 +913,20 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
                     $arm_where = $wpdb->prepare(" AND um.meta_key=%s", $meta_key);
                 }
             }
-            if(strtolower($order)!='desc')
-            {
-	    	    $order='ASC';
+            $order = ( 'desc' === strtolower( $order ) ) ? 'DESC' : 'ASC';
+            // "Recently Joined": the default toggle state (ASC) keeps the newest members first, as before; the toggle switches to oldest first.
+            if ( 'user_registered' === $orderby ) {
+            	$order = ( 'ASC' === $order ) ? 'DESC' : 'ASC';
             }
 
             $orderby_exp_check = explode( ' ', $orderby );
             if( count($orderby_exp_check) > 1 )
             {
 	    	    $order_by_keyword = $orderby = 'u.user_registered';
+	    	    // An orderby with spaces is never a valid field key: drop the meta sort so it is not used in the query.
+	    	    $arm_where     = '';
+	    	    $sort_meta_key = '';
+	    	    $filter        = 0;
 	        }
 	        else {
                 if($orderby != 'user_registered' && $orderby != 'display_name' && $orderby != 'user_login' && $orderby != 'user_email' && $orderby != 'ID' && $orderby != 'arm_last_login_date')
@@ -913,7 +946,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 	                    }
 	                }
 
-	                if( empty($valid_field_check) && !empty($dbFormFields) && is_array($dbFormFields['other']) )
+	                if( empty($valid_field_check) && !empty($dbFormFields) && isset($dbFormFields['other']) && is_array($dbFormFields['other']) )
 	                {
 	                    foreach($dbFormFields['other'] as $field_key => $field_label)
 	                    {
@@ -932,11 +965,26 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
                         $filter = 0;
 	                }
                     else {
-                        $order_by_keyword = "um.meta_value";
+						$arm_fields = $this->arm_template_profile_fields();
+
+						if ( isset( $arm_fields[$orderby] ) ) {
+							$user_join .= $wpdb->prepare( " LEFT JOIN `" . $usermeta_table . "` um_order ON u.ID = um_order.user_id AND um_order.meta_key = %s", $orderby );
+						
+							$order_by_keyword = "um_order.meta_value";
+						
+							if ( $orderby == 'country' ) {
+								// Country is stored as its index in arm_get_countries() (alphabetical); text values from custom options or old data sort by name.
+								$order_by_keyword = 'CAST(um_order.meta_value AS UNSIGNED) ' . $order . ', um_order.meta_value';
+							}
+						}
+						else{
+							$order_by_keyword = "um.meta_value";
+						}
                     }
 	            }
             }
-			$order_by         = ' ORDER BY ' . $order_by_keyword . ' ' . $order;
+			// u.ID as tiebreaker keeps paging stable when many members share the same value.
+			$order_by         = ' ORDER BY ' . $order_by_keyword . ' ' . $order . ', u.ID ' . $order;
 			if ( $orderby === 'arm_last_login_date' ) {
 				$order_by = "um.arm_last_login_date {$order}";
 			}
@@ -1107,7 +1155,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 			$user_where      .= $wpdb->prepare(' AND am.arm_primary_status = %d',1);
 
 			if ( isset( $opts['template_options']['plans'] ) && ! empty( $opts['template_options']['plans'] ) ) {
-				$total_users_res = $wpdb->get_results( "SELECT u.ID FROM `".$user_table."` u INNER JOIN `".$usermeta_table."` um  ON u.ID = um.user_id INNER JOIN `" . $ARMemberLite->tbl_arm_members . "` am  ON um.user_id = am.arm_user_id ".$user_where." ".$user_search." GROUP BY u.ID ".$order_by );//phpcs:ignore --Reason $user_table and $usermeta_table is a table name
+				$total_users_res = $wpdb->get_results( "SELECT u.ID FROM `".$user_table."` u INNER JOIN `".$usermeta_table."` um  ON u.ID = um.user_id INNER JOIN `" . $ARMemberLite->tbl_arm_members . "` am  ON um.user_id = am.arm_user_id ". $user_join ." " . $user_where." ".$user_search." GROUP BY u.ID ".$order_by );//phpcs:ignore --Reason $user_table and $usermeta_table is a table name
 
 				foreach ( $total_users_res as $tkey => $tuser ) {
 
@@ -1122,11 +1170,11 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 
 				$total_users = ( ! empty( $total_users_res ) ) ? count( $total_users_res ) : 0;
 			} else {
-				$total_users = (int) $wpdb->get_var( "SELECT COUNT(DISTINCT u.ID) FROM `".$user_table."` u INNER JOIN `".$usermeta_table."` um  ON u.ID = um.user_id INNER JOIN `" . $ARMemberLite->tbl_arm_members . "` am  ON um.user_id = am.arm_user_id ".$user_where." ".$user_search );//phpcs:ignore --Reason $user_table and $usermeta_table is a table name
+				$total_users = (int) $wpdb->get_var( "SELECT COUNT(DISTINCT u.ID) FROM `".$user_table."` u INNER JOIN `".$usermeta_table."` um  ON u.ID = um.user_id INNER JOIN `" . $ARMemberLite->tbl_arm_members . "` am  ON um.user_id = am.arm_user_id " . $user_join ." ".$user_where." ".$user_search );//phpcs:ignore --Reason $user_table and $usermeta_table is a table name
 			}
 
 
-			$users = $wpdb->get_results( " SELECT u.ID FROM `".$user_table."` u INNER JOIN `".$usermeta_table."` um  ON u.ID = um.user_id INNER JOIN `" . $ARMemberLite->tbl_arm_members . "` am  ON um.user_id = am.arm_user_id ".$user_where." ".$user_search." GROUP BY u.ID ".$order_by." ".$user_limit );//phpcs:ignore --Reason $user_table and $usermeta_table is a table name
+			$users = $wpdb->get_results( " SELECT u.ID FROM `".$user_table."` u INNER JOIN `".$usermeta_table."` um  ON u.ID = um.user_id INNER JOIN `" . $ARMemberLite->tbl_arm_members . "` am  ON um.user_id = am.arm_user_id "  . $user_join." ".$user_where." ".$user_search." GROUP BY u.ID ".$order_by." ".$user_limit );//phpcs:ignore --Reason $user_table and $usermeta_table is a table name
 
 			if ( isset( $opts['template_options']['plans'] ) && ! empty( $opts['template_options']['plans'] ) ) {
 
@@ -1327,6 +1375,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					'profile_fields'                 => array(),
 					'labels'                         => array(),
 					'arm_social_fields'              => array(),
+					'sorting_fields'                 => array(),
 					'default_cover'                  => '',
 					'custom_css'                     => '',
 				),
@@ -1546,9 +1595,9 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 				$tempOptHtml                          .= '</tr>';
 
 			}
-					$tempOptHtml            .= '<tr class="arm_directory_template_display_flex arm_width_100_pct">';
-						$tempOptHtml        .= '<th class="arm_basic_details_fields">' . esc_html__( 'Social Profile Fields', 'armember-membership' ) . '</th>';
-						$tempOptHtml        .= '<td class="arm_basic_details_fields">';
+					$tempOptHtml            .= '<tr class="arm_directory_template_display_flex arm_width_32_pct">';
+						$tempOptHtml        .= '<th>' . esc_html__( 'Social Profile Fields', 'armember-membership' ) . '</th>';
+						$tempOptHtml        .= '<td>';
 						$tempOptHtml                    .= '<div class="arm_profile_fields_selection_wrapper arm_social_profile_fields_wrap">';
 						$socialProfileFields = $arm_member_forms->arm_social_profile_field_types();
 						$activeSPF           = array();
@@ -1575,6 +1624,66 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 						$tempOptHtml     .= '</div>';
 						$tempOptHtml     .= '</td>';
 					$tempOptHtml         .= '</tr>';
+
+					$sortbox_display = checked($tempOptions['sortbox'], '1', false) ? '' : 'display:none;';
+
+                    $tempOptHtml .= '<tr class="arm_directory_template_display_flex arm_search_field_div arm_width_32_pct arm_sorting_fields_selection_container" style="' . $sortbox_display . '">';
+                    $tempOptHtml .= '<th>' . esc_html__('Sort Members by Profile Fields', 'armember-membership') . '</th>';
+                    $tempOptHtml .= '<td>';
+                    
+                    $tempOptHtml .= '<div class="arm_sorting_fields_selection_wrapper">';
+                    $dbProfileFields = $this->arm_template_sorting_fields();
+                            $orderedFields = array();
+                            if (!empty($tempOptions['sorting_fields'])) {
+                               foreach($tempOptions['sorting_fields'] as $fieldK) {
+									if($fieldK == 'display_name'){
+										$fieldK = 'alphabetical';
+									}else if($fieldK == 'user_registered'){
+										$fieldK = 'recently_joined';
+									}
+
+                                   if (isset($dbProfileFields[$fieldK])) {
+                                        $orderedFields[$fieldK] = $dbProfileFields[$fieldK];
+                                        unset($dbProfileFields[$fieldK]);
+                                   }
+                               }
+                            }
+                            
+                            $orderedFields = $orderedFields + $dbProfileFields;
+
+                            if (!empty($orderedFields)) {
+                                $tempOptHtml .= '<ul class="arm_sorting_fields_sortable_popup">';
+                                foreach ($orderedFields as $fieldMetaKey => $fieldOpt) {
+                                    if (empty($fieldMetaKey) || $fieldMetaKey == 'user_pass' || $fieldMetaKey == 'display_name' || in_array($fieldOpt['type'], array('html', 'section', 'rememberme', 'file', 'avtar', 'avatar', 'password', 'roles','arm_captcha', 'profile_cover'))) {
+                                        continue;
+                                    }
+                                    $fchecked = $fdisabled = '';
+									
+									if( $fieldMetaKey == 'alphabetical'){
+                                        $fieldMetaKey = 'display_name';
+                                    }else if( $fieldMetaKey == 'recently_joined' ){
+                                        $fieldMetaKey = 'user_registered';
+                                    }
+
+                                    if ( !empty( $tempOptions['sorting_fields'] ) && is_array( $tempOptions['sorting_fields'] ) &&  in_array($fieldMetaKey, $tempOptions['sorting_fields'])) {
+                                        $fchecked = 'checked="checked"';
+                                    }
+                                    $tempOptHtml .= '<li class="arm_sorting_fields_li">';
+                                    $tempOptHtml .= '<input type="checkbox" value="'.esc_attr($fieldMetaKey).'" class="arm_icheckbox" name="template_options[sorting_fields]['.esc_attr($fieldMetaKey).']" id="arm_profile_temp_field_input_'.esc_attr($fieldMetaKey).'" '.$fchecked.' '.$fdisabled.'/>';
+                                    $tempOptHtml .= '';
+                                    $tempOptHtml .= '<label for="arm_profile_temp_field_input_'.esc_attr($fieldMetaKey).'">'.stripslashes_deep($fieldOpt['label']).'</label>';
+                                    $tempOptHtml .= '<div class="arm_list_sortable_icon"></div>';
+                                    $tempOptHtml .= '</li>';
+                                }
+                                $tempOptHtml .= '</ul>';
+                            }
+                            
+                    $tempOptHtml .= '</div>';
+                    $tempOptHtml .= '</td>';
+		    $tempOptHtml .= '<td><div class="arm_error_sorting_field_msg hidden_section"><span class="arm_error_msg">'. esc_html__("Please select atleast one sorting option.", 'armember-membership').'</span></div></td>';
+                    $tempOptHtml .= '</tr>';
+
+
 					$tempOptHtml         .= '</tbody>';
 					$tempOptHtml         .= '<tr class="arm_spacing_div"></tr>';
 					$tempOptHtml         .= '<tbody class="arm_form_main_content">';
@@ -2753,6 +2862,7 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$tempWrapperClass.arm_template_wrapper.arm_template_wrapper_directorytemplate2 .arm_advance_sorting_filter_button_container .arm_advance_sorting_filter_button,
 					$tempWrapperClass.arm_template_wrapper.arm_template_wrapper_directorytemplate2 .arm_advance_sorting_filter_button_container .arm_directory_filter_option,
 					$tempWrapperClass.arm_template_wrapper.arm_template_wrapper_directorytemplate2 .arm_directory_search_btn.arm_directory_clear_btn,
+					$tempWrapperClass.arm_template_wrapper.arm_template_wrapper_directorytemplate2 .arm_temp_sorting_order_button,
 					$tempWrapperClass arm_directory_container .arm_directory_filter_select dd {
 						background-color: {$tempOptions['button_font_color']} !important ;
 					}
@@ -2822,6 +2932,8 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$tempWrapperClass .arm_advance_sorting_filter_button_container .arm_advance_sorting_filter_button:focus,
 					$tempWrapperClass .arm_directory_search_btn.arm_directory_clear_btn:hover,
 					$tempWrapperClass .arm_directory_search_btn.arm_directory_clear_btn:focus,
+					$tempWrapperClass .arm_temp_sorting_order_button:hover,
+					$tempWrapperClass .arm_temp_sorting_order_button:focus,
 					$tempWrapperClass .arm_directory_container .arm_user_block:hover ,
 					$tempWrapperClass .arm_user_social_blocks .arm_social_prof_div:hover,
 					$tempWrapperClass .arm_directory_search_wrapper #arm_directory_search_input.arm_directory_search_box:hover,
@@ -2882,11 +2994,17 @@ if ( ! class_exists( 'ARM_members_directory_Lite' ) ) {
 					$$tempWrapperClass .arm_advance_sorting_filter_button_container .arm_advance_sorting_filter_button svg path{
 						fill: {$tempOptions['subtitle_color']} !important;
 					}
-					$tempWrapperClass.arm_template_wrapper .arm_directory_search_btn.arm_directory_clear_btn{
+					$tempWrapperClass.arm_template_wrapper .arm_directory_search_btn.arm_directory_clear_btn:hover,
+					$tempWrapperClass.arm_template_wrapper .arm_directory_search_btn.arm_directory_clear_btn:focus,
+					$tempWrapperClass.arm_template_wrapper .arm_temp_sorting_order_button:focus,
+					$tempWrapperClass.arm_template_wrapper .arm_temp_sorting_order_button:hover{
+						color: {$tempOptions['button_color']} !important;
+					}
+					$tempWrapperClass.arm_template_wrapper .arm_directory_search_btn.arm_directory_clear_btn,
+					$tempWrapperClass.arm_template_wrapper .arm_temp_sorting_order_button{
 						color: {$tempOptions['subtitle_color']} !important;
 					}
 					
-
 					$tempWrapperClass .arm_no_result_div{
 						{$tempOptions['content_font']['font_family']} 
 					}
@@ -3281,6 +3399,11 @@ $arm_template_html = '<div class="arm_profile_detail_wrapper">
 				'profile_fields'       => array(
 					'first_name' => 'first_name',
 					'last_name'  => 'last_name',
+				),
+				'sorting_fields'       => array(
+					'login'            => 'login',
+					'display_name'     => 'display_name',
+					'user_registered'  => 'user_registered',
 				),
 
 				'custom_css'           => '',

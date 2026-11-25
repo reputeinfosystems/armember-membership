@@ -182,6 +182,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field( $_GET['page']) : ''; //p
 												'editor_class' => 'arm_message_content',
 												'media_buttons' => false,
 												'textarea_rows' => 5,
+												'wpautop' => false,
 												'default_editor' => 'html',
 												'editor_css' => '<style type="text/css"> body#tinymce{margin:0px !important;} </style>',
 											);
@@ -326,6 +327,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field( $_GET['page']) : ''; //p
 															'editor_class' => 'arm_message_content',
 															'media_buttons' => false,
 															'textarea_rows' => 5,
+															'wpautop' => false,
 															'default_editor' => 'html',
 															'editor_css' => '<style type="text/css"> body#tinymce{margin:0px !important;} </style>',
 														);
@@ -336,6 +338,7 @@ $get_page = isset($_GET['page']) ? sanitize_text_field( $_GET['page']) : ''; //p
 															'editor_class' => 'arm_message_content_translated_'.$lan,
 															'media_buttons' => false,
 															'textarea_rows' => 5,
+															'wpautop' => false,
 															'default_editor' => 'html',
 															'editor_css' => '<style type="text/css"> body#tinymce{margin:0px !important;} </style>',
 														);

@@ -610,7 +610,7 @@ $currencies = array_merge( $arm_payment_gateways->currency['paypal'], $arm_payme
 									<label class="arm-form-table-label"><?php esc_html_e( 'Admin Email', 'armember-membership' ); ?></label>
 									<i class="arm_helptip_icon armfa armfa-question-circle arm_" title="<?php echo esc_html__('You can add multiple Admin email address separated by comma in case of you want to send email to more than one email address.', 'armember-membership'); ?>"></i>
 									</div>
-									<input id="arm_email_admin_email" type="email" name="arm_email_admin_email" value="<?php echo esc_attr( ! empty( $all_email_settings['arm_email_admin_email'] ) ? sanitize_text_field($all_email_settings['arm_email_admin_email']) : get_option( 'admin_email' ) ); ?>" >
+									<input id="arm_email_admin_email" type="email" name="arm_email_admin_email" value="<?php echo esc_attr( ! empty( $all_email_settings['arm_email_admin_email'] ) ? sanitize_text_field( wp_unslash( $all_email_settings['arm_email_admin_email'] ) ) : get_option( 'admin_email' ) ); ?>" >
 									<span id="email_admin_email_error" class="arm_error_msg email_admin_email_error" style="display:none;"><?php esc_html_e( 'Please enter Admin Email ID.', 'armember-membership' ); ?></span>
 									<span id="invalid_email_admin_email_error" class="arm_error_msg invalid_email_admin_email_error" style="display:none;"><?php esc_html_e( 'Please enter valid Admin Email ID.', 'armember-membership' ); ?></span>
 								</div>

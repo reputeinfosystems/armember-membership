@@ -136,9 +136,9 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 									</div>
 								</div>
 						</div>
-						<div class="arm_form_field_block arm_margin_top_32">
+						<div class="arm_form_field_block arm_margin_top_32" id="arm_user_plan_ul">
 							<label class="arm-form-table-label arm_margin_bottom_12"><?php esc_html_e( 'Assign Plan To User', 'armember-membership' ); ?></label>
-							<input type="hidden" id="arm_plan_id" name="plan_id" value="" data-msg-required="<?php esc_attr_e( 'Please select at least one plan.', 'armember-membership' ); ?>" required/>
+							<input type="hidden" id="arm_plan_id" data-arm-plan-count="0" name="plan_id" class="arm_mm_user_plan_change_input_get_cycle" value="" data-msg-required="<?php esc_attr_e( 'Please select at least one plan.', 'armember-membership' ); ?>" required/>
 							<dl class="arm_selectbox column_level_dd arm_width_100_pct">
 								<dt><span></span><input type="text" style="display:none;" value="" class="arm_autocomplete"/><i class="armfa armfa-caret-down armfa-lg"></i></dt>
 								<dd>
@@ -159,6 +159,8 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 									</ul>
 								</dd>
 							</dl>
+							<div class="arm_choose_payment_cycle_label arm_margin_top_32 arm_margin_bottom_12 hidden_section"></div>
+							<div class="arm_selected_plan_cycle_0 arm_import_member_plan_cycle hidden_section"></div>
 						</div>
 
 						<div class="form-field arm_margin_top_32">			
@@ -310,8 +312,8 @@ $dbProfileFields = $arm_member_forms->arm_get_db_form_fields();
 						
 						 <input type="radio" class="arm_form_field_settings_field_input arm_iradio" name="arm_password_type" id="arm_is_plain_password" value="plain"/><label for="arm_is_plain_password"><?php esc_html_e( 'Your password is plain text.', 'armember-membership' ); ?></label>
 					</div>
-				 </div>
-						<div class="armclear"></div>
+				</div>
+				<div class="armclear"></div>
 				<div class="arm_import_progressbar">
 					<div class="arm_import_progressbar_inner"></div>
 				</div>

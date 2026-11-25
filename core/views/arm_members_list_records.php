@@ -1,7 +1,7 @@
 <?php 
 if(! defined('ABSPATH')) exit;
 
-global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways,$arm_common_lite,$arm_version;
+global $wpdb, $ARMemberLite, $arm_slugs, $arm_members_class, $arm_member_forms, $arm_global_settings, $arm_subscription_plans, $arm_payment_gateways,$arm_common_lite,$arm_version , $arm_pay_per_post_feature;
 $date_format    = $arm_global_settings->arm_get_wp_date_format();
 $user_roles     = get_editable_roles();
 $nowDate        = current_time( 'mysql' );
@@ -1109,9 +1109,18 @@ jQuery(document).on('change','#arm_manage_bulk_action1',function(){
 										</dt>
 										<dd>
 											<ul data-id="arm_subs_filter" data-placeholder="<?php esc_attr_e( 'Select Plans', 'armember-membership' ); ?>">
+												<?php 
+													$arm_member_without_plan_label = esc_html__( 'Member Without Plan' , 'armember-membership');
+													
+													if( $ARMemberLite->is_arm_pro_active && $arm_pay_per_post_feature->isPayPerPostFeature){
+														$arm_member_without_plan_label = esc_html__( 'Member Without Plan/Post' , 'armember-membership');
+													}
+												?>
 												<?php foreach ( $all_plans as $plan ) : ?>
 													<li data-label="<?php echo wp_unslash( esc_attr( $plan['arm_subscription_plan_name'] ) ); //phpcs:ignore ?>" data-value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"><input type="checkbox" class="arm_icheckbox" value="<?php echo esc_attr($plan['arm_subscription_plan_id']); ?>"/><?php echo wp_unslash( $plan['arm_subscription_plan_name'] ); //phpcs:ignore ?></li>
 												<?php endforeach; ?>
+												
+												<li data-label="<?php echo esc_attr( $arm_member_without_plan_label )  ?>" data-value="-2"><input type="checkbox" class="arm_icheckbox" value="-2"/><?php echo esc_html( $arm_member_without_plan_label ) ?></li>
 											</ul>
 										</dd>
 									</dl>
